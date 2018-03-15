@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TaskReporter" class="ptolemy.actor.corba.TaskReporter">
+  <description>
+An actor that sends data to a remote coordinator that implements the&#10; Coordinator inteface defined in Coordinator.idl.&#10;&#10; Specify the ORB initial property with the&lt;i&gt;ORBInitProperties&lt;/i&gt;&#10; paremerter, for example:&#10; &quot;-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050&quot;&#10; where &quot;xyz.eecs.berkeley.edu&quot; is the machine runing name server, and&#10; &quot;1050&quot; is the port for name service.&#10;&#10; Specify the name of the coordinator with &lt;i&gt;coordinatorName&lt;/i&gt; that it wants&#10; to connect to.&#10;&#10; Specify the name of this client application that this actor belongs to with&#10; &lt;i&gt;thisClientName&lt;/i&gt;  </description>
+  <author>Yang Zhao</author>
+  <version>$ $</version>
+  <since>Ptolemy II 3.0</since>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="ORBInitProperties">the ORB initial property. for example:&#10; &quot;-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050&quot;</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="coordinatorName">The name of the remote coordinator that this actor wants&#10;  to connect to. The type of the Parameter&#10;  is StringToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="thisClientName">The name represents the client application that the instance of&#10; this actor belongs to. The type of the Parameter&#10;  is StringToken.</property>
+</doc>

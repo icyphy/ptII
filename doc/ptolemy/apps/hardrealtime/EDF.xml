@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="EDF" class="ptolemy.apps.hardrealtime.EDF">
+  <description>
+&lt;p&gt;A hard real-time system consists of concurrently executing actors&#10; that release jobs. Jobs have deadlines and represent demands for&#10; execution by the processing elements that comprise the platform&#10; that the system is running on.&#10; &lt;/p&gt;&lt;p&gt;&#10; A scheduling policy determines the way that the available jobs are allocated&#10; on the processing elements. The EDF policy on a uniprocessor platform dictates&#10; that the job that has the smallest deadline should be given priority over&#10; the other jobs. Ties are broken arbitrarily.&#10; &lt;/p&gt;  </description>
+  <author>Christos Stergiou</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (chster)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chster)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="createPlot">Boolean parameter that controls whether a plot of the execution is displayed.</property>
+</doc>

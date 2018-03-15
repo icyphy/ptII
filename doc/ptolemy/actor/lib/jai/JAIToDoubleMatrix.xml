@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIToDoubleMatrix" class="ptolemy.actor.lib.jai.JAIToDoubleMatrix">
+  <description>
+This actor takes a single banded image and outputs a DoubleMatrixToken&#10; containing the data.&#10;&#10; To convert multiple banded images (for instance, color images or the&#10; output of a Discrete Fourier Transform), use either the BandSelect or&#10; BandCombine actors to separate the bands.&#10;&#10; The normalize parameter allows non floating point data types to be&#10; normalized when the token is converted.  The normalization that&#10; occurs is a mapping between the lowest and highest value's of the&#10; data type into the double values of 0 and 1.  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="normalize">This parameter indicates whether to normalize or not.  This&#10;  only should be checked for non-floating point data-types.&#10;  The default value is true.</property>
+</doc>

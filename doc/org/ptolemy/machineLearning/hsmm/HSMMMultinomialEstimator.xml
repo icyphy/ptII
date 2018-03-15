@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HSMMMultinomialEstimator" class="org.ptolemy.machineLearning.hsmm.HSMMMultinomialEstimator">
+  <description>
+&lt;p&gt; A hidden semi-markov model estimator, configured as an Explicit-Duration&#10;Hidden Markov Model (EDHMM) with multinomial emissions.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="emissionEstimates">An output that defines a probability mass estimate of the multinomial&#10; observation probabilities.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="observationProbabilities">An input guess array that defines a probability mass, defining the multinomial&#10; observation probabilities.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="observationDimension">Dimension of each observation array.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="nCategories">Number of categories in the multinomial distribution.</property>
+</doc>

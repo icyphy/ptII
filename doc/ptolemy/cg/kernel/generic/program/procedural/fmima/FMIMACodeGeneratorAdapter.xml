@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FMIMACodeGeneratorAdapter" class="ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter">
+  <description>
+Base class for a Functional Mockup Interface Master Algorithm code&#10; generator adapter.&#10;&#10; &lt;p&gt;Subclasses should override generateFMIMA().&lt;/p&gt;&#10;&#10; &lt;p&gt;Subclasses should be sure to properly indent the code by&#10; either using the code block functionality in methods like&#10; _generateBlockCode(String) or by calling&#10; &lt;a href=&quot;../../../../../../../ptolemy/cg/kernel/generic/program/CodeStream.html#indent&quot;&gt;indent(String)&lt;/a&gt;,&#10; for example:&lt;/p&gt;&#10; &lt;pre&gt;&#10;     StringBuffer code = new StringBuffer();&#10;     code.append(super.generateWrapupCode());&#10;     code.append(&quot;// Local wrapup code&quot;);&#10;     return processCode(CodeStream.indent(code.toString()));&#10; &lt;/pre&gt;  </description>
+  <author>Christopher Brooks, based on HTMLCodeGeneratorAdapter by Bert Rodiers</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

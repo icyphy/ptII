@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Discard" class="ptolemy.actor.lib.Discard">
+  <description>
+A simple sink actor that consumes and discards input tokens.&#10; &lt;p&gt;This actor is useful in situations where the value of an output is not&#10; needed, but for some reason, the output cannot be left unconnected.&#10; Also, when manipulating bus signals, this actor is useful if values&#10; in the middle of the bus need to be discarded.  Leaving the bus&#10; unconnected in the middle will not work because no channel is allocated&#10; to an unconnected relation in a bus.  </description>
+  <author>Edward A. Lee, contributors: Christopher Brooks, Brian Hudson</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (ssachs)</Pt.AcceptedRating>
+</doc>

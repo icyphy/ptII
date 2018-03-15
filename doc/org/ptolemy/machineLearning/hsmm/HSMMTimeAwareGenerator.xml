@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HSMMTimeAwareGenerator" class="org.ptolemy.machineLearning.hsmm.HSMMTimeAwareGenerator">
+  <description>
+&lt;p&gt;This actor implements an Explicit-Duration Hidden-Markov Model (EDHMM) and executes this&#10;model to generates traces. This subclass assumes that the state transitions of the EDHMM&#10;are characterized by a set of transition matrices, each active for a certain time interval.&#10;By default, the actor expects to receive a set of hourly specifications for the transition&#10;matrix, and a sampling period with which to produce observations.&#10;&lt;/p&gt;  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="At">An array of transition matrices.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="samplingPeriod">Sampling period in seconds.</property>
+</doc>

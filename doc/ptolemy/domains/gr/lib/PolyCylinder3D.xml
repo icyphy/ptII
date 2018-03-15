@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PolyCylinder3D" class="ptolemy.domains.gr.lib.PolyCylinder3D">
+  <description>
+This actor produces a generalized cylindrical shape in the GR domain.&#10; The output port is used to connect this actor to the Java3D scene&#10; graph. This actor will only have meaning in the GR domain.&#10;&#10; The parameter &lt;i&gt;polygon&lt;/i&gt; determines the polygonal shape of the base&#10; of this generalized cylinder. One will need to enter an array of coordinates&#10; in the X-Y plane to specify the polygonal shape for the base. The parameter&#10; &lt;i&gt;thickness&lt;/i&gt; determines the thickness of the generalized cylinder.  </description>
+  <author>C. Fong and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (liuxj)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="polygon">The polygonal shape of the base&#10;  This parameter should contain a ArrayToken with an even number&#10;   of DoubleToken values.&#10;  The default shape for this polygon is a triangle</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="thickness">The thickness of the generalized cylinder&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is the DoubleToken 0.3</property>
+</doc>

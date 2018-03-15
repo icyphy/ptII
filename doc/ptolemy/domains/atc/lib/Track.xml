@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Track" class="ptolemy.domains.atc.lib.Track">
+  <description>
+A model of a track in air traffic control systems.&#10;  This track can have no more than one aircraft in transit.&#10;  If there is one in transit, then it rejects all inputs.  </description>
+  <author>Maryam Bagheri</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input, which is a multiport.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="northOutput">The north output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="eastOutput">The east output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="southOutput">The south output.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="trackId">The trackId. The initial default is an integer with a value of&#10; -1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="neighbors">The neighbors.  The initial value is an array with&#10;  values {-1, -1, -1}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="stormy">A boolean indicating if it is stormy.</property>
+</doc>

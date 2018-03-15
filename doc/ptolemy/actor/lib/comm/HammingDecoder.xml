@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder">
+  <description>
+Decode a (&lt;i&gt;n&lt;/i&gt;, &lt;i&gt;k&lt;/i&gt;) Hamming code, where &lt;i&gt;n&lt;/i&gt; is specified by&#10; parameter &lt;i&gt;codedRate&lt;/i&gt; and &lt;i&gt;k&lt;/i&gt; is specified by parameter&#10; &lt;i&gt;uncodedRate&lt;/i&gt;.&#10; &lt;p&gt;&#10; The Hamming code can correct one-bit error.&#10; To encode a Hamming code, the HammingCoder consumes &lt;i&gt;k&lt;/i&gt; information bits&#10; during each firing and consider them as a row vector &lt;i&gt;&lt;u&gt;X&lt;/u&gt;&lt;/i&gt;. Its&#10; Hamming code is &lt;i&gt;&lt;u&gt;Y&lt;/u&gt;&lt;/i&gt; = &lt;i&gt;&lt;u&gt;X&lt;/u&gt;&lt;/i&gt; * G.&#10; &lt;p&gt;&#10; If there is no error in &lt;i&gt;&lt;u&gt;Y&lt;/u&gt;&lt;/i&gt;,&#10; &lt;i&gt;&lt;u&gt;Y&lt;/u&gt;&lt;/i&gt; * H&lt;sup&gt;T&lt;/sup&gt; should be a zero vector of length &lt;i&gt;n - k&lt;/i&gt;.&#10; Otherwise &lt;i&gt;&lt;u&gt;S&lt;/u&gt;&lt;/i&gt; =  &lt;i&gt;&lt;u&gt;Y&lt;/u&gt;&lt;/i&gt; * H&lt;sup&gt;T&lt;/sup&gt; is called the&#10; syndrome. Let &lt;i&gt;&lt;u&gt;S&lt;/u&gt;&lt;/i&gt; be the i-th column of H. The HammingDecoder&#10; declares there is an error at the i-th element of &lt;i&gt;&lt;u&gt;Y&lt;/u&gt;&lt;/i&gt;.&#10; &lt;p&gt;&#10; For more information on Hamming codes, see HammingCoder and Proakis, Digital&#10; Communications, Fourth Edition, McGraw-Hill, 2001, pp. 448-450.&#10; &lt;p&gt;  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="uncodedRate">Integer defining the uncode block size. It should be a positive&#10;  integer. Its default value is the integer 4.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="codedRate">Integer defining the Hamming code block size.&#10;  This parameter should be a non-negative integer.&#10;  Its default value is the integer 7.</property>
+</doc>

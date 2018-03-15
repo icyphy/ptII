@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AnythingToDouble" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+  <description>
+This actor converts an input token to a double.  If the input is&#10; a double, it acts as an identity.  Otherwise, it outputs a double&#10; token equal to NaN.  This is useful if you wish to force an output&#10; from a generic actor to always output doubles.&#10;&#10; &lt;p&gt;If you want to convert a string to a double, see the&#10; &lt;a href=&quot;../../../../ptolemy/actor/lib/conversions/ExpressionToToken.xml&quot;&gt;ptolemy.actor.lib.conversions.ExpressionToToken&lt;/a&gt; actor.&#10; or the  &lt;a href=&quot;../../../../ptolemy/actor/lib/conversions/StringToDouble.xml&quot;&gt;ptolemy.actor.lib.conversions.StringToDouble&lt;/a&gt; actor.&lt;/p&gt;  </description>
+  <author>Adam Cataldo</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

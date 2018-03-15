@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SmartSender" class="ptolemy.domains.de.demo.SmartSender.SmartSender">
+  <description>
+This actor adaptively establishes connections by searching for an&#10; unused input port in the model and connecting to it. If the output&#10; is connected to something (the width of the output port is greater&#10; than zero), then the actor sends an integer on the output port and&#10; requests a refiring at a time in the future determined by the&#10; &lt;i&gt;firingPeriod&lt;/i&gt; parameter. The value of the output is simply&#10; the count of the firing, starting at 1.&#10; &lt;p&gt;&#10; If the output is not connected to anything, then the actor will&#10; attempt to connect it. It does this by issuing a change request&#10; that, when executed, will search for an unused input port (any&#10; unused input port) in and actor in the same container as this actor,&#10; and then will connect to it.&#10; &lt;p&gt;&#10; Note that getWidth() is used rather than numberOfSinks() to determine&#10; whether the output is connected. This way, this actors search for an&#10; input port can be silenced by just connecting it to a relation.&#10; &lt;p&gt;&#10; This actor is an illustration of the capability actors can have to affect&#10; their environment, to detect faults (in this case, missing connections),&#10; and to repair the model.  It is designed to be used in the DE domain,&#10; or any domain that respects fireAt() calls.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which has type int.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="firingPeriod">The period at which this actor will execute.  This is a double&#10;  with a default value of 0.1.</property>
+</doc>

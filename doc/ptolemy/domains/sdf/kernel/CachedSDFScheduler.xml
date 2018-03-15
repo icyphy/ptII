@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CachedSDFScheduler" class="ptolemy.domains.sdf.kernel.CachedSDFScheduler">
+  <description>
+The CachedSDFScheduler extends the SDFScheduler by caching schedules.&#10; The cached schedules are labeled by their corresponding rate signatures,&#10; with the most recently used at the beginning of the cache queue. If the&#10; rate signatures are contained in the cache keys, then the corresponding&#10; schedule in the cache is used. Therefore, we do not need to recompute the&#10; schedule again.&#10; &lt;p&gt;&#10; The size of the cache in the CachedSDFScheduler is usually set by its&#10; containing director when constructing this scheduler. If the cache is&#10; full, the least recently used schedule (at the end of the cache) is&#10; discarded.  </description>
+  <author>Ye Zhou. Contributor: Brian K. Vogel</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

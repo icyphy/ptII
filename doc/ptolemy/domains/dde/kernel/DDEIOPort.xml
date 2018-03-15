@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DDEIOPort" class="ptolemy.domains.dde.kernel.DDEIOPort">
+  <description>
+A DDEIOPort is a timed input/output port used in the DDE domain.&#10; DDEIOPorts are used to send tokens between actors, and in so&#10; doing, associate time with the tokens as they are placed in&#10; DDEReceivers.&#10; &lt;P&gt;&#10; DDEIOPorts are not necessary to facilitate communication between&#10; actors executing in a DDE model; standard TypedIOPorts are sufficient&#10; for most communication. DDEIOPorts become useful when the time stamp&#10; to be associated with an outgoing token is greater than the current&#10; time of the sending actor.&#10; &lt;P&gt;&#10; The designers of models that incorporate DDEIOPorts should be careful&#10; to make sure that output time stamp ordering information is correct.&#10; Since the output time stamp of a token being sent through a DDEIOPort&#10; can be greater then the sending actor's current time, it is possible&#10; on a subsequent token production to create an outgoing token with&#10; a time stamp that is greater than the current time but less then the&#10; previously produced time stamp. In such cases, an&#10; IllegalArgumentException will be thrown.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

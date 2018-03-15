@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LoopTest2" class="ptolemy.actor.lib.test.LoopTest2">
+  <description>
+Name: LoopTest.java Purpose: The purpose of this actor is&#10;   prove that output from another actor can be input to this actor.&#10;&#10; input : counter : start of the loop, will loop until it's stopped (# 75)&#10; xmlResults :&#10; output : .  </description>
+  <author>Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="counter">The Point (Lat,Long) the user selected from the map</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="xmlResults"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="searchOutput"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="foundResultsOutput"></port>
+</doc>

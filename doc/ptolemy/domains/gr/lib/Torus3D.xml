@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Torus3D" class="ptolemy.domains.gr.lib.Torus3D">
+  <description>
+This actor contains the geometry and appearance specifications for&#10; a GR torus.  The output port is used to connect this actor to the&#10; Java3D scene graph. This actor will only have meaning in the GR&#10; domain.  The parameter &lt;i&gt;hullRadius&lt;/i&gt; determines the radius of&#10; torus ring. The parameter &lt;i&gt;crossSectionRadius&lt;/i&gt; determines the&#10; radius of the torus cross-section.  The parameter &lt;i&gt;slices&lt;/i&gt;&#10; determines the number of polygonal slices used in the creating the&#10; torus.  </description>
+  <author>C. Fong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (chf)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chf)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="crossSectionRadius">The radius of the torus cross-section&#10;  This parameter should contain a DoubleToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="hullRadius">The radius of the torus outer hull&#10;  This parameter should contain a DoubleToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="angleSpan">The span of torus sweep angle&#10;  This parameter should contain a DoubleToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="slices">The number of slices&#10;  This parameter should contain a IntToken.</property>
+</doc>

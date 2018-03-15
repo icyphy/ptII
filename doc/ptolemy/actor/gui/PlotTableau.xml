@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PlotTableau" class="ptolemy.actor.gui.PlotTableau">
+  <description>
+A tableau representing a plot in a toplevel window.&#10; The URL that is viewed is given by the &lt;i&gt;uri&lt;/i&gt; parameter, and&#10; can be either an absolute URL, a system fileName, or a resource that&#10; can be loaded relative to the classpath.  For more information about how&#10; the URL is specified, see MoMLApplication.specToURL().&#10; &lt;p&gt;&#10; The plot frame itself must be an instance of PlotTableauFrame,&#10; and must be created by the caller.&#10; As with other tableaux, this is an entity that is contained by&#10; an effigy of a model.&#10; There can be any number of instances of this class in an effigy.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

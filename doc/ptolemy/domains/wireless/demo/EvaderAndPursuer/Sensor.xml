@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Sensor" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor">
+  <description>
+This is a wireless sensor node that senses evaders in the sensor&#10; field. The sensors in the field communicate with each other to&#10; construct a spanning tree from the root node (where the evader is close&#10; to) to nodes that are one hop from the root node and so on. When a&#10; sensor detects the evader, it sets itself as the root&#10; and broadcast a message to its neighbor nodes. The message includes&#10; the time when the evader is detected, the location and the depth,&#10; zero for the root node, of the sensor. If a sensor receives&#10; a message from another sensor, it checks whether the root node&#10; has been changed from last time (by check the detected time),&#10; or whether there is a shorter path to the root node. If so, it&#10; records the detected time, updates the information of its parent&#10; node (location and depth in the tree) and broadcast a message,&#10; include the detected time, its location and depth in the tree, to&#10; it neighbot nodes. By doing this in a sensor network, a spaning&#10; tree is constructed distributedly and sensors are indexed according&#10; to how far it is from the root node. With the evader moving, it may&#10; be detected by another sensor, and the tree changes dynamically.  </description>
+  <author>Yang Zhao</author>
+  <version>$ $</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="input">Port that receives update message for the spanning tree.</port>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="signal">Port that receives a signal from the envader or pursuer.</port>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="output">Port that transmits the update message for the spanning tree.&#10;  This has type {location={double}, time=double, depth =int},&#10;  a record token.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="messageChannelName">Name of the channel for messaging between sensors.&#10;  This is a string that defaults to &quot;messageChannel&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="signalChannelName">Name of the channel for sensors to detect envader or pursuer.&#10;  This is a string that defaults to &quot;signalChannel&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="outputChannelName">Name of the output channel. This is a string that defaults to&#10;  &quot;OutputChannel&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="range">The transmission range of the sensor. The icon for this sensor&#10;  node includes a circle with this as its radius. This is a&#10;  double and default to 50.0.</property>
+</doc>

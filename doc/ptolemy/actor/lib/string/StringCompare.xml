@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+  <description>
+Compare two strings specified either as inputs or parameters. The output&#10; is either true or false, depending on whether the comparison function is&#10; satisfied.&#10;&#10; &lt;p&gt; The comparison functions are:&lt;/p&gt;&#10; &lt;ul&gt;&#10; &lt;li&gt; &lt;b&gt;equals&lt;/b&gt;: Output true if the strings are equal (Default).&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;startsWith&lt;/b&gt;: Output true if &lt;i&gt;firstString&lt;/i&gt; starts with&#10; &lt;i&gt;secondString&lt;/i&gt;.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;endsWith&lt;/b&gt;: Output true if &lt;i&gt;firstString&lt;/i&gt; ends with&#10; &lt;i&gt;secondString&lt;/i&gt;.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;contains&lt;/b&gt;: Output true if &lt;i&gt;firstString&lt;/i&gt; contains&#10; &lt;i&gt;secondString&lt;/i&gt;.&lt;/li&gt;&#10; &lt;/ul&gt;&#10; &lt;p&gt;The strings to be compared will be taken from the inputs if they are&#10; available, and otherwise will be taken from the corresponding parameters.&lt;/p&gt;  </description>
+  <author>Vinay Krishnan, Daniel L&amp;aacute;zaro Cuadrado (contributor: Edward A. Lee)</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (kapokasa)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (net)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port for the result of type BooleanToken.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="function">The comparison function to be performed. The choices are:&#10; &lt;ul&gt;&#10; &lt;li&gt; &lt;b&gt;equals&lt;/b&gt;: Compares firstString to another secondString&#10; (Default).&#10; &lt;li&gt; &lt;b&gt;startsWith&lt;/b&gt;: Tests whether firstString starts with&#10;  secondString.&#10; &lt;li&gt; &lt;b&gt;endsWith&lt;/b&gt;: Tests whether firstString ends with secondString.&#10; &lt;li&gt; &lt;b&gt;contains&lt;/b&gt;: Tests whether firstString contains secondString.&#10; &lt;/ul&gt;</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="firstString">The input PortParameter for the first string of type string.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="ignoreCase">The parameter to state whether to ignore case. This is a&#10;  boolean that defaults to false.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="secondString">The input PortParameter for the second string of type string.</property>
+</doc>

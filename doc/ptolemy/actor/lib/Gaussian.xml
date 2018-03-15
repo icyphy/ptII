@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+  <description>
+Produce a random sequence with a Gaussian distribution.  On each&#10; iteration, a new random number is produced.  The output port is of&#10; type DoubleToken.  The values that are generated are independent&#10; and identically distributed with the mean and the standard&#10; deviation given by parameters.  In addition, the seed can be&#10; specified as a parameter to control the sequence that is generated.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="mean">The mean of the random number.&#10;  This has type double, initially with value 0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="standardDeviation">The standard deviation of the random number.&#10;  This has type double, initially with value 1.</property>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+  <description>
+This actor reads a file or URL and outputs the entire file&#10; as a single string.  The file or URL is specified using any form&#10; acceptable to FileParameter.  </description>
+  <author>Yang Zhao (contributor: Edward A. Lee)</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="fileOrURLPort">An input port for optionally providing a file name. This has&#10;  type string.</port>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="fileOrURL">The file name or URL from which to read.  This is a string with&#10;  any form accepted by FileParameter.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="newline">The end of line character(s).  The default value is the value&#10;  of the line.separator property</property>
+</doc>

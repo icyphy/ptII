@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PtidesMirrorPort" class="ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesMirrorPort">
+  <description>
+This is a specialized port for PtidesPlatform.&#10;  If the container is an instance of PtidesPlatform,&#10;  then it handles type conversions between&#10;  the record types and the payload field of the record used&#10;  in NetworkPorts.  </description>
+</doc>

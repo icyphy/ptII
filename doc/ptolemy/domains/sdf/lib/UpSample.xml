@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="UpSample" class="ptolemy.domains.sdf.lib.UpSample">
+  <description>
+This actor upsamples an input stream by an integer factor by inserting&#10; tokens with value zero.  The upsample factor is given by the&#10; &lt;i&gt;factor&lt;/i&gt; parameter. On each firing, this actor reads one&#10; token from the input produces &lt;i&gt;factor&lt;/i&gt; tokens on the output&#10; port.  All but one of these is a zero-valued token of the same type&#10; as the input.  The remaining one is the token read from the input.&#10; The position of this remaining one is determined by the &lt;i&gt;phase&lt;/i&gt;&#10; parameter.  This parameter has a value between 0 and &lt;i&gt;factor&lt;/i&gt;-1.&#10; If it is 0, then the input token is the first output token, followed&#10; by zeros. If it is &lt;i&gt;factor&lt;/i&gt;-1, then it is the last output.&#10; Thus, if this actor is followed by the DownSample actor with the same&#10; &lt;i&gt;factor&lt;/i&gt;, and the two &lt;i&gt;phase&lt;/i&gt; parameters have a sum of&#10; &lt;i&gt;factor&lt;/i&gt;-1, the combination has no effect.&#10; &lt;p&gt;&#10; By default, &lt;i&gt;factor&lt;/i&gt; is 2, and &lt;i&gt;phase&lt;/i&gt; is the expression&#10; &quot;factor-1&quot;.  This means that by default, the input token that is read&#10; is the last one produced at the output.&#10; &lt;p&gt;&#10; This actor is data polymorphic. It can accept any token&#10; type on the input that supports the zero() method,&#10; and it sends output tokens of that type.  </description>
+  <author>Steve Neuendorffer, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="factor">The number of output tokens to produced per input token read.&#10;  This is an integer that defaults to 2 and must be greater than&#10;  zero.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="phase">The phase of the output with respect to the input.&#10;  This is an integer that defaults to &lt;i&gt;factor&lt;/i&gt;-1 and must be&#10;  between 0 and &lt;i&gt;factor&lt;/i&gt;-1. If &lt;i&gt;phase&lt;/i&gt; = 0, the input&#10;  is the first output, while if &lt;i&gt;phase&lt;/i&gt; = &lt;i&gt;factor&lt;/i&gt;-1&#10;  then the input is the last output.</property>
+</doc>

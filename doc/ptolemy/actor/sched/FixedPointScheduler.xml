@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FixedPointScheduler" class="ptolemy.actor.sched.FixedPointScheduler">
+  <description>
+A scheduler for the FixedPointDirector.  This scheduler constructs&#10; a static schedule for a model by performing a topological sort on&#10; actors. Currently, in this class, each actor appears only once, but&#10; a more sophisticated scheduler may mention an actor more&#10; than once if the dependencies require it.  </description>
+  <author>Haiyang Zheng and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Yellow (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewModerator)</Pt.AcceptedRating>
+</doc>

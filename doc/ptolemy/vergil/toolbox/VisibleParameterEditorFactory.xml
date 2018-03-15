@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="VisibleParameterEditorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+  <description>
+If this class is contained by a settable attribute, then double&#10; clicking on that attribute will invoke an editor for only that&#10; parameter.  This is contrary to the the double-click action for most&#10; objects, which edits the parameters they contain..  This class is&#10; contained by visible parameters in the Vergil utilities library.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

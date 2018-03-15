@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Assert" class="ptolemy.actor.lib.Assert">
+  <description>
+Check that an assertion predicate is satisfied, and throw an exception if not.&#10;  To use this actor, add any number of input ports.&#10;  Corresponding output ports will be automatically added.&#10;  Specify an expression that references the inputs and yields a boolean result.&#10;  When the actor fires, if the expression evaluates to false, then the actor&#10;  will throw an exception with the message given by the &lt;a href=&quot;../../../ptolemy/actor/lib/Assert.xml#message&quot;&gt;message&lt;/a&gt; parameter.&#10;  Otherwise, it will copy the inputs to the corresponding output ports.  </description>
+  <author>Ilge Akkaya, David Broman, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="message">The error message to display when the assertion is violated.&#10;  This is a string that defaults to &quot;Assertion failed.&quot;.</property>
+</doc>

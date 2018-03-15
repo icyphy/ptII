@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SetProperties" class="ptolemy.domains.wireless.lib.SetProperties">
+  <description>
+On each firing, this actor reads at most one token from the &lt;i&gt;payload&lt;/i&gt;&#10; and &lt;i&gt;properties&lt;/i&gt; input ports, outputs the payload on the&#10; &lt;i&gt;output&lt;/i&gt; port, and set the &lt;i&gt;outsideTransmitProperties&lt;/i&gt; of the&#10; wireless output port connected to the &lt;i&gt;output&lt;/i&gt; port with the specified&#10; transmit properties received from the &lt;i&gt;properties&lt;/i&gt; input port. If&#10; there is no token received on the &lt;i&gt;properties&lt;/i&gt; input port, this actor&#10; will not modify the &lt;i&gt;outsideTransmitProperties&lt;/i&gt; of the connected&#10; wirelessIOPort, i.e. the payload will be transmitted with the previous&#10; transmit properties.  </description>
+  <author>Yang Zhao, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="payload">Input port that receives the payload to be transmitted.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port that output the received payload. This has the same type as&#10;  the &lt;i&gt;payload&lt;/i&gt; port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="properties">Input port that receives the properties to be used for transmission&#10;  on the connected wireless output port. The type of this port&#10;  is a record type.</port>
+</doc>

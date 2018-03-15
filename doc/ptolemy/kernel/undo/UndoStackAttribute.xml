@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="UndoStackAttribute" class="ptolemy.kernel.undo.UndoStackAttribute">
+  <description>
+This attribute holds the undo/redo information for a model.&#10; This attribute is not persistent, so undo/redo information disappears&#10; when the model is closed. It is also a singleton, meaning that it will&#10; replace any previous attribute that has the same name&#10; and is an instance of the same base class, SingletonAttribute.&#10; &lt;p&gt;&#10; Two stacks of information are maintained - one for undo information and&#10; one for redo information. Normally, a push onto this stack puts the&#10; undo information in the undo stack. However, if the push occurs during&#10; the execution of an undo, then the information is put on the redo stack.&#10; The entries on the stack implement the UndoAction interface.&#10; &lt;p&gt;&#10; NOTE: the information in the redo stack is emptied when a new undo action is&#10; pushed onto the undo stack that was not the result of a redo being&#10; requested. This situation arises when a user requests a series of undo&#10; and redo operations, and then performs some normal undoable action. At this&#10; point the information in the redo stack is not relevant to the state of&#10; the model and so must be cleared.  </description>
+  <author>Neil Smyth and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

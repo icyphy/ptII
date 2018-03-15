@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DoubleFork" class="ptolemy.domains.dde.lib.DoubleFork">
+  <description>
+DoubleFork is a simple DDE actor with one input and two outputs. It&#10; has two multiport outputs - &quot;output1&quot; and &quot;output2.&quot; The fire method of&#10; DoubleFork passes real tokens through the first output (output1).&#10; Real tokens are never produced on output2.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output1">The first output port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output2">The second output port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+</doc>

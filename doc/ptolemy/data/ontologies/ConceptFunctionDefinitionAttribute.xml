@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ConceptFunctionDefinitionAttribute" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+  <description>
+Abstract base class for an Attribute that defines a concept function.  </description>
+  <author>Charles Shelton</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Green (cshelton)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cshelton)</Pt.AcceptedRating>
+</doc>

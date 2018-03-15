@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="When" class="ptolemy.domains.sr.lib.When">
+  <description>
+When the &lt;i&gt;control&lt;/i&gt; input is true, copy the &lt;i&gt;input&lt;/i&gt; to the&#10; &lt;i&gt;output&lt;/i&gt;. If &lt;i&gt;control&lt;/i&gt; is absent, false, or true with&#10; &lt;i&gt;input&lt;/i&gt; being absent, then the output is absent.&#10; This actor is inspired by the &quot;when&quot; operator in the synchronous&#10; languages LUSTRE and SIGNAL.&#10; &lt;p&gt;&#10; Note that this actor does not read the input at all if the &lt;i&gt;control&lt;/i&gt;&#10; input is either absent or has value false. If you need an actor that&#10; always reads the input, use the &lt;a href=&quot;../../../../ptolemy/actor/lib/BooleanSwitch.xml&quot;&gt;ptolemy.actor.lib.BooleanSwitch&lt;/a&gt;.&#10;&#10; &lt;p&gt;P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, &quot;LUSTRE: A&#10; Declarative Language for Programming Synchronous Systems,&quot;&#10; Conference Record of the 14th Annual ACM Symp. on Principles of&#10; Programming Languages, Munich, Germany, January, 1987.&#10;&#10; &lt;p&gt;A. Benveniste and P. Le Guernic, &quot;Hybrid Dynamical Systems Theory&#10; and the SIGNAL Language,&quot; IEEE Tr. on Automatic Control, Vol. 35,&#10; No. 5, pp. 525-546, May 1990.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="control">The control input port. This has type boolean.</port>
+</doc>

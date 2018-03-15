@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ResizableAttributeControllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+  <description>
+This is attribute that produces a custom node controller for icons that&#10; can be interactively resized. It provides a context menu suitable for&#10; an attribute as well as an interactor that provides for resizing.&#10; To use this class, just insert it as an attribute inside&#10; a Ptolemy II attribute, and then right clicking on the icon for&#10; that object will result in the use of the controller specified&#10; here.  The instance by convention will be named &quot;_controllerFactory&quot;,&#10; but the only reason to enforce this is that only the first such&#10; controller factory found as an attribute will be used.&#10; It is a singleton, so placing it any container will replace any&#10; previous controller factory with the same name.  </description>
+  <author>Edward A. Lee and Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

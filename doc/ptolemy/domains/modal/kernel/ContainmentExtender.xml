@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ContainmentExtender" class="ptolemy.domains.modal.kernel.ContainmentExtender">
+  <description>
+An implementation of containment extender for modal models as an attribute.&#10; This attribute defines a special containment relationship that is slightly&#10; different from the containment relationship defined by &lt;a href=&quot;../../../../ptolemy/kernel/util/NamedObj.html#getContainer&quot;&gt;getContainer()&lt;/a&gt;. The &lt;a href=&quot;../../../../ptolemy/domains/modal/kernel/ContainmentExtender.html#getExtendedContainer&quot;&gt;getExtendedContainer()&lt;/a&gt; method returns&#10; the container of the object that contains the implementing attribute. The&#10; returned container is supposed to be the object that visually contains the&#10; object that owns the implementing attribute, as seen by the model designer. In&#10; particular, for a modal model (either FSM or Ptera), even though a refinement is&#10; visually contained by a state or an event, &lt;a href=&quot;../../../../ptolemy/kernel/util/NamedObj.html#getContainer&quot;&gt;getContainer()&lt;/a&gt; of&#10; that refinement does not return the state or event because of a difference&#10; between the visual representation and internal data representation. In that&#10; case, &lt;a href=&quot;../../../../ptolemy/domains/modal/kernel/ContainmentExtender.html#getExtendedContainer&quot;&gt;getExtendedContainer()&lt;/a&gt; of this class returns the state or event.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+</doc>

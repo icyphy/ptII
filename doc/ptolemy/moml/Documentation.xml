@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Documentation" class="ptolemy.moml.Documentation">
+  <description>
+An attribute that contains documentation for the container.&#10; &lt;p&gt;&#10; The name of a documentation object can often be meaningful.  Many times&#10; the name can be used to specify important information about the type of&#10; documentation.  Unfortunately, all documentation objects are currently&#10; treated the same.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+</doc>

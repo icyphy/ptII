@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIEdgeDetection" class="ptolemy.actor.lib.jai.JAIEdgeDetection">
+  <description>
+An actor that does edge detection on a image.  This is done by taking&#10; the image and separately convolving it with two different masks.  The&#10; two results are squared, summed together, and square rooted to give the&#10; final image.  The user may specify one, or both masks.  A series of&#10; predefined masks are available for the user to use.  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="userSpecifiedFirstMask">The first user specified mask, and its corresponding x and&#10;  y dimensions.  The Default mask is the transparent mask,&#10;  and the default x and y dimensions is 3.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="userSpecifiedSecondMask">The second user specified mask, and its corresponding x and&#10;  y dimensions.  The Default mask is the transparent mask,&#10;  and the default x and y dimensions is 3.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="firstMask">The following two parameters are used to specify the masks used&#10;  for edge detection.  Traditionally one mask is used for&#10;  horizontal edge detection, and one mask is used for vertical&#10;  edge detection.&#10;  The following predefined masks are available:&#10;  Sobel horizontal mask.&#10;  Sobel vertical mask.&#10;  Roberts horizontal mask.&#10;  Roberts vertical mask.&#10;  Prewitt horizontal mask.&#10;  Prewitt vertical mask.&#10;  Frei and Chen horizontal mask.&#10;  Frei and Chen vertical mask.&#10;  A diagonal mask, which finds edges in the direction of a slash.&#10;  A back diagonal mask, which finds edges in the direction of a&#10;  backslash.&#10;  A Transparent mask.  Using this mask allows you to find edges in&#10;  one direction and add them back to the original image.&#10;  A mask of zeros.&#10;  The default mask for the first choice is a Sobel horizontal&#10;  mask.  The default mask for the second choice is a Sobel&#10;  vertical mask.&#10;  The user can also specify mask(s).  The dimensions of the mask(s)&#10;  must be specified if the user chooses to do so.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="secondMask">The mask used for edge detection.</property>
+</doc>

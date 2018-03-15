@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="WebElement" class="ptolemy.vergil.basic.export.web.WebElement">
+  <description>
+Attribute containing information and methods for web elements,&#10; for example, HTML tags and content, as in&#10; &amp;lt;div&amp;gt; This is some HTML content &amp;lt;/div&amp;gt;&#10;&#10; The full name including the _elementName is used as WebElement's web id.&#10; In an HTML page, elements that have ids are required to have globally&#10; unique ids.  The _webName field is used for the WebElement's web name.&#10; Elements can have non-unique web names - this is done for example for radio&#10; buttons on web forms.&#10; http://solidlystated.com/scripting/html-difference-between-id-and-name/&#10; http://stackoverflow.com/questions/1363693/do-input-field-names-have-to-be-unique-across-forms  </description>
+  <author>Elizabeth Latronico</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ltrnc)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ltrnc)</Pt.AcceptedRating>
+</doc>

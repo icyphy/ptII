@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CompositeOptimizerUsingGradient" class="org.ptolemy.optimization.CompositeOptimizerUsingGradient">
+  <description>
+This actor implements a composite optimizer that optimizes a function&#10;provided as an SDF model in the inner composite.&#10;To use the composite optimizer, construct an SDF model on the inside&#10;that operates on the x input to output four values: (i) an intermediate&#10;result, that is a function of x and possibly other inputs, (ii) a&#10;double array containing the values of the constraints, calculated for&#10;the specific x input, (iii) a double matrix that is a gradient of a&#10;function of x, and (iv) an array of double matrices that is a gradient of&#10;the constraints. If the gradients (iii) and (iv) can't be defined, un-check&#10;the parameter &quot;useGradient&quot; in expert mode so that (iii) and (iv) are not used.&#10;&lt;p&gt;&#10;In the case that the objective function is only a function of x, the&#10;trigger input should be used to start a new optimization round.&#10;&lt;p&gt;&#10;The variable named &quot;maxEvaluations&quot; can be used to limit the number&#10;of evaluations. Specifically, the inside SDF model will be fired at most&#10; &lt;i&gt;maxEvaluations&lt;/i&gt; times. There may be several reasons it is fired&#10; less than this number. The iteration may terminate due to any of the&#10; following reasons: (i) convergence criteria met (ii) user requests&#10; termination (iii) the roundoff errors become damaging, especially if&#10; the function is not smooth, and no optimal value can be found under&#10; given constraints (iv) maximum number of evaluations are reached.&#10;&lt;p&gt;&#10;This actor is properly viewed as a &quot;higher-order component&quot; in&#10;that its contained actor is a parameter that specifies how to&#10;operate on input arrays.  It is inspired by the higher-order&#10;functions of functional languages, but unlike those, the&#10;contained actor need not be functional. That is, it can have&#10;state.&#10;&lt;p&gt;&#10;If the gradients are used (the parameter &quot;useGradient&quot; is checked),&#10;Barrier Method is used as the solver. Barrier Method performs optimization&#10;efficiently using gradients and estimating the hessian of the objective function&#10;and the constraints. If the parameter &quot;useGradient&quot; is un-checked,&#10;current implementation uses Cobyla as the solver. Cobyla implements&#10;the trust-region-reflective algorithm and performs a type of gradient&#10;descent optimization, ideal for objective functions that are non-convex&#10;and/or with unknown gradient.  </description>
+  <author>Shuhei Emoto, Ilge Akkaya, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (shuhei)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="optimalValue">Optimal Value</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="trigger">Trigger.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rhoBeg">The expert parameter that denotes the beginning step-size.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rhoEnd">The expert parameter that denotes the final step-size.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="reusePreviousResult">The expert parameter that decides whether to reuse previous result as the initial value.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useGradient">The expert parameter that decides whether to use Interior point method or not.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maxEvaluations">Maximum number of function evaluations per iteration.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="mode">Optimization mode. ( min or max)</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="dimensionOfOptimizationSpace">The dimension of optimization space. Also equal to the length of the optimization variable array, x.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numberOfConstraints">Number of constraints checked at each evaluation. The expected type of constraints is a double array with length &lt;i&gt;numberOfConstraints&lt;/i&gt;.</property>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Gem5Wrapper" class="ptolemy.actor.lib.gem5.Gem5Wrapper">
+  <description>
+An actor that interacts with gem5 architectural simulator.&#10;&#10;  &lt;p&gt;The &lt;a href=&quot;http://gem5.org/#in_browser&quot;&gt;gem5 simulator&lt;/a&gt;&#10;  &quot;is a modular platform for computer-system architecture&#10;  research.&quot;&lt;/p&gt;  </description>
+  <author>Hokeun Kim, contributor: Christopher Brooks</author>
+  <version>$Id: Gem5Wrapper.java 67679 2013-10-13 03:48:10Z cxh $</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="init">The value produced by the ramp on its first iteration.&#10;  If this value is changed during execution, then the new&#10;  value will be the output on the next iteration.&#10;  The default value of this parameter is the integer 0.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="pipePathPrefix">The prefix of the file path for the pipe used for communicating&#10;  with gem5 simulator.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="step">The amount by which the ramp output is incremented on each iteration.&#10;  The default value of this parameter is the integer 1.</property>
+</doc>

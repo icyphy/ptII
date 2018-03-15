@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Rician" class="ptolemy.actor.lib.Rician">
+  <description>
+&lt;p&gt;Produce a random sequence with a Rician distribution.&#10; A Rician random variable is defined as follows:&#10; Let Z = sqrt(X&lt;sup&gt;2&lt;/sup&gt; + Y&lt;sup&gt;2&lt;/sup&gt;), where X and Y are statistically&#10; independent Gaussian random variables with means given by parameters&#10; &lt;i&gt;xMean&lt;/i&gt; and &lt;i&gt;yMean&lt;/i&gt; respectively, and common variance given by&#10; parameter &lt;i&gt;standardDeviation&lt;/i&gt;.&#10; &lt;/p&gt;&lt;p&gt;&#10; The default values of &lt;i&gt;xMean&lt;/i&gt; and &lt;i&gt;yMean&lt;/i&gt; are both set to be zero,&#10; in which the distribution is also called a Rayleigh distribution. Hence,&#10; the actor is by default a Rayleigh random generator.&#10; &lt;/p&gt;&lt;p&gt;&#10; On each iteration, a new random number is produced. The output port&#10; is of type DoubleToken. The values that are generated are independent&#10; and identically distributed with the means and the standard deviation&#10; given by parameters. In addition, the seed can be specified as a&#10; parameter to control the sequence that is generated.&lt;/p&gt;  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xMean">The mean of the random number along the X-axis.&#10;  This parameter contains a DoubleToken, initially with value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yMean">The mean of the random number along the Y-axis.&#10;  This parameter contains a DoubleToken, initially with value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="standardDeviation">The standard deviation of the random number.&#10;  This parameter contains a DoubleToken, initially with value 1.0.</property>
+</doc>

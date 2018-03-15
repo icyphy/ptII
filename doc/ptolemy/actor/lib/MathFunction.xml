@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+  <description>
+Produce an output token on each firing with a value that is&#10; equal to the specified math function of the input.&#10; The input and output types are DoubleToken.  The functions&#10; are a subset of those in the java.lang.Math class.  They are:&#10; &lt;ul&gt;&#10; &lt;li&gt; &lt;b&gt;exp&lt;/b&gt;: The exponential function.&#10; This is the default function for this actor&#10; If the argument is NaN, then the result is NaN.&#10; &lt;li&gt; &lt;b&gt;log&lt;/b&gt;: The natural logarithm function.&#10; If the argument is NaN, then the result is NaN.&#10; &lt;li&gt; &lt;b&gt;modulo&lt;/b&gt;: The modulo after division.&#10; If the second operand is zero, then the result is NaN.&#10; &lt;li&gt; &lt;b&gt;sign&lt;/b&gt;: If the argument is greater than 0, return 1.0, if&#10; it is less than 0, return -1.0, otherwise return 0.0.&#10; &lt;li&gt; &lt;b&gt;square&lt;/b&gt;: The square function&#10; If the argument is NaN, then the result is NaN.&#10; &lt;li&gt; &lt;b&gt;sqrt&lt;/b&gt;: The square root function.&#10; If the argument is NaN, then the result is NaN.&#10; &lt;/ul&gt;&#10; &lt;p&gt;&#10;&#10; NOTES:&#10; &lt;p&gt;1. Some functions like exp, log, square, and sqrt act on a single&#10; operand only.  Other functions like modulo act on two operands.&#10; The actor acquires a second input when the function is changed to&#10; modulo, and loses the input when the function is changed back.&#10; &lt;p&gt;2. There is an alternative to using the MathFunction.modulo() method&#10; If you want to use the IEEE remainder standard, use the Remainder actor.  </description>
+  <author>C. Fong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (chf)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (janneck)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="firstOperand">The port for the first operand.&#10;  The port has type BaseType.DOUBLE</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="secondOperand">The port for the second operand, if it is needed.&#10;  The port has type BaseType.DOUBLE</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port.&#10;  The port has type BaseType.DOUBLE</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="function">The function to compute.  This is a string-valued attribute&#10;  that defaults to &quot;exp&quot;.</property>
+</doc>

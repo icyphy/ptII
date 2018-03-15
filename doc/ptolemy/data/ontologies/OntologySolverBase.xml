@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="OntologySolverBase" class="ptolemy.data.ontologies.OntologySolverBase">
+  <description>
+The base abstract class for an ontology solver.&#10;&#10;&lt;p&gt;The base class provides the core functionality for ontology&#10;solver resolution.  It provides a method to create an OntologyAdapter for any&#10;given model component. The model component can be an object of any&#10;Ptolemy class (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A&#10;model component, in turn, may have one or multiple objects to which&#10;ontology concepts can be attached.&#10;&#10;&lt;p&gt;Subclasses needs to implement &lt;a href=&quot;../../../ptolemy/data/ontologies/OntologySolverBase.html#resolveConcepts&quot;&gt;resolveConcepts()&lt;/a&gt;&#10;to specify exactly how to perform the ontology concept resolution. For example,&#10;one may gather all the constraints from the OntologyAdapters and feed them&#10;into a constraint solver.&#10;&#10;&lt;p&gt;Every OntologySolver is linked together by the SharedParameter called&#10;&quot;ontologySolverUtilitiesWrapper&quot;, which contains the shared utility object.&#10;This allows every OntologySolver to find other solvers in the model.  </description>
+  <author>Man-Kit Leung</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (mankit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (mankit)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="ontologySolverUtilitiesWrapper">The shared parameter that links together every solver in the&#10; same model.</property>
+</doc>

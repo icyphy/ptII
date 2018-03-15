@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HuffmanCoder" class="ptolemy.actor.lib.comm.HuffmanCoder">
+  <description>
+Given a probability distribution and alphabet, encode the input using&#10; Huffman code and send the result in booleans to the output port.&#10; Its base class HuffmanBasic generates the code book.&#10; The HuffmanCoder actor simply encode the input into the corresponding&#10; booleans in the code book.  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

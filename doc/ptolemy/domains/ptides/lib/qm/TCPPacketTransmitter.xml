@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TCPPacketTransmitter" class="ptolemy.domains.ptides.lib.qm.TCPPacketTransmitter">
+  <description>
+Build a TCP Packet containing a user-defined number of PTIDES events.&#10;&#10;  &lt;p&gt;This actor should be directly connected to a network output port and be&#10;  used with a PTIDES director.&lt;/p&gt;&#10;&#10;  &lt;p&gt;This actor is expected to be used in pairs with the &lt;a href=&quot;../../../../../ptolemy/domains/ptides/lib/qm/TCPPacketReceiver.xml&quot;&gt;ptolemy.domains.ptides.lib.qm.TCPPacketReceiver&lt;/a&gt;.&lt;/p&gt;&#10;&#10;  &lt;p&gt;&lt;a href=&quot;../../../../../ptolemy/domains/ptides/lib/qm/TCPPacketTransmitter.xml&quot;&gt;ptolemy.domains.ptides.lib.qm.TCPPacketTransmitter&lt;/a&gt; builds TCP packets containing PTIDES events,&#10;  where each PTIDES event itself is assigned a data length in bits by the user.&#10;  The bits/event parameter is constant right now and is an actor Parameter.&#10;  At the destination platform, &lt;a href=&quot;../../../../../ptolemy/domains/ptides/lib/qm/TCPPacketReceiver.xml&quot;&gt;ptolemy.domains.ptides.lib.qm.TCPPacketReceiver&lt;/a&gt; consumes packages produced&#10;  by this actor and releases PTIDES events into its enclosing director.&lt;/p&gt;&#10;&#10;  &lt;p&gt;This actor consumes &lt;i&gt;frameSize&lt;/i&gt; number of input tokens and creates a&#10;  RecordToken with two fields labeled as TCPlabel and tokens. Here, tokens itself is&#10;  an array of RecordTokens, where each of the entries is a PTIDES RecordToken with&#10;  labels: timestamp, microstep and payload. Once the number of received tokens equals&#10;  frameSize, the RecordToken simulating the TCP Packet is sent to output port. During&#10;  wrapup, the remaining tokens(if any) are sent to the output.&lt;/p&gt;  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating></Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The data input port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The data output port, which is a RecordToken.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="defaultFrameSize">The default TCP Packet size parameter. The initial default&#10;  value is an integer with the value 5.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="priority">Default TCP Packet priority parameter. The initial default&#10;  value is an integer with the value 1.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="frameSize">User-Defined frame size port parameter.  The initial default&#10;  value is an integer with the value 5.  The type is integer.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Action" class="ptolemy.domains.modal.kernel.Action">
+  <description>
+An Action is contained by a Transition in an FSMActor or an Event in an&#10; ERGController.&#10; &lt;p&gt;&#10; When the FSMActor is fired, an enabled transition among the outgoing&#10; transitions of the current state is chosen. The choice actions&#10; contained by the chosen transition are executed. An action is a choice&#10; action if it implements the ChoiceAction marker interface. A choice&#10; action may be executed more than once during an iteration in domains&#10; with fixed-point semantics.&#10; &lt;p&gt;&#10; When the FSMActor is postfired, the chosen transition of the latest firing&#10; of the actor is committed. The commit actions contained by the transition&#10; are executed and the current state of the actor is set to the destination&#10; state of the transition. An action is a commit action if it implements the&#10; CommitAction marker interface.  </description>
+  <author>Xiaojun Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (liuxj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (liuxj)</Pt.AcceptedRating>
+</doc>

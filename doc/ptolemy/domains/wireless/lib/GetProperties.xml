@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
+  <description>
+This actor retrieves the properties most recently received by&#10; an input port that is connected on the inside to the trigger&#10; port of this actor. That port&#10; must be an instance of WirelessIOPort, and must be contained&#10; by the container of this actor, or an exception will be thrown.&#10; A typical usage pattern is inside an instance of WirelessComposite,&#10; to connect the trigger input to the port from which you want to read&#10; the properties.&#10; &lt;p&gt;&#10; NOTE: The type of the properties port is inferred from the&#10; &lt;i&gt;defaultProperties&lt;/i&gt; field of the channel used by the connected&#10; port at preinitialize() time. If the connection is changed during&#10; execution, or the connectivity is changed, then the type of the&#10; port will not be updated, and a run-time type error could occur.&#10; Thus, this actor assumes that these types do not change.&#10; If the channel has no default properties (as in the base class&#10; AtomicWirelessChannel), then the type of the properties port will&#10; be undefined. If the output is left disconnected, then this is fine,&#10; but if it is connected, then its type will need to be declared&#10; explicitly.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="trigger">Port that triggers execution.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Port that transmits the properties received on the &lt;i&gt;input&lt;/i&gt;&#10;  port.</port>
+</doc>

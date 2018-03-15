@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
+  <description>
+Calculate the discrete Fourier transform of an image.  If the input&#10; is real, then the output has twice as many bands as the input (the&#10; dataNature parameter should be set to &lt;i&gt;realToComplex&lt;/i&gt;).  Band 0&#10; in the input gets mapped to bands 0 and 1 in the output (band 0&#10; contains the real information, band 1 contains the imaginary&#10; information).  Band 1 in the input gets mapped to bands 1 and 2, etc.&#10; &lt;p&gt;&#10; If the input is complex, then the output has the same amount of bands&#10; as the input (the dataNature parameter should be set to&#10; &quot;complexToComplex&quot;, &quot;complexToReal should never be used&quot;).&#10; &lt;p&gt;&#10; The image is zero-padded to the next highest power of 2 (unless it&#10; already is a power of 2, in which case nothing happens).&#10; &lt;p&gt;&#10; The output of this actor may not be suitable for displaying or saving&#10; because of the increase in the number of bands, as well as the high&#10; resolution of the data (doubles).  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="dataNature">A parameter that describes the nature of the input and output&#10;  data.  The default is &lt;i&gt;realToComplex&lt;/i&gt;.  If the input is&#10;  complex, then &lt;i&gt;complexToComplex&lt;/i&gt; should be used.  The&#10;  setting &lt;i&gt;complexToReal&lt;/i&gt; should probably not be used.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="scalingType">The scaling to be done on the output.  There are three options,&#10;  &lt;i&gt;none&lt;/i&gt; (the default, does no scaling), &lt;i&gt;unitary&lt;/i&gt;&#10;  (multiplies by square root of the product of the dimensions),&#10;  and &lt;i&gt;dimensions&lt;/i&gt; (multiplies by the product of the&#10;  dimensions).  In a DFT-IDFT chain, the overall scaling should&#10;  equal the product of the dimensions.</property>
+</doc>

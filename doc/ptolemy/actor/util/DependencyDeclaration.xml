@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DependencyDeclaration" class="ptolemy.actor.util.DependencyDeclaration">
+  <description>
+An instance of DependencyDeclaration is an attribute that declares&#10; variable dependence information of a parameter.  This attribute is&#10; usually created in a parameter, when necessary, during the&#10; preinitialize method of an actor.  This class is used primarily by the&#10; ConstVariableModelAnalysis class to determine a change context for&#10; parameters whose value dependence is not declared through an&#10; expression reference, but maintained by the actor's Java code instead.&#10;&#10; &lt;p&gt; This attribute is not persistent by default, so it will not be exported&#10; into a MoML representation of the model.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+</doc>

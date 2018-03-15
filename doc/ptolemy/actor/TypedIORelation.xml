@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TypedIORelation" class="ptolemy.actor.TypedIORelation">
+  <description>
+This class overrides some of the methods in IORelation to ensure that&#10; TypedIOPorts are only connected to TypedIOPorts. I.e., Instances of&#10; TypedIORelation can only be linked to instances of TypedIOPort.&#10; Derived classes may further constrain this to subclasses of TypedIOPort.&#10; Such derived classes should override the protected method _checkPort()&#10; to throw an exception.&#10; &lt;p&gt;&#10; To link a TypedIOPort to a TypedIORelation, use the link() or&#10; liberalLink() method in the TypedIOPort class.  To remove a link,&#10; use the unlink() method.&#10; &lt;p&gt;&#10; The container for instances of this class can only be instances of&#10; TypedCompositeActor.  Derived classes may wish to further constrain the&#10; container to subclasses of TypedComponentEntity.  To do this, they should&#10; override the _checkContainer() method.  </description>
+  <author>Yuhong Xiong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (liuxj)</Pt.AcceptedRating>
+</doc>

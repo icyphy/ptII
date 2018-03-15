@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AttributeChanged" class="ptolemy.data.expr.test.AttributeChanged">
+  <description>
+Test class that checks to see whether it is ok to cache parameter values.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="param">The parameter to test.</property>
+</doc>

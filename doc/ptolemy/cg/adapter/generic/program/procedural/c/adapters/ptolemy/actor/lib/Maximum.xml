@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Maximum" class="ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.Maximum">
+  <description>
+An adapter class for ptolemy.actor.lib.Maximum.  </description>
+  <author>Man-Kit Leung, Gang Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Green (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (mankit)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+  <description>
+&lt;p&gt;On each firing, this actor reads exactly one token from each channel&#10; of the input port and assembles the tokens into an ArrayToken. The&#10; ArrayToken is sent to the output port. If there is no input token&#10; at any channel of the input port, the prefire() will return false.&#10; &lt;/p&gt;&lt;p&gt;&#10; This actor is polymorphic. It can accept inputs of any type, as long&#10; as the type does not change, and will produce an array with elements&#10; of the corresponding type.&#10; &lt;/p&gt;  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

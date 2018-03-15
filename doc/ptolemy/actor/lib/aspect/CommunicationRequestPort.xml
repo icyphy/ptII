@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CommunicationRequestPort" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+  <description>
+This actor implements an input port in a composite communication aspect&#10;  (@link CompositeCommunicationAspect).&#10;&#10;  &lt;p&gt;&#10;  Tokens received are RecordTokens containing two fields: receiver&#10;  and token.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (derler)</Pt.AcceptedRating>
+</doc>

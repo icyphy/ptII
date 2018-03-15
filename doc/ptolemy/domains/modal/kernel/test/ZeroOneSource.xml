@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ZeroOneSource" class="ptolemy.domains.modal.kernel.test.ZeroOneSource">
+  <description>
+This actor produces the sequence 011101011011000... as source of the AMI&#10; (Alternating Mark 1) test.  </description>
+  <author>Xiaojun Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (liuxj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

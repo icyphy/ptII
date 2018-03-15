@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LinkVisualizer" class="ptolemy.domains.wireless.lib.LinkVisualizer">
+  <description>
+This actor implements the ChannelListener interface.&#10; It creates a line between two communicating nodes that&#10; are within range of one another. It registers itself&#10; with the wireless channel specified by the&#10; &lt;i&gt;channelName&lt;/i&gt; parameter. This is notified whenever a transmission&#10; occurs on the channel on which it is listening.&#10;&#10; This is an actor because it registers itself with the channel in the&#10; initialize() method.  </description>
+  <author>Heather Taylor, Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Yellow (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (celaine)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="channelName">The name of the channel.  The default name is &quot;AtomicWirelessChannel&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="sleepTime">The amount of time to sleep in milliseconds between drawing the&#10;  line and then removing the line.  The initial default value&#10;  is an IntToken with a value of 500, meaning sleep for 500 ms.</property>
+</doc>

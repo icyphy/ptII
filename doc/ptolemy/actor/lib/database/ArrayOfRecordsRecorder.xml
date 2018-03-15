@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayOfRecordsRecorder" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">
+  <description>
+An actor that displays an array of records that arrives on its input port.&#10; The records (or a specified subset of the records) are displayed in the icon&#10; of the actor. In addition, double clicking on the actor displays&#10; the entire array of records in a table.  Alt-clicking configures&#10; the actor.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="colorKey">A column name to use as a color key. If this string is&#10;  non-empty, then it specifies a column name that is used&#10;  to determine a color for each row. The value in that&#10;  row and column determines the color via a hash function,&#10;  so that if two rows are identical in that column, then&#10;  they are also identical in color.  This is a string that&#10;  defaults to empty, indicating that all rows should&#10;  be displayed in black.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="columns">The columns to display when double clicking on the icon.&#10;  This is an array of strings specifying the column&#10;  names to display, and the order in which they are&#10;  displayed. It defaults to ALL, which indicates&#10;  that all fields should be displayed. In this case,&#10;  the columns are organized alphabetically.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="iconColumns">The columns to display in the icon.&#10;  This is an array of strings specifying the column&#10;  names to display, and the order in which they are&#10;  displayed. It defaults to ALL, which indicates&#10;  that all fields should be displayed. In this case,&#10;  the columns are organized alphabetically.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="records">Parameter to store the array of records read at the input.&#10;  This is an array of records that is by default empty.</property>
+</doc>

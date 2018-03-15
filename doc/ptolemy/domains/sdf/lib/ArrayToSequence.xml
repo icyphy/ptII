@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+  <description>
+&lt;p&gt;This actor reads an array at the input and writes the array elements&#10; as a sequence to the output. The parameter &lt;i&gt;arrayLength&lt;/i&gt; can be&#10; used to specify the length of arrays that the actor will accept.&#10; If the &lt;i&gt;enforceArrayLength&lt;/i&gt; parameter true, then if an input&#10; array does not match &lt;i&gt;arrayLength&lt;/i&gt;, the fire() method will throw&#10; an exception.  This feature is important in domains, such as SDF,&#10; that do static scheduling based on production and consumption&#10; rates.  For other domains, such as DE and PN, the &lt;i&gt;enforceArrayLength&lt;/i&gt;&#10; parameter can be set to false, in which case the &lt;i&gt;arrayLength&lt;/i&gt;&#10; parameter will be ignored.&lt;/p&gt;&#10; &lt;p&gt;&#10; This actor is polymorphic. It can accept ArrayTokens with any element&#10; type and send out tokens corresponding to that type.&#10; &lt;/p&gt;  </description>
+  <author>Yuhong Xiong, Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Yellow (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="arrayLength">The size of the input array.  This is an integer that defaults&#10;  to 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="enforceArrayLength">If true, then enforce the &lt;i&gt;arrayLength&lt;/i&gt; parameter by&#10;  throwing an exception if it is violated. This is a boolean&#10;  that defaults to true.</property>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
+  <description>
+&lt;p&gt;This actor implements a publisher in a HLA/CERTI federation. This&#10; publisher is associated to one HLA attribute. Ptolemy's tokens, received in&#10; the input port of this actor, are interpreted as an updated value of the&#10; HLA attribute. The updated value is published to the whole HLA Federation&#10; by the &lt;a href=&quot;../../../org/hlacerti/lib/HlaManager.xml&quot;&gt;org.hlacerti.lib.HlaManager&lt;/a&gt; attribute, deployed in a Ptolemy model.&#10; &lt;/p&gt;&lt;p&gt;&#10; The name of this actor is mapped to the name of the HLA attribute in the&#10; federation and need to match the Federate Object Model (FOM) specified for&#10; the Federation. The data type of the input port has to be the same type of&#10; the HLA attribute. The parameter &lt;i&gt;classObjectHandle&lt;/i&gt; needs to match the&#10; attribute object class describes in the FOM.  </description>
+  <author>Gilles Lasnier, Contributors: Patricia Derler, David Come</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (glasnier)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (glasnier)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="classObjectHandle">The object class of the HLA attribute to publish.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useCertiMessageBuffer">Indicate if the event is wrapped in a CERTI message buffer.</property>
+</doc>

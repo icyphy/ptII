@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+  <description>
+&lt;p&gt;&#10; A polymorphic adder/subtractor.&#10; This adder has two input ports, both of which are multiports,&#10; and one output port, which is not.&#10; The types on the ports are undeclared and will be resolved by&#10; the type resolution mechanism. Data that arrives on the&#10; input port named &lt;i&gt;plus&lt;/i&gt; will be added, and data that arrives&#10; on the input port named &lt;i&gt;minus&lt;/i&gt; will be subtracted.&#10; Any token type supporting addition and subtraction can be used.&#10; In most domains, either input port can be left unconnected.&#10; Thus, to get a simple adder (with no subtractor), just leave the&#10; &lt;i&gt;minus&lt;/i&gt; input unconnected.&lt;/p&gt;&#10; &lt;p&gt;&#10; The &lt;i&gt;plus&lt;/i&gt; input port will typically resolve to the least upper bound&#10; of the types presented to it.  Thus, for example, if one input channel&#10; comes from a source of type BooleanToken and another comes from a source&#10; of type IntToken, the resolved type will be StringToken, and addition&#10; will be that implemented in StringToken (which concatenates strings).&#10; Notice that StringToken does not support subtraction, so if any&#10; inputs are presented to the &lt;i&gt;minus&lt;/i&gt; port, an exception will&#10; be thrown at run time.&lt;/p&gt;&#10; &lt;p&gt;&#10; Currently, the type system is quite liberal about the resolved&#10; types it will permit at the inputs. In particular, it may permit the&#10; &lt;i&gt;plus&lt;/i&gt; and &lt;i&gt;minus&lt;/i&gt; inputs to resolve to types that cannot in fact&#10; be subtracted.  In these cases, a run-time error will occur.&#10; In the future, we hope that the type system will intercept such errors&#10; before run time.&lt;/p&gt;&#10; &lt;p&gt;&#10; This actor does not require that each input&#10; channel have a token upon firing. It will add or subtract available&#10; tokens at the inputs and ignore the channels that do not have tokens.&#10; It consumes at most one input token from each port.&#10; If no input tokens are available at all, then no output is produced.&lt;/p&gt;  </description>
+  <author>Yuhong Xiong and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="minus">Input for tokens to be subtracted.  This is a multiport, and its&#10;  type is inferred from the connections.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port.  The type is inferred from the connections.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="plus">Input for tokens to be added.  This is a multiport, and its&#10;  type is inferred from the connections.</port>
+</doc>

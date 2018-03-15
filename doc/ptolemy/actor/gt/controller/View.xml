@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="View" class="ptolemy.actor.gt.controller.View">
+  <description>
+An event to view the model in the model parameter in a separate window. If the&#10; tableau parameter is ignored as the default, a new window is opened for each&#10; such event. If the &lt;a href=&quot;../../../../ptolemy/actor/gt/controller/View.xml#referredTableau&quot;&gt;referredTableau&lt;/a&gt; parameter is specified with the&#10; name of a tableau, then the specified tableau will be used to view the model.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="isPersistent">If the isPersistent parameter is false, then the user will not&#10;  be prompted to save the model upon closing.  Models in the&#10;  test suite might want to have this parameter set to false so&#10;  as to avoid a dialog asking if the user wants to save the&#10;  model.  The default is a boolean with a value of false,&#10;  indicating that the user will be not prompted to save the model if&#10;  the model has changed.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="referredTableau">Name of the tableau referred to, or an empty string if the default&#10;  tableau is to be used.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="reopenWindow">Whether the window should be closed and reopened on each update.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="screenLocation">Location of the new window, or [-1, -1] if the default location is to be&#10;  used.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="screenSize">Size of the new window, or [-1, -1] if the default size is to be used.</property>
+    <!--ptolemy.domains.ptera.lib.TableauParameter-->
+    <property name="tableau">The default tableau.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="title">Title of the window.</property>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
+  <description>
+&lt;p&gt;A sequence plotter for sequences that are potentially infinitely long.&#10; This plotter contains an instance of the Plot&#10; class from the Ptolemy plot package as a public member. Data at&#10; the input, which can consist of any number of channels, are plotted&#10; on this instance.  Each channel is plotted as a separate data set.&#10; The horizontal axis represents the count of the iterations, modulo&#10; the &lt;i&gt;width&lt;/i&gt; parameter, scaled by the &lt;i&gt;xUnit&lt;/i&gt; parameter.&#10; The &lt;i&gt;width&lt;/i&gt; parameter must be an integer that gives the width&#10; of the plot in number of samples. It defaults to 10.&#10; If the &lt;i&gt;persistence&lt;/i&gt; parameter is positive, then it specifies&#10; the number of points that are remembered. It also defaults to 10.&#10; Any points older than these are erased and forgotten.&#10; The horizontal increment between samples is given by the&#10; &lt;i&gt;xUnit&lt;/i&gt; parameter. Its default value is 1.0. The horizontal value&#10; of the first sample is given by the &lt;i&gt;xInit&lt;/i&gt; parameter.&#10; Its default value is 0.0. The input is of type DoubleToken.&#10; &lt;/p&gt;&lt;p&gt;&#10; Note that this actor uses XOR drawing mode, which is fast, but&#10; will produce sometimes very annoying artifacts. In particular,&#10; when lines or points overlap, they will erase each other (if they&#10; are from the same data set) or produce some other color (if&#10; they are from distinct data sets).  To avoid these artifacts,&#10; use ArrayPlotter.&lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The width of the X axis, in number of samples (an integer).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="persistence">The number of samples to be displayed at any one time (an integer).</property>
+</doc>

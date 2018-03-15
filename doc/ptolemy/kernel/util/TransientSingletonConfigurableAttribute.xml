@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TransientSingletonConfigurableAttribute" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
+  <description>
+This class is a nonpersistent configurable singleton attribute.&#10; By &quot;nonpersistent&quot; we mean that it does not export MoML.&#10; A major application of this class is to define a default icon&#10; description.  An icon description is XML code in the SVG&#10; (scalable vector graphics) schema, set in a configure element&#10; in MoML.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+</doc>

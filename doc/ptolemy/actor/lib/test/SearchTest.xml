@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SearchTest" class="ptolemy.actor.lib.test.SearchTest">
+  <description>
+Name: SearchTest.java Purpose: The purpose of this actor is&#10; to prove that we can use it's output as input for the Loop Actor&#10;&#10; input :  String &quot;Search #Loop Number&quot;&#10; output : &quot;No Data&quot; or &quot;Results Found&quot;  </description>
+  <author>Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="search">The Point (Lat,Long) the user selected from the map</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="resultsOutput">Output whether the download failed or passed.&#10; ; acts as an output trigger</port>
+</doc>

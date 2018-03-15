@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
+  <description>
+Output the length of an array.  This actor reads an ArrayToken from the&#10; &lt;i&gt;input&lt;/i&gt; port and sends its length to the &lt;i&gt;output&lt;/i&gt; port.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+</doc>

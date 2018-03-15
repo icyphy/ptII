@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="EventSource" class="ptolemy.domains.continuous.lib.EventSource">
+  <description>
+This actor outputs a set of events at a discrete set of time points.&#10; It can be used to generate impulses in Continuous models. Events are&#10; produced at superdense time index 1 or greater in order to ensure&#10; that the output is piecewise continuous.&#10; &lt;p&gt;&#10; This actor only generates predictable events and that is why it does not&#10; implement the ContinuousStepSizeControlActor interface. This actor requests a&#10; refiring in its initialize() method to produce events. During its postfire()&#10; method, it requests further firings to produce more events if necessary.  </description>
+  <author>Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.0</since>
+  <Pt.ProposedRating>Yellow (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.  The type of this port is determined by from&#10;  the &lt;i&gt;values&lt;/i&gt; parameter.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="offsets">The offsets at which the specified values will be produced.&#10;  This parameter must contain an array of doubles, and it defaults&#10;  to {0.0, 1.0}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="period">The period of the output events.&#10;  This parameter must contain a DoubleToken, and defaults to 2.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="values">The values that will be produced at the specified offsets.&#10;  This parameter must contain an ArrayToken, and defaults to {1, 0}.</property>
+</doc>

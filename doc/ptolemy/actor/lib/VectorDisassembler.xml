@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
+  <description>
+&lt;p&gt;An actor that disassembles a DoubleMatrixToken to a multiport output.&#10; &lt;/p&gt;&lt;p&gt;On each firing, read one column or row vector (i.e. a&#10; DoubleMatrixToken with one column or row) from the &lt;i&gt;input&lt;/i&gt; port and&#10; send out individual DoubleTokens to each channel of the &lt;i&gt;output&lt;/i&gt;&#10; port.  If the width of the &lt;i&gt;output&lt;/i&gt; port (say, &lt;i&gt;n&lt;/i&gt;) is less than&#10; the number of rows (say, &lt;i&gt;m&lt;/i&gt;) in the input token, then the first&#10; &lt;i&gt;n&lt;/i&gt; elements in the vector will be sent, and the remaining tokens are&#10; discarded.  If &lt;i&gt;n&lt;/i&gt; is greater than &lt;i&gt;m&lt;/i&gt;, then the last&#10; &lt;i&gt;n-m&lt;/i&gt; channels of the output port will never send tokens out.&#10; This class throws an exception if the input is not a column vector.&#10;&#10; &lt;/p&gt;&lt;p&gt;For sequential domains like SDF, the combination of&#10; domains.sdf.lib.MatrixToDouble and a Distributor is equivalent to this&#10; actor.  However, that combination will not work in CT, so we need this&#10; actor.&lt;/p&gt;  </description>
+  <author>Jie Liu, Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Yellow (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (celaine)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
+  <description>
+A histogram plotter.  This plotter contains an instance of the Histogram&#10; class from the Ptolemy plot package as a public member.  A histogram&#10; of data at the input port, which can consist of any number of channels,&#10; is plotted on this instance. The input data type is double.&#10; &lt;p&gt;&#10; The output plot consists of a set of vertical bars, each representing&#10; a histogram bin.  The height of the bar is the count of the number&#10; of inputs that have been observed that fall within that bin.&#10; The &lt;i&gt;n&lt;/i&gt;-th bin represents values in the range&#10; (&lt;i&gt;x&lt;/i&gt; - &lt;i&gt;w&lt;/i&gt;/2 + &lt;i&gt;o&lt;/i&gt;, &lt;i&gt;x&lt;/i&gt; + &lt;i&gt;w&lt;/i&gt;/2 + &lt;i&gt;o&lt;/i&gt;),&#10; where &lt;i&gt;w&lt;/i&gt; is the value of the &lt;i&gt;binWidth&lt;/i&gt; parameter,&#10; and &lt;i&gt;o&lt;/i&gt; is the value of the &lt;i&gt;binOffset&lt;/i&gt; parameter.&#10; So for example, if &lt;i&gt;o = w/2&lt;/i&gt;,&#10; then each bin represents values from &lt;i&gt;nw&lt;/i&gt; to&#10; (&lt;i&gt;n&lt;/i&gt; + 1)&lt;i&gt;w&lt;/i&gt; for some integer &lt;i&gt;n&lt;/i&gt;.&#10; The default offset is 0.5, half the default bin width, which is 1.0.&#10; &lt;p&gt;&#10; This actor has a &lt;i&gt;legend&lt;/i&gt; parameter,&#10; which gives a comma-separated list of labels to attach to&#10; each dataset.  Normally, the number of elements in this list&#10; should equal the number of input channels, although this&#10; is not enforced.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port, which is a multiport.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="binWidth">The width of the bin of the histogram.&#10;  This parameter has type double, with default value 1.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="binOffset">The offset for bins of the histogram.&#10;  This parameter has type double, with default value 0.5.</property>
+</doc>

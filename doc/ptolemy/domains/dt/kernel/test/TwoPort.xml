@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TwoPort" class="ptolemy.domains.dt.kernel.test.TwoPort">
+  <description>
+  </description>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input1">The input port. This has type IntToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input2"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output1">The output port. This has type BooleanToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output2"></port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="inrate1"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="inrate2"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="outrate1"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="outrate2"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input1_tokenConsumptionRate"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input2_tokenConsumptionRate"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output1_tokenProductionRate"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output2_tokenProductionRate"></property>
+</doc>

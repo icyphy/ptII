@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FactorOracleGenerator" class="org.ptolemy.machineImprovisation.FactorOracleGenerator">
+  <description>
+A Factor Oracle (FO) builder from an input sequence. Given an input&#10; of type String, recognizes a set of alphabet by recognizing the&#10; distinct characters in the symbol and builds a factor oracle data&#10; structure.&#10;&#10; &lt;p&gt;In the future, this actor will be replaced by an on-line algorithm&#10; which adds to the data structure as more symbols are received at&#10; the input and the string requirement will be replaced by a music&#10; sequence specification.&lt;/p&gt;&#10;&#10; &lt;p&gt;This actor builds a factor oracle data structure that represents&#10; a finite acyclic automaton that contains at least all the suffixes of&#10; a given input sequence.&lt;/p&gt;  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="noteSequence">The ordered note sequence consisting of &lt;a href=&quot;../../../org/ptolemy/machineImprovisation/Note.xml&quot;&gt;org.ptolemy.machineImprovisation.Note&lt;/a&gt; objects.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="pitchMoML">The pitch oracle in MoML format.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="durationMoML">The duration oracle in MoML format.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="repetitionProbability">The repetition probability of the forward links in the Factor Oracle.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="usePitchSpecs">Parameter indicating whether to check pitch specifications.</property>
+</doc>

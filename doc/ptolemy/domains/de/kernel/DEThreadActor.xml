@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DEThreadActor" class="ptolemy.domains.de.kernel.DEThreadActor">
+  <description>
+A base class for threaded DE domain actors.&#10; &lt;P&gt;&#10; NOTE: This actor is very preliminary. It is not developed and maintained&#10; for a long time. We do not recommend using it. To try multiple threads under&#10; DE semantics, use DDE domain, which is another experimental domain.&#10; &lt;P&gt;&#10; This actor, upon its initialization, will start another thread.&#10; The thread communicate with the DEDirector thread by placing&#10; events into the DEEventQueue asynchronously.&#10; &lt;P&gt;&#10; Subclass of this class should implement the run() method.&#10; The subclass is executed in an event driven way. More precisely,&#10; the implementation of the run() method should call&#10; waitForNewInputs() after processing all current events. The&#10; calls are blocked until the next time fire() is called.&#10; Recall that the Director (after putting events into the&#10; receiver of the input ports) will call fire() on the actor.&#10; NOTE: The synchronization mechanism is implemented in DECQEventQueue&#10; to ensure the correct multi-threading behaviour.&#10; &lt;P&gt;&#10; This implementation does not change the semantics of DEReceiver,&#10; but still supports an asynchronous message passing type of&#10; concurrency.  </description>
+  <author>Lukito Muliadi</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Red (lmuliadi)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

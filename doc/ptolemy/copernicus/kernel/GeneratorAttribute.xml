@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GeneratorAttribute" class="ptolemy.copernicus.kernel.GeneratorAttribute">
+  <description>
+This is an attribute that stores the configuration of a code generator.&#10;&#10; &lt;p&gt;The initial default parameters, their values and their documentation&#10; are read in from a MoML file specified by the &lt;i&gt;initialParametersURL&lt;/i&gt;.&#10; Having the parameters defined in a MoML file allows us to easily&#10; add and modify parameters without lots of bookkeeping.&#10;&#10; &lt;p&gt;To view the initial default parameters, either call toString(), or&#10; run:&#10; &lt;pre&gt;&#10; java -classpath $PTII ptolemy.copernicus.kernel.Copernicus -help&#10; &lt;/pre&gt;  </description>
+  <author>Edward A. Lee, Christopher Hylands</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="initialParametersURL">MoML file that contains other parameters.  The default value&#10;  is the string &quot;ptolemy/copernicus/kernel/Generator.xml&quot;.</property>
+</doc>

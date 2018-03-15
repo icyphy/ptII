@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CSPSieve" class="ptolemy.domains.csp.lib.CSPSieve">
+  <description>
+Used in the Sieve of Eratosthenes demo. This actor represents a&#10; sieve process which filters out all multiples of a particular number.&#10; The first time the filter encounters a number it cannot filter it&#10; creates a new process to filter out all multiples of that number and&#10; appends it to the string of filters already created. This actor is a good&#10; illustration of how to perform changes to the topology.&#10; &lt;p&gt;  </description>
+  <author>Neil Smyth</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Red (nsmyth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+</doc>

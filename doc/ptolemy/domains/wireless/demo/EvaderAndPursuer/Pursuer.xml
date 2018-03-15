@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Pursuer" class="ptolemy.domains.wireless.demo.EvaderAndPursuer.Pursuer">
+  <description>
+The pursuer moves from a leaf node of the spanning tree to its parent node&#10; to track the envader.&#10;&#10; see the Sensor class for how the spanning tree is constructed.&#10;&#10; FIXME: Currently, the workRange is not really used, but I plan to use it&#10; to define a work area for a pursuer, so that when there are multi pursuers,&#10; each one can only take care of a particular part of the field to catch&#10; the evader more quickly.  </description>
+  <author>Yang Zhao</author>
+  <version>$ $</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">Port that receives update message for the spanning tree.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="trigger">Port that receives triggers to output its location.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="xlocation">Port that output the current x direction location of the pursuer.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="ylocation">Port that output the current y direction location of the pursuer.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="messageChannelName">Name of the channel for messaging between sensors or pursuer.&#10;  This is a string that defaults to &quot;messageChannel&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="signalChannelName">Name of the channel for sensors to detect envader or pursuer.&#10;  This is a string that defaults to &quot;signalChannel&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="speed">The speed per trigger time of the pursuer.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="workRange">The work area of the pursuer.</property>
+</doc>

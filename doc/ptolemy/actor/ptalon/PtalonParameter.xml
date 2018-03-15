@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PtalonParameter" class="ptolemy.actor.ptalon.PtalonParameter">
+  <description>
+A Parameter created in a Ptalon file.  </description>
+  <author>Adam Cataldo, Elaine Cheong</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

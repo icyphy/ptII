@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Or" class="ptolemy.domains.curriculum.Or">
+  <description>
+This is a rather uninteresting component used to indicate&#10; an alternative between prerequisites.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="postrequisites">The postrequisites port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="prerequisites">The prerequisites port.</port>
+</doc>

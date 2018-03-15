@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PlotterBase" class="ptolemy.actor.lib.gui.PlotterBase">
+  <description>
+Base class for plotters.  This class contains an instance of the&#10; PlotBox class from the Ptolemy plot package as a public member,&#10; although which subclass of PlotBox is created is left to derived classes.&#10; It provides a parameter that determines whether to fill the plot&#10; when wrapup is invoked. It also has a &lt;i&gt;legend&lt;/i&gt; parameter,&#10; which gives a comma-separated list of labels to attach to&#10; each dataset.  Normally, the number of elements in this list&#10; should equal the number of input channels, although this&#10; is not enforced.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.1</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="automaticRescale">If true, the plot will automatically rescale if necessary.&#10;  This parameter has type BooleanToken, and default value false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fillOnWrapup">If true, fill the plot when wrapup is called.&#10;  This parameter has type BooleanToken, and default value true.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="legend">A comma-separated list of labels to attach to each data set.&#10;  This is always a string, with no enclosing quotation marks.</property>
+</doc>

@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ReceiveInput" class="ptolemy.domains.ptera.lib.ReceiveInput">
+  <description>
+An event that receives user input and allows model time to be advanced. The&#10; user input can be key presses or mouse presses. A tableau is used to receive&#10; the input. The &lt;a href=&quot;../../../../ptolemy/domains/ptera/lib/ReceiveInput.xml#timeAdvance&quot;&gt;timeAdvance&lt;/a&gt; parameter defines the amount of model time&#10; that is advanced at the same time as the user sends input. For example, if the&#10; current model time is 5 and timeAdvance parameter is 1 when this event is&#10; fired, then the user input is considered to be received at model time 6. The&#10; events scheduled to occur between time 5 and 6 occur in the background, but the&#10; events scheduled to occur after 6 would be delayed until the user input is&#10; actually received. Whether the events scheduled exactly at time 5 or 6 are&#10; processed while the user input is being waited for depends on the LIFO or FIFO&#10; policy of the model.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="acceptableComponentType">The name of the class of the component that can accept user input, such&#10;  as &quot;java.awt.Button&quot;, or empty.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="acceptableKeyPattern">A string pattern in the Java regular expression used to match acceptable&#10;  key input.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="componentType">Class name of the component that actually receives the user input, which&#10;  is automatically updated after the input is received.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="keyPressText">The text of the key input, which is automatically updated after the&#10;  input is received.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="mousePressLocation">Screen location of the mouse press, which is automatically updated after&#10;  the input is received.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="receiveKeyPress">A Boolean parameter to determine whether key presses are accepted.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="receiveMousePress">A Boolean parameter to determine whether mouse presses are accepted.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="referredTableau">The parameter that contains the name of the TableauParameter to be used.&#10;  It cannot be empty.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="timeAdvance">The amount (in double) of model time advancement.</property>
+</doc>

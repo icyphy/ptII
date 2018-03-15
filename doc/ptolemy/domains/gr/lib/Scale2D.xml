@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Scale2D" class="ptolemy.domains.gr.lib.Scale2D">
+  <description>
+Scale a two-dimensional figure by the x and y factor provided by the&#10; user.  If &lt;i&gt;accumulate&lt;/i&gt; is set to true, any changes to the scale&#10; will be be relative to the figure's current size.  Otherwise, the&#10; scaling factor specified will be relative to the original size of the&#10; figure.  </description>
+  <author>Ismael M. Sarmiento, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (ismael)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (chf)</Pt.AcceptedRating>
+</doc>

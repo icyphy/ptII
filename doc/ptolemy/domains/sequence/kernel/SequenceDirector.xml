@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SequenceDirector" class="ptolemy.domains.sequence.kernel.SequenceDirector">
+  <description>
+A director that executes actors in a sequence explicitly specified&#10; by the model. Actors are required to either contain an instance&#10; of SequenceAttribute or to be upstream of an actor that contains&#10; an instance of SequenceAttribute. Each SequenceAttribute contains&#10; a unique integer that specifies the position in the sequence for&#10; the actor. This director will sort the list of actors that&#10; contain a SequenceAttribute according to these integers, and&#10; fire them in order. Before each firing, it will also fire any&#10; upstream actors actors that do not contain an instance of SequenceAttribute.&#10; FIXME: In what order are those actors fired?&#10; FIXME: What if the upstream actors do contain a SequenceAttribute?&#10; FIXME: If an actor is upstream of two actors with SequenceAttribute,&#10; does it fire twice in an iteration? Are it's output valued queued?&#10;&#10; &lt;p&gt;&#10;&#10; The SequenceDirector computes the sequenced actors and passes these in two lists to the&#10; SequenceScheduler (one list for independent sequenced actors, and one list&#10; for sequenced actors that are dependent on other actors e.g. control actors)&#10;&#10; Please see SequencedModelDirector for more details on how the schedule&#10; is computed.  </description>
+  <author>Elizabeth Latronico (Bosch), rrs1pal</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (beth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (beth)</Pt.AcceptedRating>
+</doc>

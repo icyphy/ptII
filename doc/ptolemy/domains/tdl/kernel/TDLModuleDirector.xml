@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TDLModuleDirector" class="ptolemy.domains.tdl.kernel.TDLModuleDirector">
+  <description>
+Director for a TDL (= Timing Definition Language) module. A TDL module&#10; consists of modes, modes consist of TDL tasks and TDL tasks are SDF actors.&#10; All actions inside a TDL module are executed periodically and the timing&#10; information is specified in parameters. This director parses the parameters&#10; and builds a schedule for all the TDL actions. The schedule is represented in&#10; a graph showing the dependencies between the TDL actions (see&#10; TDLActionsGraph).&#10; &lt;p&gt;&#10; In the initialization, output ports and actuators are initialized with values&#10; specified in the parameters of the ports. The schedule is generated and&#10; events are scheduled. Events that are safe to process at current model time&#10; are executed, then the fireAt(time) of the enclosing director is called with&#10; the time stamp of the next event. Events are processed in the order specified&#10; in the graph.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+</doc>

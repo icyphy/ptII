@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HuffmanBasic" class="ptolemy.actor.lib.comm.HuffmanBasic">
+  <description>
+Given a probability distribution, generate the Huffman code book.&#10; The probability distribution is given by the &lt;i&gt;pmf&lt;/i&gt; parameter.&#10; The corresponding alphabet is given by the &lt;i&gt;alphabet&lt;/i&gt; parameter.&#10; The code book is in a format of an array of strings, each string&#10; consists of '0' and '1's. The code book is sent to the&#10; &lt;i&gt;huffmanCodeBook&lt;/i&gt; output port.  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="huffmanCodeBook">A port that produces the Huffman code book generated&#10;  based on the probability mass function. It is an array&#10;  of strings.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="pmf">The probability mass function. This parameter is an array&#10;  of doubles. Each element should be positive and the sum of&#10;  all elements should be 1.0. The default value is {0.5, 0.5}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="alphabet">The alphabet of the input. This parameter is an ArrayToken.&#10;  Its default value is {0, 1}.</property>
+</doc>

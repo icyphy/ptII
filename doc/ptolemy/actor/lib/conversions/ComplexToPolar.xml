@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ComplexToPolar" class="ptolemy.actor.lib.conversions.ComplexToPolar">
+  <description>
+&lt;p&gt;Convert a complex token to polar coordinates, which are represented by two&#10; double tokens (magnitude and angle).  The output angle is in radians.&lt;/p&gt;&#10; &lt;p&gt;&#10; The implementation uses java.lang.Math.atan2(double, double).&#10; &lt;/p&gt;  </description>
+  <author>Michael Leung, Edward A. Lee, and Paul Whitaker</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The port for the input, which has type ComplexToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="magnitude">The output port for the magnitude component, which has type&#10;     DoubleToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="angle">The output port for the angle component, which has type DoubleToken.</port>
+</doc>

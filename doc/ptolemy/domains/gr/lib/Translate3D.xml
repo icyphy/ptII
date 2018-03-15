@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
+  <description>
+Conceptually, this actor takes 3D geometry in its input and&#10; produces a translated version in its output. In reality, this&#10; actor encapsulates a Java3D TransformGroup which is converted into&#10; a node in the resulting Java3D scene graph. This actor will only&#10; have meaning in the GR domain.  </description>
+  <author>C. Fong, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (chf)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chf)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="xTranslate">The amount of translation in the x-axis during firing. If this&#10;  transform is in accumulate mode, the translation value is&#10;  accumulated for each firing.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="yTranslate">The amount of translation in the y-axis during firing. If this&#10;  transform is in accumulate mode, the translation value is&#10;  accumulated for each firing.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="zTranslate">The amount of translation in the z-axis during firing. If this&#10;  transform is in accumulate mode, the translation value is&#10;  accumulated for each firing.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialXTranslation">The initial translation in the x-axis&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialYTranslation">The initial translation in the y-axis&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialZTranslation">The initial translation in the z-axis&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is 0.0.</property>
+</doc>

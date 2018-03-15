@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SuperdenseTimeTest" class="ptolemy.domains.de.test.SuperdenseTimeTest">
+  <description>
+A test actor illustrating a potential bug in DE in its&#10;  handling of superdense time. In particular,&#10;  the outputs of this actor have no causal dependence on the&#10;  inputs, and hence no delay is needed in a feedback loop&#10;  that feeds outputs back to the inputs. Inputs are read&#10;  and processed in postfire(). However, if the output is&#10;  fed directly back to an input, then the input used to be&#10;  read &lt;i&gt;in the same iteration&lt;/i&gt; in which the output&#10;  was produced. If, however, there is an intervening actor&#10;  in the feedback loop, then the input would be read&#10;  &lt;i&gt;in the next iteration&lt;/i&gt;. This leads to strange&#10;  behavior where the presence of even a no-op actor (like&#10;  a unit gain) changes the behavior of the model.&#10;  &lt;p&gt;&#10;  What is the solution here?&#10;  &lt;p&gt;&#10;  This actor first outputs nothing. In postfire(), it&#10;  reads inputs and sums them, and if any inputs were present,&#10;  it requests a new firing. In that firing, it produces the&#10;  calculated sum.&#10;  After 10 firings, it stops producing outputs.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ltrnc)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ltrnc)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="in1">The inputs and output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="in2">The inputs and output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="in3">The inputs and output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="out">The inputs and output.</port>
+</doc>

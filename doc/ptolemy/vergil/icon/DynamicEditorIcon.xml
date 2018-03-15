@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DynamicEditorIcon" class="ptolemy.vergil.icon.DynamicEditorIcon">
+  <description>
+An icon that provides for the possibility that figures may be&#10; dynamically updated.  While some icons are generally 'static' and it&#10; is simplest to regenerate new figures when their attributes change,&#10; other icons are more 'dynamic'.  For instance, some icons might&#10; display live video or a live plot.  This icon provides some basic&#10; infrastructure for dealing with such cases.&#10;&#10; The main difficulty is that, by design, an icon cannot keep track of&#10; the figures it creates, otherwise there is a possibility for memory&#10; leaks or inconsistencies in the case of multiple views.  This class&#10; solves the problem by using a WeakReferences to keep track of&#10; generated figures.  These references do not prevent objects from being&#10; garbage collected.  This class also provides a 'safe' iterator that&#10; can be used to traverse the weak references without the normal&#10; associated nastiness.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

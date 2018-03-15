@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AttributeValueAttribute" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+  <description>
+This is a text attribute whose text string shows the&#10; value of a parameter. &lt;p&gt;  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="displayWidth">The number of characters to display. This is an integer, with&#10;  default value 6.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useExpression">If true, display the expression rather than the value.&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="attributeName">The name of the attribute of the container whose value to display.</property>
+</doc>

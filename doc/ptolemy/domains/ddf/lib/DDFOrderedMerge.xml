@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge">
+  <description>
+This actor merges two monotonically nondecreasing streams of tokens&#10; into one monotonically nondecreasing stream. On each firing, it reads&#10; data from one of the inputs. On the first firing, it simply records&#10; that token. On the second firing, it reads data from the other input&#10; and outputs the smaller of the recorded token and the one it just read.&#10; If they are equal, then it outputs the recorded token. It then records&#10; the larger token. On each subsequent firing, it reads a token from the&#10; input port that did not provide the recorded token, and produces at the&#10; output the smaller of the recorded token and the one just read.&#10; &lt;p&gt;&#10; If both input sequences are nondecreasing, then the output sequence&#10; will be nondecreasing.&#10; Note that if the inputs are not nondecreasing, then the output is&#10; rather complex. The key is that in each firing, it produces the smaller&#10; of the recorded token and the token it is currently reading.&#10; This derived class only updates rate parameters to indicate the next input&#10; port.  </description>
+  <author>Gang Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (zgang)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RefinementPort" class="ptolemy.domains.modal.modal.RefinementPort">
+  <description>
+A port for controllers and refinements in modal models.  This port&#10; mirrors certain changes to it in the ports of the container of the container.&#10; That container in turn mirrors those changes in other refinements and/or&#10; controllers.  This class is designed to work closely with ModalPort,&#10; since changes to the ports can be initiated from either class.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (liuxj)</Pt.AcceptedRating>
+</doc>

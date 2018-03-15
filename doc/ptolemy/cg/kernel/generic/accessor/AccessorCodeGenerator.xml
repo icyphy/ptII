@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+  <description>
+Generate a JavaScript Accessor for a  model.&#10;&#10;  &lt;p&gt;Accessors are a technology, developed by the&#10;  &lt;a href=&quot;http://www.terraswarm.org#in_browser&quot; target=&quot;_top&quot;&gt;TerraSwarm Research Center&lt;/a&gt;,&#10;  for composing heterogeneous devices and services in the&#10;  Internet of Things (IoT).  For more information, see&#10;  &lt;a href=&quot;http://accessors.org#in_browser&quot; target=&quot;_top&quot;&gt;http://accessors.org&lt;/a&gt;.&lt;/p&gt;&#10;&#10;  &lt;p&gt;The model can only contain JavaScript and JSAccessor actors.&lt;/p&gt;&#10;&#10;  &lt;p&gt;To generate an Accessor version of a model, use:&lt;/p&gt;&#10;  &lt;pre&gt;&#10;  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/cg/TestComposite.js&#10;  &lt;/pre&gt;&#10;  which is shorthand for:&#10;  &lt;pre&gt;&#10;  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js&#10;  &lt;/pre&gt;&#10;&#10;  &lt;p&gt;For more information, see &lt;a href=&quot;https://accessors.org/wiki/Main/CapeCodeHost#in_browserr&quot;&gt;https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration&lt;/a&gt;.&lt;/p&gt;  </description>
+  <author>Christopher Brooks.  Contributor: Edward A. Lee.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="modules">A comma separated list of modules to be installed.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="npmInstall">If true, then search &lt;i&gt;codeDirectory&lt;/i&gt; and its parent&#10;  directories for a node_modules/ directory. If it is found,&#10;  then search for the modules listed in the &lt;i&gt;modules&lt;/i&gt;&#10;  parameter in that directory.  If any module is not found, then&#10;  install all the modules using npm install.  If all the modules&#10;  are found, then don't bother installing.&#10;&#10;  &lt;p&gt;The reason to set this to false is if the host is not&#10;  connected to the internet or if the host already has the&#10;  modules installed.  Setting this to false means that the&#10;  composite accessor will be deployed more quickly because&#10;  &lt;code&gt;npm install&lt;/code&gt; will not be run.  The default value&#10;  is false, indicating that &lt;code&gt;npm install&#10;  &lt;i&gt;modules&lt;/i&gt;&lt;/code&gt; should not be run.&lt;/p&gt;</property>
+</doc>

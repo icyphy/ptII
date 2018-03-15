@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Tableau" class="ptolemy.actor.gui.Tableau">
+  <description>
+A tableau is a visual representation of a Ptolemy II model in a top-level&#10; window.  This class represents such a top level window.  The top-level&#10; is always a frame, which is a window with a border and title bar. The&#10; window itself is specified by the setFrame() method, and accessed by&#10; the getFrame() method.  An instance of this class will be contained&#10; by the instance of Effigy that represents the model that is depicted&#10; in the top-level window.&#10; &lt;p&gt;&#10; By convention, the constructor for a tableau does not (necessarily)&#10; make the associated frame visible.  To do that, call show().  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.gui.SizeAttribute-->
+    <property name="size">A specification for the size of the frame.</property>
+</doc>

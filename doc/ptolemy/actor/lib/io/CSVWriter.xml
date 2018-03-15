@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CSVWriter" class="ptolemy.actor.lib.io.CSVWriter">
+  <description>
+&lt;p&gt;This actor reads record-valued input tokens and writes them,&#10; one line at a time, to a specified file, as comma-separated list&#10; (or separated by some other delimiter given by the &lt;i&gt;separator&lt;/i&gt;&#10; parameter).&#10; The first line contains the names of the fields of the input&#10; record, separated by the same delimiter.&#10; &lt;p&gt;&#10; The file is specified by the &lt;i&gt;fileName&lt;/i&gt; attribute&#10; using any form acceptable to &lt;a href=&quot;../../../../ptolemy/data/expr/FileParameter.xml&quot;&gt;ptolemy.data.expr.FileParameter&lt;/a&gt;.&lt;/p&gt;&#10; &lt;p&gt;&#10; If the &lt;i&gt;append&lt;/i&gt; attribute has value &lt;i&gt;true&lt;/i&gt;,&#10; then the file will be appended to. If it has value &lt;i&gt;false&lt;/i&gt;,&#10; then if the file exists, the user will be queried for permission&#10; to overwrite, and if granted, the file will be overwritten.&lt;/p&gt;&#10; &lt;p&gt;&#10; If the &lt;i&gt;confirmOverwrite&lt;/i&gt; parameter has value &lt;i&gt;false&lt;/i&gt;,&#10; then this actor will overwrite the specified file if it exists&#10; without asking.  If &lt;i&gt;true&lt;/i&gt; (the default), then if the file&#10; exists, then this actor will ask for confirmation before overwriting.&lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="separator">A specification of the separator between items in the table.&#10;  The default is &quot;comma&quot;, which results in assuming that fields&#10;  are separated by commas. If the value is changed to &quot;tab&quot;, then&#10;  a tab separator will be used. If the value is &quot;semicolon&quot;, then&#10;  a semicolon separator will be used. If the value is anything&#10;  else, then the value of the parameter, whatever it is, will&#10;  be the separator.</property>
+</doc>

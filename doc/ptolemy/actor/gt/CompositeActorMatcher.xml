@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
+  <description>
+A matcher to match a level of hierarchy in a hierarchical model. In the pattern&#10; of a &lt;a href=&quot;../../../ptolemy/actor/gt/TransformationRule.xml&quot;&gt;ptolemy.actor.gt.TransformationRule&lt;/a&gt;, this matcher can be customized by instances of&#10; &lt;a href=&quot;../../../ptolemy/actor/gt/ingredients/criteria/Criterion.xml&quot;&gt;ptolemy.actor.gt.ingredients.criteria.Criterion&lt;/a&gt;. A &lt;a href=&quot;../../../ptolemy/actor/gt/ingredients/criteria/PortCriterion.xml&quot;&gt;ptolemy.actor.gt.ingredients.criteria.PortCriterion&lt;/a&gt;, for instance, customizes this&#10; matcher with an additional port, whose type and name can be specified. In the&#10; replacement of a &lt;a href=&quot;../../../ptolemy/actor/gt/TransformationRule.xml&quot;&gt;ptolemy.actor.gt.TransformationRule&lt;/a&gt;, operations can be specified for&#10; this matcher with instances of &lt;a href=&quot;../../../ptolemy/actor/gt/ingredients/operations/Operation.xml&quot;&gt;ptolemy.actor.gt.ingredients.operations.Operation&lt;/a&gt;. The operations will be&#10; performed on the actor that is matched by the corresponding matcher in the&#10; pattern, and is preserved after the transformation.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 7.1</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.actor.gt.GTIngredientsAttribute-->
+    <property name="criteria">The attribute containing all the criteria in a list&#10;  (&lt;a href=&quot;../../../ptolemy/actor/gt/GTIngredientList.xml&quot;&gt;ptolemy.actor.gt.GTIngredientList&lt;/a&gt;).</property>
+    <!--ptolemy.actor.gt.GTIngredientsAttribute-->
+    <property name="operations">The attribute containing all the operations in a list&#10;  (&lt;a href=&quot;../../../ptolemy/actor/gt/GTIngredientList.xml&quot;&gt;ptolemy.actor.gt.GTIngredientList&lt;/a&gt;).</property>
+    <!--ptolemy.actor.gt.PatternObjectAttribute-->
+    <property name="patternObject">The attribute that specifies the name of the corresponding entity in the&#10;  pattern.</property>
+</doc>

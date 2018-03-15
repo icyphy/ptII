@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ExpertParameter" class="ptolemy.data.expr.ExpertParameter">
+  <description>
+This class is identical to Parameter except that its visibility&#10; is set to &quot;expert&quot; by default. The visibility is not represented&#10; in a MoML file, so if you want &quot;expert&quot; visibility to be persistent,&#10; you must use this class.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

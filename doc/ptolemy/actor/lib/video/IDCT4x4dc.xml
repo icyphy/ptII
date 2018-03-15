@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="IDCT4x4dc" class="ptolemy.actor.lib.video.IDCT4x4dc">
+  <description>
+Calculate the sum of absolute difference(SAD) between two blocks.&#10;   Each input block should have two dimensions by rectangle block(16 by 16, 8 by 8, etc.).&#10;   The output port will have the result of SAD.  </description>
+  <author>Hwayong Oh</author>
+  <version>$Id: DCT4x4dc.java,v 0.2</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (oh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (oh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">Input for tokens to be a part of previous frame. This is a single port, and its&#10; type is 2D array.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port. This is a result for calculating sum of absolute differences between&#10; ImgBlockA and ImgBlockB.&#10; The type is inferred form the connections.</port>
+</doc>

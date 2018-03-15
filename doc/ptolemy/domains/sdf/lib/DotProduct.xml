@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
+  <description>
+&lt;p&gt;Compute the dot product of two arrays or matrices. This actor has two&#10; input ports, from which it receives two ArrayTokens or two Matrix&#10; Tokens. The elements of the ArrayTokens or MatrixTokens must be of&#10; type ScalarToken. The output is the dot product of the two arrays or&#10; matrices.&lt;/p&gt;&#10;&#10; &lt;p&gt; This actor requires that each input port have a token upon&#10; firing. On each firing, it produces exactly one token, which is of&#10; type ScalarToken.&lt;/p&gt;  </description>
+  <author>Jeff Tsay, Paul Whitaker, Adam Cataldo</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (acataldo)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input1">The first input port. This has type ArrayToken. The elements of&#10;  the ArrayToken must be of type ScalarToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input2">The second input port. This has type ArrayToken. The elements of&#10;  the ArrayToken must be of type ScalarToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which has type ScalarToken.</port>
+</doc>

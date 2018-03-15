@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Dictionary" class="ptolemy.actor.lib.Dictionary">
+  <description>
+A store for key-value pairs.&#10;   This actor stores key-value pairs and provides an interface for retrieving&#10;   them one at a time or in groups.  </description>
+  <author>Shuhei Emoto, Edward A. Lee, Kentaro Mizouchi, Tetsuya Suga</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="keys">Upon receiving any token at the triggerKeys port, this actor&#10;  will produce on this output an array containing all the keys&#10;  of entries in the dictionary. The order is arbitrary.&#10;  If there are no entries in the dictionary, then send an&#10;  empty array.&#10;  The type is array of string.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="notFound">An output listing one or more keys that were&#10;  requested but not found in the dictionary.&#10;  The output is produced only if a key is not&#10;  found. The output type is an array of strings.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="readKey">An input that provides a key for a value to be read from the&#10;  dictionary.  If the dictionary does not contain any value&#10;  corresponding to this key, then the output will be a nil&#10;  token. This has type string.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="readKeyArray">An input that provides an array of keys to be read&#10;  simultaneously from the dictionary. The output will be an&#10;  array with the same length as this input where each entry in&#10;  the output array is the value corresponding to the&#10;  corresponding key in the input array. For any key that has no&#10;  entry in the dictionary, a nil token will be inserted in the&#10;  output array.&#10;  The type is array of string.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="result">An output providing the result of a single reading of the&#10;  dictionary via the readKey input port. If the specified key&#10;  is not found, this port will produce a nil token, and an&#10;  array of length one with the key will be produced on the&#10;  &lt;a href=&quot;../../../ptolemy/actor/lib/Dictionary.xml#notFound&quot;&gt;notFound&lt;/a&gt; output port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="resultArray">An output providing the result of a multiple reading of the&#10;  dictionary via the readKeyArray input port. For any of the&#10;  keys in the &lt;a href=&quot;../../../ptolemy/actor/lib/Dictionary.xml#readKeyArray&quot;&gt;readKeyArray&lt;/a&gt; input is not in the dictionary,&#10;  there will be a nil token in the result array in the position&#10;  of the missing key. The missing keys will be produced on the&#10;  notFound output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="triggerKeys">Upon receiving any token at this port, this actor will produce&#10;  on the keys output an array containing all the keys of entries&#10;  in the dictionary. The order is arbitrary.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="triggerValues">Upon receiving any token at this port, this actor will produce&#10;  on the values output an array containing all the values of entries&#10;  in the dictionary. The order is arbitrary.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="values">Upon receiving any token at the triggerValues port, this actor&#10;  will produce on this output an array containing all the values&#10;  of entries in the dictionary. The order is arbitrary.&#10;  If there are no entries in the dictionary, then send an&#10;  empty array.&#10;  The type is array of token.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="value">Input port for providing a value to store in the dictionary.&#10;  The value will be stored only if a writeKey input arrives at&#10;  the same time. Otherwise, it will be discarded.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="writeKey">An input that provides a key for a key-value pair to be stored&#10;  in the dictionary. If a key arrives on this port, but there is&#10;  no value on the value port or the value is nil, then the&#10;  dictionary entry with the specified key will be&#10;  removed. Otherwise, the value provided on the value port will&#10;  be stored indexed by this key. This has type string.</port>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="file">If a file is given here, it will be read upon initialization&#10;  (if it exists and can be parsed as an array of arrays of tokens)&#10;  to initialize the dictionary.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="loggingDirectory">If given, a log file will be written to the specified&#10;  directory.&#10;  &lt;p&gt;A file name can also contain the following strings that start&#10;  with &quot;$&quot;, which get substituted&#10;  with the appropriate values.&lt;/p&gt;&#10;  &lt;table&gt;&#10;  &lt;caption&gt;&quot;Properties that are substituted.&lt;/caption&gt;&#10;  &lt;tr&gt;&#10;  &lt;th&gt;String&lt;/th&gt;&#10;  &lt;th&gt;Description&lt;/th&gt;&#10;  &lt;th&gt;Property&lt;/th&gt;&#10;  &lt;/tr&gt;&#10;  &lt;tr&gt;&#10;  &lt;td&gt;&lt;code&gt;$CWD&lt;/code&gt;&lt;/td&gt;&#10;  &lt;td&gt;The current working directory&lt;/td&gt;&#10;  &lt;td&gt;&lt;code&gt;user.dir&lt;/code&gt;&lt;/td&gt;&#10;  &lt;/tr&gt;&#10;  &lt;tr&gt;&#10;  &lt;td&gt;&lt;code&gt;$HOME&lt;/code&gt;&lt;/td&gt;&#10;  &lt;td&gt;The user's home directory&lt;/td&gt;&#10;  &lt;td&gt;&lt;code&gt;user.home&lt;/code&gt;&lt;/td&gt;&#10;  &lt;/tr&gt;&#10;  &lt;tr&gt;&#10;  &lt;td&gt;&lt;code&gt;$PTII&lt;/code&gt;&lt;/td&gt;&#10;  &lt;td&gt;The home directory of the Ptolemy II installation&lt;/td&gt;&#10;  &lt;td&gt;&lt;code&gt;ptolemy.ptII.dir&lt;/code&gt;&lt;/td&gt;&#10;  &lt;/tr&gt;&#10;  &lt;tr&gt;&#10;  &lt;td&gt;&lt;code&gt;$TMPDIR&lt;/code&gt;&lt;/td&gt;&#10;  &lt;td&gt;The temporary directory&lt;/td&gt;&#10;  &lt;td&gt;&lt;code&gt;java.io.tmpdir&lt;/code&gt;&lt;/td&gt;&#10;  &lt;/tr&gt;&#10;  &lt;tr&gt;&#10;  &lt;td&gt;&lt;code&gt;$USERNAME&lt;/code&gt;&lt;/td&gt;&#10;  &lt;td&gt;The user's account name&lt;/td&gt;&#10;  &lt;td&gt;&lt;code&gt;user.name&lt;/code&gt;&lt;/td&gt;&#10;  &lt;/tr&gt;&#10;  &lt;/table&gt;</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="updateFile">If set to true, and if a &lt;i&gt;file&lt;/i&gt; parameter is given, then&#10;  upon each update to the dictionary, the contents of the dictionary&#10;  will be stored in the file.  This defaults to false.</property>
+</doc>

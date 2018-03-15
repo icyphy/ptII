@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime">
+  <description>
+Produce an output token on each firing with a value that is&#10;the time of the top level director.  </description>
+  <author>Jia Zou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (jiazou)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+</doc>

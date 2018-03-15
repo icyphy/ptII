@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAITranslate" class="ptolemy.actor.lib.jai.JAITranslate">
+  <description>
+Moves the origin of an image.  Typically, images in JAI, when created,&#10; have as their origin, (0, 0) in the top left corner.  This actor moves&#10; the origin.  When displayed, there is no noticeable difference between&#10; an original image, and a translated image.  The difference shows up&#10; in operations like adding (when two images are added together, a&#10; region of intersection is found; this region is effected by&#10; translation).&#10; &lt;p&gt;  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="subSampleBits">The subsample precision.  The default value of this parameter&#10;  is the integer value 8.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xShift">The shift amount in the horizontal direction.  A positive&#10;  value causes the origin to be moved to the right.  A negative&#10;  value causes the origin to be moved to the left.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yShift">The shift amount in the vertical direction.  A positive&#10;  value causes the origin to be moved to the down.  A negative&#10;  value causes the origin to be moved to the up.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="interpolationType">The type of interpolation to use.  This is a string valued&#10;  attribute that defaults to type &quot;bilinear&quot;</property>
+</doc>

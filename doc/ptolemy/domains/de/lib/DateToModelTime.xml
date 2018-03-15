@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DateToModelTime" class="ptolemy.domains.de.lib.DateToModelTime">
+  <description>
+A timed actor that outputs the local clock value that corresponds to the date.&#10;  Such a correspondence is only given in models that synchronize to real time.&#10;  In such models, the real time (date) when the model starts is recorded. An input&#10;  date to this actor is compared to the model start date. The difference between&#10;  those dates (in millisecond resolution) is multiplied by the time resolution of&#10;  the local clock and then send to the output.&#10;&#10;  Currently, this actor only works in the DE domain.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

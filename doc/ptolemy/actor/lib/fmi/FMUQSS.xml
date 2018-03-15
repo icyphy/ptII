@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FMUQSS" class="ptolemy.actor.lib.fmi.FMUQSS">
+  <description>
+Invoke a Functional Mock-up Interface (FMI) 2.0 Model Exchange Functional&#10; Mock-up Unit (FMU) which will be integrated using QSS.&#10;&#10; &lt;p&gt;&#10; Read in a &lt;code&gt;.fmu&lt;/code&gt; file named by the &lt;i&gt;fmuFile&lt;/i&gt; parameter. The&#10; &lt;code&gt;.fmu&lt;/code&gt; file is a zipped file that contains a file named&#10; &lt;code&gt;modelDescription.xml&lt;/code&gt; that describes the ports and parameters&#10; that are created. At run time, method calls are made to C functions that are&#10; included in shared libraries included in the &lt;code&gt;.fmu&lt;/code&gt; file.&#10; &lt;/p&gt;&#10;&#10; &lt;p&gt;&#10; To use this actor from within Vergil, use File -&amp;gt; Import -&amp;gt; Import FMU&#10; for QSS integration, which will prompt for a .fmu file. This actor is&#10; &lt;b&gt;not&lt;/b&gt; available from the actor pane via drag and drop. The problem is&#10; that dragging and dropping this actor ends up trying to read fmuImport.fmu,&#10; which does not exist. If we added such a file, then dragging and dropping the&#10; actor would create an arbitrary actor with arbitrary ports.&#10; &lt;/p&gt;&#10; This actor uses any QSS solver to integrate the FMUs for model exchange. A&#10; package of QSS solvers can be found in org.ptolemy.qss. This actor extends&#10; from FMUImport.java and should be used along with the QSSDirector.  </description>
+  <author>Thierry S. Nouidui, David M. Lorenzetti, Michael Wetter, Christopher Brooks.</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initFMUParameters">If true, indicate the FMU to initialize parameters variables&#10; parameters.  The default value is true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="eventDetection">If true, indicate the FMU can do state/time/step event detection.&#10; The default value is true.</property>
+</doc>

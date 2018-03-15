@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SliderSource" class="ptolemy.actor.lib.gui.SliderSource">
+  <description>
+The output of this actor is controlled by a slider in the run window.&#10; The range of the output is specified by two parameters, &lt;i&gt;minimum&lt;/i&gt; and&#10; &lt;i&gt;maximum&lt;/i&gt;. The type of these parameters and the output is integer.  </description>
+  <author>Xiaojun Liu, Gang Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (liuxj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (liuxj)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="minimum">The minimum value of the slider. The value must be an integer.&#10;  The default value is -10.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maximum">The maximum value of the slider. The value must be an integer.&#10;  The default value is 10.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="majorTickSpacing">The major tick spacing of the slider. The value must be an integer.&#10;  The default value is 10.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="minorTickSpacing">The minor tick spacing of the slider. The value must be an integer.&#10;  The default value is 1.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="title">The title to put on top.</property>
+</doc>

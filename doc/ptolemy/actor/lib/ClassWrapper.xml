@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ClassWrapper" class="ptolemy.actor.lib.ClassWrapper">
+  <description>
+This actor wraps (an instance of) a Java class specified by the&#10; &lt;i&gt;className&lt;/i&gt; parameter. The actor has no ports when created.&#10; If an input port is added to the actor, the name of the port is&#10; interpreted as the name of a method of the Java class. When the&#10; actor is fired and a token is received from this input port, the&#10; value of the token is treated as the argument(s) for invoking&#10; the method. If the method has a return value and the actor has&#10; an output port named &lt;i&gt;methodName&lt;/i&gt;Result, the return value&#10; is wrapped in a token that is sent to the output port.&#10; &lt;p&gt;&#10; For example, suppose the specified class has a method named foo&#10; and the actor has an input port of the same name. If method foo&#10; takes no argument, the token received from port &lt;i&gt;foo&lt;/i&gt; is&#10; treated as the trigger for invoking the method, and its content&#10; is ignored. If method foo takes arguments, the input token&#10; should be a record token whose field values are used as the&#10; arguments. The field labels of the record token should be &quot;arg1&quot;,&#10; &quot;arg2&quot;, etc. For example, if method foo takes two double arguments,&#10; the record token &quot;{arg1 = 0.0, arg2 = 1.0}&quot; can be the input.&#10;&#10; A special case is when method foo takes one argument, the token&#10; containing the argument value can be input directly, and does not&#10; need to be put into a record token.&#10; &lt;p&gt;&#10; FIXME: Need to set type constraints appropriately.&#10; Need (and how) to handle overloaded methods.  </description>
+  <author>Xiaojun Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (liuxj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (liuxj)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="className">The name of the Java class.</property>
+</doc>

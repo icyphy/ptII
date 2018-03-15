@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Plot" class="ptolemy.domains.ptera.lib.Plot">
+  <description>
+An event to plot the received arguments as points in a timed plotter. It&#10; implicitly contains a &lt;a href=&quot;../../../../ptolemy/actor/lib/gui/TimedPlotter.xml&quot;&gt;ptolemy.actor.lib.gui.TimedPlotter&lt;/a&gt; in a &lt;a href=&quot;../../../../ptolemy/domains/modal/kernel/Configurer/.xml&quot;&gt;ptolemy.domains.modal.kernel.Configurer&lt;/a&gt;, so that it&#10; can reuse the function provided by the timed plotter and the timed plotter can&#10; also be configured with the configuration for this event itself. This event can&#10; receive 0 to more arguments. Each argument corresponds to a distinct data set&#10; displayed in the plotter (usually in a unique color). When this event is fired,&#10; for each arguments that can be converted into double tokens, it plots the&#10; values of those arguments in the plotter with the current model time on the&#10; x-axis.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+</doc>

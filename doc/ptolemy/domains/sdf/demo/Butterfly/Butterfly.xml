@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Butterfly" class="ptolemy.domains.sdf.demo.Butterfly.Butterfly">
+  <description>
+This class defines a Ptolemy II model that traces an elaborate curve&#10; called the butterfly curve.&#10; It was described by T. Fay, &lt;i&gt;American Mathematical Monthly&lt;/i&gt;, 96(5),&#10; May, 1989.  Although users will usually prefer to define models using&#10; MoML, this class illustrates how to define a model in Java.&#10;&#10; &lt;p&gt;To run this model, use:&lt;/p&gt;&#10; &lt;pre&gt;&#10;java -classpath $PTII ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly&#10; &lt;/pre&gt;  </description>
+  <author>Christopher Hylands and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+</doc>

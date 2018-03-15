@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SensorHandler" class="ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.lib.SensorHandler">
+  <description>
+Generate code for the Renesas board for a Ptides SensorHandler.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (jiazou)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (jiazou)</Pt.AcceptedRating>
+</doc>

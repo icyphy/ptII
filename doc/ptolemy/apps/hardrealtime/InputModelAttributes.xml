@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="InputModelAttributes" class="ptolemy.apps.hardrealtime.InputModelAttributes">
+  <description>
+Container for decorator attributes that are provided to Ptides platform inputs&#10; by analysis tools that need guarantess about the input patterns on eacn input port.&#10; The PtidesToMultiFrame attribute decorates input ports in a Ptides model with the&#10; attributes contained by an instance this class.  </description>
+  <author>Christos Stergiou</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (chster)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chster)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="minimumInterarrivalTime">The minimum distance of two successive events at an input port.</property>
+</doc>

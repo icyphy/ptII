@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MaxIndex" class="ptolemy.actor.lib.MaxIndex">
+  <description>
+Produce the channel number of the largest of the inputs.&#10; This actor has one input port, which is multiport of type double&#10; and one output port, which is not a multiport, and has type int.&#10; The tokens on each channel of the input port will be&#10; compared and an IntToken giving the channel number of the largest&#10; one will be output.  </description>
+  <author>Jeff Tsay and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (ssachs)</Pt.AcceptedRating>
+</doc>

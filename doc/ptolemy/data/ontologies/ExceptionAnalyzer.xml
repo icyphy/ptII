@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ExceptionAnalyzer" class="ptolemy.data.ontologies.ExceptionAnalyzer">
+  <description>
+An attribute that analyzes a model in the event of an exception.  To be used&#10;with &lt;a href=&quot;../../../ptolemy/actor/lib/ExceptionManager.xml&quot;&gt;ptolemy.actor.lib.ExceptionManager&lt;/a&gt;.  </description>
+  <author>Elizabeth Latronico</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (beth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (beth)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="statusMessage">A status message reflecting the success or failure of actions taken&#10; upon occurrence of an exception.  Implemented as a public parameter so&#10; the message can be displayed in the icon.</property>
+</doc>

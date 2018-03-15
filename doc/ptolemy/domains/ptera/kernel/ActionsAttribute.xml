@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ActionsAttribute" class="ptolemy.domains.ptera.kernel.ActionsAttribute">
+  <description>
+An attribute associated with Ptera events containing executable actions. The&#10; actions are written as assignments separated with semicolons. They can be&#10; executed either to change the values of the variables assigned to, or to send&#10; output tokens to ports.&#10; &lt;p&gt;&#10; This class is similar to &lt;a href=&quot;../../../../ptolemy/domains/modal/kernel/CommitActionsAttribute.xml&quot;&gt;ptolemy.domains.modal.kernel.CommitActionsAttribute&lt;/a&gt; and &lt;a href=&quot;../../../../ptolemy/domains/modal/kernel/OutputActionsAttribute.xml&quot;&gt;ptolemy.domains.modal.kernel.OutputActionsAttribute&lt;/a&gt; in FSM. The difference is that in Ptera, no distinction&#10; is made between commit actions and output actions. The destination of an&#10; assignment can be either a variable or a port. If a port and a variable have&#10; the same name in a Ptera model, then assigning to that name causes output to&#10; be sent to the port instead of changing the value of the variable.&#10; &lt;p&gt;&#10; Another difference between this class and those in FSM is that in Ptera, events&#10; are allowed to receive parameters. The parameters can be referred to in the&#10; actions associated with that event.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+</doc>

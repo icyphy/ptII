@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AfdxSwitchAttributes" class="ptolemy.domains.de.lib.aspect.AFDXSwitch.AfdxSwitchAttributes">
+  <description>
+The attributes configured per port which is mediated by a&#10;  AfdxSwitch. The mediation where (which switch port) messages&#10;  are going into the switch and where (which switch port) messages&#10;  are going out of the switch.  </description>
+  <author>Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler</author>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="portIn">The id of the port on the switch on which incoming messages are&#10;  received.&#10;  This parameter defaults to the integer value 0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="portOut">The id of the port on the switch to which outgoing messages are&#10;  routed to.&#10;  This parameter defaults to the integer value 1.</property>
+</doc>

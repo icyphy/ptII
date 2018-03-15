@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
+  <description>
+This attribute, when inserted into a model causes types to be&#10; displayed on all ports at the same level of the hierarchy as&#10; this attribute. Note that this conflicts with other&#10; attributes that display info on ports, such as&#10; &lt;a href=&quot;../../../../ptolemy/vergil/actor/lib/MonitorReceiverAttribute.xml&quot;&gt;ptolemy.vergil.actor.lib.MonitorReceiverAttribute&lt;/a&gt;. The two should not be used together.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

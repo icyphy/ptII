@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TextString3D" class="ptolemy.domains.gr.lib.TextString3D">
+  <description>
+An actor that encapsulates 3D text shapes in the GR domain.&#10; The &lt;i&gt;text&lt;/i&gt; port/parameter gives the text to be displayed.&#10; The &lt;i&gt;fontSize&lt;/i&gt; parameter gives the size of the font.&#10; The &lt;i&gt;extrusionDepth&lt;/i&gt; parameter specifies how deep the 3-D&#10; rendering of the text should be.&#10; The &lt;i&gt;alignment&lt;/i&gt; parameter gives the alignment of the text&#10; relative to the position of the object.&#10; The &lt;i&gt;fontFamily&lt;/i&gt; parameter specifies the font family.&#10; The rest of the parameters are described in the base class.  </description>
+  <author>C. Fong and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (liuxj)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="alignment">The alignment of the text. This is a string that defaults to&#10;  &quot;center&quot;. The recognized values are &quot;center&quot;, &quot;first&quot;, and&#10;  &quot;last&quot;. A value of &quot;first&quot; means that the first character&#10;  is put on the position of the object, whereas &quot;last&quot; means&#10;  that the last character is put on the position. Note that&#10;  &quot;left&quot; and &quot;right&quot; would make no sense, since the orientation&#10;  is arbitrary.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="extrusionDepth">The depth of the extrusion of the text. This is a double that&#10;  defaults to 0.2.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="fontFamily">The font family. This is a string that defaults to &quot;SansSerif&quot;,&#10;  a font that is guaranteed by Java to always be present.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fontSize">The font size. This is a double that defaults to 1.0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="text">The text to display.</property>
+</doc>

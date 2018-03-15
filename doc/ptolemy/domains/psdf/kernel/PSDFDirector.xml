@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+  <description>
+The Parameterized Synchronous Dataflow (PSDF) domain is an&#10; extension of the Synchronous Dataflow (SDF) domain that allows for&#10; more extensive reconfiguration of models.  The SDF domain uses&#10; static analysis of variable dependence to detect cases where rate&#10; parameters may change.  By default, SDF disallows reconfiguration&#10; of all rate parameters.  If rate parameters are allowed to change,&#10; then SDF checks that rate parameters do not change during execution&#10; of the schedule, and declares that inferred rate parameters for&#10; external ports change as often as the internal rate parameters.&#10;&#10; &lt;p&gt;This domain offers two key extensions:&#10; &lt;ol&gt;&#10; &lt;li&gt; Dependence analysis is used to determine if the modification to the&#10; rate parameters occurs during execution of the SDF schedule.  If&#10; this test passes, then a parameterized schedule is constructed.&#10;&#10; &lt;li&gt; The generated schedule is checked for local synchrony, to determine&#10; if external rate parameters may change.  The correct dependency&#10; information for external ports is then declared.&#10;&#10; &lt;/ol&gt;&#10;&#10; Note that the resulting behavior is identical to the SDF scheduler,&#10; with rate parameter changes allowed, except much more efficient, since&#10; scheduling on the fly is not necessary during every reconfiguration.&#10; Additionally, code can be generated for the PSDF domain that allows&#10; for efficient reconfiguration.  The added precision of dependency analysis&#10; for external rate parameters also means that some hierarchical models that&#10; would be ruled out by the SDF checks are allowed.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.1</since>
+  <Pt.ProposedRating>Red (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Break" class="ptolemy.domains.sequence.lib.Break">
+  <description>
+&lt;p&gt;An actor that implements a control break.&#10; If this actor is reached, control returns to the caller.&#10; This block has no functionality.&#10;&#10;  &lt;p&gt;Break is a ControlActor, meaning that it keeps a list of&#10;  enabled output ports.  However, the Break actor has no output ports,&#10;  so this list is always empty here.  </description>
+  <author>Elizabeth Latronico (Bosch)</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (beth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (beth)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input.</port>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
+  <description>
+This actor extends the TypedAtomicActor. It applies a function to its inputs&#10; and outputs the results. But rather than has the function specified&#10; statically, this actor allows dynamic change to the function, which means&#10; the computation of this actor can be changed during executing. Its second&#10; input accept a function token for the new function's definition. The&#10; function token can be given by actors in the local model or remote actors.&#10;&#10; Currently, it only accept functions that has one argument. The return type&#10; of the function needs to be less than the output type of this actor.  </description>
+  <author>Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port for incoming data.  The type of this port is&#10;  undeclared, meaning that it will resolve to any data type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="function">The input port for function definition. The type of this port is&#10;  undeclared, but to have this actor work, the designer has to provide&#10;  a matched function token for it.&#10;  Note: The reason that we don't declare the type for it is because&#10;  currently there is not cast supported in the FunctionType class.&#10;  we'll fix this later.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.&#10;  Note: Due to the same reason above, the type of the output can't be&#10;  resolved currently. User has to specify the type.</port>
+</doc>

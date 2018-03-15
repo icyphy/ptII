@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Distributor" class="ptolemy.actor.lib.Distributor">
+  <description>
+A polymorphic distributor, which splits an input stream into a set of&#10; output streams. The distributor has an input port and an output port,&#10; the latter of which is a multiport.&#10; The types of the ports are undeclared and will be resolved by the type&#10; resolution mechanism, with the constraint that the output type must be&#10; greater than or equal to the input type. On each call to the fire method, the&#10; actor reads at most &lt;i&gt;N&lt;/i&gt; tokens from the input, where &lt;i&gt;N&lt;/i&gt; is&#10; the width of the output port times the &lt;i&gt;blockSize&lt;/i&gt; parameter,&#10; and writes &lt;i&gt;blockSize&lt;/i&gt; tokens to each output channel,&#10; in the order of the channels.  If there are fewer than &lt;i&gt;N&lt;/i&gt; tokens&#10; at the input, then the all available input tokens are sent to the output&#10; channels, and the fire() method returns.  In the next iteration of this&#10; actor, it will begin producing outputs on the first channel that did&#10; not have enough tokens in the previous iteration.&#10; &lt;p&gt;&#10; For the benefit of domains like SDF, which need to know the token consumption&#10; or production rate for all ports before they can construct a firing schedule,&#10; this actor sets the tokenConsumptionRate parameter for the input port&#10; to equal the number of output channels times the &lt;i&gt;blockSize&lt;/i&gt; parameter,&#10; and the output production rate is set to the &lt;i&gt;blockSize&lt;/i&gt; parameter.&#10; The consumption rate parameter is set each time that a link is established with&#10; the input port, or when a link is removed.  The director is notified&#10; that the schedule is invalid, so that if the link is modified at&#10; run time, the schedule will be recalculated if necessary.  </description>
+  <author>Mudit Goel, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Yellow (mudit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockSize">The number of tokens produced on each output channel on each firing.&#10;  This is an integer with default value 0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate">The parameter controlling the input port consumption rate.&#10;  This is an integer, initially with value 0. Whenever a connection&#10;  is made to the output, the value of this parameter is changed to&#10;  equal the width of the output times the &lt;i&gt;blockSize&lt;/i&gt; parameter.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output_tokenProductionRate">The parameter specifying the output port production rate.&#10;  This is an integer, equal to the value of &lt;i&gt;blockSize&lt;/i&gt;.</property>
+</doc>

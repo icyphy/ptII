@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StringSplit" class="ptolemy.actor.lib.string.StringSplit">
+  <description>
+This actor reads an input string and splits it into an array of&#10; strings. The &lt;i&gt;separator&lt;/i&gt; parameter is a regular expression&#10; that determines where the split should occur. The default behavior&#10; will split the input at newline characters.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="separator">A specification of the separator used to split the string.&#10;  The default is &quot;\n&quot;, which results in splitting the string&#10;  at newline characters.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="trimSpaces">If true, then trim spaces around each resulting string.&#10;  This is a boolean that defaults to true.</property>
+</doc>

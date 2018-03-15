@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Previous" class="ptolemy.domains.de.lib.Previous">
+  <description>
+On each iteration, this actor produces the token received on the previous&#10; iteration. On the first iteration, it produces the token given by the&#10; &lt;i&gt;initialValue&lt;/i&gt; parameter, if such a value has been set.&#10; &lt;p&gt;&#10; Although it might be tempting to try, this actor is not very useful&#10; for breaking precedences in a feedback loop in DE, the way the&#10; TimedDelay actor in DE or the SampleDelay actor in SDF do.&#10; Since it does not trigger until there is an input, it will not&#10; actually break the precedences in a feedback loop.&#10; &lt;p&gt;&#10; The output data type is constrained to be at least as general&#10; as both the input and the &lt;i&gt;initialValue&lt;/i&gt; parameter.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialValue">The initial output value. If this is set, it specifies the&#10;  first output value produced when the first input arrives.&#10;  If it is not set, then no output is produced on the first&#10;  firing.</property>
+</doc>

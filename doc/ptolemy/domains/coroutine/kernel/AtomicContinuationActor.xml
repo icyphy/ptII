@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AtomicContinuationActor" class="ptolemy.domains.coroutine.kernel.AtomicContinuationActor">
+  <description>
+  </description>
+  <author>shaver</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="_entryPort"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="_exitPort"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="_initPoint"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="_resumePoint"></port>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CoroutineDirector" class="ptolemy.domains.coroutine.kernel.CoroutineDirector">
+  <description>
+  </description>
+  <author>shaver</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initContinuationName"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="entryMapping"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="nextMapping"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="exitMapping"></property>
+</doc>

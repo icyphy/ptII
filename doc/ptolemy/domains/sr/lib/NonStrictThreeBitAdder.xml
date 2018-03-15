@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
+  <description>
+A nonstrict three-bit adder.  This adder has one input port, which is a&#10; multiport, and two output ports, which are single ports.  All of the ports&#10; are of type int, and inputs are outputs are single bits.  An exception is&#10; thrown if a number other than 0 or 1 is received as an input, or if there&#10; are not exactly three channels connected to the input port.  This actor&#10; adds the three input bits, and outputs the result to the lowBit and highBit&#10; ports.  Only two of the inputs must be known for highBit to be determined.&#10; All inputs are necessary for lowBit to be determined.  An absence of a token&#10; is considered to have no contribution to the sum (same as value the zero).&#10; If no input tokens are available at all, then no output is produced.  </description>
+  <author>Paul Whitaker</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pwhitake)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="inputBits">Inputs for bits to be added.  The types are integer, and only&#10;  ones and zeros are expected.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="highBit">Output for the high bit.  The type is integer, and only ones and&#10;  zeros will be sent.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="lowBit">Output for the low bit.  The type is integer, and only ones and&#10;  zeros will be sent.</port>
+</doc>

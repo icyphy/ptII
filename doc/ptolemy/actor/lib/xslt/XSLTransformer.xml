@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
+  <description>
+This actor reads an XSLT file and apply it to a dom tree. The file or&#10;   URL is specified using any form acceptable to the FileParameter class.&#10;&#10;   &lt;p&gt;Currently, this actor requires the&#10;   &lt;a href=&quot;http://saxon.sourceforge.net/&quot;&gt;Saxon&lt;/a&gt; XSLT processor&#10;   so as to ensure reproducible results.  This restriction may&#10;   be relaxed in later versions of this actor.&#10;&#10;   &lt;p&gt;FIXME: what should the type of the input/output ports be???.  </description>
+  <author>Yang Zhao, Christopher Hylands Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (liuj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (liuj)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="styleSheetFile">The file name or URL from which to read.  This is a string with&#10;  any form accepted by FileParameter.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="styleSheetParameters">The parameters to be used in the stylesheet. This is a record&#10;  that defaults to &quot;emptyRecord()&quot;, an expression language command&#10;  that returns an empty record.&#10;  For example, if the parameter used in the style sheet is named&#10;  &lt;i&gt;a&lt;/i&gt; with type &lt;i&gt;int&lt;/i&gt;, then the styleSheetParameters has&#10;  type &lt;i&gt;{a = int}&lt;/i&gt;. If the style sheet has multiple parameters,&#10;  then each of them is represented as a field of the record.</property>
+</doc>

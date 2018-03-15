@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+  <description>
+Produce an output token on each firing with a value that is&#10; equal to the absolute value of the input. The input can have any&#10; scalar type, or it can be an array of scalars (or an array of arrays&#10; of scalars, etc.). If the input type is not Complex, the output has the&#10; same type as the input. If the input type is Complex, the output&#10; type is Double, in which case, the output value is the magnitude&#10; of the input complex.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (yuhong)</Pt.AcceptedRating>
+</doc>

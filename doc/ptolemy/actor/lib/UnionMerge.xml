@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="UnionMerge" class="ptolemy.actor.lib.UnionMerge">
+  <description>
+On each firing, read all tokens from every input port and wrap each token&#10;into a UnionToken of which the label matches the name of the originating&#10;input port. All produced UnionTypes are sent to the output port in a single&#10;firing.&#10;&#10;&lt;p&gt;&#10;The type of the output port is a UnionType of which the labels much match&#10;the names of the input ports. This is achieved using two type constraints:&#10;The labels for the output UnionToken are the names of the input&#10;ports. This is achieved using two type constraints:&lt;/p&gt;&#10;&#10;&lt;ul&gt;&#10;&#10;&lt;li&gt;&lt;tt&gt;output &amp;ge; {| x = typeOf(inputPortX), y = typeOf(inputPortY), .. |}&#10;&lt;/tt&gt;, which requires the types of the input ports to be compatible&#10;with the corresponding types in the output union.&lt;/li&gt;&#10;&#10;&lt;li&gt;&lt;tt&gt;each input &amp;le; the type of the corresponding field inside the&#10;output union&lt;/tt&gt;, which is similar to the usual default constraints,&#10;however this constraint establishes a dependency between the inputs of&#10;this actor and the fields inside the output union, instead of just&#10;between its inputs and outputs.&lt;/li&gt;&#10;&#10;&lt;/ul&gt;&#10;&#10;&lt;p&gt;Note that the output UnionType is required to contain a corresponding&#10;field for every input. However, due to the subtyping relation of UnionType&#10;that is opposite to the subtyping of RecordType, the type constraint&#10;that the output port of this actor must be greater than or equal to the GLB&#10;of the types of its receivers (implied by the connections), is always&#10;satisfied.&lt;/p&gt;&#10;&#10;&lt;p&gt;&#10;To use this actor, instantiate it, and then add input ports&#10;(instances of TypedIOPort).&#10;&lt;/p&gt;  </description>
+  <author>Edward A. Lee, Haiyang Zheng, Yuhong Xiong, Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (yuhongx)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (yuhongx)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port. The type of this port will be the union of the&#10;  type of the input ports.</port>
+</doc>

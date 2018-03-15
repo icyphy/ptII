@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
+  <description>
+This actor converts an IntToken into a sequence of Boolean tokens.&#10; The number of Boolean tokens is specified by the &lt;i&gt;numberOfBits&lt;/i&gt;&#10; parameter. It should be a positive integer not bigger than 32.&#10; The most significant bit (the sign bit) is the first boolean&#10; token send out. It is &quot;false&quot; if the input integer is non-negative,&#10; otherwise it is &quot;true&quot;. The least significant bit is the last boolean&#10; token send out.&#10;&#10; Let &lt;i&gt;k&lt;/i&gt; denotes the value of the &lt;i&gt;numberOfBits&lt;/i&gt; parameter.&#10; An exception is thrown if the input integer is smaller than&#10; -2&lt;sup&gt;&lt;i&gt;k&lt;/i&gt;&lt;/sup&gt; or greater 2&lt;sup&gt;&lt;i&gt;k&lt;/i&gt;&lt;/sup&gt; - 1.  </description>
+  <author>Michael Leung</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numberOfBits">The number of Boolean tokens that the input integer is converted to.</property>
+</doc>

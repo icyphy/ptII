@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive">
+  <description>
+An adaptive filter using the Least-Mean Square (LMS) algorithm, also&#10; known as the stochastic gradient algorithm.&#10; The initial filter coefficients are given by the &lt;i&gt;initialTaps&lt;/i&gt;&#10; parameter.  The tap values can be observed on the&#10; &lt;i&gt;tapValues&lt;/i&gt; output. The default initial taps &lt;i&gt;initialTaps&lt;/i&gt;&#10; are {1, 0, 0, 0}. This actor supports decimation, but not interpolation.&#10; &lt;p&gt;&#10; When used correctly, this LMS adaptive filter will adapt to try to minimize&#10; the mean-squared error of the signal at its &lt;i&gt;error&lt;/i&gt; input.&#10; In order for this to be possible, the output of the filter should&#10; be compared (subtracted from) some reference signal to produce&#10; an error signal.&#10; That error signal should be fed back to the &lt;i&gt;error&lt;/i&gt; input.&#10; &lt;p&gt;&#10; The &lt;i&gt;stepSize&lt;/i&gt; parameter determines the rate of adaptation.&#10; If its magnitude is too large, or if it has the wrong sign, then&#10; the adaptation algorithm will be unstable.&#10; &lt;p&gt;&#10; The &lt;i&gt;errorDelay&lt;/i&gt; parameter must equal the total number of delays&#10; in the path from the output of the filter back to the error input.&#10; This ensures correct alignment of the adaptation algorithm.&#10; The number of delays must be greater than zero.&#10; &lt;p&gt;&#10; This actor is type polymorphic, supporting any data type that&#10; supports multiplication by a scalar (the &lt;i&gt;stepSize&lt;/i&gt;) and&#10; addition.&#10; &lt;p&gt;&#10; The algorithm is simple.  Prior to each invocation of the parent&#10; class (an FIR filter), which computes the output given the input,&#10; this actor updates the coefficients according to the following&#10; formula,&#10; &lt;pre&gt;&#10; newTapValue = oldTapValue + error * stepSize * tapData&#10; &lt;/pre&gt;&#10; where &lt;i&gt;tapData&lt;/i&gt; is the contents of the delay line at&#10; the tap in question.&#10; This assumes that the &lt;i&gt;decimation&lt;/i&gt; parameter is set&#10; to 1 (the default).  If it has a value different from 1,&#10; the algorithm is slightly more involved.  Similarly, this&#10; assumes that the &lt;i&gt;errorDelay&lt;/i&gt; is 1.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="error">The error input port. The type of this port must match that&#10;  of the input port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="tapValues">The output of tap values.  This has the same type as the&#10;  initialTaps.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="errorDelay">The number of samples of delay in the feedback loop that&#10;  brings the error back.  This has a type integer, and&#10;  defaults to 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialTaps">The initial taps of the filter. This has a type of ArrayToken.&#10;  By default, it contains the array {1.0, 0.0, 0.0, 0.0},&#10;  meaning that the output of the filter is initially&#10;  the same as the input, and that the adaptive filter has&#10;  four taps.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="stepSize">The adaptation step size.  This must have a type that can&#10;  be multiplied by the input.  It defaults to 0.01, a double.</property>
+</doc>

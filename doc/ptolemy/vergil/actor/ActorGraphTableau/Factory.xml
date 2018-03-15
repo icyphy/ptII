@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Factory" class="ptolemy.vergil.actor.ActorGraphTableau.Factory">
+  <description>
+A factory that creates graph editing tableaux for Ptolemy models.  </description>
+</doc>

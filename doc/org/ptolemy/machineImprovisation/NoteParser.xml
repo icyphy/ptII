@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NoteParser" class="org.ptolemy.machineImprovisation.NoteParser">
+  <description>
+The NoteParser receives OSC information regarding the Notes and&#10; builds a sequence of chord objects. Outputs&#10; a sequence of &lt;a href=&quot;../../../org/ptolemy/machineImprovisation/Note.xml&quot;&gt;org.ptolemy.machineImprovisation.Note&lt;/a&gt; objects, in logical timestamp order.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (ilgea)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="notes">Sequence of note tokens.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="timestamp">The time stamp tokens.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="endTraining">Indicator that the note sequence has terminated.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="resetFO">Indicator that a new sequence has started.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="replicationProbability">The replication probability of the factor oracle.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="bars">Number of bars in training melody.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="freq">Note frequency.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="dur">Note durations.</port>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MatrixSplit" class="ptolemy.domains.sdf.lib.MatrixSplit">
+  <description>
+This actor splits an input matrix into a sequence of matrices.&#10; This actor reads 1 input matrix and produces N*M output matrices,&#10; where N is the size of the &lt;i&gt;rowSplit&lt;/i&gt; array, and M is&#10; the size of the &lt;i&gt;columnSplit&lt;/i&gt; parameter. The matrices&#10; are produced from submatrices extracted left-to-right,&#10; top-to-bottom, in a raster scan pattern.&#10; For example, if &lt;i&gt;rowSplit&lt;/i&gt; = {1, 2},&#10; &lt;i&gt;columnSplit&lt;/i&gt; = {2, 1}, and the input matrix is&#10; as follows:&#10; &lt;pre&gt;&#10;   1  2  3&#10;   4  5  6&#10;   7  8  9&#10; &lt;/pre&gt;&#10; then the first matrix out is a column vector:&#10;  &lt;pre&gt;&#10;   1&#10;   4&#10; &lt;/pre&gt;&#10; The second matrix out is&#10;  &lt;pre&gt;&#10;   2  3&#10;   5  6&#10; &lt;/pre&gt;&#10; The third is&#10;  &lt;pre&gt;&#10;   7&#10; &lt;/pre&gt;&#10; (a 1x1 matrix) and the fourth is&#10;  &lt;pre&gt;&#10;   8  9&#10; &lt;/pre&gt;&#10; a row vector.&#10; If the input does not have enough elements to fill the specified&#10; output matrices, then zeros (of the same type as the input elements)&#10; are used. If the input is larger than is required to fill the specified&#10; output, then the additional values are discarded.&#10; &lt;p&gt;  </description>
+  <author>Edward Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="columnSplit">An array specifying the number of columns in the output matrices.&#10;  This is an array of integers, with default {1}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rowSplit">An array specifying the number of rows in the output matrices.&#10;  This is an array of integers, with default {1}.</property>
+</doc>

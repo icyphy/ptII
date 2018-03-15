@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FactorOracle" class="org.ptolemy.machineImprovisation.FactorOracle">
+  <description>
+Build a factor oracle (FO) data structure that represents a finite acyclic&#10; automaton that contains at least all the suffixes of a given input&#10; sequence. The actor accepts a &lt;i&gt;name&lt;/i&gt; for the Factor oracle, an&#10; Object array, representing the input &lt;i&gt; trainingSequence &lt;/i&gt; on which&#10; the suffix tree will be built, and a &lt;i&gt;repetitionFactor&lt;/i&gt; that is a&#10; double in range [0.0,1.0], which is a measure of the probability of&#10; the training sequence to be repeated at each transition. The output Factor&#10; Oracle will be a probabilistic automaton that can generate at least all the&#10; suffixes of the training string. If the &lt;i&gt; validatePitch &lt;/i&gt; Parameter&#10; is set to true, the factor oracle interprets the input string as a sequence&#10; of notes and adds a check to the transitions to validate the note against&#10; a specification.&#10;&#10; &lt;p&gt; As an example, if a transition that would generate a &quot;C4&quot; upon firing, the&#10; guard expression would look like: &lt;i&gt; validatePitch(&quot;C4&quot;) &amp;amp;&amp;amp; probability(p) &lt;/i&gt;,&#10; where p is a double in range [0.0,1.0]. This transition would be taken&#10; (i) if the probability() transition evaluates to true AND (ii) if&#10; validatePitch() returns true.&#10;&#10; &lt;p&gt;&#10; &lt;b&gt;References&lt;/b&gt;&#10; &lt;p&gt;[1]&#10; C. Allauzen, M. Crochemore, and M. Raffinot. &quot;Factor oracle: A new structure for pattern matching.&quot;&#10; &lt;i&gt;SOFSEM'99: Theory and Practice of Informatics &lt;/i&gt;. Springer Berlin Heidelberg, 1999.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="currentChord">Current chord in improvisation.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="repetitionFactor">The repetition probability P(moving along the original sequence rather than taking a jump along&#10; a suffix link).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="validatePitch">Boolean that when set to true, enables the transitions to have a condition that validates each&#10; pitch against a specification.</property>
+</doc>

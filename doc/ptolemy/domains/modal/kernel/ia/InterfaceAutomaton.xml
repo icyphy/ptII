@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="InterfaceAutomaton" class="ptolemy.domains.modal.kernel.ia.InterfaceAutomaton">
+  <description>
+This class models an Interface Automaton. Interface automata is an automata&#10; model defined by de Alfaro and Henzinger in the paper&#10;&quot;&lt;a href=&quot;http://www.eecs.berkeley.edu/~tah/Publications/interface_automata.pdf&quot;&gt;Interface Automata&lt;/a&gt;&quot;.&#10; An InterfaceAutomaton contains a set of states and&#10; InterfaceAutomatonTransitions. There are three kinds transitions:&#10; input transition, output transition, and internal transitions.&#10; The input and output transitions correspond to input and output ports,&#10; respectively. The internal transition correspond to a parameter in this&#10; InterfaceAutomaton. The parameter is added automatically when the internal&#10; transition is added.&#10; &lt;p&gt;&#10; When an InterfaceAutomaton is fired, the outgoing transitions of the current&#10; state are examined. An IllegalActionException is thrown if there is more than&#10; one enabled transition. If there is exactly one enabled transition then it is&#10; taken.&#10; &lt;p&gt;&#10; An InterfaceAutomaton enters its initial state during initialization. The&#10; name of the initial state is specified by the &lt;i&gt;initialStateName&lt;/i&gt; string&#10; attribute.&#10; &lt;p&gt;  </description>
+  <author>Yuhong Xiong, Xiaojun Liu and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (liuxj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (kienhuis)</Pt.AcceptedRating>
+</doc>

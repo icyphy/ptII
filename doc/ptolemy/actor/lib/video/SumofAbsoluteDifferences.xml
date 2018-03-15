@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SumofAbsoluteDifferences" class="ptolemy.actor.lib.video.SumofAbsoluteDifferences">
+  <description>
+Calculate the sum of absolute difference(SAD) between two blocks.&#10;   Each input block should have two dimensions by rectangle block(16 by 16, 8 by 8, etc.).&#10;   The output port will have the result of SAD.  </description>
+  <author>Hwayong Oh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (oh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (oh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="previousImageBlock">Input for tokens to be a part of previous frame. This is a single port, and its&#10; type is 2D array.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="currentImageBlock">Input for tokens to be a part of current frame. This is a single port, and its&#10; type is 2D array.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="sumAbsoluteDifference">Output port. This is a result for calculating sum of absolute differences between&#10; ImgBlockA and ImgBlockB.&#10; The type is inferred form the connections.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockSize">BlockSize parameter. This is given by a number of elements in a block.&#10;  Macro Block in</property>
+</doc>

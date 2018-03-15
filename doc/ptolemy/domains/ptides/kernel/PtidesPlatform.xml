@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
+  <description>
+This composite implements a Ptides platform,&#10;  which is used for the design of distributed real-time systems.&#10;  The main reason for implementing this composite is to allow for&#10;  special treatment of tokens on input and output ports. Ptides&#10;  platforms can only contain the following ports: SensorPort,&#10;  ActuatorPort, NetworkReceiverPort, NetworkTransmitterPort.&#10;  A Ptides platform must contain a PtidesDirector.&#10;  &lt;p&gt;&#10;  Network ports receive and transmit RecordTokens that encapsulate&#10;  Ptides events (timestamp and value).&#10;  A NetworkReceiverPort extracts the timestamp of the&#10;  Ptides event in the RecordToken and creates a new event on the&#10;  event queue on the PtidesDirector with this timestamp.&#10;&#10;  FIXME: The base class seems to have some support for&#10;  ParameterPorts but nothing that really works?  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (derler)</Pt.AcceptedRating>
+</doc>

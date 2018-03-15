@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayToMatrix" class="ptolemy.actor.lib.ArrayToMatrix">
+  <description>
+Convert an array to a row or column vector encoded as a matrix token.&#10; The input array has to have a type that is convertible to a matrix.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rowVector">If true, then convert the array to a matrix with one row&#10;  and multiple columns (a row vector), and otherwise, convert&#10;  the input to a matrix with one column and multiple rows&#10;  (a column vector). This is a boolean that defaults to true.</property>
+</doc>

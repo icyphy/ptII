@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CAViewer" class="ptolemy.domains.ca.lib.gui.CAViewer">
+  <description>
+Cellular Automata Viewer.&#10;&#10; &lt;p&gt;The CAViewer is a display actor to be used in conjunction with&#10; the CADirector.  The CAViewer can be placed on the canvas and will&#10; render the grid as defined by the Director's parameters and&#10; possibly the output of the CA2DConvolution actor.  This actor is&#10; the currently the only way to visualize cellular automata or other&#10; 2D grid based phenomena employing the CADirectory.&lt;/p&gt;  </description>
+  <author>Zach Ezzell, Contributor: Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
+  <description>
+Apply a function over one or more input sequences.&#10; This actor will collect tokens from each input port into arrays&#10; and, when enough input tokens have arrived, pass those arrays&#10; to the function specified either at the &lt;i&gt;function&lt;/i&gt; parameter&#10; or the port.&#10; &lt;p&gt;&#10; To use this actor, create any number of input ports, add&#10; a parameter named &lt;i&gt;tokenConsumptionRate&lt;/i&gt; to each input&#10; port, and set the value of this parameter to the number&#10; of tokens that you would like to be collected into an&#10; array for each function application. Also, create&#10; and set a parameter named &lt;i&gt;tokenProductionRate&lt;/i&gt;&#10; in the output port.  (If &lt;i&gt;tokenConsumptionRate&lt;/i&gt;&#10; or &lt;i&gt;tokenProductionRate&lt;/i&gt; are not defined, then they&#10; will be assumed to have value one).&#10; Then define a function that takes as many array-valued&#10; arguments as there are input ports and returns an&#10; array-valued result. For example, the following function&#10; will compute the FFT of the input array using the FFT()&#10; function in the expression language:&#10; &lt;pre&gt;&#10; function(x:{double}) abs(FFT(x, 8))&#10; &lt;/pre&gt;&#10; Note that if the &lt;i&gt;tokenConsumptionRate&lt;/i&gt; of a port is&#10; changed during the execution of the model, the change is&#10; ignored until the next execution of the model.  </description>
+  <author>Steve Neuendorffer (Contributor: Edward A. Lee)</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="function">The input port for function definition. The type of this port is&#10;  undeclared, but to have this actor work, the designer has to provide&#10;  a matched function token for it.&#10;  Note: The reason that we don't declare the type for it is because&#10;  currently there is not cast supported in the FunctionType class.&#10;  we'll fix this later.</property>
+</doc>

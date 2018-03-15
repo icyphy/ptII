@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+  <description>
+Convert discrete events at the input to a continuous-time&#10; signal at the output by holding the value of the discrete&#10; event until the next discrete event arrives. Specifically,&#10; on each firing, if an input is present, then record the&#10; value of the input. Then produce the recorded value.&#10; Prior to receipt of the first input, output the token&#10; given by &lt;i&gt;defaultValue&lt;/i&gt;, if one is given.&#10; This actor will throw an exception if the input is not&#10; purely discrete. Specifically, this means that when the input&#10; is present, the step size of the solver has to be 0.0.  </description>
+  <author>Edward A. Lee, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.0</since>
+  <Pt.ProposedRating>Green (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="defaultValue">Default output before any input has received.&#10;  The default is empty, indicating&#10;  that no output is produced until an input is received.&#10;  The type of the output is set to at least the type of&#10;  this parameter (and also at least the type of the input).</property>
+</doc>

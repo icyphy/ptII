@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ExceptionManagerGUIFactory" class="ptolemy.actor.lib.gui.ExceptionManagerGUIFactory">
+  <description>
+This is an attribute that creates an editor for configuring and&#10; running the exception manager.  This is designed to be contained by&#10; an instance of ExceptionManager or a subclass of ExceptionManager.&#10; It customizes the user interface for &quot;configuring&quot; the exception manager.&#10; This UI will be invoked when you double click on the exception manager.  </description>
+  <author>Edward A. Lee, Elizabeth Latronico</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
+  <description>
+This actor tests for exceptions that are expected to occur when&#10; running a test model. When an exception is&#10; thrown by the model, this actor is invoked. It has two&#10; working modes, training mode and non-training mode. If in training mode,&#10; this actor handles an exception by recording the exception message. If&#10; not in training mode, this actor first compares the previously stored&#10; (assumed correct) message to the exception message and then throws an&#10; exception if the two messages are not the same.&#10; Also, if a test runs to completion without throwing an exception, this actor&#10; throws an exception in its wrapup() method. An exception is expected.  </description>
+  <author>Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Yellow (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="trainingMode">If true, then collect the exception message and set the&#10;  correctExceptionMessage parameter with the content of the&#10;  exception. This parameter is a boolean, and it defaults to false.&#10;  It is a shared parameter, meaning&#10;  that changing it for any one instance in a model will change&#10;  it for all instances in the model.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="correctExceptionMessage">The correct exception message to be compared against.</property>
+</doc>

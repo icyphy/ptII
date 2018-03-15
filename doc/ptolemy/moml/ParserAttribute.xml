@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ParserAttribute" class="ptolemy.moml.ParserAttribute">
+  <description>
+This attribute represents a MoML parser.&#10; If it is present in an entity that is the context for a MoMLChangeRequest,&#10; then that change request will use it to parse the changes.&#10; It is not a persistent attribute (exportMoML() writes nothing).&#10; It is a singleton, meaning that if it is inserted into a container&#10; that already contains a singleton attribute with the same name,&#10; then it will replace the previous attribute.&#10; &lt;p&gt;&#10; By default, this attribute is not persistent, so it will not&#10; be present in a MoML representation of its container.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+</doc>

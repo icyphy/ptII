@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MetroIIPtidesPort" class="ptolemy.domains.metroII.kernel.MetroIIPtidesPort">
+  <description>
+A specialized port for Ptides platform I/O implementing functionality for&#10; sensors, actuators and network ports.&#10;&#10; &lt;p&gt;&#10; This class is identical to PtidesPort except Ptides director is mapped to&#10; MetroIIPtidesDirector.&#10; &lt;/p&gt;  </description>
+  <author>Patricia Derler, Liangpeng Guo</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="actuateAtEventTimestamp">Actuate at event timestamp parameter that defaults to the boolean value&#10; TRUE. If this parameter is set to FALSE, an actuator can produce outputs&#10; as soon as they are available.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="deviceDelay">Device delay parameter that defaults to the double value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="deviceDelayBound">Device delay bound parameter that defaults to the double value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="isNetworkPort">Flag that is true if the port is a network receiver or transmitter. The&#10; flag defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="networkDelayBound">Network delay bound parameter that defaults to the double value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="platformDelayBound">Platform delay bound parameter that defaults to the double value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="sourcePlatformDelayBound">Source platform delay bound parameter that defaults to the double value&#10; 0.0.</property>
+</doc>
