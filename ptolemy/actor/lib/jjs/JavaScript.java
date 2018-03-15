@@ -1,6 +1,6 @@
 /* Execute a script in JavaScript using Nashorn.
 
-   Copyright (c) 2014-2017 The Regents of the University of California.
+   Copyright (c) 2014-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -237,8 +237,8 @@ import ptolemy.util.StringUtilities;
         supported modules. See
         <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a>
         for what a CommonJS module is.</li>
-   <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
-   <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
+   <li> setInterval(function, long): set the function to execute after specified time and then periodically and return handle.</li>
+   <li> setTimeout(function, long): set the function to execute after specified time and return handle.</li>
    </ul>
    <p>
    Note that get() may be called within a JavaScript callback function. In that case,
@@ -568,8 +568,8 @@ public class JavaScript extends AbstractPlaceableActor
     /** Clear the interval with the specified handle, if it
      *  has not already executed.
      *  @param handle The timeout handle.
-     *  @see #setTimeout(Runnable, int)
-     *  @see #setInterval(Runnable, int)
+     *  @see #setTimeout(Runnable, long)
+     *  @see #setInterval(Runnable, long)
      */
     @Override
     public synchronized void clearInterval(Object handle) {
@@ -582,8 +582,8 @@ public class JavaScript extends AbstractPlaceableActor
     /** Clear the timeout with the specified handle, if it
      *  has not already executed.
      *  @param handle The timeout handle.
-     *  @see #setTimeout(Runnable, int)
-     *  @see #setInterval(Runnable, int)
+     *  @see #setTimeout(Runnable, long)
+     *  @see #setInterval(Runnable, long)
      */
     @Override
     public synchronized void clearTimeout(Object handle) {

@@ -1,6 +1,6 @@
 /* A class that represents model time.
 
- Copyright (c) 2004-2015 The Regents of the University of California.
+ Copyright (c) 2004-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -643,7 +643,7 @@ public class Time implements Comparable {
     /** Return a new Time object whose value equals the argument,
      *  which is interpreted in milliseconds.
      *  @param director The director with which this time object is associated.
-     *  @param timeValue The time in ms.
+     *  @param milliseconds The time in ms.
      * @return 
      */
     public static Time milliseconds(Director director, long milliseconds) {

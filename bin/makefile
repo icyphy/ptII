@@ -100,6 +100,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	node \
 	npm \
 	ptjunit \
+	ptIITravisBuild.sh \
 	reloadAllAccessors \
 	updateFmu \
 	viptos

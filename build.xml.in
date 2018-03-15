@@ -150,15 +150,24 @@
     <exclude name="**/junit/JUnitAuto32Test.*" />
   </patternset>
 
-  <!-- Tests for Cape Code. -->
-  <patternset id="test.capeCode.includes">
+  <!-- Tests for Cape Code. See
+       $PTII/org/terraswarm/accessor/accessors/web/build.xml for
+       non-CapeCode tests.-->
+  <patternset id="test.capecode.includes">
     <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
   </patternset>
   
+  <!-- Exclude Cape Code tests from short, long and longest. -->
+  <patternset id="test.capecode.excludes">
+    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
+    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
+  </patternset>
+
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     @ANT_EXCLUDE_TESTS@
+    <exclude name="**/adm/test/junit/*"/>
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
@@ -979,6 +988,7 @@ For example:
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -991,12 +1001,12 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capeCode"
+  <target name="test.capecode"
 	  description="Run the Cape Code tests.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capeCode ==
+      ==test.capecode ==
       This target runs the Cape Code accessors tests
       timeout = ${timeout.long} milliseconds
     </echo>
@@ -1013,7 +1023,7 @@ For example:
       <batchtest filtertrace="off">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capeCode.includes" />
+	  <patternset refid="test.capecode.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1023,12 +1033,12 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capeCode.xml"
+  <target name="test.capecode.xml"
 	  description="Run the Cape Code tests with xml output.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capeCode ==
+      ==test.capecode ==
       This target runs the Cape Code accessors tests and generates JUnit xml output.
       timeout = ${timeout.long} milliseconds
     </echo>
@@ -1044,7 +1054,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capeCode.includes" />
+	  <patternset refid="test.capecode.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1132,6 +1142,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1165,6 +1176,7 @@ For example:
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1232,6 +1244,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1322,6 +1335,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1486,6 +1500,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the longest running tests -->
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
@@ -1536,6 +1551,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1599,7 +1615,9 @@ For example:
     </exec>
   </target>
 
-  <target name="test.report" depends="build, initReports"
+  <target name="test.report" depends="test.report.all"/>
+
+  <target name="test.report.all" depends="build, initReports, installers"
 	  description="Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.">
     <echo>
       ==test.report==
@@ -1633,6 +1651,59 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.report.short" depends="build, initReports"
+	  description="Run the short-running junit tests in a directory or directories, results in $PTII/reports.">
+    <echo>
+      ==test.repor.short==
+      This target runs test specified by a file name and generates 
+      ${junit.formatter} output in ${junit.output.dir}.
+
+      The default is to run all the fairly short-running tests.
+      On a fast machine, these tests take around 30 minutes.
+
+      To run different tests, use -Dtest.batch, for example:
+         ant test.short -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
+
+       test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
+       test.long - runs tests that are fairly long (called by the test target)
+       test.longest - runs tests that are longest (called by the test target)
+       test.report.all - runs batch of tests specified by a path with wildcards (output=files)
+       test.report.short - runs tests that are fairly fast, generates JUnit xml
+       test.short - runs tests that are fairly fast (~30 min., called by the test target)
+       test.single target runs single test specified by its class name (output=stdout)
+
+      test.batch = ${test.batch}
+      timeout.long = ${timeout.long}
+    </echo>
+    <junit fork="yes"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <include name="${test.batch}" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
+	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}" />

@@ -1,6 +1,6 @@
 /* Interface for classes that can orchestrate the execution of accessors.
 
-   Copyright (c) 2014-2017 The Regents of the University of California.
+   Copyright (c) 2014-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -55,8 +55,8 @@ public interface AccessorOrchestrator extends Nameable {
      *  has not already executed.
      *  @param timer The timeout handle.
      *  @exception IllegalActionException If the handle is invalid.
-     *  @see #setTimeout(Runnable, int)
-     *  @see #setInterval(Runnable, int)
+     *  @see #setTimeout(Runnable, long)
+     *  @see #setInterval(Runnable, long)
      */
     public void clearInterval(Object timer) throws IllegalActionException;
 
@@ -64,8 +64,8 @@ public interface AccessorOrchestrator extends Nameable {
      *  has not already executed.
      *  @param timer The timeout handle.
      *  @exception IllegalActionException If the handle is invalid.
-     *  @see #setTimeout(Runnable, int)
-     *  @see #setInterval(Runnable, int)
+     *  @see #setTimeout(Runnable, long)
+     *  @see #setInterval(Runnable, long)
      */
     public void clearTimeout(Object timer) throws IllegalActionException;
 
