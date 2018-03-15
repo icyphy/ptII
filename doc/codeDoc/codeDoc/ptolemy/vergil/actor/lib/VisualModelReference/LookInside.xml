@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="LookInside" class="ptolemy.vergil.actor.lib.VisualModelReference.LookInside">
-  <description>
-A tableau factory to override the look inside behavior to open&#10;  the referenced model, if there is one.  </description>
-</doc>

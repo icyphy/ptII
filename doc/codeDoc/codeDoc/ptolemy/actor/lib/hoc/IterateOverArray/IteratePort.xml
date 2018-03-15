@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="IteratePort" class="ptolemy.actor.lib.hoc.IterateOverArray.IteratePort">
-  <description>
-This is a specialized port for IterateOverArray.&#10;  If the container is an instance of IterateOverArray,&#10;  then it handles type conversions between&#10;  the array types of the ports of the enclosing IterateOverArray&#10;  actor and the scalar types (or arrays with one less dimension)&#10;  of the actor that are contained.  It has a notion of an&#10;  &quot;associated port,&quot; and ensures that changes to the status&#10;  of one port (whether it is input, output, or multiport)&#10;  are reflected in the associated port.  </description>
-</doc>

@@ -1,9 +1,0 @@
-{
-    "plugins": ["node_modules/@terraswarm/jsdoc/plugins/markdown", "doc/jsdoc/plugins/accessorJSDocTags"],
-    "markdown": {
-        "tags": ["accessor", "input", "output", "parameter"]
-    },
-    "source": {
-        "excludePattern": "(doc|browser/common|browser/modules|browser/test/lib|cameraslicense.js|cv.js|node_modules\\/[^@]|HueAccessorTemplate.js|hosts/jxcore/jxcore/common|hosts/cordova/demo|node_modules/@accessors-hosts|rusteduk/duk|vendors)"
-    }
-}

@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="AssertPort" class="ptolemy.actor.lib.Assert.AssertPort">
-  <description>
-Class for ports created by the user for this actor.&#10;  These should all be input ports, in theory.&#10;  This class ensures that if you change the name of the&#10;  port, then the name and displayName of the corresponding output&#10;  port are both changed.  </description>
-</doc>

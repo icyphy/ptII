@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="Contents" class="ptolemy.actor.lib.hoc.CatchUpComposite.Contents">
-  <description>
-Contents composite that overrides the base class to have a parameter&#10;  indicating whether to fire only when triggered.  </description>
-    <!--ptolemy.data.expr.Parameter-->
-    <property name="fireOnlyWhenTriggered">If false (the default), then whenever any contained actor&#10;  makes a fireAt() request, that request is passed up to the container,&#10;  and hence this composite will be fired at the requested time.&#10;  If set to true, then the request will not be passed up,&#10;  and this composite will be fired only when the container&#10;  chooses to fire it. If the containing director is DE, for example,&#10;  that will occur only when there is an input event to provide to&#10;  this composite.</property>
-</doc>
