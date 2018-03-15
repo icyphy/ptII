@@ -869,6 +869,16 @@ For example:
     </exec>
   </target>
 
+  <target name="junitreport"
+          description="Read reports/**/TEST-*.xml files and create reports/junit/html/">
+    <junitreport todir="./reports">
+      <fileset dir="./reports">
+        <include name="**/TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="./reports/junit/html"/>
+    </junitreport>
+  </target>
+
   <!-- Ojdcheck
        We have a local copy at
        svn co svn+ssh://source.eecs.berkeley.edu/chess/ojdcheck 
@@ -1662,7 +1672,7 @@ For example:
   <target name="test.report.short" depends="build, initReports"
 	  description="Run the short-running junit tests in a directory or directories, results in $PTII/reports.">
     <echo>
-      ==test.repor.short==
+      ==test.report.short==
       This target runs test specified by a file name and generates 
       ${junit.formatter} output in ${junit.output.dir}.
 
