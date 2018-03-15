@@ -11,13 +11,18 @@ env:
     - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
+
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+
+    # Share one cache between all the matrix builds
+    # See https://docs.travis-ci.com/user/caching#Caches-and-build-matrices
+    - CACHE_NAME=PTIICACHE1
+
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     - PATH=${PTII}/bin:${PATH}
     - PTII=${TRAVIS_BUILD_DIR}
-    - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
 
 language: node_js
 
