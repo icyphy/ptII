@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GRActor2D" class="ptolemy.domains.gr.kernel.GRActor2D">
+  <description>
+A base class for all two-dimensional GR actors. These actors use Diva&#10; to render two-dimensional scenes in the GR domain. This is an abstract&#10; class that is never used as a standalone actor in a Ptolemy model.&#10; Subclasses of this actor include Geometry actors, Transform actors,&#10; Interaction actors, and the ViewScreen2D display actor.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

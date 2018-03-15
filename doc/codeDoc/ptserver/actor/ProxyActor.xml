@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ProxyActor" class="ptserver.actor.ProxyActor">
+  <description>
+An abstract parent actor that contains logic common to both sink&#10; and source proxy actors.  This actor is responsible for either&#10; removing the target actor and putting itself as a proxy or removing&#10; all actors connected to the target actor and putting itself instead&#10; of all of connected actor connected to the target actor.  </description>
+  <author>Anar Huseynov</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ahuseyno)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ahuseyno)</Pt.AcceptedRating>
+</doc>

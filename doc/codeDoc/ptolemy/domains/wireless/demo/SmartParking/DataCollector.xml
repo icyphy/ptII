@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DataCollector" class="ptolemy.domains.wireless.demo.SmartParking.DataCollector">
+  <description>
+This class collects sensor update for the state of each parking spot,&#10; and provides a parking client information of available parking spots.  </description>
+  <author>Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="update">Port that receives parking lot updates.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="debug">Output port for sending out the received message just for&#10;  debugging.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="isFull">Output port for seting a signal light to tell people&#10;  whehter the parking lot is full.</port>
+</doc>

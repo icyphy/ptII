@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TokenReader" class="ptolemy.actor.lib.io.TokenReader">
+  <description>
+An actor that reads a string expression from a file or URL upon receiving a&#10; signal on its &lt;i&gt;trigger&lt;/i&gt; input port, and outputs a token that is the&#10; result of evaluating the read string. The file or URL is specified by the&#10; &lt;i&gt;FileOrURL&lt;/i&gt; parameter or set using the &lt;i&gt;FileOrURL&lt;/i&gt; port. If the&#10; file or URL cannot be read, the expression cannot be parsed successfully,&#10; or the resulting token does not match the type constraint of the output port,&#10; the value of the &lt;i&gt;errorHandlingStrategy&lt;/i&gt; parameter determines the&#10; behavior of this actor.&#10; TODO: describe automatic port constraint setting&#10; FIXME: More here. Particularly, document output type handling.  </description>
+  <author>Edward A. Lee, Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="errorHandlingStrategy">The error handled strategy.  The strategy to use if:&#10;  &lt;ul&gt;&#10;  &lt;li&gt; the file or URL cannot be read,&lt;/li&gt;&#10;  &lt;li&gt; the data read from the file or the URL cannot be parsed,&lt;/li&gt;&#10;  &lt;li&gt; the parsed token cannot be converted into a token of the type&#10;  given by &lt;i&gt;outputType&lt;/i&gt;, if such a type is given, or&lt;/li&gt;&#10;  &lt;li&gt; the parsed token cannot&#10;  be converted to a token of the resolved type of the output, if no &lt;i&gt;outputType&lt;/i&gt;&#10;  is given.&lt;/li&gt;&#10;  &lt;/ul&gt;&#10;  This is a string that has the following&#10;  possible values: &quot;Do Nothing&quot; or &quot;Throw Exception&quot;, where&#10;  &quot;Throw Exception&quot; is the default.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="outputType">If this parameter has a value, then the value specifies the&#10;  type of the output port. When the actor reads from the file&#10;  or URL, it expects the data read to be a string that can be&#10;  parsed into a token that is convertible to (or identical to)&#10;  this output type. If it is not, then the action taken is&#10;  specified by the &lt;i&gt;errorHandlingStrategy&lt;/i&gt; parameter.&#10;  If this parameter has no value (the default), then the&#10;  output type will be set to match whatever is first read from the&#10;  file or URL and will be updated on each subsequent firing if&#10;  the data read from the file or URL cannot be converted to the&#10;  type determined by the first read.</property>
+</doc>

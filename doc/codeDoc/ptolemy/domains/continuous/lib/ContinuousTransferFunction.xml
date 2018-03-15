@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ContinuousTransferFunction" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
+  <description>
+A transfer function in the continuous time domain.&#10; This actor implements a transfer function where the single input (u) and&#10; single output (y) can be expressed in (Laplace) transfer function&#10; form as the following equation:&#10; &lt;pre&gt;&#10; y(s)    b(1)*s^(m-1) + b(2)*s^(m-2) + ... + b(m)&#10; ----- = -------------------------------------------&#10; u(s)    a(1)*s^(n-1) + a(2)*s^(n-2) + ... + a(n)&#10; &lt;/pre&gt;&#10; where m and n are the number of numerator and denominator coefficients,&#10; respectively. This actors has two parameters -- numerator and denominator --&#10; containing the coefficients of the numerator and denominator in&#10; descending powers of s. These coefficients are double numbers.&#10; The order of the denominator (n) must be greater&#10; than or equal to the order of the numerator (m).&#10; &lt;p&gt;&#10; This actor extends TypedCompositeActor and works as a higher-order function.&#10; Whenever the parameters are changed, the actor will build a transparent&#10; subsystem inside it using integrators, adders, and scales. This is called&#10; a realization of the transfer function. Notice that there are infinite&#10; number of realizations of a transfer function, and they are equivalent if and&#10; only if the initial conditions are all zero. Here we choose the controllable&#10; canonical form and preset all initial states of the integrators to zero.&#10; If you need to set arbitrary initial&#10; conditions you have to use the state-space representation, for example,&#10; use the LinearStateSpace actor.  </description>
+  <author>Christopher Brooks, based on the CT ContinuousTransferFunction by Jie Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (liuj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">Single input port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Single output port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numerator">The coefficients of the numerator, containing an array of&#10;  DoubleTokens.&#10;  The default value is {1.0}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="denominator">The coefficients of the denominator, containing an array&#10;  of DoubleTokens.&#10;  The array must have a length greater&#10;  than or equal to the length of the numerator.&#10;  The default value is {1.0}.</property>
+</doc>

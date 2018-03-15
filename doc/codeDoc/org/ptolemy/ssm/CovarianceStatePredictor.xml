@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CovarianceStatePredictor" class="org.ptolemy.ssm.CovarianceStatePredictor">
+  <description>
+Implementation of StatePredictor witch uses acceleration control input.&#10;&#10; &lt;p&gt;&#10; This actor reads a single record(x, y, vx, vy, covariance) from the port &lt;i&gt;current_state&lt;/i&gt;&#10; and an array of vector(acc_x, acc_y) from the port &quot;control_inputs&quot;.&#10; Output is an array of states(x, y, vx, vy, covariance) whose length is &lt;i&gt;prediction horizon&lt;/i&gt;.&#10; Output states are calculated using a state space model given by&#10; &lt;pre&gt;&#10; X_{t+1} = f(X_t) = [P_{t+1}; V_{t+1}]&#10;    P_{t+1} = P_t + V_t + 0.5*Acc_t&#10;    V_{t+1} = V_t + Acc_t&#10; C_{t+1} = A*C_t*AT&#10; &lt;/pre&gt;&#10; &lt;p&gt;where X is the state vector(P: position, V: velocity),  Acc is an acceleration input vector,&#10; C is the covariance matrix of X, and A is the jacobian of transition function f(X).&#10; If the length of control_inputs is shorter than prediction horizon,&#10; the last value of cotrol_inputs is used until the step of prediction horizon.&#10; &lt;/p&gt;  </description>
+  <author>Shuhei Emoto</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (shuhei)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="controlInput">control input for robots.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="currentState">current state of robots.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="predictedStates">predicted states of robots.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="timeHorizon">The time-horizon which defines the number of steps of prediction.</property>
+</doc>

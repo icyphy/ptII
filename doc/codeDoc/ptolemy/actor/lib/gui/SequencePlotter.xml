@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+  <description>
+A sequence plotter.  This plotter contains an instance of the Plot&#10; class from the Ptolemy plot package as a public member. Data at&#10; the input, which can consist of any number of channels, are plotted&#10; on this instance.  Each channel is plotted as a separate data set.&#10; The horizontal axis represents the count of the iterations, scaled&#10; by the &lt;i&gt;xUnit&lt;/i&gt; parameter.  The horizontal increment between&#10; samples is given by the &lt;i&gt;xUnit&lt;/i&gt; parameter.&#10; Its default value is 1.0. The horizontal value&#10; of the first sample is given by the &lt;i&gt;xInit&lt;/i&gt; parameter.&#10; Its default value is 0.0. The input is of type DoubleToken.  </description>
+  <author>Edward A. Lee, Bart Kienhuis</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">Input port, which has type DoubleToken.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xUnit">The increment of the X axis.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xInit">The start point of the X axis.</property>
+</doc>

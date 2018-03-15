@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ParameterEditorStyle" class="ptolemy.actor.gui.style.ParameterEditorStyle">
+  <description>
+This attribute annotates user settable attributes to specify the style&#10; used for configuring the containing attribute.&#10; The EditorPaneFactory class uses concrete subclasses&#10; of this base class as a strategy pattern for creating entries in&#10; an interactive parameter editor.  This class expects that the container&#10; will implement the Settable interface.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+</doc>

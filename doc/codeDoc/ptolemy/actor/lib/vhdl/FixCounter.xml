@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FixCounter" class="ptolemy.actor.lib.vhdl.FixCounter">
+  <description>
+A class for a fixpoint value counter.  </description>
+  <author>Man-Kit Leung</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="increment">The increment port. If this input port&#10;  receives a token, then the counter is incremented.  The port&#10;  has type general.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="decrement">The decrement port. If this input port&#10;  receives a token, then the counter is decremented.  The port&#10;  has type general.</port>
+</doc>

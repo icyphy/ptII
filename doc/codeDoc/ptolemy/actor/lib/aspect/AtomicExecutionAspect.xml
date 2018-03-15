@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AtomicExecutionAspect" class="ptolemy.actor.lib.aspect.AtomicExecutionAspect">
+  <description>
+This is a base class for resource schedulers.&#10;This is a &lt;a href=&quot;../../../../ptolemy/kernel/util/Decorator.xml&quot;&gt;ptolemy.kernel.util.Decorator&lt;/a&gt; that will decorate any instance of &lt;a href=&quot;../../../../ptolemy/actor/Actor.xml&quot;&gt;ptolemy.actor.Actor&lt;/a&gt;&#10;that is deeply contained by its container, including within opaque&#10;composites.&#10;This base class provides one decorator attributes. When you create an instance&#10;of this class in a composite actor, every Actor within that composite actor&#10;is decorated with these this parameter:&#10;&lt;ul&gt;&#10;&lt;li&gt; &lt;i&gt;enable&lt;/i&gt;: If true, then the decorated actor will use this resource.&#10;     This is a boolean that defaults to false.&#10;&lt;/ul&gt;&#10;&#10;This base class is not used but to use derived classes, drag them into a model&#10;and enable the actors that will use the resource.&#10;&#10;Currently, the following Directors honor ExecutionAspect settings:&#10;&lt;ul&gt;&#10;&lt;li&gt; PtidesDirector. A ExecutionAspect on a PtidesPlatform will cause the&#10;platform time at which actors produce their outputs&#10;to be delayed by the specified execution time beyond the platform time at&#10;which the resource becomes available to execute the actor. &lt;/li&gt;&#10;&lt;li&gt; DEDirector. Note that using a ExecutionAspect in a DE model&#10;will change the MoC and nondeterminism is introduced with ExecutionAspects.&#10;&lt;/li&gt;&#10;&lt;li&gt; SDF Director, if contained hierarchically directly or via multiple&#10;hierarchy layers by a PtidesDirector. &lt;/li&gt;&#10;&lt;li&gt; SysMLSequentialDirector, if contained hierarchically directly or via multiple&#10;hierarchy layers by a PtidesDirector. &lt;/li&gt;&#10;&lt;/ul&gt;  </description>
+  <author>Patricia DerlerEdward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (derler)</Pt.AcceptedRating>
+</doc>

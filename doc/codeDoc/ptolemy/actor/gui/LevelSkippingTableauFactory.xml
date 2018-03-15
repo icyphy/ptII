@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LevelSkippingTableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+  <description>
+This class is an attribute that creates a tableau to view an object&#10; contained by the model associated with the specified effigy.&#10; When a model is opened, this object looks for a contained entity&#10; with the name given by &lt;i&gt;entityName&lt;/i&gt;, or looks for the first&#10; contained entity if no name is given, and opens that entity rather&#10; than the model associated with the specified effigy.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="entityName">The name of the contained entity to open, or an empty string&#10;  to just open the first one found.  This is a string that defaults&#10;  to empty.</property>
+</doc>

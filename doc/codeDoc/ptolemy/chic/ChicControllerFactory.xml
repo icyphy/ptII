@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ChicControllerFactory" class="ptolemy.chic.ChicControllerFactory">
+  <description>
+This is an attribute that produces a custom node controller for&#10; Chic visible attributes.  This class creates an instance of&#10; ChicController, for controlling Chic visible attributes in a ptolemy&#10; model.  </description>
+  <author>Eleftherios Matsikoudis</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

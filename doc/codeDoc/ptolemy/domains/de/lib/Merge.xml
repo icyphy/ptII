@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Merge" class="ptolemy.domains.de.lib.Merge">
+  <description>
+A timed merge actor for the DE domain. It merges a set of input signals&#10; into a single output signal based on the order of the tags&#10; associated with the events of signals. A tag is a tuple of a timestamp&#10; (as an instance of Time) and a microstep or index (as non-negative integer).&#10; Tags have a lexicographic order.&#10; &lt;p&gt;&#10; This actor has an input port (a multiport) and an output port&#10; (a single port). The types of the ports are undeclared and will be&#10; resolved by the type resolution mechanism, with the constraint that&#10; the output type must be greater than or equal to the input type.&#10; &lt;p&gt;&#10; There is a boolean parameter &lt;i&gt;discardEvents&lt;/i&gt; associated&#10; with this actor, which decides how to handle simultaneously&#10; available inputs.&#10; &lt;p&gt;&#10; If the &lt;i&gt;discardEvents&lt;/i&gt; parameter is configured to true,&#10; then each time this actor fires, it reads the first&#10; available token from an input channel and send it to the output&#10; port.  Then this actor discards all the remaining inputs in the rest of&#10; channels.&#10; &lt;p&gt;&#10; If the &lt;i&gt;discardEvents&lt;/i&gt; parameter is configured to false (the default),&#10; then the handling of simultaneous events is a bit more subtle.&#10; On each firing, it reads at most one input from each input channel&#10; in the order of the channels and puts them on a queue to be produced&#10; as an output. It then takes the first token (the oldest one) from the queue&#10; and produces it on the output. If after this firing the queue is not empty,&#10; then it requests a refiring at the current time.  </description>
+  <author>Edward A. Lee, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Green (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="discardEvents">A flag to indicate whether the input events can be discarded.&#10;  Its default value is false.</property>
+</doc>

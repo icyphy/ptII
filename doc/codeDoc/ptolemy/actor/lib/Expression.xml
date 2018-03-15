@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Expression" class="ptolemy.actor.lib.Expression">
+  <description>
+&lt;p&gt;On each firing, evaluate an expression that may include references&#10; to the inputs, current time, and a count of the firing.  The ports&#10; are referenced by the identifiers that have the same name as the&#10; port.  To use this class, instantiate it, then add ports (instances&#10; of TypedIOPort).  In vergil, you can add ports by right clicking on&#10; the icon and selecting &quot;Configure Ports&quot;.  In MoML you can add&#10; ports by just including ports of class TypedIOPort, set to be&#10; inputs, as in the following example:&lt;/p&gt;&#10;&#10; &lt;pre&gt;&#10; &amp;lt;entity name=&quot;exp&quot; class=&quot;ptolemy.actor.lib.Expression&quot;&amp;gt;&#10; &amp;lt;port name=&quot;in&quot; class=&quot;ptolemy.actor.TypedIOPort&quot;&amp;gt;&#10; &amp;lt;property name=&quot;input&quot;/&amp;gt;&#10; &amp;lt;/port&amp;gt;&#10; &amp;lt;/entity&amp;gt;&#10; &lt;/pre&gt;&#10;&#10; &lt;p&gt; This actor is type-polymorphic.  The types of the inputs can be&#10; arbitrary and the types of the outputs are inferred from the&#10; expression based on the types inferred for the inputs.&lt;/p&gt;&#10;&#10; &lt;p&gt; The &lt;i&gt;expression&lt;/i&gt; parameter specifies an expression that&#10; can refer to the inputs by name.  By default, the expression is&#10; empty, and attempting to execute the actor without setting it&#10; triggers an exception.  This actor can be used instead of many of&#10; the arithmetic actors, such as AddSubtract, MultiplyDivide, and&#10; TrigFunction.  However, those actors will be usually be more&#10; efficient, and sometimes more convenient to use.&lt;/p&gt;&#10;&#10; &lt;p&gt; The expression language understood by this actor is the same as&#10; &lt;a href=&quot;../../../../expressions.htm&quot;&gt;that used to set any&#10; parameter value&lt;/a&gt;, with the exception that the expressions&#10; evaluated by this actor can refer to the values of inputs, and to&#10; the current time by the identifier name &quot;time&quot;, and to the current&#10; iteration count by the identifier named &quot;iteration.&quot;&lt;/p&gt;&#10;&#10; &lt;p&gt; This actor requires its all of its inputs to be present.  If&#10; inputs are not all present, then an exception will be thrown.&lt;/p&gt;&#10;&#10; &lt;p&gt; NOTE: There are a number of limitations in the current&#10; implementation.  Primarily, multiports are not supported.&lt;/p&gt;  </description>
+  <author>Xiaojun Liu, Edward A. Lee, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="expression">The expression that is evaluated to produce the output.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+  <description>
+An actor that converts a string containing JSON-formatted data into a Token.&#10;&#10;&lt;p&gt;Depending on the top level structure found in the JSON string, it produces&#10;either a RecordToken or an ArrayToken on its output port. Nested structures&#10;in the JSON data will translate to correspondingly nested structures in the&#10;Token.&lt;/p&gt;&#10;&#10;&lt;p&gt;The JSONObject parser processes values as follows:&#10;Delimited values are always parsed as a String. Values that are not delimited&#10;are tested in the order noted below. The first test that succeeds determines&#10;the type.&lt;/p&gt;&#10;&lt;ul&gt;&#10;  &lt;li&gt;'true' | 'false' =&amp;gt; Boolean (case insensitive)&lt;/li&gt;&#10;  &lt;li&gt;'null' =&amp;gt; JSONObject.NULL (case insensitive)&lt;/li&gt;&#10;  &lt;li&gt;'0x..' =&amp;gt; Integer (hexadecimal)&lt;/li&gt;&#10;  &lt;li&gt;x'.'y | exponent encoded =&amp;gt; Double&lt;/li&gt;&#10;  &lt;li&gt;x =&amp;gt; Long, or Integer if value remains the same after conversion&lt;/li&gt;&#10;&lt;/ul&gt;&#10;&lt;p&gt;If non of the above apply, the value is interpreted as a String.&lt;/p&gt;&#10;&lt;p&gt;Note that JSON allows array elements to have different types, whereas the&#10;&lt;code&gt;ArrayToken&lt;/code&gt; does not. Conversion of such mixed array will result&#10;in an &lt;code&gt;ArrayToken&lt;/code&gt; of which the types of all elements are cast to&#10;the least upper bound of the entire collection.&lt;/p&gt;&#10;&#10;&lt;p&gt;&lt;a href=&quot;http://www.json.org/&quot;&gt;http://www.json.org/&lt;/a&gt;&#10;- a description of the JSON format.&lt;/p&gt;  </description>
+  <author>Marten Lohstroh and Edward A. Lee, Contributor: Beth Latronico</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (marten)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chx)</Pt.AcceptedRating>
+</doc>

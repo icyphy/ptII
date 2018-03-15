@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ATCDirector" class="ptolemy.domains.atc.kernel.policy1.ATCDirector">
+  <description>
+A director for modeling air traffic control systems.&#10;  This director provides a receiver that consults the destination actor&#10;  to determine whether it can accept an input, and provides mechanisms&#10;  for handling rejection of an input.  </description>
+  <author>Maryam Bagheri</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+</doc>

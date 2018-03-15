@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StaticSchedulingDirector" class="ptolemy.actor.sched.StaticSchedulingDirector">
+  <description>
+A director that uses static scheduling to govern the execution of the&#10; CompositeActor it belongs to. &lt;p&gt;&#10;&#10; This class does not directly implement a scheduling algorithm, but&#10; defers to its contained scheduler.  The contained scheduler creates an&#10; instance of the Schedule class which determines the number of times&#10; each actor should be fired and their firing order.  This allows new&#10; scheduling algorithms to be easily created for existing domains.&lt;p&gt;&#10;&#10; This class is generally useful for statically scheduled domains where&#10; a schedule can be constructed once and used to repeatedly execute the&#10; model.  The Scheduler class caches the schedule until the model changes&#10; so that the schedule does not have to be recomputed.  </description>
+  <author>Jie Liu, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+</doc>

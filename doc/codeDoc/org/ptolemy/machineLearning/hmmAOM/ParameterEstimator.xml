@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ParameterEstimator" class="org.ptolemy.machineLearning.hmmAOM.ParameterEstimator">
+  <description>
+This actor is a &lt;a href=&quot;../../../../ptolemy/actor/CommunicationAspect.xml&quot;&gt;ptolemy.actor.CommunicationAspect&lt;/a&gt; that, when its&#10;  &lt;a href=&quot;../../../../org/ptolemy/machineLearning/hmmAOM/ParameterEstimator.html#sendToken&quot;&gt;sendToken(Receiver, Receiver, Token)&lt;/a&gt; method is called, delays&#10;  the delivery of the specified token to the specified receiver&#10;  according to a service rule. Specifically, if the actor is&#10;  not currently servicing a previous token, then it delivers&#10;  the token with a delay given by the &lt;i&gt;serviceTimeMultiplicationFactor&lt;/i&gt;&#10;  parameter multiplied by the &lt;i&gt;messageLength&lt;/i&gt; parameter specified in the port.&#10;  If the actor is currently servicing a previous token, then it waits&#10;  until it has finished servicing that token (and any other pending&#10;  tokens), and then delays for an additional amount given by&#10;  &lt;i&gt;serviceTimeMultiplicationFactor&lt;/i&gt; * &lt;i&gt;messageLength&lt;/i&gt;.&#10;  In the default case of the &lt;i&gt;messageLength&lt;/i&gt; = 1, the behavior is similar to&#10;  the &lt;a href=&quot;../../../../ptolemy/domains/de/lib/Server.xml&quot;&gt;ptolemy.domains.de.lib.Server&lt;/a&gt; actor.&#10;  Tokens are processed in FIFO order.&#10;  &lt;p&gt;&#10;  To use this communication aspect, drag an instance of this Bus&#10;  into the model, and (optionally)&#10;  assign it a name. Then, on any input port whose communication is to be&#10;  mediated by this instance of Bus, open the configuration dialogue,&#10;  select the tab with the name of the bus in the title and select the&#10;  &lt;i&gt;enable&lt;/i&gt; attribute. The message length is by default set to 1&#10;  but can be configured in this tab.&#10;  &lt;p&gt;&#10;  Several Bus communication aspects can be used in sequence. The order in which&#10;  Tokens are sent through Buses depends on the order in which these are&#10;  enabled via the DecoratorAttributes.&#10;  &lt;p&gt;&#10;  This actor is tested in continuous and DE.  </description>
+  <author>Patricia Derler, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (derler)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port that provides the sample observations.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="priorEstimates">The vector estimate for the prior distribution on the set of&#10; states.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="transitionMatrix">The transition matrix estimate obtained by iterating over the&#10; observation set.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="serviceTimeMultiplicationFactor">The service time for the default messageLength of 1. This is a&#10;  double with default 0.1.  It is required to be positive.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="A0">The user-provided initial guess of the transition probability matrix.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="likelihoodThreshold">The user-provided threshold on the minimum desired improvement&#10; on likelihood per iteration.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maxIterations">The user-provided maximum number of allowed iterations of the&#10; Alpha-Beta Recursion.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="batchSize">The user-provided batch-size to be considered in the estimation.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="nStates">Number of states of the HMM.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="randomizeGuessVectors">Boolean that determines whether or not to randomize input&#10; guess vectors.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="priorDistribution">The user-provided initial guess on the prior probability&#10; distribution.</property>
+</doc>

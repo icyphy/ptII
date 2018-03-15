@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TopFactory" class="ptolemy.actor.gui.RunTableau.TopFactory">
+  <description>
+A factory that creates run control panel tableaux for the model&#10;  associated with a top-level effigy (one that has a file&#10;  representation).  </description>
+</doc>

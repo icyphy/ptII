@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GiottoCodeGenerator" class="ptolemy.domains.giotto.kernel.GiottoCodeGenerator">
+  <description>
+This attribute is a visible attribute that when configured (by double&#10; clicking on it or by invoking Configure in the context menu) it generates&#10; Giotto code and displays it a text editor.  It is up to the user to save&#10; the Giotto code in an appropriate file, if necessary.&#10;&#10; &lt;p&gt;The Giotto Code Generator has been changed from the earlier generator&#10; implemented by Haiyang and Steve in the following respect :-&#10;&#10; &lt;p&gt;Any and all unconnected ports are ignored. This includes :&#10; &lt;ol&gt;&#10; &lt;li&gt; Removal of its mention in the output drivers&#10; &lt;li&gt; Removal of its mention in task (...) output (...)&#10; &lt;li&gt; Removal of driver code for tasks without inputs&#10; &lt;/ol&gt;  </description>
+  <author>Edward A. Lee, Steve Neuendorffer, Haiyang Zheng, Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

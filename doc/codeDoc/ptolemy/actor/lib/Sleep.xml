@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Sleep" class="ptolemy.actor.lib.Sleep">
+  <description>
+&lt;p&gt;On each firing, read at most one token from each input channel, sleep&#10; by the specified amount of real time, and then produce the same input&#10; tokens on the respective output channels. This actor calls Thread.sleep()&#10; in the fire() method, so the thread that calls fire() will be suspended.&#10; If fire() is called multiple times in one iteration, sleep is only called&#10; the first time.&#10; If the width of the output port is less than that of the input port,&#10; the tokens in the extra channels are lost.&#10; &lt;/p&gt;&lt;p&gt;&#10; The effect of this actor is different in different domains.&#10; In domains where all actors are iterated from within a single director&#10; thread (like SDF and DE), then multiple instances of this actor will&#10; result in cumulative time delays. That is, the time taken by an iteration&#10; of the model will be greater than the sum of the sleep times of all the&#10; instances. In domains where actors execute in their own thread (like PN&#10; and CSP), only the execution of the individual actor is slowed.&#10; Note that another way to slow down the execution of a model while running&#10; inside vergil is to turn on animation.&lt;/p&gt;  </description>
+  <author>Jie Liu, Christopher Hylands, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh) Review _wasSleepCalledInFireYet, esp locking</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="sleepTime">The sleep time in milliseconds. This has type long and default&#10;  &quot;0L&quot;.</property>
+</doc>

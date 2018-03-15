@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Backoff" class="ptolemy.domains.wireless.lib.network.mac.Backoff">
+  <description>
+This actor does the back off after a frame transmission. It randomly&#10; choose a slot from the back off window and wait for that amount of&#10; time before trying to access the medium.  </description>
+  <author>Yang Zhao</author>
+  <version>Backoff.java,v 1.14 2004/04/22 19:46:18 ellen_zh Exp</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (ellen_zh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="fromDataPump">The input port for channel status message.&#10;  This has undeclared type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="getBackoff">The input port for backoff message from the Protocol control block.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="BKDone">The output port that produces messages that&#10;  indicate the backoff is done.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="seed">The seed that controls the random number generation.&#10;  A seed of zero is interpreted to mean that no seed is specified,&#10;  which means that each execution of the model could result in&#10;  distinct data. For the value 0, the seed is set to&#10;  System.currentTimeMillis() + hashCode(), which means that&#10;  with extremely high probability, two distinct actors will have&#10;  distinct seeds.  However, current time may not have enough&#10;  resolution to ensure that two subsequent executions of the&#10;  same model have distinct seeds.&#10;&#10;  This parameter contains a LongToken, initially with value 0.</property>
+</doc>

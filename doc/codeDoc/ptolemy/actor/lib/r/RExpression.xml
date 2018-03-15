@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RExpression" class="ptolemy.actor.lib.r.RExpression">
+  <description>
+The RExpression actor is an actor designed to run an R script or function&#10; with inputs and outputs determined by the ports created by the user. Port&#10; names will correspond to R object names. The RExpression actor is modeled&#10; after the Ptolemy expression actor, except that that instead of using a&#10; single mathematical expression in Ptolemy's expression language, it uses a&#10; set of the more powerful, higher order expressions available under R. Both&#10; input and output port will usually be added to the actor; The names of these&#10; ports correspond to R variables used in the R script.  </description>
+  <author>Dan Higgins, NCEAS, UC Santa Barbara</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="graphicsFileName">The name of the default graphics output file created by the actor.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="save_nosave">This setting determines whether or not to save the R workspace when R is&#10; closed; set to '--save' if you need to retreive the workspace later in a&#10; workflow in another RExpression actor.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="Rcwd">The 'R' working directory (home dir by default).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="displayGraphicsOutput">If &lt;i&gt;true&lt;/i&gt;, then display plot. If &lt;i&gt;false&lt;/i&gt;, then don't. (the&#10; default).</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="graphicsFormat">The graphics output format. Currently the format is either a *.pdf or a&#10; *.png</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="graphicsOutput">If &lt;i&gt;true&lt;/i&gt;, then create a graphics output port. (the default); If&#10; &lt;i&gt;false&lt;/i&gt;, then don't.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="numXPixels">The width of the output graphics bitmap in pixels.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="numYPixels">The height of the output graphics bitmap in pixels.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="expression">The expression that is evaluated to produce the output.</property>
+</doc>

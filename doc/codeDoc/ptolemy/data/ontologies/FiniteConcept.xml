@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FiniteConcept" class="ptolemy.data.ontologies.FiniteConcept">
+  <description>
+A concept in a finite ontology.&#10;  The fact that this concept is part of a finite ontology allows&#10;  us to do things like draw it in a GUI, do graph traversal algorithms&#10;  with a (finite) adjacency matrix, and other similar useful conveniences.  </description>
+  <author>Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (blickly)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (blickly)</Pt.AcceptedRating>
+</doc>

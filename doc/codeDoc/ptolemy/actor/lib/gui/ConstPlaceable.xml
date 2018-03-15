@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ConstPlaceable" class="ptolemy.actor.lib.gui.ConstPlaceable">
+  <description>
+Produce a constant output from an actor that is placeable in a GUI.&#10;&#10; &lt;p&gt;The value of the&#10; output is that of the token contained by the &lt;i&gt;value&lt;/i&gt; parameter,&#10; which by default is an IntToken with value 1. The type of the output&#10; is that of &lt;i&gt;value&lt;/i&gt; parameter.&#10; &lt;p&gt;&#10; If the trigger port is connected, then this actor fires only if a token is&#10; provided on any channel of the trigger port. The value of that token&#10; does not matter. Specifically, if there is no such token, the prefire()&#10; method returns false.&lt;/p&gt;  </description>
+  <author>Yuhong Xiong, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+</doc>

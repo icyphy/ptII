@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PreinitializeMustBeInvoked" class="ptolemy.actor.lib.hoc.test.PreinitializeMustBeInvoked">
+  <description>
+Preinitialize() must be invoked after wrapup.&#10;&#10; &lt;p&gt;Test for problems similar to what we see in Matlab Engine, where wrapup()&#10; closes the connection.  If this actor is used in a RunComposite, preinitialize()&#10; must be called before the other action methods.&lt;/p&gt;&#10;&#10; &lt;p&gt;See ptolemy/matlab/test/MatlabRunComposite.xml.&lt;/p&gt;  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

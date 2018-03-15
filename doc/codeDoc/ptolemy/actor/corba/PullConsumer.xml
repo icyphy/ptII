@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PullConsumer" class="ptolemy.actor.corba.PullConsumer">
+  <description>
+An actor that sends pull request to a remote publisher and asks for data.&#10;&#10; Specify the ORB initial property with the&lt;i&gt;ORBInitProperties&lt;/i&gt;&#10; paremerter, for example:&#10; &quot;-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050&quot;&#10; where &quot;xyz.eecs.berkeley.edu&quot; is the machine runing name server, and&#10; &quot;1050&quot; is the port for name service.&#10;&#10; Specify the name of the supplier with &lt;i&gt;remoteSupplierName&lt;/i&gt;, which is&#10; the supplier it wants to request data from.&#10;&#10; If the &lt;i&gt;blocking&lt;/i&gt; parameter is true, then wait until there is&#10; token received, otherwise, send a default value specified by the&#10; &lt;i&gt;defaultToken&lt;/i&gt; parameter. Notice that the type of the output port&#10; is determined by the type of this parameter.  </description>
+  <author>Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="ORBInitProperties"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="remoteSupplierName">The name of the remote supplier. The type of the Parameter&#10;  is StringToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blocking">Indicate whether the actor blocks when it haven't receive&#10;  data. The default value is false of&#10;  type BooleanToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="defaultToken">The default token. If the actor is nonblocking&#10;  and there is no new token received after the last fire()&#10;  method call, then this&#10;  token will be output when the fire() method is called.&#10;  The default value is 0.0. And the default type is&#10;  double. Notice that the type of the output port&#10;  is determined by the type of this parameter.</property>
+</doc>

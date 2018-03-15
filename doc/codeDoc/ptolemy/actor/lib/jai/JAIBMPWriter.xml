@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
+  <description>
+Write a javax.media.jai.RenderedOp to a specified BMP file.&#10;&#10; &lt;p&gt;The file is specified by the &lt;i&gt;fileName&lt;/i&gt; attribute&#10; using any form acceptable to FileParameter.&#10;&#10; &lt;p&gt;If the &lt;i&gt;storeTopDown&lt;/i&gt; parameter has value true, then the data&#10; will be stored from the top on down.  Usually, bitmap files are stored&#10; from the bottom on up.&#10;&#10; &lt;p&gt;If the &lt;i&gt;confirmOverwrite&lt;/i&gt; parameter has value &lt;i&gt;false&lt;/i&gt;,&#10; then this actor will overwrite the specified file if it exists&#10; without asking.  If &lt;i&gt;true&lt;/i&gt; (the default), then if the file&#10; exists, then this actor will ask for confirmation before overwriting.  </description>
+  <author>James Yeh, Christopher Hylands Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="storeTopDown">If &lt;i&gt;true&lt;/i&gt;, then write the data in top to bottom order.&#10;  If &lt;i&gt;false&lt;/i&gt; (the default), then write the data in bottom&#10;  to top order.</property>
+</doc>

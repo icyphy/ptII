@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="EventButton" class="ptolemy.domains.de.lib.EventButton">
+  <description>
+Output a Token in response to a click of a button. This class is closely&#10; related to the ButtonTime class in SR domain by Paul Whitaker.  </description>
+  <author>Winthrop Williams</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (winthrop)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (winthrop)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="text">The text to put on the button.</property>
+</doc>

@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ConceptRelation" class="ptolemy.data.ontologies.ConceptRelation">
+  <description>
+A relation between concepts in an ontology.&#10;&#10; This class is really only used to connect the FiniteConcepts in the Ontology&#10; class, which corresponds to the relations that a user draws in the Ontology&#10; Editor in Vergil.  This information is also then used to generate the&#10; ordering relations when a ConceptGraph is created.  </description>
+  <author>Edward A. Lee, Ben Lickly</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="annotation">An annotation that describes the transition. If this is non-empty,&#10;  then a visual editor will be expected to put this annotation on&#10;  or near the transition to document its function. This is a string&#10;  that defaults to the empty string. Note that it can reference&#10;  variables in scope using the notation $name.</property>
+    <!--ptolemy.actor.gui.ColorAttribute-->
+    <property name="color">Color in which to render this transition.&#10;  The default color is black.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="dashed">Indicator that this transition should be rendered as a dashed line.&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="exitAngle">Attribute the exit angle of a visual rendition.&#10;  This parameter contains a DoubleToken, initially with value 0.0.&#10;  It must lie between -PI and PI.  Otherwise, it will be truncated&#10;  to lie within this range.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="gamma">Attribute giving the orientation of a self-loop. This is equal to&#10; the tangent at the midpoint (more or less).&#10;  This parameter contains a DoubleToken, initially with value 0.0.</property>
+</doc>

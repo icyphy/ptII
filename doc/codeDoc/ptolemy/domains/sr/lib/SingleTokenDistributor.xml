@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
+  <description>
+A distributor that splits an input stream into a set of output&#10; streams. The distributor has an input port and an output port, the&#10; latter of which is a multiport.  The types of the ports are undeclared&#10; and will be resolved by the type resolution mechanism, with the&#10; constraint that the output type must be greater than or equal to the&#10; input type. On each call to the fire method, the actor reads at most&#10; one token from the input, and writes one token to an output channel.&#10; If there is no token on the input, then it will not produce a token on&#10; the current output.  In the next iteration of this actor, it will&#10; produce an output on the next channel.  </description>
+  <author>Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+</doc>

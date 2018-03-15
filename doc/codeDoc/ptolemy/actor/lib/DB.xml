@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DB" class="ptolemy.actor.lib.DB">
+  <description>
+Produce a token that is the value of the input in decibels.&#10; That is, if the input is &lt;i&gt;z&lt;/i&gt;, then the output is&#10; &lt;i&gt;k&lt;/i&gt;*log&lt;sub&gt;10&lt;/sub&gt;(&lt;em&gt;z&lt;/em&gt;).&#10; The constant &lt;i&gt;k&lt;/i&gt; depends on the value of the &lt;i&gt;inputIsPower&lt;/i&gt;&#10; parameter.  If that parameter is true, then &lt;i&gt;k&lt;/i&gt; = 10.&#10; Otherwise (the default) &lt;i&gt;k&lt;/i&gt; = 20.&#10; Normally, you would set &lt;i&gt;inputIsPower&lt;/i&gt; to true if&#10; the input is the square of a signal, and to false otherwise.&#10; &lt;p&gt;&#10; The output is never smaller than the value of the &lt;i&gt;min&lt;/i&gt; parameter.&#10; This makes it easier to plot by limiting the range of output values.&#10; If the input is zero or negative, then the output is the&#10; value of the &lt;i&gt;min&lt;/i&gt; parameter.&#10; &lt;p&gt;&#10; The input and output both have type double.  </description>
+  <author>Bart Kienhuis and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (ssachs)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="inputIsPower">If the input is proportional to power, then set this to true.&#10;  This must be a boolean, and defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="min">The minimum value of the output.  This is a double,&#10;  and defaults to -100.0.</property>
+</doc>

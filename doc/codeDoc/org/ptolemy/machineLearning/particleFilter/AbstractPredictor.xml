@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AbstractPredictor" class="org.ptolemy.machineLearning.particleFilter.AbstractPredictor">
+  <description>
+Abstract Predictor Base Class.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ilgea)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="particleInput"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="particleOutput">The output port that outputs the produced particles at each firing.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="stateEstimate">State estimate output. A record token with one field per state variable</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="bootstrap">A boolean parameter that when set to true, implements the so-called&#10; bootstrap particle filter, where particles are resampled at each time step&#10; If this parameter is false, particles are resampled only when the effective&#10; sample size drops below 50% of the total number of particles</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="lowVarianceSampler">Low-variance resampler</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="predictionStep"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="t">The value of current time. This parameter is not visible in&#10;  the expression screen except in expert mode. Its value initially&#10;  is just 0.0, a double, but upon each firing, it is given a&#10;  value equal to the current time as reported by the director.</property>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="resetOnEachRun">Boolean parameter to determine whether seeds are reset on each run.</property>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="seed">The seed to be used for random token generation, to evaluate&#10; probabilistic transitions between states.</property>
+</doc>

@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SignatureActor" class="ptolemy.actor.lib.security.SignatureActor">
+  <description>
+A common base class for actors that use cryptographic signatures.&#10;&#10; &lt;p&gt;In cryptography, digital signatures can be used to verify that the&#10; data was not modified in transit.  However, the data itself is passed&#10; in clear text.&#10;&#10; &lt;p&gt;The signature algorithms that maybe implemented are limited to the&#10; signature algorithms that are implemented by providers following the&#10; JCE specifications and installed on the machine being run. In case a&#10; provider specific instance of an algorithm is needed, the provider may&#10; also be specified in the &lt;i&gt;provider&lt;/i&gt; parameter.&#10;&#10; &lt;p&gt;The input and output are both arrays of unsigned bytes.&#10;&#10; &lt;p&gt;In initialize(), this actor sets the value of the _signature member&#10; to the results of calling java.security.Signature.getInstance() with&#10; the values of the &lt;i&gt;signatureAlgorithm&lt;/i&gt; and &lt;i&gt;provider&lt;/i&gt;&#10; parameters.  Derived classes should have a fire() method that uses the&#10; _signature member to process data appropriately.&#10; In the fire() method of the derived class, super.fire() should be&#10; called before accessing _signature so that _signature may be updated if the&#10; attributes changed.&#10;&#10; &lt;p&gt;This actor relies on the Java Cryptography Architecture (JCA) and Java&#10; Cryptography Extension (JCE).  See the&#10; &lt;a href=&quot;../../../../ptolemy/actor/lib/security/CryptographyActor.xml&quot;&gt;ptolemy.actor.lib.security.CryptographyActor&lt;/a&gt; documentation for&#10; resources about JCA and JCE.  </description>
+  <author>Christopher Hylands Brooks, Contributor: Rakesh Reddy</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">This port takes in an unsigned byte array and processes the data.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">This port sends out the processed data received from &lt;i&gt;input&lt;/i&gt; in&#10;  the form of an unsigned byte array.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="provider">Specify a provider for the given algorithm.  Takes the algorithm name&#10;  as a string. The default value is &quot;SystemDefault&quot; which allows the&#10;  system chooses the provider based on the JCE architecture.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="signatureAlgorithm">Specify the algorithm to be used to sign data.  The algorithm is&#10;  specified as a string. The algorithms are limited to those&#10;  implemented by providers using the Java JCE which are found on the&#10;  system.&#10;  Depending on your JDK installation, possible values might&#10;  be SHA1WITHDSA or MD5WITHRSA.&#10;  The initial default is the first value returned by&#10;  java.security.Security.getAlgorithms(&quot;Signature&quot;).</property>
+</doc>

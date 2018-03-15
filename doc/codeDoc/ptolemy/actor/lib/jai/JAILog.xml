@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAILog" class="ptolemy.actor.lib.jai.JAILog">
+  <description>
+Output the logarithm of an image.  This actor can be used to reduce the&#10; dynamic range of an image.  For instance, the magnitude of a dft can&#10; have a large dynamic range not suitable for display.  Taking the&#10; logarithm of this image and then casting it using &lt;a href=&quot;../../../../ptolemy/actor/lib/jai/JAIDataConvert.xml&quot;&gt;ptolemy.actor.lib.jai.JAIDataConvert&lt;/a&gt; could&#10; produce a better image for displaying.&#10;&#10; &lt;p&gt; For integral image data types, the result is rounded and clamped.  For&#10; all integral image data types, the log of 0 is 0.  For signed image&#10; data types (shorts and ints), the log of a negative pixel is -1.  For&#10; floats and doubles, the log of 0 is set to -Infinity, and the log of a&#10; negative pixel is NaN.&#10;&#10; &lt;p&gt; The output of this actor may not be suitable for display because of the&#10; high resolution of the data.  To display or save the output of this&#10; image, use the &lt;a href=&quot;../../../../ptolemy/actor/lib/jai/JAIDataConvert.xml&quot;&gt;ptolemy.actor.lib.jai.JAIDataConvert&lt;/a&gt; actor to cast the data to an appropriate&#10; type (for instance, byte).  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

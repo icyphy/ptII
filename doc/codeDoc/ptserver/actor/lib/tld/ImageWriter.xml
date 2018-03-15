@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ImageWriter" class="ptserver.actor.lib.tld.ImageWriter">
+  <description>
+ImageWriter accepts ByteArrayTokens from its input stream, writes&#10; them as a temp file and passes absolute path to the file via its output to Matlab.  </description>
+  <author>Anar Huseynov</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ahuseyno)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ahuseyno)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port accepting byte array tokens.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port outputting absolute path to a temp file.</port>
+</doc>

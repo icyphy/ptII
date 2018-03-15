@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="IntRangeParameter" class="ptolemy.actor.parameters.IntRangeParameter">
+  <description>
+&lt;p&gt;This is a parameter with type integer with a limited range.&#10; Its value is an integer token that is constrained to lie&#10; within the boundaries specified by its two parameters,&#10; &lt;i&gt;min&lt;/i&gt; and &lt;i&gt;max&lt;/i&gt;.  These specify the minimum and maximum values.&#10; A user interface will typically use this&#10; information to represent the parameter value using a slider&#10; which can be decorated by labels indicating the minimum and&#10; maximum values. The actual text displayed by the labels can&#10; be set using the &lt;i&gt;minLabel&lt;/i&gt; and &lt;i&gt;maxLabel&lt;/i&gt; parameters&#10; which default to showing the actual minimum and maximum int value.&#10; The default values for &lt;i&gt;min&lt;/i&gt; and &lt;i&gt;max&lt;/i&gt; are 0 and 100,&#10; respectively, and the default value for this parameter is 50.&#10; &lt;/p&gt;  </description>
+  <author>Edward A. Lee, Christoph Daniel Schulze</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="max">The maximum value. This is has an integer value, and defaults to 100.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="min">The minimum value. This is has an integer value, and defaults to 0.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="maxLabel">The label text displayed for the maximum end of the slider. This is a String,&#10;  and defaults to $max, which is expanded to the value of the max&#10;  parameter in the user interface.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="minLabel">The label text displayed for the minimum end of the slider. This is a String,&#10;  and defaults to $min, which is expanded to the value of the min&#10;  parameter in the user interface.</property>
+</doc>

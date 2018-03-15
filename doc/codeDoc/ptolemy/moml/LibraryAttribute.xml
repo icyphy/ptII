@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LibraryAttribute" class="ptolemy.moml.LibraryAttribute">
+  <description>
+This class is a configurable singleton attribute that associates a&#10; component library with a model.  By convention, it is typically named&#10; &quot;_library&quot;.  A visual editor that opens a model containing this attribute&#10; will offer the contents of its library as the component library for editing&#10; the model.  &quot;Singleton&quot; means that if this attribute is placed in a model,&#10; it will replace any previous singleton attribute that has the same name.&#10; &quot;Configurable&quot; means that the contents of the library can be set in&#10; a configure element in MoML, or via the configure() method.&#10; The library can also be set by calling setLibrary(); this will override&#10; any library specified by configure.&#10; &lt;p&gt;&#10; When creating a library to associate with this attribute, the&#10; library should be created in the same workspace as this attribute&#10; (as returned by the workspace() method).  Normally, it will have no&#10; container.  The text specified in the configure element (or a call&#10; to the configure() method) is not parsed until the getLibrary()&#10; method is called.  Thus, the overhead of creating the library is&#10; avoided if the library is not used.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (janneck)</Pt.AcceptedRating>
+</doc>

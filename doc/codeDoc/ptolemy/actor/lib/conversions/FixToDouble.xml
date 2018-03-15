@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
+  <description>
+This actor converts a FixToken into a DoubleToken. This conversion is&#10; explicitly provided because there is no lossless conversion&#10; between these two types in the type lattice, and thus the type system&#10; does not do this conversion automatically.  Although the conversion&#10; might be lossless, a FixToken can, in principle, have&#10; arbitrary precision, and thus can exceed the capabilities of a double.  </description>
+  <author>Bart Kienhuis and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Green (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (pwhitake)</Pt.AcceptedRating>
+</doc>

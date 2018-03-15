@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ProceduralCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator">
+  <description>
+Base class for Procedural code generator.  </description>
+  <author>Bert Rodiers</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>red (rodiers)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (rodiers)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="compile">If true, then compile the generated code. The default&#10;  value is a parameter with the value true.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="compileCommand">The command to use to compile the generated code if the&#10;  &lt;i&gt;useMake&lt;/i&gt; parameter is false.  The initial default value&#10;  is &quot;make -f @modelName@.mk&quot;.  Various '@' delimited&#10;  key/value pairs will be automatically substituted.  In the&#10;  default case @modelName@ will be replaced with a sanitized&#10;  (Java-safe) version of the model name.&#10;&#10;  &lt;p&gt;If the string &quot;@help:all@&quot; appears, then all the key/value&#10;  pairs are echoed at run time, though this may not result in a&#10;  syntactically correct command.&lt;/p&gt;&#10;&#10;  &lt;p&gt;If &lt;i&gt;useMake&lt;/i&gt; is true, then the value of this parameter&#10;  is ignored.&lt;/p&gt;</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="generateEmbeddedCode">If true, then generate code for that uses the reflection for Java&#10;  and JNI for C and is embedded within the model&#10;  The default value is false and this parameter is not usually&#10;  editable by the user.  This parameter is set to true when&#10;  CompiledCompositeActor is run in an interpreted Ptolemy model.&#10;  This parameter&#10;  is set to false when a model contains one or more&#10;  CompiledCompositeActors and C or Java code is being generated for the&#10;  model.</property>
+</doc>

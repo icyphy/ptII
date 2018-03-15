@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DocBuilder" class="ptolemy.vergil.actor.DocBuilder">
+  <description>
+Build Documentation for Java and Actors.&#10;&#10;  &lt;p&gt;This class sets the commands that build the Java classes.  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="cleanFirst">If true, then clean before building documentation.  The default&#10;  value is true because if a user is adding an actor, then the&#10;  codeDoc/tree.html, codeDoc/ptolemy/actor/lib/Ramp.xml,&#10;  and codeDoc/ptolemy/actor/lib/RampIdx.xml files might already&#10;  exist.  It is safer to force a clean each time because the&#10;  makefile does not accurately capture the dependencies between&#10;  .java sources and .html, .xml and Idx.xml files.</property>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HSMMGeneratorMultinomialEmissions" class="org.ptolemy.machineLearning.hsmm.HSMMGeneratorMultinomialEmissions">
+  <description>
+&lt;p&gt; This actor generates observation traces from an Explicit-Duration&#10;Hidden-Markov Model (EDHMM) with multinomial emissions and multinomial&#10;duration distributions.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="nCategories">Number of categories in the multinomial distribution.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="powerLowerBound">A power lower bound on the generated trace, which applies to the entire generation window.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="multinomialEstimates">A matrix that has a row for each state and a column for each category&#10; in the learned multinomial distribution. if the observations are multidimensional,&#10; the categories for each dimension are concatenated into a single vector.</property>
+</doc>

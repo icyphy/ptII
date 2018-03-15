@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TimedMonitorValue" class="ptolemy.actor.lib.gui.TimedMonitorValue">
+  <description>
+Monitor inputs by setting the &lt;i&gt;value&lt;/i&gt; parameter equal&#10; to each arriving token.  This actor can be used with&#10; an icon that displays the value of a parameter to get&#10; on-screen display of values in a diagram. The value is&#10; updated only in postfire.&#10;&#10; &lt;p&gt;Note that the icon for this actor is defined in&#10; &lt;code&gt;ptolemy/actor/lib/timedsinks.xml&lt;/code&gt;, which looks something&#10; like&#10; &lt;pre&gt;&#10;&amp;lt;entity name=&quot;TimedMonitorValue&quot; class=&quot;ptolemy.actor.lib.TimedMonitorValue&quot;&amp;gt;&#10;&amp;lt;doc&amp;gt;Monitor and display values&amp;lt;/doc&amp;gt;&#10;   &amp;lt;property name=&quot;displayWidth&quot; class=&quot;ptolemy.data.expr.Parameter&quot; value=&quot;20&quot;/&amp;gt;&#10;   &amp;lt;property name=&quot;_icon&quot; class=&quot;ptolemy.vergil.icon.UpdatedValueIcon&quot;&amp;gt;&#10;      &amp;lt;property name=&quot;attributeName&quot; value=&quot;value&quot;/&amp;gt;&#10;      &amp;lt;property name=&quot;displayWidth&quot; value=&quot;displayWidth&quot;/&amp;gt;&#10;   &amp;lt;/property&amp;gt;&#10;&amp;lt;/entity&amp;gt;&#10; &lt;/pre&gt;  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

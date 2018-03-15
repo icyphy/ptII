@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LiveLink" class="ptolemy.actor.gui.LiveLink">
+  <description>
+An attribute that provides a link to a specified URL.&#10; This can be contained by any Ptolemy II object, and when a&#10; user double clicks on the icon for that object, the result is to open&#10; the specified URL. To set the URL, you either Alt-double click&#10; on the container, right click on an icon&#10; for this parameter and select Configure,&#10; or right click on the container and select Configure.&#10; &lt;p&gt;&#10; A common way to use this attribute is to put&#10; a text annotation in a model with text something like&#10; &quot;See also Foo&quot;, where &quot;Foo&quot; is the name of another&#10; related model. Drag an instance of this LiveLink attribute&#10; onto the text annotation. Alt double click (or right click&#10; and select Configure) on the text&#10; annotation to set the file name for the model Foo to&#10; link to a file or a URL to link to a web page.&#10; The file name can be relative to the location of&#10; the model containing the annotation. It can also&#10; have any of the forms supported by&#10; &lt;a href=&quot;../../../ptolemy/data/expr/FileParameter.xml&quot;&gt;ptolemy.data.expr.FileParameter&lt;/a&gt;. For example, a file name&#10; can begin with $PTII, indicating that the file&#10; is in the Ptolemy II installation tree.&#10; &lt;p&gt;&#10; The default URL is &quot;http://ptolemy.org#in_browser&quot;, which is&#10; the home page of the Ptolemy Project with an additional&#10; annotation indicating that the page should be opened&#10; in a browser. The suffix &quot;#in_browser&quot; will always&#10; be interpreted this way. Without this suffix, Vergil&#10; will be used to open the URL. Note that Vergil's HTML&#10; viewer does not handle many modern pages well.&#10;&#10; &lt;p&gt; See also ptolemy.vergil.basic.export.web.IconLink.&lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

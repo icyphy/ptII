@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CIActor" class="ptolemy.domains.ci.kernel.CIActor">
+  <description>
+A base class for actors specific to the CI domain. This class extends&#10; Transformer and provides two methods: enableActor() and isPulled(), for&#10; its subclasses (in a different package) to access the related protected&#10; methods in the CIDirector.  </description>
+  <author>Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+</doc>

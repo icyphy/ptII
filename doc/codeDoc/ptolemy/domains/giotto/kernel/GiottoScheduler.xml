@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GiottoScheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+  <description>
+This class generates schedules for the actors in a CompositeActor&#10; according to the Giotto semantics.&#10; &lt;p&gt;&#10; A schedule is represented by a list. Consider the following CompositeActor:&#10; &lt;pre&gt;&#10; +-----------------------+&#10; |           A           |&#10; +-----------------------+&#10; +-----------------------+&#10; |           B           |&#10; +-----------------------+&#10; +---------+   +---------+&#10; |    C    |   |    C    |&#10; +---------+   +---------+&#10; &lt;/pre&gt;&#10; There are three actors A, B, and C, where C runs twice as often as A and B.&#10; The list representing the schedule for this CompositeActor looks as follows:&#10; &lt;pre&gt;&#10; +-------+                         +-------+&#10; | | | ---------------------------&amp;gt;| | |nil|&#10; +-|-----+                         +-|-----+&#10; |                                 |&#10; V                                 V&#10; +-------+  +-------+  +-------+   +-------+&#10; | | | ----&amp;gt;| | | ----&amp;gt;| | |nil|   | | |nil|&#10; +-|-----+  +-|-----+  +-|-----+   +-|-----+&#10; |          |          |           |&#10; V          V          V           V&#10; +---+      +---+      +---+       +---+&#10; | A |      | B |      | c |       | c |&#10; +---+      +---+      +---+       +---+&#10;&#10; &lt;/pre&gt;  </description>
+  <author>Christoph Kirsch, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (cm)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+</doc>

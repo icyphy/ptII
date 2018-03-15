@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayContains" class="ptolemy.actor.lib.ArrayContains">
+  <description>
+Determine whether an element is contained in an array.&#10; This actor reads an array from the &lt;i&gt;array&lt;/i&gt;&#10; input port and an element from the &lt;i&gt;element&lt;/i&gt;&#10; port parameter and outputs true if the element is contained by&#10; the array.  </description>
+  <author>Efrat Jaeger and Edward A. Lee</author>
+  <version>$Id$</version>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="array">Input array. The type of this port is at least an array&#10;  of the type of the &lt;i&gt;element&lt;/i&gt; port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Boolean output specifying whether the element is contained in&#10;         the array.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="element">The element to test for presence in the array.</property>
+</doc>

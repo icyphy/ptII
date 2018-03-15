@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
+  <description>
+Extract the minimum element from an array.  This actor reads an array&#10; from the &lt;i&gt;input&lt;/i&gt; port and sends the smallest of its elements to the&#10; &lt;i&gt;output&lt;/i&gt; port.  The index of the smallest element (closest to minus&#10; infinity) is sent to the &lt;i&gt;index&lt;/i&gt; output port. If there is more than&#10; one entry in the array with the minimum value, then the index of the&#10; first such entry is what is produced.  </description>
+  <author>Mark Oliver and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0.2</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="index">The port producing the index of the largest element.&#10;  This is port has type int.</port>
+</doc>

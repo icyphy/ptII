@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AFTEDiscriminant" class="org.ptolemy.machineLearning.lib.AFTEDiscriminant">
+  <description>
+This actor calculates the Auditory Filterbank Temporal Envelope (AFTE)&#10; features of a given audio signal.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating></Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="centerFrequencies">The array of filterbank center frequencies.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="outputFeatureIndices">FFT Feature indices to be output.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="normalize">Boolean option to specify whether the output feature array should be normalized to have an L-2 norm of 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="normalizeByDc">Boolean option to specify whether the selected output features should be normalized by the DC term. If set&#10; to true together with normalize, this option is applied first.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useEnergyBands">The output features become log-sum of energies within certain FFT bands. Currently, the bin width is set t&#10; 4 FFT samples per bin, and the FFT length is set to 64. Only computed for the nonnegative frequencies and DC term&#10; is output as a separate feature. In the current setting, 9 features per channel is output.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fs">Input sampling frequency.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fmodspec">Mod spec sampling frequency.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="windowSize">Transfer size.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="nOverlap">Number of samples of overlap between adjoining sections.</property>
+</doc>

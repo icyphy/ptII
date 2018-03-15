@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NonStrictFSMDirector" class="ptolemy.domains.modal.kernel.NonStrictFSMDirector">
+  <description>
+This director extends FSMDirector by consuming only input tokens that&#10; are needed in the current state. An input port will consume at most one&#10; token if:&#10; &lt;p&gt;&#10; 1. The port is referred by any guard expression of the preemptive&#10; transitions leaving the current state, the output actions&#10; and/or set actions of the enabled transition.&#10; &lt;p&gt;&#10; 2. No preemptive transition is enabled and the port is referred by&#10; the refinements of the current state, any guard expression of the&#10; nonpreemptive transitions leaving the current state, the output&#10; actions and/or set actions of the enabled transition.&#10; &lt;p&gt;&#10; A port is said to be referred by a guard/output action/set action&#10; expression of a transition if the port name appears in that expression.&#10; A port is said to be referred by a state refinement if the it is&#10; not a dangling port and has a consumption rate greater than zero in&#10; the refinement.&#10; &lt;p&gt;&#10; FIXME: This is highly preliminary. Missing capabilities:&#10; FIXME: Currently this director uses the default receiver of FSMDirector,&#10; which is a mailbox, so there is no way to consume more than one token.&#10; This director could use a different receiver and support a syntax in&#10; the guard expression language to support consumption of more than one&#10; token.&#10; FIXME: This director does not support immediate transitions.  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

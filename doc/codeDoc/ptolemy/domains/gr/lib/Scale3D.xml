@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
+  <description>
+Conceptually, this actor takes 3D geometry in its input and&#10; produces a scaled version in its output. In reality, this actor&#10; encapsulates a Java3D TransformGroup which is converted into a node in&#10; the resulting Java3D scene graph. This actor will only have meaning in&#10; the GR domain. Scaling can be done uniformly or non-uniformly.&#10; Uniform scaling scales the input geometry equally in all&#10; directions. Uniform scaling is done through modification of the&#10; &lt;i&gt;scaleFactor&lt;/i&gt; parameter. Non-uniform scaling involves&#10; preferential scaling of the input geometry in a specified Cartesian&#10; axis.  Non-uniform scaling is done through modification of the&#10; &lt;i&gt;xScale&lt;/i&gt;, &lt;i&gt;yScale&lt;/i&gt;, and &lt;i&gt;zScale&lt;/i&gt; parameters.  </description>
+  <author>C. Fong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (chf)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chf)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="scaleInput">The amount of rescaling during firing. If this transform is in&#10;  accumulate mode, the scaling value is accumulated</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="scaleFactor">The scale factor.&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is the DoubleToken 1.0</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xScale">The scale factor in the Cartesian x-axis.&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is the DoubleToken 1.0</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yScale">The scale factor in the Cartesian y-axis.&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is the DoubleToken 1.0</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="zScale">The scale factor in the Cartesian z-axis.&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is the DoubleToken 1.0</property>
+</doc>

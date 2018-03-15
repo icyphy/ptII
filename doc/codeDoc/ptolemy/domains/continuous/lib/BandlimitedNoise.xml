@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="BandlimitedNoise" class="ptolemy.domains.continuous.lib.BandlimitedNoise">
+  <description>
+This actor generates continuous-time noise with a Gaussian distribution&#10;and controlled bandwidth. The power spectrum of the noise produced&#10;is given by&#10;&lt;pre&gt;&#10;  S(f) = T s^2 sinc^4(pi f T)&#10;&lt;/pre&gt;&#10;where f is frequency, s is the standard deviation,&#10;and the sinc function is given by&#10;&lt;pre&gt;&#10;  sinc(a) = sin(a)/a&#10;&lt;/pre&gt;&#10;Here, T = 1/b, where b is the value of the &lt;i&gt;bandwidth&lt;/i&gt; parameter.&#10;Notice that the power declines as the fourth power&#10;of one over the frequency. The &lt;i&gt;bandwidth&lt;/i&gt; parameter specifies&#10;the frequency (in Hertz) at which the first zero occurs, or,&#10;equivalently, roughly the width of the main lobe.&#10;&lt;p&gt;&#10;This actor may affect the step size taken by the solver. Specifically,&#10;it ensures that the solver provides executions at least as frequently&#10;as twice the specified bandwidth. This is nominally the Nyquist frequency&#10;of an ideally bandlimited noise frequency, but since this noise process&#10;is not ideally bandlimited, the solver samples will typically have&#10;aliasing distortion. If you need to control that aliasing distortion,&#10;then you can set the &lt;i&gt;maxStepSize&lt;/i&gt; parameter to something smaller&#10;than 1/2b, where b is the &lt;i&gt;bandwidth&lt;/i&gt;.&#10;&lt;p&gt;&#10;For some uses, the effect that this actor has on the step size may&#10;be undesirable because it increases the cost of simulation.&#10;If a less rigorous form of noise is desired (for rough models or&#10;simple demonstrations), you can use the &lt;a href=&quot;../../../../ptolemy/domains/continuous/lib/Noise.xml&quot;&gt;ptolemy.domains.continuous.lib.Noise&lt;/a&gt; actor.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="bandwidth">The bandwidth of the noise random process in Hertz.&#10;  The bandwidth is the frequency where the power spectral&#10;  density first hits zero. This is a double that defaults to&#10;  10.0 Hertz.</property>
+</doc>

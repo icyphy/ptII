@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
+  <description>
+Pattern match a string to a regular expression and output a true if it&#10; matches and a false if it does not. For a reference on regular&#10; expression syntax see:&#10; &lt;a href=&quot;http://download.oracle.com/javase/tutorial/essential/regex/#in_browser&quot;&gt;&#10; http://download.oracle.com/javase/tutorial/essential/regex/&lt;/a&gt;.  </description>
+  <author>Antonio Yordan-Nones, Colin Cochran, Contributor: Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (djstone)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output is true if the pattern exists in the string, false otherwise.&#10;  Its type is boolean.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="matchString">The string to be pattern matched to the regular expression.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="pattern">The regular expression to be pattern matched with the&#10;  matchString string.&#10;  Its default parameter is an empty string that matches no strings.</property>
+</doc>

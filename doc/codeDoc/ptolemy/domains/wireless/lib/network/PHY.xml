@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PHY" class="ptolemy.domains.wireless.lib.network.PHY">
+  <description>
+The PHY class implements a physical layer which does the following:&#10; 1) collision detection;&#10; 2) carrier sense;&#10; 3) send TxStartConfirm to the MAC when TxStart is received; send TxEnd to&#10; the MAC when transmission is completed; send RxStart to the MAC when&#10; reception starts; send RxData and RxEnd to the MAC when reception ends.&#10;&#10; Things that can be added:&#10; 1) not send channel status in the transmit state;&#10; 2) The first received signal is above the sensitivity, so the PHY decides&#10; to receive it. If the second signal is much stronger, the PHY can&#10; abort the reception of the 1st one and receive the 2nd one instead.  </description>
+  <author>Charlie Zhong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (czhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="fromMAC">Port receiving messages from the MAC</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="fromChannel">Port receiving messages from the channel</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="toMAC">Port sending messages to the MAC</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="channelStatus">Port sending channel status to the MAC</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="PHYConfirm">Port sending transmit confirmation to the MAC</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="toChannel">Port sending messages to the channel</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="aPreambleLength">The size of the Preamble header in a frame. The Preamble&#10;  header contains synchronization information and timing&#10;  information for the frame.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="aPlcpHeaderLength">The size of the PLCP header in a frame. The PLCP header&#10;  contains logical information for the physical layer to&#10;  decode the frame.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="SNRThresholdInDB">The threshold for the signal to be recognized from interference.&#10;  It is specified in decibels (10 * log&lt;sub&gt;10&lt;/sub&gt;(&lt;i&gt;r&lt;/i&gt;),&#10;  where &lt;i&gt;r&lt;/i&gt; is the power ratio.  This is a double that&#10;  defaults to Infinity, which indicates that all overlapping&#10;  messages are lost to collisions.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="sensitivity">The power threshold above which the signal can be&#10;  detected at the receiver. Any message with a received power&#10;  below this number is ignored.  This has type double&#10;  and defaults to 0.0, which indicates that all messages&#10;  (with nonzero power) will be received.</property>
+</doc>

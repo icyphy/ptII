@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+  <description>
+This class implements a director for the Giotto model of computation&#10; without Giotto modes. Schedules are generated according to the Giotto&#10; semantics. The GiottoScheduler class contains methods to compute the&#10; schedules. The GiottoReceiver class implements the data flow between&#10; actors using double-buffering.&#10; &lt;p&gt;&#10; If the parameter &lt;i&gt;synchronizeToRealTime&lt;/i&gt; is set to &lt;code&gt;true&lt;/code&gt;,&#10; then the director will not process events until the real time elapsed&#10; since the model started matches the time stamp of the event.&#10; This ensures that the director does not get ahead of real time,&#10; but, of course, it does not ensure that the director keeps up with&#10; real time.&#10; &lt;p&gt;  </description>
+  <author>Christoph Meyer Kirsch, Edward A. Lee, Haiyang Zheng, and Shanna-Shaye Forbes</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (cm)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="iterations">The number of times that postfire may be called before it&#10;  returns false. If the value is less than or equal to zero,&#10;  then the execution will never return false in postfire,&#10;  and thus the execution can continue forever.&#10;  The default value is an IntToken with the value zero.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="period">The period of an iteration. This is a double that defaults to&#10;  &lt;I&gt;0.1&lt;/I&gt;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="synchronizeToRealTime">Specify whether the execution should synchronize to the&#10;  real time. This parameter must contain a BooleanToken.&#10;  If this parameter is true, then do not process events until the&#10;  elapsed real time matches the time stamp of the events.&#10;  The value defaults to false.</property>
+</doc>

@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="QueueControl" class="ptolemy.domains.ci.demo.Router.QueueControl">
+  <description>
+An actor that distribute its input data to different outputs.&#10; Its output ports &lt;i&gt;queue1&lt;/i&gt; and &lt;i&gt;queue2&lt;/i&gt; is connected&#10; to two &lt;i&gt;queue&lt;/i&gt; actors respectively. The lengh of the two&#10; queue are fed back to its input ports &lt;i&gt;q1Length&lt;/i&gt; and&#10; &lt;i&gt;q2Length&lt;/i&gt;. The input token at &lt;i&gt;input&lt;/i&gt; is distributed&#10; according to the following policy: if the total length of queue1&#10; and queue2 is less than threshold1, specified by the &lt;i&gt;minMark&lt;/i&gt;&#10; parameter, the input token is send to &lt;i&gt;queue1&lt;/i&gt; if queue1's&#10; length is less than queue2's, otherwise send to &lt;i&gt;queue2&lt;/i&gt;; if&#10; the total length is greater than threshold1 but less than&#10; threshold2, specified by the &lt;i&gt;minMark&lt;/i&gt; parameter, the&#10; input token may be dropped randomly(with a probability&#10; proportional to the amount larger than threshold1) or&#10; send to queues shorter; if the total length is greater than&#10; threshold2, then drop the input token. If the input token is&#10; dropped, it is send to the &lt;i&gt;dropped&lt;/i&gt; output so that it can&#10; be catched or monitored when necessary.  </description>
+  <author>Xiaojun Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="q1Length"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="q2Length"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="queue1"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="dropped"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="queue2"></port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="minMark"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maxMark"></property>
+</doc>

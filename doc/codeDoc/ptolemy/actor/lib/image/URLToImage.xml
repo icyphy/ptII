@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="URLToImage" class="ptolemy.actor.lib.image.URLToImage">
+  <description>
+&lt;p&gt;An actor that reads a String input token naming a URL and outputs an&#10; Object Token that contains a java.awt.Image&lt;/p&gt;&#10;&#10; &lt;p&gt;It is possible to load a file&#10; from the local file system by using the prefix &quot;file://&quot; instead of&#10; &quot;http://&quot;. Relative file paths are allowed. To specify a file&#10; relative to the current directory, use &quot;../&quot; or &quot;./&quot;. For example,&#10; if the current directory contains a file called &quot;test.jpg&quot;, then&#10; &lt;i&gt;sourceURL&lt;/i&gt; should be set to &quot;file:./test.jpg&quot;. If the parent&#10; directory contains a file called &quot;test.jpg&quot;, then &lt;i&gt;sourceURL&lt;/i&gt;&#10; should be set to &quot;file:../test.jpg&quot;. To reference the file&#10; test.jpg, located at &quot;/tmp/test.jpg&quot;, &lt;i&gt;sourceURL&lt;/i&gt;&#10; should be set to &quot;file:///tmp/test.jpg&quot; The default value is&#10; &quot;file:///tmp/test.jpg&quot;.&lt;/p&gt;  </description>
+  <author>Christopher Hylands</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

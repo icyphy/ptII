@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SingletonConfigurableAttribute" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+  <description>
+This class is a configurable attribute that replaces any previously&#10; existing attribute in the container that has the same name.&#10; An important use of this class is to describe icons for visual rendition.&#10; The icons are described in an XML schema called SVG, given in the&#10; body of a configure XML element.  The icon description is named&#10; &quot;_iconDescription&quot;, and placing such a description into any container&#10; replaces any previous description in the container.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (janneck)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SQLStatement" class="ptolemy.actor.lib.database.SQLStatement">
+  <description>
+Issue a database statement via the specified&#10; database manager. The output is string description of the result.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="databaseManager">Name of the DatabaseManager to use.&#10;  This defaults to &quot;DatabaseManager&quot;.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="query">An SQL query. This is a string that defaults to&#10;  &quot;describe *&quot;.</property>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MapAttributes" class="org.ptolemy.ssm.MapAttributes">
+  <description>
+Container for decorator attributes that are provided to actors by&#10;a Map aspect. This class is based on ExecutionAttributes.java  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="enable">The enable parameter specifies whether the decorated actor uses&#10;  the resource scheduler decorator.&#10;  This is a boolean that defaults to false.</property>
+</doc>

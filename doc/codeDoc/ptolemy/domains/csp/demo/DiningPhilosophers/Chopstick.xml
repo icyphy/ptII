@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Chopstick" class="ptolemy.domains.csp.demo.DiningPhilosophers.Chopstick">
+  <description>
+Chopstick in the Dining Philosophers demo. Each Chopstick can only be&#10; used by one philosopher at a time. When it is not being used it can be&#10; claimed by either of the two philosophers next to it. Once it has been&#10; claimed, it is not available until it is released by the philosopher&#10; holding it.&#10; &lt;p&gt;&#10; This actor has four ports, each of width one: two are used to communicate&#10; with the philosopher on the left, and two are used to communicate with&#10; the buffer on the right. Two ports are needed to communicate with each&#10; philosopher as the philosopher holds the chopstick for some random time.&#10; &lt;p&gt;  </description>
+  <author>Neil Smyth</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (nsmyth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="leftIn">The port through which the left philosopher&#10;  releases access to this chopstick.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="leftOut">The port through which the left philosopher&#10;  receives access to this chopstick.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="rightIn">The port through which the right philosopher&#10;  releases access to this chopstick.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="rightOut">The port through which the right philosopher&#10;  receives access to this chopstick.</port>
+</doc>

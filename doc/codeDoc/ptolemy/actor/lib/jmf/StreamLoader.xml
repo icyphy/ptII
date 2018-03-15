@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StreamLoader" class="ptolemy.actor.lib.jmf.StreamLoader">
+  <description>
+Load a datasource from a URL.&#10; &lt;p&gt; This actor generates an ObjectToken that contains a DataSource.&#10; &lt;p&gt; This actor is typically connected to a &lt;a href=&quot;../../../../ptolemy/actor/lib/jmf/VideoPlayer.xml&quot;&gt;ptolemy.actor.lib.jmf.VideoPlayer&lt;/a&gt; actor.  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="fileOrURL">The file or URL that it to be read.</property>
+</doc>

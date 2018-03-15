@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="EditorPaneFactory" class="ptolemy.actor.gui.EditorPaneFactory">
+  <description>
+This is an attribute that can create a pane (called a &quot;configuration&#10; widget&quot;) for interactively configuring its container.  To use this,&#10; place an instance of this class (or a derived class) inside a Ptolemy II&#10; object.  When the user double clicks on the icon for that object,&#10; or selects Configure from the context menu, then a dialog is opened&#10; containing the pane returned by createEditorPane().&#10; &lt;p&gt;&#10; In this base class, the createEditorPane() method creates an&#10; instance of PtolemyQuery with one entry for each parameter in&#10; the container. This is the default mechanism&#10; for editing parameters.  Derived classes may override this&#10; method to present radically different interfaces to the user.&#10; For example, a digital filter actor could present a filter&#10; design interface.  A plotter actor could present a panel for&#10; configuring a plot.  A file reader actor could present a file&#10; browser.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

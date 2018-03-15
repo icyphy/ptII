@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AbstractUnscentedKalmanFilter" class="org.ptolemy.machineLearning.particleFilter.AbstractUnscentedKalmanFilter">
+  <description>
+Abstract Unscented Kalman Filter Base Class.  </description>
+  <author>Shuhei Emoto</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (shuhei)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="sigmaPointOutput">The output port that outputs the sigma-points of distribution of state variable at each firing.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="stateEstimate">State estimate output. A record token with one field per state variable.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="t">The value of current time. This parameter is not visible in&#10;  the expression screen except in expert mode. Its value initially&#10;  is just 0.0, a double, but upon each firing, it is given a&#10;  value equal to the current time as reported by the director.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="priorCovariance">A matrix value used in initialization of sigma points.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="priorMeanState">An array value used in initialization of state variables.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="processNoiseCovariance">a matrix value which determine process noise.</property>
+</doc>

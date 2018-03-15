@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NodeControllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+  <description>
+This is an attribute that produces a custom node controller.&#10; This base class produces a node controller that offers only a&#10; configure command in the context menu, and invokes a dialog to&#10; edit parameters in response to that command.  It does this by&#10; returning an instance of IconController&#10; in its create() method.  Derived classes can override this&#10; base class to put whatever they want in the context menu,&#10; invoking whatever dialogs are appropriate.&#10; To use this class, just insert it as an attribute inside&#10; any Ptolemy II object, and then right clicking on the icon for&#10; that object will result in the use of the controller specified&#10; here.  The instance by convention will be named &quot;_controllerFactory&quot;,&#10; but the only reason to enforce this is that only the first such&#10; controller factory found as an attribute will be used.&#10; It is a singleton, so placing it any container will replace any&#10; previous controller factory with the same name.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

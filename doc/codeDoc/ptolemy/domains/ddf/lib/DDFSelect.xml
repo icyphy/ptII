@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect">
+  <description>
+A type polymorphic select, which routes specified input channels to&#10; the output, used in the DDF domain. In the first iteration, an input&#10; token at the &lt;i&gt;control&lt;/i&gt; port is read and its value is recorded.&#10; In the second iteration, an input token is read from the input port&#10; channel specified by the most recently seen token at the &lt;i&gt;control&lt;/i&gt;&#10; port and sent to the output. It alternates between these two kinds of&#10; iterations until stopped. The &lt;i&gt;control&lt;/i&gt; port must receive IntTokens.&#10; The input port may receive tokens of any type. Because tokens are&#10; immutable, the same token is sent to the output, rather than a copy.&#10; Note that as for any multiport, the channel number starts from 0 and&#10; increments by 1 for each additional channel in the order the channel&#10; is created (e.g., when a connection is drawn in Vergil).&#10; &lt;p&gt;&#10; Note this actor sends an output token every two iterations. Contrast&#10; this with Select which sends an output token every iteration.  </description>
+  <author>Gang Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (zgang)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.  The port type can be any type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="control">The input port for control tokens, which specifies the input&#10;  channels to read the tokens from.  The type is int.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.  The type is at least the type of &lt;i&gt;input&lt;/i&gt;.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate">This parameter provides token consumption rate for &lt;i&gt;input&lt;/i&gt;.&#10;  The type is array of ints.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="control_tokenConsumptionRate">This parameter provides token consumption rate for &lt;i&gt;control&lt;/i&gt;.&#10;  The type is int.</property>
+</doc>

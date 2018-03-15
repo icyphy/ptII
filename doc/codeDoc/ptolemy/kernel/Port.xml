@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Port" class="ptolemy.kernel.Port">
+  <description>
+A Port is the interface of an Entity to any number of Relations.&#10; Normally, a Port is contained by an Entity, although a port&#10; may exist with no container.  The role of a port is to aggregate&#10; a set of links to relations.  Thus, for example, to represent&#10; a directed graph, entities can be created with two ports, one for&#10; incoming arcs and one for outgoing arcs.  More generally, the arcs&#10; to an entity may be divided into any number of subsets, with one port&#10; representing each subset.&#10; &lt;p&gt;&#10;&#10; A Port can link to any instance of Relation.  Derived classes may wish&#10; to constrain links to a subclass of Relation.  To do this, subclasses&#10; should override the protected method &lt;a href=&quot;../../ptolemy/kernel/Port.html#_checkLink&quot;&gt;_checkLink(Relation)&lt;/a&gt; to&#10; throw an exception if its argument is a relation that is not of the&#10; appropriate subclass.  Similarly, if a subclass wishes to constrain&#10; the containers of the port to be of a subclass of Entity, they should&#10; override the protected method &lt;a href=&quot;../../ptolemy/kernel/Port.html#_checkContainer&quot;&gt;_checkContainer(Entity)&lt;/a&gt;.  </description>
+  <author>Mudit Goel, Edward A. Lee, Jie Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+</doc>

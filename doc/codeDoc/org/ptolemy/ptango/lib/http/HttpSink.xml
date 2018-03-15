@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HttpSink" class="org.ptolemy.ptango.lib.http.HttpSink">
+  <description>
+An abstract base class for an actor that outputs the response to an HTTP-request.  </description>
+  <author>Edward A. Lee and Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port, which accepts a string that must be formatted and&#10;  encoded in accordance with the given content-type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which delivers a string, the response to the request.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="status">An output port for transmitting a token containing the status of the&#10; request.  This is a RecordToken comprised of the response code,&#10; response message, a boolean indicating if the request was successful,&#10; and a boolean indicating if further action is expected.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="contentType">The content-type to go along with the request.&#10;  This is a string that defaults to &quot;application/x-www-form-urlencoded&quot;.&#10;  In case the a content-type is defined in the properties record, either&#10;  set as a parameter, or set using an input token, that definition has&#10;  precedence over this one.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="properties">A record of which each element represents a property to be included in&#10;  the header of the request.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="timeout">The timeout in milliseconds for establishing a connection or reading a value.&#10;  Set to NONE to specify no timeout.&#10;  This is an integer that defaults to 30000, giving a timeout of 30 seconds.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="timeoutResponse">The response to send upon timeout.&#10;  If this is empty, then this actor will throw an exception rather than&#10;  send a response.  This is a string that defaults to empty.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="uri">The address of the service to invoke.&#10;  This is a string that defaults to &quot;http://localhost&quot;, which&#10;  refers to a web server on the local host.</property>
+</doc>

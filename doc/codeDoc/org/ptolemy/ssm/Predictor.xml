@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Predictor" class="org.ptolemy.ssm.Predictor">
+  <description>
+A predictor  </description>
+  <author>Ilge Akkya</author>
+  <version>$Id$</version>
+</doc>

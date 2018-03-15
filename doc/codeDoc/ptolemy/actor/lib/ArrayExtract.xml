@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
+  <description>
+Extract a subarray from an array.  This actor reads an array from the&#10; &lt;i&gt;input&lt;/i&gt; port and sends a subarray to the &lt;i&gt;output&lt;/i&gt;&#10; port, possibly padded with zeros. The segment of the input array&#10; starting at &lt;i&gt;sourcePosition&lt;/i&gt; with length &lt;i&gt;extractLength&lt;/i&gt; is&#10; copied to the output array, starting at &lt;i&gt;destinationPosition&lt;/i&gt;.&#10; The total length of the output array is &lt;i&gt;outputArrayLength&lt;/i&gt;.&#10; Any of its entries that are not supplied by the input have value&#10; zero (of the same type as the entries in the input array).&#10; With the default values of the parameters, only the first element&#10; of the input array is copied to the output array, which has length one.&#10; The output type is the same as the input type.  </description>
+  <author>Edward A. Lee, Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="sourcePosition">The index into the input array at which to start copying.&#10;  This is a non-negative integer that defaults to 0, and is&#10;  required to be less than the length of the input array.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="extractLength">The length of the segment of the input array that is copied&#10;  to the output. This is a non-negative integer that defaults&#10;  to 1. The sum of it and the &lt;i&gt;sourcePosition&lt;/i&gt; is&#10;  required to be less than or equal to the length of the input array.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="destinationPosition">The index into the output array at which to start copying.&#10;  This is a non-negative integer that defaults to 0, and is&#10;  required to be less than the length of the output array.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="outputArrayLength">The total length of the output array.&#10;  This is a non-negative integer that defaults to 1.  It is&#10;  required to be at least &lt;i&gt;destinationPosition&lt;/i&gt; plus&#10;  &lt;i&gt;extractLength&lt;/i&gt;.</property>
+</doc>

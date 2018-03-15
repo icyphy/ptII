@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LineReader" class="ptolemy.actor.lib.io.LineReader">
+  <description>
+&lt;p&gt;This actor reads a file or URL, one line at a time, and outputs each line&#10; as a string.  The file or URL is specified using any form acceptable&#10; to FileParameter. Before an end of file is reached, the &lt;i&gt;endOfFile&lt;/i&gt;&#10; output produces &lt;i&gt;false&lt;/i&gt;.  In the iteration where the last line&#10; of the file is read and produced on the &lt;i&gt;output&lt;/i&gt; port, this actor&#10; produces &lt;i&gt;true&lt;/i&gt; on the &lt;i&gt;endOfFile&lt;/i&gt; port. In that iteration,&#10; postfire() returns false.  If the actor is iterated again, after the end&#10; of file, then prefire() and postfire() will both return false, &lt;i&gt;output&lt;/i&gt;&#10; will produce the string &quot;EOF&quot;, and &lt;i&gt;endOfFile&lt;/i&gt; will produce &lt;i&gt;true&lt;/i&gt;.&#10; &lt;/p&gt;&#10; &lt;p&gt;&#10; In some domains (such as SDF), returning false in postfire()&#10; causes the model to cease executing.&#10; In other domains (such as DE), this causes the director to avoid&#10; further firings of this actor.  So usually, the actor will not be&#10; invoked again after the end of file is reached.&lt;/p&gt;&#10; &lt;p&gt;&#10; This actor reads ahead in the file so that it can produce an output&#10; &lt;i&gt;true&lt;/i&gt; on &lt;i&gt;endOfFile&lt;/i&gt; in the same iteration where it outputs&#10; the last line.&lt;/p&gt;&#10; &lt;p&gt;&#10; This actor can skip some lines at the beginning of the file or URL, with&#10; the number specified by the &lt;i&gt;numberOfLinesToSkip&lt;/i&gt; parameter. The&#10; default value of this parameter is 0.&lt;/p&gt;&#10; &lt;p&gt;&#10; If you need to reset this line reader to start again at the beginning&#10; of the file, the way to do this is to call initialize() during the run&#10; of the model.  This can be done, for example, using a modal model&#10; with a transition where reset is enabled.&lt;/p&gt;  </description>
+  <author>Edward A. Lee, Yuhong Xiong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.2</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="endOfFile">An output port that produces &lt;i&gt;false&lt;/i&gt; until the end of file&#10;  is reached, at which point it produces &lt;i&gt;true&lt;/i&gt;. The type&#10;  is boolean.</port>
+    <!--ptolemy.actor.parameters.FilePortParameter-->
+    <property name="fileOrURL">The file name or URL from which to read.  This is a string with&#10;  any form accepted by FileParameter.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numberOfLinesToSkip">The number of lines to skip at the beginning of the file or URL.&#10;  This parameter contains an IntToken, initially with value 0.&#10;  The value of this parameter must be non-negative.</property>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
+  <description>
+This actor selects from the channels on the&#10; &lt;i&gt;input&lt;/i&gt; port, copying the input from one channel to the output,&#10; based on the most recently received value on the &lt;i&gt;select&lt;/i&gt; input.&#10; If the selected channel has no token, then no output is produced.&#10; The &lt;i&gt;select&lt;/i&gt; input is required to be an integer between 0 and&#10; &lt;i&gt;n&lt;/i&gt;-1, where &lt;i&gt;n&lt;/i&gt; is the width of the &lt;i&gt;input&lt;/i&gt; port.&#10; If no token has been received on the &lt;i&gt;select&lt;/i&gt; port, then null&#10; is sent to the output.  The &lt;i&gt;input&lt;/i&gt; port may&#10; receive Tokens of any type, but all channels must have the same type.&#10; &lt;p&gt;&#10; One token is consumed from each input channel that has a token.&#10; Compare this with the Select actor, which only consumes a token on&#10; the selected channel.  </description>
+  <author>Jeff Tsay, Edward A. Lee, Stavros Tripakis</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (ctsay)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="select">Input for the index of the port to select. The type is IntToken.</port>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TDLRefinementPort" class="ptolemy.domains.tdl.kernel.TDLRefinementPort">
+  <description>
+The TDL refinement port represents an actuator and has some TDL specific&#10; parameters: - frequency: update frequency - initialValue: at time 0, this&#10; initial value is used - fast: if the actuator is connected to a fast task,&#10; this parameter is true - slots: string that supports TDL slot selection.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="frequency">frequency for the port update.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialValue">Initial value of the port.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fast">Describes a fast actuator.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="slots">Slot selection string.</property>
+</doc>

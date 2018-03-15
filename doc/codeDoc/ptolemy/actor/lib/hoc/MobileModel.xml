@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MobileModel" class="ptolemy.actor.lib.hoc.MobileModel">
+  <description>
+This is a composite actor with an input port that accepts MoML descriptions&#10; of changes that are applied to the contents. Rather than&#10; specified before executing, the inside model can be dynamically changed&#10; either locally or remotely. Currently, the model that dynamically applied&#10; to this actor is specified by a moml string from the &lt;i&gt;modelString&lt;/i&gt;&#10; input.&#10;&#10; Currently, it only accepts models with one input and one output, and&#10; requires the model name its input port as &quot;input&quot;, output port as &quot;output&quot;.  </description>
+  <author>Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (reviewmoderator)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port for incoming data to the inside model.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="modelString">The input port for model changing request of the inside model.&#10;  The type is string.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port for the result after firing the inside model&#10; upon the incoming data. Notice that the type is determined by&#10; the type of the &lt;i&gt;defaultValue&lt;/i&gt; parameter.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="director">The inside Director for executing the inside model.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="refresh">This Parameter specifies whether to replace the previous model&#10;  when there is model changing request or not. The type of this&#10;  parameter is boolean. Select this parameter if it does replace.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="connectPorts">the Parameter specifies whether to connect the input and output&#10; to the inside model. The type of this parameter is boolean.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="defaultValue">The default output token when there is no inside model&#10;  defined. The default value is 0, and the default type is&#10;  int. Notice that the type of the output port&#10;  is determined by the type of this parameter.</property>
+</doc>

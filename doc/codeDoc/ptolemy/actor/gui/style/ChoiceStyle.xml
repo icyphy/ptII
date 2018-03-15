@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ChoiceStyle" class="ptolemy.actor.gui.style.ChoiceStyle">
+  <description>
+This attribute annotates user settable attributes to specify&#10; an uneditable combobox style for configuring the containing attribute.&#10; An uneditable combobox is restricted to only the values specified as the&#10; combobox options.  No arbitrary value can be entered.&#10; For an editable combobox, use EditableChoiceStyle instead.&#10; The choices that are presented in the combobox&#10; are given by a set of attributes implementing the Settable interface,&#10; such as StringAttribute, contained by this style.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="OntologyMoMLHandler" class="ptolemy.data.ontologies.OntologyMoMLHandler">
+  <description>
+This is an attribute used by the OntologySolver to issue MoML requests and&#10;  make changes to the model. These changes include addition, update, or deletion&#10;  of concept annotations and display of the concept results.&#10;  This is designed to be contained by an instance of OntologySolver&#10;  or a subclass of OntologySolver. It contains parameters that allow&#10;  users to configure the display of the concept annotation results.  </description>
+  <author>Ben Lickly, Man-Kit Leung</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (mankit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (mankit)</Pt.AcceptedRating>
+</doc>

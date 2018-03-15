@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="QueuedTypedIOPort" class="ptolemy.actor.lib.vhdl.QueuedTypedIOPort">
+  <description>
+Delays each fixed point token sent on the port by the specified latency&#10; parameter and then outputs it via the parent TypedIOPort. Initially will&#10; output NIL until one input can be sent.  </description>
+  <author>Man-Kit Leung</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.0</since>
+  <Pt.ProposedRating>Red (mankit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (mankit)</Pt.AcceptedRating>
+</doc>

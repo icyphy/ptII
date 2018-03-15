@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ViewLayers3D" class="ptolemy.domains.gr.lib.ViewLayers3D">
+  <description>
+A sink actor that renders layered structure for High Speed Sintering (HSS)&#10;   3D printing simulation.&#10;   TODO: This is a very preliminary version. Still needs a lot of elaboration,&#10;   including information for each layer (shape, color, etc.).  </description>
+  <author>Hokeun Kim</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (acataldo)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="layer">The input scene graph. Actors that produce 3D objects&#10;  can be connected to this port for rendering.&#10;  The type of this port is sceneGraph.</port>
+    <!--ptolemy.actor.gui.ColorAttribute-->
+    <property name="backgroundColor">The background color. Note that the alpha value (the fourth&#10;  element of the array), which would normally specify transparency,&#10;  is ignored.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="horizontalResolution">The width in pixels of the display screen.&#10;  The larger of the vertical or horizontal size will&#10;  correspond by default to one unit of distance, so this&#10;  parameter determines the horizontal resolution as well as&#10;  the size of the display.&#10;  This is an int with default 400.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="iterationSynchronized">Boolean variable that determines whether screen update is done&#10;  once per iteration. This is a boolean with default false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="layerThickness">Floating-point variable for specifying thickness of each layer.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rotatable">Boolean variable that determines whether the user can&#10;  rotate the model with the mouse.  This is a boolean with&#10;  default true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="scalable">Boolean variable that determines whether the user can&#10;  move the point of view along the z axis using the mouse.&#10;  This is a boolean with default false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="showAxes">Boolean variable that determines whether or not axes are shown.&#10;  This parameter is a boolean with default false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="translatable">Boolean variable that determines whether the user can&#10;  translate the model with the mouse.&#10;  This is a boolean with default false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="verticalResolution">The height in pixels of the display screen.&#10;  The larger of the vertical or horizontal size will&#10;  correspond by default to one unit of distance, so this&#10;  parameter determines the horizontal resolution as well as&#10;  the size of the display.&#10;  This is an integer with default 400.</property>
+</doc>

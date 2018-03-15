@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CatchUpComposite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
+  <description>
+This composite allows events to occur in the inside model&#10;between the times when the outside model invokes this composite.&#10;The inside model is required to have a director.&#10;&lt;p&gt;&#10;When this composite actor is fired, it fires the&#10;inside model to process any unprocessed events it may have&#10;at earlier times than the environment time of the firing.&#10;If in any of these &quot;catch up&quot; firings the inside model&#10;attempts to produce outputs, this director will throw an&#10;exception. This director then transfers any available&#10;inputs to the inside model and fires the inside model&#10;one more time. On this &quot;caught up&quot; firing, the inside&#10;model is permitted to produce outputs.&#10;&lt;p&gt;&#10;By default, if an actor contained by this composite requests&#10;a firing at a future time, then that request is passed up to&#10;the containing director. If &lt;i&gt;fireOnlyWhenTriggered&lt;/i&gt; is set&#10;to &lt;i&gt;true&lt;/i&gt;, however, then such requests are not passed up.&#10;In this case, the next firing will occur whenever the container&#10;has an input to provide to this composite, and catching up will&#10;occur only at that time. Note that if this composite produces&#10;outputs, you have to be very careful to ensure that those outputs&#10;are produced only at times when an input trigger is provided.&#10;&lt;p&gt;&#10;Note that a firing of this composite results in one&#10;or more complete iterations of the inside model, including&#10;invocations of postfire. Thus, this actor changes state&#10;in the fire() method, and hence only implements the&#10;weak actor semantics. Therefore, it should not be used&#10;inside domains that require a strict actor semantics,&#10;such as Continuous, which requires that fire() not&#10;change state (so that backtracking can occur).&#10;This composite probably can be used in SR, where it&#10;will be treated as a strict as actor and hence will be&#10;fired only once per iteration, and only when all inputs&#10;are known.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+</doc>

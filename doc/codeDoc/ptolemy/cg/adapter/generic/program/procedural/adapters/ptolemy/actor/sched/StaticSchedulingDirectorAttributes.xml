@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StaticSchedulingDirectorAttributes" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+  <description>
+Container for decorator attributes that are provided to actors.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="padBuffers">Indicator of whether to pad buffers.&#10;  This is a boolean that defaults to true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="allowDynamicMultiportReference">Indicator of whether to allow dynamic multiport references.&#10;  If true, then channels in multiports can be dynamically&#10;  referenced using the $ref macro.&#10;  This is a boolean that defaults to false.</property>
+</doc>

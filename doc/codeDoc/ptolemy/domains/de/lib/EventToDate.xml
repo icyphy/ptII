@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="EventToDate" class="ptolemy.domains.de.lib.EventToDate">
+  <description>
+A timed actor that outputs a date token that corresponds to the current&#10;  model time (maintained by the local clock in the director).&#10;   Such a correspondence is only given in models that synchronize to real time.&#10;  In such models, the real time (date) when the model starts is recorded. An input&#10;  to this actor is compared to the model start time (in model time). The difference between&#10;  those dates (in millisecond resolution) is divided by the time resolution of&#10;  the local clock, added to the start date of the model and then sent to the output.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

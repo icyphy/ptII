@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Slice" class="ptolemy.actor.lib.vhdl.Slice">
+  <description>
+Produce an output token on each firing with a FixPoint value that is&#10; equal to the slicing of the bits of the input token value. The bit width of&#10; the output token value is determined by taking the difference of parameters&#10; start and end. The width parameter specifies the bit width of the input&#10; value. The output FixPoint value is unsigned, and all its bits are integer&#10; bits. The input can have any scalar type.  </description>
+  <author>Man-Kit Leung</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.0</since>
+  <Pt.ProposedRating>Red (mankit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (mankit)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="start">The start index for the portion of the bits to be sliced.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="end">The end index for the portion of the bits to be sliced.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="lsb">Whether start and end index assumes LSB or MSB representation.</property>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MovieReader" class="ptolemy.actor.lib.jmf.MovieReader">
+  <description>
+This actor loads a video file (MPEG, AVI, or Quicktime files only), and&#10; outputs each frame as a JMFImageToken.&#10;&#10; &lt;p&gt;Note that not all formats are supported, for details, see the JMF faq at:&#10; &lt;a href=&quot;http://www.oracle.com/technetwork/java/javase/faq-jmf-137005.html#jmf2-support&quot; target=&quot;_top&quot;&gt;http://www.oracle.com/technetwork/java/javase/faq-jmf-137005.html#jmf2-support&lt;/a&gt;.&lt;/p&gt;  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="fileOrURL">The file name or URL from which to read.  This is a string with&#10;  any form accepted by File Attribute.  The default value&#10;  is the string &quot;file:///C:/program%20files/quicktime/Sample.mov&quot;.</property>
+</doc>

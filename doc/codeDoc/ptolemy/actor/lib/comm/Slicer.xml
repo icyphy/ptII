@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Slicer" class="ptolemy.actor.lib.comm.Slicer">
+  <description>
+The Slicer functions as a decoder of the LineCoder. The parameter&#10; &lt;i&gt;table&lt;/i&gt; and &lt;i&gt;wordLength&lt;/i&gt; has the same meaning as in LineCoder,&#10; except that the type of &lt;i&gt;table&lt;/i&gt; is constrained to an ArrayToken&#10; of complex numbers. On each firing, the Slicer consumes one complex&#10; token from its input port and computes the Euclidean distance between&#10; the input data and the elements in the Slicer. The actor produces&#10; &lt;i&gt;wordLength&lt;/i&gt; booleans on each firing. The values of these booleans&#10; correspond to the index of the entry that minimizes the distance. For&#10; example, if the first entry minimizes the distance, then all of these&#10; values are &lt;i&gt;false&lt;/i&gt;. If the second entry minimizes the distance,&#10; then only the first boolean is true.  </description>
+  <author>Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (zhouye)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="table">The code table.  It is an array token of complex type.&#10;  The number of values in this array must be at least&#10;  2&lt;sup&gt;&lt;i&gt;wordLength&lt;/i&gt;&lt;/sup&gt;, or an exception&#10;  will be thrown. Its default value is {-1.0, 1.0}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="wordLength">The word length is the number of boolean output that&#10;  are produced on each firing.  Its value is an IntToken,&#10;  with default value one.</property>
+</doc>

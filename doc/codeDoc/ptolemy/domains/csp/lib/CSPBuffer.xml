@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CSPBuffer" class="ptolemy.domains.csp.lib.CSPBuffer">
+  <description>
+A single channel buffer. This actor is the canonical example of how&#10; to use a CDO construct. It is parameterized by the Parameter &quot;depth&quot;,&#10; which controls how many Tokens can be stored in this buffer.&#10; The default depth of the buffer is 1. The buffer depth is set upon&#10; calling the fire method. The fire() method does not return until a&#10; TerminateProcessException is thrown.&#10; &lt;p&gt;  </description>
+  <author>Neil Smyth</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Red (nsmyth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port for this actor.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port for this actor.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="depth">The Parameter storing the depth of the buffer.</property>
+</doc>

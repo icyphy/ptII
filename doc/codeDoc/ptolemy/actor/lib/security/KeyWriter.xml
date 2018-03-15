@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="KeyWriter" class="ptolemy.actor.lib.security.KeyWriter">
+  <description>
+Read in a Key from the input port and write it out to a KeyStore.&#10;&#10; &lt;p&gt;Keystores are ways to manage keys and certificates.&#10; See the &lt;a href=&quot;../../../../ptolemy/actor/lib/security/KeyStoreActor.xml&quot;&gt;ptolemy.actor.lib.security.KeyStoreActor&lt;/a&gt; documentation for more information about&#10; keystores.&#10;&#10; &lt;p&gt;The input is of type &lt;a href=&quot;../../../../ptolemy/actor/lib/security/KeyToken.xml&quot;&gt;ptolemy.actor.lib.security.KeyToken&lt;/a&gt;.&#10; This actor does not support writing PublicKeys because&#10; PublicKeys require certificates.  Instead, to write a PublicKey/PrivateKey&#10; pair to a keystore, use the &lt;code&gt;keytool&lt;/code&gt; executable.&#10; Currently, this actor only support writing SecretKeys and PrivateKeys&#10; to a keystore.  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port, which contains on KeyToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which contains a True boolean token when&#10;  the key has been written.</port>
+</doc>

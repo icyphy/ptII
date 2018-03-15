@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ScopeExtendingAttribute" class="ptolemy.data.expr.ScopeExtendingAttribute">
+  <description>
+An attribute that extends its container's scope. Any&#10; parameter contained by such an attribute has the same&#10; visibility as parameters of the container of the attribute.&#10; They are shadowed, however, by parameters of the container.&#10; That is, if the container has a parameter with the same name&#10; as one in the parameter set, the one in the container provides&#10; the value to any observer.  </description>
+  <author>Xiaojun Liu</author>
+  <version>$Id$</version>
+</doc>

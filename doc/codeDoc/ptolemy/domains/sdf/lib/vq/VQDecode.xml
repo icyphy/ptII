@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="VQDecode" class="ptolemy.domains.sdf.lib.vq.VQDecode">
+  <description>
+This actor decompresses a vector quantized signal.   This operation is simply&#10; a table lookup into the codebook.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="codeBook">A Parameter of type String, giving the location of the codebook data&#10;  file relative to the root classpath.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockCount">The number of blocks to be decoded during each firing.&#10;  The default value is one, which will always work, but using a higher&#10;  number (such as the number of blocks in a frame) will speed things up.&#10;  This should contain an integer.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockWidth">The width, in integer pixels, of the block to decode.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockHeight">The width, in integer pixels, of the block to decode.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate">The input rate.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output_tokenProductionRate">The output rate.</property>
+</doc>

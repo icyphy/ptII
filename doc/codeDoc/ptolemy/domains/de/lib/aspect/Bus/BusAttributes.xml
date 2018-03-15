@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="BusAttributes" class="ptolemy.domains.de.lib.aspect.Bus.BusAttributes">
+  <description>
+The port specific attributes for ports mediated by a Bus.  </description>
+  <author>Patricia Derler</author>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="messageLength">Message length per port. The total time the token is&#10;  delayed at a quantity manger is the serviceTimeMultiplicationFactor&#10;  * messageLength + the time other tokens need to be serviced.</property>
+</doc>

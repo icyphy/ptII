@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DialogTableau" class="ptolemy.actor.gui.DialogTableau">
+  <description>
+A tableau representing a Dialog in a toplevel window.&#10; &lt;p&gt;&#10; DialogTableau is just like all the other XXXTableau classes except that the&#10; Frame associated with DialogTableau is not an extension of TableauFrame, and,&#10; ultimately, the Top class. The reason being that Top adorns the GUI&#10; manifestation with the normal status bar which isn't appropriate for a&#10; dialog.&#10; In addition, the created dialog is not a JDialog, but a JFrame. And, the&#10; created dialog is non-modal.&#10; &lt;p&gt;&#10; There can be any number of instances of this class in an effigy, however,&#10; there&#10; can only be one each for the model represented by the effigy, and one each of&#10; the actors that are part of the model.  </description>
+  <author>Rowland R Johnson</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (rowland)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

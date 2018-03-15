@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Derivative" class="ptolemy.domains.de.lib.Derivative">
+  <description>
+Output the discrete derivative of the input, y[n] = (x[n] - x[n-1])/dt,&#10; where &lt;i&gt;dt&lt;/i&gt; is the time gap between input events. Output is not generated&#10; until two inputs have been consumed.&#10; &lt;p&gt;&#10; The output of this actor is constrained to be a double, and input must be castable&#10; to a double. If the input signal is not left-continuous, the derivative will be either&#10; infinite or undefined and an exception is thrown.&#10; &lt;p&gt;&#10; In postfire(), if an event is present on the &lt;i&gt;reset&lt;/i&gt; port, this&#10; actor resets to its initial state, and will not output until two&#10; subsequent inputs have been consumed.  This is useful if the input signal is&#10; switched on and off, in which case the time gap between events becomes large&#10; and would otherwise effect the value of the derivative for one sample.&#10; &lt;p&gt;  </description>
+  <author>Jeff C. Jensen</author>
+  <version>$Id: Derivative.java$</version>
+  <since>Ptolemy II 8.0</since>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="reset">The reset port, which has undeclared type. If this port&#10;  receives a token, this actor resets to its initial state,&#10;  and no output is generated until two inputs have been received.</port>
+</doc>

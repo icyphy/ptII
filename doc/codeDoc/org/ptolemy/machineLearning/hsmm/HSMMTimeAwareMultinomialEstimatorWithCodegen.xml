@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HSMMTimeAwareMultinomialEstimatorWithCodegen" class="org.ptolemy.machineLearning.hsmm.HSMMTimeAwareMultinomialEstimatorWithCodegen">
+  <description>
+A parameter estimator for a Hidden Semi-Markov Model with&#10; Multinomial Emissions and code generation. The transition probability matrix is estimated&#10; on an hourly basis.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="optvals">An output port of type double that contains optional values.</port>
+    <!--ptolemy.actor.parameters.FilePortParameter-->
+    <property name="filename">The name of the file to write to.&#10;  By default, this parameter contains an empty string, which&#10;  is interpreted to mean that output should be directed to the&#10;  standard output.&#10;  See &lt;a href=&quot;../../../../ptolemy/actor/parameters/FilePortParameter.xml&quot;&gt;ptolemy.actor.parameters.FilePortParameter&lt;/a&gt; for&#10;  details about relative path names.</property>
+    <!--ptolemy.actor.parameters.FilePortParameter-->
+    <property name="propertyFile">The property file.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="optStep">The maximum number of function evaluations before terminating.&#10;  The default value is 10.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="optimize">If set to true, model will be parameterized and parameter synthesis will be&#10; carried out using PRISM.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="modelChecking">If set to true, PRISM will be used to model check defined model properties.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="testPreset">The default value is true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="minPowerThreshold">The minimum power threshold. The inital defaultis an integer with a value 0.</property>
+</doc>

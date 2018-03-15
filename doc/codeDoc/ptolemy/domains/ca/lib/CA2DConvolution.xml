@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CA2DConvolution" class="ptolemy.domains.ca.lib.CA2DConvolution">
+  <description>
+Cellular Automata 2D Convolution Actor.&#10;&#10; &lt;p&gt;The CA2DConvolution actor should be used in conjunction with the CADirector.&#10; To use this actor, it is highly recommended to start with one of the&#10; examples.  The examples have the required variables (used by the&#10; director) added to the canvas and connected to the correct input and&#10; output ports of the CA2DConvolution actor.  The actor should be used to perform&#10; convolution operations in discrete two-dimensional (2D) space.  The&#10; inputs are: i and j, the x and yLocation of the current space on the&#10; 2D grid; the currentValue of the space (i,j) on the grid; and the&#10; currentValues of all neighboring cells in the grid.  The output is&#10; the newValue at 2D grid position (i,j).&lt;/p&gt;  </description>
+  <author>Zach Ezzell, Contributor: Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

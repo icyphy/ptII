@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HTMLViewerTableau" class="ptolemy.actor.gui.HTMLViewerTableau">
+  <description>
+A tableau representing a rendered HTML view in a toplevel window.&#10; The URL that is viewed is given by the &lt;i&gt;url&lt;/i&gt; parameter, and&#10; can be either an absolute URL, a system fileName, or a resource that&#10; can be loaded relative to the classpath.  For more information about how&#10; the URL is specified, see MoMLApplication.specToURL().&#10; &lt;p&gt;&#10; The constructor of this&#10; class creates the window. The text window itself is an instance&#10; of HTMLViewer, and can be accessed using the getFrame() method.&#10; As with other tableaux, this is an entity that is contained by&#10; an effigy of a model.&#10; There can be any number of instances of this class in an effigy.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="url">The URL to display.</property>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR">
+  <description>
+This actor implements a type polymorphic finite-impulse response&#10; filter with multirate capability, where the impulse response&#10; of the filter is provided by an input. Since this filter operates on&#10; Tokens, it is polymorphic in the type of data it operates on.&#10; &lt;p&gt;&#10; If the &lt;i&gt;decimation&lt;/i&gt; parameter is unity (the default), then&#10; the &lt;i&gt;blockSize&lt;/i&gt; parameter specifies the number of inputs&#10; of the filter that are processed per coefficient set provided on the&#10; &lt;i&gt;newTaps&lt;/i&gt; input.  Otherwise, if &lt;i&gt;decimation&lt;/i&gt; is greater than unity,&#10; then the number of tokens consumed is the product of &lt;i&gt;decimation&lt;/i&gt;&#10; and &lt;i&gt;blockSize&lt;/i&gt;, and all these inputs are processed using the&#10; filter coefficients provided on &lt;i&gt;newTaps&lt;/i&gt;.&#10; In all other respects, the behavior of this&#10; actor is the same as that of the base class.&#10; &lt;p&gt;&#10; Note that when a new set of filter coefficients arrives on &lt;i&gt;newTaps&lt;/i&gt;,&#10; if the new set has more coefficients than the old set, then a transient&#10; will occur that may be unexpected.  The delay line containing previously&#10; consumed data has to be increased in length to match the number of&#10; new coefficients.  However, the extended part of the delay line cannot&#10; possibly be initialized with previously consumed data because that&#10; data has not been saved.  Unless this actor were to save &lt;i&gt;all&lt;/i&gt;&#10; previously consumed data (which would be hopelessly inefficient), there&#10; is no way it can be assured of always having the requisite data.&#10; Thus, the actor initializes the extended part of the delay line&#10; with zeros of the same type as the input data.  </description>
+  <author>Edward A. Lee, Yuhong Xiong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="newTaps">The input for new tap values.  This is an array.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockSize">The number of inputs that use each each coefficient set is the&#10;  value of this parameter multiplied by the value of the&#10;  &lt;i&gt;decimation&lt;/i&gt; parameter.&#10;  This is an integer that defaults to 1.</property>
+</doc>

@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StatePredictorWithControl" class="org.ptolemy.ssm.StatePredictorWithControl">
+  <description>
+Implementation of StatePredictor witch uses control input.&#10;&#10; &lt;p&gt;StatePredictor runs on a state space model given by&#10; &lt;pre&gt;&#10; X_{t+1} = f(X_t, U_t)&#10; &lt;/pre&gt;&#10; where X is the state vector, U is the input vector.&#10; This actor reads a single record(x, y) from the port &quot;current_state&quot;&#10; and an array of vector(vx, vy) from the port &quot;control_inputs&quot;.&#10; Output is an array of state(x, y) whose length is &quot;prediction horizon&quot;.&#10; If the length of control_inputs is shorter than prediction horizon,&#10; the last value of cotrol_inputs is used until the step of prediction horizon.  </description>
+  <author>Shuhei Emoto</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (shuhei)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (shuhei)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="controlInput">control input for a robot.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="currentState">current state of a robot.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="predictedStates">predicted states of a robot.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="jacobianOfStates">jacobian of predicted states (dX/dU).&#10; this port output array of matrix {dX1/dU, dX2/dU, ..., dXn/dU}&#10; where Xn means predicted states of n-Step later and U means control input (matrix [U1, U2, ..., Un]).</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="timeHorizon">The time-horizon which defines the number of steps of prediction.</property>
+</doc>

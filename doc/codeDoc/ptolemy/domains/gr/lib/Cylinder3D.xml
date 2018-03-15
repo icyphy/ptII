@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Cylinder3D" class="ptolemy.domains.gr.lib.Cylinder3D">
+  <description>
+This actor contains the geometry and appearance specifications for a GR&#10; cylinder.  The output port is used to connect this actor to the Java3D&#10; scene graph. This actor will only have meaning in the GR domain.&#10; Note that most of the parameters are described in the base class documentation.  </description>
+  <author>C. Fong, Adam Cataldo, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (liuxj)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="circleDivisions">The number of divisions in the circles forming the ends of the&#10;  cylinder. This is an integer with&#10;  default value &quot;max(6, roundToInt(radius * 100))&quot;. This parameter&#10;  determines the resolution of the cylinder, which is approximated&#10;  as a surface composed of rectangular facets. Increasing this&#10;  value makes the surface smoother, but also increases the cost&#10;  of rendering.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="height">The height of the cylinder. This is a double with&#10;  default 0.7.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="sideDivisions">The number of divisions on the side of the cone.&#10;  This is an integer with default value &quot;1&quot;. This parameter&#10;  probably only needs to change when the &lt;i&gt;wireFrame&lt;/i&gt; option&#10;  is set to true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="radius">The radius of the cylinder. This is a double with&#10;  default 0.5.</property>
+</doc>

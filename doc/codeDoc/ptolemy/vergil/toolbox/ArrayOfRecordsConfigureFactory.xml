@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayOfRecordsConfigureFactory" class="ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">
+  <description>
+If this class is contained by an actor, then double clicking on that&#10; actor will display a table that shows the value of an&#10; array of tokens contained by a parameter contained by the&#10; same container as this factory. The name of the parameter&#10; is given by the  &lt;i&gt;parameterName&lt;/i&gt; attribute of this factory.&#10; It is required that the parameter contain an array of records.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ptolemy)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="columns">The names of the fields to be displayed from the records, in&#10;  the order in which they should be displayed. This is required&#10;  to be an array of string tokens. This defaults to null (no value)&#10;  which results in all fields being displayed in alphabetical&#10;  order.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="parameterName">The name of the attribute that is to be displayed.&#10;  That attribute is required to contain an array of record tokens.</property>
+</doc>

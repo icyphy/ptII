@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AreaEventType" class="ptolemy.vergil.basic.export.web.AreaEventType">
+  <description>
+A parameter used to specify the event type actions associated&#10; with an area in an HTML image map. This parameter offers the following events:&#10;  &lt;ul&gt;&#10;  &lt;li&gt;&lt;b&gt;onblur&lt;/b&gt;: Command to be run when an element loses focus.&#10;  &lt;li&gt;&lt;b&gt;onclick&lt;/b&gt;: Command to be run on a mouse click.&#10;  &lt;li&gt;&lt;b&gt;ondblclick&lt;/b&gt;: Command to be run on a mouse double-click.&#10;  &lt;li&gt;&lt;b&gt;onfocus&lt;/b&gt;: Command to be run when an element gets focus.&#10;  &lt;li&gt;&lt;b&gt;onmousedown&lt;/b&gt;: Command to be run when mouse button is pressed.&#10;  &lt;li&gt;&lt;b&gt;onmousemove&lt;/b&gt;: Command to be run when mouse pointer moves.&#10;  &lt;li&gt;&lt;b&gt;onmouseout&lt;/b&gt;: Command to be run when mouse pointer moves out of an element.&#10;  &lt;li&gt;&lt;b&gt;onmouseover&lt;/b&gt;: Command to be run when mouse pointer moves over an element.&#10;  &lt;li&gt;&lt;b&gt;onmouseup&lt;/b&gt;: Command to be run when mouse button is released.&#10;  &lt;li&gt;&lt;b&gt;onkeydown&lt;/b&gt;: Command to be run when a key is pressed.&#10;  &lt;li&gt;&lt;b&gt;onkeypress&lt;/b&gt;: Command to be run when a key is pressed and released.&#10;  &lt;li&gt;&lt;b&gt;onkeyup&lt;/b&gt;: Command to be run when a key is released.&#10;  &lt;/ul&gt;&#10;  These are the events supported by the HTML area tag.&#10;  The default value is &quot;onmouseover&quot;. It is not clear how&#10;  these areas get the focus, so the focus and key commands do not&#10;  appear to be useful.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

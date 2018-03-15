@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MetroIIPtidesDirector" class="ptolemy.domains.metroII.kernel.MetroIIPtidesDirector">
+  <description>
+MetroIIPtidesDirector adapts Ptides programming model to MetroII semantics.&#10; Instead of firing actors sequentially, MetroIIPtides simultaneously fires&#10; actors by calling startOrResume(MetroII event list) (@see StartOrResumable).&#10; This implies that each firing is a process that executes and blocks to&#10; propose MetroII events. The proposed events from actors will be passed to&#10; upper level directors and ultimately passed to MetroIIDirector (@see&#10; MetroIIDirector), where the states of the MetroII events are updated based on&#10; constraint resolution and architectural models. In other words, the order of&#10; firing may be affected by the architectural model. But causality should not&#10; be violated because the actors ready to fire simultaneously are obtained by&#10; causality analysis, see &lt;a href=&quot;../../../../ptolemy/domains/metroII/kernel/MetroIIPtidesDirector.html#isCausallyAffected&quot;&gt;isCausallyAffected(Collection, PtidesEvent)&lt;/a&gt;.&#10;&#10; &lt;p&gt;&#10; Most methods are identical to PtidesDirector except directors are mapped to&#10; MetroIIPtidesdirector instead of PtidesDirector.&#10; &lt;/p&gt;  </description>
+  <author>Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou,&#10;         Liangpeng Guo</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (derler)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="clockSynchronizationErrorBound">Bounds on clock synchronization error across all platforms. FIXME:&#10; eventually set parameter per platform or for some platforms.</property>
+</doc>

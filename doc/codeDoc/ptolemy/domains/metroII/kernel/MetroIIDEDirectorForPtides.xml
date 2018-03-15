@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MetroIIDEDirectorForPtides" class="ptolemy.domains.metroII.kernel.MetroIIDEDirectorForPtides">
+  <description>
+MetroIIDEDirectorForPtides is an intermediate class for MetroIIPtidesDirector&#10; to extend. MetroIIPtidesDirector cannot extend PtidesDirector because the&#10; super class DEDirector does not support MetroII semantics. We choose to not&#10; extend MetroIIDEDirector either, because all the actors under&#10; MetroIIPtidesDirector can be considered as MetroII actors. The assumption&#10; greatly simplifies the implementation.&#10;&#10; &lt;p&gt;&#10; MetroIIDEDirectorForPtides is a much simpler version of MetroIIDEDirector&#10; with the assumption that all the actors are MetroII actors.&#10; &lt;/p&gt;  </description>
+  <author>Liangpeng Guo</author>
+  <version>$Id: MetroIIDEDirectorForPtides.java 67634 2013-10-03 17:12:51Z glp$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (glp)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (glp)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="printTrace">Option parameter whether trace info is printed out.</property>
+</doc>

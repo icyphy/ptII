@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SubMatrix" class="ptolemy.actor.lib.SubMatrix">
+  <description>
+This actor extract a submatrix from an input matrix.&#10; For example, if the input matrix is&#10; &lt;pre&gt;&#10;   1  2  3&#10;   4  5  6&#10;   7  8  9&#10; &lt;/pre&gt;&#10; then the parameters &lt;i&gt;row&lt;/i&gt; = 1,&#10; &lt;i&gt;column&lt;/i&gt; = 0,&#10; &lt;i&gt;rowSpan&lt;/i&gt; = 2, and&#10; &lt;i&gt;columnSpan&lt;/i&gt; = 1,&#10; yield the following submatrix&#10; &lt;pre&gt;&#10;   4&#10;   7&#10; &lt;/pre&gt;&#10; If the submatrix specified is not entirely&#10; contained by the input matrix, or if the resulting submatrix&#10; is empty, then this actor will throw an exception.  </description>
+  <author>Edward Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="column">The starting column number. This is an integer that&#10;  defaults to 0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="columnSpan">The span of columns. This is an integer that defaults&#10;  to 1.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="row">The starting row number. This is an integer that&#10;  defaults to 0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="rowSpan">The span of rows. This is an integer that defaults&#10;  to 1.</property>
+</doc>

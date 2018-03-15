@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ColtChiSquare" class="ptolemy.actor.lib.colt.ColtChiSquare">
+  <description>
+Produce a random sequence with a ChiSquare distribution.  On each&#10; iteration, a new random number is produced.  The output port is of&#10; type DoubleToken.  The values that are generated are independent&#10; and identically distributed with the freedom and the standard&#10; deviation given by parameters.  In addition, the seed can be&#10; specified as a parameter to control the sequence that is generated.&#10;&#10; &lt;p&gt; This actor instantiates a&#10; &lt;a href=&quot;http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/ChiSquare.html&quot;&gt;cern.jet.random.ChiSquare&lt;/a&gt; object with&#10; freedom argument set to 1.0.&#10;&#10; The Chi Square Distribution is&#10; &lt;blockquote&gt;&#10; A special case of the Gamma distribution.&#10; &lt;p&gt;&#10; &lt;tt&gt;p(x) = (1/g(f/2)) * (x/2)^(f/2-1) * exp(-x/2)&lt;/tt&gt; with &lt;tt&gt;g(a)&lt;/tt&gt; being the gamma function and &lt;tt&gt;f&lt;/tt&gt; being the degrees of freedom.&#10; &lt;/p&gt;&lt;p&gt;&#10; Valid parameter ranges: &lt;tt&gt;freedom &amp;gt; 0&lt;/tt&gt;.&#10; &lt;/blockquote&gt;&#10;&#10; The above description of Chi Square is&#10; &lt;a href=&quot;doc-files/colt-copyright.htm&quot;&gt;copyrighted&lt;/a&gt;.&#10;&#10; &lt;p&gt;A definition of the ChiSquare distribution can be found at&#10; &lt;a href=&quot;http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000&quot;&gt;&lt;code&gt;http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000&lt;/code&gt;&lt;/a&gt;  </description>
+  <author>David Bauer and Kostas Oikonomou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="freedom">freedom.&#10;  This has type double with default value 1.0.</property>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Box3D" class="ptolemy.domains.gr.lib.Box3D">
+  <description>
+This actor contains the geometry and appearance specifications for a&#10; box.  The output port is used to connect this actor to the Java3D scene&#10; graph. This actor will only have meaning in the GR domain.&#10; The parameters &lt;i&gt;xLength&lt;/i&gt;, &lt;i&gt;yHeight&lt;/i&gt;, and &lt;i&gt;zWidth&lt;/i&gt;&#10; determine the dimensions of box. The rest of the parameters are&#10; described in the base class.  </description>
+  <author>Chamberlain Fong, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (liuxj)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xLength">The length of the box in the x-axis. This has type double&#10;  with default 0.1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yHeight">The height of the box in the y-axis. This has type double&#10;  with default 0.1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="zWidth">The width of the box in the z-axis. This has type double&#10;  with default 0.1.</property>
+</doc>

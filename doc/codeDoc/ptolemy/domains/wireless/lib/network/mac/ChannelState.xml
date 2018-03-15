@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ChannelState" class="ptolemy.domains.wireless.lib.network.mac.ChannelState">
+  <description>
+This actor updates the channel state based on the information from PHY&#10; and NAV (Network Allocation Vector). To speed up simulation, slot events&#10; in 802.11 are not generated here.  </description>
+  <author>Yang Zhao</author>
+  <version>ChannelState.java,v 1.21 2004/04/22 19:46:18 ellen_zh Exp</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (ellen_zh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="channelStatus">The input port for channel status message from the&#10;  physical layer.  This has undeclared type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="fromValidateMpdu">The input port for messages from ValidateMpdu process.&#10;  Two types of messages: UseIfs and RtsTimeout</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="fromFilterMpdu">The input port for setNav message from FilterMpdu.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="toTransmission">The output port that produces messages that&#10;  indicate the channel status.</port>
+</doc>

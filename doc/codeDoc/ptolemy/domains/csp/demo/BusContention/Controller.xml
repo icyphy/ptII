@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Controller" class="ptolemy.domains.csp.demo.BusContention.Controller">
+  <description>
+A CSP actor that serves as a controller of a shared resource. This&#10; actor has four &quot;informal&quot; states that are cycled through in the&#10; fire() method. In these four states this actor accepts and grants&#10; requests for access to a shared resource. An Actor that wants to&#10; request or be granted access to a shared resource must connect to&#10; this controller via the requestInput and requestOutput ports. To&#10; aid in monitoring such requests, the controller connects to a&#10; ContentionAlarm actor through its contendInput and contendOutput&#10; ports.&#10;&#10; In state one the controller waits for requests on its requestInput&#10; port. Once the first request has been received, the controller&#10; moves to state two and sends a message to the ContentionAlarm&#10; notifying it that a request has occurred at the current time. The&#10; controller then moves to state three and performs a conditional&#10; rendezvous on its contendInput and requestInput ports. Once an input&#10; has been received from the ContentionAlarm, then the controller knows&#10; that that the request contention period is over and it moves to state&#10; four. In state four the controller notifies the resource requestors as&#10; to whether their requests were granted based on priority relative to&#10; other contenders.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="requestInput">The resource request input port. Resource requests are made&#10;  through this port with a token that include's the requestor's&#10;  priority level. The type of this port is BaseType.INT. This&#10;  port is a multiport.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="requestOutput">The resource request output port. Resources are granted through&#10;  this port. The type of this port is BaseType.BOOLEAN. This port&#10;  is a multiport.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="contendInput">The contention input port. The availability of data on this&#10;  port indicates that additional resource contention does not&#10;  exist at the current time. The type of this port is&#10;  BaseType.GENERAL.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="contendOutput">The contention output port. Output data on this port can be&#10;  used to trigger a ContentionAlarm. The type of this port is&#10;  BaseType.GENERAL.</port>
+</doc>

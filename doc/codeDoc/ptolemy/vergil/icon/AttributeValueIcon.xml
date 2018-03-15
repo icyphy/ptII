@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AttributeValueIcon" class="ptolemy.vergil.icon.AttributeValueIcon">
+  <description>
+An icon that displays the value of an attribute of the container&#10; or of some other entity contained by the container.&#10; The attribute is assumed to be an instance of Settable, and its name&#10; is given by the parameter &lt;i&gt;attributeName&lt;/i&gt;.  The display is not&#10; automatically updated when the attribute value is updated.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="displayHeight">The maximum number of lines to display. This is an integer, with&#10;  default value 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="displayWidth">The number of characters to display. This is an integer, with&#10;  default value 6.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="entityName">Name of the entity contained by the container whose attribute&#10;  this icon will display. This is a string that defaults to the&#10;  empty string, which means that the attribute is contained&#10;  by the container of this attribute.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="attributeName">The name of the attribute of the container whose value to display.&#10;  This is a string that by default is empty. An empty string means&#10;  that the attribute whose value to display is the container itself,&#10;  rather than an attribute contained by the container.</property>
+</doc>

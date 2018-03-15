@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="InstantiableNamedObj" class="ptolemy.kernel.InstantiableNamedObj">
+  <description>
+An InstantiableNamedObj is a named object that can be either a class&#10; definition or an instance.  If it is a class definition, then &quot;instances&quot; of&#10; that class definition can be created by the instantiate() method. Those&#10; instances are called the &quot;children&quot; of this &quot;parent.&quot; Changes&#10; to the parent propagate automatically to the children as described&#10; in the &lt;a href=&quot;../../ptolemy/kernel/util/Instantiable.xml&quot;&gt;ptolemy.kernel.util.Instantiable&lt;/a&gt; interface.&#10; &lt;p&gt;&#10; Note that the &lt;a href=&quot;../../ptolemy/kernel/InstantiableNamedObj.html#instantiate&quot;&gt;instantiate(NamedObj, String)&lt;/a&gt; permits instantiating&#10; an object into a workspace that is different from the one associated with&#10; this object.  This means that some care must be exercised when propagating&#10; changes from a parent to a child, since they may be in different workspaces.&#10; Suppose for example that the change that has to propagate is made via a&#10; change request. Although it may be a safe time to execute a change request&#10; in the parent, it is not necessarily a safe time to execute a change request&#10; in the child.  Classes that restrict these safe times should override&#10; the propagateExistence(), propagateValue(), and propagateValues() methods&#10; to ensure that the destinations of the propagation are in a state that&#10; they can accept changes.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (neuendor)</Pt.AcceptedRating>
+</doc>

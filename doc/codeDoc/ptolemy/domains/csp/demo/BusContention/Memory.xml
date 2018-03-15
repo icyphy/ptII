@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Memory" class="ptolemy.domains.csp.demo.BusContention.Memory">
+  <description>
+A CSP actor that continually performs conditional rendezvous in&#10; an alternating fashion with its input and output ports. The Memory&#10; actor can optionally send tokens with string values during&#10; conditional rendezvous.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port. The type of this port is BaseType.STRING.&#10;  This is a multiport.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port. The type of this port is BaseType.GENERAL.&#10;  This is a multiport.</port>
+</doc>

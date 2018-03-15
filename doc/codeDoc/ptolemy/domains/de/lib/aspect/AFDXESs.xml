@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AFDXESs" class="ptolemy.domains.de.lib.aspect.AFDXESs">
+  <description>
+This actor is an &lt;a href=&quot;../../../../../ptolemy/actor/CommunicationAspect.xml&quot;&gt;ptolemy.actor.CommunicationAspect&lt;/a&gt; that simulates an AFDX End-systems component&#10;  When its &lt;a href=&quot;../../../../../ptolemy/domains/de/lib/aspect/AFDXESs.html#sendToken&quot;&gt;sendToken(Receiver, Receiver, Token)&lt;/a&gt; method is called,&#10;  the delivery of the specified token to the specified receiver is delayed according&#10;  to the AFDX end-system protocol and behavior. Only one actor of this kind is required&#10;  to manage all end-systems of one AFDX network.&#10;  &lt;p&gt;&#10;  For more information please refer to:&#10;      &lt;i&gt;AFDX network simulation in PtolemyII&lt;/i&gt;.&#10;      &lt;i&gt;AFDX standard document&lt;/i&gt;.  </description>
+  <author>Gilles Lasnier</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (glasnier)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (glasnier)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="bitRate">The bit rate of the bus. This is a double with default value to 100&#10; Mbits/s. It is required to be positive.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DDEGetNToken" class="ptolemy.domains.dde.kernel.test.DDEGetNToken">
+  <description>
+DDEGetNToken is a test class used to test the consumption of tokens&#10; and check relevant parameters. DDEGetNToken can retrieve N tokens&#10; where 'N' is set in the constructor. For each token retrieved, the&#10; current time at the time of consumption and the actual consumed&#10; token can be queried. The queries can take place after the completion&#10; of Manager.run().  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

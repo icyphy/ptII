@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Place" class="ptolemy.domains.petrinet.kernel.Place">
+  <description>
+A Petri net place compatible with the PetriNetDirector. A Petri net&#10; place is a basic component of the Petri Net model. Another basic&#10; component is the Transition. A place is connected to transitions. It&#10; contains an integer as the marking of the place, which represents&#10; the number of tokens in the place. The operation of the Petri net is&#10; controlled by the marking and the weights of arcs connecting places&#10; and transitions.&#10;&#10; The methods here are used to manipulate the integer marking.&#10; The TemporaryMarking is used for checking whether a transition&#10; is ready or not.  </description>
+  <author>Yuke Wang and Edward A. Lee, modified by Zach Ezzell</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialMarking">The number of initial tokens in the place. This is an integer.</property>
+</doc>

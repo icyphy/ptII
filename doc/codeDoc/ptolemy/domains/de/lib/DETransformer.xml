@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DETransformer" class="ptolemy.domains.de.lib.DETransformer">
+  <description>
+This is an abstract base class for DE actors that transform&#10; an input stream into an output stream.  It provides an input&#10; and an output port, and manages the cloning of these ports.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.  This base class imposes no type constraints except&#10;  that the type of the input cannot be greater than the type of the&#10;  output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port. By default, the type of this port is constrained&#10;  to be at least that of the input.</port>
+</doc>

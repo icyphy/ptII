@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="InteractiveDialog" class="ptolemy.actor.lib.gui.InteractiveDialog">
+  <description>
+&lt;p&gt;&#10; This actor creates a window on the screen with a command entry box&#10; and a results display box. When the user types a command and terminates&#10; it with a return, this actor will emit an output with the value of that&#10; command and also display the command in the results display box.&#10; Any input that it receives it displays in the results display box.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port. By default, this has undeclared type.&#10;  If backward type inference is enabled, then it has type general.&#10;  In either case, it can receive any data type. If it receives&#10;  token of type string, it strips off the surrounding double&#10;  quotes before displaying the value.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="terminateWithNewline">If true, append a newline to each output string.&#10;  This is a boolean that defaults to false.</property>
+</doc>

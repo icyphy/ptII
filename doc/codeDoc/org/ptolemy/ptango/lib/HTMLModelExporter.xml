@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
+  <description>
+A subclass of ModelReference that produces on its output an HTML page for the contained model.&#10;&#10; FIXME: More&#10;&#10; Running in a new thread is not supported by HTMLModelExporter.  </description>
+  <author>Edward A. Lee and Beth Latronico</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ltrnc)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ltrnc)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="webPage">The output port on which to produce HTML text for this&#10;  web page. This has type string.</port>
+    <!--ptolemy.actor.gui.ColorAttribute-->
+    <property name="backgroundColor">Background color. By default this is blank, which indicates&#10;  to use the background color of the model.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="copyJavaScriptFiles">If true, then make an exported web page stand alone.&#10;  Instead of referencing JavaScript and image files on the&#10;  ptolemy.org website, if this parameter is true, then the&#10;  required files will be copied into the target directory.&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="deleteFilesOnExit">If true, deleted generated files when the JVM exits.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="directoryToExportTo">The directory to export files that the output HTML&#10;  references, such as image files. If a relative name is given,&#10;  then it is relative to the location of the model file.&#10;  By default, this is blank,&#10;  which will result in writing to a directory with name&#10;  equal to the sanitized name of the model,&#10;  and the directory will be contained in the same location&#10;  where the model that contains this attribute is stored.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="openCompositesBeforeExport">If true, hierarchically open all composite actors&#10;  in the model before exporting (so that these also&#10;  get exported, and hyperlinks to them are created).&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="runBeforeExport">If true, run the model before exporting (to open plotter&#10;  or other display windows that get exported). Note that&#10;  it is important the model have a finite run. This is a&#10;  boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="usePtWebsite">If true, use the server-side includes of the Ptolemy website.&#10;  This is a boolean that defaults to false. This parameter&#10;  is marked as an expert parameter, so by default, it is not&#10;  visible.</property>
+</doc>

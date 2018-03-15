@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="InfiniteConcept" class="ptolemy.data.ontologies.InfiniteConcept">
+  <description>
+A concept that is not part of a finite ontology.&#10;  This class represents Concepts that, rather than being drawn from&#10;  a fixed finite set of the elements in a ConceptGraph, are drawn&#10;  from a potentially infinite set, such as those used to represent&#10;  structured datatypes like records, concepts parameterized over values,&#10;  and other situations where enumerating all possible concepts beforehand&#10;  is not feasible.&#10;  &lt;p&gt;&#10;  Since this class aims to be a general superclass of any type of infinite&#10;  concept, it does not provide any implementations that may be particular&#10;  to a particular style of infinite concepts, and is abstract.&#10;  Subclasses are responsible for determining exactly what type of infinite&#10;  concept they will support.  </description>
+  <author>Ben Lickly</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (blickly)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (blickly)</Pt.AcceptedRating>
+</doc>

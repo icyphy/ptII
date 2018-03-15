@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater">
+  <description>
+On each firing, read one token from each input port and assemble them&#10; into a RecordToken that contains the union of the original input record&#10; and each of the update ports.  To use this class, instantiate it, and&#10; then add input ports (instances of TypedIOPort).  This actor is polymorphic.&#10; The type constraint is that the output record contains all the labels in&#10; the input record plus the names of added input ports. The type of a field&#10; in the output is the same as the type of the added input port, if that field&#10; is updated by an added input port. If a field in the output is not updated&#10; by an input port, its type is the same as the corresponding field in the&#10; input record. For example, if the input record has type&#10; {item: string, value: int}, and this actor has two added input ports with&#10; name/type: value/double and id/int, then the output record will have type&#10; {item: string, value: double, id: int}  </description>
+  <author>Michael Shilman, Steve Neuendorffer, Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port. Its type is constrained to be a RecordType.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port. Its type is constrained to be a RecordType.</port>
+</doc>

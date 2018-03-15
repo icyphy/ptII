@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Console" class="ptolemy.actor.gui.Console">
+  <description>
+A tableau that displays Console messages. The standard output is redirected&#10; to here.  </description>
+  <author>Liangpeng Guo</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (glp)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (glp)</Pt.AcceptedRating>
+</doc>

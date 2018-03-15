@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Round" class="ptolemy.actor.lib.conversions.Round">
+  <description>
+Produce an output token on each firing with a value that is&#10; equal to the specified rounded value of the input.&#10; The input type is DoubleToken. The output type is IntToken.&#10; The functions are a subset of those in the java.lang.Math class.&#10; They are:&#10; &lt;ul&gt;&#10; &lt;li&gt; &lt;b&gt;ceil&lt;/b&gt;: Round towards positive infinity.&#10; &lt;li&gt; &lt;b&gt;floor&lt;/b&gt;: Round towards negative infinity.&#10; &lt;li&gt; &lt;b&gt;round&lt;/b&gt;: Round towards nearest integer.  This is the&#10; default behavior.&#10; &lt;li&gt; &lt;b&gt;truncate&lt;/b&gt;: Round towards zero.&#10; &lt;/ul&gt;&#10;&#10; If the input is NaN, then an exception is thrown.&#10; The reason for this is that there is no way to represent a NaN&#10; as an integer.  Thus, even though java.lang.Math.round(Double.NaN)&#10; returns 0, ceil(Double.NaN), floor(Double.NaN) and truncate(DoubleNaN) all&#10; return a Double.NaN.  However, this actor has an integer output,&#10; so there is no way to represent the Double.NaN as an integer, so&#10; we throw an exception.  </description>
+  <author>C. Fong, Contributor: Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (chf)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (janneck)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="function">The rounding strategy to use.  This is a string-valued parameter&#10;  that defaults to &quot;round&quot;.</property>
+</doc>

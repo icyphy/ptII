@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Combine" class="ptolemy.domains.sr.lib.Combine">
+  <description>
+Combine actor for combining synchronous signals (ports with a token&#10; or no token) using a combine function.  </description>
+  <author>Christian Motika</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>red (cmot)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (cmot)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">This is a multiport for input (known) signals.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output a signal here iff any connected input signal is known.&#10; This is a constant value of &quot;1&quot; indicating the presence, always.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="value">Output a resulting value.&#10; This is a constant value of &quot;1&quot;, always.</port>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="function">The function to compute a combine operation on signals.&#10;  This is a string-valued attribute that defaults to &quot;add&quot;.</property>
+</doc>

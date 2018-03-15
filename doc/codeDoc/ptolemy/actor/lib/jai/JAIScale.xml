@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIScale" class="ptolemy.actor.lib.jai.JAIScale">
+  <description>
+Scale a RenderedOp using the javax.media.jai.JAI class.  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="specifySize">If &lt;i&gt;true&lt;/i&gt; (the default), then the image will be scaled to&#10;  the dimensions provided in width and height.  If &lt;i&gt;false&lt;/i&gt;,&#10;  then the width and height of the image will be scaled by the&#10;  respective amounts provided in xScaleFactor and yScaleFactor.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="subSampleBits">The subsample precision.  The default value of this parameter&#10;  is the integer value 8.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xScaleFactor">The scaling factor in the horizontal direction.  The default&#10;  value of this parameter is the double value 1.0</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yScaleFactor">The scaling factor in the vertical direction.  The default&#10;  value of this parameter is the double value 1.0</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The desired width in pixels.  The default value of this&#10;  parameter is the integer 800.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="height">The desired height in pixels.  The default value of this&#10;  parameter is the integer 600.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="interpolationType">The type of interpolation to use.  This is a string valued&#10;  attribute that defaults to type &quot;bilinear&quot;</property>
+</doc>

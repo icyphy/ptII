@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DeltaConstraintSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
+  <description>
+An implementation of PropertyConstraintSolver that tries to minimize&#10; error cases.  It does this by searching for a set of constraints&#10; that produce an error but for whom removing any constraint remove&#10; the error.  </description>
+  <author>Ben Lickly, Dai Bui</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (blickly)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (blickly)</Pt.AcceptedRating>
+</doc>

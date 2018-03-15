@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TableauFactory" class="ptolemy.actor.gui.TableauFactory">
+  <description>
+This class is an attribute that creates a tableau to view a specified effigy.&#10; When a model is opened, if the top-level of that model contains this&#10; attribute or a subclass, then that attribute handles constructing a tableau.&#10; Otherwise, the configuration specifies which tableau is used.&#10; A configuration contains an instance of this class, and uses it to create&#10; a tableau for a model represented by an effigy.  This base class assumes&#10; that it contains other tableau factories. Its createTableau() method defers&#10; to each contained factory, in the order in which they were added,&#10; until one is capable of creating a tableau for the specified effigy.&#10; Subclasses of this class will usually be inner classes of a Tableau,&#10; and will create the Tableau, or might themselves be aggregates of&#10; instances of TextEditorTableauFactory.&#10; &lt;p&gt;&#10; When there are multiple distinct TableauFactory classes that are capable&#10; of providing views on the same effigy, then instances of these&#10; factories should be aggregated into a single factory contained herein.&#10; Those instances can be presented as alternative views of the data when&#10; any single view is opened.&#10; &lt;p&gt;&#10; There is a significant subtlety with respect to how Ptolemy II classes&#10; are dealt with. Normally, when one looks inside an instance of a class,&#10; what is opened is the class definition, not the instance. However,&#10; if the instance contains an instance of TableauFactory, then what&#10; is opened is the instance, not the class definition.  This is used,&#10; for example, when the look inside behavior is customized on a per&#10; instance basis.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (celaine)</Pt.AcceptedRating>
+</doc>

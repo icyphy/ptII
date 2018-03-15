@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+  <description>
+This is a model of a wireless channel with a specified transmission range.&#10; The transmission range can be specified in one of two ways.&#10; Either it is the value of the &lt;i&gt;range&lt;/i&gt; field in the&#10; &lt;i&gt;defaultProperties&lt;/i&gt; parameter (a record) of this&#10; channel, or it is provided by the transmitter on each call to&#10; transmit() as a property argument.  To use the latter mechanism,&#10; it is necessary that the property token be an instance of RecordToken&#10; with a field named &quot;range&quot; that can be converted to a double&#10; (i.e., it can be a double, an int, or a byte).&#10; The default value for &lt;i&gt;range&lt;/i&gt; is Infinity, which&#10; indicates that by default, there is no range limit.&#10; &lt;p&gt;&#10; Any receiver that is within the specified range when transmit()&#10; is called will receive the transmission.  The distance between&#10; the transmitter and receiver is determined by the protected&#10; method _distanceBetween().  In this base class, that method uses&#10; the _location attribute of the transmit and receive actors,&#10; which corresponds to the position of the icon in the Vergil&#10; visual editor.  Subclasses may override this protected method&#10; to provide some other notion of distance.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+  <description>
+An actor that displays the contents of a matrix input. This&#10; actor has a single input port, which only accepts MatrixTokens. One&#10; token is consumed per firing (in postfire()).  The data in the MatrixToken is&#10; displayed in a table format with scrollbars, using the swing JTable&#10; class.  </description>
+  <author>Bart Kienhuis and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (kienhuis)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (kienhuis)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The width of the table in pixels. This must contain an&#10;  integer.  If the table is larger than this specified width,&#10;  then scrollbars will appear, or the column width is adjusted.&#10;  The default value is 500.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="height">The height of the table in pixels. This must contain an&#10;  integer.  If the table is larger than this specified width,&#10;  then scrollbars will appear.  The default value is 300.</property>
+</doc>

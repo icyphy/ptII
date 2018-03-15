@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ParameterPort" class="ptolemy.actor.parameters.ParameterPort">
+  <description>
+A specialized port for use with PortParameter.  This port is created&#10; by an instance of PortParameter and provides values to a parameter.&#10; Data should not be read directly from this port.  Instead, the update&#10; method of the corresponding PortParameter should be invoked.  This&#10; port is only useful if the container is opaque, however, this is not&#10; checked.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="_parameter">The associated parameter.</property>
+</doc>

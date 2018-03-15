@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues">
+  <description>
+Read the given number of input booleans and output the number that are true.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (yuhong)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockSize">The number of input tokens to read before outputting a count.&#10;  The input is of type integer and has a default value of 1.</property>
+</doc>

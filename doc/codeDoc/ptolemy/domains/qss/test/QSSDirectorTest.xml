@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="QSSDirectorTest" class="ptolemy.domains.qss.test.QSSDirectorTest">
+  <description>
+A test director that extends QSSDirector.&#10;&#10; &lt;p&gt;This director consists of constructors that invoke the super&#10; class and then print the classname and arguments.  It is used&#10; during testing in $PTII/ptolemy/domains/de/test/RunDETestsAsQSS.tcl&#10; when the DE tests are run with the QSSDirector by the.&lt;/p&gt;  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy 11.0</since>
+  <Pt.ProposedRating>Red</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red</Pt.AcceptedRating>
+</doc>

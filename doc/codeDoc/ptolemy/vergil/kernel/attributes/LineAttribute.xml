@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LineAttribute" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+  <description>
+This is an attribute that is rendered as a line.&#10;&#10; &lt;p&gt;&#10; This contains two parameters, &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;, which control the&#10; run and rise, respectively, of the line.  Note that the origin is in the&#10; upper-left hand corner, so positive x values will extend to the right, and&#10; positive y values will extend downwards on the screen.&lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="x">The horizontal extent.&#10;  This is a double that defaults to 100.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="y">The y extent.&#10;  This is a double that defaults to 0.0.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ActorNameIcon" class="ptolemy.vergil.icon.ActorNameIcon">
+  <description>
+An icon that displays the parameter &lt;i&gt;_displayedName&lt;/i&gt;.&#10;&#10; This differs from &lt;a href=&quot;../../../ptolemy/vergil/icon/BoxedValueIcon.xml&quot;&gt;ptolemy.vergil.icon.BoxedValueIcon&lt;/a&gt; in that&#10; it uses the _displayedName parameter and hides the name of the&#10; container.  </description>
+  <author>Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Red (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (celaine)</Pt.AcceptedRating>
+</doc>

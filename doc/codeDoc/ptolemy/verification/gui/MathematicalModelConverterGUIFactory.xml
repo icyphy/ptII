@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MathematicalModelConverterGUIFactory" class="ptolemy.verification.gui.MathematicalModelConverterGUIFactory">
+  <description>
+This is an attribute that creates an editor for configuring and&#10; running a code generator.  This is designed to be contained by&#10; an instance of CodeGenerator or a subclass of CodeGenerator.&#10; It customizes the user interface for &quot;configuring&quot; the code&#10; generator. This UI will be invoked when you double click on the&#10; code generator.  </description>
+  <author>Chihhong Patrick Cheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (patrickj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red ()</Pt.AcceptedRating>
+</doc>

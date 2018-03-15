@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
+  <description>
+Convert a string to an integer-array.  The output is an array of integers&#10; constructed by placing one byte (i.e. one character) of the string into&#10; the least significant byte of each integer.  Typically, this byte is the&#10; ASCII code of the character.  NOTE: For the time being, this actor assumes&#10; an 8-bit character has been set as the Java default on the platform in use.&#10; This actor is designed to facilitate use of the SerialComm serial&#10; communication actor which uses the same kind of integer array.  Datagram&#10; actors can take this format as well.&#10; &lt;p&gt;  </description>
+  <author>Winthrop Williams</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (winthrop)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (winthrop)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The port for the input, which has type &lt;i&gt;string&lt;/i&gt;.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which has type &lt;i&gt;{int}&lt;/i&gt;.</port>
+</doc>

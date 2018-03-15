@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PeriodicTask" class="ptolemy.apps.hardrealtime.PeriodicTask">
+  <description>
+A task that releases jobs with a given deadline and execution requirement&#10; periodically. The first job is released at time zero by default or&#10; at a start offset if one is specified.  </description>
+  <author>Christos Stergiou</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (chster)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chster)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="deadline">The relative deadline of the jobs released by the task.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="executionTime">The execution time required by each job released by the task.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="period">The period with which the task releases new jobs.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="startOffset">The time instant that the task releases the first job.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+  <description>
+Read in tokens and silently discard any tokens that are marked as&#10; nil.  Non-nill tokens are transferred to the output.&#10;&#10; &lt;p&gt;In the real world, data sources sometimes pass null values&#10; when data sources are sparsely populated.  The null values are sometimes&#10; called missing values.  The Ptolemy II expression language represents&#10; the missing or null tokens with the string &quot;nil&quot;.&#10;&#10; &lt;p&gt;This actor should not be used in the SDF domain because&#10; the number of tokens sent to the output depends on the input.  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

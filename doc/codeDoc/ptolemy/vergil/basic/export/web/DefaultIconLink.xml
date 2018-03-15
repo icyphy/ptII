@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DefaultIconLink" class="ptolemy.vergil.basic.export.web.DefaultIconLink">
+  <description>
+A parameter specifying default hyperlink to associate&#10; with icons in model. Putting this attribute into a model causes&#10; the icons of entities, attributes, or both, to be assigned a&#10; default hyperlink to the URI given by &lt;i&gt;linkTarget&lt;/i&gt;.&#10; This will replace any configuration default link that&#10; includes the same objects, and&#10; targets the same instanceOf possibilities.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="instancesOf">If non-empty (the default), specifies a class name.&#10;  Only entities or attributes (depending on &lt;i&gt;include&lt;/i&gt;)&#10;  implementing the specified&#10;  class will be assigned the control defined by this&#10;  DefaultIconLink parameter.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="include">Specification of whether to provide the link for&#10;  Attributes, Entities, or both. This is either &quot;Entities&quot; (the&#10;  default), &quot;Attributes&quot;, or &quot;All&quot;.</property>
+</doc>

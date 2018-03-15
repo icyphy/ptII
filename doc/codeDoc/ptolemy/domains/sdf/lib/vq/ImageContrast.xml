@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ImageContrast" class="ptolemy.domains.sdf.lib.vq.ImageContrast">
+  <description>
+Change the contrast of an image.&#10;&#10; &lt;p&gt;If the input image has a lot of pixels with the same or similar color,&#10; This actor uses gray scale equalization to redistribute the value of each&#10; pixel between 0 and 255.  </description>
+  <author>Michael Leung, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Red (mikele)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

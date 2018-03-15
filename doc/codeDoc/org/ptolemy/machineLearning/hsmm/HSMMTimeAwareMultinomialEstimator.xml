@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HSMMTimeAwareMultinomialEstimator" class="org.ptolemy.machineLearning.hsmm.HSMMTimeAwareMultinomialEstimator">
+  <description>
+A parameter estimator for a Hidden Semi-Markov Model with&#10; Multinomial Emissions. The transition probability matrix is estimated&#10; on an hourly basis.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="timestamps">Array of observation timestamps as UNIX timestamps.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="empiricalStartTimes">Array of estimated probability transition matrices for each hour.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="transitionMatrixEstimationMethod">Transition Matrix partitioning options.&#10; Force self transition asserts a self transition with probability 1&#10; if no information has been learned for the state. Interpolate: Assigns&#10; uniform probabilities to any state that has Hamming distance less than&#10; two to the current state.</property>
+</doc>

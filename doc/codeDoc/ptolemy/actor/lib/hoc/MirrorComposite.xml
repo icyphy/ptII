@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MirrorComposite" class="ptolemy.actor.lib.hoc.MirrorComposite">
+  <description>
+A composite that contains one actor and mirrors the ports and&#10; parameters of that actor. This is identical to the base class&#10; except that it requires its ports to be of type MirrorPort or&#10; ParameterMirrorPort. That is, every port of this composite is&#10; mirrored in the inside model, whereas the base class tolerates ports&#10; that are not mirrored (typically instances of TypedIOPort).  </description>
+  <author>Ilge Akkaya, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+</doc>

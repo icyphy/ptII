@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DerivedDimensionRepresentativeConcept" class="ptolemy.data.ontologies.lattice.unit.DerivedDimensionRepresentativeConcept">
+  <description>
+&lt;p&gt;A representative concept in the unitSystem ontology for a set of units for&#10;  a specific physical dimension that is derived from other dimensions. For&#10;  example, the Force dimension is derived from:&lt;BR&gt;&#10;  &lt;code&gt;Force = Mass * Position / (Time ^ 2)&lt;/code&gt;&#10;  &lt;/p&gt;&#10;&#10;  &lt;p&gt;And its SI unit Newtons (N) is derived from:&lt;BR&gt;&#10;  &lt;code&gt;N = kg * m / (s ^ 2)&lt;/code&gt;&#10;  &lt;/p&gt;&#10;&#10;  &lt;p&gt;Dimensions can be composed of other derived dimensions hierarchically. For&#10;  example, the force dimension can also be derived as:&lt;BR&gt;&#10;  &lt;code&gt;Velocity = Position / Time&lt;BR&gt;&#10;  Acceleration = Velocity / Time&lt;BR&gt;&#10;  Force = Mass * Acceleration&#10;  &lt;/code&gt;&#10;  &lt;/p&gt;  </description>
+  <author>Charles Shelton</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cshelton)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cshelton)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="dimensionArray">An array of records that specifies the dimensions and exponents that&#10;  comprise this dimension.</property>
+</doc>

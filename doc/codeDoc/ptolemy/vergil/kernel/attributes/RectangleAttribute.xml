@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RectangleAttribute" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+  <description>
+&lt;p&gt;&#10; This is an attribute that is rendered as a rectangle.&#10; &lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rounding">The amount of rounding of the corners.&#10;  This is a double that defaults to 0.0, which indicates no rounding.</property>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CSPMultiSink" class="ptolemy.domains.csp.lib.CSPMultiSink">
+  <description>
+A CSPMultiSink actor accepts a token from any channel connected to&#10; its input. It uses a conditional do (CDO) construct to always be&#10; ready to accept a new token. The channels it can accept from are set&#10; at the start of each firing.  </description>
+  <author>Neil Smyth</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Red (nsmyth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (nsmyth)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">This actor's input port.</port>
+</doc>

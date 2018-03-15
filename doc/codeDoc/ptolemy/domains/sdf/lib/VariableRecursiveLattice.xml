@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="VariableRecursiveLattice" class="ptolemy.domains.sdf.lib.VariableRecursiveLattice">
+  <description>
+This actor implements a recursive (all-pole) filter with a lattice&#10; structure where the reflection coefficients are supplied at an input port.&#10; The &lt;i&gt;blockSize&lt;/i&gt; parameter specifies the number of inputs&#10; of the filter that are processed per coefficient set provided on the&#10; &lt;i&gt;newCoefficients&lt;/i&gt; input. If no coefficients are provided on that&#10; input port, then the default coefficients defined in the base class&#10; are used. In all other respects, the behavior of&#10; this actor is the same as that of the base class.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="newCoefficients">The input for new coefficient values.  The type is an array&#10;  of doubles.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockSize">The number of inputs that use each each coefficient set.&#10;  This is an integer that defaults to 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate">The number of tokens consumed from the input port.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output_tokenProductionRate">The number of tokens produced from the output port.</property>
+</doc>

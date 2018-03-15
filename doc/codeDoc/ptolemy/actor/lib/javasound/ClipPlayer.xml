@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
+  <description>
+An actor that plays an audio clip given in a file. Each time this&#10; actor fires, it starts playing the clip given by the&#10; &lt;i&gt;fileOrURL&lt;/i&gt; parameter. If the &lt;i&gt;overlay&lt;/i&gt;&#10; parameter is false (the default), then it will terminate any previously&#10; playing clip before playing the new instance. Otherwise, it will mix&#10; in the new instance with the currently playing clip.&#10; If &lt;i&gt;playToCompletion&lt;/i&gt; is true, then each firing returns only after&#10; the clip has finished playing. Otherwise, the firing returns immediately,&#10; and another firing will result in either truncating the current clip or&#10; overlaying a new instance of it, depending on the value of &lt;i&gt;overlay&lt;/i&gt;.&#10; If &lt;i&gt;outputOnlyOnStop&lt;/i&gt; is false (the default), then this actor will&#10; produce an output (with value false) only when the current clip has finished playing.&#10; Otherwise, it will also produce an output (with value true) when the clip starts&#10; playing. If &lt;i&gt;playToCompletion&lt;/i&gt; is true, both of these outputs will occur&#10; in the same firing. Otherwise, when the clip starts or stops (which occurs&#10; in another thread), this actor will request that the director fire it,&#10; and when it fires, it will produce the appropriate output.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port used to indicate starts and stops.&#10;  This is a boolean port. A true output indicates that&#10;  a clip has been started, and a false output indicates that&#10;  one has stopped.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="stop">Stop playback when this port receives a token of any type, if any&#10; clip is playing.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="trigger">The trigger.  When this port receives a token of any type,&#10;  the actor begins playing the audio clip.</port>
+    <!--ptolemy.actor.parameters.FilePortParameter-->
+    <property name="fileOrURL">The file or URL giving the audio clip.&#10;  This is set by default to a file containing a voice signal.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="outputOnlyOnStop">If true, only produce a single FALSE token upon stop.  Useful for&#10; chaining clips together in the SDF domain where multiple output tokens&#10; will cause an exception to be thrown.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="overlay">If true, then if the actor fires before the previous clip&#10;  has finished playing, then a new instance of the clip will&#10;  be played on top of the tail of the previous instance, as&#10;  long as the underlying mixer supports adding additional clips.&#10;  This is a boolean that is false by default, which means that&#10;  the clip is stopped and restarted each time the actor fires.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="playToCompletion">If true, then play the clip to completion before returning&#10;  from firing. This is a boolean that defaults to false.</property>
+</doc>
