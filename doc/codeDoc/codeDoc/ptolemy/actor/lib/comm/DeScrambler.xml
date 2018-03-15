@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler">
+  <description>
+Descramble the input bit sequence using a feedback shift register.&#10; The taps of the feedback shift register are given by the &lt;i&gt;polynomial&lt;/i&gt;&#10; parameter. The initial state of the shift register is given by the&#10; &lt;i&gt;initialState&lt;/i&gt; parameter. This is a self-synchronizing descrambler that&#10; will exactly reverse the operation of the Scrambler if the polynomials&#10; are the same. The low-order bit of the polynomial should always be set.&#10; For more information, see the documentation for the Scrambler actor&#10; and Lee and Messerschmitt, Digital Communication, Second Edition,&#10; Kluwer Academic Publishers, 1994, pp. 595-603.&#10; &lt;p&gt;  </description>
+  <author>Edward A. Lee and Ye Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="polynomial">Integer defining a polynomial with binary coefficients.&#10;  The coefficients indicate the presence (1) or absence (0)&#10;  of a tap in a feedback shift register. This parameter should&#10;  contain a positive integer with the lower-order bit being 1.&#10;  Its default value is the integer 0440001.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialState">Integer defining the initial state of the shift register.&#10;  The n-th bit of the integer indicates the value of the&#10;  n-th register. This parameter should be a non-negative&#10;  integer. Its default value is the integer 1.</property>
+</doc>

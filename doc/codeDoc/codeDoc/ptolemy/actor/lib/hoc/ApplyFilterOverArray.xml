@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ApplyFilterOverArray" class="ptolemy.actor.lib.hoc.ApplyFilterOverArray">
+  <description>
+This is an atomic actor that filters an array received at its&#10; &lt;i&gt;inputArray&lt;/i&gt; input port via applying a model specified by a&#10; file or URL. The specified model is evaluated on each input array&#10; element and should return a boolean value, and the output is an array&#10; that only contains elements satisfying the specified model (the&#10; evaluated result is true). An element of the array received at&#10; &lt;i&gt;inputArray&lt;/i&gt; is provided to the model by setting its&#10; &lt;i&gt;inputArrayElement&lt;/i&gt; parameter (which it must have defined).&#10; The result of executing the model is obtained by reading its&#10; &lt;i&gt;evaluatedValue&lt;/i&gt; parameter (which it must have defined).&#10;&#10; &lt;p&gt; Instead of outputting all the satisfied elements in the input&#10; array, the parameter &lt;i&gt;maxOutputLength&lt;/i&gt; can be used to specify&#10; how many elements this actor should only output. If the specified&#10; length is larger than the number of satisfied elements, it will&#10; ignore the specified length and only output all the satisfied&#10; elements.&#10;&#10; &lt;p&gt;&#10; FIXME: what should be the correct behavior if there are not enough elements to output?&#10; &lt;p&gt;&#10; FIXME: make a convention, say when the maxOutputLength is -1, for output&#10; all the satisfied elements?&#10;&#10; FIXME: should add a ModelToken and an input port for receiving the filter&#10; model. Create a composite actor for providing a ModelToken from its inside&#10; model.&#10; &lt;P&gt;  </description>
+  <author>Yang Zhao, Ilkay Altintas</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (ellen_zh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ellen_zh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="inputArray">The input port for an input array. It is an ArrayType.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="outputArray">The output port for output the filtered array. It has the same&#10;  type as the inputArray port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maxOutputLength">The max amount of elements in the output array.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="modelFileOrURL">The file name or URL of the filter model.</property>
+</doc>

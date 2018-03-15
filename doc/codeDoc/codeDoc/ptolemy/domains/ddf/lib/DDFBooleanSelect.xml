@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
+  <description>
+A type polymorphic select with boolean valued control for use in&#10; the DDF domain. In the first iteration, an input token at the&#10; &lt;i&gt;control&lt;/i&gt; port is read and its value is noted. In the second&#10; iteration, if the &lt;i&gt;control&lt;/i&gt; input read from the previous&#10; iteration is true, then an input token at the &lt;i&gt;trueInput&lt;/i&gt; port&#10; is read and sent to the output. Likewise with a false &lt;i&gt;control&lt;/i&gt;&#10; input and the &lt;i&gt;falseInput&lt;/i&gt; port. It alternates between these&#10; two kinds of iterations until stopped. The &lt;i&gt;control&lt;/i&gt; port must&#10; receive Boolean Tokens. The &lt;i&gt;trueInput&lt;/i&gt; and &lt;i&gt;falseInput&lt;/i&gt;&#10; ports may receive Tokens of any type. Because tokens are immutable,&#10; the same Token is sent to the output, rather than a copy.&#10; &lt;p&gt;&#10; Note this actor sends an output token every two iterations. Contrast&#10; this with BooleanSelect which sends an output token every iteration.  </description>
+  <author>Gang Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (zgang)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="trueInput">Input for tokens on the true path. The port type can be any type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="falseInput">Input for tokens on the false path. The port type can be any type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="control">Input that selects one of the other input ports.  The type is&#10;  boolean.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.  The type is at least the type of&#10;  &lt;i&gt;trueInput&lt;/i&gt; and &lt;i&gt;falseInput&lt;/i&gt;</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="trueInput_tokenConsumptionRate">This parameter provides token consumption rate for &lt;i&gt;trueInput&lt;/i&gt;.&#10;  The type is int.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="falseInput_tokenConsumptionRate">This parameter provides token consumption rate for &lt;i&gt;falseInput&lt;/i&gt;.&#10;  The type is int.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="control_tokenConsumptionRate">This parameter provides token consumption rate for &lt;i&gt;control&lt;/i&gt;.&#10;  The type is int.</property>
+</doc>

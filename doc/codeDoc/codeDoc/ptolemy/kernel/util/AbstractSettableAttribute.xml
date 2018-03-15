@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AbstractSettableAttribute" class="ptolemy.kernel.util.AbstractSettableAttribute">
+  <description>
+This is an abstract base class for attributes that implement the&#10; Settable interface. In particular, it provides a default implementation&#10; of the getDefaultExpression() method.  If this object is derived from&#10; another, then the default value is obtained from that other.&#10; Otherwise, the default value is the first value set using&#10; setExpression().  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (hyzheng)</Pt.AcceptedRating>
+</doc>

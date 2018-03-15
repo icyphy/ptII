@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NetworkActorBase" class="ptolemy.domains.wireless.lib.network.NetworkActorBase">
+  <description>
+This is a base class designed for the Network actors.&#10; Currently, it mainly contains several methods for dealing with timers.  </description>
+  <author>Yang Zhao, Charlie Zhong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (ellen_zh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+</doc>

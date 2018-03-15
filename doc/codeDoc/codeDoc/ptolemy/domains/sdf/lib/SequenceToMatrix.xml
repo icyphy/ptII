@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
+  <description>
+This actor bundles a specified number of input tokens into a matrix.&#10; On each firing, it reads &lt;i&gt;rows&lt;/i&gt; times &lt;i&gt;columns&lt;/i&gt; input tokens&#10; and writes one output matrix token with the specified number of rows&#10; and columns.&#10; This actor is polymorphic. It can accept inputs of any scalar type&#10; that has a corresponding matrix type.&#10; &lt;p&gt;  </description>
+  <author>Edward Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rows">The number of rows in the output.  This is an integer that defaults&#10;  to 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="columns">The number of columns in the output.  This is an integer that defaults&#10;  to 1.</property>
+</doc>

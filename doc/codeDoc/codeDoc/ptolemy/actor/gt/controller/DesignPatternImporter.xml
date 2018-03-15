@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
+  <description>
+An attribute that specifies the location of a design pattern and&#10; populates the container with that design pattern automatically. This&#10; attribute has the same effect of importing a design pattern into the&#10; current model with the menu item in the File menu of the Ptolemy&#10; environment, but it automatically imports the specified design&#10; pattern and does not require the model user to manually import it.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="designPatternFile">The design pattern file.</property>
+</doc>

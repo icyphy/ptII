@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MirrorDecoratorAttributes" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
+  <description>
+Attribute generator class for the MirrorDecorator.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.1</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ilgea)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="enable">The enable parameter specifies whether the decorated actor uses&#10;  the resource scheduler decorator.&#10;  This is a boolean that defaults to false.</property>
+</doc>

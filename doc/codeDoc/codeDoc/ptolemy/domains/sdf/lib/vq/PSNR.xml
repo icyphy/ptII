@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
+  <description>
+This actor consumes an IntMatrixToken from each input port, and calculates the&#10; Power Signal to Noise Ratio (PSNR) between them.  The PSNR is output on the&#10; output port as a DoubleToken.  </description>
+  <author>Michael Leung, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="signal">The input signal.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="distortedSignal">A distorted version of the input signal.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The calculated PSNR between the two inputs.</port>
+</doc>

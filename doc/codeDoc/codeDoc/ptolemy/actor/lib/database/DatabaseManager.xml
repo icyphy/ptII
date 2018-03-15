@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
+  <description>
+A DatabaseManager. When preinitialized, this actor opens a connection&#10; to the specified database. When wrapup() is called, it closes the&#10; connection. A user of this class can also separately call getConnection()&#10; to open a connection, but then that user must also call closeConnection()&#10; when finished.&#10; &lt;p&gt;&#10; This class polls all available JDBC database drivers until one is willing&#10; to open the string given by the &lt;i&gt;database&lt;/i&gt; parameter. Depending&#10; on the driver, this string may be a URL. Some database drivers are&#10; packaged with Ptolemy II and available from a vergil process. You can&#10; make others available by setting the jdbc.drivers property. For&#10; example, when invoking vergil, do something like this:&#10; &lt;pre&gt;&#10;  export JAVAFLAGS=-Djdbc.drivers=com.mysql.jdbc.Driver:bad.tast.ourDriver&#10;  $PTII/bin/vergil -verbose&#10; &lt;/pre&gt;&#10; The above lists two drivers, in order of preference, separated by&#10; a &quot;:&quot;. More information can be found at&#10; &lt;a href=&quot;http://download.oracle.com/javase/6/docs/api/java/sql/DriverManager.html#in_browser&quot;&gt;&#10; http://download.oracle.com/javase/6/docs/api/java/sql/DriverManager.html&lt;/a&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="database">JDBC connection string to access the database.&#10;  This always starts with &quot;jdbc:driver&quot;, where the specific&#10;  driver chosen determines how to interpret fields in the&#10;  rest of the string.  For example,&#10;  &lt;pre&gt;&#10;    jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs&#10;  &lt;/pre&gt;&#10;  specifies a thin client for an Oracle database located&#10;  at host buffy.eecs.berkeley.edu, which listens on port&#10;  1521. The &quot;acgeecs&quot; is the database name.&#10;  Another example is&#10;  &lt;pre&gt;&#10;    jdbc:mysql://localhost:3306/space&#10;  &lt;/pre&gt;&#10;  which specifies a MySQL database on the local host,&#10;  where &quot;space&quot; is the name of the database.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="passwordFile">The file that contains the password.  If this parameter is&#10;  non-empty, then it is assumed to refer to a file that contains&#10;  the password.  If this parameter is empty, or names a file&#10;  that cannot be read, then a dialog is displayed for the user&#10;  to enter the password.  It is up to the user to properly&#10;  protect the file from unauthorized readers by using the file&#10;  system permissions.  The default value is the empty string,&#10;  meaning that the dialog will be displayed.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="userName">User name.</property>
+</doc>

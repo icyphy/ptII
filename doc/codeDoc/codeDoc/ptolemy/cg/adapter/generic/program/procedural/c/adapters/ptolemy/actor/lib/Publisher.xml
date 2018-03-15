@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Publisher" class="ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.Publisher">
+  <description>
+Generate Java code for an actor that publishes tokens on a named channel.  </description>
+  <author>Christopher Brooks, Contributor: Bert Rodiers</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (mankit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

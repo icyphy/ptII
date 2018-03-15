@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="IdentityActor" class="ptolemy.actor.test.IdentityActor">
+  <description>
+An IdentityActor is a simple atomic actor that transfers the input token&#10; to the output. This actor is used in tests that needs to emulate the&#10; fire method. This actor has a single input port and a single output port,&#10; with the name &quot;input&quot; and &quot;output&quot; respectively.  </description>
+  <author>Jie Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Yellow (liuj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

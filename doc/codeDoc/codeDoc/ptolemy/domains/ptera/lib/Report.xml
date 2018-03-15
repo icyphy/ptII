@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Report" class="ptolemy.domains.ptera.lib.Report">
+  <description>
+An event to report a message to the user in various forms.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="columnsDisplayed">The horizontal size of the display, in columns. This contains&#10;  an integer, and defaults to 40.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="message">The message to be displayed.</property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="mode">The display mode.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="referredTableau">The tableau parameter referred to, or an empty string.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="response">The last received yes-or-no response.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rowsDisplayed">The vertical size of the display, in rows. This contains an integer, and&#10;        defaults to 10.</property>
+    <!--ptolemy.domains.ptera.lib.TableauParameter-->
+    <property name="tableau">The default tableau.</property>
+</doc>

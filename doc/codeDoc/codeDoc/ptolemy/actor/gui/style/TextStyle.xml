@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TextStyle" class="ptolemy.actor.gui.style.TextStyle">
+  <description>
+This attribute annotates user settable attributes to specify an&#10; arbitrary multi-line text area style for configuring the containing&#10; attribute.  This style can be used with any Settable attribute.  </description>
+  <author>Zoltan Kemenczy, Research in Motion Ltd</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.1</since>
+  <Pt.ProposedRating>Red (zkemenczy)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="height">The height (in lines) of the text box. This is an integer&#10;  that defaults to 10.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The width (in characters) of the text box. This is an integer&#10;  that defaults to 30.</property>
+</doc>

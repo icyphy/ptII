@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SequencedModelDirector" class="ptolemy.domains.sequence.kernel.SequencedModelDirector">
+  <description>
+An abstract base class for SequenceDirector and ProcessDirector.&#10;&#10; &lt;p&gt;The SequencedModelDirector&#10; &lt;br&gt;- Computes the sequenced actors and passes these in two lists to the&#10; SequenceScheduler (one list for independent sequenced actors, and one list&#10; for sequenced actors that are dependent on other actors e.g. control actors)  </description>
+  <author>Elizabeth Latronico (Bosch), rrs1pal</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (beth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (beth)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="iterations">A Parameter representing the number of times that postfire may be&#10;  called before it returns false.  If the value is less than or&#10;  equal to zero, then the execution will never return false in postfire,&#10;  and thus the execution can continue forever. Note that the amount&#10;  of data processed by the Sequence model is a function of both this&#10;  parameter and the value of parameter &lt;i&gt;vectorizationFactor&lt;/i&gt;, since&#10;  &lt;i&gt;vectorizationFactor&lt;/i&gt; can influence the choice of schedule.&#10;  The default value is an IntToken with the value zero.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="userDefinedOutputInitialValue">If true, enable user defined output initial values.  The default value&#10;  is a boolean true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="userDefinedDefaultOutputInitialValue">The user defined default output initial value.  The default type&#10;  is BaseType.GENERAL.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="defaultOutputInitialValue">If true, enable default output initial values.  The default value&#10;  is a boolean true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fireUnexecutedActors">If true, fire any unexecuted actors that were not fired during&#10;  the sequence schedule.</property>
+</doc>

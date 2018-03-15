@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TaskPtDirector" class="ptolemy.domains.taskpt.kernel.TaskPtDirector">
+  <description>
+A director for controlling tasks and threads in the taskpt domain.&#10;&#10; &lt;p&gt;A TaskPtDirector has a shared memory that can be accessed by the actors&#10; that this director is controlling. The memory is local to this&#10; director (and not accessible for higher level entities).&lt;/p&gt;&#10;&#10; For more details on this MoC see&#10; Torsten Limberg, Bastian Ristau, and Gerhard Fettweis.&#10; &lt;a href=&quot;http://dx.doi.org/10.1007/978-3-540-70550-5_9&quot;&gt;&#10; A Real-Time Programming Model for Heterogeneous MPSoCs&lt;/a&gt;, Proc. of SAMOS VIII.  </description>
+  <author>Bastian Ristau</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>red (ristau)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (ristau)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+  <description>
+&lt;p&gt;This actor bundles a specified number of input tokens into a single array&#10; and broadcasts the resulting array on all output channels.&#10; The number of tokens to be bundled is specified by the &lt;i&gt;arrayLength&lt;/i&gt;&#10; parameter.&#10; &lt;/p&gt;&lt;p&gt;&#10; This actor is polymorphic. It can accept inputs of any type, as long&#10; as the type does not change, and will produce an array with elements&#10; of the corresponding type.&#10; &lt;/p&gt;  </description>
+  <author>Yuhong Xiong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Green (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="arrayLength">The size of the output array.  This is an integer that defaults&#10;  to 1.</property>
+</doc>

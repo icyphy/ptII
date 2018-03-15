@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ComplexToCartesian" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+  <description>
+Read a complex token and output double tokens that represent the real and&#10; imaginary parts to two different output ports.  </description>
+  <author>Michael Leung, Edward A. Lee, Paul Whitaker</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (pwhitake)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The port for the input, which has type ComplexToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="x">The output port for x coordinate, which has type DoubleToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="y">The output port for the imaginary coordinate, which has type&#10;     DoubleToken.</port>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="BoxedValuesIcon" class="ptolemy.vergil.icon.BoxedValuesIcon">
+  <description>
+This icon displays the value of all visible attributes of class Settable&#10; contained by the container of this icon. Visible attributes are those&#10; whose visibility is Settable.FULL. The names and values of the attributes&#10; are displayed in a box that resizes as necessary. If any line is longer&#10; than &lt;i&gt;displayWidth&lt;/i&gt; (in characters), then it is truncated.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="displayWidth">The number of characters to display. This is an integer, with&#10;  default value 80.</property>
+</doc>

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+  <description>
+Produce a random sequence of booleans.  The output is of type BooleanToken.&#10; The values that are generated are independent and identically distributed,&#10; where the probability of &lt;i&gt;true&lt;/i&gt; is given by the parameter&#10; &lt;i&gt;trueProbability&lt;/i&gt;.&#10; The seed can be specified as a parameter to control the sequence that is&#10; generated.&#10; This actor uses the class java.util.Random to generate random numbers.&#10; Note that if the parameters are changed during execution of the&#10; model, there is a one iteration delay before the changes take&#10; effect.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="trueProbability">The probability of &lt;i&gt;true&lt;/i&gt;.&#10;  This parameter contains a DoubleToken, initially with value 0.5.</property>
+</doc>

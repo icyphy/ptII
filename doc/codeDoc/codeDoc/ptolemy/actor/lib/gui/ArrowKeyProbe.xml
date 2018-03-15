@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrowKeyProbe" class="ptolemy.actor.lib.gui.ArrowKeyProbe">
+  <description>
+Detect when the user presses or releases an arrow key and produce an&#10; integer on the corresponding output.&#10;&#10; &lt;p&gt;When this actor is preinitialized, it pops up a new JFrame window on&#10; the desktop, usually in the upper left hand corner of the screen.&#10; When this JFrame has the focus (such as when it has been clicked on)&#10; it is capable of sensing keystrokes.&#10;&#10; &lt;p&gt;This actor senses only the four non-numeric-pad arrow-key&#10; keystrokes.  This actor responds to key releases as well as key&#10; presses.  Upon each key press, the integer 1 is broadcast from the&#10; corresponding output.  Upon each key release, the integer 0 is output.&#10;&#10; &lt;p&gt;This actor contains a private inner class which generated the JFrame.&#10; The frame sets up call-backs which react to the keystrokes.  When called,&#10; these call the director's fireAtCurrentTime() method.  This causes&#10; the director to call fire() on the actor.   The actor then broadcasts&#10; tokens from one or both outputs depending on which keystroke(s) have&#10; occurred since the actor was last fired.&#10;&#10; &lt;p&gt;NOTE: This actor only works in the DE domain due to its reliance on&#10; this director's fireAtCurrentTime() method.  </description>
+  <author>Winthrop Williams</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (winthrop)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (winthrop)</Pt.AcceptedRating>
+</doc>

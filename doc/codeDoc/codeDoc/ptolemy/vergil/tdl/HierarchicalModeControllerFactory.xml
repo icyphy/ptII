@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HierarchicalModeControllerFactory" class="ptolemy.vergil.tdl.HierarchicalModeControllerFactory">
+  <description>
+This is attribute that produces a custom node controller for&#10; hierarchical states.  This class creates an instance of&#10; HierarchicalStateController, for controlling hierarchical states&#10; in modal models.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

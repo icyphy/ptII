@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Rotate3D" class="ptolemy.domains.gr.lib.Rotate3D">
+  <description>
+Conceptually, this actor takes 3D geometry in its input and produces&#10; a rotated version in its output. In reality, this actor encapsulates a&#10; Java3D TransformGroup which is converted into a node in the resulting&#10; Java3D scene graph. This actor will only have meaning in the GR domain.&#10;&#10; The parameters &lt;i&gt;axisDirectionX&lt;/i&gt;,&lt;i&gt;axisDirectionY&lt;/i&gt;, and&#10; &lt;i&gt;axisDirectionZ&lt;/i&gt; determine the direction of the axis of rotation.&#10; The parameters &lt;i&gt;baseX&lt;/i&gt;, &lt;i&gt;baseY&lt;/i&gt;, and &lt;i&gt;baseZ&lt;/i&gt; determine&#10; the pivot point for axis of the rotation. The parameter &lt;i&gt;initialAngle&lt;/i&gt;&#10; determines the initial angle of rotation.  </description>
+  <author>C. Fong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (chf)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chf)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="angle">The amount of rotation during firing. If this transform is in&#10;  accumulate mode, the angle value is accumulated for each firing.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialAngle">The initial angle of rotation.&#10;  This parameter should contain a DoubleToken.&#10;  The default value of this parameter is 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="axisDirection">The direction of the axis of rotation.&#10;  The parameter should contain a DoubleMatrixToken&#10;  The default value of this parameter is [0.0, 1.0, 0.0]</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="pivotLocation">The pivot location of the axis of rotation.&#10;  This parameter should contain a DoubleMatrixToken&#10;  The default value of this parameter is [0.0, 0.0, 0.0]</property>
+</doc>

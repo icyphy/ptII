@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+  <description>
+On each firing, look for instances of the pattern specified by &lt;i&gt;pattern&lt;/i&gt;&#10; in &lt;i&gt;stringToEdit&lt;/i&gt; and replace them with the string given by&#10; &lt;i&gt;replacement&lt;/i&gt;.  If &lt;i&gt;replaceAll&lt;/i&gt; is true, then replace&#10; all instances that match &lt;i&gt;pattern&lt;/i&gt;.  Otherwise, replace only&#10; the first instance that matches.  If there is no match, then the&#10; output is the string provided by &lt;i&gt;stringToEdit&lt;/i&gt;, unchanged.&#10; The &lt;i&gt;pattern&lt;/i&gt; is given by a regular expression.&#10; For a reference on regular expression syntax see:&#10; &lt;a href=&quot;http://download.oracle.com/javase/tutorial/essential/regex/#in_browser&quot;&gt;&#10; http://download.oracle.com/javase/tutorial/essential/regex/&lt;/a&gt;.&#10;&#10; &lt;p&gt;&#10; The &lt;i&gt;replacement&lt;/i&gt; string, as usual with string-valued parameters&#10; in Ptolemy II, can include references to parameter values in scope.&#10; E.g., if the enclosing composite actor has a parameter named &quot;x&quot;&#10; with value 1, say, then the replacement string a${x}b will become&#10; &quot;a1b&quot;.&#10; &lt;p&gt;&#10; In addition, the &lt;i&gt;replacement&lt;/i&gt; string can reference the pattern&#10; that is matched using the syntax &quot;$$0&quot;.  For example, the regular&#10; expression &quot;t[a-z]+&quot; in &lt;i&gt;pattern&lt;/i&gt; will match the character t followed by a&#10; sequence of one or more lower-case letters.&#10; If &lt;i&gt;replacement&lt;/i&gt; is &quot;p$$0&quot; then &quot;this is a test&quot; becomes&#10; &quot;pthis is a ptest&quot;.&#10; &lt;p&gt;&#10; If the &lt;i&gt;pattern&lt;/i&gt; contains parenthesized subpatterns, such&#10; as &quot;(t[a-z]+)|(T([a-z]+))&quot;, then the value of &lt;i&gt;replacement&lt;/i&gt;&#10; can reference the match of each parenthesized subpattern with&#10; the syntax &quot;$$n&quot;, where &quot;n&quot; is an integer between 1 and 9.&#10; For example, if &lt;i&gt;pattern&lt;/i&gt;=&quot;(t[a-z]+)|(T([a-z]+))&quot;&#10; and &lt;i&gt;replacement&lt;/i&gt;=&quot;p$$1$$3&quot;, then &quot;this is a Test&quot; becomes&#10; &quot;pthis is a pest&quot;. The index &quot;n&quot; corresponds to the order&#10; of opening parentheses in the pattern.&#10; &lt;p&gt;&#10; To get a &quot;$&quot; into the replacement string, use&#10; &quot;\$$&quot;.  To get a &quot;\&quot; into the replacement string, use &quot;\\&quot;.  </description>
+  <author>Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (djstone)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (net)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port on which the edited string is produced.&#10;  This has type string.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="stringToEdit">The string to edit by replacing substrings that match the&#10;  specified pattern with the specified replacement. This is&#10;  a string that defaults to the empty string.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="pattern">The pattern used to pattern match and replace the stringToEdit&#10;  string. It is an empty string by default.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="replacement">The replacement string that replaces any matched instance of the&#10;  pattern. It is an empty string by default.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="replaceAll">When the boolean value is true, replace all instances that match the&#10;  pattern, and when false, replace the first instance.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="regularExpression">If true, interpret the pattern as a regular expression. Otherwise,&#10;  interpret it as the literal string to replace. This is a boolean&#10;  that defaults to true.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
+  <description>
+This director executes actors in their own threads&#10; and provides a receiver that implements rendezvous communication.&#10; The threads are created in the initialize()&#10; method and started in the prefire() method.  After the thread for an actor&#10; is started it is &lt;i&gt;active&lt;/i&gt; until the thread finishes. While the&#10; thread is active, it can also be &lt;i&gt;blocked&lt;/i&gt;.&#10; A thread is blocked if it is trying to communicate but&#10; the thread with which it is trying to communicate is not&#10; ready to do so yet. A deadlock occurs when all threads are&#10; blocked. If this director is used at the top level,&#10; the model stops executing when a deadlock occurs.&#10; This director is based on the CSPDirector by&#10; Neil Smyth, Mudit Goel, and John S. Davis II.  </description>
+  <author>Thomas Feng, Edward A. Lee, Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.1</since>
+  <Pt.ProposedRating>green (acataldo)</Pt.ProposedRating>
+  <Pt.AcceptedRating>green (acataldo)</Pt.AcceptedRating>
+</doc>

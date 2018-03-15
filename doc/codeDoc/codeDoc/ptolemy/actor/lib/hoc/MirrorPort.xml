@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MirrorPort" class="ptolemy.actor.lib.hoc.MirrorPort">
+  <description>
+This port mirrors the properties of an associated port. That is,&#10; if either this port or the associated port is changed by&#10; setInput(), setOutput(), setMultiport(), or if it is removed&#10; by setContainer(null), or its name is changed by setName(),&#10; then the mirror port gets the same&#10; changes.  The changes are also applied to derived ports&#10; (ports that mirror this one because of the class mechanism).&#10; &lt;p&gt;&#10; Users of this class must override their clone(Workspace)&#10; method to re-establish appropriate port associations in&#10; the clone.  Cloning this port results in a clone with&#10; no associations.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="BootstrapSampleDelay" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.BootstrapSampleDelay">
+  <description>
+A adapter class for BootstrapSampleDelay.  </description>
+  <author>Martin Schoeberl, Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (mschoebe)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (mschoebe)</Pt.AcceptedRating>
+</doc>

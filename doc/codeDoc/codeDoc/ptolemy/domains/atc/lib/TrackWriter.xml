@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TrackWriter" class="ptolemy.domains.atc.lib.TrackWriter">
+  <description>
+Write track records, one line at a time.&#10;  &lt;p&gt; This actor writes track records,&#10; one line at a time, to a specified file, as tab-separated list.&#10; The first line contains the names of the fields of the input&#10; record, separated by the same delimiter.&lt;/p&gt;&#10;&#10; &lt;p&gt;The file is specified by the &lt;i&gt;fileName&lt;/i&gt; attribute&#10; using any form acceptable to &lt;a href=&quot;../../../../ptolemy/data/expr/FileParameter.xml&quot;&gt;ptolemy.data.expr.FileParameter&lt;/a&gt;.&lt;/p&gt;  </description>
+  <author>Maryam Bagheri</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="fileName">The file name to which to write.  This is a string with&#10;  any form accepted by FilePortParameter.  The default value is&#10;  &quot;System.out&quot;.</property>
+</doc>

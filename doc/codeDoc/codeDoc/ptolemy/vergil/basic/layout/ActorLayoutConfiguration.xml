@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ActorLayoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
+  <description>
+Specialized layout configuration dialog for&#10; &lt;a href=&quot;../../../../ptolemy/vergil/actor/ActorGraphModel.xml&quot;&gt;ActorGraphModel&lt;/a&gt;s.  </description>
+  <author>Ulf Rueegg</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 11.0</since>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="minimizeBends">Whether bends are minimized.  The default value is true.</property>
+</doc>

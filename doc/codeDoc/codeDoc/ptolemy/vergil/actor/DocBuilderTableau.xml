@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DocBuilderTableau" class="ptolemy.vergil.actor.DocBuilderTableau">
+  <description>
+A tableau representing a documentation builder.&#10;&#10; &lt;p&gt; The constructor of this class creates the window. The text window&#10; itself is an instance of DocBuilderGUI, and can be accessed using the&#10; getFrame() method.  As with other tableaux, this is an entity that is&#10; contained by an effigy of a model.  There can be any number of&#10; instances of this class in an effigy.  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

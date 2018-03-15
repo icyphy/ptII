@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Server" class="ptolemy.domains.de.lib.Server">
+  <description>
+This actor models a presemptive server with a fixed or variable service time.&#10; A server is either busy (serving a customer) or not busy at any given time.&#10; If an input arrives when the server is not busy, then the input token is&#10; produced on the output with a delay given by the &lt;i&gt;serviceTime&lt;/i&gt;&#10; parameter.&#10; If an input arrives while the server is busy, then that input is&#10; queued until the server becomes free, at which point it is produced&#10; on the output with a delay given by the &lt;i&gt;serviceTime&lt;/i&gt; parameter&#10; value at the time that the input arrived.&#10; If several inputs arrive while the server is busy, then they are&#10; served on a first-come, first-served basis.&#10; On every firing, produce an output indicating the final queue size.&#10; &lt;p&gt;&#10; The service time and priority used for a job are the most recently arrived&#10; values prior to or simultaneous with the &lt;i&gt;arrival&lt;/i&gt; of the job&#10; (not with the time at which service begins). Thus, if you want&#10; each job to have an independent service time or priority, you should&#10; provide each parameter as an input synchronized with each new job arrival.  </description>
+  <author>Lukito Muliadi, Edward A. Lee, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Yellow (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="size">The current size of the queue. This port produces an output&#10;  whenever the size changes. It has type int.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="capacity">The capacity of the queue. If the value is positive, then&#10;  it specifies the capacity of the queue. If it is negative&#10;  or 0, then it specifies that the capacity is infinite.&#10;  This is an integer with default 0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="serviceTime">The service time. This is a double with default 1.0.&#10;  It is required to be non-negative.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="priority">The priority. This is a double with default 0.0.&#10;  A higher priority implies the task has precedence over tasks&#10;  with lower priority values.</property>
+</doc>

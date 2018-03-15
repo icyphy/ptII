@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SingleEvent" class="ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.SingleEvent">
+  <description>
+A adapter class for ptolemy.actor.lib.SingleEvent.  </description>
+  <author>Jia Zou, Willian Lucas</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+</doc>

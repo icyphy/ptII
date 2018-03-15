@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HybridModalDirector" class="ptolemy.domains.continuous.kernel.HybridModalDirector">
+  <description>
+An HybridModalDirector governs the execution of the discrete dynamics of a hybrid&#10; system model. It extends ModalDirector by implementing the ContinuousStatefulComponent&#10; and ContinuousStepSizeController interfaces by delegating the function of those&#10; interfaces to the currently active state refinement.&#10; &lt;p&gt;&#10; Note that when a multi-step solver is used, the guards on the transitions are&#10; only evaluated when either the step size is zero or the multi-step solver has&#10; just completed its last step. The guards are not evaluated during intermediate&#10; steps.&#10; &lt;p&gt;&#10; This director is based on HSFSMDirector by Xiaojun Liu and Haiyang Zheng.  </description>
+  <author>Edward A. Lee, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (liuxj)</Pt.AcceptedRating>
+</doc>

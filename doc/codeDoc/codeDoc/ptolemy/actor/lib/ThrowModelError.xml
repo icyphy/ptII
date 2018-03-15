@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError">
+  <description>
+&lt;p&gt;An actor that throws a model error when it receives a true token&#10; on any input channel.  The message reported in the model error is&#10; given by the &lt;i&gt;message&lt;/i&gt; parameter.&#10; The inputs are read and checked in the postfire() method only.&#10; &lt;/p&gt;&lt;p&gt;&#10; A model error is an exception that is passed up the containment&#10; hierarchy rather than being immediately thrown. Any container&#10; in the containment hierarchy may choose to handle the error.&#10; By default, containers will pass and delegate the error to their&#10; container, if they have one, and throw an exception if they&#10; don't. But some containers might do more with the error.&lt;/p&gt;  </description>
+  <author>Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.1</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="throwInPostfire">True to throw the model error in the postfire method.&#10;  False to throw in fire. This is a boolean that defaults&#10;  to false.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="message">The message reported in the exception.</property>
+</doc>

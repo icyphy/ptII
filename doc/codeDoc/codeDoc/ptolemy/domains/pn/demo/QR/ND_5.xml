@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ND_5" class="ptolemy.domains.pn.demo.QR.ND_5">
+  <description>
+This class defines a PN actor object. This actor is automatically&#10; generated, as part of the &lt;A&#10; HREF=&quot;http://www.gigascale.org/compaan&quot;&gt;Compaan&lt;/A&gt; project. Although&#10; most of the actor is generated automatically, some parts have been&#10; manually tuned for this demo especially when reading and writing of&#10; matrices is involved; they may change in future releases.  </description>
+  <author>Bart Kienhuis</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (kienhuis)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (kienhuis)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="RP_11"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="RP_12"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="out"></port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="parameter_N"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="parameter_K"></property>
+</doc>

@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="UnitsConverter" class="ptolemy.domains.ontologies.lib.UnitsConverter">
+  <description>
+An actor that outputs a scaled and offset version of the input based on a&#10; unit conversion factor specified in the unitSystem ontology.&#10; Produce an output token on each firing with a value that transforms&#10; the input value according to the conversion required between the specified&#10; input and output unit measurements. The unit measurements are taken from the unitSystem&#10; &lt;a href=&quot;../../../../ptolemy/data/ontologies/Ontology.xml&quot;&gt;Ontology&lt;/a&gt; and an&#10; &lt;a href=&quot;../../../../ptolemy/data/ontologies/OntologySolver.xml&quot;&gt;OntologySolver&lt;/a&gt;&#10; for the unitSystem ontology must be present in the model.&#10; For data types where multiplication is not commutative (such&#10; as matrices), whether the factor is multiplied on the left is controlled&#10; by the &lt;i&gt;scaleOnLeft&lt;/i&gt; parameter. Setting the parameter to true means&#10; that the factor is  multiplied on the left, and the input&#10; on the right. Otherwise, the factor is multiplied on the right.  </description>
+  <author>Charles Shelton</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cshelton)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cshelton)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="scaleOnLeft">Multiply on the left.&#10;  This parameter controls whether the units transformation factor is multiplied&#10;  on the left. The default value is a boolean token of value true.&#10;  Setting is to false will multiply the factor on the right.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="unitSystemOntologySolver">The unitSystem ontology solver in the model that contains the unitSystem&#10;  ontology.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="dimensionConcept">The name of the dimension from which both units are derived.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="conversionLabel">The conversion label string that will be displayed on the actor icon.&#10;  It is of the form &quot;inputUnits -&amp;gt; outputUnits&quot;&#10;  For example, if the actor converts kilometers to miles, its icon label&#10;  would be: &quot;km -&amp;gt; mi&quot;&#10;  This label will change when the user changes the unit conversion.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="inputUnitConcept">The input unit measurement for the actor. This specifies the units&#10;  in which the input value is received. It will be a&#10;  &lt;a href=&quot;../../../../ptolemy/data/ontologies/Concept.xml&quot;&gt;Concept&lt;/a&gt; in the&#10;  unitSystem &lt;a href=&quot;../../../../ptolemy/data/ontologies/Ontology.xml&quot;&gt;Ontology&lt;/a&gt;.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="outputUnitConcept">The output unit measurement for the actor. This specifies the units&#10;  to which the output value is transformed. It will be a&#10;  &lt;a href=&quot;../../../../ptolemy/data/ontologies/Concept.xml&quot;&gt;Concept&lt;/a&gt; in the&#10;  unitSystem &lt;a href=&quot;../../../../ptolemy/data/ontologies/Ontology.xml&quot;&gt;Ontology&lt;/a&gt;.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute">
+  <description>
+ProcessAttribute is a subclass of Parameter with support for strings.&#10;&#10;   &lt;p&gt;A ProcessAttribute is a tuple (string processName, int&#10;   sequenceNumber, (optionally) string methodName).&lt;/p&gt;&#10;&#10;   &lt;p&gt;The ProcessDirector collects the ProcessAttributes to determine the order&#10;   in which order the actors in the model are fired.&lt;/p&gt;  </description>
+  <author>Elizabeth Latronico (Bosch)</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (beth)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (beth)</Pt.AcceptedRating>
+</doc>

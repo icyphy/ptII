@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Optimizer" class="org.ptolemy.machineLearning.particleFilter.Optimizer">
+  <description>
+Black-box optimizer that uses JCobyla as the solver&#10;&#10;&lt;p&gt; Performs mutual information-based optimization using &lt;/p&gt;&#10;&#10;&lt;b&gt;References&lt;/b&gt;&#10; &lt;p&gt;[1]&#10;B. Charrow, V. Kumar, and N. Michael &lt;i&gt;Approximate Representations for Multi-Robot&#10;  Control Policies that Maximize Mutual Information&lt;/i&gt;, In Proc. Robotics: Science and Systems Conference (RSS), 2013.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ilgea)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Control Output.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="particles">Particles input that accepts an array of record tokens. One field of the record must be labeled as &quot;weight&quot;.&#10; Other fields will be resolved to state variables.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="locations">An Array of record tokens.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="covariance">The coveariance.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="speedLimit">The speed limit.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rhoBeg">The beginning of rho.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rhoEnd">The end of rho.</property>
+</doc>

@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+  <description>
+Given a URL or directory name, produce an array of file names in that&#10; directory that match an (optional) pattern.&#10;&#10; &lt;p&gt;The file names include the complete path, unless &lt;i&gt;relative&lt;/i&gt;&#10; is set to true, in which case, the names are relative to the&#10; directory. The pattern is a regular expression. For a reference on&#10; regular expression syntax see: &lt;a href=&quot;http://download.oracle.com/javase/tutorial/essential/regex/#in_browser&quot;&gt;http://download.oracle.com/javase/tutorial/essential/regex/&lt;/a&gt;&lt;/p&gt;&#10;&#10; &lt;p&gt;If &lt;i&gt;directoryOrURL&lt;/i&gt; is a local directory (not a URL), then you can&#10; optionally list only contained files or directories.&#10; If &lt;i&gt;listOnlyDirectories&lt;/i&gt; is true, then only directories will be&#10; listed on the output.  If &lt;i&gt;listOnlyFiles&lt;/i&gt; is true, then only&#10; files will be listed on the output. If both are true, then an exception&#10; is thrown.&lt;/p&gt;&#10;&#10; &lt;p&gt;If &lt;i&gt;directoryOrURL&lt;/i&gt; is a URL, then this actor assumes that the&#10; server will list the contents of the referenced directory in an&#10; HTML file where each file listed will have the following form:&lt;/p&gt;&#10;&#10; &lt;pre&gt;&#10; &amp;lt;a href=&quot;filename&quot;&amp;gt;filename&amp;lt;/a&amp;gt;&#10; &lt;/pre&gt;&#10;&#10; &lt;p&gt;If the filename is longer than 20 characters, then only the first&#10; 20 characters of the two appearances of the filename are compared,&#10; since some servers truncate the file names.&lt;/p&gt;&#10;&#10; &lt;p&gt;If &lt;i&gt;allowEmptyDirectory&lt;/i&gt; controls whether reading an empty directory&#10; will throw an exception.&lt;/p&gt;&#10;&#10; &lt;p&gt;Note that DirectoryListing returns the contents of the directory&#10; in a different order depending on whether one is using the Sun JVM&#10; or the IBM JVM.  Thus, you may want to connect the output to an&#10; ArraySort actor.&lt;/p&gt;  </description>
+  <author>Christopher Hylands, Edward A. Lee, Contributor: Jianwu Wang</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (liuj)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.FilePortParameter-->
+    <property name="directoryOrURL">The directory name or URL from which to read.  This is a string with&#10;  any form accepted by &lt;a href=&quot;../../../../ptolemy/actor/parameters/FilePortParameter.xml&quot;&gt;ptolemy.actor.parameters.FilePortParameter&lt;/a&gt;.&#10;  By default, this is empty. An empty string is equivalent to specifying&#10;  &quot;$CWD&quot;, the current working directory.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="listOnlyDirectories">If true, and &lt;i&gt;directoryOrURL&lt;/i&gt; refers to a local directory (not a URL),&#10;  then only directories will be listed on the output. If &lt;i&gt;directoryOrURL&lt;/i&gt;&#10;  is a URL, then this parameter is ignored (there appears to be no reliable&#10;  way to tell whether the URL refers to a directory or file).&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="listOnlyFiles">If true, and &lt;i&gt;directoryOrURL&lt;/i&gt; refers to a local directory (not a URL),&#10;  then only files will be listed on the output. If &lt;i&gt;directoryOrURL&lt;/i&gt;&#10;  is a URL, then this parameter is ignored (there appears to be no reliable&#10;  way to tell whether the URL refers to a directory or file).&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="allowEmptyDirectory">If true, and &lt;i&gt;directoryOrURL&lt;/i&gt; refers to a local directory&#10;  (not a URL), that is empty, then the output will be empty&#10;  string array and no exception is reported. If&#10;  &lt;i&gt;directoryOrURL&lt;/i&gt; is a URL, then this parameter is ignored&#10;  (there appears to be no reliable way to tell whether the URL&#10;  refers to a directory or file).  This is a boolean that&#10;  defaults to false.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="pattern">If non-empty, then only output file and directory names that&#10;  match the specified (regular expression) pattern.&#10;  The default value of this parameter is the empty String &quot;&quot;,&#10;  which indicates that everything matches.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="recursive">Whether files in the subdirectories should be searched as well.&#10;  The recursive parameter only works if &lt;i&gt;directoryOrURL&lt;/i&gt;&#10;  refers to a local directory (not a URL).&#10;  This is a boolean that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="relative">If true, then produce an array with file names relative to the&#10;  specified directory. This is a boolean that defaults to false,&#10;  which causes the absolute (complete) path to be produced.</property>
+</doc>

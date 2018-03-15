@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
+  <description>
+This actor implements a logical NOT operator.  It has one input and&#10; one output port, neither of which is a multiport, and both of which have&#10; type boolean.  A BooleanToken that arrives in the &lt;i&gt;input&lt;/i&gt;&#10; will be negated and sent on the &lt;i&gt;output&lt;/i&gt;.&#10; If no input token is available, then no output is produced.  </description>
+  <author>John Li</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Green (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (pwhitake)</Pt.AcceptedRating>
+</doc>

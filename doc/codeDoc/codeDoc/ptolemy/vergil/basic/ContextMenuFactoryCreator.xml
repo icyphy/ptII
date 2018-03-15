@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ContextMenuFactoryCreator" class="ptolemy.vergil.basic.ContextMenuFactoryCreator">
+  <description>
+An object that can create a tableau for a model.&#10;&#10; &lt;p&gt;This class allows the configuration option &quot;contextMenuFactory&quot; to&#10; be passed via the moml configuration.&#10; A suitable MenuFactory is instantiated and returned by a call to the&#10; createContextMenuFactory() method.  </description>
+  <author>Matthew Brooke</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

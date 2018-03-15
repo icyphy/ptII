@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="BinarySwitch" class="ptolemy.domains.ci.lib.BinarySwitch">
+  <description>
+An actor that calls Thread.sleep() on the current thread the first&#10; time fire() is called.  The sleep delays the inputs for a certain&#10; amount of real time, specified by the &lt;i&gt;sleepTime&lt;/i&gt; parameter.&#10;&#10; &lt;p&gt;Note that one way to slow down the execution of a model while running&#10; inside vergil is to turn on animation.&#10;&#10; &lt;p&gt;If the width of the output port is less than that of the input port,&#10; the tokens in the extra channels are lost.  </description>
+  <author>Yang Zhao, based on Sleep by Jie Liu, Christopher Hylands</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.2</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="q1_len"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="q2_len"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="pkt_in"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="q1_out"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="q2_out"></port>
+</doc>

@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: nashornHost</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: nashornHost</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>JavaScript functions for the Nashorn host, which uses
+ Java's Nashorn JavaScript engine.
+ This host supports version 1 accessors.</p>
+<p> This host is almost entirely independent of Ptolemy II,
+ except for some utility functions in
+ FileUtilities (which could easily be factored out).
+ Also, modules that are required by accessors are loaded
+ from $PTII/ptolemy/actor/lib/jjs, and some of those modules
+ may have dependencies on Ptolemy II.</p>
+<p> To invoke this, the accessors repository has a script in
+ accessors/web/hosts/nashorn called nashornAccessorHost.
+ Execute that script with command-line arguments (e.g. a composite
+ accessor to instantiate and initialize).</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>$$Id$$</li></ul></dd>
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>Ptolemy II 11.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Edward A. Lee, Contributor: Christopher Brooks</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~_accessorClasspath"><span class="type-signature">(inner) </span>_accessorClasspath<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>An array that gives the search path for accessors to be extended.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line132">line 132</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_accessorPath"><span class="type-signature">(inner) </span>_accessorPath<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>An array that gives the search path for accessors to be extended.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line129">line 129</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_accessorRoot"><span class="type-signature">(inner) </span>_accessorRoot<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A string giving the full path to the root directory for installed accessors.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_moduleClasspath"><span class="type-signature">(inner) </span>_moduleClasspath<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>An array that gives the search path for modules to be required relative to the classpath.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line107">line 107</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_modulePath"><span class="type-signature">(inner) </span>_modulePath<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>An array that gives the search path for modules to be required.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_moduleRoot"><span class="type-signature">(inner) </span>_moduleRoot<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A string giving the full path to the root directory for installed modules.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~_testAccessors"><span class="type-signature">(inner) </span>_testAccessors<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A string giving the full path to the root directory for test accessors.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~require"><span class="type-signature">(inner) </span>require<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Require the named module. This function imports modules formatted
+according to the CommonJS standard.</p>
+<p>If the name begins with './' or '/', then it is assumed to
+specify a file or directory on the local disk. If it is a file, the
+'.js' suffix may be optionally omitted. If it is a directory, then
+this function will look for a package.json file in that directory
+and load the file specified by the 'main' property the JSON object
+defined in that file. If there is no package.json file, then it
+will load an 'index.js' file, if there is one.</p>
+
+<p>If the name does not begin with './' or '/', then it is assumed
+to specify a module installed in this accessor host.</p>
+
+<p>In both cases, this function returns an object that includes as
+properties any properties that have been added to the 'exports'
+property. For example, to export a function, the module JavaScript
+file could define the function as follows:</p>
+
+<pre>
+  exports.myFunction = function() {...};
+</pre>
+
+<p>Alternatively, the module JavaScript file can explicitly define
+the exports object as follows:<p>
+
+<pre>
+  var myFunction = function() {...};
+  module.exports = {
+      myFunction : myFunction
+  };
+</pre>
+
+<p>This implementation uses the requires() function implemented by Walter Higgins,
+found here: <a href="https://github.com/walterhiggins/commonjs-modules-javax-script.">https://github.com/walterhiggins/commonjs-modules-javax-script</a>.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line268">line 268</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="http://nodejs.org/api/modules.html#modules_the_module_object">http://nodejs.org/api/modules.html#modules_the_module_object</a></li>
+        
+            <li>also: http://wiki.commonjs.org/wiki/Modules</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~util"><span class="type-signature">(inner) </span>util<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Require the named accessor. This is a version of require() that looks
+in a different place for accessors.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line310">line 310</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-nashornHost.html#require()">#require()</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~alert"><span class="type-signature">(inner) </span>alert<span class="signature">(message)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Print a message to the console.
+ NOTE: This function is not required by the accessor specification, so accessors
+ should not rely on it being present.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The message</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line142">line 142</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~clearInterval"><span class="type-signature">(inner) </span>clearInterval<span class="signature">(handle)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Clear an interval timer with the specified handle.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>handle</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The handle.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line190">line 190</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>setInterval().</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~clearTimeout"><span class="type-signature">(inner) </span>clearTimeout<span class="signature">(handle)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Clear a timeout with the specified handle.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>handle</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The handle.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line201">line 201</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>setTimeout().</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~error"><span class="type-signature">(inner) </span>error<span class="signature">(message)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Report an error by printing using console.error().</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The message for the exception.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line211">line 211</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~getAccessorCode"><span class="type-signature">(inner) </span>getAccessorCode<span class="signature">(name)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Return the source code for an accessor from its fully qualified name.
+ This will throw an exception if there is no such accessor on the accessor
+ search path.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Fully qualified accessor name, e.g. 'net/REST'.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line327">line 327</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~getResource"><span class="type-signature">(inner) </span>getResource<span class="signature">(path, options, callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Get a resource, which may be a relative file name or a URL, and return the
+ value of the resource as a string.</p>
+<p> Implementations of this function may restrict the locations from which
+ resources can be retrieved. This implementation restricts relative file
+ names to be in the same directory where the swarmlet model is located or
+ in a subdirectory, or if the resource begins with &quot;$CLASSPATH/&quot;, to the
+ classpath of the current Java process.</p>
+<p> If the accessor is not restricted, the $KEYSTORE is resolved to
+ $HOME/.ptKeystore.</p>
+<p> The options parameter may have the following values:</p>
+<ul>
+<li>If the type of the options parameter is a Number, then it is assumed
+to be the timeout in milliseconds.</li>
+<li>If the type of the options parameter is a String, then it is assumed
+to be the encoding, for example &quot;UTF-8&quot;.  If the value is &quot;Raw&quot; or &quot;raw&quot;
+then the data is returned as an unsigned array of bytes.
+The default encoding is the default encoding of the system.
+In CapeCode, the default encoding is returned by Charset.defaultCharset().</li>
+<li><p>If the type of the options parameter is an Object, then it may
+have the following fields:
+<strong> encoding {string} The encoding of the file, see above for values.
+</strong> timeout {number} The timeout in milliseconds.</p>
+<p>If the callback parameter is not present, then getResource() will
+be synchronous read like Node.js's
+<a href="https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options">fs.readFileSync()</a>.
+If the callback argument is present, then getResource() will be asynchronous like
+<a href="https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback">fs.readFile()</a>.</p>
+</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The URI or path to the resource</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The options for reading the resource</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callback function.  The first argument is the error,
+ if any, the second argument is the data, if any.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line182">line 182</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~instantiate"><span class="type-signature">(inner) </span>instantiate<span class="signature">(accessorName, accessorClass)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Instantiate and return an accessor. If there is no 'actor' variable in scope,
+ then this method assumes there is nothing in charge of execution of this accessor
+ and therefore creates an orchestrator for it and starts an event loop.
+ This will throw an exception if there is no such accessor class on the accessor
+ search path.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>accessorName</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name to give to the instance.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accessorClass</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Fully qualified accessor class name, e.g. 'net/REST'.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line386">line 386</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~instantiateTopLevel"><span class="type-signature">(inner) </span>instantiateTopLevel<span class="signature">(accessorName, accessorClass)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Instantiate and return a top-level accessor.
+ For now, this is the same as instantiate().</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>accessorName</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name to give to the instance.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accessorClass</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Fully qualified accessor class name, e.g. 'net/REST'.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line422">line 422</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~processCommandLineArguments"><span class="type-signature">(inner) </span>processCommandLineArguments<span class="signature">(argv)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Evaluate command-line arguments by first converting the arguments
+ from a Java array to a JavaScript array, and then invoking main()
+ in commonHost.js.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>argv</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Command-line arguments.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line433">line 433</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if any standalone accessors with active event loops
+  were instantiated.</p>
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~setInterval"><span class="type-signature">(inner) </span>setInterval<span class="signature">(func, milliseconds)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set a timeout to call the specified function after the specified
+time and repeatedly at multiples of that time.</p>
+<p> Return a handle to use in clearInterval(). If there are
+additional arguments beyond the first two, then those arguments
+will be passed to the function when it is invoked. This
+implementation uses fireAt() of the director in charge of the host
+JavaScript actor in Ptolemy II. Hence, actors that use this should
+be used with a director that respects fireAt(), such as DE.  If the
+director has synchronizeToRealTime set to true, then it will
+approximate real-time behavior reasonably closely. Otherwise, the
+timeout will only be simulated. Either way, the timing is much more
+precise and well-defined than usual for JavaScript environments. If
+two actors specify the same timeout time in, say, their
+initialize() function, then they will be invoked at the same model
+time, and their outputs will be simultaneous. Any downstream actor
+will see them simultaneously.</p>
+
+<p><p>Note with this implementation, it is not necessary to
+call clearInterval() in the actor's wrapup() function.
+Nevertheless, it is a good idea to do that in an accessor
+since other accessor hosts may not work the same way.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callback function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>milliseconds</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The interval in milliseconds.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line494">line 494</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~setTimeout"><span class="type-signature">(inner) </span>setTimeout<span class="signature">(func, milliseconds)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set a timeout to call the specified function after the specified time.
+Return a handle to use in clearTimeout(). If there are
+additional arguments beyond the first two, then those arguments
+will be passed to the function when it is invoked. This
+implementation uses fireAt() of the director in charge of the host
+JavaScript actor in Ptolemy II. Hence, actors that use this should
+be used with a director that respects fireAt(), such as DE.  If the
+director has synchronizeToRealTime set to true, then it will
+approximate real-time behavior reasonably closely. Otherwise, the
+timeout will only be simulated. Either way, the timing is much more
+precise and well-defined than usual for JavaScript environments. If
+two actors specify the same timeout time in, say, their
+initialize() function, then they will be invoked at the same model
+time, and their outputs will be simultaneous. Any downstream actor
+will see them simultaneously.</p>
+<p>Note with this implementation, it is not necessary to
+call clearTimeout() in the actor's wrapup() function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callback function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>milliseconds</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The interval in milliseconds.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ptolemy_actor_lib_jjs_nashornHost.js.html">ptolemy/actor/lib/jjs/nashornHost.js</a>, <a href="ptolemy_actor_lib_jjs_nashornHost.js.html#line534">line 534</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Accessors</h3><ul><li><a href="accessor-audio_AudioCapture.html">audio/AudioCapture</a></li><li><a href="accessor-audio_AudioPlayer.html">audio/AudioPlayer</a></li><li><a href="accessor-audio_ClipPlayer.html">audio/ClipPlayer</a></li><li><a href="accessor-audioIo_AudioIoCapture.html">audioIo/AudioIoCapture</a></li><li><a href="accessor-audioIo_AudioIoPlay.html">audioIo/AudioIoPlay</a></li><li><a href="accessor-audioIo_AudioIoWavFile.html">audioIo/AudioIoWavFile</a></li><li><a href="accessor-cameras_Camera.html">cameras/Camera</a></li><li><a href="accessor-cameras_Foscam.html">cameras/Foscam</a></li><li><a href="accessor-contextAware_contextAware.html">contextAware/contextAware</a></li><li><a href="accessor-contextAware_contextAwareTest.html">contextAware/contextAwareTest</a></li><li><a href="accessor-deterministicTemporalSemantics_SpontaneousAperiodic.html">deterministicTemporalSemantics/SpontaneousAperiodic</a></li><li><a href="accessor-deterministicTemporalSemantics_SpontaneousPeriodic.html">deterministicTemporalSemantics/SpontaneousPeriodic</a></li><li><a href="accessor-devices_AdsB.html">devices/AdsB</a></li><li><a href="accessor-devices_DrDose.html">devices/DrDose</a></li><li><a href="accessor-devices_EcSensor.html">devices/EcSensor</a></li><li><a href="accessor-devices_Hue.html">devices/Hue</a></li><li><a href="accessor-devices_Lifx.html">devices/Lifx</a></li><li><a href="accessor-devices_Moto360SensorListener.html">devices/Moto360SensorListener</a></li><li><a href="accessor-devices_PhSensor.html">devices/PhSensor</a></li><li><a href="accessor-geodesy_Lla2Ecef.html">geodesy/Lla2Ecef</a></li><li><a href="accessor-geodesy_LlaDist.html">geodesy/LlaDist</a></li><li><a href="accessor-HandlerWithSuppress.html">HandlerWithSuppress</a></li><li><a href="accessor-Hello.html">Hello</a></li><li><a href="accessor-image_AprilTags.html">image/AprilTags</a></li><li><a href="accessor-image_CharacterDetection.html">image/CharacterDetection</a></li><li><a href="accessor-image_ComputerVision.html">image/ComputerVision</a></li><li><a href="accessor-image_demo_TextFromCamera.html">image/demo/TextFromCamera</a></li><li><a href="accessor-image_FaceDetector.html">image/FaceDetector</a></li><li><a href="accessor-image_ImageAnnotate.html">image/ImageAnnotate</a></li><li><a href="accessor-image_ImageDisplay.html">image/ImageDisplay</a></li><li><a href="accessor-image_ImageFilter.html">image/ImageFilter</a></li><li><a href="accessor-image_MotionDetector.html">image/MotionDetector</a></li><li><a href="accessor-LifxAccessorTemplate.html">LifxAccessorTemplate</a></li><li><a href="accessor-localization_Location.html">localization/Location</a></li><li><a href="accessor-localization_mapRepo.html">localization/mapRepo</a></li><li><a href="accessor-mutable_MutableTestGain.html">mutable/MutableTestGain</a></li><li><a href="accessor-mutable_TestGain1.html">mutable/TestGain1</a></li><li><a href="accessor-mutable_TestGain2.html">mutable/TestGain2</a></li><li><a href="accessor-net_Discovery.html">net/Discovery</a></li><li><a href="accessor-net_IPAddress.html">net/IPAddress</a></li><li><a href="accessor-net_KeyValueStore.html">net/KeyValueStore</a></li><li><a href="accessor-net_MQTTPublisher.html">net/MQTTPublisher</a></li><li><a href="accessor-net_MQTTSubscriber.html">net/MQTTSubscriber</a></li><li><a href="accessor-net_REST.html">net/REST</a></li><li><a href="accessor-net_SecureCommClient.html">net/SecureCommClient</a></li><li><a href="accessor-net_SecureCommServer.html">net/SecureCommServer</a></li><li><a href="accessor-net_SecurePublisher.html">net/SecurePublisher</a></li><li><a href="accessor-net_SecureSubscriber.html">net/SecureSubscriber</a></li><li><a href="accessor-net_SerialPort.html">net/SerialPort</a></li><li><a href="accessor-net_TCPSocketClient.html">net/TCPSocketClient</a></li><li><a href="accessor-net_TCPSocketServer.html">net/TCPSocketServer</a></li><li><a href="accessor-net_UDPSocketListener.html">net/UDPSocketListener</a></li><li><a href="accessor-net_UDPSocketSender.html">net/UDPSocketSender</a></li><li><a href="accessor-net_VertxPublish.html">net/VertxPublish</a></li><li><a href="accessor-net_VertxSubscribe.html">net/VertxSubscribe</a></li><li><a href="accessor-net_WebServer.html">net/WebServer</a></li><li><a href="accessor-net_WebSocketClient.html">net/WebSocketClient</a></li><li><a href="accessor-net_WebSocketServer.html">net/WebSocketServer</a></li><li><a href="accessor-net_XBee.html">net/XBee</a></li><li><a href="accessor-PressureSensor.html">PressureSensor</a></li><li><a href="accessor-robotics_DroneLocation.html">robotics/DroneLocation</a></li><li><a href="accessor-robotics_GlobalPosition2LatLonAlt.html">robotics/GlobalPosition2LatLonAlt</a></li><li><a href="accessor-robotics_LocationRosPublisher.html">robotics/LocationRosPublisher</a></li><li><a href="accessor-robotics_RosPublisher.html">robotics/RosPublisher</a></li><li><a href="accessor-robotics_RosSubscriber.html">robotics/RosSubscriber</a></li><li><a href="accessor-robotics_Scarab.html">robotics/Scarab</a></li><li><a href="accessor-ROSTeleoperation.html">ROSTeleoperation</a></li><li><a href="accessor-services_FFT.html">services/FFT</a></li><li><a href="accessor-services_FINDLocation.html">services/FINDLocation</a></li><li><a href="accessor-services_GeoCoder.html">services/GeoCoder</a></li><li><a href="accessor-services_GeoLocation.html">services/GeoLocation</a></li><li><a href="accessor-services_Heartbeat.html">services/Heartbeat</a></li><li><a href="accessor-services_NaturalLanguage.html">services/NaturalLanguage</a></li><li><a href="accessor-services_RedPinLocation.html">services/RedPinLocation</a></li><li><a href="accessor-services_ReverseGeoCoder.html">services/ReverseGeoCoder</a></li><li><a href="accessor-services_SpeechRecognition.html">services/SpeechRecognition</a></li><li><a href="accessor-services_Weather.html">services/Weather</a></li><li><a href="accessor-services_WiFiScan.html">services/WiFiScan</a></li><li><a href="accessor-SoundActuator.html">SoundActuator</a></li><li><a href="accessor-TemperatureSensor.html">TemperatureSensor</a></li><li><a href="accessor-test_Test.html">test/Test</a></li><li><a href="accessor-test_TestAccessor.html">test/TestAccessor</a></li><li><a href="accessor-test_TestAdder.html">test/TestAdder</a></li><li><a href="accessor-test_TestBaseC.html">test/TestBaseC</a></li><li><a href="accessor-test_TestComposite.html">test/TestComposite</a></li><li><a href="accessor-test_TestCompositeSpontaneous.html">test/TestCompositeSpontaneous</a></li><li><a href="accessor-test_TestDerivedAgainA.html">test/TestDerivedAgainA</a></li><li><a href="accessor-test_TestDerivedC.html">test/TestDerivedC</a></li><li><a href="accessor-test_TestFunctions.html">test/TestFunctions</a></li><li><a href="accessor-test_TestGain.html">test/TestGain</a></li><li><a href="accessor-test_TestImplement.html">test/TestImplement</a></li><li><a href="accessor-test_TestInheritance.html">test/TestInheritance</a></li><li><a href="accessor-test_TestRequire.html">test/TestRequire</a></li><li><a href="accessor-test_TestSpontaneous.html">test/TestSpontaneous</a></li><li><a href="accessor-test_TestSpontaneousOnce.html">test/TestSpontaneousOnce</a></li><li><a href="accessor-test_TestWebSocketClient.html">test/TestWebSocketClient</a></li><li><a href="accessor-test_TrainableTest.html">test/TrainableTest</a></li><li><a href="accessor-TestDerivedC.html">TestDerivedC</a></li><li><a href="accessor-TrafficLight.html">TrafficLight</a></li><li><a href="accessor-trusted_AccessorStatus.html">trusted/AccessorStatus</a></li><li><a href="accessor-tutorial_Hello.html">tutorial/Hello</a></li><li><a href="accessor-util_GetResource.html">util/GetResource</a></li><li><a href="accessor-utilities_Clock.html">utilities/Clock</a></li><li><a href="accessor-utilities_Cron.html">utilities/Cron</a></li><li><a href="accessor-utilities_Exec.html">utilities/Exec</a></li><li><a href="accessor-utilities_LocalStorage.html">utilities/LocalStorage</a></li><li><a href="accessor-utilities_MutableBase.html">utilities/MutableBase</a></li><li><a href="accessor-utilities_Stop.html">utilities/Stop</a></li><li><a href="accessor-utilities_TextDisplay.html">utilities/TextDisplay</a></li><li><a href="accessor-VibrationSensor.html">VibrationSensor</a></li><li><a href="MessageBoard.accessor_js.html">js</a></li><li><a href="utilities_UserInterface.accessor_js.html">js</a></li></ul><h3>Modules</h3><ul><li><a href="module-@accessor-hosts_browser.html">@accessor-hosts/browser</a></li><li><a href="module-@accessors-hosts_browser_demo_tutorial.html">@accessors-hosts/browser/demo/tutorial</a></li><li><a href="module-@accessors-hosts_browser_test_regressionTestScript.html">@accessors-hosts/browser/test/regressionTestScript</a></li><li><a href="module-@accessors-hosts_common_deterministicTemporalSemantics.html">@accessors-hosts/common/deterministicTemporalSemantics</a></li><li><a href="module-@accessors-hosts_common_modules_hostHelper.html">@accessors-hosts/common/modules/hostHelper</a></li><li><a href="module-@accessors-hosts_common_modules_ontology.html">@accessors-hosts/common/modules/ontology</a></li><li><a href="module-@accessors-hosts_common_modules_util.html">@accessors-hosts/common/modules/util</a></li><li><a href="module-@accessors-hosts_common_sync-atom.html">@accessors-hosts/common/sync-atom</a></li><li><a href="module-@accessors-hosts_commonHost.html">@accessors-hosts/commonHost</a></li><li><a href="module-@accessors-hosts_duktapeHost.html">@accessors-hosts/duktapeHost</a></li><li><a href="module-@accessors-hosts_node_nodeHostInvoke.html">@accessors-hosts/node/nodeHostInvoke</a></li><li><a href="module-@accessors-hosts_node_nodeHostShell.html">@accessors-hosts/node/nodeHostShell</a></li><li><a href="module-@accessors-hosts_node_test_mocha_testNodeAllAuto.html">@accessors-hosts/node/test/mocha/testNodeAllAuto</a></li><li><a href="module-@accessors-hosts_node_test_testNodeAuto.html">@accessors-hosts/node/test/testNodeAuto</a></li><li><a href="module-@accessors-hosts_nodeHost.html">@accessors-hosts/nodeHost</a></li><li><a href="module-@accessors-modules_cameras.html">@accessors-modules/cameras</a></li><li><a href="module-@accessors-modules_discovery.html">@accessors-modules/discovery</a></li><li><a href="module-@accessors-modules_http-client.html">@accessors-modules/http-client</a></li><li><a href="module-@accessors-modules_http-server.html">@accessors-modules/http-server</a></li><li><a href="module-@accessors-modules_image-display.html">@accessors-modules/image-display</a></li><li><a href="module-@accessors-modules_iot-auth.html">@accessors-modules/iot-auth</a></li><li><a href="module-@accessors-modules_local-storage.html">@accessors-modules/local-storage</a></li><li><a href="module-@accessors-modules_serial.html">@accessors-modules/serial</a></li><li><a href="module-@accessors-modules_socket.html">@accessors-modules/socket</a></li><li><a href="module-@accessors-modules_text-display.html">@accessors-modules/text-display</a></li><li><a href="module-@accessors-modules_udp-socket.html">@accessors-modules/udp-socket</a></li><li><a href="module-@accessors-modules_web-socket-client.html">@accessors-modules/web-socket-client</a></li><li><a href="module-@accessors-modules_web-socket-server.html">@accessors-modules/web-socket-server</a></li><li><a href="module-accessorMap.html">accessorMap</a></li><li><a href="module-accessorMapCapeCode.html">accessorMapCapeCode</a></li><li><a href="module-aprilTags.html">aprilTags</a></li><li><a href="module-audio.html">audio</a></li><li><a href="module-ble.html">ble</a></li><li><a href="module-buffer.html">buffer</a></li><li><a href="module-camera.html">camera</a></li><li><a href="module-capeCodeHost.html">capeCodeHost</a></li><li><a href="module-computerVision.html">computerVision</a></li><li><a href="module-console.html">console</a></li><li><a href="module-contextAware.html">contextAware</a></li><li><a href="module-cordova_modules_util.html">cordova/modules/util</a></li><li><a href="module-cordovaHost.html">cordovaHost</a></li><li><a href="module-crypto.html">crypto</a></li><li><a href="module-dataConverter.html">dataConverter</a></li><li><a href="module-discovery.html">discovery</a></li><li><a href="module-dsp.html">dsp</a></li><li><a href="module-duktape_modules_util.html">duktape/modules/util</a></li><li><a href="module-eventbus.html">eventbus</a></li><li><a href="module-faceDetector.html">faceDetector</a></li><li><a href="module-geolocation.html">geolocation</a></li><li><a href="module-http-client.html">http-client</a></li><li><a href="module-httpServer.html">httpServer</a></li><li><a href="module-imageDisplay.html">imageDisplay</a></li><li><a href="module-imageFilters.html">imageFilters</a></li><li><a href="module-IMUSensor.html">IMUSensor</a></li><li><a href="module-iotAuth.html">iotAuth</a></li><li><a href="module-lib_interfaces_common.html">lib/interfaces/common</a></li><li><a href="module-localFunctions.html">localFunctions</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-motionDetector.html">motionDetector</a></li><li><a href="module-mqtt.html">mqtt</a></li><li><a href="module-nashornHost.html">nashornHost</a></li><li><a href="module-objectAssign.html">objectAssign</a></li><li><a href="module-os.html">os</a></li><li><a href="module-sampleStatus.html">sampleStatus</a></li><li><a href="module-serial.html">serial</a></li><li><a href="module-shell.html">shell</a></li><li><a href="module-simpleMutable.html">simpleMutable</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-speechRecognition.html">speechRecognition</a></li><li><a href="module-status.html">status</a></li><li><a href="module-textDisplay.html">textDisplay</a></li><li><a href="module-udpSocket.html">udpSocket</a></li><li><a href="module-userInterface.html">userInterface</a></li><li><a href="module-webSocket.html">webSocket</a></li><li><a href="module-webSocketClient.html">webSocketClient</a></li><li><a href="module-webSocketServer.html">webSocketServer</a></li><li><a href="module-wifiScanner.html">wifiScanner</a></li><li><a href="module-xbee.html">xbee</a></li><li><a href="swarmlet.module_js.html">js</a></li></ul><h3>Classes</h3><ul><li><a href="CoordinateSystem.html">CoordinateSystem</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Map.html">Map</a></li><li><a href="MapSource.html">MapSource</a></li><li><a href="module-eventbus-VertxBus.html">VertxBus</a></li><li><a href="module-http-client-ClientRequest.html">ClientRequest</a></li><li><a href="module-http-client-IncomingMessage.html">IncomingMessage</a></li><li><a href="ObservationMetadata.html">ObservationMetadata</a></li><li><a href="Occupancy.html">Occupancy</a></li><li><a href="Placement.html">Placement</a></li><li><a href="Quaternion.html">Quaternion</a></li><li><a href="URL.html">URL</a></li></ul><h3>Namespaces</h3><ul><li><a href="addChainableMethod.html">addChainableMethod</a></li><li><a href="addMethod.html">addMethod</a></li><li><a href="addProperty.html">addProperty</a></li><li><a href="Assert.html">Assert</a></li><li><a href="BDD.html">BDD</a></li><li><a href="Expect.html">Expect</a></li><li><a href="expectTypes.html">expectTypes</a></li><li><a href="flag.html">flag</a></li><li><a href="getActual.html">getActual</a></li><li><a href="getEnumerableProperties.html">getEnumerableProperties</a></li><li><a href="getMessage.html">getMessage</a></li><li><a href="getName.html">getName</a></li><li><a href="getPathInfo.html">getPathInfo</a></li><li><a href="getPathValue.html">getPathValue</a></li><li><a href="getProperties.html">getProperties</a></li><li><a href="inspect.html">inspect</a></li><li><a href="overwriteChainableMethod.html">overwriteChainableMethod</a></li><li><a href="overwriteMethod.html">overwriteMethod</a></li><li><a href="overwriteProperty.html">overwriteProperty</a></li><li><a href="Should.html">Should</a></li><li><a href="test.html">test</a></li><li><a href="transferFlags.html">transferFlags</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html"></a></li><li><a href="global.html#addObserver">addObserver</a></li><li><a href="global.html#assert">assert</a></li><li><a href="global.html#clearRepo">clearRepo</a></li><li><a href="global.html#coordinateTransformationsToJSONString">coordinateTransformationsToJSONString</a></li><li><a href="global.html#coordinateTransformationsToString">coordinateTransformationsToString</a></li><li><a href="global.html#createApplication">createApplication</a></li><li><a href="global.html#createApplicationDeprecated">createApplicationDeprecated</a></li><li><a href="global.html#createApplicationNew">createApplicationNew</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#drawMap">drawMap</a></li><li><a href="global.html#entitiesToJSONString">entitiesToJSONString</a></li><li><a href="global.html#entitiesToString">entitiesToString</a></li><li><a href="global.html#EventEmitter">EventEmitter</a></li><li><a href="global.html#express">express</a></li><li><a href="global.html#extractProtocol">extractProtocol</a></li><li><a href="global.html#findSignpost">findSignpost</a></li><li><a href="global.html#getCoordinateTransformation">getCoordinateTransformation</a></li><li><a href="global.html#getResource">getResource</a></li><li><a href="global.html#getSignposts">getSignposts</a></li><li><a href="global.html#httpClient">httpClient</a></li><li><a href="global.html#initialize">initialize</a></li><li><a href="global.html#localRepoToJSONString">localRepoToJSONString</a></li><li><a href="global.html#lolcation">lolcation</a></li><li><a href="global.html#mapsToJSONString">mapsToJSONString</a></li><li><a href="global.html#mapsToString">mapsToString</a></li><li><a href="global.html#nodeHost">nodeHost</a></li><li><a href="global.html#parseDataAudio">parseDataAudio</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#query">query</a></li><li><a href="global.html#querystring">querystring</a></li><li><a href="global.html#querystringify">querystringify</a></li><li><a href="global.html#registerAndReact">registerAndReact</a></li><li><a href="global.html#registerCoordinateTransformation">registerCoordinateTransformation</a></li><li><a href="global.html#registerEntity">registerEntity</a></li><li><a href="global.html#registerMap">registerMap</a></li><li><a href="global.html#replaceRepo">replaceRepo</a></li><li><a href="global.html#resolve">resolve</a></li><li><a href="global.html#rules">rules</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setup">setup</a></li><li><a href="global.html#SpaceTypeEnum">SpaceTypeEnum</a></li><li><a href="global.html#startEddystoneURLBeacon">startEddystoneURLBeacon</a></li><li><a href="global.html#stop">stop</a></li><li><a href="global.html#stopAll">stopAll</a></li><li><a href="global.html">stringify</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#Testing">Testing</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#unpublish">unpublish</a></li><li><a href="global.html#unsubscribe">unsubscribe</a></li><li><a href="global.html#useSampleAudioData">useSampleAudioData</a></li><li><a href="global.html#useSampleRFData">useSampleRFData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.1-dev</a> on Thu Mar 15 2018 00:02:29 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DateConstructor" class="ptolemy.actor.lib.DateConstructor">
+  <description>
+Construct date token by parsing all date elements (year, day, month, ...).  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (pd)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pd)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output for the constructed date.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="year">The year.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="month">The month.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="day">The day of the month.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="hour">The hour of the day.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="minute">The minutes.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="second">The seconds.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="millisecond">The milliseconds.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="microsecond">The microseconds.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="nanosecond">The nanoseconds.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="timeZoneOffset">The time zone offset.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="timeInMillis">The time as a long value representing the milliseconds since&#10;  January 1, 1970.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useTimeInMillis">Use the time in milliseconds. The default value is false,&#10;  which means that the timeAsLongValue will be set according the&#10;  year, month, day etc and adjusted according to the precision.&#10;  If useTimeInMillis is true, then the value of timeAsLongValue&#10;  will be the time in milliseconds.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="precision">The precision of the date. The precision defaults to&#10;  milliseconds.</property>
+</doc>

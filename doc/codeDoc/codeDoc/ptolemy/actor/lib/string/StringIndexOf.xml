@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="StringIndexOf" class="ptolemy.actor.lib.string.StringIndexOf">
+  <description>
+Output the index of a &lt;i&gt;searchFor&lt;/i&gt; string contained in a given&#10; &lt;i&gt;inText&lt;/i&gt;.  The search begins at the index given by&#10; &lt;i&gt;startIndex&lt;/i&gt; and ends at either the end or the beginning of the&#10; string, depending on whether &lt;i&gt;searchForwards&lt;/i&gt; is true or false,&#10; respectively. If the string is not found, then the output is -1.  If&#10; the string is found, then the output is the index of the start of the&#10; string, where index 0 refers to the first character in the string.  </description>
+  <author>Rakesh Reddy, Philip Baldwin, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Green (pjb2e)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output producing the index of the &lt;i&gt;searchFor&lt;/i&gt; string, if&#10;  it is found, and -1 otherwise. This has type int.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="ignoreCase">The parameter to state whether to ignore case. This is a&#10;  boolean that defaults to false.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="inText">Port and parameter specifying the string that will be searched.&#10;  This has type string and defaults to the empty string.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="searchFor">Port and parameter specifying a string to find in&#10;  the &lt;i&gt;inText&lt;/i&gt; string.  This has type string and&#10;  defaults to an empty string.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="searchForwards">Boolean parameter indicating the direction in which to search.&#10;  This is true to find the first occurrence and false to find the last.&#10;  The default value is true.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="startIndex">Port and parameter that determines where to start the search.&#10;  This has type int and defaults to 0.</property>
+</doc>

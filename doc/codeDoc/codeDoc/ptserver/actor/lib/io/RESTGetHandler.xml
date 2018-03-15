@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RESTGetHandler" class="ptserver.actor.lib.io.RESTGetHandler">
+  <description>
+RESTGetHandler is an actor that takes a model and a RESTful string specifying a&#10;model resource as inputs, and prints information about that resource to the&#10;destination file in a combination of HTML + Javascript format.&#10;&#10;In the future - should we separate actions (REST get) from actors?&#10;I envision a &quot;RESTHandler&quot; which would take care of web connection settings,&#10;and have (at least) four methods (get, post, put, delete) where classes could be&#10;registered to support each method dynamically.  A default method can be inserted&#10;if the operation is not supported (for example, delete).  </description>
+  <author>Beth Latronico</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ltrnc)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ltrnc)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port for the HTML response.</port>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="destinationFileName">The file name to write to.</property>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="ignoreNamedObjsStartingWithUnderscores">True if NamedObjs that start with underscores should be ignored.&#10;  The default is a boolean with value false, indicating that NamedObjs&#10;  such as parameters like _vergilSize should be printed out.&#10;  This parameters is primarily used for testing.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="outputToFile">True if the actor should output to the file specified by&#10; destinationFileName.  Otherwise, actor sends output to output port.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="resource">The resource to return.  This can be the whole model, any contained&#10; entity, or a set of contained entities.  Please see the find() method&#10; for a full explanation of the syntax.  Some examples:&#10; modelName  - Returns the top-level entity (the whole model) and a list of&#10; resources contained by this entity&#10;&#10; modelName/x  - Returns actor x whose parent is the top-level entity and a&#10; list of resources contained by x&#10;&#10; modelName/x/y  - Returns actor y, whose parent is x, whose parent is the&#10; top-level entity, and a list of resources contained by y&#10;&#10; modelName/ontology.name=unitSystem&amp;amp;concept=Temperature -  Returns all&#10; entities who have a port annotated with the concept &quot;Temperature&quot; from&#10; the ontology &quot;unitSystem&quot;</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="sourceModel">An optional string specifying the file name or URL of the model to read&#10;  from.  If blank, the model containing this actor is used.</property>
+</doc>

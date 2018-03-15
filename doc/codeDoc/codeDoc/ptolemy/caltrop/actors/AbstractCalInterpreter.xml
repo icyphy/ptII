@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AbstractCalInterpreter" class="ptolemy.caltrop.actors.AbstractCalInterpreter">
+  <description>
+This class is the base class for actors that interpret CAL source&#10; inside the Ptolemy II framework. It configures itself according to an&#10; &lt;a href=&quot;../../../caltrop/interpreter/ast/Actor.html&quot;&gt;Actor&lt;/a&gt; data structure (setting&#10; up ports, parameters, types etc.) and then proceeds to execute as the&#10; actor by interpreting the actions using the &lt;a href=&quot;../../../ptolemy/caltrop/ddi/util/DataflowActorInterpreter.xml&quot;&gt;DataflowActorInterpreter&lt;/a&gt; infrastructure.&#10;&#10; &lt;p&gt; The actor interpreter is configured by a context that injects the&#10; appropriate &lt;tt&gt;Token&lt;/tt&gt;-based value system into the evaluation of&#10; the actions. This is implemented in the class &lt;a href=&quot;../../../ptolemy/caltrop/PtolemyPlatform.xml&quot;&gt;PtolemyPlatform&lt;/a&gt;.&#10;&#10; &lt;p&gt; For further documentation on CAL, see the&#10; &lt;a href = &quot;http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport&quot;&gt;Language Report&lt;/a&gt;.  </description>
+  <author>J&amp;#246;rn W. Janneck, Christopher Chang, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

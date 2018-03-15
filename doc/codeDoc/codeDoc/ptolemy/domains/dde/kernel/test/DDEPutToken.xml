@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DDEPutToken" class="ptolemy.domains.dde.kernel.test.DDEPutToken">
+  <description>
+DDEPutToken is a test class used for testing the production of tokens.&#10; DDEPutToken has a single, typed, output multiport. A DDEPutToken object&#10; can output N tokens where 'N' is specified in the constructor. The current&#10; time of DDEPutToken at the time a given token is output can be queried&#10; after Manager.run() is finished.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

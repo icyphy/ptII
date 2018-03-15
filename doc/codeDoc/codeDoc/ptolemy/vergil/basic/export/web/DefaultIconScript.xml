@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DefaultIconScript" class="ptolemy.vergil.basic.export.web.DefaultIconScript">
+  <description>
+A parameter specifying default JavaScript actions to associate&#10; with icons in model. Putting this attribute into a model causes&#10; the icons of entities, attributes, or both, to be assigned a&#10; default action of type given by &lt;i&gt;eventType&lt;/i&gt;, where the&#10; action is defined by the value of this parameter.&#10; This will replace any configuration default that targets&#10; the same event type, includes the same objects, and&#10; targets the same instanceOf possibilities.&#10; &lt;p&gt;&#10; A typical use of this would be to set its string value&#10; to something like &quot;foo(args)&quot; where foo is a JavaScript function&#10; defined in the &lt;i&gt;script&lt;/i&gt; parameter.&#10; You can also provide HTML text to insert into the start or&#10; end sections of the container's web page.&#10; &lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="instancesOf">If non-empty (the default), specifies a class name.&#10;  Only entities or attributes (depending on &lt;i&gt;include&lt;/i&gt;)&#10;  implementing the specified&#10;  class will be assigned the control defined by this&#10;  DefaultIconScript parameter.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="include">Specification of whether to provide the default behavior for&#10;  Attributes, Entities, or both. This is either &quot;Entities&quot; (the&#10;  default), &quot;Attributes&quot;, or &quot;All&quot;.</property>
+</doc>

@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Airport" class="ptolemy.domains.atc.lib.Airport">
+  <description>
+This actor receives a record token which shows an airplane decides to fly.&#10; Therefore, this actor just sends that to a proper direction based on the neighbors (of the airport)&#10; If the destination track (first track in the airplane's flight map is unavailable,&#10; then airport try to send it after a period of time.  </description>
+  <author>Maryam Bagheri</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port, which is of type record token.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which is of type record token.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="connectedTracks">An array indicating the connected tracks.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="delay">The delay.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="airportId">The airport Id.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="takeOff">A double with the initial default value of 1.</property>
+</doc>

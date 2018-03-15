@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend">
+  <description>
+An actor that appends ArrayTokens together.  This actor has a single input&#10; multiport, and a single output port.  The types on the input and the output&#10; port must both be the same array type.  During each firing, this actor reads&#10; up to one ArrayToken from each channel of the input port and creates an&#10; ArrayToken of the same type on the output port.  If no token is available on&#10; a particular channel, then there will be no contribution to the output.&#10; The output is an array of length equal to the sum of the lengths of&#10; the input arrays (which may be zero if either there are no input&#10; arrays or the lengths of the input arrays are all zero).  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+</doc>

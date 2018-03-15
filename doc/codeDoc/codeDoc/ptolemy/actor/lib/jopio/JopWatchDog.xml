@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JopWatchDog" class="ptolemy.actor.lib.jopio.JopWatchDog">
+  <description>
+&lt;p&gt;&#10; Watch dog output for the Java processor JOP (see http://www.jopdesign.com).&#10; The watch dog has to be triggered at least all 1.6 seconds. Best is to trigger&#10; it once a second, which gives a calming blinking at 0.5 Hz.&#10; &lt;p&gt;&#10; In the simulation the watch dog LED is just printed to standard out with&#10; '*' and 'o'.  </description>
+  <author>Martin Schoeberl</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (mschoebe)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (mschoebe)</Pt.AcceptedRating>
+</doc>

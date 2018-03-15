@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope">
+  <description>
+&lt;p&gt;A signal plotter that plots in an oscilloscope style, meaning that the&#10; horizontal axis is wrapped and that there is finite persistence.  This&#10; plotter contains an instance of the Plot class from the Ptolemy plot&#10; package as a public member.  Data at the input, which can consist of&#10; any number of channels, are plotted on this instance.  Each channel is&#10; plotted as a separate data set.  The input is of type DoubleToken.&#10;&#10; &lt;/p&gt;&lt;p&gt;The horizontal axis represents time.  The &lt;i&gt;width&lt;/i&gt; parameter is&#10; a double that gives the width of the plot. The horizontal axis will be&#10; labeled from 0.0 to &lt;i&gt;width&lt;/i&gt;.  It defaults to 10.0.&#10;&#10; &lt;/p&gt;&lt;p&gt;If the &lt;i&gt;persistence&lt;/i&gt; parameter is positive, then it specifies&#10; the amount of time into the past that points are shown.  It also&#10; defaults to 10.0, so any point older than 10.0 time units is erased and&#10; forgotten.&lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The width of the X axis (a double).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="persistence">The amount of data displayed at any one time (a double).&#10;  This has units of the X axis.</property>
+</doc>

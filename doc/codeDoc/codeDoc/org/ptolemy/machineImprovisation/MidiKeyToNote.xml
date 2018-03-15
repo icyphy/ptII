@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MidiKeyToNote" class="org.ptolemy.machineImprovisation.MidiKeyToNote">
+  <description>
+Simple conversion actor that converts a midi key integer into a letter&#10; note.  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (ilgea)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="letterNote">A note equivalent of the key, represented by a string,&#10; consisting of the pitch letter A-G, the ocrave, and (possibly)&#10; a trailing symbol.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="midiKey">The midi key index.</port>
+</doc>

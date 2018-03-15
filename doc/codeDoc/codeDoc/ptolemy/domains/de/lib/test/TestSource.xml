@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TestSource" class="ptolemy.domains.de.lib.test.TestSource">
+  <description>
+This actor fires itself five times at each time instant,&#10; then repeats the cycle one time unit later.  It outputs a ramp,&#10; starting at zero and incrementing by one each time.&#10; If there is an input, it adds the input to the ramp output.&#10; This actor is designed to test two features of the DE scheduler.&#10; First, that an iteration processes all events of a given time&#10; stamp.  And second, that self-scheduling events are processed&#10; in the proper order, with proper priorities.  To do these&#10; tests, connect two of these actors in cascade.  </description>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output"></port>
+</doc>

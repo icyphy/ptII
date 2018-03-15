@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SmallWorldRouter" class="ptolemy.domains.wireless.demo.SmallWorld.SmallWorldRouter">
+  <description>
+This actor implements a routing algorithm to route a message to the&#10; destination via a short path based only on local information. It&#10; assumes that it knows which nodes are in range and the location of&#10; that node. It also assumes that the location of the destination is&#10; known. Based on this information, it finds the node that is closest&#10; to the destination from its connected node set.&#10;&#10; &lt;p&gt; We assume that the actor are connected to nodes inside a&#10; particular range, specified by the &lt;i&gt;sureRange&lt;/i&gt; parameter, for&#10; sure. Outside this range, it may connected to a node with&#10; probability propotional to the r-th inverse power of the distance&#10; between them. Whether it is connected to a particular node is&#10; independent of whether it is connected to any other node.&lt;/p&gt;&#10;&#10; &lt;p&gt; For convenience, a variable named &quot;distance&quot; is available and&#10; equal to the distance between this actor and other actors. The loss&#10; probability can be given as an expression that depends on this&#10; distance.&lt;/p&gt;&#10;&#10; &lt;p&gt; The distance between the transmitter and receiver is determined&#10; by the protected method _distanceBetween(), which is also used to&#10; set the value of the &lt;i&gt;distance&lt;/i&gt; variable that can be used in&#10; the expression for loss probability.&lt;/p&gt;  </description>
+  <author>Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="input">The input port for messages to route. It requires the received&#10;  token to be a record token has type:&#10;  {data=double, destination=String, routeTo=String, hops=int}.</port>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="output">The output port that send a message to connected nodes.&#10;  This has type:&#10;  {data=double, destination=String, routeTo=String, hops=int}.</port>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="test">This port is for analysis uses. When the destination node&#10;  receives the message, it outputs an int token to indicate&#10;  how many hops from the source.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="inputChannelName">Name of the input channel. This is a string that defaults to&#10;  &quot;InputChannel&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="outputChannelName">Name of the output channel. This is a string that defaults to&#10;  &quot;OutputChannel&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="testChannelName">Name of the test channel. This is a string that defaults to&#10;  &quot;testChannel&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="lossProbability">The probability that a connection between two node will fail&#10;  to happen. This is a double that defaults to 0.0, which means that&#10;  no loss occurs.&#10; FIXME: get a better name for it.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="sureRange">The for sure connected range between two nodes. This is a double that&#10;  defaults to 100.0.  The icon for this sensor node includes&#10;  a circle with this as its radius.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="delay">The time required for relaying a message. This is a double that&#10;  defaults to 1.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="seed">The seed that controls the random number generation.&#10;  A seed of zero is interpreted to mean that no seed is specified,&#10;  which means that each execution of the model could result in&#10;  distinct data. For the value 0, the seed is set to&#10;  System.currentTimeMillis() + hashCode(), which means that&#10;  with extremely high probability, two distinct actors will have&#10;  distinct seeds.  However, current time may not have enough&#10;  resolution to ensure that two subsequent executions of the&#10;  same model have distinct seeds.&#10;  This parameter contains a LongToken, initially with value 0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="doublePath">If true, then this actor will also route the message to the&#10;  node that is the second closest to the destination among all&#10;  its connected nodes.  FIXME: This is still under&#10;  experiment. The issue I try to address is that some links may&#10;  fail and long links may fail with higher probability. If so,&#10;  routing a message to two paths may improve the hit&#10;  probability. However, this will also cost more energy and also&#10;  lower the capacity of the network.  There is a tradeoff. A&#10;  simple idea is to use a threshold to control the exponentially&#10;  increased branches. For example, with a threshold equals 2, it&#10;  only route to two pathes for the first hop.</property>
+</doc>

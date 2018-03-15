@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+  <description>
+An actor of this class executes compiled embedded code.&#10; FIXME: Currently, it seems this only works with embedded Java code, but&#10; in theory it should work with any embedded code that can be executed&#10; within Java.&#10; &lt;p&gt;&#10; To use this actor within Vergil, double click on the actor and&#10; insert Java code into the code templates, as indicated by the sample&#10; template.  Normally you will also need to add ports to the actor.&#10; You may need to set the types of these ports as well.&#10; &lt;p&gt;&#10; This actor is actually a composite actor that contains a single&#10; embedded actor that actually executes the generated code. The&#10; reason for the extra level of hierarchy is so that the director&#10; adapter code that handles conversion and transport across the boundary&#10; can be consolidated in one place. In its preinitialize() method,&#10; this actor will create an instance of whatever director is&#10; in charge of executing it. The presumption is that that director&#10; has a code generation adapter that knows how to transport data&#10; from the simulation world in Java to the generated code world&#10; within.  </description>
+  <author>Bert Rodiers, Gang Zhou, Edward A. Lee, Jia Zou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (zgang)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (zgang)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="embeddedCode">The Java code that specifies the function of this actor.  The&#10;  default value is the code necessary to implement a identity&#10;  function.</property>
+</doc>

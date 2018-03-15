@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="KeyReader" class="ptolemy.actor.lib.security.KeyReader">
+  <description>
+Read in a keystore from a FileParameter and output a Key.&#10;&#10; &lt;p&gt;Keystores are ways to manage keys and certificates.&#10; See the &lt;a href=&quot;../../../../ptolemy/actor/lib/security/KeyStoreActor.xml&quot;&gt;ptolemy.actor.lib.security.KeyStoreActor&lt;/a&gt; documentation for more information about&#10; keystores.&#10;&#10; &lt;p&gt;This class has many parameters, derived classes usually set some&#10; of the parameters to reasonable defaults and then hide them&#10; by setting the visibility to EXPERT.  </description>
+  <author>Christopher Hylands Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.  This port contains an KeyToken that contains&#10;  a java.security.Key.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="trigger">The trigger port.  The type of this port is undeclared, meaning&#10;  that it will resolve to any data type.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="getPublicKey">True if we should get the public key.  False if we should&#10;  get the private key.  The default value is true.&#10;  Getting the private key requires using the keyPassword.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="signatureAlgorithm">The name of the signature algorithm used to generate the key.&#10;  This StringParameter is not settable by the user, it is set&#10;  after initialize() is called and the certificate has been&#10;  obtained from the KeyStore.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="verifyCertificate">True if the certificate associated with a key should be verified.&#10;  False if the certificate (if any) need not be verified.&#10;  &lt;br&gt;Public Keys must be associated with a certificate, so&#10;  if &lt;i&gt;getPublicKey&lt;/i&gt; is true, then this Parameter should&#10;  be true as well.&#10;  &lt;br&gt;Private keys are usually associated with a certificate, so&#10;  verifying the certificate is a good idea.&#10;  &lt;br&gt;Secret keys do not usually have a certificate, so if the&#10;  key is a secret key, then usually &lt;i&gt;verifyCertificate&lt;/i&gt;&#10;  is set to false.</property>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Wire" class="ptolemy.domains.dde.lib.Wire">
+  <description>
+Wire is a simple DDE actor with an input and output multiport. When&#10; executed, a Wire will simple consume a token from its input port&#10; and then produce the token on its output port.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+</doc>

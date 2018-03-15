@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TaskFrame" class="ptolemy.apps.hardrealtime.TaskFrame">
+  <description>
+As described in &lt;a href=&quot;../../../ptolemy/apps/hardrealtime/MultiFrameTask.xml&quot;&gt;ptolemy.apps.hardrealtime.MultiFrameTask&lt;/a&gt;, a multiframe task rotates through&#10; a set of different job specifications. A task frame describes one of those possible&#10; job specifications.  </description>
+  <author>Christos Stergiou</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (chster)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chster)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="deadline">The relative deadline of jobs released by the task frame.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="executionTime">The execution requirement of jobs released by the task frame.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initial">Whether the task frame is the initial frame in the multi-frame task.</property>
+</doc>

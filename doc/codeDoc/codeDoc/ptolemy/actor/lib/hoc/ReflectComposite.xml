@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ReflectComposite" class="ptolemy.actor.lib.hoc.ReflectComposite">
+  <description>
+A composite that contains one actor and mirrors the ports and&#10; parameters of that actor. In this base class, ports that are&#10; not instances of MirrorPort are not mirrored. The subclass&#10; MirrorComposite will mirror those ports.  </description>
+  <author>Ilge Akkaya and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (neuendor)</Pt.AcceptedRating>
+</doc>

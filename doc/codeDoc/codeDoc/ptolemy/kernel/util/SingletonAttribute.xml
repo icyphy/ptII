@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SingletonAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+  <description>
+This class is an attribute that replaces any previously&#10; existing attribute in the container that has the same name.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (janneck)</Pt.AcceptedRating>
+</doc>

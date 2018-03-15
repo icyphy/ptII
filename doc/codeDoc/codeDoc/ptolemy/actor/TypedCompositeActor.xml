@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TypedCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+  <description>
+A TypedCompositeActor is an aggregation of typed actors.&#10; &lt;p&gt;&#10; When exporting MoML, instances of this class identify their class name&#10; as TypedCompositeActor. If a derived class does not change this, then it&#10; too will be identified as a TypedCompositeActor. To change this in a&#10; derived class, put the following line in the constructor:&lt;/p&gt;&#10; &lt;pre&gt;&#10; setClassName(&lt;i&gt;full class name&lt;/i&gt;&quot;);&#10; &lt;/pre&gt;&#10; &lt;p&gt;If you do this, you will probably also want to override _exportMoMLContents()&#10; to not generate a description of the contents of the composite, since&#10; they will be already defined in the Java class.&#10; &lt;/p&gt;&#10;&#10; &lt;p&gt;&#10; The ports of a TypedCompositeActor are constrained to be TypedIOPorts,&#10; the relations to be TypedIORelations, and the actors to be instances of&#10; ComponentEntity that implement the TypedActor interface.  Derived classes&#10; may impose further constraints by overriding newPort(), _addPort(),&#10; newRelation(), _addRelation(), and _addEntity(). Also, derived classes may&#10; constrain the container by overriding _checkContainer().&#10; &lt;/p&gt;  </description>
+  <author>Yuhong Xiong, Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (lmuliadi)</Pt.AcceptedRating>
+</doc>

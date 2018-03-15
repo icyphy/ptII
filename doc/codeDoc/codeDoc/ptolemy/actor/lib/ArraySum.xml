@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArraySum" class="ptolemy.actor.lib.ArraySum">
+  <description>
+Compute the sum of the elements in an array.  This actor reads an&#10; array from the &lt;i&gt;input&lt;/i&gt; port and sends the sum of its elements&#10; to the &lt;i&gt;output&lt;/i&gt; port. The output data type is at least the&#10; type of the elements of the input array.  The elements of the input&#10; array have to support addition, or an&#10; exception will be thrown in the fire() method.&#10; This actor is similar to ArrayAverage, except that it supports&#10; data types that do not support division by an integer.  </description>
+  <author>Edward A. Lee, Christine Avanessians</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

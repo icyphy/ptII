@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ThrottleAttributes" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+  <description>
+Container for decorator attributes that are provided to local sources and&#10;other actors that schedule their own firings by&#10;a &lt;a href=&quot;../../../../ptolemy/domains/ptides/kernel/PtidesDirector.xml&quot;&gt;ptolemy.domains.ptides.kernel.PtidesDirector&lt;/a&gt;. Local sources in Ptides can produce an infinite&#10;number of future events. Whether this can happen depends on the execution&#10;strategy implemented in the Ptides director. Note that in a DE composite,&#10;all events are produced in time-stamp order. In Ptides we do not have&#10;this restriction; events can be produced out of timestamp order as long&#10;as the event is safe to process. Local sources are triggered by pure&#10;events produced during a firing of a local source. Such a pure event is&#10;always safe to process.&#10;The attributes provided by this decorator are used to throttle the&#10;production of events by local sources in Ptides.&#10;&#10;&lt;ul&gt;&#10;&lt;li&gt;The parameter &lt;i&gt;maximumLookaheadTime&lt;/i&gt; makes sure that actors are not fired&#10;at logical times bigger than the current platform time plus the parameter value.&#10;&lt;/li&gt;&#10;&lt;li&gt;&#10;The parameter &lt;i&gt;maximumFutureEvents&lt;/i&gt; specifies that the decorated actor&#10;can only create and put onto the event queue a certain number of events. These&#10;events have to be consumed by downstream actors in order to allow the actor&#10;to create more events.&#10;&lt;/li&gt;&#10;&lt;/ul&gt;&#10;&#10;The boolean parameters useMaximumLookaheadTime and useMaximumFutureEvents&#10;are used to specify which parameter is used. It is possible to use both parameters&#10;to throttle events to say the following:&#10;The decorated actor should produce events with timestamps up to maximumLookaheadTime&#10;time units ahead of the current platform time, but there should not be more than&#10;maximumFutureEvents events from this actor in the event queue at any time.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useMaximumLookaheadTime">This parameter specifies that the parameter maximumFutureFiringTime&#10;  should be used to throttle the decorated actor.&#10;  This parameter contains a boolean value that defaults to false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maximumLookaheadTime">The maximumLookaheadTime parameter is the time added to the current&#10;  platform time during which the decorated actor can safely be fired.&#10;  This parameter contains a double value that defaults to 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useMaximumFutureEvents">This parameter specifies that the parameter maximumFutureEvents&#10;  should be used to throttle the decorated actor.&#10;  This parameter contains a boolean value that defaults to true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maximumFutureEvents">The maximumFutureEvents parameter specifies the maximum number&#10;  of events produced by the decorated actor that can be present&#10;  in the event queue at a time.&#10;  This parameter contains an int value that defaults to 0.</property>
+</doc>

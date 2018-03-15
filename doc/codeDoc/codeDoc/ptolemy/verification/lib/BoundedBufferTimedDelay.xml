@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="BoundedBufferTimedDelay" class="ptolemy.verification.lib.BoundedBufferTimedDelay">
+  <description>
+A bounded buffer with a timed delay.  </description>
+  <author>Patrick Cheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="bufferSize">The size of the buffer. The default for this parameter is 1.&#10;  This parameter must contain a DoubleToken&#10;  with a non-negative value, or an exception will be thrown when&#10;  it is set.</property>
+</doc>

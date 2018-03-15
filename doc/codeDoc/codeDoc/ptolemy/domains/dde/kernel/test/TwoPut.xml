@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TwoPut" class="ptolemy.domains.dde.kernel.test.TwoPut">
+  <description>
+TwoPut is a test class with two output ports used to test token&#10; production AND consumption. It has a single typed, input multiport&#10; and two output multiports. The fire() method of this class simply&#10; passes through &quot;real&quot; tokens on the _first_ output port (&quot;output1&quot;).&#10; Use this class to test feedback loops.  </description>
+  <author>John S. Davis II</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Red (davisj)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output1"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output2"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input"></port>
+</doc>

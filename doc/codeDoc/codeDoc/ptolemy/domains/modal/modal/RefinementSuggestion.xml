@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RefinementSuggestion" class="ptolemy.domains.modal.modal.RefinementSuggestion">
+  <description>
+An attribute that suggests the class of the container for the associated state&#10; or actor.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="refinementClassName">The suggested class name of the refinement.</property>
+</doc>

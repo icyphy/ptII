@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+  <description>
+A nonstrict actor that delays tokens by one iteration.&#10; &lt;p&gt;&#10; This actor provides a one-tick delay.  On each firing, it produces&#10; on the output port whatever value it read on the input port in the&#10; previous tick of the clock. If the input was absent on the previous&#10; tick of the clock, then the output will be absent. On the first tick,&#10; the output is &lt;i&gt;initialValue&lt;/i&gt; if it is given, and absent otherwise.&#10; In contrast to the Pre actor, this actor is non-strict, and hence can&#10; break causality loops.  Whereas Pre provides a one-step delay of&#10; non-absent values, this actor simply delays by one clock tick.  </description>
+  <author>Paul Whitaker, Elaine Cheong, and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Yellow (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialValue">Initial token value.  This defaults to no value, which results&#10;  in the first output being absent. If a value is given, then&#10;  output will be constrained to have at least the type of the value&#10;  (as well as at least the type of the input).</property>
+</doc>

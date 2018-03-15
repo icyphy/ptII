@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Timer" class="ptolemy.domains.de.lib.Timer">
+  <description>
+A timer actor delays an event with a time delay specified by its input.&#10; &lt;p&gt;&#10; When a timer actor receives an input, if the input value is&#10; bigger than 0.0, the timer schedules itself to fire again some time&#10; later to generate an output. The amount of delay is specified by the&#10; input value. The value of output is specified by the &lt;i&gt;value&lt;/i&gt;&#10; parameter of this actor. If the input value is 0.0, an output is&#10; produced in the next firing with a bigger microstep. If the input is&#10; less than 0.0, an exception will be thrown.&#10;&#10; &lt;p&gt; This actor is different from the &lt;a href=&quot;../../../../ptolemy/domains/de/lib/NonInterruptibleTimer.xml&quot;&gt;ptolemy.domains.de.lib.NonInterruptibleTimer&lt;/a&gt; actor because the&#10; NonInterruptibleTimer actor delays the processing of a new input if&#10; it has not finished processing a previous input, while the&#10; Timer actor begins processing inputs immediately upon their arrival.  </description>
+  <author>Jie Liu, Edward A. Lee, Haiyang Zheng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (hyzheng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (hyzheng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="value">The value produced at the output.  This can have any type,&#10;  and it defaults to a boolean token with value &lt;i&gt;true&lt;/i&gt;.</property>
+</doc>

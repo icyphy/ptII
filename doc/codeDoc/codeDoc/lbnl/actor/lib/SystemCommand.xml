@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SystemCommand" class="lbnl.actor.lib.SystemCommand">
+  <description>
+Actor that calls a system command.&#10;  This actor fires a system command that is defined by the parameter&#10;  &lt;code&gt;programName&lt;/code&gt; with arguments &lt;code&gt;programArguments&lt;/code&gt;.&#10;  It waits unit the command terminates. The output of the actor&#10;  are the exit flag, the standard output and standard error&#10;  of the command&#10;&#10;  &lt;p&gt;The parameters &lt;code&gt;programName&lt;/code&gt; and &lt;code&gt;programArguments&lt;/code&gt;&#10;  can have references to the port name that will be replaced by the token&#10;  value of the respective port. For example, a user may add an input port&#10;  called &lt;code&gt;inPort&lt;/code&gt; and enter as the &lt;code&gt;programArguments&lt;/code&gt;&#10;  the string &lt;code&gt;1 $inPort 3&lt;/code&gt;. Then, if at the current firing, the&#10;  input port is &lt;code&gt;inPort=2&lt;/code&gt;, then the program argument will&#10;  be &lt;code&gt;1 2 3&lt;/code&gt;. In addition to port names, you can also use&#10;  the variable &lt;code&gt;$time&lt;/code&gt; and &lt;code&gt;$iteration&lt;/code&gt;, which&#10;  will be replaced by the current simulation time and the iteration count.&#10;&#10;  To use this class, instantiate it, then add ports (instances&#10;  of TypedIOPort).  In vergil, you can add ports by right clicking on&#10;  the icon and selecting &quot;Configure Ports&quot;.  In MoML you can add&#10;  ports by just including ports of class TypedIOPort, set to be&#10;  inputs, as in the following example:&lt;/p&gt;&#10;&#10; &lt;pre&gt;&#10; &amp;lt;entity name=&quot;exp&quot; class=&quot;lbnl.actor.lib.SystemCommand&quot;&amp;gt;&#10; &amp;lt;port name=&quot;in&quot; class=&quot;ptolemy.actor.TypedIOPort&quot;&amp;gt;&#10; &amp;lt;property name=&quot;input&quot;/&amp;gt;&#10; &amp;lt;/port&amp;gt;&#10; &amp;lt;/entity&amp;gt;&#10; &lt;/pre&gt;  </description>
+  <author>Michael Wetter</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The port that outputs the standard output stream of the program.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="error">The port that outputs the standard error stream of the program.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="exitValue">The port that outputs the exit value of the program.</port>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="programName">Name of program that starts the simulation.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="simulationLogFile">File name to which this actor writes the simulation log.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="workingDirectory">Working directory of the simulation.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="showConsoleWindow">If &lt;i&gt;true&lt;/i&gt; (the default), a window will be created that&#10;        shows the console output.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="programArguments">Arguments of program that starts the simulation.</property>
+</doc>

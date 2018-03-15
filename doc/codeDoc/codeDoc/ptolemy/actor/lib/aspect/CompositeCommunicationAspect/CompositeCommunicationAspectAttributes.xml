@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CompositeCommunicationAspectAttributes" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect.CompositeCommunicationAspectAttributes">
+  <description>
+Attributes for ports decorated by this composite communication aspect.&#10;  A port on an actor decorated by a composite communication aspect must&#10;  specify the port in the CompositeCommunicationAspect.&#10;  that input tokens are routed to.  </description>
+  <author>Patricia Derler</author>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="inputPort">Input port in the composite communication aspect that receives&#10;  tokens from decorated actor ports.</property>
+</doc>

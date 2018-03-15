@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
+  <description>
+An actor to open a window to display the specified model and apply its inputs&#10;to the model.&#10;If inputs are provided for the moml input port, they are expected to be&#10;MoML strings that are to be applied to the model. This can be used, for&#10;example, to create animations. If inputs are not provided for the moml input&#10;port but for either the trigger port of the modelName port, then empty models&#10;are generated with the name specified by the most updated value of the modelName&#10;PortParameter.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="moml">The port to receive moml strings of the models.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="modelName">The port parameter for the model name.</property>
+</doc>

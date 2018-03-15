@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
+  <description>
+A line coder, which converts a sequence of booleans into symbols.  </description>
+  <author>Edward A. Lee, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="table">The code table.  Its value is a token of type ArrayToken.&#10;  The array provides the symbol values to produce on the output.&#10;  The number of values in this array must be at least&#10;  2&lt;sup&gt;&lt;i&gt;wordLength&lt;/i&gt;&lt;/sup&gt;, or an exception&#10;  will be thrown.  The number of tokens consumed by this actor when&#10;  it fires is log&lt;sub&gt;2&lt;/sub&gt;(&lt;i&gt;tableSize&lt;/i&gt;), where&#10;  &lt;i&gt;tableSize&lt;/i&gt; is the length of the table.  If all of these&#10;  values are &lt;i&gt;false&lt;/i&gt;, then the first array entry is produced&#10;  as an output.  If only the first one is true, then then second&#10;  array value is produced.  In general, the &lt;i&gt;N&lt;/i&gt; inputs consumed&#10;  are taken to be a binary digit that indexes the array,&#10;  where the first input is taken to be the low-order bit of the array.&#10;  The default code table has two entries, -1.0&#10;  and 1.0, so that input &lt;i&gt;false&lt;/i&gt; values are mapped to -1.0,&#10;  and input &lt;i&gt;true&lt;/i&gt; values are mapped to +1.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="wordLength">The word length is the number of boolean inputs that are consumed&#10;  to construct an index into the table.  Its value is an IntToken,&#10;  with default value one.</property>
+</doc>

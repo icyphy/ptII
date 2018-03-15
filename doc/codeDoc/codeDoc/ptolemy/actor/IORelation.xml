@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="IORelation" class="ptolemy.actor.IORelation">
+  <description>
+This class mediates connections between ports that can send data to&#10; one another via message passing. One purpose of this relation is to&#10; ensure that IOPorts are only connected to IOPorts. A second purpose&#10; is to support the notion of a &lt;i&gt;width&lt;/i&gt; to represent something&#10; like a bus. By default an IORelation is a bus for which the width&#10; will be inferred, which corresponds to a width equal to Auto. In&#10; Vergil you can change the width from Auto to a specific value, to&#10; explicitly specify the width of a relation. Specifying a width&#10; equal to zero will disable the relation.&#10; A width equal equal to -1 is equivalent to a width equal to Auto,&#10; in which case the width will be inferred (if possible) from the&#10; context. In particular, if this relation is linked on the inside&#10; to a port with some width, then the width of this relation will&#10; be inferred to be the enough so that the widths of all inside&#10; linked relations adds up to the outside width of the port.&#10; If this IORelation is linked to another&#10; instance of IORelation, then the width of the two IORelations is&#10; constrained to be the same.&#10; &lt;p&gt;&#10; Instances of IORelation can only be linked to instances of IOPort&#10; or instances of IORelation.&#10; Derived classes may further constrain this to subclasses of IOPort&#10; of IORelation.&#10; Such derived classes should override the protected methods _checkPort()&#10; and _checkRelation() to throw an exception.&#10; &lt;p&gt;&#10; To link a IOPort to an IORelation, use the link() or&#10; liberalLink() method in the IOPort class.  To remove a link,&#10; use the unlink() method. To link (unlink) an IORelation to an IORelation,&#10; use the link() (unlink()) method of IORelation.&#10; &lt;p&gt;&#10; The container for instances of this class can only be instances of&#10; CompositeActor.  Derived classes may wish to further constrain the&#10; container to subclasses of ComponentEntity.  To do this, they should&#10; override the _checkContainer() method.  </description>
+  <author>Edward A. Lee, Jie Liu, Contributor: Bert Rodiers</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (acataldo)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The width of this relation. This is an integer that defaults&#10;  to WIDTH_TO_INFER, which means that the width will be inferred.</property>
+</doc>

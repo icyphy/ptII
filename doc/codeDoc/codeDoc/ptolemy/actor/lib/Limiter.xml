@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Limiter" class="ptolemy.actor.lib.Limiter">
+  <description>
+Produce an output token on each firing with a value that is&#10; equal to the input if the input lies between the &lt;i&gt;bottom&lt;/i&gt; and&#10; &lt;i&gt;top&lt;/i&gt; parameters.  Otherwise, if the input is greater than &lt;i&gt;top&lt;/i&gt;,&#10; output &lt;i&gt;top&lt;/i&gt;.  If the input is less than &lt;i&gt;bottom&lt;/i&gt;, output&#10; &lt;i&gt;bottom&lt;/i&gt;.  This actor operates on scalar types only.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (yuhong)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="bottom">The bottom of the limiting range.  This is a scalar with default&#10;  value 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="top">The top of the limiting range.  This is a scalar with default&#10;  value 1.0.</property>
+</doc>

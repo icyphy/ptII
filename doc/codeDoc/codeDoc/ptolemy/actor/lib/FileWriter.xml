@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+  <description>
+This actor reads tokens from any number of input channels and writes&#10; their string values to the specified output file. The input type&#10; can be anything. If a StringToken is received, then its stringValue()&#10; method will be used to get the string to write to the file. Otherwise,&#10; the toString() method of the received token will be used.  If no file name&#10; is given, then the values are written to the standard output.&#10; If multiple input channels are provided on the input port, then&#10; the values received are written separated by a tab character.&#10; Each time a new name is received on the &lt;i&gt;filename&lt;/i&gt; input, a&#10; new file will be opened for writing. If no new filename is received,&#10; then the data will be appended to previously used file. When appending,&#10; the values received on subsequent firings are separated by a newline&#10; character (a newline character will be inserted if one is not already&#10; provide by the input string).&#10; Unlike @see{ExpressionWriter}, this actor makes no changes to the&#10; input string. It writes to the file exactly what it receives on its&#10; input.  </description>
+  <author>Yuhong Xiong, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Yellow (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (mudit)</Pt.AcceptedRating>
+    <!--ptolemy.actor.parameters.FilePortParameter-->
+    <property name="filename">The name of the file to write to.&#10;  By default, this parameter contains an empty string, which&#10;  is interpreted to mean that output should be directed to the&#10;  standard output.&#10;  See &lt;a href=&quot;../../../ptolemy/actor/parameters/FilePortParameter.xml&quot;&gt;ptolemy.actor.parameters.FilePortParameter&lt;/a&gt; for&#10;  details about relative path names.</property>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TCPPacketReceiver" class="ptolemy.domains.ptides.lib.qm.TCPPacketReceiver">
+  <description>
+This actor receives RecordTokens from a network input port and decomposes the&#10;  packet into several tokens that are contained within the packet.&#10;  This actor should used with a PTIDES director and in pairswith the &lt;a href=&quot;../../../../../ptolemy/domains/ptides/lib/qm/TCPPacketReceiver.xml&quot;&gt;ptolemy.domains.ptides.lib.qm.TCPPacketReceiver&lt;/a&gt;,&#10;  typically with a network fabric model in between.&#10;&#10;  &lt;p&gt;&lt;a href=&quot;../../../../../ptolemy/domains/ptides/lib/qm/TCPPacketReceiver.xml&quot;&gt;ptolemy.domains.ptides.lib.qm.TCPPacketReceiver&lt;/a&gt; decomposes TCP packets containing PTIDES events.&lt;/p&gt;&#10;&#10;  &lt;p&gt;&#10;  This actor consumes one input token and creates a stream of output tokens, each with&#10;  the timestamp specified as a part of the token.&lt;/p&gt;  </description>
+  <author>Ilge Akkaya</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating></Pt.ProposedRating>
+  <Pt.AcceptedRating></Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port, which is a record type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port.</port>
+</doc>

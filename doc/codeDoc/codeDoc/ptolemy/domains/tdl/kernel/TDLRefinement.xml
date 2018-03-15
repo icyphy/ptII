@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TDLRefinement" class="ptolemy.domains.tdl.kernel.TDLRefinement">
+  <description>
+A TDL refinement is used to define the implementation of a TDL mode. The only&#10; reason for not using the Refinement class is because the Ports used in a&#10; refinement should be used are TDLRefinementPort.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+</doc>

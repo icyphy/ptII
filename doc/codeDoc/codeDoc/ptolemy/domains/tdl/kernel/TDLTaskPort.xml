@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TDLTaskPort" class="ptolemy.domains.tdl.kernel.TDLTaskPort">
+  <description>
+A TDL task output port has some TDL specific parameters. - initialValue: a&#10; TDL output port has an initial value.  </description>
+  <author>Patricia Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialValue">The initial value of the task.</property>
+</doc>

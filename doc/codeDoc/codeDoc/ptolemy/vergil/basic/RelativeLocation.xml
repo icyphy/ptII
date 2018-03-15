@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RelativeLocation" class="ptolemy.vergil.basic.RelativeLocation">
+  <description>
+An attribute used to store a relative visual location.&#10;  The location is relative to an object specified by&#10;  the &lt;i&gt;relativeTo&lt;/i&gt; attribute, which gives the name&#10;  of an object that is expected to be contained by the&#10;  container of the container of this attribute.&#10;  In addition, the &lt;i&gt;relativeToElementName&lt;/i&gt; specifies&#10;  what kind of object this is relative to (an &quot;entity&quot;,&#10;  &quot;property&quot; (attribute), &quot;port&quot;, or &quot;relation&quot;).  </description>
+  <author>Edward A. Lee, Christian Motika, Miro Spoenemann</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="relativeTo">The name of the object this location is relative to.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="relativeToElementName">The element name of the object this location is relative to.&#10;  This defaults to &quot;entity&quot;.</property>
+</doc>

@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
+  <description>
+A DE actor to compare the time stamps of events at its two input ports, and&#10; output the difference. Every time an event can be processed either at input&#10; port &lt;code&gt;input1&lt;/code&gt; or at &lt;code&gt;input2&lt;/code&gt;, the event is consumed. The&#10; value that the event carries is insignificant, but the time stamp of the event&#10; is recorded in a local list. Time stamps received at the two input ports are&#10; stored in two different lists. Every time when both lists have data, the&#10; difference between the top elements of the lists is obtained, and is sent to&#10; the output port. This done by subtracting the time stamp of every top event in&#10; the list for &lt;code&gt;input2&lt;/code&gt; with the time stamp of every top event in the&#10; list for &lt;code&gt;input1&lt;/code&gt;.&#10; &lt;p&gt;&#10; This actor could potentially consume an infinite amount of memory if the&#10; arrival rates of events at the two input ports are different, because one of&#10; the lists keeps growing.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input1">The first input port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input2">The second input port.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port to which difference values are sent.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="nonnegative">A boolean parameter to decide whether inputs at input2 should be ignored&#10;    if they lead to negative outputs.</property>
+</doc>

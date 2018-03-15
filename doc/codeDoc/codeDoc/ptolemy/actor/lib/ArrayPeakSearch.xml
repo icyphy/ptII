@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrayPeakSearch" class="ptolemy.actor.lib.ArrayPeakSearch">
+  <description>
+&lt;p&gt;This actor outputs the indices and values of peaks in an input array.&lt;/p&gt;&#10;&#10; &lt;p&gt;The &lt;i&gt;dip&lt;/i&gt; and &lt;i&gt;squelch&lt;/i&gt; parameters control the&#10; sensitivity to noise.  These are given either as absolute numbers&#10; or as relative numbers.  If they are absolute numbers, then a peak&#10; is detected if a rise above &lt;i&gt;dip&lt;/i&gt; is detected before the peak&#10; and a dip below &lt;i&gt;dip&lt;/i&gt; is detected after the peak.&#10; If they are given as relative numbers, then a peak is detected when&#10; a rise by a factor &lt;i&gt;dip&lt;/i&gt; above the most recently seen minimum&#10; (if there has been one) is seen before the peak, and if a dip by a&#10; factor &lt;i&gt;dip&lt;/i&gt; relative to the peak is seen after the peak.&#10; Relative numbers can be either linear (a fraction) or in decibels.&#10; This is determined by the value of the &lt;i&gt;scale&lt;/i&gt; parameter. For&#10; example, if &lt;i&gt;dip&lt;/i&gt; is given as 2.0 and &lt;i&gt;scale&lt;/i&gt; has value&#10; &quot;relative linear&quot;, then a dip must drop to half of a local peak&#10; value to be considered a dip.&lt;/p&gt;&#10;&#10; &lt;p&gt;If &lt;i&gt;squelch&lt;/i&gt; is given as 10.0 and &lt;i&gt;scale&lt;/i&gt; has value&#10; &quot;relative linear&quot;, then any peaks that lie below 1/10 of the global&#10; peak are ignored.  Note that &lt;i&gt;dip&lt;/i&gt; is relative to the most&#10; recently seen peak or valley, and &lt;i&gt;squelch&lt;/i&gt; is relative to the&#10; global peak in the array, when relative values are used.  If&#10; &lt;i&gt;scale&lt;/i&gt; has value &quot;relative amplitude decibels&quot;, then a value&#10; of 6.0 is equivalent to the linear value 2.0.  If &lt;i&gt;scale&lt;/i&gt; has&#10; value &quot;relative power decibels&quot;, then a value of 3.0 is equivalent&#10; to the linear value 2.0.  In either decibel scale, 0.0 is&#10; equivalent to 0.0 linear.  Other parameters control how the search&#10; is conducted.&lt;/p&gt;&#10;&#10; &lt;p&gt;This actor is based on Matlab code developed by John Signorotti of&#10; Southwest Research Institute.&lt;/p&gt;  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.  This is required to be an array of doubles</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="peakIndices">The output port for the indices of the peaks. The type is&#10;  {int} (array of int).</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="peakValues">The output port for the values of the peaks. The type is the&#10;  same as the input port.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="dip">The amount that the signal must drop below a local maximum before a&#10;  peak is detected. This is a double that can be interpreted as an&#10;  absolute threshold or relative to the local peak, and if relative, on&#10;  a linear or decibel scale, depending on the &lt;i&gt;scale&lt;/i&gt;&#10;  parameter. It defaults to 0.0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="endIndex">The end point of the search. If this number is larger than&#10;  the length of the input array, then the search is to the end&#10;  of the array.  This is an integer that defaults to MaxInt.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maximumNumberOfPeaks">The maximum number of peaks to report.&#10;  This is an integer that defaults to MaxInt.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="scale">An indicator of whether &lt;i&gt;dip&lt;/i&gt; and &lt;i&gt;squelch&lt;/i&gt; should&#10;  be interpreted as absolute or relative, and if relative, then&#10;  on a linear scale, in amplitude decibels, or power decibels.&#10;  If decibels are used, then the corresponding linear threshold&#10;  is 10^(&lt;i&gt;threshold&lt;/i&gt;/&lt;i&gt;N&lt;/i&gt;), where &lt;i&gt;N&lt;/i&gt; is 20 (for&#10;  amplitude decibels) or 10 (for power decibels).&#10;  This parameter is a string with possible values &quot;absolute&quot;,&#10;  &quot;relative linear&quot;, &quot;relative amplitude decibels&quot; or &quot;relative&#10;  power decibels&quot;. The default value is &quot;absolute&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="squelch">The value below which the input is ignored by the&#10;  algorithm. This is a double that can be interpreted as an&#10;  absolute number or a relative number, and if relative, on a&#10;  linear or decibel scale, depending on the &lt;i&gt;scale&lt;/i&gt;&#10;  parameter. For the relative case, the number is relative&#10;  to the global peak. It defaults to -10.0.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="startIndex">The starting point of the search. If this number is larger than&#10;  the value of &lt;i&gt;endIndex&lt;/i&gt;, the search is conducted backwards&#10;  (and the results presented in reverse order). If this number is&#10;  larger than the length of the input array, then the search is&#10;  started at the end of the input array.&#10;  This is an integer that defaults to 0.</property>
+</doc>

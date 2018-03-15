@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Transform" class="ptolemy.actor.gt.controller.Transform">
+  <description>
+An event to transform the model in the model parameter with the encapsulated&#10; transformation rule.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="defer">Whether the transformation should be deferred with a change request.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="matched">Whether the last pattern matching was successful (read-only).</property>
+    <!--ptolemy.actor.gt.TransformationMode-->
+    <property name="mode">The transformation mode.</property>
+</doc>

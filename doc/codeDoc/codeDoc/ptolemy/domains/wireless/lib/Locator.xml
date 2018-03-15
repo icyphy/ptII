@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Locator" class="ptolemy.domains.wireless.lib.Locator">
+  <description>
+This is a wireless sensor node that reacts to an input event by&#10; transmitting an output with the current location of this node and&#10; the time of the input.  The output is a record token with type&#10; {location={double}, time=double}.  The location is an array with&#10; two doubles representing the X and Y positions of the sensor.&#10; The location of the sensor is determined by the _getLocation()&#10; protected method, which in this base class returns the location&#10; of the icon in the visual editor, which is determined from the&#10; _location attribute of the actor.  If there is no _location&#10; attribute, then an exception is thrown.  Derived classes may&#10; override this protected method to specify the location in some&#10; other way (or in more dimensions).  </description>
+  <author>Philip Baldwin, Xiaojun Liu and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (pjb2e)</Pt.AcceptedRating>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="input">Port that receives a trigger input that causes transmission&#10;  of location and time information on the &lt;i&gt;output&lt;/i&gt; port.</port>
+    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
+    <port name="output">Port that transmits the current location and the time&#10;  of the event on the &lt;i&gt;input&lt;/i&gt; port.  This has&#10;  type {location={double}, time=double}, a record token.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="inputChannelName">Name of the input channel. This is a string that defaults to&#10;  &quot;InputChannel&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="outputChannelName">Name of the output channel. This is a string that defaults to&#10;  &quot;OutputChannel&quot;.</property>
+</doc>

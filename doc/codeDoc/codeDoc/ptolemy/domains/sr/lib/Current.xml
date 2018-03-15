@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Current" class="ptolemy.domains.sr.lib.Current">
+  <description>
+Output the most recent input received.&#10;&#10; &lt;p&gt;At each tick of the clock, this actor outputs the most recently received&#10; non-absent input. If no input has been received, then the output is absent.&#10; This implements the Lustre &quot;current&quot; operator.&#10;&#10; &lt;p&gt;P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, &quot;LUSTRE: A&#10; Declarative Language for Programming Synchronous Systems,&quot;&#10; Conference Record of the 14th Annual ACM Symp. on Principles of&#10; Programming Languages, Munich, Germany, January, 1987.  </description>
+  <author>Paul Whitaker, Christopher Hylands, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.1</since>
+  <Pt.ProposedRating>Yellow (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh) Should support multiports</Pt.AcceptedRating>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PetriNetActor" class="ptolemy.domains.petrinet.kernel.PetriNetActor">
+  <description>
+A Petri net Actor&#10;&#10; &lt;p&gt; As defined in the PetriNetDirector.java, a PetriNetActor is a&#10; directed and weighted graph &lt;i&gt;G = (V, E) &lt;/i&gt; containing three kinds&#10; of nodes: Places &lt;i&gt;p_i&lt;/i&gt;, Transitions &lt;i&gt;t_i&lt;/i&gt;, and PetriNetActors&#10; &lt;i&gt;PA_i&lt;/i&gt;, i.e., &lt;i&gt; V = {p_i} union {t_i} union {PA_i} &lt;/i&gt;,&#10; where each &lt;i&gt;PA_i&lt;/i&gt; itself is again defined as a PetriNetActor.&#10; Each node of &lt;i&gt;V&lt;/i&gt; is called a &lt;i&gt;component&lt;/i&gt; of the&#10; PetriNetActor &lt;i&gt;G&lt;/i&gt;.&#10;&#10; A PetriNetActor is implemented as an extension of TypedCompositeActor.&#10; The current file contains two main methods: fire() and prefire().&#10; More details of PetriNetActor can be found in PetriNetDirector.java.  </description>
+  <author>Yuke Wang</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

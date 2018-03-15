@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ArrowAttribute" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+  <description>
+An attribute shown as an arrow. The length and width of the arrow head can be&#10; set with the &lt;i&gt;arrowLength&lt;/i&gt; and &lt;i&gt;arrowWidth&lt;/i&gt; parameters.  </description>
+  <author>Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (tfeng)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="arrowLength">Length of the arrow head. Default to 16.0</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="arrowWidth">Width of the arrow head. Default to 10.0.</property>
+</doc>

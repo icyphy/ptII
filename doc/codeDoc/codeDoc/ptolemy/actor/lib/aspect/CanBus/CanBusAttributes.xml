@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CanBusAttributes" class="ptolemy.actor.lib.aspect.CanBus.CanBusAttributes">
+  <description>
+The attributes configured per port which is mediated by a&#10;  CanBus. The mediation where (which switch port) messages&#10;  are going into the switch and where (which switch port) messages&#10;  are going out of the switch.  </description>
+  <author>Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler</author>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="canPriority">Value of the CAN priority parameter.</property>
+</doc>

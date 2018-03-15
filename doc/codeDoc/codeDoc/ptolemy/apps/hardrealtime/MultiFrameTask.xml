@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MultiFrameTask" class="ptolemy.apps.hardrealtime.MultiFrameTask">
+  <description>
+&lt;p&gt;A multiframe task is an edge-labeled and vertex-labeled directed cyclic graph&#10; together with a current location predicate. The nodes are annotated with task frames,&#10; the edges are labeled with minimum separation times, and the current location contains&#10; a specific node of the graph. A task frame &lt;a href=&quot;../../../ptolemy/apps/hardrealtime/TaskFrame.xml&quot;&gt;ptolemy.apps.hardrealtime.TaskFrame&lt;/a&gt; is represented by an&#10; execution time and a relative deadline.&lt;/p&gt;&#10;&#10; &lt;p&gt;During an execution a multiframe task is at the node specified by current location predicate.&#10; If it has not released a job since the time it entered the node, it may do so at any time.&#10; The job's deadline and execution time are as specified by the task frame associated with the&#10; node. After a job is released at a node, the multiframe task waits for time equal to the&#10; separation time specified by the outgoing edge (there is a unique outgoing edge, since it is&#10; a cyclic graph) and then moves the current location to the node downstream.&lt;/p&gt;&#10;&#10; &lt;p&gt;The minimum separation time of an edge, that connects two nodes A and B, describes then&#10; the minimum time that can separate a release of a job from node B from a release of a job&#10; from node A. This class simulates the case where the separation time is always equal to the&#10; minimum value.&lt;/p&gt;&#10;&#10; &lt;p&gt;For more information on multiframe tasks and the schedulability problem of such tasks look&#10; at: Sanjoy Baruah, Deji Chen, Sergey Gorinsky, and Aloysius Mok (1999).&#10; Generalized Multiframe Tasks. Real-Time Systems, July 1999, Volume 17, Issue 1, pp 5-22.&lt;/p&gt;  </description>
+  <author>Christos Stergiou</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Red (chster)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chster)</Pt.AcceptedRating>
+</doc>

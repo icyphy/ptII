@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MultipleConceptIcon" class="ptolemy.vergil.ontologies.MultipleConceptIcon">
+  <description>
+An icon that displays multiple concepts, in a set of rounded boxes, with&#10;  the uppermost box containing the name of the set of concepts.&#10;  This is designed to be used within an instance of&#10;  &lt;a href=&quot;../../../ptolemy/data/ontologies/FlatTokenRepresentativeConcept.xml&quot;&gt;ptolemy.data.ontologies.FlatTokenRepresentativeConcept&lt;/a&gt;.  </description>
+  <author>Ben Lickly, Edward A. Lee, Elizabeth Latronico, Charles Shelton</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (blickly)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (blickly)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="translation">The amount of translation to apply to the background figure.&#10;  This is a double that defaults to 10.0.</property>
+</doc>

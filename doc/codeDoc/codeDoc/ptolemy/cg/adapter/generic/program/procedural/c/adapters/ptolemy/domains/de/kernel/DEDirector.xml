@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DEDirector" class="ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.kernel.DEDirector">
+  <description>
+Code generator adapter associated with the DEDirector class.&#10; This adapter is highly experimental since it changes a lot&#10; of behaviors of the code generation process.&#10; This class is also associated with a code generator.  </description>
+  <author>William Lucas based on SDFDirector.java by Ye Zhou, Gang Zhou</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>red (wlc)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (wlc)</Pt.AcceptedRating>
+</doc>

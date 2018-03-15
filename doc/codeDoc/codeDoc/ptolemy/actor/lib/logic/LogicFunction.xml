@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
+  <description>
+&lt;p&gt;Produce an output token on each firing with a value that is&#10; equal to the specified logic operator of the input(s).&#10; The functions are:&lt;/p&gt;&#10; &lt;ul&gt;&#10; &lt;li&gt; &lt;b&gt;and&lt;/b&gt;: The logical and operator.&#10; This is the default function for this actor.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;or&lt;/b&gt;: The logical or operator.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;xor&lt;/b&gt;: The logical xor operator.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;nand&lt;/b&gt;: The logical nand operator.&#10; Equivalent to the negation of &lt;i&gt;and&lt;/i&gt;.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;nor&lt;/b&gt;: The logical nor operator.&#10; Equivalent to the negation of &lt;i&gt;or&lt;/i&gt;.&lt;/li&gt;&#10; &lt;li&gt; &lt;b&gt;xnor&lt;/b&gt;: The logical xnor operator.&#10; Equivalent to the negation of &lt;i&gt;xor&lt;/i&gt;.&lt;/li&gt;&#10; &lt;/ul&gt;&#10; &lt;p&gt;&#10; NOTE: All operators have&#10; a single input port, which is a multiport, and a single output port, which&#10; is not a multiport.  All ports have type boolean.&lt;/p&gt;&#10; &lt;p&gt;&#10; This actor does not require that each input&#10; channel have a token upon firing.  As long as one channel contains a&#10; token, output will be produced.  If no input tokens are available at&#10; all, then no output is produced.  At most one token is consumed&#10; on each input channel.&lt;/p&gt;  </description>
+  <author>Paul Whitaker</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (pwhitake)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="function">The function to compute.  This is a string-valued attribute&#10;  that defaults to &quot;and&quot;.</property>
+</doc>

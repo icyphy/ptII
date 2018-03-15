@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+  <description>
+An actor that produces a sequence of frames from a video camera.&#10; This actor requires the Java Media Framework, and has been tested&#10; at least with version 2.1.1.&#10;&#10; FIXME: more info.  </description>
+  <author>Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="deviceNumber">This parameter lets the user select the device to use.&#10;  Typically this parameter is of no concern and should be left&#10;  at 0.  However, if a computer has more than one usable&#10;  cameras, this parameter can be used to choose amongst them.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="formatName">The type of video format to use.  This is a string valued&#10;  attribute that defaults to the type RGB.</property>
+</doc>

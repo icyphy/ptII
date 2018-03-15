@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PriorityResourceAttributes" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+  <description>
+Container for decorator attributes that are provided to actors by&#10;a &lt;a href=&quot;../../../../ptolemy/actor/ActorExecutionAspect.xml&quot;&gt;ptolemy.actor.ActorExecutionAspect&lt;/a&gt;.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="LOWEST_PRIORITY">An invisible parameter giving the value of the lowest priority.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="priority">The priority for scheduling.</property>
+</doc>

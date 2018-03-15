@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TreeTableau" class="ptolemy.vergil.tree.TreeTableau">
+  <description>
+A tree view for ptolemy models.  </description>
+  <author>Steve Neuendorffer and Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (johnr)</Pt.AcceptedRating>
+</doc>

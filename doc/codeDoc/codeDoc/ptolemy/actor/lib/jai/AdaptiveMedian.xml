@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="AdaptiveMedian" class="ptolemy.actor.lib.jai.AdaptiveMedian">
+  <description>
+This actor performs adaptive median filtering on an image.  The&#10; algorithm is as follows.  For each pixel in the image, a square region&#10; of interest is formed with the pixel at the center.  If said region&#10; can not be formed (because it is at or near the edge).&#10;&#10; If the median of this region of interest is strictly less than the&#10; maximum value in the region of interest and strictly greater than&#10; the minimum value in the region of interest, then we keep the pixel&#10; if it too is strictly less than the maximum value in the region of&#10; interest and strictly greater than the minimum value in the region&#10; of interest.  If it is not, then use the median of the region of&#10; interest instead of the pixel.&#10;&#10; If the pixel is not strictly less than the maximum value and strictly&#10; greater than the minimum value, an attempt is made at using larger&#10; region of interest.  If successful, then this process is repeated until&#10; a value can be determine, or we hit the the maximum window size.  If this&#10; happens, then the pixel is kept.  This process is repeated for each pixel.  </description>
+  <author>James Yeh, Contributor: Christopher Hylands Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="maxWindowSize">The largest window size to use.  This number must be an odd&#10;  integer.  The default value is 7.</property>
+</doc>

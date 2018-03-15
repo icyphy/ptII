@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ChicAttribute" class="ptolemy.chic.ChicAttribute">
+  <description>
+An attribute that has a string value which is meant to be used as an interface&#10; in Chic.&#10; Use setExpression() to define the value, as in for example&#10; &lt;pre&gt;&#10; attribute.setExpression(&quot;xxx&quot;);&#10; &lt;/pre&gt;&#10; &lt;p&gt;The default value of the string contained by this attribute is the empty&#10; string.&#10;&#10; &lt;p&gt;By default, an instance of this class is fully visible in a user&#10; interface and it is annotated with a TextStyle attribute.  The&#10; visibility is indicated to the user interface when the user interface&#10; calls the getVisibility() method of this class and the value&#10; Settable.FULL is returned to the userInterface.&#10;&#10; &lt;p&gt;Note that the string value within ChicAttribute will not be parsed&#10; and you do not have to type a leading and a trailing double quote.&#10;&#10; &lt;p&gt;This class is an attribute that replaces any previously existing&#10; attribute of the same class in the container that has the same name.  </description>
+  <author>Eleftherios Matsikoudis</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

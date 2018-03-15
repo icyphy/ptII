@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+  <description>
+On each firing, read one RecordToken from the input port and send out&#10; the fields of the RecordToken to multiple output ports.&#10; The labels for the RecordToken must match the names of the output ports.&#10; This is achieved using three type constraints:&#10; &lt;ul&gt;&#10; &lt;li&gt;&lt;tt&gt;input &amp;ge; {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}&#10; &lt;/tt&gt;, which requires the types of the fields in the input record to be&#10; compatible with the types of the corresponding output ports.&#10; &lt;/li&gt;&#10; &lt;li&gt;&lt;tt&gt;input &amp;le; {x = GENERAL, y = GENERAL, ..}&lt;/tt&gt;, which requires the&#10; input record to contain a corresponding field for each output port.&#10; &lt;/li&gt;&#10; &lt;li&gt;&lt;tt&gt;each output &amp;ge; the type of the corresponding field inside the input&#10; record&lt;/tt&gt;, which is similar to the usual default constraints, however&#10; this constraint establishes a dependency between fields inside the input&#10; record and the outputs of this actor, instead of just between its inputs&#10; and outputs.&#10; &lt;/li&gt;&#10; &lt;/ul&gt;&#10;&#10; &lt;p&gt;If the received Token contains more fields than the output ports, the extra&#10; fields are ignored.&lt;/p&gt;&#10;&#10; &lt;p&gt;To use this class, instantiate it, and then add output ports (instances&#10; of TypedIOPort).  This actor is polymorphic. The type constraint is that&#10; the type of each output port is no less than the type of the corresponding&#10; record field.&lt;/p&gt;&#10;&#10; &lt;p&gt;Note that if the display name of a port is set, display name is used in&#10; the type constraints instead of name. This is useful in case fields to&#10; extract from the record contain a period, because periods are not allowed&#10; in port names.&lt;/p&gt;  </description>
+  <author>Yuhong Xiong, Steve Neuendorffer, Edward A. Lee, Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (yuhong)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port.</port>
+</doc>

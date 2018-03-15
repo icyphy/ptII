@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JVMTableau" class="ptolemy.actor.gui.JVMTableau">
+  <description>
+A tableau that displays Java Virtual Machine information such&#10; as the version number and other properties.  </description>
+  <author>Christopher Hylands</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

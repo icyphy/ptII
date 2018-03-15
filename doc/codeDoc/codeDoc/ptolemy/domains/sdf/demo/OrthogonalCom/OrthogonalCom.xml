@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="OrthogonalCom" class="ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom">
+  <description>
+An binary, orthogonal communication system. Randomly choose a bit,&#10;send the signal associated with the bit, add Gaussian noise to&#10;the signal, and attempt to recover the bit using the maximum&#10;likelihood decision rule. The difference between the send and output&#10;bit is output on the screen. (0 = no error; 1,-1 = error).&#10;&#10;This class is used as a demonstration of the codegen facility, which is&#10;why it is written in Java instead of using MoML.  </description>
+  <author>Jeff Tsay</author>
+  <version>$Id$$Id$</version>
+  <since>Ptolemy II 8.0</since>
+  <Pt.ProposedRating>Red (ctsay)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (ctsay)</Pt.AcceptedRating>
+</doc>

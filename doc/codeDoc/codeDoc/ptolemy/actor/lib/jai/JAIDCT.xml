@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIDCT" class="ptolemy.actor.lib.jai.JAIDCT">
+  <description>
+Calculate the discrete cosine transform of an image.  Even though the&#10; input image data may be 3 bytes (one for each band) per pixel, the&#10; output image data is of a higher resolution (doubles), not suitable for&#10; displaying or saving.  To display or save the output of this image,&#10; use the &lt;a href=&quot;../../../../ptolemy/actor/lib/jai/JAIDataConvert.xml&quot;&gt;ptolemy.actor.lib.jai.JAIDataConvert&lt;/a&gt; actor to cast the data to an appropriate type&#10; (for instance, byte).  The output of the DCT is zero padded to the&#10; next power of 2 in each dimension (unless that dimensions is already&#10; a power of two, in which case, nothing happens).  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

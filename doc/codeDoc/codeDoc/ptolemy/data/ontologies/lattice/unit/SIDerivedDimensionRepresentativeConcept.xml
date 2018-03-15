@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SIDerivedDimensionRepresentativeConcept" class="ptolemy.data.ontologies.lattice.unit.SIDerivedDimensionRepresentativeConcept">
+  <description>
+A representative concept in the unitSystem ontology for a set of units for&#10;  a specific physical dimension that is one of the 7 SI specified base dimensions.&#10;&#10;  There are 7 base dimensions from which all other unit dimensions are&#10;  derived. These can be specified in a units system ontology by 7&#10;  BaseUnitRepresentativeConcepts:&#10;  &lt;ul&gt;&#10;  &lt;li&gt;Mass - SI unit kilograms (kg)&#10;  &lt;li&gt;Position - SI unit meters (m)&#10;  &lt;li&gt;Time - SI unit seconds (sec)&#10;  &lt;li&gt;Current - SI unit amperes (amp)&#10;  &lt;li&gt;Temperature - SI unit Kelvin (K)&#10;  &lt;li&gt;Amount of substance - SI unit moles (mol)&#10;  &lt;li&gt;Intensity of light - SI unit candela (cd)&#10;  &lt;/ul&gt;  </description>
+  <author>Charles Shelton</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cshelton)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cshelton)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="useAbbreviation">Boolean parameter that indicates whether the unit names for this&#10;  dimension should use the abbreviated symbols for the name and prefixes&#10;  or the full unit name and prefixes.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="baseUnitRecord">The parameter that holds the record describing the component units&#10;  that specify this derived dimension's base unit.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="unitFullName">The name of the base SI unit for this dimension.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="unitAbbreviation">The abbreviated symbol for the base SI unit for this dimension.</property>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
+  <description>
+Calculate the inverse discrete Fourier transform of an image.  If the&#10; input is complex, there are two options.  One is to set the dataNature&#10; parameter to &lt;i&gt;complexToReal&lt;/i&gt; (the default).  The output would have&#10; half the bands of the input (bands 0 and 1 get transformed into band 0,&#10; bands 2 and 3 would get transformed into band 1, etc.), and could be&#10; display or saved after passing through a &lt;a href=&quot;../../../../ptolemy/actor/lib/jai/JAIDataConvert.xml&quot;&gt;ptolemy.actor.lib.jai.JAIDataConvert&lt;/a&gt; actor.&#10;&#10; &lt;p&gt;The other option would be to set it to &lt;i&gt;complexToComplex&lt;/i&gt;, in which&#10; case the output would have the same number of bands as the input.&#10;&#10; &lt;p&gt;If the input is real, the only option is to set the dataNature parameter&#10; to &lt;i&gt;realToComplex&lt;/i&gt;.  An alternative to this would be to create a&#10; complex image from this real image by using the real image as a magnitude&#10; image, and creating a phase image of all 0's, and making a complex image&#10; using the JAIPolarToComplex actor.&#10;&#10; &lt;p&gt;The data of the output is of a high resolution (doubles), not suitable&#10; for displaying or saving.  To display or save the output of this image,&#10; use the JAIDataConvert Actor to cast the data to an appropriate type&#10; (for instance, byte).  </description>
+  <author>James Yeh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 3.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="dataNature">A parameter that describes the nature of the input and output&#10;  data.  The default is &lt;i&gt;complexToReal&lt;/i&gt; (so that the output&#10;  can be saved and/or displayed after putting it through the&#10;  &lt;a href=&quot;../../../../ptolemy/actor/lib/jai/JAIDataConvert.xml&quot;&gt;actor&lt;/a&gt;.  The setting&#10;  &lt;i&gt;complexToComplex&lt;/i&gt; can also be used.  The setting&#10;  &lt;i&gt;realToComplex&lt;/i&gt; should probably not be used.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="scalingType">The scaling to be done on the output.  There are three options,&#10;  &lt;i&gt;none&lt;/i&gt; (does no scaling), &lt;i&gt;unitary&lt;/i&gt; (multiplies by&#10;  square root of the product of the dimensions), and&#10;  &lt;i&gt;dimensions&lt;/i&gt; (the default, multiplies by the product of the&#10;  dimensions).  In a DFT-IDFT chain, the overall scaling should&#10;  equal the product of the dimensions.</property>
+</doc>

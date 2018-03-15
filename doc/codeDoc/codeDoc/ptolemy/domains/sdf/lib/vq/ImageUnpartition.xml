@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ImageUnpartition" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
+  <description>
+Combine subimages into a larger image. Each input subimage&#10; should have dimensions partitionColumns by partitionRows, and each output image&#10; will have dimensions imageColumns by imageRows.  The input images&#10; will be placed in row-scanned order from top to bottom into the output image.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Green (neuendor)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="imageColumns">The width of the input matrices.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="imageRows">The height of the input matrices.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="partitionColumns">The width of the input partitions.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="partitionRows">The height of the input partitions.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate">The input rate.</property>
+</doc>

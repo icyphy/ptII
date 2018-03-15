@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DefaultTitle" class="ptolemy.vergil.basic.export.web.DefaultTitle">
+  <description>
+A parameter specifying default title to associate&#10; with a model and with components in the model.&#10; By default, this attribute uses the model name&#10; and component names as the title.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="instancesOf">If non-empty (the default), specifies a class name.&#10;  Only entities or attributes (depending on &lt;i&gt;include&lt;/i&gt;)&#10;  implementing the specified&#10;  class will be assigned the title defined by this&#10;  DefaultTitle parameter.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="include">Specification of whether to provide the title for&#10;  Attributes, Entities, or both. This is either &quot;Entities&quot; (the&#10;  default), &quot;Attributes&quot;, &quot;All&quot;, or &quot;None&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="showTitleInHTML">If set to true, then the title given by this parameter&#10;  will be shown in the HTML prior to the image of the model&#10;  (as well as in the image of the model, if it is visible&#10;  when the export to web occurs). This is a boolean that&#10;  defaults to true.</property>
+</doc>

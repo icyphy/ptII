@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SDFTestSplit" class="ptolemy.domains.sdf.kernel.test.SDFTestSplit">
+  <description>
+This actor deterministically splits its input token stream into two&#10; streams.  </description>
+  <author>Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.4</since>
+  <Pt.ProposedRating>Red</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output1"></port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output2"></port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output1_tokenProductionRate"></property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output2_tokenProductionRate"></property>
+</doc>

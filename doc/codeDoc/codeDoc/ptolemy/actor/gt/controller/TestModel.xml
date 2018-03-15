@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TestModel" class="ptolemy.actor.gt.controller.TestModel">
+  <description>
+An event to compare the model in the model parameter with a known good result.&#10; &lt;p&gt;If the models differ only be the VersionAttribute, then they are&#10; considered to be equal.  </description>
+  <author>Christopher Brooks, based on View by Thomas Huining Feng</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="correctValues">A matrix specifying what the input should be.&#10;  This defaults to a one-by-one array containing a boolean true.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="requireAllCorrectValues">If true, and the number of tokens seen in wrapup() is not&#10;  equal to or greater than the number of elements in the&#10;  &lt;i&gt;correctValues&lt;/i&gt; array, then throw an exception.  The&#10;  default value is true. This parameter is a shared parameter,&#10;  meaning that changing it for any one instance in a model will&#10;  change it for all instances in the model.</property>
+    <!--ptolemy.actor.parameters.SharedParameter-->
+    <property name="trainingMode">If true, then do not check inputs, but rather collect them into&#10;  the &lt;i&gt;correctValues&lt;/i&gt; array.  This parameter is a boolean,&#10;  and it defaults to false. It is a shared parameter, meaning&#10;  that changing it for any one instance in a model will change&#10;  it for all instances in the model.</property>
+</doc>

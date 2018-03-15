@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="OptimizerDirector" class="org.ptolemy.optimization.CompositeOptimizer.OptimizerDirector">
+  <description>
+This is a specialized director that fires the input SDF model&#10;  repeatedly for different values of the optimization variable.&#10;  The director stores the tokens from input ports and re-sends them&#10;  to the inside receivers for each execution of the inside composite.&#10;  The fire() method makes a call to Cobyla.FindMinimum, which is a&#10;  derivative-free optimizer that uses a sequential trust-region algorithm&#10;  with linear approximations.  </description>
+</doc>

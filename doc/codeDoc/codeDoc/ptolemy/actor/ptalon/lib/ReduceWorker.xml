@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ReduceWorker" class="ptolemy.actor.ptalon.lib.ReduceWorker">
+  <description>
+A ReduceWorker actor, as a subsystem of the MapReduce system.&#10;&#10; &lt;p&gt; This actor has a parameter &lt;i&gt;classNameForReduce&lt;/i&gt; which is the&#10; qualified name for a Java class that extends&#10; ptolemy.actor.ptalon.lib.MapReduceAlgorithm.  It must also have a no&#10; argument constructor.  By extending this abstract class, it will&#10; implement a method named &lt;i&gt;reduce&lt;/i&gt; with type signature:&#10;&#10; &lt;p&gt; &lt;code&gt;public List&amp;lt;String&amp;gt; reduce(String key,&#10; BlockingQueue&amp;lt;String&amp;gt; value)&lt;/code&gt;&#10;&#10; &lt;p&gt; This method defines the Reduce algorithm for the MapReduce&#10; system.  At each call, it should return a list of Strings, which is a&#10; reduction of the list of input values.  At each firing, this actor&#10; inputs all available input keys and values.  It outputs the value&#10; tokens when its &lt;i&gt;doneReading&lt;/i&gt; port receives a true value.  This&#10; should only happen after all inputs have been sent to the system.&#10;&#10; &lt;p&gt; When implementing a custom reduce method in a subclass of&#10; MapReduceAlgorithm, note to use the take method to get values from&#10; the queue.  Call the &lt;i&gt;isQueueEmpty&lt;/i&gt; of MapReduceAlgorithm to&#10; test if this actor has stopped putting values on the queue and that&#10; all values have been taken from the queue.  The last element of the&#10; queue will always be the empty string.  Ignore this value.  </description>
+  <author>Adam Cataldo</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="doneReading">A boolean input.  When this input is true, the&#10; actor is done reading values, and it may output&#10; tokens for each key it received.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="inputKey">A String input key.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="inputValue">A String input value.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="outputKey">A String output key.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="outputValue">A String output value.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="classNameForReduce">The qualified class name for a Java class containing a method&#10;  with signature:&#10;  &lt;p&gt;&#10;  &lt;code&gt;public static List&amp;lt;String[]&amp;gt; map(String key, String value)&lt;/code&gt;&#10;  &lt;p&gt;&#10;  Each element of each returned list should be a length two array of&#10;  Strings.</property>
+</doc>

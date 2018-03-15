@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="GenericCodeGenerator" class="ptolemy.cg.kernel.generic.GenericCodeGenerator">
+  <description>
+Base class for code generator.&#10;  &lt;p&gt;Derived classes usually override &lt;a href=&quot;../../../../ptolemy/cg/kernel/generic/GenericCodeGenerator.html#generateCode&quot;&gt;generateCode(StringBuffer)&lt;/a&gt;.  </description>
+  <author>Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks, Bert Rodiers</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="codeDirectory">The directory in which to put the generated code.&#10;  This is a file parameter that must specify a directory.&#10;  The default is &quot;&lt;code&gt;$HOME/cg/&lt;/code&gt;&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="generateInSubdirectory">If true, then generate code in a subdirectory of &lt;i&gt;codeDirectory&lt;/i&gt;.&#10;  The default value is false, indicating that code should be&#10;  generated in the directory named by codeDirectory.&#10;  If the value is true, then code is generated in a &lt;b&gt;subdirectory&lt;/b&gt;&#10;  of the directory named by the &lt;i&gt;codeDirectory&lt;/i&gt; parameter.&#10;  This is useful for languages such as Java, which means that&#10;  the code will be generated in a package named by the sanitized&#10;  version of the model name.  The default value is a Boolean with&#10;  the value &quot;false&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="generatorPackage">The name of the package in which to look for adapter class&#10;  code generators. The default value of this parameter&#10;  is the empty string.  Derived classes may set this parameter&#10;  to values like &lt;code&gt;ptolemy.cg.kernel.generic.program.procedural.c&lt;/code&gt;.&#10;  &lt;code&gt;ptolemy.cg.kernel.generic.html&lt;/code&gt;,&#10;  or &lt;code&gt;ptolemy.cg.kernel.generic.program.procedural.java&lt;/code&gt;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="generatorPackageList">The name of the package(s) in which to look for adapter&#10;  classes. The string can either be just one package, such as&#10;  &quot;generic.program.procedural.java&quot; or a list of semicolon ';' ,&#10;  colon ':', space ' ' or asterix '*' separated list of Java&#10;  packages, such as&#10;  &lt;code&gt;generic.program.procedural.java.target1:generic.program.procedural.java.target2&lt;/code&gt;.&#10;  The adapter is first searched in the first package.&#10;  Adapters are looked up by class name, where the class name&#10;  consists of &quot;ptolemy.cg.adapter&quot; + the package name&#10;  from this list + &quot;adapters.&quot;.  Thus, if generatorPackageList&#10;  is set to &lt;code&gt;generic.program.procedural.java&lt;/code&gt;, then the&#10;  &lt;code&gt;ptolemy.cg.adapter.&lt;b&gt;generic.program.procedural.java&lt;/b&gt;.adapters.&lt;/code&gt;&#10;  package will be searched.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="overwriteFiles">If true, overwrite preexisting files.  The default&#10;  value is a parameter with the value true.</property>
+</doc>

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CartesianToComplex" class="ptolemy.actor.lib.conversions.CartesianToComplex">
+  <description>
+Convert a Cartesian pair (represented as two double tokens) to a single&#10; complex token. At each firing of the actor, it will consume exactly one&#10; token from each of the two input ports and produce a complex token on the&#10; output port. The x input becomes the real output and the y input becomes the&#10; imaginary output. If either input port is empty, nothing is produced.  </description>
+  <author>Michael Leung, Jie Liu, Edward A. Lee, Paul Whitaker</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (pwhitake)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (pwhitake)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="x">The input port for the x coordinate of the Cartesian pair, which&#10;     has type DoubleToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="y">The input port for the y coordinate of the Cartesian pair, which&#10;     has type DoubleToken.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The port for the output, which has type ComplexToken.</port>
+</doc>

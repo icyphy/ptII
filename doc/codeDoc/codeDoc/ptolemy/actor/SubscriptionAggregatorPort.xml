@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SubscriptionAggregatorPort" class="ptolemy.actor.SubscriptionAggregatorPort">
+  <description>
+Aggregate data produced by multiple publishers.&#10;&#10; &lt;p&gt;This is a generalization of the &lt;a href=&quot;../../ptolemy/actor/SubscriberPort.xml&quot;&gt;ptolemy.actor.SubscriberPort&lt;/a&gt; (the base class) where the channel name&#10; is interpreted as a regular expression.  Data produced by all&#10; publishers that publish on a channel name that matches the regular&#10; expression are aggregated using the operation given by the &lt;a href=&quot;../../ptolemy/actor/SubscriptionAggregatorPort.xml#operation&quot;&gt;operation&lt;/a&gt; parameter.&lt;/p&gt;&#10;&#10; &lt;p&gt;Note that the &lt;a href=&quot;../../ptolemy/actor/SubscriberPort.xml#channel&quot;&gt;&lt;i&gt;channel&lt;/i&gt;&lt;/a&gt;&#10; parameter of the superclass is now a regular expression in this class.&#10; One thing to watch out for is using &lt;code&gt;.&lt;/code&gt; instead of &lt;code&gt;\.&lt;/code&gt;.&#10; For example, &lt;code&gt;channel.foo&lt;/code&gt; does not mean the same thing as&#10; &lt;code&gt;channel\.foo&lt;/code&gt;. The latter requires a dot between channel and&#10; foo, where the former does not.&#10;&#10; &lt;p&gt;Note that although this is a multiport, calls to get() should only reference&#10; channel 0. An exception will be thrown otherwise. The result of the get will&#10; be the aggregate of what is received on all the input channels.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="operation">The operation used to aggregate the data produced by&#10;  matching publishers. The choices are &quot;add&quot; and &quot;multiply&quot;.&#10;  Note that &quot;multiply&quot; is a poor choice if the data type&#10;  has a non-commutative multiplication operation (e.g.&#10;  matrix types) because the result will be nondeterministic.&#10;  This is a string that defaults to &quot;add&quot;.</property>
+</doc>

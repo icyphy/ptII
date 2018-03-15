@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="HttpPut" class="org.ptolemy.ptango.lib.HttpPut">
+  <description>
+Take the input string, wrap it into a HTTP message, and send it&#10;  to the server associated with the given URL.  </description>
+  <author>Edward A. Lee and Marten Lohstroh</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (eal)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">The input port, which accepts a string that must be formatted and&#10;  encoded in accordance with the given content-type.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="status">An output port for transmitting a token containing the status of the&#10; request.  This is a RecordToken comprised of the response code,&#10; response message, a boolean indicating if the request was successful,&#10; and a boolean indicating if further action is expected.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">The output port, which delivers a string, the response to the post.</port>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="contentType">The content-type to go along with the request.&#10;  This is a string that defaults to &quot;application/x-www-form-urlencoded&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="timeout">The timeout in milliseconds for establishing a connection or reading a value.&#10;  Set to NONE to specify no timeout.&#10;  This is an integer that defaults to 30000, giving a timeout of 30 seconds.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="timeoutResponse">The response to send upon timeout.&#10;  If this is empty, then this actor will throw an exception rather than&#10;  send a response.  This is a string that defaults to empty.</property>
+    <!--ptolemy.actor.parameters.PortParameter-->
+    <property name="url">The URL to post to.&#10;  This is a string that defaults to &quot;http://localhost&quot;, which&#10;  refers to a web server on the local host.</property>
+</doc>

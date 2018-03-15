@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="OpenModelica" class="ptolemy.domains.openmodelica.lib.OpenModelica">
+  <description>
+&lt;p&gt;One actor provided in the Vergil, &lt;i&gt;MoreLibraries&lt;/i&gt; Under &lt;i&gt;OpenModelica&lt;/i&gt;.&#10;    It is called &lt;i&gt;OpenModelica&lt;/i&gt;; To view or edit its Modelica script, look inside the actor. &lt;/p&gt;&#10;    &lt;p&gt;OpenModelica actor starts the OpenModelica Compiler(OMC) server listening on the CORBA interface&#10;    in initialize(). In fire(), upon modifying the value of variable(s) and parameter(s) by input port or actor's&#10;    parameter, the Modelica model is built in &lt;i&gt;non-interactive&lt;/i&gt; or &lt;i&gt;interactive&lt;/i&gt; mode.&#10;    &lt;p&gt;Upon building the model in an interactive mode, client and servers are created, IP and ports of the servers&#10;    are set and streams for transferring information between client and servers are set up. Afterwards,&#10;    the simulation result is sent from the Transfer Server to the Ptolemy II. The simulation result&#10;    is displayed step by step according to the parameters of the OpenModelica actor.&#10;    The formula for calculating the step time is step time = (stop time - start time) / number of intervals.&#10;    There is one issue, the simulation does not stop automatically at the stop time that is selected as one of the&#10;    OpenModelica actors' parameters. So during fetching the result back from Transfer server, stop time should be&#10;    checked, this checking is occurred in OMIThread. The simulation result is sent in the string format to&#10;    the output port of the OpenModelica actor to be displayed by Display actor.&lt;/p&gt;&#10;    &lt;p&gt;In case of building the model in a non-interactive mode, it's not possible to have the result step by step, the&#10;    whole simulation result is displayed according to the start and stop time of simulation that are set as&#10;    OpenModelica actors' parameters.&lt;/p&gt;&#10;    &lt;p&gt;In the final phase, wrapup(), the OMC server is stopped.&lt;/p&gt;  </description>
+  <author>Mana Mirzaei</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="input">Input port of the OpenModelica actor, that gets input from Ramp.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="output">Output port sends the simulation result from Ptolemy II&#10;  to other actors.</port>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="baseModel">The base-model that should be built.&#10;  The default value of this parameter is null.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="dependencies">The file that the base-model should be loaded from.&#10;  The default value of this parameter is null.</property>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="fileName">The file that the (sub-)model should be loaded from.&#10;  The default value is &quot;dcmotor.mo&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="initialValue">New value for changing the current value of variable(s) and parameter(s) prior to running the model.&#10;  The default value of this parameter is null.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numberOfIntervals">Number of intervals in the result file.&#10;  The default value of this parameter is the integer 500.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="outputFormat">Format of the generated result file.&#10;  The default value of this parameter is string &quot;csv&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="parameter">Parameter(s) and variable(s) of the Modelica model.&#10;  The default value of this parameter is null.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="processingMode">Type of processing for running the executable result file of building the Modelica model.&#10;  The default value of this parameter is &quot;non-interactive&quot;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="simulationStartTime">The start time of the simulation.&#10;  The default value of this parameter is double 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="simulationStopTime">The stop time of the simulation.&#10;  The default value of this parameter is double 0.1.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="subModel">The (sub-)model that should be built.&#10;  The default value is &quot;dcmotor&quot;.</property>
+    <!--ptolemy.data.expr.StringParameter-->
+    <property name="variableFilter">Filter for displaying result of simulation.&#10;  The default value of this parameter is null.</property>
+</doc>

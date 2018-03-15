@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RecorderGeneral" class="ptolemy.actor.lib.test.RecorderGeneral">
+  <description>
+Record all input tokens for later querying.&#10;&#10; &lt;p&gt;This actor differs from actor &lt;a href=&quot;../../../../ptolemy/actor/lib/Recorder.xml&quot;&gt;ptolemy.actor.lib.Recorder&lt;/a&gt;&#10; in that this actor has its input type set to BaseType.GENERAL.&#10; This actor is used to test the type constraints of the&#10; Display actor, which is more difficult to test because it is a graphical&#10; actor.  </description>
+  <author>Christopher Brooks</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

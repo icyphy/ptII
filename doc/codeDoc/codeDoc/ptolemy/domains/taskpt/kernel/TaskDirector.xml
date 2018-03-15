@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="TaskDirector" class="ptolemy.domains.taskpt.kernel.TaskDirector">
+  <description>
+A director for controlling a task in the taskpt domain. This director&#10; only accepts tokens of type &lt;i&gt;PtrToken&lt;/i&gt; on its ports connected to upstream&#10; actors in the higher level composite. Pure output ports are ignored by this&#10; director.&#10;&#10; &lt;p&gt;When transferring data from higher level composites, the director does not pass&#10; the incoming tokens directly. If the port is a pure input port,&#10; tokens are read from the address specified in the &lt;i&gt;PtrToken&lt;/i&gt;&#10; from the shared memory controlled by the higher level director and are passed&#10; to the downstream actors inside. If the port is an input/output port, the data&#10; send from the actors inside are stored in the shared memory of the higher level&#10; director after all the actors controlled by this director have finished execution.&lt;/p&gt;  </description>
+  <author>Bastian Ristau</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>red (ristau)</Pt.ProposedRating>
+  <Pt.AcceptedRating>red (ristau)</Pt.AcceptedRating>
+</doc>

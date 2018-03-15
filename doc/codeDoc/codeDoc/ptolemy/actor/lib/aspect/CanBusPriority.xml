@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="CanBusPriority" class="ptolemy.actor.lib.aspect.CanBusPriority">
+  <description>
+This actor is a &lt;a href=&quot;../../../../ptolemy/actor/lib/Transformer.xml&quot;&gt;ptolemy.actor.lib.Transformer&lt;/a&gt; designed for use with the &lt;a href=&quot;../../../../ptolemy/actor/lib/aspect/CanBus/.xml&quot;&gt;ptolemy.actor.lib.aspect.CanBus&lt;/a&gt;.&#10; This actor comes with a parameter &lt;i&gt;CanId&lt;/i&gt; that sets the priority of the output port that it 'covers'.&#10; To improve visibility this parameter is made visible using a BoxedValueIcon.&#10;&#10; For more information see: &lt;i&gt;CAN bus simulator using Quantity Manager&lt;/i&gt;.  </description>
+  <author>D. Marciano, P. Derler</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 10.0</since>
+  <Pt.ProposedRating>Red (derler)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (derler)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="value">Value of the CanId parameter.</property>
+</doc>

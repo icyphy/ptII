@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SmoothToDouble" class="ptolemy.actor.lib.conversions.SmoothToDouble">
+  <description>
+Convert a &lt;a href=&quot;../../../../ptolemy/data/SmoothToken.xml&quot;&gt;ptolemy.data.SmoothToken&lt;/a&gt; (one that has a double value and an array of&#10; derivatives) to a DoubleToken, discarding the derivative information.&#10; Normally, such a conversion is not necessary&#10; because any actor that can accept a DoubleToken can also transparently&#10; accept a SmoothToken. However, when an input port receives a SmoothToken,&#10; the port becomes &lt;i&gt;persistent&lt;/i&gt;, meaning that it will always have a token.&#10; If an actor reads from this input port at a time when no SmoothToken has arrived,&#10; then the most recently received SmoothToken will be extrapolated, using its&#10; derivative information, to obtain a value at that time. If you wish for a&#10; downstream port to not be persistent, then you can use this actor to convert&#10; the signal.  Downstream input ports will be absent at all times except those&#10; when an actual token is sent.  </description>
+  <author>Thierry S. Nouidui, Christopher Brooks</author>
+  <version>$Id$</version>
+  <Pt.ProposedRating>Green (thn)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (thn)</Pt.AcceptedRating>
+</doc>

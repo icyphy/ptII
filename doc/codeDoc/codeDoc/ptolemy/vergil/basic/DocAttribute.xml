@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+  <description>
+An attribute containing documentation for a Ptolemy II object.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.2</since>
+  <Pt.ProposedRating>Red (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="author">The author field.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="description">The description.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="since">The since field.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="version">The version field.</property>
+</doc>

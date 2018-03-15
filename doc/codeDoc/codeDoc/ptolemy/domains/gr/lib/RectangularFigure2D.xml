@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="RectangularFigure2D" class="ptolemy.domains.gr.lib.RectangularFigure2D">
+  <description>
+A base class for actors that create figures based on rectangular&#10; bounding boxes, such as rectangles, rounded rectangles, and ellipses.&#10; The initial size, position, and type of figure are specified in the&#10; parameter edit window and can be changed after the figure has been&#10; displayed.  </description>
+  <author>Ismael M. Sarmiento, Steve Neuendorffer</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (ismael)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (chf)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="xPosition">The initial x position (of type double) of the figure, before&#10; additional transformations.  The default value is 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yPosition">The initial y position (of type double) of the figure, before&#10; additional transformations.  The default value is 0.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="width">The initial width of the bounding rectangle (of type double)&#10; of the figure, before additional transformations.  The default&#10; value is 50.0.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="height">The initial height of the bounding rectangle (of type double)&#10;  of the figure, before additional transformations.  The default&#10;  value is 50.0.</property>
+</doc>

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="ComplexAddSubtract" class="ptolemy.actor.ptalon.lib.ComplexAddSubtract">
+  <description>
+A complex number adder/subtractor.&#10; This adder has two input ports, both of which are multiports,&#10; and one output port, which is not.&#10; The types on the ports are complex.  Data that arrives on the&#10; input port named &lt;i&gt;plus&lt;/i&gt; will be added, and data that arrives&#10; on the input port named &lt;i&gt;minus&lt;/i&gt; will be subtracted.&#10; Any token type supporting addition and subtraction can be used.&#10; In most domains, either input port can be left unconnected.&#10; Thus, to get a simple adder (with no subtractor), just leave the&#10; &lt;i&gt;minus&lt;/i&gt; input unconnected.&#10; &lt;p&gt;&#10; This actor does not require that each input&#10; channel have a token upon firing. It will add or subtract available&#10; tokens at the inputs and ignore the channels that do not have tokens.&#10; It consumes at most one input token from each port.&#10; If no input tokens are available at all, then no output is produced.  </description>
+  <author>Adam Cataldo</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 6.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

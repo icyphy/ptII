@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: org/terraswarm/accessor/accessors/web/test/TrainableTest.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: org/terraswarm/accessor/accessors/web/test/TrainableTest.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Copyright (c) 2016-2017 The Regents of the University of California.
+// All rights reserved.
+//
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+//
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+//
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+//
+/** Compare the input with a known good input.
+ *  If you set ''trainingMode'' to true and provide inputs, then the
+ *  inputs will be recorded in the ''correctValues'' parameters.
+ *  Otherwise, the inputs will be compared against those in the
+ *  ''correctValue'' parameter.
+ *
+ *  @accessor test/TrainableTest
+ *  @input input The input value.
+ *  @output output False as long as there is data to compare against the input
+ *  @param correctValues a JSON array of the correct values.
+ *  @param trainingMode true if the input is being trained.
+ *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee
+ *  @version $$Id$$
+ */
+
+// Stop extra messages from jslint and jshint.  Note that there should
+// be no space between the / and the * and global. See
+// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */
+/*globals console, exports*/
+/*jshint globalstrict: true*/
+/*jslint plusplus: true */
+'use strict';
+
+exports.setup = function () {
+    this.parameter('correctValues', {
+        'value': [0]
+    });
+    this.input('input');
+    this.output('output', {
+        'type': 'boolean'
+    });
+    this.parameter('tolerance', {
+        'type': 'number',
+        'value': 0.000000001
+    });
+    this.parameter('trainingMode', {
+        'type': 'boolean',
+        'value': false
+    });
+};
+
+// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java
+
+// Set to true if an input is handled.  If no inputs are handled, then
+// throw an exception in wrapup().
+var inputHandled = false;
+
+// Set to true when initialize() is called.
+var initialized = false;
+
+// The number of input tokens that have been read in.
+var numberOfInputTokensSeen = 0;
+
+// If trainingMode is true, then inputs that have been seen so far.
+var trainingTokens = [];
+
+// Set to false in initialize() and true at the end of wrapup().
+// FIXME: We should have an exit hook that checks that wrapup() is called for all the actors.
+var wrappedUp = false;
+
+// So we can test this in hosts/node/test/mocha/testMain.js to test that wrapup was called.
+exports.wrappedUp = wrappedUp;
+
+// Return true if the object has the same properties, in any order.
+// Based on http://procbits.com/2012/01/19/comparing-two-javascript-objects
+var objectPropertiesEqual = function(object1, object2) {
+    var property;
+
+    // Check that all the properties in object2 are present in object.
+    for ( property in object2) {
+        if (typeof object1[property] === 'undefined') {
+            return false;
+        }
+    }
+
+    // Check that all the properties in object1 are preset in object2.
+    for (property in object1) {
+        if (typeof object2[property] === 'undefined') {
+            return false;
+        }
+    }
+
+    // If a property is an object1, the recursively call this function.
+    // If a property is a function, then do a string comparison.
+    for (property in object2) {
+        if (object2[property]) {
+            switch (typeof object2[property]) {
+            case 'object1':
+                // Here's the recursive bit
+                if (!objectPropertiesEqual(object1[property], object2[property])) {
+                    return false;
+                }
+                break;
+            case 'function':
+                if (typeof object1[property] ==='undefined' ||
+                    (property != 'object1PropertiesEqual' &amp;&amp;
+                     object2[property].toString() != object1[property].toString())) {
+                    return false;
+                }
+                break;
+            default:
+                if (object2[property] !== object1[property]) {
+                    return false;
+                }
+            }
+        } else {
+            // FIXME: I'm not sure if this case is ever used, but it was in 
+            // http://procbits.com/2012/01/19/comparing-two-javascript-objects
+            if (object1[property]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+};
+
+/** Create an input handler to compare the input with the appropriate element(s)
+ *  from correctValues.
+ */
+exports.initialize = function () {
+    //console.log("Test initialize(): typeof correctValues: " + typeof this.getParameter('correctValues'))
+    var inputValueValue,
+        self = this;
+
+    trainingTokens = [];
+    exports.wrappedUp = false;
+    numberOfInputTokensSeen = 0;
+
+    this.addInputHandler('input', function () {
+        var cache = [],
+            inputValue = self.get('input'),
+            inputValueValue;
+        inputHandled = true;
+
+        // If the input is not connected, then inputValue will be null.
+        if (self.getParameter('trainingMode')) {
+            trainingTokens.push(inputValue);
+            self.send('output', false);
+            return;
+        }
+        var correctValuesValues = self.getParameter('correctValues');
+
+        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {
+            var referenceToken = correctValuesValues[numberOfInputTokensSeen];
+            //console.log("Test: " + numberOfInputTokensSeen + ", input: " + inputValue
+            //+ ", referenceToken: " + referenceToken);
+            if (typeof inputValue !== 'boolean' &amp;&amp;
+                typeof inputValue !== 'number' &amp;&amp;
+                typeof inputValue !== 'object' &amp;&amp;
+                typeof inputValue !== 'string') {
+                if (inputValue === null) {
+                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                    ' tokens, the value of the input was null?  ' +
+                                    'Perhaps the input is not connected?'
+                                   );
+                }
+                cache = [];
+                inputValueValue = JSON.stringify(inputValue, function (key, value) {
+                    if (typeof value === 'object' &amp;&amp; value !== null) {
+                        if (cache.indexOf(value) !== -1) {
+                            // Circular reference found, discard key
+                            return;
+                        }
+                        // Store value in our collection
+                        cache.push(value);
+                    }
+                    return value;
+                });
+                if (inputValueValue.length > 100) {
+                    inputValueValue = inputValueValue.substring(0, 100) + '...';
+                }
+                cache = null; // Enable garbage collection
+
+
+                throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                ' tokens, the input "' + inputValue +
+                                '" is neither a number nor a string, it is a ' +
+                                typeof inputValue + ' with value ' + inputValueValue);
+            }
+            if (typeof referenceToken === 'boolean') {
+                // If the input not a boolean, then throw an error.
+                if (typeof inputValue !== 'boolean') {
+                    inputValueValue = inputValue;
+                    if (typeof inputValue === 'object') {
+                        inputValueValue = JSON.stringify(inputValue, function (key, value) {
+                            if (typeof value === 'object' &amp;&amp; value !== null) {
+                                if (cache.indexOf(value) !== -1) {
+                                    // Circular reference found, discard key
+                                    return;
+                                }
+                                // Store value in our collection
+                                cache.push(value);
+                            }
+                            return value;
+                        });
+                    }
+                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                    ' tokens, the input "' + inputValueValue +
+                                    '" is not a boolean, it is a ' +
+                                    typeof inputValue + '.  The expected value was "' +
+                                    referenceToken + '"');
+                }
+                if (inputValue !== referenceToken) {
+                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                    ' tokens, the input "' + inputValue + '" is not equal to "' +
+                                    referenceToken + '"');
+                }
+            } else if (typeof referenceToken === 'number') {
+                // If the input not a number, then throw an error.
+                if (typeof inputValue !== 'number') {
+                    inputValueValue = inputValue;
+                    if (typeof inputValue === 'object') {
+                        inputValueValue = JSON.stringify(inputValue, function (key, value) {
+                            if (typeof value === 'object' &amp;&amp; value !== null) {
+                                if (cache.indexOf(value) !== -1) {
+                                    // Circular reference found, discard key
+                                    return;
+                                }
+                                // Store value in our collection
+                                cache.push(value);
+                            }
+                            return value;
+                        });
+                    }
+                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                    ' tokens, the input "' + inputValueValue +
+                                    '" is not a number, it is a ' +
+                                    typeof inputValue + '.  The expected value was "' +
+                                    referenceToken + '"');
+                }
+
+                var difference = Math.abs(inputValue - referenceToken);
+                if (isNaN(difference)) {
+                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                    ' tokens, the absolute value of the input "' +
+                                    inputValue + '" - the referenceToken "' +
+                                    referenceToken + '" is NaN?  It should be less than ' +
+                                    self.getParameter('tolerance'));
+                }
+                if (difference > self.getParameter('tolerance')) {
+                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                    ' tokens, the input "' + inputValue + '" is not within "' +
+                                    self.getParameter('tolerance') +
+                                    '" of the expected value "' +
+                                    referenceToken + '"');
+                }
+            } else if (typeof referenceToken === 'string') {
+                if (inputValue !== referenceToken) {
+                    // devices/test/auto/WatchEmulator.js needs this test for object because
+                    // if we receive a JSON object, then we should try to stringify it.
+                    if (typeof inputValue === 'object') {
+                        inputValueValue = null;
+                        try {
+                            inputValueValue = JSON.stringify(inputValue);
+                        } catch (err) {
+                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                            ' tokens, the input "' + inputValue + '" is !== ' +
+                                            ' to the expected value "' +
+                                            referenceToken + '".  The input was an object, and a string was expected.');
+                        }
+                        if (inputValueValue !== referenceToken) {
+                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                            ' tokens, the input "' + inputValueValue + '" is !== ' +
+                                            ' to the expected value "' +
+                                            referenceToken +
+                                            '".  The input was an object and JSON.stringify() did not throw an exception.' +
+                                            'A string was expected.');
+                        }
+                    }
+                }
+            } else if (typeof referenceToken === 'object') {
+                // Sadly, in JavaScript, objects that have the same
+                // properties, but in a different order are not
+                // consider equal in that Object.is() will return
+                // false.  However, Ptolemy RecordTokens are by
+                // default unordered (unless they are
+                // OrderedRecordTokens), So, we have a function that
+                // does a deep comparison and ignores differences in
+                // property order.
+                if (objectPropertiesEqual(inputValue, referenceToken)) {
+                    // The objects are not the same.
+
+                    // Generate string representations of the values
+                    // so that the user can possibly tell what went
+                    // wrong.
+                    cache = [];
+                    inputValueValue = JSON.stringify(inputValue, function (key, value) {
+                        if (typeof value === 'object' &amp;&amp; value !== null) {
+                            if (cache.indexOf(value) !== -1) {
+                                // Circular reference found, discard key
+                                return;
+                            }
+                            // Store value in our collection
+                            cache.push(value);
+                        }
+                        return value;
+                    });
+                    cache = [];
+                    var referenceTokenValue = JSON.stringify(referenceToken, function (key, value) {
+                        if (typeof value === 'object' &amp;&amp; value !== null) {
+                            if (cache.indexOf(value) !== -1) {
+                                // Circular reference found, discard key
+                                return;
+                            }
+                            // Store value in our collection
+                            cache.push(value);
+                        }
+                        return value;
+                    });
+
+                    cache = null; // Enable garbage collection
+
+                    // If we are comparing longs from CapeCode, then the values will be like "1L",
+                    // and stringify will return undefined.
+                    if (inputValueValue === undefined) {
+                        inputValueValue = inputValue;
+                    }
+                    if (referenceTokenValue === undefined) {
+                        referenceTokenValue = referenceToken;
+                    }
+
+                    if (inputValueValue !== referenceTokenValue) {
+                        // inputValueValue could still be undefined here if inputValue
+                        // was undefined.
+                        if (inputValueValue !== undefined &amp;&amp; inputValueValue.length > 100) {
+                            inputValueValue = inputValueValue.substring(0, 100) + '...';
+                        }
+                        if (referenceTokenValue !== undefined &amp;&amp; referenceTokenValue.length > 100) {
+                            referenceTokenValue = referenceTokenValue.substring(0, 100) + '...';
+                        }
+                        // Deal with referenceTokens with value 1L.
+                        if (typeof inputValueValue !== 'object' || typeof referenceTokenValue !== 'object' &amp;&amp;
+                            inputValueValue.toString() !== referenceTokenValue.toString) {
+                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                            ' tokens, the input Object \n"' + inputValueValue +
+                                            '" is !== to the expected value Object\n"' +
+                                            referenceTokenValue);
+                        }
+                    }
+                }
+            } else {
+                throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +
+                                ' tokens, the referenceToken "' + referenceToken +
+                                '" is not a number, it is a ' +
+                                typeof referenceToken);
+            }
+            numberOfInputTokensSeen += 1;
+            // If we are past the end of the expected inputs, then read
+            if (numberOfInputTokensSeen >= correctValuesValues.length) {
+                self.send('output', true);
+            } else {
+                self.send('output', false);
+            }
+        } else {
+            self.send('output', true);
+        }
+    });
+    initialized = true;
+};
+
+/** If trainingMode is true, then updated the correctValues. */
+exports.wrapup = function () {
+    if (this.getParameter('trainingMode')) {
+        this.setParameter('correctValues', trainingTokens);
+    } else {
+        if (initialized) {
+            if (!inputHandled) {
+                initialized = false;
+                throw new Error(this.accessorName + ': The input handler of this accessor was never invoked. ' +
+                                'Usually, this is an error indicating that ' +
+                                'starvation is occurring.');
+            }
+            var correctValuesValues = this.getParameter('correctValues');
+            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {
+                throw new Error(this.accessorName + ': The test produced only ' +
+                                numberOfInputTokensSeen +
+                                ' tokens, yet the correctValues parameter was ' +
+                                'expecting ' +
+                                correctValuesValues.length +
+                                ' tokens');
+            }
+        }
+        initialized = false;
+    }
+    var name = this.accessorName;
+
+    // FIXME: Should we check to see if the name has no dots in and if
+    // it does not, add the container name?
+
+    //if (this.container) {
+    //    name = this.container.accessorName + "." + name;
+    //}
+
+    //
+    exports.wrappedUp = true;
+    // console.log("TrainableTest.js: wrapup() finished: " + name + ", exports.wrappedUp: " + exports.wrappedUp);
+
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Accessors</h3><ul><li><a href="accessor-audio_AudioCapture.html">audio/AudioCapture</a></li><li><a href="accessor-audio_AudioPlayer.html">audio/AudioPlayer</a></li><li><a href="accessor-audio_ClipPlayer.html">audio/ClipPlayer</a></li><li><a href="accessor-audioIo_AudioIoCapture.html">audioIo/AudioIoCapture</a></li><li><a href="accessor-audioIo_AudioIoPlay.html">audioIo/AudioIoPlay</a></li><li><a href="accessor-audioIo_AudioIoWavFile.html">audioIo/AudioIoWavFile</a></li><li><a href="accessor-cameras_Camera.html">cameras/Camera</a></li><li><a href="accessor-cameras_Foscam.html">cameras/Foscam</a></li><li><a href="accessor-contextAware_contextAware.html">contextAware/contextAware</a></li><li><a href="accessor-contextAware_contextAwareTest.html">contextAware/contextAwareTest</a></li><li><a href="accessor-deterministicTemporalSemantics_SpontaneousAperiodic.html">deterministicTemporalSemantics/SpontaneousAperiodic</a></li><li><a href="accessor-deterministicTemporalSemantics_SpontaneousPeriodic.html">deterministicTemporalSemantics/SpontaneousPeriodic</a></li><li><a href="accessor-devices_AdsB.html">devices/AdsB</a></li><li><a href="accessor-devices_DrDose.html">devices/DrDose</a></li><li><a href="accessor-devices_EcSensor.html">devices/EcSensor</a></li><li><a href="accessor-devices_Hue.html">devices/Hue</a></li><li><a href="accessor-devices_Lifx.html">devices/Lifx</a></li><li><a href="accessor-devices_Moto360SensorListener.html">devices/Moto360SensorListener</a></li><li><a href="accessor-devices_PhSensor.html">devices/PhSensor</a></li><li><a href="accessor-geodesy_Lla2Ecef.html">geodesy/Lla2Ecef</a></li><li><a href="accessor-geodesy_LlaDist.html">geodesy/LlaDist</a></li><li><a href="accessor-HandlerWithSuppress.html">HandlerWithSuppress</a></li><li><a href="accessor-Hello.html">Hello</a></li><li><a href="accessor-image_AprilTags.html">image/AprilTags</a></li><li><a href="accessor-image_CharacterDetection.html">image/CharacterDetection</a></li><li><a href="accessor-image_ComputerVision.html">image/ComputerVision</a></li><li><a href="accessor-image_demo_TextFromCamera.html">image/demo/TextFromCamera</a></li><li><a href="accessor-image_FaceDetector.html">image/FaceDetector</a></li><li><a href="accessor-image_ImageAnnotate.html">image/ImageAnnotate</a></li><li><a href="accessor-image_ImageDisplay.html">image/ImageDisplay</a></li><li><a href="accessor-image_ImageFilter.html">image/ImageFilter</a></li><li><a href="accessor-image_MotionDetector.html">image/MotionDetector</a></li><li><a href="accessor-LifxAccessorTemplate.html">LifxAccessorTemplate</a></li><li><a href="accessor-localization_Location.html">localization/Location</a></li><li><a href="accessor-localization_mapRepo.html">localization/mapRepo</a></li><li><a href="accessor-mutable_MutableTestGain.html">mutable/MutableTestGain</a></li><li><a href="accessor-mutable_TestGain1.html">mutable/TestGain1</a></li><li><a href="accessor-mutable_TestGain2.html">mutable/TestGain2</a></li><li><a href="accessor-net_Discovery.html">net/Discovery</a></li><li><a href="accessor-net_IPAddress.html">net/IPAddress</a></li><li><a href="accessor-net_KeyValueStore.html">net/KeyValueStore</a></li><li><a href="accessor-net_MQTTPublisher.html">net/MQTTPublisher</a></li><li><a href="accessor-net_MQTTSubscriber.html">net/MQTTSubscriber</a></li><li><a href="accessor-net_REST.html">net/REST</a></li><li><a href="accessor-net_SecureCommClient.html">net/SecureCommClient</a></li><li><a href="accessor-net_SecureCommServer.html">net/SecureCommServer</a></li><li><a href="accessor-net_SecurePublisher.html">net/SecurePublisher</a></li><li><a href="accessor-net_SecureSubscriber.html">net/SecureSubscriber</a></li><li><a href="accessor-net_SerialPort.html">net/SerialPort</a></li><li><a href="accessor-net_TCPSocketClient.html">net/TCPSocketClient</a></li><li><a href="accessor-net_TCPSocketServer.html">net/TCPSocketServer</a></li><li><a href="accessor-net_UDPSocketListener.html">net/UDPSocketListener</a></li><li><a href="accessor-net_UDPSocketSender.html">net/UDPSocketSender</a></li><li><a href="accessor-net_VertxPublish.html">net/VertxPublish</a></li><li><a href="accessor-net_VertxSubscribe.html">net/VertxSubscribe</a></li><li><a href="accessor-net_WebServer.html">net/WebServer</a></li><li><a href="accessor-net_WebSocketClient.html">net/WebSocketClient</a></li><li><a href="accessor-net_WebSocketServer.html">net/WebSocketServer</a></li><li><a href="accessor-net_XBee.html">net/XBee</a></li><li><a href="accessor-PressureSensor.html">PressureSensor</a></li><li><a href="accessor-robotics_DroneLocation.html">robotics/DroneLocation</a></li><li><a href="accessor-robotics_GlobalPosition2LatLonAlt.html">robotics/GlobalPosition2LatLonAlt</a></li><li><a href="accessor-robotics_LocationRosPublisher.html">robotics/LocationRosPublisher</a></li><li><a href="accessor-robotics_RosPublisher.html">robotics/RosPublisher</a></li><li><a href="accessor-robotics_RosSubscriber.html">robotics/RosSubscriber</a></li><li><a href="accessor-robotics_Scarab.html">robotics/Scarab</a></li><li><a href="accessor-ROSTeleoperation.html">ROSTeleoperation</a></li><li><a href="accessor-services_FFT.html">services/FFT</a></li><li><a href="accessor-services_FINDLocation.html">services/FINDLocation</a></li><li><a href="accessor-services_GeoCoder.html">services/GeoCoder</a></li><li><a href="accessor-services_GeoLocation.html">services/GeoLocation</a></li><li><a href="accessor-services_Heartbeat.html">services/Heartbeat</a></li><li><a href="accessor-services_NaturalLanguage.html">services/NaturalLanguage</a></li><li><a href="accessor-services_RedPinLocation.html">services/RedPinLocation</a></li><li><a href="accessor-services_ReverseGeoCoder.html">services/ReverseGeoCoder</a></li><li><a href="accessor-services_SpeechRecognition.html">services/SpeechRecognition</a></li><li><a href="accessor-services_Weather.html">services/Weather</a></li><li><a href="accessor-services_WiFiScan.html">services/WiFiScan</a></li><li><a href="accessor-SoundActuator.html">SoundActuator</a></li><li><a href="accessor-TemperatureSensor.html">TemperatureSensor</a></li><li><a href="accessor-test_Test.html">test/Test</a></li><li><a href="accessor-test_TestAccessor.html">test/TestAccessor</a></li><li><a href="accessor-test_TestAdder.html">test/TestAdder</a></li><li><a href="accessor-test_TestBaseC.html">test/TestBaseC</a></li><li><a href="accessor-test_TestComposite.html">test/TestComposite</a></li><li><a href="accessor-test_TestCompositeSpontaneous.html">test/TestCompositeSpontaneous</a></li><li><a href="accessor-test_TestDerivedAgainA.html">test/TestDerivedAgainA</a></li><li><a href="accessor-test_TestDerivedC.html">test/TestDerivedC</a></li><li><a href="accessor-test_TestFunctions.html">test/TestFunctions</a></li><li><a href="accessor-test_TestGain.html">test/TestGain</a></li><li><a href="accessor-test_TestImplement.html">test/TestImplement</a></li><li><a href="accessor-test_TestInheritance.html">test/TestInheritance</a></li><li><a href="accessor-test_TestRequire.html">test/TestRequire</a></li><li><a href="accessor-test_TestSpontaneous.html">test/TestSpontaneous</a></li><li><a href="accessor-test_TestSpontaneousOnce.html">test/TestSpontaneousOnce</a></li><li><a href="accessor-test_TestWebSocketClient.html">test/TestWebSocketClient</a></li><li><a href="accessor-test_TrainableTest.html">test/TrainableTest</a></li><li><a href="accessor-TestDerivedC.html">TestDerivedC</a></li><li><a href="accessor-TrafficLight.html">TrafficLight</a></li><li><a href="accessor-trusted_AccessorStatus.html">trusted/AccessorStatus</a></li><li><a href="accessor-tutorial_Hello.html">tutorial/Hello</a></li><li><a href="accessor-util_GetResource.html">util/GetResource</a></li><li><a href="accessor-utilities_Clock.html">utilities/Clock</a></li><li><a href="accessor-utilities_Cron.html">utilities/Cron</a></li><li><a href="accessor-utilities_Exec.html">utilities/Exec</a></li><li><a href="accessor-utilities_LocalStorage.html">utilities/LocalStorage</a></li><li><a href="accessor-utilities_MutableBase.html">utilities/MutableBase</a></li><li><a href="accessor-utilities_Stop.html">utilities/Stop</a></li><li><a href="accessor-utilities_TextDisplay.html">utilities/TextDisplay</a></li><li><a href="accessor-VibrationSensor.html">VibrationSensor</a></li><li><a href="MessageBoard.accessor_js.html">js</a></li><li><a href="utilities_UserInterface.accessor_js.html">js</a></li></ul><h3>Modules</h3><ul><li><a href="module-@accessor-hosts_browser.html">@accessor-hosts/browser</a></li><li><a href="module-@accessors-hosts_browser_demo_tutorial.html">@accessors-hosts/browser/demo/tutorial</a></li><li><a href="module-@accessors-hosts_browser_test_regressionTestScript.html">@accessors-hosts/browser/test/regressionTestScript</a></li><li><a href="module-@accessors-hosts_common_deterministicTemporalSemantics.html">@accessors-hosts/common/deterministicTemporalSemantics</a></li><li><a href="module-@accessors-hosts_common_modules_hostHelper.html">@accessors-hosts/common/modules/hostHelper</a></li><li><a href="module-@accessors-hosts_common_modules_ontology.html">@accessors-hosts/common/modules/ontology</a></li><li><a href="module-@accessors-hosts_common_modules_util.html">@accessors-hosts/common/modules/util</a></li><li><a href="module-@accessors-hosts_common_sync-atom.html">@accessors-hosts/common/sync-atom</a></li><li><a href="module-@accessors-hosts_commonHost.html">@accessors-hosts/commonHost</a></li><li><a href="module-@accessors-hosts_duktapeHost.html">@accessors-hosts/duktapeHost</a></li><li><a href="module-@accessors-hosts_node_nodeHostInvoke.html">@accessors-hosts/node/nodeHostInvoke</a></li><li><a href="module-@accessors-hosts_node_nodeHostShell.html">@accessors-hosts/node/nodeHostShell</a></li><li><a href="module-@accessors-hosts_node_test_mocha_testNodeAllAuto.html">@accessors-hosts/node/test/mocha/testNodeAllAuto</a></li><li><a href="module-@accessors-hosts_node_test_testNodeAuto.html">@accessors-hosts/node/test/testNodeAuto</a></li><li><a href="module-@accessors-hosts_nodeHost.html">@accessors-hosts/nodeHost</a></li><li><a href="module-@accessors-modules_cameras.html">@accessors-modules/cameras</a></li><li><a href="module-@accessors-modules_discovery.html">@accessors-modules/discovery</a></li><li><a href="module-@accessors-modules_http-client.html">@accessors-modules/http-client</a></li><li><a href="module-@accessors-modules_http-server.html">@accessors-modules/http-server</a></li><li><a href="module-@accessors-modules_image-display.html">@accessors-modules/image-display</a></li><li><a href="module-@accessors-modules_iot-auth.html">@accessors-modules/iot-auth</a></li><li><a href="module-@accessors-modules_local-storage.html">@accessors-modules/local-storage</a></li><li><a href="module-@accessors-modules_serial.html">@accessors-modules/serial</a></li><li><a href="module-@accessors-modules_socket.html">@accessors-modules/socket</a></li><li><a href="module-@accessors-modules_text-display.html">@accessors-modules/text-display</a></li><li><a href="module-@accessors-modules_udp-socket.html">@accessors-modules/udp-socket</a></li><li><a href="module-@accessors-modules_web-socket-client.html">@accessors-modules/web-socket-client</a></li><li><a href="module-@accessors-modules_web-socket-server.html">@accessors-modules/web-socket-server</a></li><li><a href="module-accessorMap.html">accessorMap</a></li><li><a href="module-accessorMapCapeCode.html">accessorMapCapeCode</a></li><li><a href="module-aprilTags.html">aprilTags</a></li><li><a href="module-audio.html">audio</a></li><li><a href="module-ble.html">ble</a></li><li><a href="module-buffer.html">buffer</a></li><li><a href="module-camera.html">camera</a></li><li><a href="module-capeCodeHost.html">capeCodeHost</a></li><li><a href="module-computerVision.html">computerVision</a></li><li><a href="module-console.html">console</a></li><li><a href="module-contextAware.html">contextAware</a></li><li><a href="module-cordova_modules_util.html">cordova/modules/util</a></li><li><a href="module-cordovaHost.html">cordovaHost</a></li><li><a href="module-crypto.html">crypto</a></li><li><a href="module-dataConverter.html">dataConverter</a></li><li><a href="module-discovery.html">discovery</a></li><li><a href="module-dsp.html">dsp</a></li><li><a href="module-duktape_modules_util.html">duktape/modules/util</a></li><li><a href="module-eventbus.html">eventbus</a></li><li><a href="module-faceDetector.html">faceDetector</a></li><li><a href="module-geolocation.html">geolocation</a></li><li><a href="module-http-client.html">http-client</a></li><li><a href="module-httpServer.html">httpServer</a></li><li><a href="module-imageDisplay.html">imageDisplay</a></li><li><a href="module-imageFilters.html">imageFilters</a></li><li><a href="module-IMUSensor.html">IMUSensor</a></li><li><a href="module-iotAuth.html">iotAuth</a></li><li><a href="module-lib_interfaces_common.html">lib/interfaces/common</a></li><li><a href="module-localFunctions.html">localFunctions</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-motionDetector.html">motionDetector</a></li><li><a href="module-mqtt.html">mqtt</a></li><li><a href="module-nashornHost.html">nashornHost</a></li><li><a href="module-objectAssign.html">objectAssign</a></li><li><a href="module-os.html">os</a></li><li><a href="module-sampleStatus.html">sampleStatus</a></li><li><a href="module-serial.html">serial</a></li><li><a href="module-shell.html">shell</a></li><li><a href="module-simpleMutable.html">simpleMutable</a></li><li><a href="module-socket.html">socket</a></li><li><a href="module-speechRecognition.html">speechRecognition</a></li><li><a href="module-status.html">status</a></li><li><a href="module-textDisplay.html">textDisplay</a></li><li><a href="module-udpSocket.html">udpSocket</a></li><li><a href="module-userInterface.html">userInterface</a></li><li><a href="module-webSocket.html">webSocket</a></li><li><a href="module-webSocketClient.html">webSocketClient</a></li><li><a href="module-webSocketServer.html">webSocketServer</a></li><li><a href="module-wifiScanner.html">wifiScanner</a></li><li><a href="module-xbee.html">xbee</a></li><li><a href="swarmlet.module_js.html">js</a></li></ul><h3>Classes</h3><ul><li><a href="CoordinateSystem.html">CoordinateSystem</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Map.html">Map</a></li><li><a href="MapSource.html">MapSource</a></li><li><a href="module-eventbus-VertxBus.html">VertxBus</a></li><li><a href="module-http-client-ClientRequest.html">ClientRequest</a></li><li><a href="module-http-client-IncomingMessage.html">IncomingMessage</a></li><li><a href="ObservationMetadata.html">ObservationMetadata</a></li><li><a href="Occupancy.html">Occupancy</a></li><li><a href="Placement.html">Placement</a></li><li><a href="Quaternion.html">Quaternion</a></li><li><a href="URL.html">URL</a></li></ul><h3>Namespaces</h3><ul><li><a href="addChainableMethod.html">addChainableMethod</a></li><li><a href="addMethod.html">addMethod</a></li><li><a href="addProperty.html">addProperty</a></li><li><a href="Assert.html">Assert</a></li><li><a href="BDD.html">BDD</a></li><li><a href="Expect.html">Expect</a></li><li><a href="expectTypes.html">expectTypes</a></li><li><a href="flag.html">flag</a></li><li><a href="getActual.html">getActual</a></li><li><a href="getEnumerableProperties.html">getEnumerableProperties</a></li><li><a href="getMessage.html">getMessage</a></li><li><a href="getName.html">getName</a></li><li><a href="getPathInfo.html">getPathInfo</a></li><li><a href="getPathValue.html">getPathValue</a></li><li><a href="getProperties.html">getProperties</a></li><li><a href="inspect.html">inspect</a></li><li><a href="overwriteChainableMethod.html">overwriteChainableMethod</a></li><li><a href="overwriteMethod.html">overwriteMethod</a></li><li><a href="overwriteProperty.html">overwriteProperty</a></li><li><a href="Should.html">Should</a></li><li><a href="test.html">test</a></li><li><a href="transferFlags.html">transferFlags</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Global</h3><ul><li><a href="global.html"></a></li><li><a href="global.html#addObserver">addObserver</a></li><li><a href="global.html#assert">assert</a></li><li><a href="global.html#clearRepo">clearRepo</a></li><li><a href="global.html#coordinateTransformationsToJSONString">coordinateTransformationsToJSONString</a></li><li><a href="global.html#coordinateTransformationsToString">coordinateTransformationsToString</a></li><li><a href="global.html#createApplication">createApplication</a></li><li><a href="global.html#createApplicationDeprecated">createApplicationDeprecated</a></li><li><a href="global.html#createApplicationNew">createApplicationNew</a></li><li><a href="global.html#decode">decode</a></li><li><a href="global.html#drawMap">drawMap</a></li><li><a href="global.html#entitiesToJSONString">entitiesToJSONString</a></li><li><a href="global.html#entitiesToString">entitiesToString</a></li><li><a href="global.html#EventEmitter">EventEmitter</a></li><li><a href="global.html#express">express</a></li><li><a href="global.html#extractProtocol">extractProtocol</a></li><li><a href="global.html#findSignpost">findSignpost</a></li><li><a href="global.html#getCoordinateTransformation">getCoordinateTransformation</a></li><li><a href="global.html#getResource">getResource</a></li><li><a href="global.html#getSignposts">getSignposts</a></li><li><a href="global.html#httpClient">httpClient</a></li><li><a href="global.html#initialize">initialize</a></li><li><a href="global.html#localRepoToJSONString">localRepoToJSONString</a></li><li><a href="global.html#lolcation">lolcation</a></li><li><a href="global.html#mapsToJSONString">mapsToJSONString</a></li><li><a href="global.html#mapsToString">mapsToString</a></li><li><a href="global.html#nodeHost">nodeHost</a></li><li><a href="global.html#parseDataAudio">parseDataAudio</a></li><li><a href="global.html#publish">publish</a></li><li><a href="global.html#query">query</a></li><li><a href="global.html#querystring">querystring</a></li><li><a href="global.html#querystringify">querystringify</a></li><li><a href="global.html#registerAndReact">registerAndReact</a></li><li><a href="global.html#registerCoordinateTransformation">registerCoordinateTransformation</a></li><li><a href="global.html#registerEntity">registerEntity</a></li><li><a href="global.html#registerMap">registerMap</a></li><li><a href="global.html#replaceRepo">replaceRepo</a></li><li><a href="global.html#resolve">resolve</a></li><li><a href="global.html#rules">rules</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setup">setup</a></li><li><a href="global.html#SpaceTypeEnum">SpaceTypeEnum</a></li><li><a href="global.html#startEddystoneURLBeacon">startEddystoneURLBeacon</a></li><li><a href="global.html#stop">stop</a></li><li><a href="global.html#stopAll">stopAll</a></li><li><a href="global.html">stringify</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#Testing">Testing</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#unpublish">unpublish</a></li><li><a href="global.html#unsubscribe">unsubscribe</a></li><li><a href="global.html#useSampleAudioData">useSampleAudioData</a></li><li><a href="global.html#useSampleRFData">useSampleRFData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.1-dev</a> on Thu Mar 15 2018 00:02:29 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
