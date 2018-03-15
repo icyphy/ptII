@@ -1,6 +1,6 @@
 /* Instantiate and Invoke Accessors using Nashorn.
 
-   Copyright (c) 2016-2017 The Regents of the University of California.
+   Copyright (c) 2016-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -247,8 +247,8 @@ public class NashornAccessorHostApplication {
          *  has not already executed.
          *  @param timer The timeout handle.
          *  @exception IllegalActionException If the handle is invalid.
-         *  @see #setTimeout(Runnable, int)
-         *  @see #setInterval(Runnable, int)
+         *  @see #setTimeout(Runnable, long)
+         *  @see #setInterval(Runnable, long)
          */
         @Override
         public synchronized void clearInterval(Object timer)
@@ -260,8 +260,8 @@ public class NashornAccessorHostApplication {
          *  has not already executed.
          *  @param timer The timeout handle.
          *  @exception IllegalActionException If the handle is invalid.
-         *  @see #setTimeout(Runnable, int)
-         *  @see #setInterval(Runnable, int)
+         *  @see #setTimeout(Runnable, long)
+         *  @see #setInterval(Runnable, long)
          */
         @Override
         public synchronized void clearTimeout(Object timer)

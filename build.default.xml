@@ -702,7 +702,9 @@ For example:
   <target name="doccheck"
 	  depends="initReports"
 	  description="Run Doccheck (http://java.sun.com/j2se/javadoc/doccheck/) to detect JavaDoc bugs." >
-    <javadoc destdir="${ptII.reports}/doccheck"
+
+    <javadoc additionalparam="-notimestamp"
+             destdir="${ptII.reports}/doccheck"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
@@ -825,7 +827,8 @@ For example:
     java.maxmemory.large, which could cause problems for 32-bit
     jvms. -->
 
-    <javadoc destdir="doc/codeDoc"
+    <javadoc additionalparam="-notimestamp"
+             destdir="doc/codeDoc"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory.large}"
@@ -867,11 +870,11 @@ For example:
   <target name="javadoc.base"
 	  depends="javadoc.doclets">
     <echo>Generate javadoc without building the actor documentation and the actor/demonstration index</echo>
-    <javadoc destdir="doc/codeDoc"
-	     additionalparam="-tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
-	     packagenames="${javadoc.packagenames}"
+    <javadoc additionalparam="-notimestamp -tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
+	     destdir="doc/codeDoc"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
+	     packagenames="${javadoc.packagenames}"
 	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
@@ -1025,7 +1028,7 @@ For example:
   <target name="ojdcheck"
 	  depends="initReports"
 	  description="Ojdcheck - An updated version of DocCheck. See http://github.com/egonw/ojdcheck">
-    <javadoc additionalparam="-xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
+    <javadoc additionalparam="-notimestamp -xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
