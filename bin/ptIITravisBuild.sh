@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/bash -x
 
 # This script is called by $PTII/.travis.yml as part of the Travis-ci
 # build at https://travis-ci.org/icyphy/ptII/
@@ -68,6 +68,9 @@ updateGhPages () {
     # rm -rf $TMP
 }
 
+# timeout a process
+function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+
 # Below here, the if statements should be in alphabetical order
 # according to variable name.
 
@@ -86,7 +89,7 @@ fi
 if [ ! -z "$PT_TRAVIS_P" ]; then
     LOG=$PTII/logs/ant_p.txt
     echo "$0: Output will appear in $LOG"
-    ant -p | grep -v GITHUB_TOKEN > $LOG 2>&1
+    ant -p 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -97,7 +100,9 @@ fi
 if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
-    ant -p | grep -v GITHUB_TOKEN > $LOG 2>&1
+    
+    # Stop after 46 minutes
+    timeout 2760 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -114,7 +119,9 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml
     echo "$0: Output will appear in $LOG"
-    ant test.capecode.xml | grep -v GITHUB_TOKEN > $LOG 2>&1
+
+    # Stop after 46 minutes
+    timeout 2760 ant test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $PTII/logs/test.capecode.xml.txt
@@ -125,7 +132,7 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     LOG=$PTII/logs/test.report.short.txt
     echo "$0: Output will appear in $LOG"
-    ant test.report.short | grep -v GITHUB_TOKEN > $LOG 2>&1
+    ant test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
