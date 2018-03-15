@@ -97,7 +97,8 @@ fi
 if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
-    ant installers | grep -v GITHUB_TOKEN > $LOG 2>&1
+    # ant installers | grep -v GITHUB_TOKEN > $LOG 2>&1
+    ant -p | grep -v GITHUB_TOKEN > $LOG 2>&1
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -125,7 +126,8 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     LOG=$PTII/logs/test.report.short.txt
     echo "$0: Output will appear in $LOG"
-    ant test.report.short | grep -v GITHUB_TOKEN > $LOG 2>&1
+    # ant test.report.short | grep -v GITHUB_TOKEN > $LOG 2>&1
+    ant -p | grep -v GITHUB_TOKEN > $LOG 2>&1
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
