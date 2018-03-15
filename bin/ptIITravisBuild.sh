@@ -61,11 +61,35 @@ updateGhPages () {
             echo "$0: Created $2 in [pwd]."
         fi
     fi        
+
     cp -Rf $1 $2
+
+    # JUnit xml output will include the values of the environment,
+    # which can include GITHUB_TOKEN, which is supposed to be secret.
+    # So, we remove any lines checked in to gh-pages that mentions
+    # GITHUB_TOKEN.
+    echo "Remove any instances of GITHUB_TOKEN: "
+    set +x
+    files=`find . -type f`
+    for file in $files
+    do
+        egrep -e  "GITHUB_TOKEN" $file > /dev/null
+	retval=$?
+	if [ $retval != 1 ]; then
+            echo -n "$file "
+            egrep -v "GITHUB_TOKEN" $file > $file.tmp
+            mv $file.tmp $file
+        fi
+    done        
+    echo "Done."
+
+    set -x
+
     git add -f .
     git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git push -fq origin gh-pages
-    # rm -rf $TMP
+
+    rm -rf $TMP
 }
 
 # timeout a process
