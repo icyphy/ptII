@@ -117,7 +117,7 @@ fi
 
 # Run the CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
-    LOG=$PTII/logs/test.capecode.xml
+    LOG=$PTII/logs/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
 
     # Stop after 46 minutes
@@ -126,6 +126,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $PTII/logs/test.capecode.xml.txt
     updateGhPages $LOG logs/
+    updateGhPages $PTII/reports/junit reports/
 fi
 
 # Run the short tests.
@@ -137,6 +138,6 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
     updateGhPages $LOG logs
-
+    updateGhPages $PTII/reports/junit reports/
 fi
 
