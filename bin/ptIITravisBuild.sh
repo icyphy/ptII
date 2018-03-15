@@ -48,7 +48,7 @@ updateGhPages () {
 
     # Don't echo GITHUB_TOKEN
     set +x
-    git clone --depth=50 --branch=master --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
+    git clone --depth=50 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
     set -x
 
     # Commit and Push the Changes
@@ -79,8 +79,7 @@ fi
 
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
     ant javadoc jsdoc;
-    updateGhPages $PTII/doc/codeDoc doc/codeDoc/
-    updateGhPages $PTII/doc/jsdoc doc/jsdoc/
+    updateGhPages $PTII/doc/codeDoc doc
 fi
 
 # Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
