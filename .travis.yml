@@ -121,7 +121,7 @@ deploy:
     file_glob: true
     file: $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
     on:
-      branch: master
+      branch: "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
       condition: "$PT_TRAVIS_INSTALLERS == true"
     skip_cleanup: true    
     verbose: true
