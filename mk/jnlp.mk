@@ -1814,6 +1814,27 @@ L4J_EXES =		$(L4J_CAPECODE_EXES) $(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLO
 # These files are created by $(MKL4J)
 L4J_CONFIGS =		$(L4J_EXES:%.exe=%_l4j.xml)
 
+# If necessary, create $(L4J_DIR).
+$(L4J_DIR):
+	if [ ! -d $(L4J_DIR) ]; then \
+		UNTAR_OR_UNZIP="tar -zxf"; \
+		case `uname -s` in \
+		Darwin) \
+			L4J_TAR=launch4j-3.11-macosx-x86.tgz;; \
+		Linux) \
+			L4J_TAR=launch4j-3.11-linux-x64.tgz;; \
+		*) \
+			L4J_TAR= launch4j-3.11-win32.zip \
+			UNTAR_OR_UNZIP="unzip -q";; \
+		esac; \
+		echo "About to download $$L4J_TAR"; \
+		cd `dirname $(L4J_DIR)`; \
+		wget "https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2F$$L4J_TAR" -O $$L4J_TAR; \
+		tar -zxf $$L4J_TAR; \
+	fi
+
+$(L4JC): $(L4J_DIR)
+
 # Create all the .exe files
 exes: $(L4J_CONFIGS) $(L4J_EXES)
 
@@ -1831,7 +1852,7 @@ bcvtb_l4j.xml: $(MKL4J)
 		-bcvtb \
 		`echo $(BCVTB_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-bcvtb.exe: bcvtb_l4j.xml
+bcvtb.exe: bcvtb_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
 
 PTBOOK_PDF=PtolemyII_DigitalV1_02.pdf
@@ -1859,7 +1880,7 @@ capecode_l4j.xml: $(MKL4J)
 		-capecode \
 		`echo $(CAPECODE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-capecode.exe: capecode_l4j.xml
+capecode.exe: capecode_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) capecode_l4j.xml`
 
 DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
@@ -1869,14 +1890,14 @@ dopseating_l4j.xml:
 		"-space $(DOPCenterModel)" \
 		`echo $(SPACE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-dopseating.exe: dopseating_l4j.xml
+dopseating.exe: dopseating_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) dopseating_l4j.xml`
 
 histogram_l4j.xml:
 	$(MKL4J) histogram ptolemy.plot.plotml.HistogramMLApplication \
 		doc/img/histogram.ico \
 		"" ptolemy/plot/plotapplication.jar > $@
-histogram.exe: histogram_l4j.xml
+histogram.exe: histogram_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) histogram_l4j.xml`
 
 hyvisual_l4j.xml:
@@ -1885,7 +1906,7 @@ hyvisual_l4j.xml:
 		-hyvisual \
 		`echo $(HYBRID_SYSTEMS_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-hyvisual.exe: hyvisual_l4j.xml
+hyvisual.exe: hyvisual_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) $^`
 
 hyvisualdoc_l4j.xml:
@@ -1893,7 +1914,7 @@ hyvisualdoc_l4j.xml:
 		doc/img/pdf.ico \
 		doc/design/hyvisual.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/hyvisual.pdf
-hyvisualdoc.exe: hyvisualdoc_l4j.xml
+hyvisualdoc.exe: hyvisualdoc_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) hyvisualdoc_l4j.xml`
 
 ptiny_l4j.xml: $(MKL4J)
@@ -1902,14 +1923,14 @@ ptiny_l4j.xml: $(MKL4J)
 		-ptiny \
 		`echo $(PTINY_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-ptiny.exe: ptiny_l4j.xml
+ptiny.exe: ptiny_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) ptiny_l4j.xml`
 
 ptplot_l4j.xml:
 	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication \
 		doc/img/ptplot.ico \
 		"" ptolemy/plot/plotapplication.jar > $@
-ptplot.exe: ptplot_l4j.xml
+ptplot.exe: ptplot_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) ptplot_l4j.xml`
 
 
@@ -1920,7 +1941,7 @@ vergil_l4j.xml:
 		"" \
 		`echo $(FULL_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g" ` > $@
 
-vergil.exe: vergil_l4j.xml
+vergil.exe: vergil_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) vergil_l4j.xml`
 
 vergil.jar:
@@ -1940,7 +1961,7 @@ viptos_l4j.xml:
 		-viptos \
 		`echo $(VIPTOS_JNLP_JARS) | sed 's@$(PTII)/@@g' | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-viptos.exe: viptos_l4j.xml
+viptos.exe: viptos_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) viptos_l4j.xml`
 
 visualsense_l4j.xml:
@@ -1949,14 +1970,14 @@ visualsense_l4j.xml:
 		-visualsense \
 		`echo $(VISUAL_SENSE_JNLP_JARS) | sed 's@$(PTII)/@@g' | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
-visualsense.exe: visualsense_l4j.xml
+visualsense.exe: visualsense_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) visualsense_l4j.xml`
 
 visualsensedoc_l4j.xml:
 	$(MKL4J) visualsensedoc ptolemy.actor.gui.BrowserLauncher \
 		doc/img/pdf.ico $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/visualsense.pdf
-visualsensedoc.exe: visualsensedoc_l4j.xml
+visualsensedoc.exe: visualsensedoc_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) visualsensedoc_l4j.xml`
 
 ################################################################
