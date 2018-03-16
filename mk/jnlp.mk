@@ -1039,6 +1039,18 @@ $(SIGNED_DIR):
 
 $(KEYSTORE): 
 	if [ ! -f "$(KEYSTORE)" ]; then \
+	    if [ ! -d `dirname $(KEYSTORE)` ]; then \
+		echo "Creating `dirname $(KEYSTORE)`"; \
+		mkdir -p `dirname $(KEYSTORE)`; \
+	    fi; \
+	    if [ ! -d `dirname $(KEYSTORE)` ]; then \
+		echo "Creating `dirname $(KEYSTORE)` as root"; \
+		sudo -n mkdir -p `dirname $(KEYSTORE)`; \
+		sudo -n chown $(USER) `dirname $(KEYSTORE)`; \
+	    fi; \
+	    if [ ! -d `dirname $(KEYSTORE)` ]; then \
+		echo "Hmm, $(KEYSTORE) still does not exist?"; \
+	    fi; \
 	   "$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
 		-keystore "$(KEYSTORE)" \
@@ -1727,7 +1739,13 @@ jnlp_dist_update:
 	-ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
-jnlp_dist_nightly:
+$(HOME)/.certpw:
+	if [ ! -f $@ ]; then \
+		echo "$@ does not exist, so we probably won't be using the ptII key.  Creating a dummy password."; \
+		echo "this.is.the.keyPassword,change.it" > $@; \
+	fi
+
+jnlp_dist_nightly: $(HOME)/.certpw
 	$(MAKE) STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
@@ -2420,7 +2438,7 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 
 # Update the 11.0 tree.
 # To use: cd $PTII; make JNLP_MODEL_DIRECTORY=ptolemy/domains/sdf/demo/MaximumEntropySpectrum JNLP_MODEL=MaximumEntropySpectrum 11_0_update_model
-11_0_update_model:
+11_0_update_model: $(HOME)/.certpw
 	$(MAKE) KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat ${HOME}/.certpw`" KEYPASSWORD="-storepass `cat ${HOME}/.certpw`" DIST_BASE=ptolemyII/ptII11.0/jnlp-11.0.devel book_dist_update
 
 11_0_update_all_models: ptolemy/configs/doc/models.txt
