@@ -465,6 +465,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	# Tools used to build installers.
 	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
 	ln -s $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
+	ls -l $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
 	#
 	# Checking to be sure we can build
 	#(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
@@ -1189,7 +1190,7 @@ $(PTII_SRC_JAR): src_jar
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	rm -rf src_jar/ptII$(VERSION)/vendor/izpack* src_jar/ptII$(VERSION)/vendor/launch4j*
+	rm -rf src_jar/ptII$(VERSION)/vendors/izpack* src_jar/ptII$(VERSION)/vendors/launch4j*
 	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
