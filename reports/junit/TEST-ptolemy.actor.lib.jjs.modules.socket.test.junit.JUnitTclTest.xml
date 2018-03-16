@@ -124,7 +124,6 @@
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
     <property name="env.TRAVIS_COMMIT" value="14612b0ca456beb646e520a5c7d847552864c889" />
-    <property name="env.GITHUB_TOKEN" value="f4eba526eb297a3eb630b5d0e5da21a6e2af86b2" />
     <property name="env._system_arch" value="x86_64" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
