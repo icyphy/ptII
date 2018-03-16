@@ -1728,7 +1728,7 @@ jnlp_dist_update:
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 jnlp_dist_nightly:
-	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
+	$(MAKE) STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
 DIST_JAR=/home/www/ptweb/ptolemyII/ptII11.0/$(PTVERSION)
