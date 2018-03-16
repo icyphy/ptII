@@ -5,5 +5,10 @@
     },
     "source": {
         "excludePattern": "(doc|browser/common|browser/modules|browser/test/lib|cameraslicense.js|cv.js|node_modules\\/[^@]|HueAccessorTemplate.js|hosts/jxcore/jxcore/common|hosts/cordova/demo|node_modules/@accessors-hosts|rusteduk/duk|vendors)"
+    },
+    "templates": {
+        "default": {
+            "includeDate": false
+        }
     }
 }
