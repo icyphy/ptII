@@ -1536,8 +1536,8 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
 
-jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
-jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
+jnlp_sign: jnlp_sign1 $(JNLPS)
+jnlp_sign1: $(SIGNED_DIR)  $(KEYSTORE) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	# Replace the CLASSPATHSEPARATOR with a space.
 	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g" | awk '{for (i=1; i <= NF; i++) { print $$i}}' | sort | uniq`; \
