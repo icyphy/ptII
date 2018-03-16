@@ -1836,7 +1836,7 @@ $(L4J_DIR):
 $(L4JC): $(L4J_DIR)
 
 # Create all the .exe files
-exes: $(L4J_CONFIGS) $(L4J_EXES)
+exes: $(L4J_CONFIGS) $(L4J_DIR) $(L4J_EXES)
 
 # Remove the .exe files and the .xml files used to create the .exe files
 clean_exes:
@@ -1881,6 +1881,9 @@ capecode_l4j.xml: $(MKL4J)
 		`echo $(CAPECODE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
 capecode.exe: capecode_l4j.xml $(L4JC)
+	- ls -l $(L4JC)
+	- ls -l `dirname $(L4JC)`
+	- ls -l $(PTII)/vendors
 	"$(L4JC)" `$(PTCYGPATH) capecode_l4j.xml`
 
 DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
