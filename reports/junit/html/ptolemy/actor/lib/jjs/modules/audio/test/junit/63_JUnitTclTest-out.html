@@ -1,0 +1,27 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/knownFailedTests/AudioError.xml
+JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+ClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
+1289 ms. Memory: 185856K Free: 60280K (32%)
+Known Failure: java.lang.reflect.InvocationTargetException
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
+----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+REST: Making an HTTP request. (Thread[SpeechSynthesisTest,1,main])
+31127 ms. Memory: 518144K Free: 277179K (53%)
+----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+REST: Making an HTTP request. (Thread[Thread-8,5,main])
+30036 ms. Memory: 658432K Free: 193662K (29%)
+reloadAllAccessors: .SpeechSynthesisTest
+This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+REST: Making an HTTP request. (Thread[Thread-8,5,main])
+30228 ms. Memory: 798720K Free: 556446K (70%)
+</pre>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Error creating effigy and tableau
+  in .LeastSquaresNodeLocalization.XYPlotter
+Because:
+
+No X11 DISPLAY variable was set, but this program performed an operation which requires it.
+	at ptolemy.actor.lib.gui.PlotterBaseJavaSE.initializeEffigy(PlotterBaseJavaSE.java:169)
+	at ptolemy.actor.lib.gui.Plotter.initialize(Plotter.java:149)
+	at ptolemy.actor.Director.initialize(Director.java:938)
+	at ptolemy.actor.Director.initialize(Director.java:907)
+	at ptolemy.domains.de.kernel.DEDirector.initialize(DEDirector.java:943)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: java.awt.HeadlessException: 
+No X11 DISPLAY variable was set, but this program performed an operation which requires it.
+	at java.awt.GraphicsEnvironment.checkHeadless(GraphicsEnvironment.java:204)
+	at java.awt.Window.&lt;init&gt;(Window.java:536)
+	at java.awt.Frame.&lt;init&gt;(Frame.java:420)
+	at java.awt.Frame.&lt;init&gt;(Frame.java:385)
+	at javax.swing.JFrame.&lt;init&gt;(JFrame.java:189)
+	at ptolemy.gui.Top.&lt;init&gt;(Top.java:172)
+	at ptolemy.actor.gui.TableauFrame.&lt;init&gt;(TableauFrame.java:135)
+	at ptolemy.actor.gui.TableauFrame.&lt;init&gt;(TableauFrame.java:188)
+	at ptolemy.actor.gui.PlotTableauFrame.&lt;init&gt;(PlotTableauFrame.java:154)
+	at ptolemy.actor.lib.gui.PlotterBaseJavaSE$PlotWindowTableau.&lt;init&gt;(PlotterBaseJavaSE.java:372)
+	at ptolemy.actor.lib.gui.PlotterBaseJavaSE.initializeEffigy(PlotterBaseJavaSE.java:165)
+	... 9 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Error creating effigy and tableau
+  in .LinearRegression.ArrayPlotterXY
+Because:
+
+No X11 DISPLAY variable was set, but this program performed an operation which requires it.
+	at ptolemy.actor.lib.gui.PlotterBaseJavaSE.initializeEffigy(PlotterBaseJavaSE.java:169)
+	at ptolemy.actor.lib.gui.Plotter.initialize(Plotter.java:149)
+	at ptolemy.actor.lib.gui.ArrayPlotterXY.initialize(ArrayPlotterXY.java:136)
+	at ptolemy.actor.Director.initialize(Director.java:938)
+	at ptolemy.actor.Director.initialize(Director.java:907)
+	at ptolemy.actor.sched.StaticSchedulingDirector.initialize(StaticSchedulingDirector.java:159)
+	at ptolemy.domains.sdf.kernel.SDFDirector.initialize(SDFDirector.java:544)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: java.awt.HeadlessException: 
+No X11 DISPLAY variable was set, but this program performed an operation which requires it.
+	at java.awt.GraphicsEnvironment.checkHeadless(GraphicsEnvironment.java:204)
+	at java.awt.Window.&lt;init&gt;(Window.java:536)
+	at java.awt.Frame.&lt;init&gt;(Frame.java:420)
+	at java.awt.Frame.&lt;init&gt;(Frame.java:385)
+	at javax.swing.JFrame.&lt;init&gt;(JFrame.java:189)
+	at ptolemy.gui.Top.&lt;init&gt;(Top.java:172)
+	at ptolemy.actor.gui.TableauFrame.&lt;init&gt;(TableauFrame.java:135)
+	at ptolemy.actor.gui.TableauFrame.&lt;init&gt;(TableauFrame.java:188)
+	at ptolemy.actor.gui.PlotTableauFrame.&lt;init&gt;(PlotTableauFrame.java:154)
+	at ptolemy.actor.lib.gui.PlotterBaseJavaSE$PlotWindowTableau.&lt;init&gt;(PlotterBaseJavaSE.java:372)
+	at ptolemy.actor.lib.gui.PlotterBaseJavaSE.initializeEffigy(PlotterBaseJavaSE.java:165)
+	... 11 more
+</pre>
+</body>
+</html>
