@@ -388,6 +388,12 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	@echo "OPENCV_DLL: $(OPENCV_DLL)"
+	@echo "NODE_DARWIN: $(NODE_DARWIN)"
+	@echo "NODE_LINUX: $(NODE_LINUX)"
+	@echo "NODE_WIN: $(NODE_WIN)"
+	@echo "IZPACK_DIR: $(IZPACK_DIR)"
+	@echo "L4J_DIR: $(L4J_DIR)"
 	mkdir -p $@
 	@echo "git pull in $(PTIIHOME)"
 	(cd $(PTIIHOME); git pull)
@@ -464,8 +470,11 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
 	# Tools used to build installers.
 	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
+	- ls -l $(PTIIHOME)/vendors
+	- ls -l $(PTIIDIST)/vendors
+	- ls -l$(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
 	ln -s $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
-	ls -l $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
+	-ls -l $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
 	#
 	# Checking to be sure we can build
 	#(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
@@ -3590,9 +3599,12 @@ L4J_DIR=$(PTIIHOME)/vendors/launch4j
 L4J_TAR=launch4j-3.11-linux-x64.tgz
 
 $(L4J_DIR):
-	cd $(PTIIHOME)/vendors; \
+	@echo "Creating L4J_DIR: $(L4J_DIR)"
+	if [ ! -d $(L4J_DIR) ]; then \
+		cd $(PTIIHOME)/vendors; \
 		wget --quiet 'https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-linux-x64.tgz' -O $(L4J_TAR); \
-		$(TAR) -zxf $(L4J_TAR)
+		$(TAR) -zxf $(L4J_TAR); \
+	fi
 
 
 # Launch4J console application that reads in .xml files and creates .exe files.
