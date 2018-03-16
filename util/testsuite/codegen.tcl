@@ -450,7 +450,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 
 	set results ""
 	# make -C is a GNU make extension that changes to a directory
-	#set results [exec gmake -C .. MODEL=$model SOURCECLASS=$modelPath $command]
+	#set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]
 
 	if { ${codeGenType} == "Deep" } {
 	    set codeGenerator "java"
@@ -498,7 +498,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	}
 	puts $results
 
-	#    if [catch {set results [exec gmake -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
+	#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
 	#	puts $results
 	#	puts $errMsg
 	#    }
@@ -537,7 +537,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	# try passing -stderrok as the first arg to exec: exec -stderrok make
 	# 'make obfuscate' was failing with an error here until we
 	# redirected 2>&1
-	if [catch {set results [exec gmake -C ../cg/$modelName \
+	if [catch {set results [exec make -C ../cg/$modelName \
 		MODEL=$modelName \
 		SOURCECLASS=$modelPath $command]} errMsg] {
 	    $watchDog cancel
