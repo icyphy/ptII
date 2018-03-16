@@ -3670,15 +3670,21 @@ $(CAPECODE_SETUP_64).exe: $(CAPECODE_SETUP_DEPENDENCIES) \
 		ls -l $@; \
 	fi
 
+$(PTIIDIST)/vendors/launch4j:
+	if [ ! -h $@ ]; then \
+		echo "Created link for launch4j"; \
+		ln -s $(L4J_DIR) $(PTIIDIST)/vendors/launch4j; \
+	fi
+
 ptiny.exe: $(PTIIDIST)/ptiny.exe
-$(PTIIDIST)/ptiny.exe:
+$(PTIIDIST)/ptiny.exe: $(PTIIDIST)/vendors/launch4j
 	@echo " Creating $(PTIIDIST)/ptiny.exe"
 	$(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
-$(PTIIDIST)/ptbook.exe:
+$(PTIIDIST)/ptbook.exe: $(PTIIDIST)/vendors/launch4j
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
-$(PTIIDIST)/capecode.exe:
+$(PTIIDIST)/capecode.exe: $(PTIIDIST)/vendors/launch4j
 	@echo " Creating $(PTIIDIST)/capecode.exe"
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
