@@ -44,6 +44,7 @@ updateGhPages () {
     if [ ! -d $TMP ]; then
         mkdir $TMP
     fi
+    lastwd=`pwd`
     cd $TMP
 
     # Get to the Travis build directory, configure git and clone the repo
@@ -92,6 +93,7 @@ updateGhPages () {
     git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git push -fq origin gh-pages
 
+    cd $lastwd
     rm -rf $TMP
 }
 
@@ -136,8 +138,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
 
     ls $PTII/adm/gen-11.0
     if [ -f $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar ]; then
-        updateGhPages $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
-        downloads/
+        updateGhPages $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar downloads/
     fi
 fi
 
@@ -145,7 +146,7 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
-
+    
     timeout $TIMEOUT ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
