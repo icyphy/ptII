@@ -26,7 +26,8 @@ fi
 # Number of seconds to run the subprocess.  Can't be more than 50
 # minutes or 3000 seconds.  We can't use Travis' timeout feature
 # because we want to copy the output to gh-pages.
-TIMEOUT=2700
+# 45 minutes is cutting it a bit close, so we go with 40 minutes.
+TIMEOUT=2400
 
 # This shell procedure copies the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
