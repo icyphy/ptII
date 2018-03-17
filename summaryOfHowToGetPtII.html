@@ -1,0 +1,285 @@
+<html>
+  <head>
+    <title>Summary of ways to get ptII</title>
+  </head>
+  <body>
+    <h1>Summary of ways to get ptII</h1>
+
+    <table border=1>
+      <tr>
+        <td>
+          <B>How</B>
+        </td>
+        <td>
+          <B>Advantages</B>
+        </td>
+        <td>
+          <B>Disadvantages  </B>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest">Use the most recent stable release</a>
+        </td>
+        <td>
+          Stable configuration that has been tested on multiple platforms
+          <br>Includes a Windows installer
+        </td>
+        <td>
+          Last updated in December, 2014.
+        </td> 
+      </tr>
+
+      <tr>
+        <td>
+          <a href="downloads/index.html">Use the most recent snapshot release</a>
+        </td>
+        <td>
+          Stable configuration that has been lightly tested on multiple platforms.
+          <br>Includes a Windows installer.
+        </td>
+        <td>
+          As of November, 2015, the most recent snapshot is available on the <a href="downloads/index.htm">Nightly Build</a> page.
+        </td> 
+      </tr>
+
+      <tr>
+        <td>
+          <a href="#git">Github: Just the master branch and the last 50 commits</a>
+        </td>
+        <td>
+          To download just the master branch and the last 50 commits, use:
+          <pre>
+            git clone --depth=50 --branch=master --single-branch https://github.com/icyphy/ptII
+          </pre>
+
+        </td>
+        <td>
+          Takes about 2 minutes via Wi-Fi.
+        </td> 
+      </tr>
+
+      <tr>
+        <td>
+          <a href="#git">Github Full Download</a>
+        </td>
+        <td>
+          To download the entire Git repository of 75,000 commits and 40-50 branches, use:
+          <pre>
+            git clone https://github.com/icyphy/ptII
+          </pre>
+
+        </td>
+        <td>
+          Takes 5 minutes to download on a fast machine, 20 minutes via Wi-Fi.
+        </td> 
+      </tr>
+
+      <tr>
+        <td>
+          <a href="downloads/index.htm">Nightly Build</a> source tar files
+        </td>
+        <td>
+          Easy to get
+          <br>Optionally includes a Windows installer (<I>that has not been tested</I>)
+        </td>
+        <td>
+          The nightly build does not always work, so you might download a broken
+          build, which would require downloading a new version.
+          <br>Getting updates requires downloading an entire new distribution.
+        </td> 
+      </tr>
+
+    </table>
+
+
+    <h3><a name="javaversion">Install Java</a></h3>
+    Ptolemy II requires JDK 1.8. or later.
+    For details, see <code>$PTII/doc/install.htm</code>.
+
+    <br><code>ptII/doc/install.java</code> in the source
+    tree you have just downloaded more fully describes
+    what packages to install.
+    <p>The quick Java installation instructions:
+      <ol>
+        <li>Install the latest JDK from
+          <a href="http://java.sun.com/javase/downloads/index.jsp"><code>http://java.sun.com/javase/downloads/index.jsp</code></a>
+          <br>Oracle calls the JDK various names: JDK 8 or Java SE 8 or JDK1.8.
+          <br> The installation should end up in a directory
+          like <code>c:/Program Files/Java/jdk1.8.0</code>
+
+      </ol>
+
+      <h3><a name="build">Build instructions</a></h3>
+
+    <p>You have now checked out the source code!  But it still needs to
+      be compiled.  First you will need to set some environment variables.
+      These may be set locally in the shell, or globally via a Windows
+      dialog box.
+
+    <p>To set the environment variables in a C shell, first cd to the
+      directory (such as your home directory) where your ptII directory
+      lives.  Then use the following commands:
+
+      <pre>
+        setenv HOME `pwd`
+        setenv PTII `pwd`/ptII
+      </pre>
+      To set them in a Bash shell:
+      <pre>
+        export HOME=c:/directoryOfYourChoice
+        export PTII=c:/directoryOfYourChoice/ptII
+      </pre>
+
+      The <code>export</code> commands above are useful if you will be creating
+      subprocesses of your Bash shell.  Anyway, they don't hurt.
+
+      <blockquote>
+
+        <table border=2>
+          <tr>
+	    <td>
+	      <h4>Cygwin directory mapping</h4>
+	      <p>Note that Cygwin remaps directories, so <code>d:\tmp</code>
+	        may appear as <code>/cygdrive/d/tmp</code>.
+
+	      <p>Unfortunately, the <code>java</code> command
+	        does not understand the Cygwin <code>/cygdrive</code> notation,
+	        so <code>java</code> may not find the files it needs.
+
+	      <p>For example, <code>pwd</code>
+	        returns <code>/cygrive/d/tmp/ptII</code>, which will not work
+	        with <code>java</code>:
+	        <pre>
+	          cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+	          $ PTII=d:\\tmp\\ptII
+
+	          cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+	          $ echo $PTII
+	          d:\tmp\ptII
+
+	          cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+	          $ cd $PTII
+
+	          cxh@MOWAT-171 /cygdrive/d/tmp/ptII
+	          $ pwd
+	          /cygdrive/d/tmp/ptII
+	        </pre>
+
+	        So, under Cygwin, it is best to avoid using pwd when setting
+	        variables.  Avoid:
+	        <pre>
+	          PTII=`pwd`/ptII
+	        </pre>
+	        and use
+	        <pre>
+	          PTII=d:\\tmp\\ptII
+	        </pre>
+	        instead. 
+
+	      <p>An alternative is to use the <code>cygpath</code> command.
+	        <pre>
+	          export PTII=`cygpath -m ${PWD}`
+	        </pre>
+	        This results in a path that has forward slashes.  Formerly, under
+	        Windows, Java would not work well with forward slashes, but that
+	        problem seems to be fixed in Java 1.7.
+
+	    </td>
+</td>
+</table>
+</blockquote>
+In either shell, you may also wish to set your path to include
+<code>c:\directoryofyourchoice\ptII\bin</code> (where vergil lives) and
+<code>c:\Program Files\Java\jdk1.8.0\bin</code> or wherever your java installation is located.
+
+<p>To set environment variables in Windows, do Start -> Settings
+  -> Control Panel -> System.  Click the Advanced tab and then
+  the Environment Variables button.
+
+  Set up the following under the heading
+  <code>User variables for <i>yourlogin</i></code>
+  <pre>
+    Variable    Value
+    HOME        c:\directoryofyourchoice
+    PTII        c:\directoryofyourchoice\ptII
+</pre><p>
+
+
+  Under System Variables, augment your Path variable.  Edit it,
+  and add <code>c:\<I>directoryofyourchoice</I>\ptII\bin;</code> in front of the
+  existing text in the Variable Value window.  You may also wish to
+  add something like <code>c:\Program Files\Java\jdk1.8.0\bin;</code> to point to the java
+  installation you want Ptolemy II to use.  Otherwise, the one in your
+  WINNT/System32 directory may be used. <p>
+
+  If you have used the Windows dialog to set the environment variables,
+  you will need to open a new shell in order to have them take effect.
+  On the other hand, if you have set them from within the shell, do not
+  open a new one.  New shells will not have the variables set.<p>
+
+  You are now ready to compile Ptolemy II!  First you configure.  To use
+  the default java instalation on your system, simply type the following
+  command:
+
+  <pre>
+    ./configure
+  </pre>
+
+<p>The <code>./</code> in the above command is needed to convince the
+  shell that you really do want to execute configure as a command, even
+  though your current working directory may not be on your path.  If you
+  wish to control the exact java used, you may specify it with a command
+  like the following instead:</p>
+
+<pre>
+  ./configure --with-java=c:/Program\ Files/Java/jdk1..0
+</pre>
+
+<p>Note that --with-java is not well supported, and you are better off
+  having your path properly set up so that the version of java you would
+  like Ptolemy II to use is first in your path.</p>
+
+<p>Which ever form you use, it grinds briefly.  Some warnings or errors
+  are normal.  Mostly they indicate optional adjuncts to Ptolemy II
+  which were not installed.</p>
+
+<p>The next step is to run make:</p>
+<pre>
+  make fast all
+</pre>
+<p>  The <code>all</code> directive isn't strictly necessary, since
+  <code>all</code> is the default.  The <code>fast</code> directive
+  speeds compilation of multiple java files.  It causes many java files
+  to be loaded into the compiler at once, instead of re-invoking the
+  compiler for each java file.</p>
+
+<p>You're done!!  You can type now <code>vergil</code> (or
+  <code>$PTII/bin/vergil</code> if you did not set your path) in the C
+  shell or cygwin Bash window and it should start up!</p>
+
+<p>Note that if your <code>$PTII</code> path includes spaces,
+  then try </p>
+<pre>
+  "$PTII/bin/vergil"
+</pre>
+
+
+<p>To update your tree and get any updates, do:</p>
+<pre>
+  cd $PTII
+  git pull
+  ./configure
+  $PTII/bin/ant
+</pre>
+
+<hr>
+<ul>
+  <li><a href="index.html">Ptolemy II External Access</a></li>
+  <li><a href="edit.html">How to edit this page</a></li>
+</ul>
+
+
+</body>
+</html>
