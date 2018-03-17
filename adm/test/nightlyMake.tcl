@@ -34,14 +34,13 @@ proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
     global PTII gendir
     set ptIIhome $PTII
     set ptIIadm $PTII/adm
-    set user hudson
 
     # Use StreamExec so that we echo the results to stdout as the
     # results are produced.
     set streamExec [java::new ptolemy.util.StreamExec]
     set commands [java::new java.util.LinkedList]
     cd $PTII
-    $commands add "make -C $gendir USER=$user PTIIHOME=${ptIIhome} PTIIADM=${ptIIadm} JAR=/usr/bin/jar TAR=/usr/local/bin/tar $target"
+    $commands add "make -C $gendir PTIIHOME=${ptIIhome} PTIIADM=${ptIIadm} JAR=/usr/bin/jar TAR=/usr/local/bin/tar $target"
     $streamExec setCommands $commands
     $streamExec setPattern $pattern
     $streamExec start
