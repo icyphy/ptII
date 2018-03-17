@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-624e099e-d700-4234-a02a-601d2421b108" name="ptolemy.actor.lib.hoc.test.junit.JUnitTclTest" skipped="0" tests="58" time="56.17" timestamp="2018-03-16T22:09:35">
+<testsuite errors="0" failures="0" hostname="travis-job-24fc8dec-5b41-4c03-a3c5-16a0232b9a5f" name="ptolemy.actor.lib.hoc.test.junit.JUnitTclTest" skipped="0" tests="58" time="62.42" timestamp="2018-03-17T00:20:00">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -7,7 +7,7 @@
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
     <property name="env.CACHE_NAME" value="PTIICACHE1" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="93.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="94.5" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
     <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.11 52076 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.6 59776 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -48,7 +48,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.11 52076 10.20.0.41 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.6 59776 10.20.0.104 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -65,12 +65,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5348089901818793704.properties propsfile=/home/travis/build/icyphy/ptII/junit1841737738146169292.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1827454093695340398.properties propsfile=/home/travis/build/icyphy/ptII/junit3343953129747084547.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="5b8ed4a5ecbd...42003b563492" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="42003b563492...798fa60a532e" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="93" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="94" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="354525343" />
+    <property name="env.TRAVIS_BUILD_ID" value="354569848" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="42003b563492b2f4c6c5ee060830e7ce2599f2f4" />
+    <property name="env.TRAVIS_COMMIT" value="798fa60a532e58abdb52c0ee8a17ec92b8cdefab" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -165,7 +165,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="PTII_SRC_JAR: Properly remove izpack and launch4j links." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Attempt to create .certpw and KEYSTORE." />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test" />
@@ -202,7 +202,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="354525348" />
+    <property name="env.TRAVIS_JOB_ID" value="354569853" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -220,156 +220,156 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl (RunTclFile)" time="0.27" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml (RunModel)" time="0.219" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl (RunTclFile)" time="0.404" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml (RunModel)" time="0.294" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml (RunModel)" time="0.318" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml (RunModel)" time="0.384" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml (RunModel)" time="1.313" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case.xml (RunModel)" time="0.099" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml (RunModel)" time="0.082" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml (RunModel)" time="0.132" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml (RunModel)" time="0.061" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml (RunModel)" time="0.062" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml (RunModel)" time="0.059" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml (RunModel)" time="0.114" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml (RunModel)" time="0.071" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml (RunModel)" time="0.059" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml (RunModel)" time="0.049" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml (RunModel)" time="0.057" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml (RunModel)" time="0.069" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite5.xml (RunModel)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml (RunModel)" time="0.215" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml (RunModel)" time="0.14" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml (RunModel)" time="0.068" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml (RunModel)" time="1.511" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DFTSubSetTest.xml (RunModel)" time="0.285" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml (RunModel)" time="0.26" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml (RunModel)" time="0.02" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml (RunModel)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml (RunModel)" time="0.071" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml (RunModel)" time="0.207" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml (RunModel)" time="0.193" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml (RunModel)" time="0.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml (RunModel)" time="0.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml (RunModel)" time="0.129" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml (RunModel)" time="0.096" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml (RunModel)" time="0.125" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml (RunModel)" time="20.081" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)" time="20.078" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml (RunModel)" time="1.854" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml (RunModel)" time="0.043" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor4.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml (RunModel)" time="6.495" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml (RunModel)" time="0.467" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml (RunModel)" time="0.511" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml (RunModel)" time="0.034" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml (RunModel)" time="1.344" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case.xml (RunModel)" time="0.098" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml (RunModel)" time="0.101" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml (RunModel)" time="0.213" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml (RunModel)" time="0.116" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml (RunModel)" time="0.111" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml (RunModel)" time="0.215" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml (RunModel)" time="0.158" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml (RunModel)" time="0.074" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml (RunModel)" time="0.075" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml (RunModel)" time="0.069" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml (RunModel)" time="0.09" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml (RunModel)" time="0.08" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite5.xml (RunModel)" time="0.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml (RunModel)" time="0.336" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml (RunModel)" time="0.186" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml (RunModel)" time="0.081" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml (RunModel)" time="1.544" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DFTSubSetTest.xml (RunModel)" time="0.491" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml (RunModel)" time="0.473" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml (RunModel)" time="0.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml (RunModel)" time="0.083" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml (RunModel)" time="0.319" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml (RunModel)" time="0.292" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml (RunModel)" time="0.046" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml (RunModel)" time="0.037" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml (RunModel)" time="0.183" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml (RunModel)" time="0.145" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml (RunModel)" time="0.135" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml (RunModel)" time="20.12" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml (RunModel)" time="0.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml (RunModel)" time="0.057" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)" time="20.114" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml (RunModel)" time="1.869" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml (RunModel)" time="0.048" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml (RunModel)" time="0.037" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor4.xml (RunModel)" time="0.048" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml (RunModel)" time="10.308" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl
-testDefs.tcl: setting time out to 9000 seconds at Fri Mar 16 22:09:35 UTC 2018
-03/16/18 10:09:35
+testDefs.tcl: setting time out to 9000 seconds at Sat Mar 17 00:20:00 UTC 2018
+03/17/18 12:20:01
 Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml
-34 ms. Memory: 116224K Free: 106730K (92%)
+50 ms. Memory: 116224K Free: 106384K (92%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml
-106 ms. Memory: 116224K Free: 85105K (73%)
+177 ms. Memory: 116224K Free: 85005K (73%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml
-94 ms. Memory: 146944K Free: 137378K (93%)
+109 ms. Memory: 146944K Free: 137860K (94%)
 reloadAllAccessors: .AllToAllMultiInstanceComposite
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml
-146 ms. Memory: 146944K Free: 117238K (80%)
+150 ms. Memory: 146944K Free: 117881K (80%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml
-82 ms. Memory: 146944K Free: 113595K (77%)
+132 ms. Memory: 146944K Free: 114256K (78%)
 reloadAllAccessors: .ApplyFFTTest
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml
-3 ms. Memory: 146944K Free: 110298K (75%)
+5 ms. Memory: 146944K Free: 110924K (75%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml
-2 ms. Memory: 146944K Free: 109832K (75%)
+4 ms. Memory: 146944K Free: 110376K (75%)
 reloadAllAccessors: .ApplyFunction
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml
-623 ms. Memory: 146944K Free: 101733K (69%)
+657 ms. Memory: 146944K Free: 102211K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml
-609 ms. Memory: 146944K Free: 100203K (68%)
+620 ms. Memory: 146944K Free: 100672K (69%)
 reloadAllAccessors: .BackgroundExecution
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case.xml
-25 ms. Memory: 146944K Free: 92638K (63%)
+19 ms. Memory: 146944K Free: 92905K (63%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case.xml
-14 ms. Memory: 146944K Free: 90988K (62%)
+16 ms. Memory: 146944K Free: 91508K (62%)
 reloadAllAccessors: .Case
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml
-10 ms. Memory: 146944K Free: 82360K (56%)
+24 ms. Memory: 146944K Free: 83977K (57%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml
-17 ms. Memory: 146944K Free: 142176K (97%)
+16 ms. Memory: 146944K Free: 82334K (56%)
 reloadAllAccessors: .Case1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml
-48 ms. Memory: 146944K Free: 130754K (89%)
+73 ms. Memory: 146944K Free: 132379K (90%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml
-26 ms. Memory: 146944K Free: 127875K (87%)
+31 ms. Memory: 146944K Free: 129480K (88%)
 reloadAllAccessors: .Case2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml
-15 ms. Memory: 146944K Free: 121262K (83%)
+23 ms. Memory: 146944K Free: 122681K (83%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml
-5 ms. Memory: 146944K Free: 119748K (81%)
+20 ms. Memory: 146944K Free: 121332K (83%)
 reloadAllAccessors: .Case3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml
-8 ms. Memory: 146944K Free: 111649K (76%)
+24 ms. Memory: 146944K Free: 112874K (77%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml
-6 ms. Memory: 146944K Free: 109922K (75%)
+16 ms. Memory: 146944K Free: 111066K (76%)
 reloadAllAccessors: .Case4
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml
-21 ms. Memory: 146944K Free: 102727K (70%)
+89 ms. Memory: 146944K Free: 104459K (71%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml
-19 ms. Memory: 146944K Free: 100960K (69%)
+68 ms. Memory: 146944K Free: 102618K (70%)
 reloadAllAccessors: .junk
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml
-43 ms. Memory: 146944K Free: 87808K (60%)
+38 ms. Memory: 146944K Free: 89379K (61%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml
-34 ms. Memory: 146944K Free: 84495K (58%)
+59 ms. Memory: 146944K Free: 86016K (59%)
 reloadAllAccessors: .Case6
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml
-11 ms. Memory: 208384K Free: 197550K (95%)
+14 ms. Memory: 208384K Free: 199097K (96%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml
-10 ms. Memory: 208384K Free: 195579K (94%)
+11 ms. Memory: 208384K Free: 197107K (95%)
 reloadAllAccessors: .CaseString2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml
-11 ms. Memory: 208384K Free: 185530K (89%)
+16 ms. Memory: 208384K Free: 186887K (90%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml
-6 ms. Memory: 208384K Free: 184023K (88%)
+11 ms. Memory: 208384K Free: 185044K (89%)
 reloadAllAccessors: .CatchUpComposite1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml
-7 ms. Memory: 208384K Free: 174603K (84%)
+18 ms. Memory: 208384K Free: 175796K (84%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml
-6 ms. Memory: 208384K Free: 173620K (83%)
+10 ms. Memory: 208384K Free: 174551K (84%)
 reloadAllAccessors: .CatchUpComposite2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml
-5 ms. Memory: 208384K Free: 163585K (79%)
+8 ms. Memory: 208384K Free: 164653K (79%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml
-4 ms. Memory: 208384K Free: 162110K (78%)
+6 ms. Memory: 208384K Free: 163424K (78%)
 reloadAllAccessors: .CatchUpComposite3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml
-16 ms. Memory: 208384K Free: 153689K (74%)
+21 ms. Memory: 208384K Free: 154757K (74%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml
-13 ms. Memory: 208384K Free: 152199K (73%)
+10 ms. Memory: 208384K Free: 153528K (74%)
 reloadAllAccessors: .CatchUpComposite4
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite5.xml
-9 ms. Memory: 208384K Free: 143180K (69%)
+19 ms. Memory: 208384K Free: 144875K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite5.xml
-5 ms. Memory: 208384K Free: 142165K (68%)
+8 ms. Memory: 208384K Free: 143646K (69%)
 reloadAllAccessors: .CatchUpComposite5
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
@@ -377,14 +377,14 @@ execution, which can potentially reverse causality. There is no guarantee that a
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-93 ms. Memory: 208384K Free: 124862K (60%)
+128 ms. Memory: 208384K Free: 126265K (61%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
 execution, which can potentially reverse causality. There is no guarantee that actors fire at the 
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-44 ms. Memory: 208384K Free: 120405K (58%)
+81 ms. Memory: 208384K Free: 121964K (59%)
 reloadAllAccessors: .CatchUpComposite6
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
@@ -392,254 +392,254 @@ execution, which can potentially reverse causality. There is no guarantee that a
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-44 ms. Memory: 208384K Free: 103941K (50%)
+45 ms. Memory: 208384K Free: 105209K (50%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
 execution, which can potentially reverse causality. There is no guarantee that actors fire at the 
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-24 ms. Memory: 208384K Free: 100460K (48%)
+45 ms. Memory: 208384K Free: 102105K (49%)
 reloadAllAccessors: .CatchUpComposite7
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml
-15 ms. Memory: 208384K Free: 93054K (45%)
+17 ms. Memory: 208384K Free: 94086K (45%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml
-16 ms. Memory: 208384K Free: 90565K (43%)
+15 ms. Memory: 208384K Free: 91612K (44%)
 reloadAllAccessors: .ConcurrentExecutionTimeSDF
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml
-766 ms. Memory: 208384K Free: 198755K (95%)
+761 ms. Memory: 208384K Free: 196382K (94%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml
-719 ms. Memory: 208384K Free: 194036K (93%)
+735 ms. Memory: 208384K Free: 192384K (92%)
 reloadAllAccessors: .ConcurrentSleep
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml
-13 ms. Memory: 208384K Free: 186832K (90%)
+12 ms. Memory: 208384K Free: 185548K (89%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml
-9 ms. Memory: 208384K Free: 184989K (89%)
+12 ms. Memory: 208384K Free: 183582K (88%)
 reloadAllAccessors: .DEInPNInRunCompositeActor
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DFTSubSetTest.xml
-141 ms. Memory: 208384K Free: 138189K (66%)
+245 ms. Memory: 208384K Free: 136481K (65%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DFTSubSetTest.xml
-67 ms. Memory: 208384K Free: 127711K (61%)
+107 ms. Memory: 208384K Free: 126079K (61%)
 reloadAllAccessors: .DFTSubSetTest
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml
-118 ms. Memory: 208384K Free: 100702K (48%)
+251 ms. Memory: 208384K Free: 98897K (47%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml
-96 ms. Memory: 208384K Free: 90193K (43%)
+158 ms. Memory: 208384K Free: 88511K (42%)
 reloadAllAccessors: .HocDE
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml
-8 ms. Memory: 208384K Free: 85277K (41%)
+10 ms. Memory: 208384K Free: 84087K (40%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml
-3 ms. Memory: 208384K Free: 84663K (41%)
+5 ms. Memory: 208384K Free: 83104K (40%)
 reloadAllAccessors: .IterateOverArray
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml
-3 ms. Memory: 208384K Free: 80547K (39%)
+40 ms. Memory: 331264K Free: 322219K (97%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml
-1 ms. Memory: 208384K Free: 79933K (38%)
+2 ms. Memory: 331264K Free: 321681K (97%)
 reloadAllAccessors: .IterateOverArray10
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml
-4 ms. Memory: 332800K Free: 321465K (97%)
+10 ms. Memory: 331264K Free: 316220K (95%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml
-3 ms. Memory: 332800K Free: 320236K (96%)
+8 ms. Memory: 331264K Free: 316220K (95%)
 reloadAllAccessors: .IterateOverArray11
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml
-16 ms. Memory: 332800K Free: 311993K (94%)
+25 ms. Memory: 331264K Free: 308522K (93%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml
-12 ms. Memory: 332800K Free: 310764K (93%)
+27 ms. Memory: 331264K Free: 306569K (93%)
 reloadAllAccessors: .IterateOverArray12
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml
-67 ms. Memory: 332800K Free: 278229K (84%)
+131 ms. Memory: 331264K Free: 278235K (84%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml
-60 ms. Memory: 332800K Free: 268399K (81%)
+92 ms. Memory: 331264K Free: 269443K (81%)
 reloadAllAccessors: .IterateOverArray13
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml
-56 ms. Memory: 332800K Free: 232763K (70%)
+81 ms. Memory: 331264K Free: 233664K (71%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml
-64 ms. Memory: 332800K Free: 224161K (67%)
+104 ms. Memory: 331264K Free: 224872K (68%)
 reloadAllAccessors: .IterateOverArray14
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml
-7 ms. Memory: 332800K Free: 218661K (66%)
+9 ms. Memory: 331264K Free: 219956K (66%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml
-3 ms. Memory: 332800K Free: 217432K (65%)
+4 ms. Memory: 331264K Free: 218979K (66%)
 reloadAllAccessors: .IterateOverArray2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml
-6 ms. Memory: 332800K Free: 210044K (63%)
+10 ms. Memory: 331264K Free: 211565K (64%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml
-5 ms. Memory: 332800K Free: 207586K (62%)
+12 ms. Memory: 331264K Free: 209611K (63%)
 reloadAllAccessors: .IterateOverArray3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml
-8 ms. Memory: 332800K Free: 202086K (61%)
+11 ms. Memory: 331264K Free: 205703K (62%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml
-3 ms. Memory: 332800K Free: 200857K (60%)
+4 ms. Memory: 331264K Free: 204726K (62%)
 reloadAllAccessors: .IterateOverArray4
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml
-7 ms. Memory: 332800K Free: 195942K (59%)
+8 ms. Memory: 331264K Free: 199266K (60%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml
-2 ms. Memory: 332800K Free: 194713K (59%)
+4 ms. Memory: 331264K Free: 199266K (60%)
 reloadAllAccessors: .IterateOverArray5
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml
-4 ms. Memory: 332800K Free: 190442K (57%)
+6 ms. Memory: 331264K Free: 195358K (59%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml
-2 ms. Memory: 332800K Free: 189213K (57%)
+2 ms. Memory: 331264K Free: 195358K (59%)
 reloadAllAccessors: .IterateOverArray6
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml
-8 ms. Memory: 332800K Free: 184298K (55%)
+7 ms. Memory: 331264K Free: 188889K (57%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml
-3 ms. Memory: 332800K Free: 183069K (55%)
+6 ms. Memory: 331264K Free: 187912K (57%)
 reloadAllAccessors: .IterateOverArray7
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml
-4 ms. Memory: 332800K Free: 177569K (53%)
+4 ms. Memory: 331264K Free: 183429K (55%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml
-5 ms. Memory: 332800K Free: 176340K (53%)
+3 ms. Memory: 331264K Free: 182452K (55%)
 reloadAllAccessors: .IterateOverArray8
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml
-5 ms. Memory: 332800K Free: 170840K (51%)
+5 ms. Memory: 331264K Free: 178545K (54%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml
-3 ms. Memory: 332800K Free: 169611K (51%)
+5 ms. Memory: 331264K Free: 177536K (54%)
 reloadAllAccessors: .IterateOverArray9
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml
-3 ms. Memory: 332800K Free: 163467K (49%)
+5 ms. Memory: 331264K Free: 171099K (52%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml
-2 ms. Memory: 332800K Free: 162238K (49%)
+2 ms. Memory: 331264K Free: 170122K (51%)
 reloadAllAccessors: .IterateOverArrayCoercedOutputType
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml
-9 ms. Memory: 332800K Free: 155510K (47%)
+11 ms. Memory: 331264K Free: 165237K (50%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml
-1 ms. Memory: 332800K Free: 155510K (47%)
+3 ms. Memory: 331264K Free: 164260K (50%)
 reloadAllAccessors: .IterateOverArrayInferredOutputType
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml
-7 ms. Memory: 332800K Free: 150586K (45%)
+6 ms. Memory: 331264K Free: 158800K (48%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml
-2 ms. Memory: 332800K Free: 149358K (45%)
+3 ms. Memory: 331264K Free: 157823K (48%)
 reloadAllAccessors: .MobileFunctionTest
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml
-60 ms. Memory: 332800K Free: 127883K (38%)
+95 ms. Memory: 331264K Free: 137292K (41%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml
-44 ms. Memory: 332800K Free: 116824K (35%)
+50 ms. Memory: 331264K Free: 125536K (38%)
 reloadAllAccessors: .MobileModelTest
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml
-3 ms. Memory: 332800K Free: 108222K (33%)
-3 ms. Memory: 332800K Free: 106993K (32%)
-5 ms. Memory: 332800K Free: 106993K (32%)
-2 ms. Memory: 332800K Free: 105764K (32%)
-2 ms. Memory: 332800K Free: 104535K (31%)
-1 ms. Memory: 332800K Free: 104535K (31%)
-1 ms. Memory: 332800K Free: 103307K (31%)
-2 ms. Memory: 332800K Free: 103307K (31%)
-1 ms. Memory: 332800K Free: 102078K (31%)
-2 ms. Memory: 332800K Free: 100849K (30%)
-31 ms. Memory: 332800K Free: 100849K (30%)
+4 ms. Memory: 331264K Free: 117114K (35%)
+5 ms. Memory: 331264K Free: 116137K (35%)
+3 ms. Memory: 331264K Free: 115160K (35%)
+7 ms. Memory: 331264K Free: 114183K (34%)
+2 ms. Memory: 331264K Free: 113206K (34%)
+2 ms. Memory: 331264K Free: 113206K (34%)
+4 ms. Memory: 331264K Free: 112229K (34%)
+2 ms. Memory: 331264K Free: 111252K (34%)
+2 ms. Memory: 331264K Free: 110275K (33%)
+2 ms. Memory: 331264K Free: 109298K (33%)
+46 ms. Memory: 331264K Free: 109298K (33%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml
-6 ms. Memory: 332800K Free: 99620K (30%)
-1 ms. Memory: 332800K Free: 99620K (30%)
-1 ms. Memory: 332800K Free: 98391K (30%)
-2 ms. Memory: 332800K Free: 97163K (29%)
-2 ms. Memory: 332800K Free: 97163K (29%)
-2 ms. Memory: 332800K Free: 95934K (29%)
-2 ms. Memory: 332800K Free: 94705K (28%)
-1 ms. Memory: 332800K Free: 94705K (28%)
-3 ms. Memory: 332800K Free: 93476K (28%)
-1 ms. Memory: 332800K Free: 92247K (28%)
-32 ms. Memory: 332800K Free: 92247K (28%)
+3 ms. Memory: 331264K Free: 108321K (33%)
+5 ms. Memory: 331264K Free: 107345K (32%)
+3 ms. Memory: 331264K Free: 106368K (32%)
+8 ms. Memory: 331264K Free: 105391K (32%)
+3 ms. Memory: 331264K Free: 105391K (32%)
+2 ms. Memory: 331264K Free: 104414K (32%)
+3 ms. Memory: 331264K Free: 103437K (31%)
+3 ms. Memory: 331264K Free: 102460K (31%)
+5 ms. Memory: 331264K Free: 101483K (31%)
+11 ms. Memory: 331264K Free: 100490K (30%)
+59 ms. Memory: 331264K Free: 100490K (30%)
 reloadAllAccessors: .ModelReference
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml
-1 ms. Memory: 332800K Free: 85519K (26%)
-5 ms. Memory: 332800K Free: 85519K (26%)
-1 ms. Memory: 332800K Free: 84290K (25%)
-1 ms. Memory: 332800K Free: 83061K (25%)
-1 ms. Memory: 332800K Free: 83061K (25%)
-5 ms. Memory: 332800K Free: 81832K (25%)
-2 ms. Memory: 332800K Free: 80620K (24%)
-1 ms. Memory: 332800K Free: 80620K (24%)
-1 ms. Memory: 332800K Free: 322445K (97%)
-2 ms. Memory: 332800K Free: 321745K (97%)
-52 ms. Memory: 332800K Free: 321745K (97%)
+3 ms. Memory: 331264K Free: 95030K (29%)
+2 ms. Memory: 331264K Free: 94053K (28%)
+3 ms. Memory: 331264K Free: 93076K (28%)
+2 ms. Memory: 331264K Free: 92099K (28%)
+3 ms. Memory: 331264K Free: 92099K (28%)
+5 ms. Memory: 331264K Free: 91122K (28%)
+2 ms. Memory: 331264K Free: 90145K (27%)
+2 ms. Memory: 331264K Free: 89168K (27%)
+2 ms. Memory: 331264K Free: 88192K (27%)
+3 ms. Memory: 331264K Free: 87215K (26%)
+38 ms. Memory: 331264K Free: 87215K (26%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml
-18 ms. Memory: 332800K Free: 317186K (95%)
-1 ms. Memory: 332800K Free: 316547K (95%)
-2 ms. Memory: 332800K Free: 315270K (95%)
-1 ms. Memory: 332800K Free: 314615K (95%)
-6 ms. Memory: 332800K Free: 313976K (94%)
-2 ms. Memory: 332800K Free: 313337K (94%)
-1 ms. Memory: 332800K Free: 312060K (94%)
-1 ms. Memory: 332800K Free: 311421K (94%)
-1 ms. Memory: 332800K Free: 310783K (93%)
-1 ms. Memory: 332800K Free: 309505K (93%)
-55 ms. Memory: 332800K Free: 309505K (93%)
+3 ms. Memory: 331264K Free: 85229K (26%)
+2 ms. Memory: 331264K Free: 84252K (25%)
+3 ms. Memory: 331264K Free: 84252K (25%)
+3 ms. Memory: 331264K Free: 83275K (25%)
+3 ms. Memory: 331264K Free: 82298K (25%)
+3 ms. Memory: 331264K Free: 81321K (25%)
+2 ms. Memory: 331264K Free: 80344K (24%)
+2 ms. Memory: 331264K Free: 79352K (24%)
+3 ms. Memory: 331264K Free: 78491K (24%)
+1 ms. Memory: 331264K Free: 78491K (24%)
+44 ms. Memory: 331264K Free: 78491K (24%)
 reloadAllAccessors: .ModelReference3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml
-1 ms. Memory: 332800K Free: 302944K (91%)
-2 ms. Memory: 332800K Free: 301715K (91%)
-5 ms. Memory: 332800K Free: 299257K (90%)
-1 ms. Memory: 332800K Free: 298028K (90%)
-3 ms. Memory: 332800K Free: 296799K (89%)
-2 ms. Memory: 332800K Free: 295571K (89%)
-1 ms. Memory: 332800K Free: 294342K (88%)
-4 ms. Memory: 332800K Free: 293113K (88%)
-2 ms. Memory: 332800K Free: 290655K (87%)
-2 ms. Memory: 332800K Free: 289426K (87%)
-10021 ms. Memory: 332800K Free: 289426K (87%)
+2 ms. Memory: 332800K Free: 314705K (95%)
+4 ms. Memory: 332800K Free: 313484K (94%)
+10 ms. Memory: 332800K Free: 310841K (93%)
+14 ms. Memory: 332800K Free: 309619K (93%)
+3 ms. Memory: 332800K Free: 308398K (93%)
+8 ms. Memory: 332800K Free: 307177K (92%)
+3 ms. Memory: 332800K Free: 305956K (92%)
+2 ms. Memory: 332800K Free: 304735K (92%)
+2 ms. Memory: 332800K Free: 302277K (91%)
+3 ms. Memory: 332800K Free: 301056K (90%)
+10034 ms. Memory: 332800K Free: 301056K (90%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml
-2 ms. Memory: 332800K Free: 288197K (87%)
-2 ms. Memory: 332800K Free: 286969K (86%)
-1 ms. Memory: 332800K Free: 284495K (85%)
-10 ms. Memory: 332800K Free: 283266K (85%)
-1 ms. Memory: 332800K Free: 282037K (85%)
-2 ms. Memory: 332800K Free: 280809K (84%)
-9 ms. Memory: 332800K Free: 279580K (84%)
-1 ms. Memory: 332800K Free: 278351K (84%)
-1 ms. Memory: 332800K Free: 275877K (83%)
-1 ms. Memory: 332800K Free: 274649K (83%)
-10040 ms. Memory: 332800K Free: 274649K (83%)
+3 ms. Memory: 332800K Free: 298858K (90%)
+9 ms. Memory: 332800K Free: 297637K (89%)
+6 ms. Memory: 332800K Free: 296415K (89%)
+2 ms. Memory: 332800K Free: 294209K (88%)
+1 ms. Memory: 332800K Free: 292988K (88%)
+3 ms. Memory: 332800K Free: 291767K (88%)
+4 ms. Memory: 332800K Free: 290546K (87%)
+2 ms. Memory: 332800K Free: 288332K (87%)
+4 ms. Memory: 332800K Free: 287111K (86%)
+4 ms. Memory: 332800K Free: 285890K (86%)
+10024 ms. Memory: 332800K Free: 285890K (86%)
 reloadAllAccessors: .ModelReference4
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml
-27 ms. Memory: 332800K Free: 258120K (78%)
+21 ms. Memory: 332800K Free: 269519K (81%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml
-13 ms. Memory: 332800K Free: 253165K (76%)
+19 ms. Memory: 332800K Free: 264586K (80%)
 reloadAllAccessors: .MultiInstanceComposite
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml
-15 ms. Memory: 332800K Free: 239150K (72%)
+18 ms. Memory: 332800K Free: 250649K (75%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml
-5 ms. Memory: 332800K Free: 236660K (71%)
+12 ms. Memory: 332800K Free: 248183K (75%)
 reloadAllAccessors: .MultiInstanceComposite2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml
-10027 ms. Memory: 332800K Free: 222660K (67%)
+10033 ms. Memory: 332800K Free: 235491K (71%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml
-10028 ms. Memory: 332800K Free: 218974K (66%)
+10050 ms. Memory: 332800K Free: 230599K (69%)
 reloadAllAccessors: .MulticoreExecution
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml
-920 ms. Memory: 332800K Free: 207448K (62%)
+919 ms. Memory: 332800K Free: 219152K (66%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml
-914 ms. Memory: 332800K Free: 203754K (61%)
+925 ms. Memory: 332800K Free: 215488K (65%)
 reloadAllAccessors: .ParallelExecution
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml
-5 ms. Memory: 332800K Free: 195096K (59%)
+15 ms. Memory: 332800K Free: 206484K (62%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml
-4 ms. Memory: 332800K Free: 192630K (58%)
+13 ms. Memory: 332800K Free: 204018K (61%)
 reloadAllAccessors: .RunCompositeActor
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml
-4 ms. Memory: 332800K Free: 184824K (56%)
+9 ms. Memory: 332800K Free: 196651K (59%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml
-3 ms. Memory: 332800K Free: 183595K (55%)
+2 ms. Memory: 332800K Free: 195422K (59%)
 reloadAllAccessors: .RunCompositeActor2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml
-2 ms. Memory: 332800K Free: 177001K (53%)
+5 ms. Memory: 332800K Free: 188883K (57%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml
-1 ms. Memory: 332800K Free: 175756K (53%)
+3 ms. Memory: 332800K Free: 187646K (56%)
 reloadAllAccessors: .RunCompositeActor3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor4.xml
-7 ms. Memory: 332800K Free: 166697K (50%)
+12 ms. Memory: 332800K Free: 178634K (54%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor4.xml
-6 ms. Memory: 332800K Free: 162994K (49%)
+12 ms. Memory: 332800K Free: 174930K (53%)
 reloadAllAccessors: .RunCompositeActor4
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml
-4 ms. Memory: 332800K Free: 156432K (47%)
+5 ms. Memory: 332800K Free: 168392K (51%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml
-3 ms. Memory: 332800K Free: 155187K (47%)
+4 ms. Memory: 332800K Free: 167155K (50%)
 reloadAllAccessors: .RunCompositeIterateOverArray
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml
-1671 ms. Memory: 547328K Free: 191560K (35%)
+3205 ms. Memory: 549376K Free: 185698K (34%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml
-1649 ms. Memory: 582656K Free: 508148K (87%)
+2501 ms. Memory: 551424K Free: 436388K (79%)
 reloadAllAccessors: .ThreadedJS
 ]]></system-out>
   <system-err><![CDATA[java.lang.RuntimeException: Execution failed
