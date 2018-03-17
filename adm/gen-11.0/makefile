@@ -223,10 +223,10 @@ release_terra_linux:
 
 
 release_terra_jenkins_setup:
-	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup
+	$(MAKE) PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup
 
 release_terra_jenkins_test_capecode_setup:
-	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup test_capecode_setup
+	$(MAKE) PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup test_capecode_setup
 
 
 release_terra_remote4_test:
@@ -2049,90 +2049,90 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 
 # Commands run by hudson by hand.  See $PTII/adm/test/Release.tcl and Nightly.tcl and NightlyInstall.tcl for what really gets run.
 hudson: 
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup updateDOPCenterImage update_moog coverity
 
 hudson_mac:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	setup_mac_jar
 
 hudson_notest: 
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup update_moog
 
 hudson_ptiny.exe:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	ptiny.exe
 
 hudson_setup:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup update_moog
 
 hudson_setup_only:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup
 
 hudson_setup_test:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup update_moog
 hudson_start: 
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup_start
 
 hudson_test_setup:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	test_setup
 
 hudson_jar_dist:
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	dist_jar_dist
 
 hudson_ant: 
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	test_setup_ant
 
 hudson_dist: 
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup updateDOPCenterImage update_moog 
 
 hudson_update_moog: 
-	$(MAKE) -k USER=hudson \
+	$(MAKE) -k  \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
