@@ -1,1 +1,5 @@
+title: Ptolemy II CI: Downloads, Builds, Docs and Tests
+description: Ptolemy continuous integration.
+show_downloads: true
+google_analytics:
 theme: jekyll-theme-slate
