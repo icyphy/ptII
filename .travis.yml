@@ -43,7 +43,7 @@ install:
   - sudo apt-get install -y p7zip-full
 
   # Get pdflatex for the DOP Center image.
-  - sudo apt-get apt install -y texlive-latex-base
+  - sudo apt-get install -y texlive-latex-base
 
   # libv4l is needed by Bridj for the camera
   -  sudo apt-get install -y libv4l-dev
