@@ -82,14 +82,14 @@ puts "This test (NightlyInstallTest.tcl) should be run after Nightly.tcl"
 
 test NightlyInstall-1.0 {test_setup_start: build the installer and unjar the installer} {
     puts "To run this test by hand, log in to terra as jenkins"
-    puts "and run: cd $gendir; nohup make USER=jenkins PTIIHOME=$PTII PTIIADM=$PTII/adm JAR=/usr/bin/jar test_setup_start"
+    puts "and run: cd $gendir; nohup make PTIIHOME=$PTII PTIIADM=$PTII/adm JAR=/usr/bin/jar test_setup_start"
     set matches [nightlyMake test_setup_start {.*\*\*\*.*|^Failed: [1-9].*}]
     list $matches
 } {{}}
 
 test NightlyInstall-2.0 {test_setup_make_fast_install: Build using make fast install} {
     puts "To run this test by hand, log in to sisyphus as hudson"
-    puts "and run: cd $gendir; nohup make USER=hudson PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar test_setup_make_fast_install"
+    puts "and run: cd $gendir; nohup make PTIIHOME=$PTII PTIIADM=$PTII JAR=/usr/bin/jar test_setup_make_fast_install"
     set matches [nightlyMake test_setup_make_fast_install {.*\*\*\*.*|^Failed: [1-9].*}]
     list $matches
 } {{}}
