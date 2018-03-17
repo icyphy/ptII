@@ -14,7 +14,6 @@ Below are instructions for accessing the current development version of Ptolemy 
  * [Downloads](downloads/index.html)
  * [Logs](logs/index.html)
  * [Reports](reports/index.html)
-* [Wiki](https://wiki.eecs.berkeley.edu/ptexternal)
 
 
 # How to get Ptolemy II source code
