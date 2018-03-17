@@ -41,6 +41,10 @@ install:
   # Shorter running installations first.
   # Get 7z for installing jogl as part of the installers.
   - sudo apt-get install -y p7zip-full
+
+  # Get pdflatex for the DOP Center image.
+  - sudo apt-get apt install -y texlive-latex-base
+
   # libv4l is needed by Bridj for the camera
   -  sudo apt-get install -y libv4l-dev
 
