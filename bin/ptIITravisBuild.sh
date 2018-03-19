@@ -26,8 +26,11 @@ fi
 # Number of seconds to run the subprocess.  Can't be more than 50
 # minutes or 3000 seconds.  We can't use Travis' timeout feature
 # because we want to copy the output to gh-pages.
-# 45 minutes is cutting it a bit close, so we go with 40 minutes.
-TIMEOUT=2400
+# We have timeouts at 30, 35 and 40 minutes to avoid Git conflicts between any two builds.
+TIMEOUT1=1800
+TIMEOUT2=2100
+# 45 minutes is cutting it a bit close, so we go with 40 minutes for
+TIMEOUT3=2400
 
 # This shell procedure copies the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
@@ -97,6 +100,7 @@ updateGhPages () {
     git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git pull
     git push origin gh-pages
+    git push -f origin gh-pages
 
     cd $lastwd
     rm -rf $TMP
@@ -135,7 +139,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout $TIMEOUT ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    timeout $TIMEOUT1 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -152,7 +156,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout $TIMEOUT ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout $TIMEOUT2 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $PTII/logs/test.capecode.xml.txt
@@ -165,7 +169,7 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     LOG=$PTII/logs/test.report.short.txt
     echo "$0: Output will appear in $LOG"
-    timeout $TIMEOUT ant build test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout $TIMEOUT3 ant build test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
