@@ -91,8 +91,12 @@ updateGhPages () {
     set -x
 
     git add -f .
+    date
+    git pull
+    date
     git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
-    git push -fq origin gh-pages
+    git pull
+    git push origin gh-pages
 
     cd $lastwd
     rm -rf $TMP
