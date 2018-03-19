@@ -94,7 +94,7 @@ test coverity-1.0 {coverity} {
     list $matches
 } {{****************************************************
 ****************************************************
-}}
+}} {Need to set up Coverity Scan, see https://docs.travis-ci.com/user/coverity-scan/}
 
 set VERBOSE 0
 cd $startingDirectory
