@@ -37,6 +37,7 @@ install:
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
   - ls -l $PTII/logs
+  - find $PTII -type f | xargs grep hudson
   
   # Shorter running installations first.
   # Get 7z for installing jogl as part of the installers.
