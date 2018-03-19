@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-6e245d9d-3199-4d0c-9c64-6415ebe86df4" name="ptolemy.actor.lib.fmi.test.junit.JUnitTclTest" skipped="0" tests="63" time="29.921" timestamp="2018-03-17T15:41:30">
+<testsuite errors="0" failures="0" hostname="travis-job-ecc89b14-0d75-409d-a24e-f762d197584f" name="ptolemy.actor.lib.fmi.test.junit.JUnitTclTest" skipped="0" tests="63" time="30.465" timestamp="2018-03-19T22:44:14">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -7,7 +7,7 @@
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
     <property name="env.CACHE_NAME" value="PTIICACHE1" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="98.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="101.5" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
     <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 38230 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.3 40530 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -48,7 +48,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 38230 10.20.0.43 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.3 40530 10.20.0.198 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -65,12 +65,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.fmi.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.fmi.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1858759188788425742.properties propsfile=/home/travis/build/icyphy/ptII/junit2185077792542992468.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.fmi.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.fmi.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher503434177264994121.properties propsfile=/home/travis/build/icyphy/ptII/junit464205897256650184.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="dbbe6f9bba3e...e5e7d7c55af2" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="dca0a98b7f19...88d8b3301cc2" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="98" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="101" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="354740877" />
+    <property name="env.TRAVIS_BUILD_ID" value="355598008" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="e5e7d7c55af2c472cbb7aac582f04f00e6856318" />
+    <property name="env.TRAVIS_COMMIT" value="88d8b3301cc22ee895c9639189a8c26d2ffe826c" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -165,7 +165,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Look for USER in adm/test/*." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Updating for git" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test" />
@@ -202,7 +202,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="354740882" />
+    <property name="env.TRAVIS_JOB_ID" value="355598017" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -220,71 +220,71 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUImport.tcl (RunTclFile)" time="2.629" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUQSS.tcl (RunTclFile)" time="0.055" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/knownFailedTests/FMUContinuousInc20.xml (RunModel)" time="0.223" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml (RunModel)" time="2.35" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml (RunModel)" time="1.276" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml (RunModel)" time="3.405" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml (RunModel)" time="0.236" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml (RunModel)" time="2.139" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml (RunModel)" time="0.433" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml (RunModel)" time="1.258" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml (RunModel)" time="1.476" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml (RunModel)" time="0.299" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml (RunModel)" time="0.208" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml (RunModel)" time="0.226" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml (RunModel)" time="0.256" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml (RunModel)" time="0.813" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml (RunModel)" time="0.138" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml (RunModel)" time="0.96" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml (RunModel)" time="0.928" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml (RunModel)" time="0.664" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml (RunModel)" time="0.312" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml (RunModel)" time="0.303" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUImport.tcl (RunTclFile)" time="2.795" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUQSS.tcl (RunTclFile)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/knownFailedTests/FMUContinuousInc20.xml (RunModel)" time="0.204" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml (RunModel)" time="2.395" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml (RunModel)" time="1.228" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml (RunModel)" time="3.571" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml (RunModel)" time="0.204" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml (RunModel)" time="2.099" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml (RunModel)" time="0.414" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml (RunModel)" time="1.161" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml (RunModel)" time="1.632" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml (RunModel)" time="0.264" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml (RunModel)" time="0.19" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml (RunModel)" time="0.221" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml (RunModel)" time="0.376" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml (RunModel)" time="0.904" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml (RunModel)" time="0.166" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml (RunModel)" time="0.939" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml (RunModel)" time="0.97" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml (RunModel)" time="0.799" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml (RunModel)" time="0.302" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml (RunModel)" time="0.324" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml (RunModel)" time="0.043" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml (RunModel)" time="0.125" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml (RunModel)" time="0.052" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml (RunModel)" time="0.056" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml (RunModel)" time="0.2" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml (RunModel)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml (RunModel)" time="0.092" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml (RunModel)" time="0.019" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml (RunModel)" time="0.026" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml (RunModel)" time="0.037" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml (RunModel)" time="0.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml (RunModel)" time="0.127" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml (RunModel)" time="0.181" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml (RunModel)" time="0.019" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml (RunModel)" time="0.021" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml (RunModel)" time="0.062" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml (RunModel)" time="0.144" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml (RunModel)" time="4.261" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml (RunModel)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml (RunModel)" time="0.455" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml (RunModel)" time="0.044" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml (RunModel)" time="0.109" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml (RunModel)" time="0.109" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml (RunModel)" time="0.121" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml (RunModel)" time="0.026" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml (RunModel)" time="0.053" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml (RunModel)" time="0.053" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml (RunModel)" time="0.151" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml (RunModel)" time="0.116" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml (RunModel)" time="0.084" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml (RunModel)" time="0.682" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml (RunModel)" time="0.109" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml (RunModel)" time="0.14" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml (RunModel)" time="0.053" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml (RunModel)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml (RunModel)" time="0.049" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml (RunModel)" time="1.329" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml (RunModel)" time="4.452" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml (RunModel)" time="0.434" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml (RunModel)" time="0.047" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml (RunModel)" time="0.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml (RunModel)" time="0.12" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml (RunModel)" time="0.121" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml (RunModel)" time="0.099" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml (RunModel)" time="0.057" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml (RunModel)" time="0.158" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml (RunModel)" time="0.119" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml (RunModel)" time="0.098" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml (RunModel)" time="0.435" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml (RunModel)" time="0.064" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml (RunModel)" time="0.158" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml (RunModel)" time="0.021" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml (RunModel)" time="0.122" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml (RunModel)" time="1.193" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml (RunModel)" time="0.041" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUImport.tcl
-testDefs.tcl: setting time out to 9000 seconds at Sat Mar 17 15:41:30 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Mon Mar 19 22:44:14 UTC 2018
 .top.ballDynamics
 FMUImport.tcl: auto/tankOpen.fmu is to be imported as a modelExchange fmu.
 .top.tankOpen
@@ -397,572 +397,572 @@ FMUImport.tcl: auto/vanDerPolME1.fmu is to be imported as a modelExchange fmu.
 .top.CheckEqualityFP
 .top.bouncingBall20RC
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUQSS.tcl
-03/17/18 03:41:32
+03/19/18 10:44:17
 Failed: 0  Total Tests: 80  ((Passed: 80, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/knownFailedTests/FMUContinuousInc20.xml
-153 ms. Memory: 146944K Free: 95951K (65%)
+132 ms. Memory: 146944K Free: 96030K (65%)
 Known Failure: java.lang.reflect.InvocationTargetException
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml
  Number of steps: 1811
   stateEvents: 3
   stepEvents: 0
   timeEvents: 0
-1486 ms. Memory: 208896K Free: 160983K (77%)
+1544 ms. Memory: 208896K Free: 160939K (77%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml
  Number of steps: 1811
   stateEvents: 3
   stepEvents: 0
   timeEvents: 0
-695 ms. Memory: 208896K Free: 119439K (57%)
+646 ms. Memory: 208896K Free: 119461K (57%)
 reloadAllAccessors: .FMUQSSAirOulet1_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml
  Number of steps: 1811
   stateEvents: 3
   stepEvents: 0
   timeEvents: 0
-673 ms. Memory: 209920K Free: 180774K (86%)
+685 ms. Memory: 209920K Free: 180866K (86%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml
  Number of steps: 1811
   stateEvents: 3
   stepEvents: 0
   timeEvents: 0
-497 ms. Memory: 209920K Free: 139550K (66%)
+438 ms. Memory: 209920K Free: 140128K (67%)
 reloadAllAccessors: .FMUQSSAirToOulet1_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml
  Number of steps: 9936
   stateEvents: 1
   stepEvents: 0
   timeEvents: 8
-1878 ms. Memory: 334336K Free: 161656K (48%)
+1639 ms. Memory: 334336K Free: 164423K (49%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml
  Number of steps: 9936
   stateEvents: 1
   stepEvents: 0
   timeEvents: 8
-1415 ms. Memory: 336384K Free: 189256K (56%)
+1836 ms. Memory: 336384K Free: 188848K (56%)
 reloadAllAccessors: .FMUQSSAirToOulet2_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml
  Number of steps: 295
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-80 ms. Memory: 336384K Free: 174140K (52%)
+71 ms. Memory: 336384K Free: 172532K (51%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml
  Number of steps: 295
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-68 ms. Memory: 336384K Free: 165682K (49%)
+60 ms. Memory: 336384K Free: 165282K (49%)
 reloadAllAccessors: .FMUQSSStateEvent1_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml
  Number of steps: 6179
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-1203 ms. Memory: 484864K Free: 413801K (85%)
+1101 ms. Memory: 484864K Free: 416512K (86%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml
  Number of steps: 6179
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-891 ms. Memory: 484864K Free: 285020K (59%)
+966 ms. Memory: 484864K Free: 288739K (60%)
 reloadAllAccessors: .FMUQSSStateEvent1_QSS2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml
  Number of steps: 1067
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-212 ms. Memory: 484864K Free: 254374K (52%)
+204 ms. Memory: 484864K Free: 258102K (53%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml
  Number of steps: 1067
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-173 ms. Memory: 484864K Free: 231303K (48%)
+166 ms. Memory: 484864K Free: 235031K (48%)
 reloadAllAccessors: .FMUQSSStateEvent1_QSS3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml
  Number of steps: 3368
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-589 ms. Memory: 484864K Free: 146701K (30%)
+571 ms. Memory: 484864K Free: 150437K (31%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml
  Number of steps: 3368
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-585 ms. Memory: 484864K Free: 69797K (14%)
+513 ms. Memory: 484864K Free: 73533K (15%)
 reloadAllAccessors: .FMUQSSStateEvent2_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml
  Number of steps: 2499
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-638 ms. Memory: 487424K Free: 335847K (69%)
+661 ms. Memory: 487424K Free: 338946K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml
  Number of steps: 2499
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-497 ms. Memory: 487424K Free: 253294K (52%)
+565 ms. Memory: 487424K Free: 256601K (53%)
 reloadAllAccessors: .FMUQSSStateEvent2_QSS2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml
  Number of steps: 707
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-123 ms. Memory: 487424K Free: 229031K (47%)
+106 ms. Memory: 487424K Free: 232360K (48%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml
  Number of steps: 707
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-116 ms. Memory: 487424K Free: 213650K (44%)
+84 ms. Memory: 487424K Free: 216979K (45%)
 reloadAllAccessors: .FMUQSSStateEvent4_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml
  Number of steps: 528
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-90 ms. Memory: 487424K Free: 194392K (40%)
+92 ms. Memory: 487424K Free: 197753K (41%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml
  Number of steps: 528
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-84 ms. Memory: 487424K Free: 182857K (38%)
+66 ms. Memory: 487424K Free: 186217K (38%)
 reloadAllAccessors: .FMUQSSStateEvent4_QSS2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml
  Number of steps: 546
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-96 ms. Memory: 487424K Free: 163599K (34%)
+95 ms. Memory: 487424K Free: 166975K (34%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml
  Number of steps: 546
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-91 ms. Memory: 487424K Free: 152063K (31%)
+86 ms. Memory: 487424K Free: 155440K (32%)
 reloadAllAccessors: .FMUQSSStateEvent4_QSS3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml
  Number of steps: 991
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-102 ms. Memory: 487424K Free: 123208K (25%)
+153 ms. Memory: 487424K Free: 126585K (26%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml
  Number of steps: 991
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-88 ms. Memory: 487424K Free: 100137K (21%)
+161 ms. Memory: 487424K Free: 103514K (21%)
 reloadAllAccessors: .FMUQSSStateEvent5_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml
  Number of steps: 3082
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-507 ms. Memory: 680960K Free: 596965K (88%)
+594 ms. Memory: 681472K Free: 600299K (88%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml
  Number of steps: 3082
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-266 ms. Memory: 680960K Free: 530103K (78%)
+272 ms. Memory: 681472K Free: 533435K (78%)
 reloadAllAccessors: .FMUQSSStateEvent5_QSS2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml
  Number of steps: 416
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-65 ms. Memory: 680960K Free: 511756K (75%)
+82 ms. Memory: 681472K Free: 515092K (76%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml
  Number of steps: 416
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-50 ms. Memory: 680960K Free: 503185K (74%)
+60 ms. Memory: 681472K Free: 503664K (74%)
 reloadAllAccessors: .FMUQSSStateEvent5_QSS3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml
  Number of steps: 4328
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-502 ms. Memory: 680960K Free: 397476K (58%)
+490 ms. Memory: 681472K Free: 397939K (58%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml
  Number of steps: 4328
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-392 ms. Memory: 680960K Free: 300338K (44%)
+386 ms. Memory: 681472K Free: 300801K (44%)
 reloadAllAccessors: .FMUQSSStateEvent6_QSS1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml
  Number of steps: 2682
   stateEvents: 9
   stepEvents: 0
   timeEvents: 0
-418 ms. Memory: 680960K Free: 186026K (27%)
+483 ms. Memory: 681472K Free: 186490K (27%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml
  Number of steps: 2682
   stateEvents: 9
   stepEvents: 0
   timeEvents: 0
-386 ms. Memory: 680960K Free: 100316K (15%)
+384 ms. Memory: 681472K Free: 100780K (15%)
 reloadAllAccessors: .FMUQSSStateEvent6_QSS2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml
-205 ms. Memory: 680960K Free: 50290K (7%)
+245 ms. Memory: 681472K Free: 50089K (7%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml
-297 ms. Memory: 685568K Free: 606319K (88%)
+324 ms. Memory: 685568K Free: 606196K (88%)
 reloadAllAccessors: .FMU30Inc
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml
-118 ms. Memory: 685568K Free: 590321K (86%)
+144 ms. Memory: 685568K Free: 591162K (86%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml
-97 ms. Memory: 685568K Free: 582702K (85%)
+95 ms. Memory: 685568K Free: 588305K (86%)
 reloadAllAccessors: .FMUBouncingBall
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml
-125 ms. Memory: 685568K Free: 563640K (82%)
+149 ms. Memory: 685568K Free: 568274K (83%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml
-72 ms. Memory: 685568K Free: 559831K (82%)
+82 ms. Memory: 685568K Free: 565417K (82%)
 reloadAllAccessors: .FMUBouncingBallME20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml
-14 ms. Memory: 685568K Free: 548387K (80%)
+7 ms. Memory: 685568K Free: 556830K (81%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml
-3 ms. Memory: 685568K Free: 548387K (80%)
+3 ms. Memory: 685568K Free: 556830K (81%)
 reloadAllAccessors: .FMUDQ
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml
-44 ms. Memory: 685568K Free: 532373K (78%)
+50 ms. Memory: 685568K Free: 544644K (79%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml
-23 ms. Memory: 685568K Free: 532373K (78%)
+22 ms. Memory: 685568K Free: 541787K (79%)
 reloadAllAccessors: .FMUDq20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml
-9 ms. Memory: 685568K Free: 520929K (76%)
+12 ms. Memory: 685568K Free: 530359K (77%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml
-6 ms. Memory: 685568K Free: 520929K (76%)
+4 ms. Memory: 685568K Free: 530359K (77%)
 reloadAllAccessors: .FMUDqME20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml
-15 ms. Memory: 685568K Free: 509501K (74%)
+10 ms. Memory: 685568K Free: 518923K (76%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml
-6 ms. Memory: 685568K Free: 505683K (74%)
+6 ms. Memory: 685568K Free: 516058K (75%)
 reloadAllAccessors: .FMUFourInputsFourOutputsME20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile7141530973541481002.tmp/binaries/linux64/heaterFlowResistance.so
+Attempting to build /tmp/FMUFile3254882900503510140.tmp/binaries/linux64/heaterFlowResistance.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so heaterFlowResistance.so
-make[1]: Entering directory `/tmp/FMUFile7141530973541481002.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile3254882900503510140.tmp/sources'
 echo `pwd`
-/tmp/FMUFile7141530973541481002.tmp/sources
+/tmp/FMUFile3254882900503510140.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  heaterFlowResistance.c -o heaterFlowResistance.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,heaterFlowResistance.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/heaterFlowResistance.so heaterFlowResistance.o 
 rm heaterFlowResistance.o
-make[1]: Leaving directory `/tmp/FMUFile7141530973541481002.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile3254882900503510140.tmp/sources'
 
-148 ms. Memory: 685568K Free: 480170K (70%)
+150 ms. Memory: 685568K Free: 492413K (72%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml
-6 ms. Memory: 685568K Free: 476361K (69%)
+5 ms. Memory: 685568K Free: 492413K (72%)
 reloadAllAccessors: .FMUHeaterFlowResistance
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml
-5 ms. Memory: 685568K Free: 468742K (68%)
+4 ms. Memory: 685568K Free: 486699K (71%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml
-2 ms. Memory: 685568K Free: 468742K (68%)
+2 ms. Memory: 685568K Free: 486699K (71%)
 reloadAllAccessors: .FMUHelloWorld
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile7646960830092529338.tmp/binaries/linux64/helloWorld.so
+Attempting to build /tmp/FMUFile6232214937563529824.tmp/binaries/linux64/helloWorld.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so helloWorld.so
-make[1]: Entering directory `/tmp/FMUFile7646960830092529338.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile6232214937563529824.tmp/sources'
 echo `pwd`
-/tmp/FMUFile7646960830092529338.tmp/sources
+/tmp/FMUFile6232214937563529824.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  helloWorld.c -o helloWorld.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,helloWorld.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/helloWorld.so helloWorld.o 
 rm helloWorld.o
-make[1]: Leaving directory `/tmp/FMUFile7646960830092529338.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile6232214937563529824.tmp/sources'
 
-79 ms. Memory: 685568K Free: 453505K (66%)
+73 ms. Memory: 685568K Free: 475271K (69%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml
-4 ms. Memory: 685568K Free: 453505K (66%)
+5 ms. Memory: 685568K Free: 472414K (69%)
 reloadAllAccessors: .FMUHelloWorldUnBuilt
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml
-4 ms. Memory: 685568K Free: 445141K (65%)
+6 ms. Memory: 685568K Free: 465958K (68%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml
-2 ms. Memory: 685568K Free: 445141K (65%)
+3 ms. Memory: 685568K Free: 463101K (68%)
 reloadAllAccessors: .FMUInc
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml
-9 ms. Memory: 685568K Free: 437523K (64%)
+12 ms. Memory: 685568K Free: 457387K (67%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml
-10 ms. Memory: 685568K Free: 437523K (64%)
+10 ms. Memory: 685568K Free: 454522K (66%)
 reloadAllAccessors: .FMUInc2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml
-6 ms. Memory: 685568K Free: 426095K (62%)
+5 ms. Memory: 685568K Free: 448808K (65%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml
-4 ms. Memory: 685568K Free: 426095K (62%)
+3 ms. Memory: 685568K Free: 445951K (65%)
 reloadAllAccessors: .FMUIncME1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml
-5 ms. Memory: 685568K Free: 417731K (61%)
+5 ms. Memory: 685568K Free: 439496K (64%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml
-3 ms. Memory: 685568K Free: 417731K (61%)
+3 ms. Memory: 685568K Free: 436623K (64%)
 reloadAllAccessors: .FMUIncME20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml
-12 ms. Memory: 685568K Free: 406287K (59%)
+9 ms. Memory: 685568K Free: 428036K (62%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml
-7 ms. Memory: 685568K Free: 406287K (59%)
+7 ms. Memory: 685568K Free: 428036K (62%)
 reloadAllAccessors: .FMUIncScale20RC1pt
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml
-23 ms. Memory: 685568K Free: 398669K (58%)
+28 ms. Memory: 685568K Free: 419449K (61%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml
-23 ms. Memory: 685568K Free: 394860K (58%)
+20 ms. Memory: 685568K Free: 419449K (61%)
 reloadAllAccessors: .FMULevelStairs
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile8076325681302523891.tmp/binaries/linux64/pumpConstantSpeed.so
+Attempting to build /tmp/FMUFile8334194205782252349.tmp/binaries/linux64/pumpConstantSpeed.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so pumpConstantSpeed.so
-make[1]: Entering directory `/tmp/FMUFile8076325681302523891.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile8334194205782252349.tmp/sources'
 echo `pwd`
-/tmp/FMUFile8076325681302523891.tmp/sources
+/tmp/FMUFile8334194205782252349.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  pumpConstantSpeed.c -o pumpConstantSpeed.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,pumpConstantSpeed.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/pumpConstantSpeed.so pumpConstantSpeed.o 
 rm pumpConstantSpeed.o
-make[1]: Leaving directory `/tmp/FMUFile8076325681302523891.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile8334194205782252349.tmp/sources'
 
-112 ms. Memory: 685568K Free: 375052K (55%)
+116 ms. Memory: 685568K Free: 401557K (59%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml
-6 ms. Memory: 685568K Free: 375052K (55%)
+7 ms. Memory: 685568K Free: 401557K (59%)
 reloadAllAccessors: .FMUPumpConstantSpeed
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile4386430037305497181.tmp/binaries/linux64/tankOpen.so
+Attempting to build /tmp/FMUFile3188648470362571847.tmp/binaries/linux64/tankOpen.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so tankOpen.so
-make[1]: Entering directory `/tmp/FMUFile4386430037305497181.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile3188648470362571847.tmp/sources'
 echo `pwd`
-/tmp/FMUFile4386430037305497181.tmp/sources
+/tmp/FMUFile3188648470362571847.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  tankOpen.c -o tankOpen.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,tankOpen.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/tankOpen.so tankOpen.o -lm
 rm tankOpen.o
-make[1]: Leaving directory `/tmp/FMUFile4386430037305497181.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile3188648470362571847.tmp/sources'
 
  Number of steps: 39894
   stateEvents: 0
   stepEvents: 0
   timeEvents: 0
-2732 ms. Memory: 685568K Free: 43618K (6%)
+2774 ms. Memory: 685568K Free: 75844K (11%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml
  Number of steps: 39894
   stateEvents: 0
   stepEvents: 0
   timeEvents: 0
-1471 ms. Memory: 668160K Free: 297231K (44%)
+1608 ms. Memory: 667136K Free: 328791K (49%)
 reloadAllAccessors: .FMUQSSTankOpen
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml
-5 ms. Memory: 668160K Free: 288393K (43%)
+5 ms. Memory: 667136K Free: 319999K (48%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml
-3 ms. Memory: 668160K Free: 288393K (43%)
+2 ms. Memory: 667136K Free: 319999K (48%)
 reloadAllAccessors: .FMUSDFBouncingBall
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml
-200 ms. Memory: 668160K Free: 246303K (37%)
+198 ms. Memory: 667136K Free: 277978K (42%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml
-170 ms. Memory: 668160K Free: 224143K (34%)
+157 ms. Memory: 667136K Free: 255859K (38%)
 reloadAllAccessors: .FMUSDFBouncingBall20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml
-16 ms. Memory: 668160K Free: 215817K (32%)
+13 ms. Memory: 667136K Free: 247564K (37%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml
-6 ms. Memory: 668160K Free: 213047K (32%)
+6 ms. Memory: 667136K Free: 244799K (37%)
 reloadAllAccessors: .FMUSDFBouncingBall20RC1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml
-6 ms. Memory: 668160K Free: 204222K (31%)
+8 ms. Memory: 667136K Free: 236008K (35%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml
-7 ms. Memory: 668160K Free: 204222K (31%)
+5 ms. Memory: 667136K Free: 236008K (35%)
 reloadAllAccessors: .FMUSDFInc20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml
-53 ms. Memory: 668160K Free: 195896K (29%)
+60 ms. Memory: 667136K Free: 227713K (34%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml
-40 ms. Memory: 668160K Free: 193126K (29%)
+45 ms. Memory: 667136K Free: 224948K (34%)
 reloadAllAccessors: .FMUStairs
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile1052911726263395416.tmp/binaries/linux64/stepCounter1.so
+Attempting to build /tmp/FMUFile1893895679072949564.tmp/binaries/linux64/stepCounter1.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter1.so
-make[1]: Entering directory `/tmp/FMUFile1052911726263395416.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile1893895679072949564.tmp/sources'
 echo `pwd`
-/tmp/FMUFile1052911726263395416.tmp/sources
+/tmp/FMUFile1893895679072949564.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounter1.c -o stepCounter1.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounter1.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounter1.so stepCounter1.o 
 rm stepCounter1.o
-make[1]: Leaving directory `/tmp/FMUFile1052911726263395416.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile1893895679072949564.tmp/sources'
 
-88 ms. Memory: 668160K Free: 175160K (26%)
+94 ms. Memory: 667136K Free: 210627K (32%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml
-3 ms. Memory: 668160K Free: 175160K (26%)
+2 ms. Memory: 667136K Free: 207033K (31%)
 reloadAllAccessors: .FMUStepCounter1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile3725256314573923511.tmp/binaries/linux64/stepCounter.so
+Attempting to build /tmp/FMUFile6035447396164555587.tmp/binaries/linux64/stepCounter.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter.so
-make[1]: Entering directory `/tmp/FMUFile3725256314573923511.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile6035447396164555587.tmp/sources'
 echo `pwd`
-/tmp/FMUFile3725256314573923511.tmp/sources
+/tmp/FMUFile6035447396164555587.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounter.c -o stepCounter.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounter.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounter.so stepCounter.o 
 rm stepCounter.o
-make[1]: Leaving directory `/tmp/FMUFile3725256314573923511.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile6035447396164555587.tmp/sources'
 
-100 ms. Memory: 668160K Free: 161294K (24%)
+74 ms. Memory: 667136K Free: 193193K (29%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml
-3 ms. Memory: 668160K Free: 161294K (24%)
+4 ms. Memory: 667136K Free: 193193K (29%)
 reloadAllAccessors: .FMUStepCounter2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml
-4 ms. Memory: 668160K Free: 152476K (23%)
+3 ms. Memory: 667136K Free: 184386K (28%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml
-3 ms. Memory: 668160K Free: 152476K (23%)
+3 ms. Memory: 667136K Free: 184386K (28%)
 reloadAllAccessors: .FMUStepCounterContinuous
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml
-7 ms. Memory: 668160K Free: 144167K (22%)
+5 ms. Memory: 667136K Free: 176091K (26%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml
-3 ms. Memory: 668160K Free: 144167K (22%)
+7 ms. Memory: 667136K Free: 176091K (26%)
 reloadAllAccessors: .FMUStepCounterContinuous2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml
-7 ms. Memory: 668160K Free: 135341K (20%)
+15 ms. Memory: 667136K Free: 167284K (25%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml
-6 ms. Memory: 668160K Free: 135341K (20%)
+6 ms. Memory: 667136K Free: 167284K (25%)
 reloadAllAccessors: .FMUStepCounterContinuousTwoFMUs
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml
-14 ms. Memory: 668160K Free: 127031K (19%)
+13 ms. Memory: 667136K Free: 158990K (24%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml
-12 ms. Memory: 668160K Free: 124261K (19%)
+11 ms. Memory: 667136K Free: 156224K (23%)
 reloadAllAccessors: .FMUStepCounterContinuousTwoFMUs2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile3828335969965619597.tmp/binaries/linux64/stepCounterExtendedFMI.so
+Attempting to build /tmp/FMUFile5033517197704480614.tmp/binaries/linux64/stepCounterExtendedFMI.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounterExtendedFMI.so
-make[1]: Entering directory `/tmp/FMUFile3828335969965619597.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile5033517197704480614.tmp/sources'
 echo `pwd`
-/tmp/FMUFile3828335969965619597.tmp/sources
+/tmp/FMUFile5033517197704480614.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounterExtendedFMI.c -o stepCounterExtendedFMI.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounterExtendedFMI.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounterExtendedFMI.so stepCounterExtendedFMI.o 
 rm stepCounterExtendedFMI.o
-make[1]: Leaving directory `/tmp/FMUFile3828335969965619597.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile5033517197704480614.tmp/sources'
 
-120 ms. Memory: 668160K Free: 107110K (16%)
+115 ms. Memory: 667136K Free: 139107K (21%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml
-11 ms. Memory: 668160K Free: 107110K (16%)
+18 ms. Memory: 667136K Free: 139107K (21%)
 reloadAllAccessors: .FMUStepCounterExtendedFMI
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile5666383160941814940.tmp/binaries/linux64/stepCounterPeriodInName.so
+Attempting to build /tmp/FMUFile2268398020923161835.tmp/binaries/linux64/stepCounterPeriodInName.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounterPeriodInName.so
-make[1]: Entering directory `/tmp/FMUFile5666383160941814940.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile2268398020923161835.tmp/sources'
 echo `pwd`
-/tmp/FMUFile5666383160941814940.tmp/sources
+/tmp/FMUFile2268398020923161835.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounterPeriodInName.c -o stepCounterPeriodInName.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounterPeriodInName.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounterPeriodInName.so stepCounterPeriodInName.o 
 rm stepCounterPeriodInName.o
-make[1]: Leaving directory `/tmp/FMUFile5666383160941814940.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile2268398020923161835.tmp/sources'
 
-99 ms. Memory: 668160K Free: 93244K (14%)
+97 ms. Memory: 667136K Free: 125267K (19%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml
-5 ms. Memory: 668160K Free: 93244K (14%)
+5 ms. Memory: 667136K Free: 125267K (19%)
 reloadAllAccessors: .FMUStepCounterPeriodInNameContinuous2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml
-31 ms. Memory: 668160K Free: 78878K (12%)
+35 ms. Memory: 667136K Free: 110922K (17%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml
-24 ms. Memory: 668160K Free: 78878K (12%)
+35 ms. Memory: 667136K Free: 110922K (17%)
 reloadAllAccessors: .FMUTankOpen
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml
-333 ms. Memory: 676864K Free: 599682K (89%)
+129 ms. Memory: 667136K Free: 72150K (11%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml
-158 ms. Memory: 676864K Free: 593033K (88%)
+162 ms. Memory: 667136K Free: 66604K (10%)
 reloadAllAccessors: .FMUTwoBallCollision
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml
-14 ms. Memory: 676864K Free: 581570K (86%)
+11 ms. Memory: 667136K Free: 55040K (8%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml
-6 ms. Memory: 676864K Free: 581570K (86%)
+5 ms. Memory: 667136K Free: 55040K (8%)
 reloadAllAccessors: .FMUValues
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml
-10 ms. Memory: 676864K Free: 570130K (84%)
+17 ms. Memory: 667136K Free: 43965K (7%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml
-6 ms. Memory: 676864K Free: 567344K (84%)
+6 ms. Memory: 667136K Free: 42797K (6%)
 reloadAllAccessors: .FMUValues20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml
-40 ms. Memory: 676864K Free: 550349K (81%)
+60 ms. Memory: 676352K Free: 587568K (87%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml
-38 ms. Memory: 676864K Free: 547571K (81%)
+30 ms. Memory: 676352K Free: 582022K (86%)
 reloadAllAccessors: .FMUValuesME20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml
-7 ms. Memory: 676864K Free: 538894K (80%)
+4 ms. Memory: 676352K Free: 573355K (85%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml
-3 ms. Memory: 676864K Free: 538894K (80%)
+3 ms. Memory: 676352K Free: 573355K (85%)
 reloadAllAccessors: .FMUVanDerPol
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml
-65 ms. Memory: 676864K Free: 519472K (77%)
+42 ms. Memory: 676352K Free: 553628K (82%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml
-37 ms. Memory: 676864K Free: 513916K (76%)
+49 ms. Memory: 676352K Free: 548083K (81%)
 reloadAllAccessors: .FMUVanDerPol20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml
-14 ms. Memory: 676864K Free: 499699K (74%)
+11 ms. Memory: 676352K Free: 533886K (79%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml
-11 ms. Memory: 676864K Free: 499699K (74%)
+10 ms. Memory: 676352K Free: 533886K (79%)
 reloadAllAccessors: .FMUVanDerPolME20
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml
-4 ms. Memory: 676864K Free: 491021K (73%)
+4 ms. Memory: 676352K Free: 525591K (78%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml
-3 ms. Memory: 676864K Free: 491021K (73%)
+2 ms. Memory: 676352K Free: 525591K (78%)
 reloadAllAccessors: .FMUdq20RC1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml
-8 ms. Memory: 676864K Free: 479573K (71%)
+9 ms. Memory: 676352K Free: 514159K (76%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml
-8 ms. Memory: 676864K Free: 479573K (71%)
+9 ms. Memory: 676352K Free: 511395K (76%)
 reloadAllAccessors: .FMUvalues20RC1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml
-11 ms. Memory: 676864K Free: 470896K (70%)
+8 ms. Memory: 676352K Free: 502736K (74%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml
-6 ms. Memory: 676864K Free: 468118K (69%)
+5 ms. Memory: 676352K Free: 499955K (74%)
 reloadAllAccessors: .FMUvanDerPol20RC1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile6084600977937378879.tmp/binaries/linux64/Constant.so
+Attempting to build /tmp/FMUFile7416458417863268365.tmp/binaries/linux64/Constant.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Constant.so
-make[1]: Entering directory `/tmp/FMUFile6084600977937378879.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile7416458417863268365.tmp/sources'
 echo `pwd`
-/tmp/FMUFile6084600977937378879.tmp/sources
+/tmp/FMUFile7416458417863268365.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Constant.c -o Constant.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Constant.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Constant.so Constant.o 
 rm Constant.o
-make[1]: Leaving directory `/tmp/FMUFile6084600977937378879.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile7416458417863268365.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile2696757526347604124.tmp/binaries/linux64/Integrator.so
+Attempting to build /tmp/FMUFile8667065523205311227.tmp/binaries/linux64/Integrator.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Integrator.so
-make[1]: Entering directory `/tmp/FMUFile2696757526347604124.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile8667065523205311227.tmp/sources'
 echo `pwd`
-/tmp/FMUFile2696757526347604124.tmp/sources
+/tmp/FMUFile8667065523205311227.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Integrator.c -o Integrator.o
 Integrator.c: In function ‘fmi2HybridGetMaxStepSize’:
 Integrator.c:112:20: warning: unused variable ‘comp’ [-Wunused-variable]
@@ -976,58 +976,58 @@ fmuTemplate.c:992:12: warning: variable ‘prevState’ set but not used [-Wunus
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Integrator.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Integrator.so Integrator.o 
 rm Integrator.o
-make[1]: Leaving directory `/tmp/FMUFile2696757526347604124.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile8667065523205311227.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile377151772960699730.tmp/binaries/linux64/Adder.so
+Attempting to build /tmp/FMUFile62715596208925337.tmp/binaries/linux64/Adder.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Adder.so
-make[1]: Entering directory `/tmp/FMUFile377151772960699730.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile62715596208925337.tmp/sources'
 echo `pwd`
-/tmp/FMUFile377151772960699730.tmp/sources
+/tmp/FMUFile62715596208925337.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Adder.c -o Adder.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Adder.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Adder.so Adder.o 
 rm Adder.o
-make[1]: Leaving directory `/tmp/FMUFile377151772960699730.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile62715596208925337.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile6367540541573668191.tmp/binaries/linux64/ZeroCrossingDetector.so
+Attempting to build /tmp/FMUFile9125804827859225056.tmp/binaries/linux64/ZeroCrossingDetector.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so ZeroCrossingDetector.so
-make[1]: Entering directory `/tmp/FMUFile6367540541573668191.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile9125804827859225056.tmp/sources'
 echo `pwd`
-/tmp/FMUFile6367540541573668191.tmp/sources
+/tmp/FMUFile9125804827859225056.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  ZeroCrossingDetector.c -o ZeroCrossingDetector.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,ZeroCrossingDetector.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/ZeroCrossingDetector.so ZeroCrossingDetector.o 
 rm ZeroCrossingDetector.o
-make[1]: Leaving directory `/tmp/FMUFile6367540541573668191.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile9125804827859225056.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile2171139196778694262.tmp/binaries/linux64/Delay.so
+Attempting to build /tmp/FMUFile6483999456519164252.tmp/binaries/linux64/Delay.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Delay.so
-make[1]: Entering directory `/tmp/FMUFile2171139196778694262.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile6483999456519164252.tmp/sources'
 echo `pwd`
-/tmp/FMUFile2171139196778694262.tmp/sources
+/tmp/FMUFile6483999456519164252.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Delay.c -o Delay.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Delay.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Delay.so Delay.o 
 rm Delay.o
-make[1]: Leaving directory `/tmp/FMUFile2171139196778694262.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile6483999456519164252.tmp/sources'
 
-1254 ms. Memory: 676864K Free: 424196K (63%)
+1135 ms. Memory: 676352K Free: 455757K (67%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml
-37 ms. Memory: 676864K Free: 421426K (62%)
+29 ms. Memory: 676352K Free: 452992K (67%)
 reloadAllAccessors: .TestZeroDelayFeedback
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml
-5 ms. Memory: 676864K Free: 415534K (61%)
+5 ms. Memory: 676352K Free: 447462K (66%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml
-3 ms. Memory: 676864K Free: 412748K (61%)
+3 ms. Memory: 676352K Free: 444682K (66%)
 reloadAllAccessors: .helloWorldME2
 ]]></system-out>
   <system-err><![CDATA[java.lang.RuntimeException: Execution failed
