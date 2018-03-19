@@ -30,6 +30,11 @@ language: node_js
 node_js:
   - "7"
 
+# Need X11 to create the DOP Center map and for testing.
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
