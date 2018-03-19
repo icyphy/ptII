@@ -81,11 +81,19 @@ cd $gendir
 puts "This test (NightlyUpdate.tcl) should be run after NightlyTest.tcl"
 
 test nightly-1.6 {updateDOPCenterImage, which updates the pdf} {
+    global env
     file delete -force $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
     file delete -force $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf
     set start [list [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
 		   [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]]
-    set matches [nightlyMake updateDOPCenterImage]
+    set pass [file join [lindex [join [array get env {HOME}]] 1] {.spacecadet}]
+
+    # Only invoke the command to update the center image if ~/.spacecadet exists.
+    if [file exists $pass] {
+        set matches [nightlyMake updateDOPCenterImage]
+    } {
+        error "$pass does not exist, so we can't access the database."
+    }
     list $start $matches [file exists $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png] \
 	[file exists $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf]
 } {{0 0} {} 1 1}
