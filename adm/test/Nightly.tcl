@@ -81,6 +81,7 @@ set startingDirectory [pwd]
 cd $gendir
 
 test nightly-1.1 {clean} {
+    puts "adm/test/Nightly.tcl: about to clean"
     set matches [nightlyMake clean]
     list $matches [file exists $ptII_full]
 } {{} 0}
