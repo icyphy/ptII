@@ -43,6 +43,7 @@ proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
     $commands add "make -C $gendir PTIIHOME=${ptIIhome} PTIIADM=${ptIIadm} JAR=/usr/bin/jar TAR=/usr/local/bin/tar $target"
     $streamExec setCommands $commands
     $streamExec setPattern $pattern
+    puts "adm/test/nightlyMake.tcl: about to execute [$commands toString]"
     $streamExec start
     set returnCode [$streamExec getLastSubprocessReturnCode]
     if { $returnCode != 0 } {
