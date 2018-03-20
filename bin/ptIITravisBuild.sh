@@ -150,12 +150,14 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     echo "$0: Output will appear in $LOG"
     
     # Copy any jar files that may have previously been created so that the build is faster.
-    wget -O doc/codeDoc.jar https://icyphy.github.io/ptII/doc/codeDoc.jar 
-    wget -O doc/codeDocBcvtb.jar https://icyphy.github.io/ptII/doc/codeDocBcvtb.jar
-    wget -O doc/codeDocCapeCode.jar  https://icyphy.github.io/ptII/doc/codeDocCapeCode.jar
-    wget -O doc/codeDocHyVisual.jar https://icyphy.github.io/ptII/doc/codeDocHyVisual.jar
-    wget -O doc/codeDocViptos.jar https://icyphy.github.io/ptII/doc/codeDocViptos.jar
-    wget -O doc/codeDocVisualSense.jar  https://icyphy.github.io/ptII/doc/codeDocVisualSense.jar
+    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
+    for jar in $jars
+    do
+        echo $jar
+        wget -O $PTII/doc/$jar https://icyphy.github.io/ptII/doc/$jar
+        ls -l $PTII/doc/$jar
+        (cd $PTII; jar -xf $PTII/doc/$jar)
+    done
 
     # Number of seconds to run the subprocess.  Can't be more than 50
     # minutes or 3000 seconds.  45 minutes is cutting it a bit close,
