@@ -70,7 +70,6 @@ public class RestrictedJavaScriptInterface {
 
     /** Clear the interval with the specified handle, if it has not already executed.
      *  @param handle The interval handle.
-     *  @see #setInterval(Runnable, long)
      */
     public void clearInterval(Integer handle) {
         _actor.clearTimeout(handle);
@@ -78,7 +77,6 @@ public class RestrictedJavaScriptInterface {
 
     /** Clear the timeout with the specified handle, if it has not already executed.
      *  @param handle The timeout handle.
-     *  @see #setTimeout(Runnable, long)
      */
     public void clearTimeout(Integer handle) {
         _actor.clearTimeout(handle);
