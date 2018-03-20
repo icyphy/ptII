@@ -127,6 +127,7 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
     # Create the Javadoc jar files for use by the installer Note that
     # there is a chance that the installer will use javadoc jar files
     # that are slightly out of date.
+    ant docs
     (cd doc; make install)
     updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
