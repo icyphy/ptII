@@ -396,7 +396,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	@echo "L4J_DIR: $(L4J_DIR)"
 	mkdir -p $@
 	@echo "git pull in $(PTIIHOME)"
-	(cd $(PTIIHOME); git pull)
+	-(cd $(PTIIHOME); git pull)
 	@echo "git pull in $(PTIIHOME)/org/terraswarm/accessor/accessors/web"
 	(cd $(PTIIHOME)/org/terraswarm/accessor/accessors/web; git pull)
 	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
@@ -652,8 +652,17 @@ $(PTIIDIST)/jar_dist:
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
 	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; rm -rf bin/*.app; \
 		PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean all_packages install); \
-		echo "About to run ant jars"; \
+		if [ -f "`find $(PTII)/doc -name "codeDoc*.jar" -mtime -10 | head -1`" ]; then \
+			echo "Found $(PTII)/codeDoc*.jar files that are less than 10 days old.  Will use them instead of rerunning javadoc."; \
+			for jarfile in $(PTII)/doc/codeDoc*.jar; do \
+				echo "Unjaring $$jarfile"; \
+				$(JAR) -xf $$jarfile; \
+			done; \
+		else \
+			echo "About to rebuild javadocs: `date`"; \
+			(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean all_packages install); \
+		fi; \
+		echo "About to run ant jars: `date`"; \
 		ant jars; \
 		echo "Rebuild ptiny.exe so that vergil_l4j.jar gets built so that $(PTIIDIST)/jar_dist can use vergil_l4j.jar"; \
 		rm -rf $(PTIIDIST)/ptiny.exe; \
