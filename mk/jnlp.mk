@@ -1046,10 +1046,10 @@ $(KEYSTORE):
 	    if [ ! -d `dirname $(KEYSTORE)` ]; then \
 		echo "Creating `dirname $(KEYSTORE)` as root"; \
 		sudo -n mkdir -p `dirname $(KEYSTORE)`; \
-		sudo -n chown $(USER) `dirname $(KEYSTORE)`; \
+		sudo -n chown `dirname $(KEYSTORE)`; \
 	    fi; \
 	    if [ ! -d `dirname $(KEYSTORE)` ]; then \
-		echo "Hmm, $(KEYSTORE) still does not exist?"; \
+		echo "Hmm, `dirname $(KEYSTORE)` still does not exist?"; \
 	    fi; \
 	   "$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
@@ -1746,7 +1746,7 @@ $(HOME)/.certpw:
 	fi
 
 jnlp_dist_nightly: $(HOME)/.certpw
-	$(MAKE) STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
+	$(MAKE) STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=$(HOME)/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
 DIST_JAR=/home/www/ptweb/ptolemyII/ptII11.0/$(PTVERSION)
