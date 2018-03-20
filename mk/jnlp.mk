@@ -279,7 +279,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
-	$(OPENCV_JAR) \
+	lib/opencv-320.jar \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTSLF4J_API_JAR) \
 	$(PTSLF4J_SIMPLE_JAR) \
@@ -1730,15 +1730,15 @@ WEBSERVER_USER=$(USER)
 WEBSERVER=moog
 
 jnlp_dist_update:
-	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
-	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
-	-tar -cf - $(SIGNED_DIR) $(JNLPS) \
-		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
-	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
-	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
-	-ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
-	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
+	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
+	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	# -tar -cf - $(SIGNED_DIR) $(JNLPS) \
+	# 	$(OTHER_FILES_TO_BE_DISTED) | \
+	# 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
+	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
+	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
+	# scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 $(HOME)/.certpw:
 	if [ ! -f $@ ]; then \
