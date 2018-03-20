@@ -472,7 +472,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
 	- ls -l $(PTIIHOME)/vendors
 	- ls -l $(PTIIDIST)/vendors
-	- ls -l$(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
+	- ls -l $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
 	ln -s $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
 	-ls -l $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
 	#
@@ -653,11 +653,14 @@ $(PTIIDIST)/jar_dist:
 	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; rm -rf bin/*.app; \
 		PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
 		if [ -f "`find $(PTII)/doc -name "codeDoc*.jar" -mtime -10 | head -1`" ]; then \
-			echo "Found $(PTII)/codeDoc*.jar files that are less than 10 days old.  Will use them instead of rerunning javadoc."; \
+			echo "Found $(PTII)/codeDoc*.jar files that are less than 10 days old.  Will use unjar them in `pwd` instead of rerunning javadoc."; \
 			for jarfile in $(PTII)/doc/codeDoc*.jar; do \
-				echo "Unjaring $$jarfile"; \
-				$(JAR) -xf $$jarfile; \
+				echo "Unjaring $$jarfile in `pwd`"; \
+				$(JAR) -xvf $$jarfile; \
 			done; \
+			ls -l $(PTIIDIST); \
+			ls -l $(PTIIDIST)/doc; \
+			ls -l $(PTIIDIST)/doc/codeDoc; \
 		else \
 			echo "About to rebuild javadocs: `date`"; \
 			(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean all_packages install); \
@@ -3518,6 +3521,9 @@ $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanS
 	@echo "#"
 	@echo "# Now building target setup_jar (PTSETUP).jar: $@"
 	@echo "# `date`"
+	-ls -l $(PTIIDIST)
+	-ls -l $(PTIIDIST)/doc
+	-ls -l $(PTIIDIST)/doc/codeDoc
 	-ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
 	(cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
