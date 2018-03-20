@@ -9,6 +9,7 @@
 
 # To test, set the environment variable:
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
@@ -26,15 +27,23 @@ fi
 
 TIMEOUT_INSTALLERS=2400
 
-# This shell procedure copies the file or directory named by
+# Copy the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
 #   updateGhPages logs/installers.txt logs
 # will copy logs/installers.txt to logs in the gh-pages and push it.
+# If the last argument ends in a /, then a directory by that name is created.
 # The reason we need this is because the Travis deploy to gh-pages seems
 # to overwrite everything in the repo.
+# Usage:
+#   updateGhPages fileOrDirectory1 [fileOrDirectory2 ...] destinationDirectory
+#
 updateGhPages () {
+    length=$(($#-1))
+    sources=${@:1:$length}
+    destination=${@: -1}
+
     if [ -z "$GITHUB_TOKEN" ]; then
-        echo "$0: GITHUB_TOKEN was not set, so $1 will not be copied to $2 in the gh-pages repo."
+        echo "$0: GITHUB_TOKEN was not set, so $sources will not be copied to $destination in the gh-pages repo."
         return 
     fi
 
@@ -56,22 +65,24 @@ updateGhPages () {
 
     # Commit and Push the Changes
     cd gh-pages
-    echo "$2" | grep '.*/$'
+    echo "$destination" | grep '.*/$'
     status=$?
     if [ $status -eq 0 ]; then
-        if [ ! -d $2 ]; then
-            mkdir -p $2
-            echo "$0: Created $2 in [pwd]."
+        if [ ! -d $destination ]; then
+            mkdir -p $destination
+            echo "$0: Created $destination in [pwd]."
         fi
     fi        
 
-    cp -Rf $1 $2
+    cp -Rf $sources $destination
 
     # JUnit xml output will include the values of the environment,
     # which can include GITHUB_TOKEN, which is supposed to be secret.
     # So, we remove any lines checked in to gh-pages that mentions
     # GITHUB_TOKEN.
     echo "Remove any instances of GITHUB_TOKEN: "
+    date
+    # Don't echo GITHUB_TOKEN
     set +x
     files=`find . -type f`
     for file in $files
@@ -113,8 +124,11 @@ if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
 fi
 
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
-    ant javadoc jsdoc;
-    updateGhPages $PTII/doc/codeDoc doc
+    # Create the Javadoc jar files for use by the installer Note that
+    # there is a chance that the installer will use javadoc jar files
+    # that are slightly out of date.
+    (cd doc; make install)
+    updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
 # Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
@@ -133,6 +147,14 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
     
+    # Copy any jar files that may have previously been created so that the build is faster.
+    wget -O doc/codeDoc.jar https://icyphy.github.io/ptII/doc/codeDoc.jar 
+    wget -O doc/codeDocBcvtb.jar https://icyphy.github.io/ptII/doc/codeDocBcvtb.jar
+    wget -O doc/codeDocCapeCode.jar  https://icyphy.github.io/ptII/doc/codeDocCapeCode.jar
+    wget -O doc/codeDocHyVisual.jar https://icyphy.github.io/ptII/doc/codeDocHyVisual.jar
+    wget -O doc/codeDocViptos.jar https://icyphy.github.io/ptII/doc/codeDocViptos.jar
+    wget -O doc/codeDocVisualSense.jar  https://icyphy.github.io/ptII/doc/codeDocVisualSense.jar
+
     # Number of seconds to run the subprocess.  Can't be more than 50
     # minutes or 3000 seconds.  45 minutes is cutting it a bit close,
     # so we go with a maximum of 40 minutes or 2400 seconds.  We can't
