@@ -73,6 +73,8 @@
     
         cur['env.DEBIAN_FRONTEND'] = 'noninteractive';
     
+        cur['env.DISPLAY'] = ':99.0';
+    
         cur['env.ELIXIR_VERSION'] = '1.4.5';
     
         cur['env.GEM_HOME'] = '/home/travis/.rvm/gems/ruby-2.4.1';
@@ -186,9 +188,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 38230 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 45160 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 38230 10.20.0.43 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 45160 10.20.0.40 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +204,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '354740877';
+        cur['env.TRAVIS_BUILD_ID'] = '355627949';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '98';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '102';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'e5e7d7c55af2c472cbb7aac582f04f00e6856318';
+        cur['env.TRAVIS_COMMIT'] = '5ad56b3edfff6ca75714cf112b77932a21fb676a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Look for USER in adm/test/*.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Still updating docs.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'dbbe6f9bba3e...e5e7d7c55af2';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '88d8b3301cc2...5ad56b3edfff';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '354740882';
+        cur['env.TRAVIS_JOB_ID'] = '355627954';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '98.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '102.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +410,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6515955119016499356.properties propsfile=/home/travis/build/icyphy/ptII/junit1512984562317407297.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3241528080378847376.properties propsfile=/home/travis/build/icyphy/ptII/junit6556339420888254140.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -489,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="67_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="67_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>28.983</td><td>2018-03-17T15:46:34</td><td>travis-job-6e245d9d-3199-4d0c-9c64-6415ebe86df4</td>
+<td><a title="Display all tests" href="67_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="67_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>25.403</td><td>2018-03-20T00:15:04</td><td>travis-job-8a149e2a-87c5-465b-8c65-993ad6e93bbd</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -501,13 +503,13 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)</td><td>Success</td><td></td><td>28.887</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)</td><td>Success</td><td></td><td>25.329</td>
 </tr>
 </table>
 <div class="Properties">

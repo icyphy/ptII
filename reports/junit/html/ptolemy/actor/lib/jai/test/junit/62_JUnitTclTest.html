@@ -73,6 +73,8 @@
     
         cur['env.DEBIAN_FRONTEND'] = 'noninteractive';
     
+        cur['env.DISPLAY'] = ':99.0';
+    
         cur['env.ELIXIR_VERSION'] = '1.4.5';
     
         cur['env.GEM_HOME'] = '/home/travis/.rvm/gems/ruby-2.4.1';
@@ -186,9 +188,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.3 40530 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 45160 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.3 40530 10.20.0.198 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 45160 10.20.0.40 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +204,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '355598008';
+        cur['env.TRAVIS_BUILD_ID'] = '355627949';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '101';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '102';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '88d8b3301cc22ee895c9639189a8c26d2ffe826c';
+        cur['env.TRAVIS_COMMIT'] = '5ad56b3edfff6ca75714cf112b77932a21fb676a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating for git';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Still updating docs.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'dca0a98b7f19...88d8b3301cc2';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '88d8b3301cc2...5ad56b3edfff';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '355598017';
+        cur['env.TRAVIS_JOB_ID'] = '355627954';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '101.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '102.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +410,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jai.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jai.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1255770721271504835.properties propsfile=/home/travis/build/icyphy/ptII/junit4994614757646432097.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jai.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jai.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5080873751306393069.properties propsfile=/home/travis/build/icyphy/ptII/junit5290818031630494084.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -489,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="62_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="62_JUnitTclTest.html">30</a></td><td>0</td><td>0</td><td>0</td><td>5.592</td><td>2018-03-19T22:45:52</td><td>travis-job-ecc89b14-0d75-409d-a24e-f762d197584f</td>
+<td><a title="Display all tests" href="62_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="62_JUnitTclTest.html">30</a></td><td>0</td><td>0</td><td>0</td><td>5.126</td><td>2018-03-20T00:10:51</td><td>travis-job-8a149e2a-87c5-465b-8c65-993ad6e93bbd</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -498,94 +500,94 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml (RunModel)</td><td>Success</td><td></td><td>0.718</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml (RunModel)</td><td>Success</td><td></td><td>0.712</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.127</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.083</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml (RunModel)</td><td>Success</td><td></td><td>0.086</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml (RunModel)</td><td>Success</td><td></td><td>0.075</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.031</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml (RunModel)</td><td>Success</td><td></td><td>0.065</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml (RunModel)</td><td>Success</td><td></td><td>0.046</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml (RunModel)</td><td>Success</td><td></td><td>0.055</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml (RunModel)</td><td>Success</td><td></td><td>0.097</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml (RunModel)</td><td>Success</td><td></td><td>0.086</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml (RunModel)</td><td>Success</td><td></td><td>0.404</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml (RunModel)</td><td>Success</td><td></td><td>0.367</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml (RunModel)</td><td>Success</td><td></td><td>0.056</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml (RunModel)</td><td>Success</td><td></td><td>0.054</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml (RunModel)</td><td>Success</td><td></td><td>0.051</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml (RunModel)</td><td>Success</td><td></td><td>0.058</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.102</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.110</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml (RunModel)</td><td>Success</td><td></td><td>0.052</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml (RunModel)</td><td>Success</td><td></td><td>0.095</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml (RunModel)</td><td>Success</td><td></td><td>0.064</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml (RunModel)</td><td>Success</td><td></td><td>0.039</td>
+<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml (RunModel)</td><td>Success</td><td></td><td>2.625</td>
+<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml (RunModel)</td><td>Success</td><td></td><td>2.261</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
+<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml (RunModel)</td><td>Success</td><td></td><td>0.053</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml (RunModel)</td><td>Success</td><td></td><td>0.094</td>
+<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml (RunModel)</td><td>Success</td><td></td><td>0.054</td>
+<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml (RunModel)</td><td>Success</td><td></td><td>0.052</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.082</td>
+<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml (RunModel)</td><td>Success</td><td></td><td>0.127</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml (RunModel)</td><td>Success</td><td></td><td>0.078</td>
+<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml (RunModel)</td><td>Success</td><td></td><td>0.107</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml (RunModel)</td><td>Success</td><td></td><td>0.064</td>
+<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml (RunModel)</td><td>Success</td><td></td><td>0.196</td>
+<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml (RunModel)</td><td>Success</td><td></td><td>0.184</td>
 </tr>
 </table>
 <div class="Properties">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-ecc89b14-0d75-409d-a24e-f762d197584f" name="ptolemy.actor.lib.io.test.junit.JUnitTclTest" skipped="0" tests="32" time="4.604" timestamp="2018-03-19T22:45:47">
+<testsuite errors="0" failures="0" hostname="travis-job-8a149e2a-87c5-465b-8c65-993ad6e93bbd" name="ptolemy.actor.lib.io.test.junit.JUnitTclTest" skipped="0" tests="32" time="4.511" timestamp="2018-03-20T00:10:46">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -7,7 +7,8 @@
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
     <property name="env.CACHE_NAME" value="PTIICACHE1" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="101.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="102.5" />
+    <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
     <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
@@ -29,7 +30,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.3 40530 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.5 45160 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -48,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.3 40530 10.20.0.198 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.5 45160 10.20.0.40 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -65,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.io.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.io.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2437792977764648629.properties propsfile=/home/travis/build/icyphy/ptII/junit2406331119261932939.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.io.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.io.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3050552149672853885.properties propsfile=/home/travis/build/icyphy/ptII/junit2409411437289270359.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="dca0a98b7f19...88d8b3301cc2" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="88d8b3301cc2...5ad56b3edfff" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +113,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="101" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="102" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +128,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="355598008" />
+    <property name="env.TRAVIS_BUILD_ID" value="355627949" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="88d8b3301cc22ee895c9639189a8c26d2ffe826c" />
+    <property name="env.TRAVIS_COMMIT" value="5ad56b3edfff6ca75714cf112b77932a21fb676a" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -146,8 +147,8 @@
     <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
     <property name="env.TRAVIS_PULL_REQUEST" value="false" />
     <property name="env.PYENV_SHELL" value="bash" />
-    <property name="ant.project.name" value="ptII" />
     <property name="bin.vergil.exists" value="true" />
+    <property name="ant.project.name" value="ptII" />
     <property name="java.vm.specification.version" value="1.8" />
     <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
@@ -160,12 +161,12 @@
     <property name="java.vm.vendor" value="Oracle Corporation" />
     <property name="env.TRAVIS_TAG" value="" />
     <property name="env.TRAVIS_FILTERED" value="redirect_io" />
-    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Still updating docs." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Updating for git" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test" />
@@ -180,13 +181,13 @@
     <property name="sun.cpu.endian" value="little" />
     <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
     <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
-    <property name="java.vm.version" value="25.151-b12" />
     <property name="env.RAILS_ENV" value="test" />
+    <property name="java.vm.version" value="25.151-b12" />
     <property name="java.class.path" value="/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/usr/share/java/ant-launcher-1.9.3.jar:/usr/share/ant/lib/ant.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar" />
     <property name="ant.library.dir" value="/usr/share/ant/lib" />
     <property name="os.arch" value="amd64" />
-    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
     <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
     <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
     <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
     <property name="sun.java.launcher" value="SUN_STANDARD" />
@@ -195,14 +196,14 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation" />
     <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
     <property name="file.separator" value="/" />
-    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
     <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
     <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
-    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="355598017" />
+    <property name="env.TRAVIS_JOB_ID" value="355627954" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -210,53 +211,53 @@
     <property name="env.CASHER_DIR" value="/home/travis/.casher" />
     <property name="env.NVM_CD_FLAGS" value="" />
     <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
-    <property name="java.vendor" value="Oracle Corporation" />
     <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="java.vendor" value="Oracle Corporation" />
     <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
-    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
     <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
     <property name="java.specification.version" value="1.8" />
     <property name="env.TRAVIS" value="true" />
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/DirectoryListing.tcl (RunTclFile)" time="0.5" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriter.xml (RunModel)" time="0.091" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrdered.xml (RunModel)" time="0.11" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrderedTestReader.xml (RunModel)" time="0.074" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListing.xml (RunModel)" time="0.047" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml (RunModel)" time="0.094" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingJar.xml (RunModel)" time="0.063" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRecursive.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRelative.xml (RunModel)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURL.xml (RunModel)" time="1.583" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURLPattern.xml (RunModel)" time="0.987" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml (RunModel)" time="0.069" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV1.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV2.xml (RunModel)" time="0.042" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV3.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV4.xml (RunModel)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV5.xml (RunModel)" time="0.038" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV6.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV7.xml (RunModel)" time="0.043" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV8.xml (RunModel)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDF.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDFinSDF.xml (RunModel)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadFileOver.xml (RunModel)" time="0.177" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInClasspath.xml (RunModel)" time="0.026" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInDE.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInPTII.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSDF.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSameDirectory.xml (RunModel)" time="0.057" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSubDirectory.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/WriteIPAddressToStdout.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/DirectoryListing.tcl (RunTclFile)" time="0.474" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriter.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrdered.xml (RunModel)" time="0.075" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrderedTestReader.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListing.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml (RunModel)" time="0.072" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingJar.xml (RunModel)" time="0.051" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRecursive.xml (RunModel)" time="0.071" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRelative.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURL.xml (RunModel)" time="1.532" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURLPattern.xml (RunModel)" time="0.92" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml (RunModel)" time="0.05" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV1.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV2.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV3.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV4.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV5.xml (RunModel)" time="0.064" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV6.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV7.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV8.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDF.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDFinSDF.xml (RunModel)" time="0.047" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadFileOver.xml (RunModel)" time="0.18" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInClasspath.xml (RunModel)" time="0.058" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInDE.xml (RunModel)" time="0.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInPTII.xml (RunModel)" time="0.053" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSDF.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSameDirectory.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSubDirectory.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/WriteIPAddressToStdout.xml (RunModel)" time="0.038" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/DirectoryListing.tcl
-testDefs.tcl: setting time out to 9000 seconds at Mon Mar 19 22:45:47 UTC 2018
-24 ms. Memory: 116224K Free: 110509K (95%)
-6 ms. Memory: 116224K Free: 109290K (94%)
-03/19/18 10:45:47
+testDefs.tcl: setting time out to 9000 seconds at Tue Mar 20 00:10:46 UTC 2018
+20 ms. Memory: 116224K Free: 110492K (95%)
+4 ms. Memory: 116224K Free: 109297K (94%)
+03/20/18 12:10:46
 Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test
@@ -267,7 +268,7 @@ a,b
 2,"abb"
 3,"abbb"
 4,"abbbb"
-28 ms. Memory: 116224K Free: 103331K (89%)
+11 ms. Memory: 116224K Free: 103621K (89%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriter.xml
 a,b
 0,"a"
@@ -275,107 +276,107 @@ a,b
 2,"abb"
 3,"abbb"
 4,"abbbb"
-7 ms. Memory: 116224K Free: 102377K (88%)
+6 ms. Memory: 116224K Free: 102579K (88%)
 reloadAllAccessors: .CSVWriter
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrdered.xml
-20 ms. Memory: 116224K Free: 95888K (83%)
+17 ms. Memory: 116224K Free: 95854K (82%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrdered.xml
-17 ms. Memory: 116224K Free: 94320K (81%)
+14 ms. Memory: 116224K Free: 94561K (81%)
 reloadAllAccessors: .CSVWriterOrdered
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrderedTestReader.xml
-23 ms. Memory: 116224K Free: 90748K (78%)
+9 ms. Memory: 116224K Free: 90359K (78%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/CSVWriterOrderedTestReader.xml
-9 ms. Memory: 116224K Free: 90078K (78%)
+6 ms. Memory: 116224K Free: 89664K (77%)
 reloadAllAccessors: .CSVWriterOrderedTestReader
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListing.xml
-9 ms. Memory: 116224K Free: 84851K (73%)
+7 ms. Memory: 116224K Free: 85051K (73%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListing.xml
-5 ms. Memory: 116224K Free: 84221K (72%)
+5 ms. Memory: 116224K Free: 84089K (72%)
 reloadAllAccessors: .DirectoryListing
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml
-31 ms. Memory: 146944K Free: 139494K (95%)
+28 ms. Memory: 116224K Free: 108542K (93%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml
-8 ms. Memory: 146944K Free: 137973K (94%)
+9 ms. Memory: 116224K Free: 107199K (92%)
 reloadAllAccessors: .DirectoryListingEmptyPattern
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingJar.xml
-21 ms. Memory: 146944K Free: 132824K (90%)
+26 ms. Memory: 116224K Free: 103359K (89%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingJar.xml
-16 ms. Memory: 146944K Free: 131595K (90%)
+6 ms. Memory: 116224K Free: 102745K (88%)
 reloadAllAccessors: .DirectoryListingJar
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRecursive.xml
-7 ms. Memory: 146944K Free: 126567K (86%)
+5 ms. Memory: 116224K Free: 98219K (85%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRecursive.xml
-4 ms. Memory: 146944K Free: 125929K (86%)
+3 ms. Memory: 116224K Free: 97202K (84%)
 reloadAllAccessors: .DirectoryListingRecursive
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRelative.xml
-5 ms. Memory: 146944K Free: 121564K (83%)
+6 ms. Memory: 116224K Free: 93154K (80%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingRelative.xml
-3 ms. Memory: 146944K Free: 120934K (82%)
+4 ms. Memory: 116224K Free: 92459K (80%)
 reloadAllAccessors: .DirectoryListingRelative
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURL.xml
-1142 ms. Memory: 146944K Free: 94985K (65%)
+1051 ms. Memory: 116224K Free: 95658K (82%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURL.xml
-425 ms. Memory: 146944K Free: 90652K (62%)
+452 ms. Memory: 116224K Free: 92430K (80%)
 reloadAllAccessors: .DirectoryListingURL
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURLPattern.xml
-516 ms. Memory: 146944K Free: 138249K (94%)
+487 ms. Memory: 116224K Free: 85733K (74%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/DirectoryListingURLPattern.xml
-420 ms. Memory: 146944K Free: 134733K (92%)
+409 ms. Memory: 116224K Free: 82966K (71%)
 reloadAllAccessors: .DirectoryListingURLPattern
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml
-9 ms. Memory: 146944K Free: 129999K (88%)
+6 ms. Memory: 146944K Free: 136642K (93%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/FileReader.xml
-7 ms. Memory: 146944K Free: 129582K (88%)
+3 ms. Memory: 146944K Free: 136111K (93%)
 reloadAllAccessors: .FileReader
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV1.xml
-4 ms. Memory: 146944K Free: 126225K (86%)
+11 ms. Memory: 146944K Free: 132847K (90%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV1.xml
-2 ms. Memory: 146944K Free: 125799K (86%)
+2 ms. Memory: 146944K Free: 132200K (90%)
 reloadAllAccessors: .ReadCSV1
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV2.xml
-13 ms. Memory: 146944K Free: 122442K (83%)
+9 ms. Memory: 146944K Free: 129000K (88%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV2.xml
-12 ms. Memory: 146944K Free: 121566K (83%)
+2 ms. Memory: 146944K Free: 127990K (87%)
 reloadAllAccessors: .ReadCSV2
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV3.xml
-5 ms. Memory: 146944K Free: 117700K (80%)
+10 ms. Memory: 146944K Free: 124605K (85%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV3.xml
-5 ms. Memory: 146944K Free: 117251K (80%)
+3 ms. Memory: 146944K Free: 123990K (84%)
 reloadAllAccessors: .ReadCSV3
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV4.xml
-4 ms. Memory: 146944K Free: 113893K (78%)
+3 ms. Memory: 146944K Free: 120766K (82%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV4.xml
-3 ms. Memory: 146944K Free: 113468K (77%)
+3 ms. Memory: 146944K Free: 120427K (82%)
 reloadAllAccessors: .ReadCSV4
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV5.xml
-5 ms. Memory: 146944K Free: 110102K (75%)
+5 ms. Memory: 146944K Free: 116506K (79%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV5.xml
-4 ms. Memory: 146944K Free: 109243K (74%)
+3 ms. Memory: 146944K Free: 115876K (79%)
 reloadAllAccessors: .ReadCSV5
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV6.xml
-4 ms. Memory: 146944K Free: 105417K (72%)
+6 ms. Memory: 146944K Free: 112603K (77%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV6.xml
-4 ms. Memory: 146944K Free: 104991K (71%)
+4 ms. Memory: 146944K Free: 111948K (76%)
 reloadAllAccessors: .ReadCSV6
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV7.xml
-7 ms. Memory: 146944K Free: 101176K (69%)
+8 ms. Memory: 146944K Free: 107446K (73%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV7.xml
-3 ms. Memory: 146944K Free: 100325K (68%)
+3 ms. Memory: 146944K Free: 106728K (73%)
 reloadAllAccessors: .ReadCSV7
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV8.xml
-5 ms. Memory: 146944K Free: 96228K (65%)
+15 ms. Memory: 146944K Free: 102597K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSV8.xml
-3 ms. Memory: 146944K Free: 95819K (65%)
+4 ms. Memory: 146944K Free: 101918K (69%)
 reloadAllAccessors: .ReadCSV8
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDF.xml
-4 ms. Memory: 146944K Free: 91599K (62%)
+5 ms. Memory: 146944K Free: 98102K (67%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDF.xml
-2 ms. Memory: 146944K Free: 91190K (62%)
+3 ms. Memory: 146944K Free: 97488K (66%)
 reloadAllAccessors: .ReadCSVInSDF
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDFinSDF.xml
-5 ms. Memory: 146944K Free: 86210K (59%)
+21 ms. Memory: 146944K Free: 92412K (63%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadCSVInSDFinSDF.xml
-3 ms. Memory: 146944K Free: 84965K (58%)
+4 ms. Memory: 146944K Free: 91442K (62%)
 reloadAllAccessors: .ReadCSVInSDFinSDF
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadFileOver.xml
 This
@@ -392,7 +393,7 @@ test
 text
 data
 file.
-65 ms. Memory: 208384K Free: 194740K (93%)
+35 ms. Memory: 146944K Free: 81162K (55%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadFileOver.xml
 This
 is
@@ -408,7 +409,7 @@ test
 text
 data
 file.
-16 ms. Memory: 208384K Free: 191462K (92%)
+28 ms. Memory: 146944K Free: 78001K (53%)
 reloadAllAccessors: .ReadFileOver
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInClasspath.xml
 Below is the copyright agreement for the Ptolemy II system.
@@ -438,7 +439,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-5 ms. Memory: 208384K Free: 187675K (90%)
+4 ms. Memory: 146944K Free: 136077K (93%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInClasspath.xml
 Below is the copyright agreement for the Ptolemy II system.
 Version: $Id$
@@ -467,7 +468,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-6 ms. Memory: 208384K Free: 187060K (90%)
+3 ms. Memory: 146944K Free: 135158K (92%)
 reloadAllAccessors: .ReadLineInClasspath
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInDE.xml
 This
@@ -477,7 +478,7 @@ test
 text
 data
 file.
-11 ms. Memory: 208384K Free: 182759K (88%)
+16 ms. Memory: 146944K Free: 130264K (89%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInDE.xml
 This
 is
@@ -486,7 +487,7 @@ test
 text
 data
 file.
-5 ms. Memory: 208384K Free: 182145K (87%)
+4 ms. Memory: 146944K Free: 129854K (88%)
 reloadAllAccessors: .ReadLineInDE
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInPTII.xml
 Below is the copyright agreement for the Ptolemy II system.
@@ -516,7 +517,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-5 ms. Memory: 208384K Free: 179073K (86%)
+17 ms. Memory: 146944K Free: 127102K (86%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInPTII.xml
 Below is the copyright agreement for the Ptolemy II system.
 Version: $Id$
@@ -545,12 +546,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-4 ms. Memory: 208384K Free: 178458K (86%)
+5 ms. Memory: 146944K Free: 126251K (86%)
 reloadAllAccessors: .ReadLineInPTII
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSDF.xml
-3 ms. Memory: 208384K Free: 174024K (84%)
+3 ms. Memory: 146944K Free: 122663K (83%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSDF.xml
-3 ms. Memory: 208384K Free: 173410K (83%)
+2 ms. Memory: 146944K Free: 122253K (83%)
 reloadAllAccessors: .ReadLineInSDF
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSameDirectory.xml
 <?xml version="1.0" standalone="no"?>
@@ -596,7 +597,7 @@ reloadAllAccessors: .ReadLineInSDF
     <link port="LineReader.output" relation="relation"/>
     <link port="LineWriter.input" relation="relation"/>
 </entity>
-15 ms. Memory: 208384K Free: 169992K (82%)
+5 ms. Memory: 146944K Free: 119139K (81%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSameDirectory.xml
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -641,7 +642,7 @@ reloadAllAccessors: .ReadLineInSDF
     <link port="LineReader.output" relation="relation"/>
     <link port="LineWriter.input" relation="relation"/>
 </entity>
-6 ms. Memory: 208384K Free: 168763K (81%)
+4 ms. Memory: 146944K Free: 118288K (80%)
 reloadAllAccessors: .ReadLineInSameDirectory
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSubDirectory.xml
 This
@@ -651,7 +652,7 @@ test
 text
 data
 file.
-3 ms. Memory: 208384K Free: 165683K (80%)
+2 ms. Memory: 146944K Free: 115814K (79%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/ReadLineInSubDirectory.xml
 This
 is
@@ -660,14 +661,14 @@ test
 text
 data
 file.
-2 ms. Memory: 208384K Free: 165069K (79%)
+1 ms. Memory: 146944K Free: 114979K (78%)
 reloadAllAccessors: .ReadLineInSubDirectory
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/WriteIPAddressToStdout.xml
 127.0.1.1
-3 ms. Memory: 208384K Free: 162611K (78%)
+2 ms. Memory: 146944K Free: 112211K (76%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/io/test/auto/WriteIPAddressToStdout.xml
 127.0.1.1
-2 ms. Memory: 208384K Free: 161997K (78%)
+2 ms. Memory: 146944K Free: 111392K (76%)
 reloadAllAccessors: .WriteIPAddressToStdout
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
