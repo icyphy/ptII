@@ -124,11 +124,12 @@ if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
 fi
 
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
+    LOG=$PTII/logs/docs.txt
     # Create the Javadoc jar files for use by the installer Note that
     # there is a chance that the installer will use javadoc jar files
     # that are slightly out of date.
-    ant javadoc jsdoc
-    (cd doc; make install)
+    ant javadoc jsdoc 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    (cd doc; make install) 2>&1 | grep -v GITHUB_TOKEN >> $LOG 
     updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
