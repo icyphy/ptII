@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-34ef0f3a-9b19-44f0-bc36-b8c230d87370" name="doc.papers.y14.constructive.models.test.junit.JUnitTclTest" skipped="0" tests="20" time="40.733" timestamp="2018-03-20T15:41:11">
+<testsuite errors="0" failures="0" hostname="travis-job-a06abf77-2f46-4b50-aea5-d1fe7efff8c1" name="doc.papers.y14.constructive.models.test.junit.JUnitTclTest" skipped="0" tests="20" time="50.746" timestamp="2018-03-20T16:15:59">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -7,7 +7,7 @@
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
     <property name="env.CACHE_NAME" value="PTIICACHE1" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="105.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="106.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -30,7 +30,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 45184 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.32 43546 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 45184 10.20.0.139 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.32 43546 10.20.1.230 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.papers.y14.constructive.models.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.papers.y14.constructive.models.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4949872076667819945.properties propsfile=/home/travis/build/icyphy/ptII/junit880823330518817598.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.papers.y14.constructive.models.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.papers.y14.constructive.models.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8493820701834822430.properties propsfile=/home/travis/build/icyphy/ptII/junit7874534015071459223.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="d89373b6ebbe...1b10e29a76c2" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="1b10e29a76c2...c37e1d62e269" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -113,7 +113,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="105" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="106" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -128,12 +128,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="355910542" />
+    <property name="env.TRAVIS_BUILD_ID" value="355913996" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="1b10e29a76c24ef428232f4885cd6d5071399e6b" />
+    <property name="env.TRAVIS_COMMIT" value="c37e1d62e2690bb1cc8982925472aa146c8eafea" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -164,7 +164,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="When building the docs, run ant docs so that we create the appropriate class files etc." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Run ant javadoc jsdoc." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -203,7 +203,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="355910547" />
+    <property name="env.TRAVIS_JOB_ID" value="355914001" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -222,112 +222,112 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.003" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml (RunModel)" time="3.349" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml (RunModel)" time="9.396" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml (RunModel)" time="17.286" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml (RunModel)" time="0.432" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml (RunModel)" time="0.483" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml (RunModel)" time="0.6" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml (RunModel)" time="4.307" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml (RunModel)" time="0.521" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml (RunModel)" time="0.583" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml (RunModel)" time="0.268" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml (RunModel)" time="0.222" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml (RunModel)" time="0.189" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml (RunModel)" time="0.382" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml (RunModel)" time="2.369" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml (RunModel)" time="0.126" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.005" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml (RunModel)" time="4.278" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml (RunModel)" time="11.805" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml (RunModel)" time="21.76" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml (RunModel)" time="0.45" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml (RunModel)" time="0.588" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml (RunModel)" time="0.703" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml (RunModel)" time="5.197" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml (RunModel)" time="0.537" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml (RunModel)" time="0.743" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml (RunModel)" time="0.318" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml (RunModel)" time="0.304" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml (RunModel)" time="0.261" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml (RunModel)" time="0.486" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml (RunModel)" time="2.91" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml (RunModel)" time="0.161" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml (RunModel)" time="0.051" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml
-1566 ms. Memory: 208384K Free: 156189K (75%)
+1973 ms. Memory: 207872K Free: 93701K (45%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml
-902 ms. Memory: 330752K Free: 161674K (49%)
+1185 ms. Memory: 331264K Free: 222191K (67%)
 reloadAllAccessors: .BilliardsOneDimensional
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml
-5262 ms. Memory: 577024K Free: 270842K (47%)
+6499 ms. Memory: 479232K Free: 215638K (45%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml
-4039 ms. Memory: 577536K Free: 180205K (31%)
+5147 ms. Memory: 439296K Free: 338088K (77%)
 reloadAllAccessors: .BouncingBall
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml
-9558 ms. Memory: 393728K Free: 321943K (82%)
+11726 ms. Memory: 284672K Free: 96154K (34%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml
-7589 ms. Memory: 236032K Free: 132988K (56%)
+9902 ms. Memory: 139776K Free: 120608K (86%)
 reloadAllAccessors: .BouncingBallModal2
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml
-158 ms. Memory: 236032K Free: 92113K (39%)
+160 ms. Memory: 139776K Free: 81510K (58%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml
-134 ms. Memory: 236032K Free: 77845K (33%)
+164 ms. Memory: 138240K Free: 123887K (90%)
 reloadAllAccessors: .Collision
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml
-184 ms. Memory: 228864K Free: 167117K (73%)
+237 ms. Memory: 136704K Free: 124832K (91%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml
-177 ms. Memory: 228864K Free: 146537K (64%)
+171 ms. Memory: 136704K Free: 103685K (76%)
 reloadAllAccessors: .Collision3
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml
-252 ms. Memory: 228864K Free: 78270K (34%)
+293 ms. Memory: 135168K Free: 90386K (67%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml
-219 ms. Memory: 224256K Free: 194778K (87%)
+256 ms. Memory: 134656K Free: 118858K (88%)
 reloadAllAccessors: .Collision4
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml
-2255 ms. Memory: 211968K Free: 115761K (55%)
+2689 ms. Memory: 125440K Free: 99400K (79%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml
-1957 ms. Memory: 197632K Free: 167590K (85%)
+2393 ms. Memory: 117760K Free: 98634K (84%)
 reloadAllAccessors: .Collision5
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml
-214 ms. Memory: 197632K Free: 97368K (49%)
+192 ms. Memory: 124416K Free: 107767K (87%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml
-163 ms. Memory: 195072K Free: 182436K (94%)
+175 ms. Memory: 124416K Free: 79856K (64%)
 reloadAllAccessors: .Collision6Modal
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml
-242 ms. Memory: 195072K Free: 111182K (57%)
+287 ms. Memory: 144384K Free: 123463K (86%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml
-211 ms. Memory: 195072K Free: 83132K (43%)
+267 ms. Memory: 144384K Free: 94873K (66%)
 reloadAllAccessors: .CollisionSimultaneous
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml
-77 ms. Memory: 190976K Free: 138056K (72%)
+82 ms. Memory: 157184K Free: 117803K (75%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml
-66 ms. Memory: 190976K Free: 127939K (67%)
+71 ms. Memory: 157184K Free: 107609K (68%)
 reloadAllAccessors: .CollisionSimultaneousDifferentMasses
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml
-66 ms. Memory: 190976K Free: 75591K (40%)
+86 ms. Memory: 173056K Free: 146708K (85%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml
-62 ms. Memory: 186368K Free: 168524K (90%)
+76 ms. Memory: 173056K Free: 137020K (79%)
 reloadAllAccessors: .CollisionSimultaneousDifferentMasses2
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml
-47 ms. Memory: 186368K Free: 123362K (66%)
+70 ms. Memory: 173056K Free: 92014K (53%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml
-46 ms. Memory: 186368K Free: 115006K (62%)
+63 ms. Memory: 173056K Free: 84063K (49%)
 reloadAllAccessors: .CollisionSimultaneousLoss
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml
-162 ms. Memory: 208896K Free: 182762K (87%)
+183 ms. Memory: 190976K Free: 133215K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml
-130 ms. Memory: 208896K Free: 150485K (72%)
+156 ms. Memory: 190976K Free: 101237K (53%)
 reloadAllAccessors: .DiodeInductorModel
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml
-1088 ms. Memory: 199168K Free: 87824K (44%)
+1372 ms. Memory: 239104K Free: 86402K (36%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml
-1049 ms. Memory: 188416K Free: 152767K (81%)
+1257 ms. Memory: 264704K Free: 196069K (74%)
 reloadAllAccessors: .Friction
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml
-12 ms. Memory: 188416K Free: 147364K (78%)
+15 ms. Memory: 264704K Free: 190452K (72%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml
-8 ms. Memory: 188416K Free: 146306K (78%)
+10 ms. Memory: 264704K Free: 188635K (71%)
 reloadAllAccessors: .IntegratorLoopPlot
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml
-39 ms. Memory: 188416K Free: 120798K (64%)
+48 ms. Memory: 264704K Free: 162996K (62%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml
-33 ms. Memory: 188416K Free: 112311K (60%)
+47 ms. Memory: 264704K Free: 153876K (58%)
 reloadAllAccessors: .LCDModal
 ----------------- testing /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml
-7 ms. Memory: 188416K Free: 100554K (53%)
+8 ms. Memory: 264704K Free: 142812K (54%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml
-5 ms. Memory: 188416K Free: 99488K (53%)
+6 ms. Memory: 264704K Free: 140995K (53%)
 reloadAllAccessors: .TwoCapacitorsModelWithDelays
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>

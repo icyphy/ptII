@@ -188,9 +188,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 45184 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.32 43546 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 45184 10.20.0.139 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.32 43546 10.20.1.230 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -204,25 +204,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '355910542';
+        cur['env.TRAVIS_BUILD_ID'] = '355913996';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '105';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '106';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '1b10e29a76c24ef428232f4885cd6d5071399e6b';
+        cur['env.TRAVIS_COMMIT'] = 'c37e1d62e2690bb1cc8982925472aa146c8eafea';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'When building the docs, run ant docs so that we create the appropriate class files etc.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Run ant javadoc jsdoc.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'd89373b6ebbe...1b10e29a76c2';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '1b10e29a76c2...c37e1d62e269';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '355910547';
+        cur['env.TRAVIS_JOB_ID'] = '355914001';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '105.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '106.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -410,7 +410,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6963054389285558383.properties propsfile=/home/travis/build/icyphy/ptII/junit6385116847887970928.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2738122305511494865.properties propsfile=/home/travis/build/icyphy/ptII/junit2271597438984991441.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -491,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="27_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="27_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="27_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>0.910</td><td>2018-03-20T15:44:09</td><td>travis-job-34ef0f3a-9b19-44f0-bc36-b8c230d87370</td>
+<td><a title="Display all tests" href="27_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="27_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="27_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>0.934</td><td>2018-03-20T16:19:29</td><td>travis-job-a06abf77-2f46-4b50-aea5-d1fe7efff8c1</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -503,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:131)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Execution failed.<br>  in .MultiDataTypes.Producer<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .MultiDataTypesProducer.producer<br>	at ptolemy.actor.lib.hoc.ModelReference.fire(ModelReference.java:588)<br>	at ptolemy.vergil.actor.lib.VisualModelReference.fire(VisualModelReference.java:389)<br>	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)<br>	at ptolemy.actor.Director.fire(Director.java:360)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .MultiDataTypesProducer.producer<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:169)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:719)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference.fire(ModelReference.java:586)<br>
-</code></td><td>0.816</td>
+</code></td><td>0.813</td>
 </tr>
 </table>
 <div class="Properties">

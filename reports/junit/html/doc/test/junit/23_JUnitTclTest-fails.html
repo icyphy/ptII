@@ -188,9 +188,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 45184 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.32 43546 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 45184 10.20.0.139 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.32 43546 10.20.1.230 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -204,25 +204,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '355910542';
+        cur['env.TRAVIS_BUILD_ID'] = '355913996';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '105';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '106';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '1b10e29a76c24ef428232f4885cd6d5071399e6b';
+        cur['env.TRAVIS_COMMIT'] = 'c37e1d62e2690bb1cc8982925472aa146c8eafea';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'When building the docs, run ant docs so that we create the appropriate class files etc.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Run ant javadoc jsdoc.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'd89373b6ebbe...1b10e29a76c2';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '1b10e29a76c2...c37e1d62e269';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '355910547';
+        cur['env.TRAVIS_JOB_ID'] = '355914001';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '105.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '106.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -410,7 +410,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7921638898082489180.properties propsfile=/home/travis/build/icyphy/ptII/junit3580809614381640080.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher510197089994105452.properties propsfile=/home/travis/build/icyphy/ptII/junit741009221839800802.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -491,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="23_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="23_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="23_JUnitTclTest-fails.html">1</a></td><td>0</td><td>132.920</td><td>2018-03-20T15:41:52</td><td>travis-job-34ef0f3a-9b19-44f0-bc36-b8c230d87370</td>
+<td><a title="Display all tests" href="23_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="23_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="23_JUnitTclTest-fails.html">1</a></td><td>0</td><td>154.356</td><td>2018-03-20T16:16:50</td><td>travis-job-a06abf77-2f46-4b50-aea5-d1fe7efff8c1</td>
 </tr>
 </table>
 <h2>Failures</h2>
@@ -503,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/doc/test/docManager.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/doc/test/docManager.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;13&gt;<br>
 <br>
 <code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;13&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>132.835</td>
+</code></td><td>154.232</td>
 </tr>
 </table>
 <div class="Properties">
