@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Autocorrelation" class="ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.Autocorrelation">
+  <description>
+This actor calculates the autocorrelation of a sequence of input tokens.&#10; &lt;a name=&quot;autocorrelation&quot;&gt;&lt;/a&gt;&#10; It is polymorphic, supporting any input data type that supports&#10; multiplication, addition, and division by an integer.&#10; However, since integer division will lose the fractional portion of the&#10; result, type resolution will resolve the input type to double or double&#10; matrix if the input port is connected to an integer or integer matrix source,&#10; respectively.&#10; &lt;p&gt;&#10; Both biased and unbiased autocorrelation estimates are supported.&#10; If the parameter &lt;i&gt;biased&lt;/i&gt; is true, then&#10; the autocorrelation estimate is&#10; &lt;a name=&quot;unbiasedAutocorrelation&quot;&gt;&lt;/a&gt;&#10; &lt;pre&gt;&#10; N-1-k&#10; 1  ---&#10; r(k) = -  \    x(n)x(n+k)&#10; N  /&#10; ---&#10; n=0&#10; &lt;/pre&gt;&#10; for &lt;i&gt;k &lt;/i&gt;= 0&lt;i&gt;, ... , p&lt;/i&gt;, where &lt;i&gt;N&lt;/i&gt; is the number of&#10; inputs to average (&lt;i&gt;numberOfInputs&lt;/i&gt;), &lt;i&gt;p&lt;/i&gt; is the number of&#10; lags to estimate (&lt;i&gt;numberOfLags&lt;/i&gt;), and x&lt;sup&gt;*&lt;/sup&gt; is the&#10; conjugate of the input (if it is complex).&#10; This estimate is biased because the outermost lags have fewer than &lt;i&gt;N&lt;/i&gt;&#10; &lt;a name=&quot;biasedAutocorrelation&quot;&gt;&lt;/a&gt;&#10; terms in the summation, and yet the summation is still normalized by &lt;i&gt;N&lt;/i&gt;.&#10; &lt;p&gt;&#10; If the parameter &lt;i&gt;biased&lt;/i&gt; is false (the default), then the estimate is&#10; &lt;pre&gt;&#10; N-1-k&#10; 1   ---&#10; r(k) = ---  \    x(n)x(n+k)&#10; N-k  /&#10; ---&#10; n=0&#10; &lt;/pre&gt;&#10; In this case, the estimate is unbiased.&#10; However, note that the unbiased estimate does not guarantee&#10; a positive definite sequence, so a power spectral estimate based on this&#10; autocorrelation estimate may have negative components.&#10; &lt;a name=&quot;spectralEstimation&quot;&gt;&lt;/a&gt;&#10; &lt;p&gt;&#10; The output will be an array of tokens whose type is at least that&#10; of the input. If the parameter &lt;i&gt;symmetricOutput&lt;/i&gt; is true,&#10; then the output will be symmetric and have length equal to twice&#10; the number of lags requested plus one.  Otherwise, the output&#10; will have length equal to twice the number of lags requested,&#10; which will be almost symmetric (insert the last&#10; sample into the first position to get the symmetric output that you&#10; would get with the &lt;i&gt;symmetricOutput&lt;/i&gt; being true).  </description>
+  <author>Edward A. Lee and Yuhong Xiong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (neuendor)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="biased">If true, the estimate will be biased.&#10; This is a boolean with default value false.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numberOfInputs">Number of input samples to average.&#10; This is an integer with default value 256.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numberOfLags">Number of autocorrelation lags to output.&#10; This is an integer with default value 64.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="symmetricOutput">If true, then the output from each firing&#10; will have 2*&lt;i&gt;numberOfLags&lt;/i&gt; + 1&#10; samples (an odd number) whose values are symmetric about&#10; the midpoint. If false, then the output from each firing will&#10; have 2*&lt;i&gt;numberOfLags&lt;/i&gt; samples (an even number)&#10; by omitting one of the endpoints (the last one).&#10; This is a boolean with default value false.</property>
+</doc>

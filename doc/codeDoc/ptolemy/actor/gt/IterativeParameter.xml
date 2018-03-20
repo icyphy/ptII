@@ -13,8 +13,6 @@ A special parameter in the pattern that can take various values in pattern.&#10;
     <property name="constraint">The constraint that all values must satisfy.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="initial">The initial value.</property>
-    <!--ptolemy.data.expr.ChoiceParameter-->
-    <property name="mode">The mode of this parameter.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="next">The next value (computed based on the current value).</property>
 </doc>

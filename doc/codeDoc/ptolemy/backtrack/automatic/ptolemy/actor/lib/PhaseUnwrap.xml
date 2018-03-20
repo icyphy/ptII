@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PhaseUnwrap" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.PhaseUnwrap">
+  <description>
+This actor unwraps a phase plot, removing discontinuities of&#10; magnitude 2*PI. The input is assumed to be a sequence of phases in&#10; radians in the range [-PI, PI].  The input and output types&#10; are double.  This actor assumes that the phase never&#10; changes by more than PI in one sample period. This is not a very&#10; sophisticated phase unwrapper, but for many applications, it does&#10; the job.  </description>
+  <author>Joe Buck and Edward A. Lee and Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (celaine)</Pt.AcceptedRating>
+</doc>

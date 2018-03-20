@@ -15,8 +15,4 @@ A Ptera event is contained by a Ptera controller in a Ptera modal model.&#10; Ea
     <property name="isFinalEvent">A Boolean parameter to specify whether this event is a final event.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="isInitialEvent">A Boolean parameter to specify whether this event is an initial&#10;    event.</property>
-    <!--ptolemy.domains.ptera.kernel.ParametersAttribute-->
-    <property name="parameters">A list of formal parameters.</property>
-    <!--ptolemy.domains.ptera.kernel.ActionsAttribute-->
-    <property name="actions">The actions for this event.</property>
 </doc>

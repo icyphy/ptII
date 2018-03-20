@@ -11,8 +11,6 @@ A scheduling relation is an edge from one Ptera event to another. If it is not&#
   <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
     <!--ptolemy.data.expr.Parameter-->
     <property name="canceling">A Boolean-valued parameter that defines whether this scheduling relation&#10;        is cancelling.</property>
-    <!--ptolemy.actor.parameters.Priority-->
-    <property name="priority">The priority of this scheduling relation.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="triggers">A comma-separated list of port names and variable names to be&#10;  monitored.</property>
     <!--ptolemy.kernel.util.StringAttribute-->

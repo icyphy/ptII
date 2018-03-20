@@ -41,8 +41,6 @@ Base class for attributes generating the HTML file with JavaScript to plot&#10; 
     <property name="graphHeight">Parameter specifying the height of the figure.&#10;  This is an int that defaults to 500px.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="horizontalAlign">Parameter specifying the horizontal position of the legend on the figure.&#10;  This defaults to &quot;center&quot;.</property>
-    <!--ptolemy.vergil.basic.export.web.LinkTarget-->
-    <property name="linkTarget">Parameter specifying the target for the link.&#10;  The possibilities are:&#10;  &lt;ul&gt;&#10;  &lt;li&gt;&lt;b&gt;_lightbox&lt;/b&gt;: Open in a lightbox-style popup frame.&#10;  &lt;li&gt;&lt;b&gt;_blank&lt;/b&gt;: Open in a new window or tab.&#10;  &lt;li&gt;&lt;b&gt;_self&lt;/b&gt;: Open in the same frame as it was clicked.&#10;  &lt;li&gt;&lt;b&gt;_parent&lt;/b&gt;: Open in the parent frameset.&#10;  &lt;li&gt;&lt;b&gt;_top&lt;/b&gt;: Open in the full body of the window.&#10;  &lt;li&gt;&lt;b&gt;&lt;i&gt;framename&lt;/i&gt;&lt;/b&gt;: Open in a named frame.&#10;  &lt;/ul&gt;&#10;  The default is &quot;_lightbox&quot;.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="outputDataFile">Parameter specifying the name of the file to store the data and event traces.&#10;  This defaults to &quot;simulationResult.txt&quot;.</property>
     <!--ptolemy.data.expr.StringParameter-->

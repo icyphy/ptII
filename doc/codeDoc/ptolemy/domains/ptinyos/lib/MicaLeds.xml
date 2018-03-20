@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
+  <description>
+An actor to display the LEDs of the simulated mote.  There are&#10; three LEDS -- red, yellow, and green.&#10;&#10; &lt;p&gt;The actor has a boolean port for each LED.  A token with value of&#10; true received at the port will cause the corresponding LED on the&#10; icon to light up.&#10;&#10; &lt;p&gt;The actor also has a parameter for each LED, which allows the&#10; container to read the value and use it to change the color of the&#10; icon.  </description>
+  <author>Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.1</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (celaine)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="ledGreen">Input port for the green LED.  The token type is boolean.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="ledRed">Input port for the red LED.  The token type is boolean.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="ledYellow">Input port for the yellow LED.  The token type is boolean.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="green">The color of the &quot;green&quot; LED.  The initial value is set to&#10;  dark green ({0.0, 0.5, 0.0, 1.0}).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="red">The color of the &quot;red&quot; LED.  The initial value is set to dark&#10;  red ({0.5, 0.0, 0.0, 1.0}).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="yellow">The color of the &quot;yellow&quot; LED.  The initial value is set to&#10;  dark yellow ({0.5,0.5,0.0,1.0}).</property>
+</doc>

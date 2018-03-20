@@ -35,10 +35,6 @@ A Transition has a source state and a destination state. A&#10;   transition has
     <property name="termination">Parameter specifying whether the refinements of the origin&#10;  state must have terminated (postfire has returned false)&#10;  for the transition to be enabled.</property>
     <!--ptolemy.kernel.util.StringAttribute-->
     <property name="guardExpression">Attribute specifying the guard expression.</property>
-    <!--ptolemy.domains.modal.kernel.OutputActionsAttribute-->
-    <property name="outputActions">The action commands that produce outputs when the transition is taken.</property>
     <!--ptolemy.kernel.util.StringAttribute-->
     <property name="refinementName">Attribute specifying one or more names of refinements. The&#10;  refinements must be instances of TypedActor and have the same&#10;  container as the FSMActor containing this state, otherwise&#10;  an exception will be thrown when getRefinement() is called.&#10;  Usually, the refinement is a single name. However, if a&#10;  comma-separated list of names is provided, then all the specified&#10;  refinements will be executed.&#10;  This attribute has a null expression or a null string as&#10;  expression when the state is not refined.</property>
-    <!--ptolemy.domains.modal.kernel.CommitActionsAttribute-->
-    <property name="setActions">The action commands that set parameters when the transition is taken.&#10;  By default, this is empty.</property>
 </doc>

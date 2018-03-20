@@ -17,10 +17,6 @@ This Actor is simulation of a Bluetooth adapter in a Bluetooth enabled device. T
     <port name="wiredInputData">The input port for data to be sent. This will only be checked when the command to send data has been issued, and further will only be checked when in the&#10; connected state. This port is of type General.</port>
     <!--ptolemy.actor.TypedIOPort-->
     <port name="wiredOutput">The output port for wired communication, which could potentially facilitate communication with other&#10; devices/components/actors which are not wireless that interact with this actor.&#10; This port is of type General.</port>
-    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
-    <port name="wirelessInput">The input port for wireless communication, which accepts a BluetoothRecordToken - this is to ensure&#10; that any RecordToken at this port only comes from another BluetoothDevice.&#10; This port is of type General.</port>
-    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
-    <port name="wirelessOutput">The output port for wireless communication, which will output a BluetoothResponseToken of type General.</port>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="wirelessInputChannelName">Name of the wireless input channel. This is a string that defaults to&#10;  &quot;WirelessInputChannel&quot;.</property>
     <!--ptolemy.data.expr.StringParameter-->

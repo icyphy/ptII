@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Commutator" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Commutator">
+  <description>
+A polymorphic commutator, which merges a set of input sequences into a&#10; single output sequence.  The commutator has an input port (a&#10; multiport) and an output port (a single port).  The types of the ports&#10; are undeclared and will be resolved by the type resolution mechanism,&#10; with the constraint that the output type must be greater than or equal&#10; to the input type. On each call to the fire method, the actor reads&#10; N tokens from each input channel and sends the tokens to the output&#10; port, where N is the value of &lt;i&gt;blockSize&lt;/i&gt;. The order in which&#10; the tokens are produced is the order of the channels in the input&#10; multiport. If any input channel has no tokens,  then the fire method&#10; returns without producing output.  In the next iteration, the actor will&#10; begin reading at the channel that had no input token in the previous&#10; iteration.  If no input token is available on the first channel being&#10; read, then no output is produced.&#10; &lt;p&gt;&#10; For the benefit of domains like SDF, which need to know the token&#10; consumption or production rate for all ports before they can construct&#10; a firing schedule, this actor sets the &lt;i&gt;tokenProductionRate&lt;/i&gt; parameter&#10; for the output port to equal the number of input channels times the value&#10; of the &lt;i&gt;blockSize&lt;/i&gt; parameter.  This&#10; parameter is set each time that a link is established with the input&#10; port, or when a link is removed.  The director is notified that the&#10; schedule is invalid, so that if the link is modified at run time, the&#10; schedule will be recalculated if necessary.  </description>
+  <author>Mudit Goel, Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.2</since>
+  <Pt.ProposedRating>Yellow (mudit)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="blockSize">The number of tokens read from each input channel on each firing.&#10; This is an integer that defaults to 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="input_tokenConsumptionRate">The parameter controlling the input port consumption rate.&#10; This parameter contains an IntToken, initially with a value of 1.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="output_tokenProductionRate">The parameter controlling the output port production rate.&#10; This parameter contains an IntToken, initially with a value of 0.&#10; When connections are made and/or the &lt;i&gt;blockSize&lt;/i&gt; parameter&#10; is set, this is changed to the width of the input times the&#10; value of the &lt;i&gt;blockSize&lt;/i&gt; parameter.</property>
+</doc>

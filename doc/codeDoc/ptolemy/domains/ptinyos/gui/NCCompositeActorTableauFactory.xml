@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NCCompositeActorTableauFactory" class="ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory">
+  <description>
+A factory that creates graph editing tableaux for NCCompositeActor's.  </description>
+  <author>Elaine Cheong</author>
+  <version>$Id: NCCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh&#10;          Exp $</version>
+  <since>Ptolemy II 5.1</since>
+  <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

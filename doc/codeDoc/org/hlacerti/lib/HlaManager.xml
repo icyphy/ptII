@@ -31,6 +31,4 @@ This class implements a HLA Manager which allows a Ptolemy model to&#10; coopera
     <property name="requireSynchronization">Boolean value, 'true' if the Federate is synchronised with other&#10;  Federates using a HLA synchronization point, 'false' if not. This&#10;  parameter must contain an BooleanToken.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="synchronizationPointName">Name of the synchronization point (if required). This parameter must&#10;  contain an StringToken.</property>
-    <!--ptolemy.data.expr.ChoiceParameter-->
-    <property name="timeManagementService">Choice of time advancement service (NER or exclusive TAR).</property>
 </doc>

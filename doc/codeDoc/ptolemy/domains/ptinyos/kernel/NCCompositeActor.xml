@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NCCompositeActor" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
+  <description>
+A composite actor in the PtinyOS domain with no ports.  This actor is&#10; always a type opaque composite actor.&#10;&#10; &lt;p&gt; This actor represents a nesC component with no interfaces and no&#10; .nc implementation.  See &lt;a href=&quot;../../../../ptolemy/domains/ptinyos/kernel/PtinyOSDirector.xml&quot;&gt;ptolemy.domains.ptinyos.kernel.PtinyOSDirector&lt;/a&gt; for more information&#10; on nesC.  This actor should be used when it is not necessary to have&#10; typed ports that interface to regular Ptolemy II models.  If typed&#10; ports are needed, then an actor that implements &lt;a href=&quot;../../../../ptolemy/domains/ptinyos/kernel/PtinyOSCompositeActor.xml&quot;&gt;ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor&lt;/a&gt; should be used.&#10;&#10; &lt;p&gt; NCCompositeActor is used as a place holder for nesC (.nc) code&#10; that the user must write separately in an editor like &lt;a href=&quot;../../../../ptolemy/domains/ptinyos/gui/NCCompositeActorTableauFactory.xml&quot;&gt;ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory&lt;/a&gt;.  The&#10; user should add ports in the GUI as necessary when adding nesC&#10; interfaces to their nesC component.  These ports should connect to&#10; other nesC components.&#10;&#10; &lt;p&gt;FIXME: Test creation of NCCompositeActor that is not at the&#10; toplevel.  </description>
+  <author>Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.1</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (celaine)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rotatePorts">Relative orientation of ports on the icon of this actor.  The&#10;  default value is an integer value of 90 (input ports are on&#10;  the top edge of the icon).</property>
+</doc>

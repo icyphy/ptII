@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Sequencer" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequencer">
+  <description>
+This actor takes a sequence of inputs tagged with a sequence number&#10; and produces them on the output port in the order given by the&#10; sequence number.  The sequence numbers are integers starting&#10; with zero.  On each firing, this actor consumes one token&#10; from the &lt;i&gt;input&lt;/i&gt; port and one token from the&#10; &lt;i&gt;sequenceNumber&lt;/i&gt; port. If the sequence number is the&#10; next one in the sequence, then the token read from the &lt;i&gt;input&lt;/i&gt;&#10; port is produced on the &lt;i&gt;output&lt;/i&gt; port.  Otherwise,&#10; it is saved until its sequence number is the next one&#10; in the sequence.  If an output is produced, then it may&#10; be immediately followed by tokens that were previously&#10; saved, if their sequence numbers are next.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (ctsay)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="sequenceNumber">Input for the sequence number. The type is int.</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="startingSequenceNumber">The first number of the sequence.  This is an int that&#10; defaults to 0.</property>
+</doc>

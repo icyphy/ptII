@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="NCComponentBase" class="ptolemy.domains.ptinyos.lib.NCComponentBase">
+  <description>
+Actor that serves as a placeholder for PtinyOS nesC modules and&#10;  configurations.  This class is a base class for nesC component&#10;  classes.  These are classes with source code defined in a .nc file&#10;  intended for use with TinyOS to program the Berkeley Motes.  This&#10;  class provides a parameter &lt;i&gt;source&lt;/i&gt; that is used to identify&#10;  the nesC source file. It works in conjunction with the NCComponent&#10;  MoML class, which attaches a tableau factory so that selecting the&#10;  &quot;Open Actor&quot; menu choice will open the nesC source file.  </description>
+  <author>Elaine Cheong, Edward A. Lee, Yang Zhao</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.1</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.FileParameter-->
+    <property name="source">The source code file or URL.  The default value is&#10;  &quot;$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc&quot;</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="rotatePorts">Relative orientation of ports on the icon of this actor.  The&#10;  default value is an IntegerToken of value 90.</property>
+    <!--ptolemy.kernel.util.StringAttribute-->
+    <property name="displayedName">Displayed name on icon.  The value is set to the name of the&#10;  nesC component being represented.  Otherwise, the name of this&#10;  class is displayed.</property>
+</doc>

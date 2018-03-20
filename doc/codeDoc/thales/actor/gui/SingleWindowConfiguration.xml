@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="SingleWindowConfiguration" class="thales.actor.gui.SingleWindowConfiguration">
+  <description>
+A Configuration that intercept created Tableau, and the content of its&#10; Frame into a TabbedPane.  </description>
+  <author>J&amp;eacute;r&amp;ocirc;me Blanc &amp;amp; Benoit Masson, Thales Research and technology, 01 sept. 2003</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 4.0</since>
+  <Pt.ProposedRating>Yellow (jerome.blanc)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+</doc>

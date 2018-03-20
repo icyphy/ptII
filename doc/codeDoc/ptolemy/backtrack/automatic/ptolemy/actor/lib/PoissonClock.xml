@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PoissonClock" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock">
+  <description>
+This actor produces discrete events according to a Poisson process.&#10; The time between events is given by independent and identically&#10; distributed exponential random variables. The values produced&#10; rotate sequentially through those given in the &lt;i&gt;values&lt;/i&gt; parameter,&#10; which is an array of anything and defaults to {1, 0}.&#10; The type of the output can be any token type.  This type is inferred from&#10; the element type of the &lt;i&gt;values&lt;/i&gt; parameter.&#10; The mean time between events is given by the &lt;i&gt;meanTime&lt;/i&gt; parameter,&#10; which defaults to 1.0.&#10; &lt;p&gt;&#10; In the initialize() method and postfire() methods,&#10; the actor uses the fireAt() method of the director to request&#10; the next firing.  The first firing is always at the start time, unless&#10; the parameter &lt;i&gt;fireAtStart&lt;/i&gt; is changed to &lt;i&gt;false&lt;/i&gt;.&#10; &lt;p&gt;&#10; If the trigger input is connected, then any event on it will&#10; cause the Poisson process to immediately produce the next&#10; event, as if the time for that event had arrived.&#10; &lt;p&gt;&#10; If this actor is inactive at the time at which it would have&#10; otherwise produced an output, then it will stop producing outputs.&#10; This should not happen.  </description>
+  <author>Edward A. Lee</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Yellow (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (yuhong)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="fireAtStart">If true, then this actor will request a firing at the start time.&#10; Otherwise, the first firing will be requested at the first random&#10; time. This is a boolean-valued parameter that defaults to &lt;i&gt;true&lt;/i&gt;.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="meanTime">The mean time between events, where the output value transitions.&#10; This parameter must contain a DoubleToken.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="stopTime">The time at which postfire() should return false. This is a&#10; double that defaults to Infinity, which means that postfire()&#10; never returns false (or at least, doesn't do so due to stopTime&#10; having been exceeded).</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="values">The values that will be produced at the output.&#10; This parameter can contain any ArrayToken, and it defaults to {1, 0}.</property>
+</doc>

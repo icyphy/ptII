@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="LinearDifferenceEquationSystem" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.LinearDifferenceEquationSystem">
+  <description>
+Linear Difference Equation System.&#10; &lt;p&gt;The linear state-space model implements a system whose behavior&#10; is defined by:&#10; &lt;pre&gt;&#10; x(k+1) = Ax(k) + Bu(k)&#10; y(k) = Cx(k) + Du(k)&#10; x(0) = x0&#10; &lt;/pre&gt;&#10; where x is the state vector, u is the input vector, and y is the&#10; output vector. (Note that in Ptolemy II, vectors are double matrices&#10; with one column or one row.) The matrix coefficients must have the&#10; following characteristics:&#10; &lt;pre&gt;&#10; A must be an n-by-n matrix, where n is the number of states.&#10; B must be an n-by-m matrix, where m is the number of inputs.&#10; C must be an r-by-n matrix, where r is the number of outputs.&#10; D must be an r-by-m matrix.&#10; &lt;/pre&gt;&#10; For each firing, the actor accepts one input DoubleMatrixToken of&#10; dimension &lt;i&gt;m&lt;/i&gt; x 1, and generates one output DoubleMatrixToken of&#10; dimension &lt;i&gt;r&lt;/i&gt; x 1.&#10; &lt;P&gt;&#10; In addition to producing the output &lt;i&gt;y&lt;/i&gt; through port&#10; &lt;i&gt;output&lt;/i&gt;, the actor also produce the state values &lt;i&gt;x&lt;/i&gt;&#10; through port &lt;i&gt;state&lt;/i&gt;.  </description>
+  <author>Jie Liu and Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 2.0</since>
+  <Pt.ProposedRating>Yellow (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Yellow (celaine)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="state">Output port that produces DoubleMatrixToken of dimension&#10; &lt;i&gt;r&lt;/i&gt; x 1 (see class comment).</port>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="A">The A matrix in the state-space representation. It must be a&#10; square matrix.&#10; The default value is [[1.0]].</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="B">The B matrix in the state-space representation. The number of&#10; rows must be equal to the number of rows of the A matrix. The&#10; number of columns must be equal to the number of rows in the&#10; input token.  The default value is [[1.0]].</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="C">The C matrix in the state-space representation. The number of&#10; columns must be equal to the number of columns of the A&#10; matrix.  The number of rows must be equal to the number of&#10; columns in the output token. The default value is [[0.0]].</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="D">The D matrix in the state-space representation. The number of&#10; columns must be equal to the number of rows in the input token&#10; (a DoubleMatrixToken of dimension &lt;i&gt;m&lt;/i&gt; x 1.  The number of&#10; rows must be equal to the number of columns in the output&#10; token (a DoubleMatrixToken of dimension &lt;i&gt;r&lt;/i&gt; x 1.  The&#10; default value is [[0.0]].</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="initialStates">The initial condition for the state variables. This must be a&#10; column vector (double matrix with only one column) whose&#10; length is equal to the number of state variables.  The default&#10; value is [0.0].&#10; NOTE: Changes to this parameter will be * applied at the next&#10; time when fire() is called.</property>
+</doc>

@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="PtinyOSCompositeActor" class="ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor">
+  <description>
+A base class for a PtinyOS composite actor with typed packet ports.&#10; This actor is always a type opaque composite actor.&#10;&#10; &lt;p&gt; This actor should be used to interface to or be embedded in a&#10; regular Ptolemy II model.&#10;&#10; &lt;p&gt;The local director of this actor must be a&#10;  &lt;a href=&quot;../../../../ptolemy/domains/ptinyos/kernel/PtinyOSDirector.xml&quot;&gt;ptolemy.domains.ptinyos.kernel.PtinyOSDirector&lt;/a&gt;.  </description>
+  <author>Elaine Cheong</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 5.1</since>
+  <Pt.ProposedRating>Green (celaine)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (celaine)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="packetIn">An input port of type String.</port>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="packetOut">An output port of type String.</port>
+</doc>

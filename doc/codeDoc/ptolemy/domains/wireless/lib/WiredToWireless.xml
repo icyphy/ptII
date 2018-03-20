@@ -11,8 +11,6 @@ On each firing, this actor reads at most one token from the &lt;i&gt;payload&lt;
   <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
     <!--ptolemy.actor.TypedIOPort-->
     <port name="payload">Input port that receives the payload to be transmitted on the&#10;  &lt;i&gt;output&lt;/i&gt; port.</port>
-    <!--ptolemy.domains.wireless.kernel.WirelessIOPort-->
-    <port name="output">Port that sends a wireless output. This has the same type as&#10;  the &lt;i&gt;payload&lt;/i&gt; port.</port>
     <!--ptolemy.actor.TypedIOPort-->
     <port name="properties">input port that receives the properties to be used for transmission&#10;  on the &lt;i&gt;output&lt;/i&gt; port. The type of this port is a record type.</port>
     <!--ptolemy.data.expr.StringParameter-->

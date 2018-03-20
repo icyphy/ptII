@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="IIR" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.IIR">
+  <description>
+This actor is an implementation of an infinite impulse response IIR&#10; filter.  A direct form II [1] implementation is used. This actor is type&#10; polymorphic. Its input, output,&#10; numerator and denominator types can be any type of Token supporting the&#10; basic arithmetic operations (add, subtract and multiply).&#10; &lt;p&gt;&#10; This filter has a transfer function given by:&#10; &lt;b&gt;References&lt;/b&gt;&#10; &lt;p&gt;[1]A. V. Oppenheim, R. W. Schafer, &lt;i&gt;Discrete-Time Signal Processing&lt;/i&gt;,&#10; Prentice Hall, 1989.  </description>
+  <author>Brian K. Vogel, Steve NeuendorfferAleksandar Necakov, Research in Motion Limited</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 1.0</since>
+  <Pt.ProposedRating>Red (vogel)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="numerator">This parameter represents the numerator coefficients as an array&#10; of tokens. The format is&#10; {b&lt;sub&gt;0&lt;/sub&gt;, b&lt;sub&gt;1&lt;/sub&gt;, ..., b&lt;sub&gt;M&lt;/sub&gt;}. The default&#10; value of this parameter is {1.0}.</property>
+    <!--ptolemy.data.expr.Parameter-->
+    <property name="denominator">This  parameter represents the denominator coefficients as an&#10; array of a tokens. The format is&#10; {a&lt;sub&gt;0&lt;/sub&gt;, a&lt;sub&gt;1&lt;/sub&gt;, ..., a&lt;sub&gt;N&lt;/sub&gt;}. Note that&#10; the value of a&lt;sub&gt;0&lt;/sub&gt; is constrained to be 1.0. This&#10; implementation will issue a warning if it is not.&#10; The default value of this parameter is {1.0}.</property>
+</doc>

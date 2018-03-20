@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
+<doc name="Average" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.Average">
+  <description>
+&lt;p&gt;Output the average of the inputs after the last time a true token is&#10; received at the reset port.&#10; One output is produced each time the actor is fired.&#10; The inputs and outputs can be any token type that&#10; supports addition and division by an integer.  The output type is&#10; constrained to be the same as the input type.&#10; Note that if the input is an integer, then the output is an&#10; integer, which may not be what you want. You may need to set&#10; the input and output ports to double to force the result to be&#10; a double.&lt;/p&gt;&#10; &lt;p&gt;&#10; Note that the type system will fail to catch some errors. Static type&#10; checking may result in a resolved type that does not support addition&#10; and division.  In this case, a run-time error will occur.&#10; &lt;/p&gt;  </description>
+  <author>Edward A. Lee, Jie Liu</author>
+  <version>$Id$</version>
+  <since>Ptolemy II 0.3</since>
+  <Pt.ProposedRating>Green (eal)</Pt.ProposedRating>
+  <Pt.AcceptedRating>Green (bilung)</Pt.AcceptedRating>
+    <!--ptolemy.actor.TypedIOPort-->
+    <port name="reset">The reset port of type BooleanToken. If this input port&#10; receives a True token, then the averaging process will be&#10; reset.</port>
+</doc>
