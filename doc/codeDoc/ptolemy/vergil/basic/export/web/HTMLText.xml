@@ -9,4 +9,6 @@ Attribute for inserting HTML text into the page exported by Export to Web.&#10; 
   <since>Ptolemy II 10.0</since>
   <Pt.ProposedRating>Red (cxh)</Pt.ProposedRating>
   <Pt.AcceptedRating>Red (cxh)</Pt.AcceptedRating>
+    <!--ptolemy.vergil.basic.export.web.HTMLTextPosition-->
+    <property name="textPosition">Parameter specifying the position into which to export HTML text.&#10; The parameter offers the following possibilities:&#10;  &lt;ul&gt;&#10;  &lt;li&gt;&lt;b&gt;end&lt;/b&gt;: Put the text at the end of the HTML file.&#10;  &lt;li&gt;&lt;b&gt;header&lt;/b&gt;: Put the text in the header section.&#10;  &lt;li&gt;&lt;b&gt;start&lt;/b&gt;: Put the text at the start of the body section.&#10;  &lt;li&gt;&lt;i&gt;anything_else&lt;/i&gt;: Put the text in a div of this name.&#10;  &lt;/ul&gt;&#10;  The default is &quot;start&quot;.</property>
 </doc>

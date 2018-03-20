@@ -13,6 +13,12 @@ Base class for mathematical model converter.  </description>
     <property name="target"></property>
     <!--ptolemy.data.expr.FileParameter-->
     <property name="template"></property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="modelType"></property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="formulaType"></property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="outputType"></property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="formula"></property>
     <!--ptolemy.data.expr.Parameter-->

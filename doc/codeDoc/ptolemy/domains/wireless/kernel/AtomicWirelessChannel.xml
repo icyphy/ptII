@@ -11,4 +11,6 @@ The base class for communication channels in the wireless domain.&#10;&#10; &lt;
   <Pt.AcceptedRating>Yellow (cxh)</Pt.AcceptedRating>
     <!--ptolemy.data.expr.Parameter-->
     <property name="defaultProperties">The default properties for transmission. In this base class,&#10;  the type is constrained to be a record and the default value&#10;  is set to an empty record.  Derived classes&#10;  will define this to be a record.</property>
+    <!--ptolemy.data.expr.NameParameter-->
+    <property name="name">When set to a non-empty value, this NameParameter will cause&#10;  the name of this channel to be set to this value.</property>
 </doc>

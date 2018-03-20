@@ -13,10 +13,14 @@ An event to report a message to the user in various forms.  </description>
     <property name="columnsDisplayed">The horizontal size of the display, in columns. This contains&#10;  an integer, and defaults to 40.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="message">The message to be displayed.</property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="mode">The display mode.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="referredTableau">The tableau parameter referred to, or an empty string.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="response">The last received yes-or-no response.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="rowsDisplayed">The vertical size of the display, in rows. This contains an integer, and&#10;        defaults to 10.</property>
+    <!--ptolemy.domains.ptera.lib.TableauParameter-->
+    <property name="tableau">The default tableau.</property>
 </doc>

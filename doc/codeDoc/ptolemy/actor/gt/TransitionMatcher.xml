@@ -9,4 +9,10 @@ A matcher to match any transition in an FSM controller or scheduling relation&#1
   <since>Ptolemy II 8.0</since>
   <Pt.ProposedRating>Yellow (tfeng)</Pt.ProposedRating>
   <Pt.AcceptedRating>Red (tfeng)</Pt.AcceptedRating>
+    <!--ptolemy.actor.gt.GTIngredientsAttribute-->
+    <property name="criteria">The attribute containing all the criteria in a list&#10;  (&lt;a href=&quot;../../../ptolemy/actor/gt/GTIngredientList.xml&quot;&gt;ptolemy.actor.gt.GTIngredientList&lt;/a&gt;).</property>
+    <!--ptolemy.actor.gt.GTIngredientsAttribute-->
+    <property name="operations">The attribute containing all the operations in a list&#10;  (&lt;a href=&quot;../../../ptolemy/actor/gt/GTIngredientList.xml&quot;&gt;ptolemy.actor.gt.GTIngredientList&lt;/a&gt;).</property>
+    <!--ptolemy.actor.gt.PatternObjectAttribute-->
+    <property name="patternObject">The attribute that specifies the name of the corresponding entity in the&#10;  pattern.</property>
 </doc>

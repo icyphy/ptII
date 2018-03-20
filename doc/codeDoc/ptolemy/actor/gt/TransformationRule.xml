@@ -23,6 +23,8 @@ A transformation rule that contains a pattern and a replacement. It has two&#10;
     <port name="remaining">The remaining port.</port>
     <!--ptolemy.actor.TypedIOPort-->
     <port name="trigger">The trigger port.</port>
+    <!--ptolemy.actor.gt.TransformationMode-->
+    <property name="mode">The mode.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="repeatCount">The count of repeated transformation in one firing.</property>
     <!--ptolemy.data.expr.Parameter-->

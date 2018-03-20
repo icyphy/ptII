@@ -15,6 +15,8 @@ A parameter that represents a debugger for event debugging. It receives&#10; deb
     <property name="hierarchical">Whether debugging messages from lower levels of the model hierarchy&#10;  should be displayed.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="log">The recorded messages.</property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="mode">The mode of this debugger, which is either &quot;check log&quot;, &quot;display&quot;, or&#10;  &quot;record log&quot;.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="rowsDisplayed">The vertical size of the display, in rows. This contains an integer, and&#10;  defaults to 10.</property>
 </doc>

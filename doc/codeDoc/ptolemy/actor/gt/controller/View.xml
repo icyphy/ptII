@@ -19,6 +19,8 @@ An event to view the model in the model parameter in a separate window. If the&#
     <property name="screenLocation">Location of the new window, or [-1, -1] if the default location is to be&#10;  used.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="screenSize">Size of the new window, or [-1, -1] if the default size is to be used.</property>
+    <!--ptolemy.domains.ptera.lib.TableauParameter-->
+    <property name="tableau">The default tableau.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="title">Title of the window.</property>
 </doc>

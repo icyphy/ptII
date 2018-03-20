@@ -17,6 +17,8 @@ An attribute for parameters of automatic layout. This is read by the KIELER&#10;
     <property name="spacing">The overall spacing between graph elements.</property>
     <!--ptolemy.actor.parameters.DoubleRangeParameter-->
     <property name="logAspectRatio">The aspect ratio for placement of connected components (logarithmic).</property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="interactionMode">Mode of user interaction: whether user positioning is allowed to affect the layout.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="helpURL">Customized help file to be displayed by the layout configuration dialog.</property>
 </doc>

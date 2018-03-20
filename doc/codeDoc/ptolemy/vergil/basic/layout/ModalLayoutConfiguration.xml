@@ -9,4 +9,6 @@ Specialized layout configuration dialog for&#10; &lt;a href=&quot;../../../../pt
   <since>Ptolemy II 11.0</since>
     <!--ptolemy.data.expr.Parameter-->
     <property name="drawSplines">Whether the edges of FSMs should be routed and drawn as splines.</property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="direction">Specifies the direction into which the &quot;flow&quot; of the layout points.</property>
 </doc>

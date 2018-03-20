@@ -23,6 +23,8 @@ An event to set the state of a tableau.  </description>
     <property name="screenLocation">Location of the tableau, or [-1, -1] if not changed.</property>
     <!--ptolemy.data.expr.Parameter-->
     <property name="screenSize">Size of the tableau, or [-1, -1] if not changed.</property>
+    <!--ptolemy.data.expr.ChoiceParameter-->
+    <property name="state">The iconified, maximized or normal state of the tableau.</property>
     <!--ptolemy.data.expr.StringParameter-->
     <property name="title">The title of the tableau, or an empty string if not changed.</property>
     <!--ptolemy.data.expr.Parameter-->
