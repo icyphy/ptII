@@ -1709,7 +1709,8 @@ DIST_URL = https://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
 
-KEYSTORE2=/users/ptII/adm/certs/ptkeystore
+#KEYSTORE2=/users/ptII/adm/certs/ptkeystore
+KEYSTORE2=$(HOME)/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
@@ -1746,7 +1747,7 @@ $(HOME)/.certpw:
 	fi
 
 jnlp_dist_nightly: $(HOME)/.certpw
-	$(MAKE) STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=$(HOME)/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
+	$(MAKE) STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=$(HOME)/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=$(HOME)/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
 DIST_JAR=/home/www/ptweb/ptolemyII/ptII11.0/$(PTVERSION)
