@@ -62,9 +62,9 @@ import ptolemy.util.FileUtilities;
    repository. They need to be downloaded separately. Please place
    under $PTII/vendors/sphinx4 , then run ./configure.
 
-   <a href="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar">sphinx4-core-5prealpha.jar</a>
+   <a href="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-core&amp;v=5prealpha&amp;e=jar">sphinx4-core-5prealpha.jar</a>
 
-   <a href="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar">sphinx4-data-5prealpha.jar</a>
+   <a href="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar">sphinx4-data-5prealpha.jar</a>
 
    <p>Then:</p>
    <pre>
@@ -74,7 +74,7 @@ import ptolemy.util.FileUtilities;
    Sphinx works much better with a custom dictionary and language
    model.  These can be generated from a file of sentences with an
    online tool.  Please see:
-   <a href="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar">https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar</a>
+   <a href="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar">https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar</a>
 
    A sample dictionary, language model and sentence file from Sphinx4 are included with the demo:
    $PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition
