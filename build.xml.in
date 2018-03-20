@@ -675,7 +675,7 @@ For example:
     java.maxmemory.large, which could cause problems for 32-bit
     jvms. -->
 
-    <javadoc additionalparam="-notimestamp -quiet"
+    <javadoc additionalparam="-quiet"
              destdir="doc/codeDoc"
              docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
