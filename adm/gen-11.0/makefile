@@ -409,16 +409,14 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 			--exclude="CVS" \
 			--exclude=",svn" \
 			--exclude=".git" \
-			--exclude="*codeDoc*" \
 			-X $(GENDIR)/src.ex \
 			-X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
-	@echo "Removing codeDoc directories and other documentation"
+	@echo "Removing other documentation"
 	#@echo "  tar -X does not seem to work under Cygwin"
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
-	rm -rf $(PTIIDIST)/doc/codeDoc* \
-		$(PTIIDIST)/config/*.jar \
+	rm -rf $(PTIIDIST)/config/*.jar \
 		$(PTIIDIST)/config/*.class
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	-(cd $(PTIIDIST); $(FINDCLEAN))
@@ -492,8 +490,6 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	#
 	# Copy *.so files because src.ex removes them.
 	cp $(PTIIHOME)/lib/lib*.so $(PTIIDIST)/lib/
-	cp $(PTIIHOME)/lib/linux-x86-64-rhel/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
-	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
 	#
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
@@ -640,7 +636,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR
 	#(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) install)
 	# Regenerate $PTII/build.xml
 	(cd $(PTII); ./configure)
-	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
+	ls -l $(PTIIDIST)/lib/lib*.so
 
 dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
@@ -3804,7 +3800,7 @@ test_setup_make_fast_install:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
+	ls -l $(PTIIDIST)/lib/lib*.so
 	(cd test/installerTest; chmod a+x ./configure; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
 
 test_setup_make_tests:
@@ -4037,7 +4033,6 @@ $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTIN
 	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
-	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/
 	# Disable logging, see https://groups.google.com/forum/#!topic/izpack-user/87fwTxSz3jA
 	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
@@ -4051,7 +4046,6 @@ $(CAPECODE_SETUP_LINUX).jar: $(CAPECODE_SETUP_LINUX).xml $(PTIIDIST)/jar_dist $(
 	@echo "#"
 	@echo "# Now building target setup_linux_jar: (CAPECODE_SETUP_LINUX): $@"
 	@echo "# `date`"
-	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/
 	# Disable logging, see https://groups.google.com/forum/#!topic/izpack-user/87fwTxSz3jA
 	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
