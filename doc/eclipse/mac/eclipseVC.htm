@@ -1,0 +1,139 @@
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Eclipse is aware of the Version Control aspects of the project.</title> 
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Eclipse is aware of the Version Control aspects of the project.</h1>
+    <p><i>(Use both the Eclipse Git plugin and optionally the
+	shell <code>git</code> command).</i>
+
+      <br/>This choice is the <b>preferred</b> choice for collaborating with
+      the Ptolemy group because it means that your Ptolemy II tree can get
+      recent changes.
+
+      <br/>The downside is that that the development tree is under
+      development, so there may be bugs or instability.</p>
+
+
+    <p>For other ways to set up Eclipse and Ptolemy II, see
+      the <a href="project.htm" target="main">Setting up Eclipse to manage your Ptolemy II development Environment</a> page.</p>
+
+    <p>In Eclipse, add the ptII Git Repository:</p>
+
+    <ol>
+      <li>Choose the <code>Window</code> menu | <code>Show View</code> | <code>Other</code> | <code>Git</code> | <code>Git Repositories</code> and then hit Open:
+        <center>
+	  <p><img src="../../img/eclipseShowView.png" alt="Eclipse Git Show View" width="302" height="414"></p>
+        </center>
+      </li>
+
+      <li>In the Git Repository View, you may need to resize the pane
+        by dragging the upper border upwards.
+        <center>
+	  <p><img src="../../img/eclipseGitRepositories.png" alt="Eclipse Git Repositories" width="804" height="232"></p>
+        </center>
+        In the Git Repository View select <code>Clone a Git repository</code>.
+      </li>
+
+      <li>In the Select Repository Source window, select <code>Clone URI</code> and click on Next:
+        <center>
+	  <p><img src="../../img/eclipseCloneGitRepository.png" alt="Eclipse Clone Git Repository" width="523" height="568"></p>
+        </center>
+      </li>
+
+      <li>In the URI field, paste
+        <pre>
+          https://github.com/icyphy/ptII
+        </pre>
+        <center>
+	  <p><img src="../../img/eclipseSourceGitRepository.png" alt="Eclipse Source Git Repository" width="527" height="569"></p>
+        </center>        
+
+        <i>Optional</i> If you have write access to the repository,
+        add your user name and password to the Authentication section.
+
+      </li>
+
+      <li>In the Branch Selection window, click on <code>Deselect All</code>, then click on the box next to the <code>master</code> branch, then Next:
+        <center>
+	  <p><img src="../../img/eclipseBranchSelection.png" alt="Eclipse Branch Selection" width="527" height="569"></p>
+        </center>        
+
+        <blockquote>
+          <table border="1">
+            <tr>
+	      <td>
+	        Be sure to check out the <b><code>master</code></b> branch and not the
+	        entire tree, which include all the branches and the trunk.
+	      </td>
+            </tr>
+          </table>
+        </blockquote>
+
+      </li>
+
+      <li>In the Local Destination window, the defaults are probably fine.  Click Finish
+        <center>
+	  <p><img src="../../img/eclipseLocalDestination.png" alt="Eclipse Local Destination" width="522" height="568"></p>
+        </center>        
+      </li>
+      <li>The clone will occur, which will take a few minutes.
+    </ol>
+
+    
+    <p> To set up the Eclipse project, follow these steps:</p>
+    <ol>
+      <li> In the File menu, select New | Project ..</li>
+      <li> In the New Project window, select Java &gt; Java project, Click Next.
+        <center>
+	  <p><img src="../../img/eclipseNewProject.png" alt="Eclipse New Project" width="528" height="502"></p>
+        </center>
+      </li>
+      <li>In the Create a Java Project window:
+        <br/> In Project name, enter any project name,  <code>ptII</code>
+        is a common choice.
+        <br/> Uncheck Use default location and browse to the location of the ptII git repo, which is usually
+        in the home directory as <code>git/ptII</code>.
+        <br/> Hit Finish
+        <br/>Below is the Create a Java Project window:
+        <center>
+	  <p><img src="../../img/eclipseCreateAJavaProject.png" alt="Eclipse Create A Java Project" width="588" height="722"></p>
+        </center>
+      </li>
+
+      <li> Click Next.</li>
+
+      <li> In the Java Settings window, change the Default output folder to ptII/eclipse.
+
+        <p>In Ptolemy II, the <code>$PTII/bin</code> directory contains
+          Ptolemy-specific scripts.  Unfortunately, Eclipse wants to write
+          .class files to that directory.  In versions of Eclipse before
+          Oxygen, it was possible to import a project have the output
+          directory be the same as the project.  Unfortunately, this is no
+          longer possible, so we have Eclipse output files
+          into <code>$PTII/eclipse</code></p>
+        
+        <p>Ideally, we would have a <code>$PTII/.project</code> file that
+          would define the Ptolemy II Eclipse project, which could then be
+          imported.  Unfortunately, the format of the <code>.project</code>
+          file does not support having the output files the same as the
+          project.</p>
+        <p>Here's the Java Settings window:</p>
+      <center>
+	<p><img src="../../img/eclipseCreateAJavaProject.png" alt="Eclipse Create A Java Project" width="587" height="723"></p>
+      </center>
+
+      </li>
+      <li> Click Finish.</li>
+
+      <li> The Open Associated Perspective? window will appear.  Click Open Perspective.</li>
+        
+      <li> There will likely be many errors.  These are soled in the next step.
+        </br>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
+      </li>
+
+    </ol>
+  </body>
+</html>
