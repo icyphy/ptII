@@ -153,8 +153,8 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
     for jar in $jars
     do
-        echo $jar
-        wget -O $PTII/doc/$jar https://icyphy.github.io/ptII/doc/$jar
+        echo "Downloading $jar: `date`"
+        wget -quiet -O $PTII/doc/$jar https://icyphy.github.io/ptII/doc/$jar
         ls -l $PTII/doc/$jar
         (cd $PTII; jar -xf $PTII/doc/$jar)
     done
