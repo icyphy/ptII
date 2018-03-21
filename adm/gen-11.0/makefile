@@ -378,11 +378,15 @@ $(NODE_WIN): node
 	fi
 
 
+# Define these here so that PTIIDIST can depend on them.
+IZPACK_DIR=$(PTIIHOME)/vendors/izpack
+L4J_DIR=$(PTIIHOME)/vendors/launch4j
+
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR) $(L4J_DIR)
+$(PTIIDIST): $(IZPACK_DIR) $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -3414,7 +3418,6 @@ indent_all:
 # Download from http://www.izforge.com/izpack/downloads
 
 #IZPACK_DIR=c:/Program Files/IzPack
-IZPACK_DIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACK_DIR)/bin/compile
 IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLogging.txt sh "$(IZPACK_COMPILE)" -o
 
@@ -3605,16 +3608,15 @@ izpack:
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
 
-L4J_DIR=$(PTIIHOME)/vendors/launch4j
-
 L4J_TAR=launch4j-3.11-linux-x64.tgz
 
 $(L4J_DIR):
 	@echo "Creating L4J_DIR: $(L4J_DIR)"
 	if [ ! -d $(L4J_DIR) ]; then \
 		cd $(PTIIHOME)/vendors; \
-		wget --quiet 'https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-linux-x64.tgz' -O $(L4J_TAR); \
+		wget 'https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-linux-x64.tgz' -O $(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR); \
+		ls -l $@; \
 	fi
 
 
