@@ -45,17 +45,14 @@ install:
   - find $PTII -type f | xargs grep hudson || true
   
   # Shorter running installations first.
-  # Get 7z for installing jogl as part of the installers.
-  - sudo apt-get install -y p7zip-full
 
-  # Get pdflatex for the DOP Center image.
-  - sudo apt-get install -y texlive-latex-base
-
-  # libv4l is needed by Bridj for the camera
-  -  sudo apt-get install -y libv4l-dev
-
-  # Install Java3D
-  - sudo apt-get install -y libjava3d-java || true
+  # Below are the packages that are needed, in alphabetical order:
+  #   genisoimage for building Darwin dmg files under Linux.
+  #   Java3D
+  #   libv4l for  Bridj for the camera.
+  #   p7zip-full for installing jogl as part of the installers.
+  #   pdflatex for the DOP Center image.
+  - sudo apt-get install -y genisoimage libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
 
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
@@ -75,7 +72,7 @@ install:
   # Needed for building installers.
   - sudo ln -s /bin/tar /usr/local/bin/tar
 
-  # Longer running installations
+  # Longer running installations:
 
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
