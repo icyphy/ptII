@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":42,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var methods = {"i0":42,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -167,25 +167,6 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#Z:Z_ignoredReceivers">_ignoredReceivers</a></span></code>&nbsp;</td>
-</tr>
-</table>
-</li>
-</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -219,19 +200,6 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#Z:Z_setOutputTime-ptolemy.actor.util.Time-">_setOutputTime</a></span>(<a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;outputTime)</code>
-<div class="block">Set the output time associated with this time keeper.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#Z:Z_setReceiverPriorities--">_setReceiverPriorities</a></span>()</code>
-<div class="block">Set the priorities of the receivers contained in the input
-  ports of the actor managed by this time keeper.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>double</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#getCurrentTime--">getCurrentTime</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -240,7 +208,7 @@ extends java.lang.Object</pre>
 </div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/domains/dde/kernel/PrioritizedTimedQueue.html" title="class in ptolemy.domains.dde.kernel">PrioritizedTimedQueue</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#getFirstReceiver--">getFirstReceiver</a></span>()</code>
 <div class="block">Return the active PrioritizedTimedQueue with the oldest receiver time
@@ -248,20 +216,20 @@ extends java.lang.Object</pre>
   controls.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#getModelTime--">getModelTime</a></span>()</code>
 <div class="block">Return the current time of this TimeKeeper.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#getNextTime--">getNextTime</a></span>()</code>
 <div class="block">Return the earliest possible time stamp of the next token to be
   consumed by the actor managed by this time keeper.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#getOutputTime--">getOutputTime</a></span>()</code>
 <div class="block">Return the current value of the output time associated with
@@ -269,27 +237,27 @@ extends java.lang.Object</pre>
   a new value that is equivalent to this time keeper's current time.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#removeAllIgnoreTokens--">removeAllIgnoreTokens</a></span>()</code>
 <div class="block">Update receivers controlled by this time keeper that have
   a receiver time equal to PrioritizedTimedQueue.IGNORE.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#sendOutNullTokens-ptolemy.domains.dde.kernel.DDEReceiver-">sendOutNullTokens</a></span>(<a href="../../../../ptolemy/domains/dde/kernel/DDEReceiver.html" title="class in ptolemy.domains.dde.kernel">DDEReceiver</a>&nbsp;receiver)</code>
 <div class="block">Send a NullToken to all output channels that have a receiver
   time less than or equal to the current time of this time keeper.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#setCurrentTime-ptolemy.actor.util.Time-">setCurrentTime</a></span>(<a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;time)</code>
 <div class="block">Set the current time of this TimeKeeper.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html#updateReceiverList-ptolemy.domains.dde.kernel.PrioritizedTimedQueue-">updateReceiverList</a></span>(<a href="../../../../ptolemy/domains/dde/kernel/PrioritizedTimedQueue.html" title="class in ptolemy.domains.dde.kernel">PrioritizedTimedQueue</a>&nbsp;prioritizedTimedQueue)</code>
 <div class="block">Update the list of receivers by adding a receiver to the
@@ -313,23 +281,6 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="Z:Z_ignoredReceivers">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>_ignoredReceivers</h4>
-<pre>volatile&nbsp;boolean _ignoredReceivers</pre>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -514,7 +465,7 @@ public&nbsp;double&nbsp;getCurrentTime()</pre>
 <a name="updateReceiverList-ptolemy.domains.dde.kernel.PrioritizedTimedQueue-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>updateReceiverList</h4>
 <pre>public&nbsp;void&nbsp;updateReceiverList(<a href="../../../../ptolemy/domains/dde/kernel/PrioritizedTimedQueue.html" title="class in ptolemy.domains.dde.kernel">PrioritizedTimedQueue</a>&nbsp;prioritizedTimedQueue)</pre>
@@ -527,47 +478,6 @@ public&nbsp;double&nbsp;getCurrentTime()</pre>
   position is being updated.</dd>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../ptolemy/domains/dde/kernel/ReceiverComparator.html" title="class in ptolemy.domains.dde.kernel"><code>ReceiverComparator</code></a></dd>
-</dl>
-</li>
-</ul>
-<a name="Z:Z_setOutputTime-ptolemy.actor.util.Time-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_setOutputTime</h4>
-<pre>void&nbsp;_setOutputTime(<a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;outputTime)
-             throws <a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></pre>
-<div class="block">Set the output time associated with this time keeper.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>outputTime</code> - The output time of this time keeper.</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - If the output time is
-  less than the current time.</dd>
-</dl>
-</li>
-</ul>
-<a name="Z:Z_setReceiverPriorities--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>_setReceiverPriorities</h4>
-<pre>void&nbsp;_setReceiverPriorities()
-                     throws <a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></pre>
-<div class="block">Set the priorities of the receivers contained in the input
-  ports of the actor managed by this time keeper. Order the
-  receiver priorities relative to one another according to the
-  inverse order in which they were connected to the model
-  topology. I.e., if two input receivers (receiver A and
-  receiver B) are added to an actor such that receiver A is
-  connected in the model topology before receiver B, then
-  receiver B will have a higher priority than receiver A.</div>
-<dl>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - If an error occurs during
-  receiver access.</dd>
 </dl>
 </li>
 </ul>
@@ -624,13 +534,13 @@ public&nbsp;double&nbsp;getCurrentTime()</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

@@ -238,7 +238,9 @@ extends java.lang.Object</pre>
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../../ptolemy/cg/kernel/generic/program/CodeStream.html#CodeStream-java.lang.String-ptolemy.cg.kernel.generic.program.ProgramCodeGenerator-">CodeStream</a></span>(java.lang.String&nbsp;path,
           <a href="../../../../../ptolemy/cg/kernel/generic/program/ProgramCodeGenerator.html" title="class in ptolemy.cg.kernel.generic.program">ProgramCodeGenerator</a>&nbsp;generator)</code>
 <div class="block">Construct a new code stream, given a specified file path of the
- adapter .</div>
+ adapter .[target] file as a URL suitable for
+ <a href="../../../../../ptolemy/util/FileUtilities.html#openForReading-java.lang.String-java.net.URI-java.lang.ClassLoader-"><code>FileUtilities.openForReading(String, URI, ClassLoader)</code></a>,
+  for example "file:./test/testCodeBlock.c".</div>
 </td>
 </tr>
 </table>
@@ -340,7 +342,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/cg/kernel/generic/program/CodeStream.html#description--">description</a></span>()</code>
 <div class="block">Return a String that contains all the code block names and
- bodies from the associated adapter .</div>
+ bodies from the associated adapter .[target] file.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">

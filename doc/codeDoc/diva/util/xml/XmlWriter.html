@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":42,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -173,52 +173,25 @@ extends <a href="../../../diva/util/LoggableOp.html" title="class in diva.util">
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#makeAttributeType-java.lang.String-java.lang.String-">makeAttributeType</a></span>(java.lang.String&nbsp;elname,
-                 java.lang.String&nbsp;aname)</code>
-<div class="block">Generate the attribute type as a normalised string.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>(package private) java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#makeAttributeValue-java.lang.String-java.lang.String-">makeAttributeValue</a></span>(java.lang.String&nbsp;elname,
-                  java.lang.String&nbsp;aname)</code>
-<div class="block">Generate a full attribute default value.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>(package private) java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#makeExternalIdentifiers-java.lang.String-java.lang.String-">makeExternalIdentifiers</a></span>(java.lang.String&nbsp;pubid,
-                       java.lang.String&nbsp;sysid)</code>
-<div class="block">Construct a string equivalent of external identifiers.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>(package private) java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#makeLiteral-java.lang.String-">makeLiteral</a></span>(java.lang.String&nbsp;data)</code>
-<div class="block">Quote a literal, and escape any '"' or non-ASCII characters within it.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#setXMLVersion-java.lang.String-">setXMLVersion</a></span>(java.lang.String&nbsp;v)</code>
 <div class="block">Set the XML version string.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#write-diva.util.xml.XmlDocument-">write</a></span>(<a href="../../../diva/util/xml/XmlDocument.html" title="class in diva.util.xml">XmlDocument</a>&nbsp;document)</code>
 <div class="block">Write the given XmlDocument to its URL.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#write-diva.util.xml.XmlDocument-java.io.Writer-">write</a></span>(<a href="../../../diva/util/xml/XmlDocument.html" title="class in diva.util.xml">XmlDocument</a>&nbsp;document,
      java.io.Writer&nbsp;out)</code>
 <div class="block">Write the given XmlDocument to a given Writer.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#write-diva.util.xml.XmlElement-java.io.Writer-java.lang.String-">write</a></span>(<a href="../../../diva/util/xml/XmlElement.html" title="class in diva.util.xml">XmlElement</a>&nbsp;e,
      java.io.Writer&nbsp;out,
@@ -228,33 +201,26 @@ extends <a href="../../../diva/util/LoggableOp.html" title="class in diva.util">
 </div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#writeDTD-diva.util.xml.XmlDocument-java.io.Writer-">writeDTD</a></span>(<a href="../../../diva/util/xml/XmlDocument.html" title="class in diva.util.xml">XmlDocument</a>&nbsp;document,
         java.io.Writer&nbsp;out)</code>
 <div class="block">Write the DTD of the given XmlDocument to a given Writer.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#writeDTDAttributes-java.lang.String-java.io.Writer-">writeDTDAttributes</a></span>(java.lang.String&nbsp;elname,
-                  java.io.Writer&nbsp;out)</code>
-<div class="block">Dump attributes for an element.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#writeDTDElements-java.io.Writer-">writeDTDElements</a></span>(java.io.Writer&nbsp;out)</code>
 <div class="block">Produce normalised declarations for all elements.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#writeDTDEntities-java.io.Writer-">writeDTDEntities</a></span>(java.io.Writer&nbsp;out)</code>
 <div class="block">Produce normalised declarations for all general entities.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/xml/XmlWriter.html#writeDTDNotations-java.io.Writer-">writeDTDNotations</a></span>(java.io.Writer&nbsp;out)</code>
 <div class="block">Produce normalised declarations for all notations.</div>
@@ -421,7 +387,7 @@ public&nbsp;void&nbsp;write(<a href="../../../diva/util/xml/XmlElement.html" tit
 <a name="writeDTDElements-java.io.Writer-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>writeDTDElements</h4>
 <pre>public&nbsp;void&nbsp;writeDTDElements(java.io.Writer&nbsp;out)
@@ -431,76 +397,6 @@ public&nbsp;void&nbsp;write(<a href="../../../diva/util/xml/XmlElement.html" tit
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.io.IOException</code></dd>
 </dl>
-</li>
-</ul>
-<a name="writeDTDAttributes-java.lang.String-java.io.Writer-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>writeDTDAttributes</h4>
-<pre>void&nbsp;writeDTDAttributes(java.lang.String&nbsp;elname,
-                        java.io.Writer&nbsp;out)
-                 throws java.io.IOException</pre>
-<div class="block">Dump attributes for an element.</div>
-<dl>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.io.IOException</code></dd>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../diva/util/xml/XmlWriter.html#makeAttributeType-java.lang.String-java.lang.String-"><code>makeAttributeType(String, String)</code></a>, 
-<a href="../../../diva/util/xml/XmlWriter.html#makeAttributeValue-java.lang.String-java.lang.String-"><code>makeAttributeValue(String, String)</code></a></dd>
-</dl>
-</li>
-</ul>
-<a name="makeAttributeType-java.lang.String-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>makeAttributeType</h4>
-<pre>java.lang.String&nbsp;makeAttributeType(java.lang.String&nbsp;elname,
-                                   java.lang.String&nbsp;aname)</pre>
-<div class="block">Generate the attribute type as a normalised string.</div>
-</li>
-</ul>
-<a name="makeAttributeValue-java.lang.String-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>makeAttributeValue</h4>
-<pre>java.lang.String&nbsp;makeAttributeValue(java.lang.String&nbsp;elname,
-                                    java.lang.String&nbsp;aname)</pre>
-<div class="block">Generate a full attribute default value.</div>
-<dl>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../diva/util/xml/XmlWriter.html#makeLiteral-java.lang.String-"><code>makeLiteral(java.lang.String)</code></a></dd>
-</dl>
-</li>
-</ul>
-<a name="makeExternalIdentifiers-java.lang.String-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>makeExternalIdentifiers</h4>
-<pre>java.lang.String&nbsp;makeExternalIdentifiers(java.lang.String&nbsp;pubid,
-                                         java.lang.String&nbsp;sysid)</pre>
-<div class="block">Construct a string equivalent of external identifiers.</div>
-<dl>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../diva/util/xml/XmlWriter.html#makeLiteral-java.lang.String-"><code>makeLiteral(java.lang.String)</code></a></dd>
-</dl>
-</li>
-</ul>
-<a name="makeLiteral-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>makeLiteral</h4>
-<pre>java.lang.String&nbsp;makeLiteral(java.lang.String&nbsp;data)</pre>
-<div class="block">Quote a literal, and escape any '"' or non-ASCII characters within it.</div>
 </li>
 </ul>
 </li>

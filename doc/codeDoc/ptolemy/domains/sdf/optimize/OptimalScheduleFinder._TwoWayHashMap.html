@@ -17,12 +17,6 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
-var altColor = "altColor";
-var rowColor = "rowColor";
-var tableTab = "tableTab";
-var activeTableTab = "activeTableTab";
 </script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -73,15 +67,15 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.summary">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 </div>
 <a name="skip.navbar.top">
@@ -123,198 +117,18 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) java.util.HashMap</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._TwoWayHashMap.html#Z:Z_backwardMap">_backwardMap</a></span></code>
-<div class="block">one-way hash map to make the backward association</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>(package private) java.util.HashMap</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._TwoWayHashMap.html#Z:Z_forwardMap">_forwardMap</a></span></code>
-<div class="block">one-way hash map to make the forward association</div>
-</td>
-</tr>
-</table>
-</li>
-</ul>
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colOne" scope="col">Constructor and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._TwoWayHashMap.html#Z:Z_TwoWayHashMap--">_TwoWayHashMap</a></span>()</code>
-<div class="block">Construct an instance of two-way hash map.</div>
-</td>
-</tr>
-</table>
-</li>
-</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
 <!--   -->
 </a>
 <h3>Method Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Method and Description</th>
-</tr>
-<tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) java.lang.Object</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._TwoWayHashMap.html#getBW-java.lang.Object-">getBW</a></span>(java.lang.Object&nbsp;B)</code>
-<div class="block">Backward lookup.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>(package private) java.lang.Object</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._TwoWayHashMap.html#getFW-java.lang.Object-">getFW</a></span>(java.lang.Object&nbsp;A)</code>
-<div class="block">Forward lookup.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._TwoWayHashMap.html#put-java.lang.Object-java.lang.Object-">put</a></span>(java.lang.Object&nbsp;A,
-   java.lang.Object&nbsp;B)</code>
-<div class="block">Put an association between objects A and B in the hash map.</div>
-</td>
-</tr>
-</table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="details">
-<ul class="blockList">
-<li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="Z:Z_forwardMap">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_forwardMap</h4>
-<pre>java.util.HashMap _forwardMap</pre>
-<div class="block">one-way hash map to make the forward association</div>
-</li>
-</ul>
-<a name="Z:Z_backwardMap">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>_backwardMap</h4>
-<pre>java.util.HashMap _backwardMap</pre>
-<div class="block">one-way hash map to make the backward association</div>
-</li>
-</ul>
-</li>
-</ul>
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a name="Z:Z_TwoWayHashMap--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>_TwoWayHashMap</h4>
-<pre>_TwoWayHashMap()</pre>
-<div class="block">Construct an instance of two-way hash map.</div>
-</li>
-</ul>
-</li>
-</ul>
-<!-- ============ METHOD DETAIL ========== -->
-<ul class="blockList">
-<li class="blockList"><a name="method.detail">
-<!--   -->
-</a>
-<h3>Method Detail</h3>
-<a name="put-java.lang.Object-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>put</h4>
-<pre>void&nbsp;put(java.lang.Object&nbsp;A,
-         java.lang.Object&nbsp;B)</pre>
-<div class="block">Put an association between objects A and B in the hash map.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>A</code> - object A</dd>
-<dd><code>B</code> - object B</dd>
-</dl>
-</li>
-</ul>
-<a name="getFW-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getFW</h4>
-<pre>java.lang.Object&nbsp;getFW(java.lang.Object&nbsp;A)</pre>
-<div class="block">Forward lookup.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>A</code> - lookup object associated with object A</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>associated object</dd>
-</dl>
-</li>
-</ul>
-<a name="getBW-java.lang.Object-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>getBW</h4>
-<pre>java.lang.Object&nbsp;getBW(java.lang.Object&nbsp;B)</pre>
-<div class="block">Backward lookup.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>B</code> - lookup object associated with object B</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>associated object</dd>
-</dl>
-</li>
 </ul>
 </li>
 </ul>
@@ -369,15 +183,15 @@ extends java.lang.Object</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.summary">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 </div>
 <a name="skip.navbar.bottom">

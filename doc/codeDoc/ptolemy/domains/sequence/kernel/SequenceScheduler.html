@@ -226,19 +226,6 @@ inside that module are executed
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>(package private) java.util.Hashtable&lt;<a href="../../../../ptolemy/actor/Actor.html" title="interface in ptolemy.actor">Actor</a>,java.util.List&lt;<a href="../../../../ptolemy/graph/Node.html" title="class in ptolemy.graph">Node</a>&gt;&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sequence/kernel/SequenceScheduler.html#Z:Z_actorGraphNodeList">_actorGraphNodeList</a></span></code>
-<div class="block">Hashtable of actors to graph nodes
-  FIXME:  Is there a better way to do this?</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sequence/kernel/SequenceScheduler.html#Z:Z_allowDisconnectedGraphs">_allowDisconnectedGraphs</a></span></code>
-<div class="block">Cache of the value of allowDisconnectedGraphs.</div>
-</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>protected static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sequence/kernel/SequenceScheduler.html#Z:Z_DEFAULT_SCHEDULER_NAME">_DEFAULT_SCHEDULER_NAME</a></span></code>
 <div class="block">The default name.</div>
@@ -248,15 +235,6 @@ inside that module are executed
 <td class="colFirst"><code>protected boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sequence/kernel/SequenceScheduler.html#Z:Z_scheduleUnexecutedActors">_scheduleUnexecutedActors</a></span></code>
 <div class="block">Flag for appending all the unexecuted actors that are not sequenced at the end of the schedule.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>(package private) java.util.Hashtable&lt;<a href="../../../../ptolemy/graph/Node.html" title="class in ptolemy.graph">Node</a>,java.lang.Boolean&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sequence/kernel/SequenceScheduler.html#Z:Z_visitedNodes">_visitedNodes</a></span></code>
-<div class="block">Hashtable of graph nodes to a boolean value
-  Keeps track of which nodes in the graph have been visited
-  (in other words, can be scheduled somewhere)
-  Anything that has not been visited is unreachable.</div>
 </td>
 </tr>
 </table>
@@ -373,7 +351,11 @@ inside that module are executed
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sequence/kernel/SequenceScheduler.html#setContainer-ptolemy.kernel.util.NamedObj-">setContainer</a></span>(<a href="../../../../ptolemy/kernel/util/NamedObj.html" title="class in ptolemy.kernel.util">NamedObj</a>&nbsp;container)</code>
-<div class="block">FIXME:  Keep this or change?</div>
+<div class="block">FIXME:  Keep this or change?
+  Should the SequencedModelDirector be a sub-class of StaticSchedulingDirector?
+  If it is, then can just use superclass function
+
+  Specify the container.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
@@ -457,52 +439,14 @@ inside that module are executed
 <div class="block">Flag for appending all the unexecuted actors that are not sequenced at the end of the schedule.</div>
 </li>
 </ul>
-<a name="Z:Z_allowDisconnectedGraphs">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_allowDisconnectedGraphs</h4>
-<pre>boolean _allowDisconnectedGraphs</pre>
-<div class="block">Cache of the value of allowDisconnectedGraphs.</div>
-</li>
-</ul>
 <a name="Z:Z_actorGraph">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_actorGraph</h4>
-<pre>public&nbsp;<a href="../../../../ptolemy/graph/DirectedGraph.html" title="class in ptolemy.graph">DirectedGraph</a> _actorGraph</pre>
-<div class="block">The DirectedGraph for the model.</div>
-</li>
-</ul>
-<a name="Z:Z_actorGraphNodeList">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_actorGraphNodeList</h4>
-<pre>java.util.Hashtable&lt;<a href="../../../../ptolemy/actor/Actor.html" title="interface in ptolemy.actor">Actor</a>,java.util.List&lt;<a href="../../../../ptolemy/graph/Node.html" title="class in ptolemy.graph">Node</a>&gt;&gt; _actorGraphNodeList</pre>
-<div class="block">Hashtable of actors to graph nodes
-  FIXME:  Is there a better way to do this?</div>
-</li>
-</ul>
-<a name="Z:Z_visitedNodes">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>_visitedNodes</h4>
-<pre>java.util.Hashtable&lt;<a href="../../../../ptolemy/graph/Node.html" title="class in ptolemy.graph">Node</a>,java.lang.Boolean&gt; _visitedNodes</pre>
-<div class="block">Hashtable of graph nodes to a boolean value
-  Keeps track of which nodes in the graph have been visited
-  (in other words, can be scheduled somewhere)
-  Anything that has not been visited is unreachable.
-  Note:  TestExceptionHandler actors are not included in this hashtable
-  That way, we can use the easy .contains(false) on the hash table
-  to see if an unreachable node exists, instead of having to check
-  each node and make sure it's not a TestExceptionHandler</div>
+<h4>_actorGraph</h4>
+<pre>public&nbsp;<a href="../../../../ptolemy/graph/DirectedGraph.html" title="class in ptolemy.graph">DirectedGraph</a> _actorGraph</pre>
+<div class="block">The DirectedGraph for the model.</div>
 </li>
 </ul>
 </li>

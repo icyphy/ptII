@@ -17,12 +17,6 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
-var altColor = "altColor";
-var rowColor = "rowColor";
-var tableTab = "tableTab";
-var activeTableTab = "activeTableTab";
 </script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -73,15 +67,15 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.summary">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 </div>
 <a name="skip.navbar.top">
@@ -131,269 +125,18 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) int[]</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#actorContent">actorContent</a></span></code>
-<div class="block">Array to store all actor content, remaining number of firings.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>(package private) int[]</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#channelContent">channelContent</a></span></code>
-<div class="block">Array to store all channel content.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._Actor</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#firingActor">firingActor</a></span></code>
-<div class="block">The actor that was fired to reach this state.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>(package private) boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#firingExclusive">firingExclusive</a></span></code>
-<div class="block">true if the firing to reach the state was exclusive.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#previousState">previousState</a></span></code>
-<div class="block">Link to the previous state.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>(package private) int</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#value">value</a></span></code>
-<div class="block">Value to be optimized, smaller is better.</div>
-</td>
-</tr>
-</table>
-</li>
-</ul>
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colOne" scope="col">Constructor and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#Z:Z_State-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">_State</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;thePreviousState)</code>
-<div class="block">Construct an instance of State, with a reference to a previous state.</div>
-</td>
-</tr>
-</table>
-</li>
-</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
 <!--   -->
 </a>
 <h3>Method Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Method and Description</th>
-</tr>
-<tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#clone-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">clone</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</code>
-<div class="block">Create new state by cloning state 'state' and marking
- s as its predecessor state.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>(package private) int</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#getFiringsToCompletion--">getFiringsToCompletion</a></span>()</code>
-<div class="block">Determine the number of remaining firings.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>(package private) boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html#isEndState--">isEndState</a></span>()</code>
-<div class="block">Test whether this is a valid end state, i.e. whether all actors have
- completed their required number of firings.</div>
-</td>
-</tr>
-</table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="details">
-<ul class="blockList">
-<li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="firingExclusive">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>firingExclusive</h4>
-<pre>boolean firingExclusive</pre>
-<div class="block">true if the firing to reach the state was exclusive.</div>
-</li>
-</ul>
-<a name="firingActor">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>firingActor</h4>
-<pre><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._Actor</a> firingActor</pre>
-<div class="block">The actor that was fired to reach this state.
- remains nil for the initial state.</div>
-</li>
-</ul>
-<a name="previousState">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>previousState</h4>
-<pre><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a> previousState</pre>
-<div class="block">Link to the previous state.</div>
-</li>
-</ul>
-<a name="channelContent">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>channelContent</h4>
-<pre>int[] channelContent</pre>
-<div class="block">Array to store all channel content.
- Channels and input ports within those channels are given their unique
- index into this array.</div>
-</li>
-</ul>
-<a name="actorContent">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>actorContent</h4>
-<pre>int[] actorContent</pre>
-<div class="block">Array to store all actor content, remaining number of firings.
- Actors are given their unique index into this array.</div>
-</li>
-</ul>
-<a name="value">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>value</h4>
-<pre>int value</pre>
-<div class="block">Value to be optimized, smaller is better.</div>
-</li>
-</ul>
-</li>
-</ul>
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a name="Z:Z_State-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>_State</h4>
-<pre>_State(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;thePreviousState)</pre>
-<div class="block">Construct an instance of State, with a reference to a previous state.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>thePreviousState</code> - link to previous state</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
-<!-- ============ METHOD DETAIL ========== -->
-<ul class="blockList">
-<li class="blockList"><a name="method.detail">
-<!--   -->
-</a>
-<h3>Method Detail</h3>
-<a name="clone-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>clone</h4>
-<pre><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;clone(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</pre>
-<div class="block">Create new state by cloning state 'state' and marking
- s as its predecessor state.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>state</code> - state to clone</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>the new state</dd>
-</dl>
-</li>
-</ul>
-<a name="isEndState--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>isEndState</h4>
-<pre>boolean&nbsp;isEndState()</pre>
-<div class="block">Test whether this is a valid end state, i.e. whether all actors have
- completed their required number of firings.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>true is end state</dd>
-</dl>
-</li>
-</ul>
-<a name="getFiringsToCompletion--">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>getFiringsToCompletion</h4>
-<pre>int&nbsp;getFiringsToCompletion()</pre>
-<div class="block">Determine the number of remaining firings.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>number of remaining firings</dd>
-</dl>
-</li>
 </ul>
 </li>
 </ul>
@@ -448,15 +191,15 @@ extends java.lang.Object</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.summary">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Field&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
+<li>Method</li>
 </ul>
 </div>
 <a name="skip.navbar.bottom">

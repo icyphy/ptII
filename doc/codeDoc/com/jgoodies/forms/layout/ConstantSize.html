@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10,"i6":9,"i7":10,"i8":9};
-var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -74,13 +74,13 @@ var activeTableTab = "activeTableTab";
 <li>Summary:&nbsp;</li>
 <li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
@@ -244,34 +244,6 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 </table>
 </li>
 </ul>
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colOne" scope="col">Constructor and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#ConstantSize-double-com.jgoodies.forms.layout.ConstantSize.Unit-">ConstantSize</a></span>(double&nbsp;value,
-            <a href="../../../../com/jgoodies/forms/layout/ConstantSize.Unit.html" title="class in com.jgoodies.forms.layout">ConstantSize.Unit</a>&nbsp;unit)</code>
-<div class="block">Constructs an instance of <code>ConstantSize</code> from the given
- encoded size and unit description.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#ConstantSize-int-com.jgoodies.forms.layout.ConstantSize.Unit-">ConstantSize</a></span>(int&nbsp;value,
-            <a href="../../../../com/jgoodies/forms/layout/ConstantSize.Unit.html" title="class in com.jgoodies.forms.layout">ConstantSize.Unit</a>&nbsp;unit)</code>
-<div class="block">Constructs an instance of <code>ConstantSize</code> from the given
- encoded size and unit description.</div>
-</td>
-</tr>
-</table>
-</li>
-</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
@@ -279,72 +251,43 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) static <a href="../../../../com/jgoodies/forms/layout/ConstantSize.html" title="class in com.jgoodies.forms.layout">ConstantSize</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#dluX-int-">dluX</a></span>(int&nbsp;value)</code>
-<div class="block">Returns an instance of <code>Size</code> for the specified value
- in horizontal dialog units.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>(package private) static <a href="../../../../com/jgoodies/forms/layout/ConstantSize.html" title="class in com.jgoodies.forms.layout">ConstantSize</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#dluY-int-">dluY</a></span>(int&nbsp;value)</code>
-<div class="block">Returns an instance of <code>Size</code> for the specified value
- in vertical dialog units.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#equals-java.lang.Object-">equals</a></span>(java.lang.Object&nbsp;o)</code>
 <div class="block">Indicates whether some other ConstantSize is "equal to" this one.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#getPixelSize-java.awt.Component-">getPixelSize</a></span>(java.awt.Component&nbsp;component)</code>
 <div class="block">Converts the size if necessary and returns the value in pixels.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#hashCode--">hashCode</a></span>()</code>
 <div class="block">Returns a hash code value for the object.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#maximumSize-java.awt.Container-java.util.List-com.jgoodies.forms.layout.FormLayout.Measure-com.jgoodies.forms.layout.FormLayout.Measure-com.jgoodies.forms.layout.FormLayout.Measure-">maximumSize</a></span>(java.awt.Container&nbsp;container,
            java.util.List&nbsp;components,
-           <a href="../../../../com/jgoodies/forms/layout/FormLayout.Measure.html" title="interface in com.jgoodies.forms.layout">FormLayout.Measure</a>&nbsp;minMeasure,
-           <a href="../../../../com/jgoodies/forms/layout/FormLayout.Measure.html" title="interface in com.jgoodies.forms.layout">FormLayout.Measure</a>&nbsp;prefMeasure,
-           <a href="../../../../com/jgoodies/forms/layout/FormLayout.Measure.html" title="interface in com.jgoodies.forms.layout">FormLayout.Measure</a>&nbsp;defaultMeasure)</code>
+           com.jgoodies.forms.layout.FormLayout.Measure&nbsp;minMeasure,
+           com.jgoodies.forms.layout.FormLayout.Measure&nbsp;prefMeasure,
+           com.jgoodies.forms.layout.FormLayout.Measure&nbsp;defaultMeasure)</code>
 <div class="block">Returns this size as pixel size.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>(package private) static java.lang.String[]</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#splitValueAndUnit-java.lang.String-">splitValueAndUnit</a></span>(java.lang.String&nbsp;encodedValueAndUnit)</code>
-<div class="block">Splits a string that encodes size with unit into the size and unit
- substrings.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#toString--">toString</a></span>()</code>
 <div class="block">Returns a string representation of this size object.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>(package private) static <a href="../../../../com/jgoodies/forms/layout/ConstantSize.html" title="class in com.jgoodies.forms.layout">ConstantSize</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/jgoodies/forms/layout/ConstantSize.html#valueOf-java.lang.String-boolean-">valueOf</a></span>(java.lang.String&nbsp;encodedValueAndUnit,
-       boolean&nbsp;horizontal)</code>
-<div class="block">Constructs an instance of <code>ConstantSize</code> from the given
- encoded size and unit description.</div>
 </td>
 </tr>
 </table>
@@ -479,110 +422,12 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 </ul>
 </li>
 </ul>
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<ul class="blockList">
-<li class="blockList"><a name="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a name="ConstantSize-int-com.jgoodies.forms.layout.ConstantSize.Unit-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>ConstantSize</h4>
-<pre>ConstantSize(int&nbsp;value,
-             <a href="../../../../com/jgoodies/forms/layout/ConstantSize.Unit.html" title="class in com.jgoodies.forms.layout">ConstantSize.Unit</a>&nbsp;unit)</pre>
-<div class="block">Constructs an instance of <code>ConstantSize</code> from the given
- encoded size and unit description.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>value</code> - the size value interpreted in the given units</dd>
-<dd><code>unit</code> - the size's unit</dd>
-</dl>
-</li>
-</ul>
-<a name="ConstantSize-double-com.jgoodies.forms.layout.ConstantSize.Unit-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>ConstantSize</h4>
-<pre>ConstantSize(double&nbsp;value,
-             <a href="../../../../com/jgoodies/forms/layout/ConstantSize.Unit.html" title="class in com.jgoodies.forms.layout">ConstantSize.Unit</a>&nbsp;unit)</pre>
-<div class="block">Constructs an instance of <code>ConstantSize</code> from the given
- encoded size and unit description.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>value</code> - the size value interpreted in the given units</dd>
-<dd><code>unit</code> - the size's unit</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ============ METHOD DETAIL ========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.detail">
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="valueOf-java.lang.String-boolean-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>valueOf</h4>
-<pre>static&nbsp;<a href="../../../../com/jgoodies/forms/layout/ConstantSize.html" title="class in com.jgoodies.forms.layout">ConstantSize</a>&nbsp;valueOf(java.lang.String&nbsp;encodedValueAndUnit,
-                            boolean&nbsp;horizontal)</pre>
-<div class="block">Constructs an instance of <code>ConstantSize</code> from the given
- encoded size and unit description.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>encodedValueAndUnit</code> - the size's value and unit as string</dd>
-<dd><code>horizontal</code> - true for horizontal, false for vertical</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>a constant size for the given encoding and unit description</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.IllegalArgumentException</code> - if the unit requires integer
-    but the value is not an integer</dd>
-</dl>
-</li>
-</ul>
-<a name="dluX-int-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>dluX</h4>
-<pre>static&nbsp;<a href="../../../../com/jgoodies/forms/layout/ConstantSize.html" title="class in com.jgoodies.forms.layout">ConstantSize</a>&nbsp;dluX(int&nbsp;value)</pre>
-<div class="block">Returns an instance of <code>Size</code> for the specified value
- in horizontal dialog units.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>value</code> - size value in horizontal dialog units</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>the associated Size instance</dd>
-</dl>
-</li>
-</ul>
-<a name="dluY-int-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>dluY</h4>
-<pre>static&nbsp;<a href="../../../../com/jgoodies/forms/layout/ConstantSize.html" title="class in com.jgoodies.forms.layout">ConstantSize</a>&nbsp;dluY(int&nbsp;value)</pre>
-<div class="block">Returns an instance of <code>Size</code> for the specified value
- in vertical dialog units.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>value</code> - size value in vertical dialog units</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>the associated Size instance</dd>
-</dl>
-</li>
-</ul>
 <a name="getPixelSize-java.awt.Component-">
 <!--   -->
 </a>
@@ -607,9 +452,9 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 <h4>maximumSize</h4>
 <pre>public&nbsp;int&nbsp;maximumSize(java.awt.Container&nbsp;container,
                        java.util.List&nbsp;components,
-                       <a href="../../../../com/jgoodies/forms/layout/FormLayout.Measure.html" title="interface in com.jgoodies.forms.layout">FormLayout.Measure</a>&nbsp;minMeasure,
-                       <a href="../../../../com/jgoodies/forms/layout/FormLayout.Measure.html" title="interface in com.jgoodies.forms.layout">FormLayout.Measure</a>&nbsp;prefMeasure,
-                       <a href="../../../../com/jgoodies/forms/layout/FormLayout.Measure.html" title="interface in com.jgoodies.forms.layout">FormLayout.Measure</a>&nbsp;defaultMeasure)</pre>
+                       com.jgoodies.forms.layout.FormLayout.Measure&nbsp;minMeasure,
+                       com.jgoodies.forms.layout.FormLayout.Measure&nbsp;prefMeasure,
+                       com.jgoodies.forms.layout.FormLayout.Measure&nbsp;defaultMeasure)</pre>
 <div class="block">Returns this size as pixel size. Neither requires the component
  list nor the specified measures.<p>
 
@@ -675,7 +520,7 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 <a name="toString--">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>toString</h4>
 <pre>public&nbsp;java.lang.String&nbsp;toString()</pre>
@@ -689,23 +534,6 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 <dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a string representation of the constant size</dd>
-</dl>
-</li>
-</ul>
-<a name="splitValueAndUnit-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>splitValueAndUnit</h4>
-<pre>static&nbsp;java.lang.String[]&nbsp;splitValueAndUnit(java.lang.String&nbsp;encodedValueAndUnit)</pre>
-<div class="block">Splits a string that encodes size with unit into the size and unit
- substrings. Returns an array of two strings.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>encodedValueAndUnit</code> - a strings that represents a size with unit</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>the first element is size, the second is unit</dd>
 </dl>
 </li>
 </ul>
@@ -763,13 +591,13 @@ implements <a href="../../../../com/jgoodies/forms/layout/Size.html" title="inte
 <li>Summary:&nbsp;</li>
 <li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>

@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":10,"i1":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -156,42 +156,12 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#doneTestSuite--">doneTestSuite</a></span>()</code>
-<div class="block">Clean up after running a test suite.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#print-java.lang.String-">print</a></span>(java.lang.String&nbsp;s)</code>
-<div class="block">Print to the output stream with no indent</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#println-java.lang.String-">println</a></span>(java.lang.String&nbsp;s)</code>
-<div class="block">Print to the output stream with the current indent</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#printnoln-java.lang.String-">printnoln</a></span>(java.lang.String&nbsp;s)</code>
-<div class="block">Print to the output stream with the current indent</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#readyTestSuite-diva.util.jester.TestSuite-">readyTestSuite</a></span>(<a href="../../../diva/util/jester/TestSuite.html" title="class in diva.util.jester">TestSuite</a>&nbsp;suite)</code>
-<div class="block">Get ready to run a test suite.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#runTestCase-diva.util.jester.TestCase-">runTestCase</a></span>(<a href="../../../diva/util/jester/TestCase.html" title="class in diva.util.jester">TestCase</a>&nbsp;testCase)</code>
 <div class="block">Run a single test and log the results</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/util/jester/TestHarness.html#setOutputStream-java.io.PrintStream-">setOutputStream</a></span>(java.io.PrintStream&nbsp;s)</code>
 <div class="block">Set the output stream</div>
@@ -246,64 +216,14 @@ extends java.lang.Object</pre>
 <div class="block">Run a single test and log the results</div>
 </li>
 </ul>
-<a name="readyTestSuite-diva.util.jester.TestSuite-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>readyTestSuite</h4>
-<pre>void&nbsp;readyTestSuite(<a href="../../../diva/util/jester/TestSuite.html" title="class in diva.util.jester">TestSuite</a>&nbsp;suite)</pre>
-<div class="block">Get ready to run a test suite. Calls to this can be nested.</div>
-</li>
-</ul>
-<a name="doneTestSuite--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>doneTestSuite</h4>
-<pre>void&nbsp;doneTestSuite()</pre>
-<div class="block">Clean up after running a test suite.</div>
-</li>
-</ul>
 <a name="setOutputStream-java.io.PrintStream-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOutputStream</h4>
-<pre>public&nbsp;void&nbsp;setOutputStream(java.io.PrintStream&nbsp;s)</pre>
-<div class="block">Set the output stream</div>
-</li>
-</ul>
-<a name="println-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>println</h4>
-<pre>void&nbsp;println(java.lang.String&nbsp;s)</pre>
-<div class="block">Print to the output stream with the current indent</div>
-</li>
-</ul>
-<a name="printnoln-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>printnoln</h4>
-<pre>void&nbsp;printnoln(java.lang.String&nbsp;s)</pre>
-<div class="block">Print to the output stream with the current indent</div>
-</li>
-</ul>
-<a name="print-java.lang.String-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>print</h4>
-<pre>void&nbsp;print(java.lang.String&nbsp;s)</pre>
-<div class="block">Print to the output stream with no indent</div>
+<h4>setOutputStream</h4>
+<pre>public&nbsp;void&nbsp;setOutputStream(java.io.PrintStream&nbsp;s)</pre>
+<div class="block">Set the output stream</div>
 </li>
 </ul>
 </li>

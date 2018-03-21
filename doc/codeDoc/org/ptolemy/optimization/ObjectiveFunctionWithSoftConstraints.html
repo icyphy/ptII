@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../org/ptolemy/optimization/ObjectiveFunctionForPhaseI.html" title="class in org.ptolemy.optimization"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../org/ptolemy/optimization/CompositeOptimizerUsingGradient.OptimizerDirector.html" title="class in org.ptolemy.optimization"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../org/ptolemy/optimization/PositionConstraintCalculator.html" title="class in org.ptolemy.optimization"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.org.ptolemy.optimization.ObjectiveFunction">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -98,12 +98,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">org.ptolemy.optimization.ObjectiveFunction</a></li>
-<li>
-<ul class="inheritance">
 <li>org.ptolemy.optimization.ObjectiveFunctionWithSoftConstraints</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -113,7 +108,7 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public class <span class="typeNameLabel">ObjectiveFunctionWithSoftConstraints</span>
-extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a></pre>
+extends java.lang.Object</pre>
 <div class="block">The objective function class which is used in Phase 1 of the interior point method.
  In the interior point method, a starting point X must be a feasible point that satisfies all
  constraints. If the feasible point couldn't be found, the interior point method solve
@@ -142,13 +137,53 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <!--   -->
 </a>
 <h3>Field Summary</h3>
-<ul class="blockList">
-<li class="blockList"><a name="fields.inherited.from.class.org.ptolemy.optimization.ObjectiveFunction">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.ptolemy.optimization.<a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a></h3>
-<code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#currentX">currentX</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#f0Gradient">f0Gradient</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#f0Hessian">f0Hessian</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#f0Result">f0Result</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#fiGradients">fiGradients</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#fiHessians">fiHessians</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#fiResults">fiResults</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#iterationCounter">iterationCounter</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#quasiNewtonMethod">quasiNewtonMethod</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#stopRequested">stopRequested</a></code></li>
-</ul>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#currentX">currentX</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#f0Gradient">f0Gradient</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double[][]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#f0Hessian">f0Hessian</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#f0Result">f0Result</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double[][]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#fiGradients">fiGradients</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double[][][]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#fiHessians">fiHessians</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#fiResults">fiResults</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#iterationCounter">iterationCounter</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#quasiNewtonMethod">quasiNewtonMethod</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#stopRequested">stopRequested</a></span></code>&nbsp;</td>
+</tr>
+</table>
 </li>
 </ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -163,7 +198,7 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#ObjectiveFunctionWithSoftConstraints-org.ptolemy.optimization.ObjectiveFunction-">ObjectiveFunctionWithSoftConstraints</a></span>(<a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a>&nbsp;a_source)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#ObjectiveFunctionWithSoftConstraints-org.ptolemy.optimization.ObjectiveFunction-">ObjectiveFunctionWithSoftConstraints</a></span>(org.ptolemy.optimization.ObjectiveFunction&nbsp;a_source)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -192,14 +227,25 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <div class="block">Objective function and constraint functions.</div>
 </td>
 </tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#checkFeasibility--">checkFeasibility</a></span>()</code>
+<div class="block">check feasibility of current point</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#clearMatrix-double:A:A-">clearMatrix</a></span>(double[][]&nbsp;matrix)</code>
+<div class="block">Clear Matrix</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>double[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../org/ptolemy/optimization/ObjectiveFunctionWithSoftConstraints.html#getCurrentPoint--">getCurrentPoint</a></span>()</code>
+<div class="block">get current point</div>
+</td>
+</tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.org.ptolemy.optimization.ObjectiveFunction">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.ptolemy.optimization.<a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a></h3>
-<code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#checkFeasibility--">checkFeasibility</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#clearMatrix-double:A:A-">clearMatrix</a>, <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#getCurrentPoint--">getCurrentPoint</a></code></li>
-</ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -215,6 +261,104 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="f0Result">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>f0Result</h4>
+<pre>public&nbsp;double f0Result</pre>
+</li>
+</ul>
+<a name="fiResults">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fiResults</h4>
+<pre>public&nbsp;double[] fiResults</pre>
+</li>
+</ul>
+<a name="f0Gradient">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>f0Gradient</h4>
+<pre>public&nbsp;double[] f0Gradient</pre>
+</li>
+</ul>
+<a name="fiGradients">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fiGradients</h4>
+<pre>public&nbsp;double[][] fiGradients</pre>
+</li>
+</ul>
+<a name="f0Hessian">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>f0Hessian</h4>
+<pre>public&nbsp;double[][] f0Hessian</pre>
+</li>
+</ul>
+<a name="fiHessians">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fiHessians</h4>
+<pre>public&nbsp;double[][][] fiHessians</pre>
+</li>
+</ul>
+<a name="currentX">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>currentX</h4>
+<pre>public&nbsp;double[] currentX</pre>
+</li>
+</ul>
+<a name="iterationCounter">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>iterationCounter</h4>
+<pre>public&nbsp;int iterationCounter</pre>
+</li>
+</ul>
+<a name="stopRequested">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>stopRequested</h4>
+<pre>public&nbsp;boolean stopRequested</pre>
+</li>
+</ul>
+<a name="quasiNewtonMethod">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>quasiNewtonMethod</h4>
+<pre>public&nbsp;boolean quasiNewtonMethod</pre>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -227,7 +371,7 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ObjectiveFunctionWithSoftConstraints</h4>
-<pre>public&nbsp;ObjectiveFunctionWithSoftConstraints(<a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a>&nbsp;a_source)</pre>
+<pre>public&nbsp;ObjectiveFunctionWithSoftConstraints(org.ptolemy.optimization.ObjectiveFunction&nbsp;a_source)</pre>
 </li>
 </ul>
 </li>
@@ -245,13 +389,10 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <li class="blockList">
 <h4>calcFunction</h4>
 <pre>public&nbsp;boolean&nbsp;calcFunction(double[]&nbsp;x)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#calcFunction-double:A-">ObjectiveFunction</a></code></span></div>
 <div class="block">Objective function and constraint functions.
  In this function, all results(f0_result, fi_results)
  and gradients(f0_gradient, fi_gradients) must be updated.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#calcFunction-double:A-">calcFunction</a></code>&nbsp;in class&nbsp;<code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>x</code> - : input variables</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -262,16 +403,56 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <a name="calcFuncInternal-double:A-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>calcFuncInternal</h4>
 <pre>public&nbsp;void&nbsp;calcFuncInternal(double[]&nbsp;x)</pre>
 <div class="block">Objective function called in optimization class.</div>
 <dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html#calcFuncInternal-double:A-">calcFuncInternal</a></code>&nbsp;in class&nbsp;<code><a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title="class in org.ptolemy.optimization">ObjectiveFunction</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>x</code> - input variables</dd>
+</dl>
+</li>
+</ul>
+<a name="checkFeasibility--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>checkFeasibility</h4>
+<pre>public&nbsp;boolean&nbsp;checkFeasibility()</pre>
+<div class="block">check feasibility of current point</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>: true if all of constraints are negative</dd>
+</dl>
+</li>
+</ul>
+<a name="getCurrentPoint--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCurrentPoint</h4>
+<pre>public&nbsp;double[]&nbsp;getCurrentPoint()</pre>
+<div class="block">get current point</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>: current point X</dd>
+</dl>
+</li>
+</ul>
+<a name="clearMatrix-double:A:A-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>clearMatrix</h4>
+<pre>protected&nbsp;void&nbsp;clearMatrix(double[][]&nbsp;matrix)</pre>
+<div class="block">Clear Matrix</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>matrix</code> - : matrix which is to be zero-matrix.</dd>
 </dl>
 </li>
 </ul>
@@ -302,7 +483,7 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../org/ptolemy/optimization/ObjectiveFunctionForPhaseI.html" title="class in org.ptolemy.optimization"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../org/ptolemy/optimization/CompositeOptimizerUsingGradient.OptimizerDirector.html" title="class in org.ptolemy.optimization"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../org/ptolemy/optimization/PositionConstraintCalculator.html" title="class in org.ptolemy.optimization"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -328,13 +509,13 @@ extends <a href="../../../org/ptolemy/optimization/ObjectiveFunction.html" title
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.org.ptolemy.optimization.ObjectiveFunction">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

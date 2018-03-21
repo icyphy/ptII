@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -303,7 +303,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../../../../net/jimblackler/Utils/YieldAdapterIterable.html" title="interface in net.jimblackler.Utils">YieldAdapterIterable</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>net.jimblackler.Utils.YieldAdapterIterable&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIIDEDirector.html#adapter--">adapter</a></span>()</code>
 <div class="block">Since the MetroIIDEDirector is always used inside a
  MetroIICompositeActor, the adapter() in MetroIICompositeActor
@@ -319,7 +319,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIIDEDirector.html#getfire-net.jimblackler.Utils.ResultHandler-">getfire</a></span>(<a href="../../../../net/jimblackler/Utils/ResultHandler.html" title="interface in net.jimblackler.Utils">ResultHandler</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIIDEDirector.html#getfire-net.jimblackler.Utils.ResultHandler-">getfire</a></span>(net.jimblackler.Utils.ResultHandler&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)</code>
 <div class="block">Fire actors according to events in the event queue.</div>
 </td>
 </tr>
@@ -330,13 +330,6 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>(package private) void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIIDEDirector.html#processMappableActorEventsUntil-net.jimblackler.Utils.ResultHandler-ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder-">processMappableActorEventsUntil</a></span>(<a href="../../../../net/jimblackler/Utils/ResultHandler.html" title="interface in net.jimblackler.Utils">ResultHandler</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler,
-                               <a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&nbsp;event)</code>
-<div class="block">Process the mappable actors.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIIDEDirector.html#stop--">stop</a></span>()</code>
 <div class="block">Request the execution of the current iteration to stop.</div>
@@ -564,35 +557,14 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 </dl>
 </li>
 </ul>
-<a name="processMappableActorEventsUntil-net.jimblackler.Utils.ResultHandler-ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>processMappableActorEventsUntil</h4>
-<pre>void&nbsp;processMappableActorEventsUntil(<a href="../../../../net/jimblackler/Utils/ResultHandler.html" title="interface in net.jimblackler.Utils">ResultHandler</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler,
-                                     <a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&nbsp;event)
-                              throws <a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a>,
-                                     <a href="../../../../net/jimblackler/Utils/CollectionAbortedException.html" title="class in net.jimblackler.Utils">CollectionAbortedException</a></pre>
-<div class="block">Process the mappable actors. The assumption is that a mappable actor has
- a delay strictly greater than zero.</div>
-<dl>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - If there is problem with
- starting or resuming an event, prefiring or postfiring</dd>
-<dd><code><a href="../../../../net/jimblackler/Utils/CollectionAbortedException.html" title="class in net.jimblackler.Utils">CollectionAbortedException</a></code> - If thrown while handling
- the resulting events.</dd>
-</dl>
-</li>
-</ul>
 <a name="getfire-net.jimblackler.Utils.ResultHandler-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getfire</h4>
-<pre>public&nbsp;void&nbsp;getfire(<a href="../../../../net/jimblackler/Utils/ResultHandler.html" title="interface in net.jimblackler.Utils">ResultHandler</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)
-             throws <a href="../../../../net/jimblackler/Utils/CollectionAbortedException.html" title="class in net.jimblackler.Utils">CollectionAbortedException</a>,
+<pre>public&nbsp;void&nbsp;getfire(net.jimblackler.Utils.ResultHandler&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)
+             throws net.jimblackler.Utils.CollectionAbortedException,
                     <a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></pre>
 <div class="block">Fire actors according to events in the event queue. Whether the actual
  firing of an actor can be done also depend on the MetroII events
@@ -614,7 +586,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - If we couldn't process an event or if an event of smaller
  timestamp is found within the event queue.</dd>
-<dd><code><a href="../../../../net/jimblackler/Utils/CollectionAbortedException.html" title="class in net.jimblackler.Utils">CollectionAbortedException</a></code></dd>
+<dd><code>net.jimblackler.Utils.CollectionAbortedException</code></dd>
 </dl>
 </li>
 </ul>
@@ -624,7 +596,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 <ul class="blockListLast">
 <li class="blockList">
 <h4>adapter</h4>
-<pre>public&nbsp;<a href="../../../../net/jimblackler/Utils/YieldAdapterIterable.html" title="interface in net.jimblackler.Utils">YieldAdapterIterable</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;adapter()</pre>
+<pre>public&nbsp;net.jimblackler.Utils.YieldAdapterIterable&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;adapter()</pre>
 <div class="block">Since the MetroIIDEDirector is always used inside a
  MetroIICompositeActor, the adapter() in MetroIICompositeActor
  is responsible for creating the iterator of getfire(), this

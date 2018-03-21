@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9,"i1":10,"i2":6,"i3":10,"i4":9};
-var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
+var methods = {"i0":10,"i1":6,"i2":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -110,10 +110,6 @@ var activeTableTab = "activeTableTab";
 <dd>java.awt.CompositeContext</dd>
 </dl>
 <dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../com/jhlabs/composite/AddComposite.Context.html" title="class in com.jhlabs.composite">AddComposite.Context</a>, <a href="../../../com/jhlabs/composite/AverageComposite.Context.html" title="class in com.jhlabs.composite">AverageComposite.Context</a>, <a href="../../../com/jhlabs/composite/BurnComposite.Context.html" title="class in com.jhlabs.composite">BurnComposite.Context</a>, <a href="../../../com/jhlabs/composite/ColorBurnComposite.Context.html" title="class in com.jhlabs.composite">ColorBurnComposite.Context</a>, <a href="../../../com/jhlabs/composite/ColorComposite.Context.html" title="class in com.jhlabs.composite">ColorComposite.Context</a>, <a href="../../../com/jhlabs/composite/ColorDodgeComposite.Context.html" title="class in com.jhlabs.composite">ColorDodgeComposite.Context</a>, <a href="../../../com/jhlabs/composite/DarkenComposite.Context.html" title="class in com.jhlabs.composite">DarkenComposite.Context</a>, <a href="../../../com/jhlabs/composite/DifferenceComposite.Context.html" title="class in com.jhlabs.composite">DifferenceComposite.Context</a>, <a href="../../../com/jhlabs/composite/DodgeComposite.Context.html" title="class in com.jhlabs.composite">DodgeComposite.Context</a>, <a href="../../../com/jhlabs/composite/ExclusionComposite.Context.html" title="class in com.jhlabs.composite">ExclusionComposite.Context</a>, <a href="../../../com/jhlabs/composite/HardLightComposite.Context.html" title="class in com.jhlabs.composite">HardLightComposite.Context</a>, <a href="../../../com/jhlabs/composite/HueComposite.Context.html" title="class in com.jhlabs.composite">HueComposite.Context</a>, <a href="../../../com/jhlabs/composite/LightenComposite.Context.html" title="class in com.jhlabs.composite">LightenComposite.Context</a>, <a href="../../../com/jhlabs/composite/MultiplyComposite.Context.html" title="class in com.jhlabs.composite">MultiplyComposite.Context</a>, <a href="../../../com/jhlabs/composite/NegationComposite.Context.html" title="class in com.jhlabs.composite">NegationComposite.Context</a>, <a href="../../../com/jhlabs/composite/OverlayComposite.Context.html" title="class in com.jhlabs.composite">OverlayComposite.Context</a>, <a href="../../../com/jhlabs/composite/PinLightComposite.Context.html" title="class in com.jhlabs.composite">PinLightComposite.Context</a>, <a href="../../../com/jhlabs/composite/SaturationComposite.Context.html" title="class in com.jhlabs.composite">SaturationComposite.Context</a>, <a href="../../../com/jhlabs/composite/ScreenComposite.Context.html" title="class in com.jhlabs.composite">ScreenComposite.Context</a>, <a href="../../../com/jhlabs/composite/SoftLightComposite.Context.html" title="class in com.jhlabs.composite">SoftLightComposite.Context</a>, <a href="../../../com/jhlabs/composite/SubtractComposite.Context.html" title="class in com.jhlabs.composite">SubtractComposite.Context</a>, <a href="../../../com/jhlabs/composite/ValueComposite.Context.html" title="class in com.jhlabs.composite">ValueComposite.Context</a></dd>
-</dl>
-<dl>
 <dt>Enclosing class:</dt>
 <dd><a href="../../../com/jhlabs/composite/RGBComposite.html" title="class in com.jhlabs.composite">RGBComposite</a></dd>
 </dl>
@@ -154,35 +150,26 @@ implements java.awt.CompositeContext</pre>
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) static int</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/composite/RGBComposite.RGBCompositeContext.html#clamp-int-">clamp</a></span>(int&nbsp;a)</code>&nbsp;</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/composite/RGBComposite.RGBCompositeContext.html#compose-java.awt.image.Raster-java.awt.image.Raster-java.awt.image.WritableRaster-">compose</a></span>(java.awt.image.Raster&nbsp;src,
        java.awt.image.Raster&nbsp;dstIn,
        java.awt.image.WritableRaster&nbsp;dstOut)</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>abstract void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/composite/RGBComposite.RGBCompositeContext.html#composeRGB-int:A-int:A-float-">composeRGB</a></span>(int[]&nbsp;src,
           int[]&nbsp;dst,
           float&nbsp;alpha)</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/composite/RGBComposite.RGBCompositeContext.html#dispose--">dispose</a></span>()</code>&nbsp;</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>(package private) static int</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/composite/RGBComposite.RGBCompositeContext.html#multiply255-int-int-">multiply255</a></span>(int&nbsp;a,
-           int&nbsp;b)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -236,25 +223,6 @@ implements java.awt.CompositeContext</pre>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>dispose</code>&nbsp;in interface&nbsp;<code>java.awt.CompositeContext</code></dd>
 </dl>
-</li>
-</ul>
-<a name="multiply255-int-int-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>multiply255</h4>
-<pre>static&nbsp;int&nbsp;multiply255(int&nbsp;a,
-                       int&nbsp;b)</pre>
-</li>
-</ul>
-<a name="clamp-int-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>clamp</h4>
-<pre>static&nbsp;int&nbsp;clamp(int&nbsp;a)</pre>
 </li>
 </ul>
 <a name="composeRGB-int:A-int:A-float-">

@@ -237,26 +237,20 @@ extends <a href="../../../../../ptolemy/domains/sdf/kernel/SDFDirector.html" tit
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>(package private) java.util.HashMap</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/distributed/domains/sdf/kernel/DistributedSDFDirector.html#commandsMap">commandsMap</a></span></code>
-<div class="block">Map of commands to be executed.</div>
-</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/distributed/domains/sdf/kernel/DistributedSDFDirector.html#parallelExecution">parallelExecution</a></span></code>
 <div class="block">A Parameter representing whether a sequential or parallel execution
   will be performed.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/distributed/domains/sdf/kernel/DistributedSDFDirector.html#parallelSchedule">parallelSchedule</a></span></code>
 <div class="block">A Parameter representing whether a sequential or parallel schedule
   will be computed.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/distributed/domains/sdf/kernel/DistributedSDFDirector.html#pipelining">pipelining</a></span></code>
 <div class="block">A Parameter representing whether a pipelined parallel execution
@@ -498,7 +492,7 @@ extends <a href="../../../../../ptolemy/domains/sdf/kernel/SDFDirector.html" tit
 <a name="parallelExecution">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>parallelExecution</h4>
 <pre>public&nbsp;<a href="../../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a> parallelExecution</pre>
@@ -506,20 +500,6 @@ extends <a href="../../../../../ptolemy/domains/sdf/kernel/SDFDirector.html" tit
   will be performed.
   This parameter must be a boolean.
   The default value is false BooleanToken.</div>
-</li>
-</ul>
-<a name="commandsMap">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>commandsMap</h4>
-<pre>java.util.HashMap commandsMap</pre>
-<div class="block">Map of commands to be executed. This is used by the pipelined parallel
-  execution for efficiency. Since new levels are added every time to the
-  commands map, after buffering, a sequence of a fully parallel
-  commandsMap is used several times. There is no point in recalculating
-  it again and it is reused from the buffering phase.</div>
 </li>
 </ul>
 </li>

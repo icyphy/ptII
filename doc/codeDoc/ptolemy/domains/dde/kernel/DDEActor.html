@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -141,7 +141,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../ptolemy/domains/dde/kernel/FeedBackDelay.html" title="class in ptolemy.domains.dde.kernel">FeedBackDelay</a></dd>
+<dd><a href="../../../../ptolemy/domains/dde/kernel/FeedBackDelay.html" title="class in ptolemy.domains.dde.kernel">FeedBackDelay</a>, <a href="../../../../ptolemy/domains/dde/demo/HelloWorld/PrintString.html" title="class in ptolemy.domains.dde.demo.HelloWorld">PrintString</a></dd>
 </dl>
 <hr>
 <br>
@@ -282,13 +282,6 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/DDEActor.html#Z:Z_getNextInput--">_getNextInput</a></span>()</code>
-<div class="block">Return a token from the receiver that has the minimum
-  receiver time of all receivers contained by this actor.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dde/kernel/DDEActor.html#getNextToken--">getNextToken</a></span>()</code>
 <div class="block">Return a non-NullToken from the receiver that has the minimum,
@@ -454,42 +447,6 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="Z:Z_getNextInput--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>_getNextInput</h4>
-<pre><a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a>&nbsp;_getNextInput()
-             throws <a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></pre>
-<div class="block">Return a token from the receiver that has the minimum
-  receiver time of all receivers contained by this actor.
-  The returned token will have the lowest time stamp of
-  all pending tokens for this actor. If there exists a
-  set of multiple receivers that share a common minimum
-  receiver time, then return the token contained by the
-  highest priority receiver within this set. If this actor
-  contains no receivers then return null.
-  <P>
-  The primary difference between this method and getNextToken()
-  is that this method returns all types of tokens including
-  NullTokens while getNextToken only returns real tokens.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The token with the smallest time stamp of all tokens
-  contained by this actor. If multiple tokens share the smallest
-  time stamp this token will come from the highest priority
-  receiver that has the minimum receiver time. If all receivers
-  have expired then throw a TerminateProcessException.</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code></dd>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../../ptolemy/domains/dde/kernel/DDEReceiver.html" title="class in ptolemy.domains.dde.kernel"><code>DDEReceiver</code></a>, 
-<a href="../../../../ptolemy/domains/dde/kernel/TimeKeeper.html" title="class in ptolemy.domains.dde.kernel"><code>TimeKeeper</code></a>, 
-<a href="../../../../ptolemy/domains/dde/kernel/DDEThread.html" title="class in ptolemy.domains.dde.kernel"><code>DDEThread</code></a></dd>
-</dl>
-</li>
-</ul>
 <a name="getNextToken--">
 <!--   -->
 </a>

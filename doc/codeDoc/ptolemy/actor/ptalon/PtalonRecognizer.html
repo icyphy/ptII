@@ -232,8 +232,7 @@ implements <a href="../../../ptolemy/actor/ptalon/PtalonTokenTypes.html" title="
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#actor_declaration--">actor_declaration</a></span>()</code>
-<div class="block">Parse statements of one of form:
- <i>ID</i>(<i>assignment</i>, <i>assignment</i>, ...)</div>
+<div class="block">Parse statements of one of form:</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -247,12 +246,7 @@ implements <a href="../../../ptolemy/actor/ptalon/PtalonTokenTypes.html" title="
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#assignment--">assignment</a></span>()</code>
-<div class="block">Parse statements of one of form:
- <i>ID</i> := <i>ID</i>
- <i>ID</i> := <i>actor_declaration</i>
- <i>ID</i> := <i>arithmetic_expression</i>
- <i>ID</i> := <i>boolean_expression</i>
- with preference given in that order.</div>
+<div class="block">Parse statements of one of form:</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -282,12 +276,7 @@ implements <a href="../../../ptolemy/actor/ptalon/PtalonTokenTypes.html" title="
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#expression--">expression</a></span>()</code>
-<div class="block">Parse anything inside XML-like block
- &lt;  /&gt;
- Generate the tree
- #(EXPRESSION)
- where the text of the token EXPRESSION is the expression
- inside the XML-like block.</div>
+<div class="block">Parse anything inside XML-like block</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
@@ -301,37 +290,25 @@ implements <a href="../../../ptolemy/actor/ptalon/PtalonTokenTypes.html" title="
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#parameter_declaration--">parameter_declaration</a></span>()</code>
-<div class="block">Parse for one of:
- parameter <i>ID</i>
- actor <i>ID</i>
- where parameterType is either "parameter", "intparameter", or 
- "outparameter".</div>
+<div class="block">Parse for one of:</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#port_declaration--">port_declaration</a></span>()</code>
-<div class="block">Parse for statement:
- <i>portType</i> <i>ID</i>
- where portType is either "port", "inport", or "outport".</div>
+<div class="block">Parse for statement:</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#qualified_identifier--">qualified_identifier</a></span>()</code>
-<div class="block">Parse qualified identifier:
- <i>ID</i>
- or
- <i>ID</i>.qualified_identifier
- Generate tree #(QUALID)</div>
+<div class="block">Parse qualified identifier:</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/ptalon/PtalonRecognizer.html#relation_declaration--">relation_declaration</a></span>()</code>
-<div class="block">Parse relation declaration:
- relation <i>ID</i>
- Generate tree #(RELATION ID)</div>
+<div class="block">Parse relation declaration:</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">

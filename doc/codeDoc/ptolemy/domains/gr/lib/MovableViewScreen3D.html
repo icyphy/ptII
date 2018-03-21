@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li><a href="#nested.classes.inherited.from.class.ptolemy.kernel.Entity">Nested</a>&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#fields.inherited.from.class.ptolemy.domains.gr.lib.ViewScreen3D">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -199,33 +199,6 @@ extends <a href="../../../../ptolemy/domains/gr/lib/ViewScreen3D.html" title="cl
 <!--   -->
 </a>
 <h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/actor/parameters/PortParameter.html" title="class in ptolemy.actor.parameters">PortParameter</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/gr/lib/MovableViewScreen3D.html#viewerPosition">viewerPosition</a></span></code>
-<div class="block">A double array representing the (x,y,z) position of the view
-  frame relative to the virtual universe.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/actor/parameters/PortParameter.html" title="class in ptolemy.actor.parameters">PortParameter</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/gr/lib/MovableViewScreen3D.html#viewerRotationAngle">viewerRotationAngle</a></span></code>
-<div class="block">A double value representing the angle, in radians, of rotation
-  about the viewerRotationAxis.</div>
-</td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/actor/parameters/PortParameter.html" title="class in ptolemy.actor.parameters">PortParameter</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/gr/lib/MovableViewScreen3D.html#viewerRotationAxis">viewerRotationAxis</a></span></code>
-<div class="block">A double array representing an axis of rotation for the view frame.</div>
-</td>
-</tr>
-</table>
 <ul class="blockList">
 <li class="blockList"><a name="fields.inherited.from.class.ptolemy.domains.gr.lib.ViewScreen3D">
 <!--   -->
@@ -448,56 +421,6 @@ extends <a href="../../../../ptolemy/domains/gr/lib/ViewScreen3D.html" title="cl
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="viewerPosition">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>viewerPosition</h4>
-<pre><a href="../../../../ptolemy/actor/parameters/PortParameter.html" title="class in ptolemy.actor.parameters">PortParameter</a> viewerPosition</pre>
-<div class="block">A double array representing the (x,y,z) position of the view
-  frame relative to the virtual universe.  By default, this value
-  is (0,0,2.4).</div>
-</li>
-</ul>
-<a name="viewerRotationAxis">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>viewerRotationAxis</h4>
-<pre><a href="../../../../ptolemy/actor/parameters/PortParameter.html" title="class in ptolemy.actor.parameters">PortParameter</a> viewerRotationAxis</pre>
-<div class="block">A double array representing an axis of rotation for the view frame.
-  By default, when you look at the view screen, you are looking
-  in the (0.0, 0.0, -1.0) direction of the virtual universe.  Your
-  right is the (1.0, 0.0, 0.0) direction, and up is the (0.0, 1.0, 0.0)
-  direction.  In this situtation, the frame describing the viewer has
-  its positive z-axis going from the screen to you.  It's positive
-  x-axis points right, and it's positve y-axis points up.  When the
-  viewerRotationAxis and the viewerRotationAngle are provided, the
-  ViewScreen frame is rotated counterclockwise around the
-  viewerRotationAxis by the viewerRotationAngle.</div>
-</li>
-</ul>
-<a name="viewerRotationAngle">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>viewerRotationAngle</h4>
-<pre><a href="../../../../ptolemy/actor/parameters/PortParameter.html" title="class in ptolemy.actor.parameters">PortParameter</a> viewerRotationAngle</pre>
-<div class="block">A double value representing the angle, in radians, of rotation
-  about the viewerRotationAxis.</div>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -697,13 +620,13 @@ extends <a href="../../../../ptolemy/domains/gr/lib/ViewScreen3D.html" title="cl
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li><a href="#nested.classes.inherited.from.class.ptolemy.kernel.Entity">Nested</a>&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#fields.inherited.from.class.ptolemy.domains.gr.lib.ViewScreen3D">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

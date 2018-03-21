@@ -262,7 +262,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="../../../../net/jimblackler/Utils/YieldAdapterIterable.html" title="interface in net.jimblackler.Utils">YieldAdapterIterable</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>net.jimblackler.Utils.YieldAdapterIterable&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIISequentialSDFDirector.html#adapter--">adapter</a></span>()</code>
 <div class="block">Returns the iterator for the caller function of getfire().</div>
 </td>
@@ -275,7 +275,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIISequentialSDFDirector.html#getfire-net.jimblackler.Utils.ResultHandler-">getfire</a></span>(<a href="../../../../net/jimblackler/Utils/ResultHandler.html" title="interface in net.jimblackler.Utils">ResultHandler</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/metroII/kernel/MetroIISequentialSDFDirector.html#getfire-net.jimblackler.Utils.ResultHandler-">getfire</a></span>(net.jimblackler.Utils.ResultHandler&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)</code>
 <div class="block">The order of actor firing should be static and identical to fire().</div>
 </td>
 </tr>
@@ -501,7 +501,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 <ul class="blockList">
 <li class="blockList">
 <h4>adapter</h4>
-<pre>public&nbsp;<a href="../../../../net/jimblackler/Utils/YieldAdapterIterable.html" title="interface in net.jimblackler.Utils">YieldAdapterIterable</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;adapter()</pre>
+<pre>public&nbsp;net.jimblackler.Utils.YieldAdapterIterable&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;adapter()</pre>
 <div class="block">Returns the iterator for the caller function of getfire().</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -517,8 +517,8 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getfire</h4>
-<pre>public&nbsp;void&nbsp;getfire(<a href="../../../../net/jimblackler/Utils/ResultHandler.html" title="interface in net.jimblackler.Utils">ResultHandler</a>&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)
-             throws <a href="../../../../net/jimblackler/Utils/CollectionAbortedException.html" title="class in net.jimblackler.Utils">CollectionAbortedException</a></pre>
+<pre>public&nbsp;void&nbsp;getfire(net.jimblackler.Utils.ResultHandler&lt;java.lang.Iterable&lt;<a href="../../../../ptolemy/domains/metroII/kernel/util/ProtoBuf/metroIIcomm.Event.Builder.html" title="class in ptolemy.domains.metroII.kernel.util.ProtoBuf">metroIIcomm.Event.Builder</a>&gt;&gt;&nbsp;resultHandler)
+             throws net.jimblackler.Utils.CollectionAbortedException</pre>
 <div class="block">The order of actor firing should be static and identical to fire(). Each
  actor is fired only if the associated Metro event is notified.</div>
 <dl>
@@ -527,7 +527,7 @@ implements <a href="../../../../ptolemy/domains/metroII/kernel/GetFirable.html" 
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>resultHandler</code> - iterable of events 'yield returned'.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../net/jimblackler/Utils/CollectionAbortedException.html" title="class in net.jimblackler.Utils">CollectionAbortedException</a></code></dd>
+<dd><code>net.jimblackler.Utils.CollectionAbortedException</code></dd>
 </dl>
 </li>
 </ul>
