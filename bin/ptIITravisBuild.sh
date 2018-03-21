@@ -173,9 +173,8 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     updateGhPages $LOG logs/
 
     ls $PTII/adm/gen-11.0
-    if [ -f $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar ]; then
-        updateGhPages $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar downloads/
-    fi
+    # We use Travis-ci deploy to upload the release because GitHub has
+    # a 100Mb limit unless we use Git LFS.
 fi
 
 # Run the CapeCode tests.
