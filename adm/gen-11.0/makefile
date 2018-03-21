@@ -3744,14 +3744,14 @@ jre:
 
 jre32:
 	if [ ! -d jre32 ] ; then \
-		mkdir jre32; \
-		echo "32-bit JRE Directory" > jre32/README.txt; \
+		wget -O WinJre32.tar.gz https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
+		tar -zxf WinJre32.tar.gz; \
 	fi
 
 jre64:
 	if [ ! -d jre64 ] ; then \
-		mkdir jre64; \
-		echo "64-bit JRE Directory" > jre64/README.txt; \
+		wget -O WinJre64.tar.gz https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
+		tar -zxf WinJre64.tar.gz; \
 	fi
 
 # This is the main target for creating installers.
