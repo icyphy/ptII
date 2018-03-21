@@ -23,7 +23,7 @@
     <p>In Eclipse, add the ptII Git Repository:</p>
 
     <ol>
-      <li>Choose the <code>Window</code> menu | <code>Show View</code> | <code>Other</code> | <code>Git</code> | <code>Git Repositories</code> and then hit Open:
+      <li>Choose the Window menu | Show View | Other | Git | Git Repositories and then hit Open:
         <center>
 	  <p><img src="../../img/eclipseShowView.png" alt="Eclipse Git Show View" width="302" height="414"></p>
         </center>
@@ -34,10 +34,10 @@
         <center>
 	  <p><img src="../../img/eclipseGitRepositories.png" alt="Eclipse Git Repositories" width="804" height="232"></p>
         </center>
-        In the Git Repository View select <code>Clone a Git repository</code>.
+        In the Git Repository View select Clone a Git repository.
       </li>
 
-      <li>In the Select Repository Source window, select <code>Clone URI</code> and click on Next:
+      <li>In the Select Repository Source window, select Clone URI and click on Next:
         <center>
 	  <p><img src="../../img/eclipseCloneGitRepository.png" alt="Eclipse Clone Git Repository" width="523" height="568"></p>
         </center>
@@ -56,7 +56,7 @@
 
       </li>
 
-      <li>In the Branch Selection window, click on <code>Deselect All</code>, then click on the box next to the <code>master</code> branch, then Next:
+      <li>In the Branch Selection window, click on Deselect All, then click on the box next to the master branch, then Next:
         <center>
 	  <p><img src="../../img/eclipseBranchSelection.png" alt="Eclipse Branch Selection" width="527" height="569"></p>
         </center>        
@@ -65,7 +65,7 @@
           <table border="1">
             <tr>
 	      <td>
-	        Be sure to check out the <b><code>master</code></b> branch and not the
+	        Be sure to check out the <b>master</b> branch and not the
 	        entire tree, which include all the branches and the trunk.
 	      </td>
             </tr>
@@ -86,7 +86,7 @@
     <p> To set up the Eclipse project, follow these steps:</p>
     <ol>
       <li> In the File menu, select New | Project ..</li>
-      <li> In the New Project window, select Java &gt; Java project, Click Next.
+      <li> In the New Project window, select Java | Java project, Click Next.
         <center>
 	  <p><img src="../../img/eclipseNewProject.png" alt="Eclipse New Project" width="528" height="502"></p>
         </center>
@@ -121,15 +121,28 @@
           file does not support having the output files the same as the
           project.</p>
         <p>Here's the Java Settings window:</p>
-      <center>
-	<p><img src="../../img/eclipseCreateAJavaProject.png" alt="Eclipse Create A Java Project" width="587" height="723"></p>
-      </center>
+        <center>
+	  <p><img src="../../img/eclipseJavaSettings.png" alt="Eclipse Java Settings" width="587" height="723"></p>
+        </center>
+
+        <blockquote>
+          <table border="1">
+            <tr>
+	      <td>
+                Be sure to change the Default output folder from ptII/bin to a directory that does not exist,
+                such as ptII/eclipse.  If the output folder is <code>ptII/bin</code>, then Eclipse will <b>remove
+                  the contents of <code>$PTII/bin</code> including <code>$PTII/bin/vergil</code>, which is how
+                  Ptolemy II is started from the command line.</b>
+	      </td>
+            </tr>
+          </table>
+        </blockquote>
 
       </li>
       <li> Click Finish.</li>
 
       <li> The Open Associated Perspective? window will appear.  Click Open Perspective.</li>
-        
+      
       <li> There will likely be many errors.  These are soled in the next step.
         </br>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
       </li>
