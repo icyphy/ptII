@@ -112,8 +112,8 @@ before_deploy:
   - git config --local user.name "cxbrooks"
   - git config --local user.email "cxh@eecs.berkeley.edu"
 #  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-  - git tag nightly
-  - git push origin --tags
+  - git tag nightly || true
+  - git push origin --tags https://${GITHUB_TOKEN}@github.com/icyphy/ptII || true
   - echo $PTII
   - ls -l $PTII/logs
   - pwd
