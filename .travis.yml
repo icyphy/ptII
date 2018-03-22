@@ -107,14 +107,14 @@ cache:
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
-before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name "cxbrooks"
-  - git config --local user.email "cxh@eecs.berkeley.edu"
-  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-  - echo $PTII
-  - ls -l $PTII/logs
-  - pwd
+# before_deploy:
+#   # Set up git user name and tag this commit
+#   - git config --local user.name "cxbrooks"
+#   - git config --local user.email "cxh@eecs.berkeley.edu"
+#   - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+#   - echo $PTII
+#   - ls -l $PTII/logs
+#   - pwd
   
 deploy:
   # - provider: pages
