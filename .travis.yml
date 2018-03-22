@@ -4,11 +4,11 @@ env:
     # Run separate jobs with these variables.  The name of the
     # variable corresponds with the target name in $PTII/build.xml and
     # should be alphabetical.
-    #- PT_TRAVIS_BUILD_ALL=true
+    - PT_TRAVIS_BUILD_ALL=true
     - PT_TRAVIS_DOCS=true
-    #- PT_TRAVIS_INSTALLERS=true
-    #- PT_TRAVIS_TEST_CAPECODE_XML=true
-    #- PT_TRAVIS_TEST_REPORT_SHORT=true
+    - PT_TRAVIS_INSTALLERS=true
+    - PT_TRAVIS_TEST_CAPECODE_XML=true
+    - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
 
@@ -37,7 +37,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 install:
-  We keep logs in a directory to avoid the 10k line problem.
+  # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
   - echo $HOME
   - echo "Created by Travis-ci" > $HOME/README.md
@@ -108,16 +108,16 @@ cache:
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
-before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name "cxbrooks"
-  - git config --local user.email "cxh@eecs.berkeley.edu"
-  #  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-  - git tag nightly || true
-  - git push origin --tags https://${GITHUB_TOKEN}@github.com/icyphy/ptII || true
-  - echo $PTII
-  - ls -l $PTII/logs
-  - pwd
+# before_deploy:
+#   # Set up git user name and tag this commit
+#   - git config --local user.name "cxbrooks"
+#   - git config --local user.email "cxh@eecs.berkeley.edu"
+#   #  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+#   - git tag nightly || true
+#   - git push origin --tags https://${GITHUB_TOKEN}@github.com/icyphy/ptII || true
+#   - echo $PTII
+#   - ls -l $PTII/logs
+#   - pwd
   
 deploy:
   # - provider: pages
