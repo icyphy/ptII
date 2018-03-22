@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-0e599bc5-5e93-4e70-b3a3-62fab097e40b" name="doc.books.systems.discreteevents.test.junit.JUnitTclTest" skipped="0" tests="18" time="9.496" timestamp="2018-03-22T17:54:15">
+<testsuite errors="0" failures="0" hostname="travis-job-fb48a89a-5ce8-4610-83d2-c25c2c81ae07" name="doc.books.systems.discreteevents.test.junit.JUnitTclTest" skipped="0" tests="18" time="9.479" timestamp="2018-03-22T20:16:33">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -7,7 +7,7 @@
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
     <property name="env.CACHE_NAME" value="PTIICACHE1" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="126.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="127.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -30,7 +30,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.3 52726 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.5 45416 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.3 52726 10.20.0.216 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.5 45416 10.20.0.26 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.discreteevents.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.discreteevents.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8360691296671986590.properties propsfile=/home/travis/build/icyphy/ptII/junit2788136191460962989.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.discreteevents.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.discreteevents.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2441313965384514234.properties propsfile=/home/travis/build/icyphy/ptII/junit8441039695821282092.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="df2c1d53f549...6c066978d851" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="252da8f10255b24f1c20558cb56cc733f497f8f4...6c066978d851acf89c804bed09b025ff1b307e58" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -113,7 +113,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="126" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="127" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -128,7 +128,7 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="357006521" />
+    <property name="env.TRAVIS_BUILD_ID" value="357073270" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -172,7 +172,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="api" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -203,7 +203,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="357006527" />
+    <property name="env.TRAVIS_JOB_ID" value="357073275" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -221,101 +221,101 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.004" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml (RunModel)" time="0.432" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml (RunModel)" time="0.063" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml (RunModel)" time="0.1" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml (RunModel)" time="0.08" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml (RunModel)" time="0.354" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml (RunModel)" time="0.148" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml (RunModel)" time="0.26" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml (RunModel)" time="0.108" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml (RunModel)" time="0.061" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml (RunModel)" time="6.294" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml (RunModel)" time="0.085" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml (RunModel)" time="0.087" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml (RunModel)" time="1.197" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml (RunModel)" time="0.445" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml (RunModel)" time="0.062" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml (RunModel)" time="0.284" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml (RunModel)" time="0.087" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml (RunModel)" time="0.216" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml (RunModel)" time="0.051" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml (RunModel)" time="5.311" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml (RunModel)" time="0.066" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml (RunModel)" time="0.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml (RunModel)" time="0.953" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml
-76 ms. Memory: 116224K Free: 107386K (92%)
+79 ms. Memory: 116224K Free: 107389K (92%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml
-36 ms. Memory: 116224K Free: 104042K (90%)
+35 ms. Memory: 116224K Free: 104038K (90%)
 reloadAllAccessors: .DEExample
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml
-15 ms. Memory: 116224K Free: 96498K (83%)
+16 ms. Memory: 116224K Free: 96574K (83%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml
-11 ms. Memory: 116224K Free: 94906K (82%)
+11 ms. Memory: 116224K Free: 94950K (82%)
 reloadAllAccessors: .FSMSource
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml
-24 ms. Memory: 116224K Free: 88417K (76%)
+16 ms. Memory: 116224K Free: 88501K (76%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml
-14 ms. Memory: 116224K Free: 86856K (75%)
+15 ms. Memory: 116224K Free: 86829K (75%)
 reloadAllAccessors: .FSMSource2
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml
-20 ms. Memory: 116224K Free: 82016K (71%)
+8 ms. Memory: 116224K Free: 81988K (71%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml
-13 ms. Memory: 116224K Free: 112076K (96%)
+17 ms. Memory: 116224K Free: 112114K (96%)
 reloadAllAccessors: .Feedback
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml
-252 ms. Memory: 116224K Free: 103479K (89%)
+167 ms. Memory: 116224K Free: 103485K (89%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml
-53 ms. Memory: 116224K Free: 99720K (86%)
+80 ms. Memory: 116224K Free: 99451K (86%)
 reloadAllAccessors: .InterarrivalTimes
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml
-58 ms. Memory: 116224K Free: 93479K (80%)
+32 ms. Memory: 116224K Free: 92927K (80%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml
-55 ms. Memory: 116224K Free: 90675K (78%)
+27 ms. Memory: 116224K Free: 90146K (78%)
 reloadAllAccessors: .InterarrivalTimes2
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml
-129 ms. Memory: 116224K Free: 112113K (96%)
+99 ms. Memory: 116224K Free: 111651K (96%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml
-102 ms. Memory: 116224K Free: 107888K (93%)
+51 ms. Memory: 116224K Free: 107571K (93%)
 reloadAllAccessors: .InterarrivalTimes3
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml
-19 ms. Memory: 116224K Free: 100461K (86%)
+22 ms. Memory: 116224K Free: 100227K (86%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml
-9 ms. Memory: 116224K Free: 99364K (85%)
+12 ms. Memory: 116224K Free: 99051K (85%)
 reloadAllAccessors: .Iteration
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml
-9 ms. Memory: 116224K Free: 93523K (80%)
+7 ms. Memory: 116224K Free: 93094K (80%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml
-4 ms. Memory: 116224K Free: 92600K (80%)
+4 ms. Memory: 116224K Free: 92179K (79%)
 reloadAllAccessors: .MM1Queue
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml
-5 ms. Memory: 116224K Free: 88901K (76%)
+3 ms. Memory: 116224K Free: 88561K (76%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml
-1 ms. Memory: 116224K Free: 88419K (76%)
+2 ms. Memory: 116224K Free: 87946K (76%)
 reloadAllAccessors: .ModelTimeVsRealTime
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml
-3582 ms. Memory: 331264K Free: 106387K (32%)
+2701 ms. Memory: 331264K Free: 110068K (33%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml
-2419 ms. Memory: 478720K Free: 226556K (47%)
+2323 ms. Memory: 478720K Free: 221565K (46%)
 reloadAllAccessors: .OpenQueueingNetwork
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml
-12 ms. Memory: 478720K Free: 209302K (44%)
+7 ms. Memory: 478720K Free: 204311K (43%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml
-8 ms. Memory: 478720K Free: 209302K (44%)
+3 ms. Memory: 478720K Free: 204311K (43%)
 reloadAllAccessors: .Priorities
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml
-29 ms. Memory: 478720K Free: 193634K (40%)
+40 ms. Memory: 478720K Free: 188644K (39%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml
-5 ms. Memory: 478720K Free: 193634K (40%)
+5 ms. Memory: 478720K Free: 188644K (39%)
 reloadAllAccessors: .SDFWithinDE
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml
-21 ms. Memory: 478720K Free: 177967K (37%)
+20 ms. Memory: 478720K Free: 172976K (36%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml
-10 ms. Memory: 478720K Free: 177967K (37%)
+7 ms. Memory: 478720K Free: 172976K (36%)
 reloadAllAccessors: .Wireless
 ----------------- testing /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml
-615 ms. Memory: 478720K Free: 123132K (26%)
+497 ms. Memory: 478720K Free: 110307K (23%)
 ----------------- testing again /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml
-533 ms. Memory: 478720K Free: 91797K (19%)
+388 ms. Memory: 478720K Free: 463972K (97%)
 reloadAllAccessors: .Zeno
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
