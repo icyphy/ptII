@@ -23,6 +23,7 @@ env:
     - PT_NO_NET=true
     - PATH=${PTII}/bin:${PATH}
     - PTII=${TRAVIS_BUILD_DIR}
+    - TRAVIS_TAG=nightly
 
 language: node_js
 
@@ -38,65 +39,65 @@ before_install:
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
-  - echo $HOME
-  - echo "Created by Travis-ci" > $HOME/README.md
-  - ls -l $HOME
-  - ls -l $PTII/logs
-  - find $PTII -type f | xargs grep hudson || true
+  # - echo $HOME
+  # - echo "Created by Travis-ci" > $HOME/README.md
+  # - ls -l $HOME
+  # - ls -l $PTII/logs
+  # - find $PTII -type f | xargs grep hudson || true
   
-  # Shorter running installations first.
+  # # Shorter running installations first.
 
-  # Below are the packages that are needed, in alphabetical order:
-  #   genisoimage for building Darwin dmg files under Linux.
-  #   Java3D
-  #   libv4l for  Bridj for the camera.
-  #   p7zip-full for installing jogl as part of the installers.
-  #   pdflatex for the DOP Center image.
-  - sudo apt-get install -y genisoimage libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
+  # # Below are the packages that are needed, in alphabetical order:
+  # #   genisoimage for building Darwin dmg files under Linux.
+  # #   Java3D
+  # #   libv4l for  Bridj for the camera.
+  # #   p7zip-full for installing jogl as part of the installers.
+  # #   pdflatex for the DOP Center image.
+  # - sudo apt-get install -y genisoimage libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
 
-  # Install JAI.  If the wget fails, then don't stop the build.
-  - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
+  # # Install JAI.  If the wget fails, then don't stop the build.
+  # - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
 
-  # Install JMF.  If the wget fails, then don't stop the build.
-  - ls $PTII/vendors
-  - ls $PTII/vendors/opencv
-  - ls -l $PTII/vendors/opencv/share/OpenCV/java || true
-  - ls $PTII/vendors/JMF-2.1.1e || true
-  - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
+  # # Install JMF.  If the wget fails, then don't stop the build.
+  # - ls $PTII/vendors
+  # - ls $PTII/vendors/opencv
+  # - ls -l $PTII/vendors/opencv/share/OpenCV/java || true
+  # - ls $PTII/vendors/JMF-2.1.1e || true
+  # - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
 
-  # Install Sphinx for the speech recognition accessor
-  - if [ ! -d $PTII/vendors/misc/sphinx4 ]; then mkdir $PTII/vendors/misc/sphinx4; fi
-  - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true; fi
-  - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' || true; fi
+  # # Install Sphinx for the speech recognition accessor
+  # - if [ ! -d $PTII/vendors/misc/sphinx4 ]; then mkdir $PTII/vendors/misc/sphinx4; fi
+  # - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true; fi
+  # - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' || true; fi
 
-  # Needed for building installers.
-  - sudo ln -s /bin/tar /usr/local/bin/tar
+  # # Needed for building installers.
+  # - sudo ln -s /bin/tar /usr/local/bin/tar
 
-  # Longer running installations:
+  # # Longer running installations:
 
-  # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
-  - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
-  - ls -l /usr/lib/jni/
-  - ls -l $PTII/vendors/opencv/share/OpenCV/java/
+  # # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
+  # - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+  # - ls -l /usr/lib/jni/
+  # - ls -l $PTII/vendors/opencv/share/OpenCV/java/
 
-  # Display environment variables
-  - env | sort
-  - ls -l vendors
+  # # Display environment variables
+  # - env | sort
+  # - ls -l vendors
   - ./configure --enable-verbose
 
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
  
-  # travis_wait does not help here because we want to redirect the output of cmake.
-  # See https://github.com/travis-ci/travis-ci/issues/4190
-  - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+  # # travis_wait does not help here because we want to redirect the output of cmake.
+  # # See https://github.com/travis-ci/travis-ci/issues/4190
+  # - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
-  - grep USER $PTII/adm/test/* || true
-  - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
-  - $PTII/bin/ptIITravisBuild.sh
+  # - grep USER $PTII/adm/test/* || true
+  # - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
+  # - $PTII/bin/ptIITravisBuild.sh
 
-  # Killing background sleep loop.
-  - kill %1
+  # # Killing background sleep loop.
+  # - kill %1
 
 
 # See https://docs.travis-ci.com/user/caching
@@ -132,9 +133,9 @@ deploy:
     api_key: $GITHUB_TOKEN
     file_glob: true
     # file: $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
-    file: $PTII/doc/codeDoc.jar
+    file: $PTII/README.md
     on:
-      tags: nightly
+      tags: true
       condition: $PT_TRAVIS_DOCS = true
     overwrite: true
     skip_cleanup: true    
