@@ -133,7 +133,7 @@ deploy:
     api_key: $GITHUB_TOKEN
     file_glob: true
     # file: $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
-    file: $PTII/README.md
+    file: $PTII/.travis.yml
     on:
       tags: true
       condition: $PT_TRAVIS_DOCS = true
