@@ -1582,7 +1582,7 @@ if [ "$error" = "none" ]; then
 	    
 	    if [ ! -d $MACAPP_APP ]; then
 		mkdir $MACAPP_APP
-		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm -rf {} \;)
+		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".git*" -exec rm -rf {} \;)
 	    fi
             if [ ! -d $MACAPP_APP/Contents/Resources/Java ]; then 
 		mkdir -p $MACAPP_APP/Contents/Resources/Java
@@ -1605,6 +1605,9 @@ if [ "$error" = "none" ]; then
 		
             STUB=$PTII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub 
             if [ ! -f "$STUB" ]; then
+                echo "$0: $STUB does not exist, creating it from GitHub."
+                rm -rf $PTII/vendors/universalJavaApplicationStub
+
 		# Unfortunately, under RHEL, having LD_LIBRARY_PATH set can cause problems
 	        # with git.
 
@@ -1873,16 +1876,21 @@ EOF6
 		   (cd $PTII/; tar -xf "$MacJVMTar")
 	       else
 		   # When we are building a release PTII might be set to dists/ptII11.0.devel so MacJVM.tar won't be found.
-		   MacJVMTar=/tmp/MacJVM.tar.gz
-		   if [ ! -f "$MacJVMTar" ]; then
-		       echo "$0: Could not find MacJVMTar in $MacJVMTar, downloading it now"
-                       wget -O $MacJVMTar https://ptolemy.eecs.berkeley.edu/ptolemyII/MacJVM.tar.gz
+                   INSTALLER_SRCS=$PTII/vendors/installer
+		   MacJVMTar=$INSTALLER_SRCS/MacJVM.tar.gz
+		   if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true"]; then
+                       if [ ! -d $INSTALLER_SRCS ]; then
+                           mkdir -p $INSTALLER_SRCS
+                       fi
+		       echo "$0: Could not find MacJVMTar in $MacJVMTar, downloading it now: `date`"
+                       wget --quiet -O $MacJVMTar https://ptolemy.eecs.berkeley.edu/ptolemyII/MacJVM.tar.gz
                    fi
 		   if [ -f "$MacJVMTar" ]; then
-		       echo "Untaring $MacJVMTar in $PTII/"
+		       echo "Untaring $MacJVMTar in $PTII/ now: `date`"
 		       (cd $PTII/; tar -xf "$MacJVMTar")
 		   else
-		       echo "$0: Could not find MacJVMTar in $MacJVMTar"
+		       echo "$0: Could not find MacJVMTar in $MacJVMTar."
+                       echo "  Try 'export TRAVIS=true' and rerun makeapp."
 		   fi
 	       fi	   
 	   fi # Darwin
