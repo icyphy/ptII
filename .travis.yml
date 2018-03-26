@@ -7,7 +7,7 @@ env:
     - PT_TRAVIS_BUILD_ALL=true
     - PT_TRAVIS_DOCS=true
     - PT_TRAVIS_INSTALLERS=true
-    - PT_TRAVIS_PRIME_INSTALLER=true
+    # - PT_TRAVIS_PRIME_INSTALLER=true
     - PT_TRAVIS_TEST_CAPECODE_XML=true
     - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
@@ -15,11 +15,6 @@ env:
 
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
-
-    # Share one cache between all the matrix builds
-    # See https://docs.travis-ci.com/user/caching#Caches-and-build-matrices
-    - CACHE_NAME=PTIICACHE1
-
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     - PATH=${PTII}/bin:${PATH}
@@ -43,8 +38,6 @@ install:
   - echo $HOME
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
-  - ls -l $PTII/logs
-  - find $PTII -type f | xargs grep hudson || true
   
   # Shorter running installations first.
 
