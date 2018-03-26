@@ -1878,7 +1878,7 @@ EOF6
 		   # When we are building a release PTII might be set to dists/ptII11.0.devel so MacJVM.tar won't be found.
                    INSTALLER_SRCS=$PTII/vendors/installer
 		   MacJVMTar=$INSTALLER_SRCS/MacJVM.tar.gz
-		   if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true"]; then
+		   if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
                        if [ ! -d $INSTALLER_SRCS ]; then
                            mkdir -p $INSTALLER_SRCS
                        fi
