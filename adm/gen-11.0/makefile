@@ -365,7 +365,7 @@ $(OPENCV_DLL): $(OPENCV_DLL_SRC)
 	cp $(OPENCV_DLL_SRC) $(OPENCV_DLL)
 
 $(OPENCV_DLL_SRC):
-	echo "Creating $@: `date`";
+	@echo "Creating $@: `date`";
 	wget --quiet -O $@ https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
 # If you update the NODE_VERSION, then be sure to edit IzpackSetup.java.
@@ -3639,19 +3639,22 @@ izpack:
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
 
+
 L4J_TAR=$(INSTALLER_SRCS)/launch4j-3.11.tgz
 
-l4j_dir:$(L4J_DIR)
-
-$(L4J_DIR): $(INSTALLER_SRCS)
+$(L4J_TAR): $(INSTALLER_SRCS)
 	if [ ! -f $(L4J_TAR) ]; then \
 	    case `uname` in \
 		Darwin) osfile=macosx-x86;; \
-		Linux) osfile=linux-x64ll;; \
+		Linux) osfile=linux-x64;; \
 	    esac; \
 	    echo "Downloading $(L4J_TAR) for $$osfile: `date`"; \
 	    wget --quiet "https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-$$osfile.tgz" -O $(L4J_TAR); \
         fi
+
+l4j_dir:$(L4J_DIR)
+
+$(L4J_DIR): $(L4J_TAR)
 	@echo "Creating L4J_DIR: $(L4J_DIR)"
 	if [ ! -d $(L4J_DIR) ]; then \
 		cd $(PTIIHOME)/vendors; \
