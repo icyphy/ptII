@@ -347,10 +347,26 @@ FINDCLEAN = $(GENDIR)/findclean
 # Don't use javadoc from Java 1.6 here, it will hang
 JAVADOC=javadoc
 
+# Define these here so that PTIIDIST can depend on them.
+IZPACK_DIR=$(PTIIHOME)/vendors/izpack
+L4J_DIR=$(PTIIHOME)/vendors/launch4j
+
+# Create a directory for the downloads that we need.  Travis caches these for us.
+INSTALLER_SRCS=$(PTIIHOME)/vendors/installer
+$(INSTALLER_SRCS):
+	mkdir -p $@
+
 OPENCV_DLL=opencv_java320.dll
+OPENCV_DLL_SRC=$(INSTALLER_SRCS)/$(OPENCV_DLL)
+
 opencv_dll: $(OPENCV_DLL)
-$(OPENCV_DLL):
-	wget --quiet https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
+
+$(OPENCV_DLL): $(OPENCV_DLL_SRC)
+	cp $(OPENCV_DLL_SRC) $(OPENCV_DLL)
+
+$(OPENCV_DLL_SRC):
+	echo "Creating $@: `date`";
+	wget --quiet -O $@ https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
 # If you update the NODE_VERSION, then be sure to edit IzpackSetup.java.
 NODE_VERSION=7.10.1
@@ -362,25 +378,26 @@ node:
 NODE_DARWIN = node/node-v$(NODE_VERSION)-darwin-x64.tar.gz
 $(NODE_DARWIN): node
 	if [ ! -f "$@" ]; then \
+		echo "Creating node darwin $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
 	fi
 
 NODE_LINUX = node/node-v$(NODE_VERSION)-linux-x64.tar.xz
 $(NODE_LINUX): node
 	if [ ! -f "$@" ]; then \
+		echo "Creating node linux $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz); \
 	fi
 
 NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
 $(NODE_WIN): node
 	if [ ! -f "$@" ]; then \
+		echo "Creating node win $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
 	fi
 
 
-# Define these here so that PTIIDIST can depend on them.
-IZPACK_DIR=$(PTIIHOME)/vendors/izpack
-L4J_DIR=$(PTIIHOME)/vendors/launch4j
+
 
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
@@ -447,6 +464,7 @@ $(PTIIDIST): $(IZPACK_DIR) $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX)
 		echo "Downloading Jogl for the mac because it is too damn big to check in."; \
 		mkdir $(PTIIHOME)/vendors/jogl; \
 		cd $(PTIIHOME)/vendors/jogl; \
+		date; \
 		wget --quiet http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z; \
 		7z x jogamp-all-platforms.7z; \
 	fi
@@ -1829,15 +1847,25 @@ untar:
 update_ftp_book: PtolemyII_DigitalV1_02.pdf
 	scp PtolemyII_DigitalV1_02.pdf $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/
 
-PtolemyII_DigitalV1_02.pdf:
+PtolemyII_DigitalV1_02.pdf: $(INSTALLER_SRCS)/PtolemyII_DigitalV1_02.pdf
+	cp $< $@
+
+# Download a copy of the book to INSTALLER_SRCS
+BOOK_PDF=PtolemyII_DigitalV1_02.pdf
+BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
+BOOK_LOCAL_SRC=$(INSTALLER_SRCS)/$(BOOK_PDF)
+$(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		if [ -f $(HOME)/Downloads/$(BOOK_PDF) ]; then \
-			cp $(HOME)/Downloads/$(BOOK_PDF) .; \
-		else \
-			echo "Downloading $(BOOK_URL)"; \
-			wget --quiet $(BOOK_URL); \
-		fi; \
+		echo "Creating $@: `date`"; \
+		wget --quiet -O $@ $(BOOK_URL); \
         fi
+
+PTIIDIST_BOOK_PDF=$(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
+book_pdf: $(PTIIDIST_BOOK_PDF)
+
+$(PTIIDIST_BOOK_PDF): $(BOOK_LOCAL_SRC)
+	cp $< $@
+
 
 update_ftp_index:
 	scp index2.htm $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/index.htm
@@ -3459,13 +3487,18 @@ $(IZPACK_COMPILE): $(IZPACK_DIR)
 	 cd $(IZPACK_DIR)/src; ant dist
 
 # Download IzPack
-$(IZPACK_DIR):
+IZPACK_JAR=$(INSTALLER_SRCS)/izpack-dist-5.1.2.jar
+izpack_jar:$(IZPACK_JAR)
+$(IZPACK_JAR): $(INSTALLER_SRCS)
+	if [ ! -f $@ ]; then \
+		echo "Downloading izpack: `date`"; \
+		wget --quiet -O $@ https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar; \
+	fi
+
+
+$(IZPACK_DIR): $(IZPACK_JAR)
 	sed 's#@@PTII@@#$(PTIIHOME)#' izpackInstallDist.xml > izpackInstall.xml
-	if [ ! -f $(PTIIHOME)/vendors/izpack-dist-5.1.2.jar ]; then \
-		echo "Downloading izpack"; \
-		wget --quiet https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar -O $(PTIIHOME)/vendors/izpack-dist-5.1.2.jar; \
-        fi
-	(cd $(PTIIHOME)/vendors; java -jar izpack-dist-5.1.2.jar $(PTIIHOME)/adm/gen-$(PTII_MAJOR_VERSION)/izpackInstall.xml)
+	(cd $(PTIIHOME)/vendors; java -jar $< $(PTIIHOME)/adm/gen-$(PTII_MAJOR_VERSION)/izpackInstall.xml)
 	#rm -f izpackInstall.xml
 
 # It is necessary to this before create the Windows and Mac setup jar files.
@@ -3479,8 +3512,6 @@ cleanSrc:
 	rm -f src/ptII$(VERSION)/mk/ptII.mk
 	rm -f src/ptII$(VERSION)/.classpath
 	rm -f src/ptII$(VERSION)/lib/ptII.properties
-
-BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 
 $(PTIIDIST)/jar_dist/ptolemy/matlab/matlab.jar:
 	if [ ! -f $@ ]; then \
@@ -3516,7 +3547,7 @@ $(PTIIDIST)/lib/matlab.jar:
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar izpacksetup.jar
-$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32 izpacksetup.jar $(PTIIDIST)/jar_dist/ptolemy/matlab/matlab.jar $(PTIIDIST)/ptolemy/matlab/matlab.jar $(PTIIDIST)/ptolemy/matlab/demo/demo.jar $(PTIIDIST)/jar_dist/ptolemy/matlab/demo/demo.jar $(PTIIDIST)/jar_dist/lib/matlab.jar $(PTIIDIST)/lib/matlab.jar
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST_BOOK_PDF) jre32 izpacksetup.jar $(PTIIDIST)/jar_dist/ptolemy/matlab/matlab.jar $(PTIIDIST)/ptolemy/matlab/matlab.jar $(PTIIDIST)/ptolemy/matlab/demo/demo.jar $(PTIIDIST)/jar_dist/ptolemy/matlab/demo/demo.jar $(PTIIDIST)/jar_dist/lib/matlab.jar $(PTIIDIST)/lib/matlab.jar
 	@echo "#"
 	@echo "# Now building target setup_jar (PTSETUP).jar: $@"
 	@echo "# `date`"
@@ -3608,13 +3639,22 @@ izpack:
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
 
-L4J_TAR=launch4j-3.11-linux-x64.tgz
+L4J_TAR=$(INSTALLER_SRCS)/launch4j-3.11.tgz
 
-$(L4J_DIR):
+l4j_dir:$(L4J_DIR)
+
+$(L4J_DIR): $(INSTALLER_SRCS)
+	if [ ! -f $(L4J_TAR) ]; then \
+	    case `uname` in \
+		Darwin) osfile=macosx-x86;; \
+		Linux) osfile=linux-x64ll;; \
+	    esac; \
+	    echo "Downloading $(L4J_TAR) for $$osfile: `date`"; \
+	    wget --quiet "https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-$$osfile.tgz" -O $(L4J_TAR); \
+        fi
 	@echo "Creating L4J_DIR: $(L4J_DIR)"
 	if [ ! -d $(L4J_DIR) ]; then \
 		cd $(PTIIHOME)/vendors; \
-		wget 'https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-linux-x64.tgz' -O $(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR); \
 		ls -l $@; \
 	fi
@@ -3714,23 +3754,6 @@ $(PTIIDIST)/capecode.exe: $(PTIIDIST)/vendors/launch4j
 	@echo " Creating $(PTIIDIST)/capecode.exe"
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
-book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
-
-BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
-$(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
-	if [ ! -f "$@" ] ; then \
-		if [ -f $(HOME)/Downloads/$(BOOK_PDF) ]; then \
-			cp $(HOME)/Downloads/$(BOOK_PDF) .; \
-		else \
-			echo "Downloading $(BOOK_URL)"; \
-			wget --quiet $(BOOK_URL); \
-			if [ -d $(HOME)/Downloads ]; then \
-				cp $(BOOK_PDF) $(HOME)/Downloads; \
-			fi; \
-		fi; \
-		mv $(BOOK_PDF) $(PTIIDIST)/doc/books/systems; \
-		ls -l "$@"; \
-	fi
 
 $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll: $(PTIIDIST)/lib/matlabWindows.jar
 	# Use a relative path and avoid problems with /cygdrive/c under Windows.
@@ -3742,17 +3765,25 @@ jre:
 		echo "JRE Directory" > jre/README.txt; \
 	fi
 
-jre32:
-	if [ ! -d jre32 ] ; then \
-		wget -O WinJre32.tar.gz https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
-		tar -zxf WinJre32.tar.gz; \
+WINJRE32_TAR=$(INSTALLER_SRCS)/WinJre32.tar.gz
+$(WINJRE32_TAR): $(INSTALLER_SRCS)
+	if [ ! -f $@ ]; then \
+		echo "Creating $@: `date`"; \
+		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
 	fi
 
-jre64:
-	if [ ! -d jre64 ] ; then \
-		wget -O WinJre64.tar.gz https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
-		tar -zxf WinJre64.tar.gz; \
+jre32: $(WINJRE32_TAR)
+	tar -zxf $<
+
+WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
+$(WINJRE64_TAR): $(INSTALLER_SRCS)
+	if [ ! -f $@ ]; then \
+		echo "Creating $@: `date`"; \
+		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
 	fi
+
+jre64: $(WINJRE64_TAR)
+	tar -zxf $<
 
 # This is the main target for creating installers.
 setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(PTSETUP_LINUX).tar.gz $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz
@@ -4555,3 +4586,5 @@ test_capeCodeNonGUI.tar.gz: capeCodeNonGUI.tar.gz
 	(cd /tmp/capeCodeNonGUI; ./capeCodeNonGUI ./DiscoveryJSStdout.xml)
 
 
+# Download resources needed for building the installers.
+prime_installer: $(OPENCV_DLL_SRC) $(BOOK_LOCAL_SRC) $(IZPACK_JAR) $(L4J_TAR) $(WINJRE32_TAR) $(WINJRE64_TAR) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)

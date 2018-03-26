@@ -6,6 +6,7 @@ env:
     # should be alphabetical.
     - PT_TRAVIS_BUILD_ALL=true
     - PT_TRAVIS_DOCS=true
+    - PT_TRAVIS_INSTALLERS_PRE=true
     - PT_TRAVIS_INSTALLERS=true
     - PT_TRAVIS_TEST_CAPECODE_XML=true
     - PT_TRAVIS_TEST_REPORT_SHORT=true
