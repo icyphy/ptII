@@ -93,7 +93,6 @@ script:
   # See https://github.com/travis-ci/travis-ci/issues/4190
   - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
-  - grep USER $PTII/adm/test/* || true
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
   - $PTII/bin/ptIITravisBuild.sh
 

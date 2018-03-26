@@ -10,8 +10,8 @@
 # To test, set the environment variable:
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_INSTALLERS_PRE=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
@@ -145,15 +145,8 @@ if [ ! -z "$PT_TRAVIS_P" ]; then
     updateGhPages $LOG logs/
 fi
 
-# Prime the cache in $PTII/vendors/installer so that the installers target is faster
-if [ ! -z "$PT_TRAVIS_INSTALLERS_PRE" ]; then
-
-    timeout 2400 make -C $PTII/adm/gen-11.0 USER=travis PTIIHOME=$PTII COMPRESS=gzip prime_installer 2>&1 | grep -v GITHUB_TOKEN
-
-    ls $PTII/vendors/installer
-fi
-
-# Build the installers.
+# Build the installers.  For this to complete in the time alloted by
+# Travis, the prime_installer target below needs to run.
 if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
@@ -184,6 +177,12 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     ls $PTII/adm/gen-11.0
     # We use Travis-ci deploy to upload the release because GitHub has
     # a 100Mb limit unless we use Git LFS.
+fi
+
+# Prime the cache in $PTII/vendors/installer so that the installers target is faster.
+if [ ! -z "$PT_TRAVIS_PRIME_INSTALLER" ]; then
+    make -C $PTII/adm/gen-11.0 USER=travis PTIIHOME=$PTII COMPRESS=gzip prime_installer
+    ls $PTII/vendors/installer
 fi
 
 # Run the CapeCode tests.
