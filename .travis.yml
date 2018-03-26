@@ -103,8 +103,11 @@ script:
 # See https://docs.travis-ci.com/user/caching
 cache:
   directories:
+    - $PTII/vendors/adm/gen-11.0/node
+    - $PTII/vendors/installer
     - $PTII/vendors/jai-1_1_2_01
     - $PTII/vendors/JMF-2.1.1e
+    - $PTII/vendors/jogl
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
