@@ -282,6 +282,7 @@ ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
 ptserver/test/junit/PtolemyServer.log
 replay_pid*.log
 updateMoMLFiles.xml
+vendors/installer
 vendors/jogl
 vendors/jsdoc
 vendors/node
