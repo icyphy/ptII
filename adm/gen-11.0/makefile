@@ -365,7 +365,7 @@ $(OPENCV_DLL): $(OPENCV_DLL_SRC)
 	cp $(OPENCV_DLL_SRC) $(OPENCV_DLL)
 
 $(OPENCV_DLL_SRC):
-	@echo "Creating $@: `date`";
+	@echo "Downloading $@: `date`";
 	wget --quiet -O $@ https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
 # If you update the NODE_VERSION, then be sure to edit IzpackSetup.java.
@@ -378,21 +378,21 @@ node:
 NODE_DARWIN = node/node-v$(NODE_VERSION)-darwin-x64.tar.gz
 $(NODE_DARWIN): node
 	if [ ! -f "$@" ]; then \
-		echo "Creating node darwin $@: `date`"; \
+		echo "Downloading node darwin $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
 	fi
 
 NODE_LINUX = node/node-v$(NODE_VERSION)-linux-x64.tar.xz
 $(NODE_LINUX): node
 	if [ ! -f "$@" ]; then \
-		echo "Creating node linux $@: `date`"; \
+		echo "Downloading node linux $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz); \
 	fi
 
 NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
 $(NODE_WIN): node
 	if [ ! -f "$@" ]; then \
-		echo "Creating node win $@: `date`"; \
+		echo "Downloading node win $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
 	fi
 
@@ -1859,15 +1859,14 @@ BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
 BOOK_LOCAL_SRC=$(INSTALLER_SRCS)/$(BOOK_PDF)
 $(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		echo "Creating $@: `date`"; \
+		echo "Downloading Ptolemy Book: $@: `date`"; \
 		wget --quiet -O $@ $(BOOK_URL); \
         fi
 
 PTIIDIST_BOOK_PDF=$(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 book_pdf: $(PTIIDIST_BOOK_PDF)
 
-$(PTIIDIST_BOOK_PDF): $(BOOK_LOCAL_SRC)
-	cp $< $@
+$(PTIIDIST_BOOK_PDF)
 
 
 update_ftp_index:
@@ -3774,7 +3773,7 @@ jre:
 WINJRE32_TAR=$(INSTALLER_SRCS)/WinJre32.tar.gz
 $(WINJRE32_TAR): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		echo "Creating $@: `date`"; \
+		echo "Downloading WinJre32 $@: `date`"; \
 		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
 	fi
 
@@ -3784,7 +3783,7 @@ jre32: $(WINJRE32_TAR)
 WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
 $(WINJRE64_TAR): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		echo "Creating $@: `date`"; \
+		echo "Downloading WinJre64 $@: `date`"; \
 		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
 	fi
 
