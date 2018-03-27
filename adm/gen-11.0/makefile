@@ -3789,7 +3789,7 @@ jre64: $(WINJRE64_TAR)
 	tar -zxf $<
 
 # This is the main target for creating installers.
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(PTSETUP_LINUX).tar.gz $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_LINUX).tar.gz $(CAPECODE_SETUP_64).exe $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz #$(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -4107,6 +4107,8 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 
 capecode_setup_mac_app: $(CAPECODE_SETUP_MAC).app
 $(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
+	df -k
+	du -k $PTII | sort -nr
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
 	find $@ -type d -exec touch {} \; 
