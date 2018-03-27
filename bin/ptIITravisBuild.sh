@@ -48,6 +48,7 @@ updateGhPages () {
         return 
     fi
 
+    df -k
     TMP=/tmp/ptIITravisBuild_gh_pages.$$
     if [ ! -d $TMP ]; then
         mkdir $TMP
@@ -61,9 +62,10 @@ updateGhPages () {
 
     # Don't echo GITHUB_TOKEN
     set +x
-    git clone --depth=50 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
+    git clone --depth=1 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
     set -x
 
+    df -k
     # Commit and Push the Changes
     cd gh-pages
     echo "$destination" | grep '.*/$'
@@ -170,11 +172,17 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
 
     timeout 2400 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
  
+    # Free up space for clone of gh-pages
+    df -k
+    rm -rf $PTII/adm/dists
+    ant clean
+
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
     updateGhPages $LOG logs/
 
-    ls $PTII/adm/gen-11.0
+    ls -l $PTII/adm/gen-11.0
+
     # We use Travis-ci deploy to upload the release because GitHub has
     # a 100Mb limit unless we use Git LFS.
 fi
