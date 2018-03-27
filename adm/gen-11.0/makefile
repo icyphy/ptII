@@ -1866,8 +1866,8 @@ $(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
 PTIIDIST_BOOK_PDF=$(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 book_pdf: $(PTIIDIST_BOOK_PDF)
 
-$(PTIIDIST_BOOK_PDF)
-
+$(PTIIDIST_BOOK_PDF): $(BOOK_LOCAL_SRC)
+	cp $< $@
 
 update_ftp_index:
 	scp index2.htm $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/index.htm
