@@ -1890,7 +1890,7 @@ EOF6
 		       (cd $PTII/; tar -xf "$MacJVMTar")
 		   else
 		       echo "$0: Could not find MacJVMTar in $MacJVMTar."
-                       echo "  Try 'export TRAVIS=true' and rerun makeapp."
+                       echo "TRAVIS = $TRAVIS. To download the MacJVM, try 'export TRAVIS=true' and rerun makeapp."
 		   fi
 	       fi	   
 	   fi # Darwin
