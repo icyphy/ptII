@@ -186,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.13 40390 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.13 44646 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.13 40390 10.20.0.32 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.13 44646 10.20.0.61 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '358657422';
+        cur['env.TRAVIS_BUILD_ID'] = '359040739';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '134';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '139';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'ae41ae30de6d3d5058a655bc1da80768f89809e6';
+        cur['env.TRAVIS_COMMIT'] = '669517485fa2c15e3536e8f666f206d891e72b1c';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Travis Caches are not really meant to be shared.  Don\'t run the prime_installer target because the installer target will prime the cache.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'In PTIIDIST, link vendors/install to avoid downloading MacJVM.jar again.  Print out times.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '90a5e85e4e37...ae41ae30de6d';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'd7ba96599c74...669517485fa2';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '358657427';
+        cur['env.TRAVIS_JOB_ID'] = '359040747';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '134.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '139.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.opencv.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.opencv.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1639739020948584645.properties propsfile=/home/travis/build/icyphy/ptII/junit1186523959106135903.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.opencv.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.opencv.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher909364865157600878.properties propsfile=/home/travis/build/icyphy/ptII/junit6272525298380348133.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -489,7 +489,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="34_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="34_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="34_JUnitTclTest-fails.html">1</a></td><td>0</td><td>0.315</td><td>2018-03-26T23:54:08</td><td>travis-job-4707bee9-fb0a-462c-840b-cfde2044f0b3</td>
+<td><a title="Display all tests" href="34_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="34_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="34_JUnitTclTest-fails.html">1</a></td><td>0</td><td>0.325</td><td>2018-03-27T19:14:25</td><td>travis-job-6b763526-5a6f-4537-87cc-681914f8dd86</td>
 </tr>
 </table>
 <h2>Failures</h2>
@@ -501,7 +501,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>
 <br>
 <code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>0.209</td>
+</code></td><td>0.241</td>
 </tr>
 </table>
 <div class="Properties">
