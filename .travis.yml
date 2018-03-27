@@ -53,9 +53,6 @@ install:
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
 
   # Install JMF.  If the wget fails, then don't stop the build.
-  - ls $PTII/vendors
-  - ls $PTII/vendors/opencv
-  - ls -l $PTII/vendors/opencv/share/OpenCV/java || true
   - ls $PTII/vendors/JMF-2.1.1e || true
   - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
 
@@ -71,12 +68,20 @@ install:
 
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
-  - ls -l /usr/lib/jni/
-  - ls -l $PTII/vendors/opencv/share/OpenCV/java/
+
+  # List the contents of vendors and cached directories
+  - ls $PTII/vendors
+  - ls -l $PTII/vendors/adm/gen-11.0/node || true
+  - ls -l $PTII/vendors/installer || true
+  - ls -l $PTII/vendors/jai-1_1_2_01 || true
+  - ls -l $PTII/vendors/JMF-2.1.1e || true
+  - ls -l $PTII/vendors/jogl || true
+  - ls -l $PTII/vendors/misc/sphinx4 || true
+  - ls -l $PTII/vendors/opencv || true
+  - ls -l $PTII/vendors/opencv/share/OpenCV/java || true
 
   # Display environment variables
   - env | sort
-  - ls -l vendors
   - ./configure --enable-verbose
 
 script:
@@ -130,29 +135,15 @@ deploy:
     file_glob: true
     file:
       - $PTII/doc/codeDoc*.jar
-      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.linux.jar
       - $PTII/adm/gen-11.0/capecode0.2.devel.setup.linux.tar.gz
-      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.app
       - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.app.tar.gz
-      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.dmg
-      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.jar
       - $PTII/adm/gen-11.0/capecode0_2_devel_setup_windows_64.exe
-      - $PTII/adm/gen-11.0/capecode0_2_devel_setup_windows_64.jar
-      - $PTII/adm/gen-11.0/capecode0.2.devel.tar.gz
-      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.linux.jar
       - $PTII/adm/gen-11.0/ptII11.0.devel.setup.linux.tar.gz
-      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.app
       - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.app.tar.gz
-      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.dmg
-      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
       - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows_64.exe
-      - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows_64.jar
       - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.exe
-      - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.jar
-      - $PTII/adm/gen-11.0/ptII11.0.devel.src.jar
       - $PTII/adm/gen-11.0/ptII11.0.devel.src.tar
       - $PTII/adm/gen-11.0/ptII11.0.devel.src.zip
-      - $PTII/adm/gen-11.0/ptII11.0.devel.tar
     on:
       tags: true
       condition: $PT_TRAVIS_INSTALLERS = true
