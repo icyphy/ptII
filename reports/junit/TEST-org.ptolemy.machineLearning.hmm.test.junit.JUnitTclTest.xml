@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-6b763526-5a6f-4537-87cc-681914f8dd86" name="org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest" skipped="0" tests="5" time="3.297" timestamp="2018-03-27T19:12:50">
+<testsuite errors="0" failures="0" hostname="travis-job-5d26aea0-2fc6-4b6d-963b-322a3c1110bc" name="org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest" skipped="0" tests="5" time="3.949" timestamp="2018-03-27T19:48:43">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="139.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="140.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.13 44646 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.9 45900 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -48,7 +48,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.13 44646 10.20.0.61 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.9 45900 10.20.0.133 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -65,12 +65,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2942584214550245286.properties propsfile=/home/travis/build/icyphy/ptII/junit4342976673218722809.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8446549046729761608.properties propsfile=/home/travis/build/icyphy/ptII/junit1031563826069213869.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="d7ba96599c74...669517485fa2" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="669517485fa2...9173137ed4d6" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="139" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="140" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="359040739" />
+    <property name="env.TRAVIS_BUILD_ID" value="359051676" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="669517485fa2c15e3536e8f666f206d891e72b1c" />
+    <property name="env.TRAVIS_COMMIT" value="9173137ed4d62ff7888b41903afe51441787b4d0" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -165,7 +165,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="In PTIIDIST, link vendors/install to avoid downloading MacJVM.jar again.  Print out times." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Typo." />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test" />
@@ -202,7 +202,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="359040747" />
+    <property name="env.TRAVIS_JOB_ID" value="359051681" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -220,11 +220,11 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml (RunModel)" time="1.891" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml (RunModel)" time="1.324" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml (RunModel)" time="2.147" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml (RunModel)" time="1.712" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test
@@ -250,7 +250,7 @@ No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/machineLearnin
 183.22690803766702
 182.65190344952822
 =======
-737 ms. Memory: 146944K Free: 102558K (70%)
+824 ms. Memory: 146944K Free: 102655K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml
 70.88585844977061
 158.04267378679518
@@ -273,80 +273,94 @@ No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/machineLearnin
 183.22690803766702
 182.65190344952822
 =======
-390 ms. Memory: 208384K Free: 140778K (68%)
+490 ms. Memory: 208384K Free: 137506K (66%)
 reloadAllAccessors: .CommunicationAnomalyDetectionAOMTest
 ----------------- testing /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml
--1405.1054970378732
--1237.433056666634
--1125.843655826838
--1083.3012817080312
--1085.0979666790274
--1082.001220433709
--1074.6435163459976
--1072.0653898299963
--1072.6799714241238
--1076.3569118668133
--1069.9948202139342
--1066.9676995307193
--1064.2575362193784
--1062.4339156815984
--1061.463313145738
--1061.108080576126
--1061.1104771435612
--1061.2676245314278
--1061.450600535236
--1061.5958905722864
--1061.685509569621
--1061.7264171709814
--1061.7347668430994
--1061.7264490225864
--1061.712969207817
--1061.7008043481637
--1061.6924705794077
--1061.6880581000516
--1061.686559457472
--1061.6867505572807
--1061.6876383505817
--1061.68859726158
--1061.6893314418996
--1061.6897700031375
--1061.6899605562594
+-1416.1765963589773
+-1259.2454319036476
+-1141.565801983277
+-1100.2522499410452
+-1128.9851206476212
+-1136.8602435358653
+-1127.8287196800027
+-1121.9727497018782
+-1119.7778777458138
+-1117.4947379219377
+-1112.2958180249404
+-1104.4740770522626
+-1097.2310143240609
+-1093.249629742175
+-1092.0076104867967
+-1096.570625825279
+-1095.217132361801
+-1096.656262433485
+-1097.8535080354723
+-1098.55284652181
+-1098.7232134780397
+-1098.5007295239811
+-1098.0928785951562
+-1097.687439046057
+-1097.4004473005575
+-1097.268784057242
+-1097.270805324201
+-1097.3554790491366
+-1097.4678244798986
+-1097.5655778094422
+-1097.626259966241
+-1097.6462608613338
+-1097.6349529013373
+-1097.607217256198
+-1097.5771127087935
+-1097.5541316822118
+-1097.5421809744043
+-1097.540555270482
+-1097.5458653689336
+-1097.554007869257
+-1097.5616012078085
+-1097.566680845097
+-1097.5687321963514
+-1097.5682977134427
+-1097.5664281456725
+-1097.5641927300387
+-1097.5623666076615
+-1097.561318923039
+-1097.5610587503243
+-1097.561366789062
+-1097.5619431770385
+-1097.562523188136
+-1097.5629397566538
+-1097.5631347976234
 =======
-626 ms. Memory: 330240K Free: 248719K (75%)
+997 ms. Memory: 331264K Free: 153024K (46%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml
--1441.9916690589407
--1295.1084423116704
--1160.547557710272
--1091.3649768599807
--1106.0225216988686
--1114.1798962065861
--1115.5504638132495
--1114.0363442092496
--1109.089936283547
--1104.5345022966128
--1101.936134787265
--1100.9886293567606
--1100.9982476142466
--1101.3680506845428
--1101.7332012905338
--1101.9526087355289
--1102.0284531751893
--1102.0184922420058
--1101.9791339993508
--1101.9438339550084
--1101.9239520067692
--1101.9178394936182
--1101.9194597909698
--1101.923441418538
--1101.9267759550924
--1101.9285510374077
--1101.9290249737114
--1101.928808543844
--1101.928409440274
--1101.928096144427
--1101.9279390525653
+-1401.8828890498708
+-1212.15816700916
+-1103.0092067758167
+-1090.4166963258817
+-1112.2195311053188
+-1114.8522626317385
+-1091.0113041670552
+-1074.138556091537
+-1066.5909120623028
+-1063.2812510001745
+-1061.756109644004
+-1060.9331677272469
+-1060.4164275904536
+-1060.0625246926347
+-1059.8165200106796
+-1059.6503589873419
+-1059.5432384346518
+-1059.4776166414053
+-1059.4393825247082
+-1059.4181467104368
+-1059.4068834969237
+-1059.4011778716792
+-1059.3984239491438
+-1059.3971656452509
+-1059.3966289330365
+-1059.3964216359282
 =======
-483 ms. Memory: 330752K Free: 274748K (83%)
+428 ms. Memory: 331264K Free: 214215K (65%)
 reloadAllAccessors: .HMMTest
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
