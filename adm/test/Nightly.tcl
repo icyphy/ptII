@@ -80,61 +80,60 @@ set ptsetup ptII${windows_version}_setup_windows
 set startingDirectory [pwd]
 cd $gendir
 
-test nightly-1.1 {clean} {
-    puts "adm/test/Nightly.tcl: about to clean"
-    set matches [nightlyMake clean]
-    list $matches [file exists $ptII_full]
-} {{} 0}
+# test nightly-1.1 {clean} {
+#     puts "adm/test/Nightly.tcl: about to clean"
+#     set matches [nightlyMake clean]
+#     list $matches [file exists $ptII_full]
+# } {{} 0}
 
-test nightly-1.2 {all} {
-    set matches [nightlyMake all]
-    list $matches [file exists $ptII_full]
-} {{} 1}
+# test nightly-1.2 {all} {
+#     set matches [nightlyMake all]
+#     list $matches [file exists $ptII_full]
+# } {{} 1}
 
 test nightly-1.3 {jnlp} {
-    # set filename $PTII/adm/dists/ptII$version/vergil.jnlp
-    # file delete -force $filename
-    # set r0  [file exists $filename]
-
-    # set matches [nightlyMake jnlp]
-
-    # puts "nightly-1.3: $filename"
-    # list $r0 $matches [file exists $filename]
-    list "jnlp takes too long and is not used."
-} {0 {} 1} {jnlp takes too long and is not used}
-
-test nightly-1.4 {src.jar} {
-    set filename $gendir/ptII$version.src.jar
+    set filename $PTII/adm/dists/ptII$version/vergil.jnlp
     file delete -force $filename
     set r0  [file exists $filename]
 
-    set matches [nightlyMake src.jar]
+    set matches [nightlyMake jnlp]
 
-    puts "nightly-1.4: $filename"
+    puts "nightly-1.3: $filename"
     list $r0 $matches [file exists $filename]
 } {0 {} 1}
 
-test nightly-1.5 {setup} {
-    set filename $gendir/$ptsetup.exe
-    file delete -force $filename
-    set r0  [file exists $filename]
+# test nightly-1.4 {src.jar} {
+#     set filename $gendir/ptII$version.src.jar
+#     file delete -force $filename
+#     set r0  [file exists $filename]
 
-    set matches [nightlyMake setup]
+#     set matches [nightlyMake src.jar]
 
-    puts "nightly-1.5: $filename"
-    list $r0 $matches [file exists $filename]
-} {0 {} 1}
+#     puts "nightly-1.4: $filename"
+#     list $r0 $matches [file exists $filename]
+# } {0 {} 1}
 
-test nightly-1.6 {capeCodeNonGUI tar file} {
-    set filename $gendir/capeCodeNonGUI.tar.gz
-    file delete -force $filename
-    set r0  [file exists $filename]
+# test nightly-1.5 {setup} {
+#     set filename $gendir/$ptsetup.exe
+#     file delete -force $filename
+#     set r0  [file exists $filename]
 
-    set matches [nightlyMake capeCodeNonGUI.tar.gz]
+#     set matches [nightlyMake setup]
 
-    puts "nightly-1.6: $filename"
-    list $r0 $matches [file exists $filename]
-} {0 {} 1}
+#     puts "nightly-1.5: $filename"
+#     list $r0 $matches [file exists $filename]
+# } {0 {} 1}
+
+# test nightly-1.6 {capeCodeNonGUI tar file} {
+#     set filename $gendir/capeCodeNonGUI.tar.gz
+#     file delete -force $filename
+#     set r0  [file exists $filename]
+
+#     set matches [nightlyMake capeCodeNonGUI.tar.gz]
+
+#     puts "nightly-1.6: $filename"
+#     list $r0 $matches [file exists $filename]
+# } {0 {} 1}
 
 set VERBOSE 0
 cd $startingDirectory
