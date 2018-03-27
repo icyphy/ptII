@@ -92,15 +92,16 @@ test nightly-1.2 {all} {
 } {{} 1}
 
 test nightly-1.3 {jnlp} {
-    set filename $PTII/adm/dists/ptII$version/vergil.jnlp
-    file delete -force $filename
-    set r0  [file exists $filename]
+    # set filename $PTII/adm/dists/ptII$version/vergil.jnlp
+    # file delete -force $filename
+    # set r0  [file exists $filename]
 
-    set matches [nightlyMake jnlp]
+    # set matches [nightlyMake jnlp]
 
-    puts "nightly-1.3: $filename"
-    list $r0 $matches [file exists $filename]
-} {0 {} 1}
+    # puts "nightly-1.3: $filename"
+    # list $r0 $matches [file exists $filename]
+    list "jnlp takes too long and is not used."
+} {0 {} 1} {jnlp takes too long and is not used}
 
 test nightly-1.4 {src.jar} {
     set filename $gendir/ptII$version.src.jar
