@@ -449,7 +449,7 @@ $(PTIIDIST): $(IZPACK_DIR) $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX)
 	(cd $(PTIIDIST)/vendors/node; tar -zxf $(GENDIR)/$(NODE_DARWIN))
 	(cd $(PTIIDIST)/vendors/node; tar -Jxf $(GENDIR)/$(NODE_LINUX))
 	(cd $(PTIIDIST)/vendors/node; unzip -q $(GENDIR)/$(NODE_WIN))
-	(cd $(PTIIDIST/vendors; ln -s $(PTIIHOME)/vendors/installer .)
+	(cd $(PTIIDIST)/vendors; ln -s $(PTIIHOME)/vendors/installer .)
 	ls -l $(PTIIDIST)/vendors/installer
 	# Remove the duktape binaries.
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
