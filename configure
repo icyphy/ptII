@@ -4702,21 +4702,29 @@ PTVIEWER_DIR=viewer
 PTVIEWER_PACKAGES=ptolemy.media.viewer
 
 # Handle Java 9 fails.
-case "$JVERSION" in
-        9*)    # We use to need to add a module so that
-               # javax.xml.bind.DatatypeConverter can be found.
-               # However, we no longer need that class.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking Java 9 and later" >&5
+$as_echo_n "checking Java 9 and later... " >&6; }
+echo "$JVERSION" | egrep '9*|1-90-9*' > /dev/null
+status=$?
+if test $status -eq 1 ; then
+    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Java 9 or later is not present" >&5
+$as_echo "Java 9 or later is not present" >&6; }; fi
+else
+    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Java 9 or later present" >&5
+$as_echo "Java 9 or later present" >&6; }; fi
+    # We use to need to add a module so that
+    # javax.xml.bind.DatatypeConverter can be found.
+    # However, we no longer need that class.
 
-               # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
-               # JAVAC_MODULES="--add-modules java.xml.bind"
-               PTVIEWER_DIR=
-               PTVIEWER_PACKAGES=
-               updateExcludes "ptolemy/copernicus/applet/"
-               updateExcludes "ptolemy/media/viewer"
-
-               ;;
-esac
-
+    # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+    # JAVAC_MODULES="--add-modules java.xml.bind"
+    PTVIEWER_DIR=
+    PTVIEWER_PACKAGES=
+    updateExcludes "ptolemy/copernicus/applet/"
+    updateExcludes "ptolemy/media/viewer/"
+fi
 
 
 #####################################################################
