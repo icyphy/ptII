@@ -2,36 +2,145 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTrackingAttackModeling" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 36, 1248, 732}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1134, 732}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1014, 622]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[900, 622]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9333387803272737">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.172108994944517">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.2832031249999, 268.8857460781872}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.6575249565972, 268.24951171875}">
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple adaptive cruise control system,&#10;illustrating model-integrated control strategies. A leading&#10;car model produces information that is observed with possible&#10;flaws by a following car. If the following car detects flaws, it&#10;uses a conservative strategy. Otherwise, it tracks the leading&#10;car closely.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 290.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows an adaptive cruise control system&#10;suffering from a communication network attack.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="80.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 35.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="center">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From time 20 to 40&#10;replace the value with&#10;a fixed number 6.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 450.0]">
+        </property>
+    </property>
+    <property name="Attack" class="ptolemy.data.expr.ChoiceStringParameter" value="ManInTheMiddleAttack">
+        <property name="choices" class="ptolemy.data.expr.StringParameter" value="None, ReplayAttack, FabricationAttack, ManInTheMiddleAttack, InterruptionAttack">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 305.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="center">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, start&#10;replaying data&#10;recorded from time 10.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 450.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="center">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 5 time units,&#10;replace the value&#10;with a random one&#10;between 0 and 20.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 455.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="center">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From time 20 to 40,&#10;drop the value.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 445.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that for most of these, the position of the following car crosses the&#10;possition of the leading car, indicating a crash.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 495.0}">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Choose an&#10;attack here:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 255.0]">
+        </property>
+    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To use the model, switch the aspects &#10;in the relation between the LeadingCar &#10;and the FollowingCar:&#10;&#10;1. Right-click on the FollowingCar input &#10;    port&#10;2. Customize -&gt; Configure&#10;3. Enable one of the four Attack Models &#10;    by ticking the box and setting the &#10;    inputPort to 'in'.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 10.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Communication Network Attack using Aspects">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The attacks are implemented by the following models (open them to see):">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The attack occurs on&#10;this communication.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 225.0]">
+        </property>
+    </property>
+    <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 225.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="arrowWidth" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
     </property>
     <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -39,9 +148,9 @@
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leading car, normal, man in the middle, fabrication, interruption, replay">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leading car, following car">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1129, 281, 522, 343}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 552, 522, 343}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 299]">
         </property>
@@ -51,7 +160,7 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 285.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -106,13 +215,13 @@
 <title>Position</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>distance (meters)</yLabel>
-<xRange min="0.0" max="200.0"/>
-<yRange min="0.0" max="3746.239461898263"/>
+<xRange min="0.0" max="80.0"/>
+<yRange min="0.0" max="1165.6134476288037"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="LeadingCar" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 175.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -206,7 +315,7 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 124, 788, 328}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 124, 853, 632}, maximized=false}">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -432,9 +541,9 @@
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leading car, following car">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="desired speed, leading car, following car">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1169, 281, 522, 343}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={790, 550, 522, 343}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 299]">
         </property>
@@ -444,7 +553,7 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 135.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -496,16 +605,16 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Position</title>
+<title>Speed</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>distance (meters)</yLabel>
-<xRange min="0.0" max="200.0"/>
-<yRange min="0.0" max="50.0"/>
+<xRange min="0.0" max="80.0"/>
+<yRange min="0.0" max="32.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Urban Driving Cycle" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 125.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 35, 1055, 638}, maximized=false}">
         </property>
@@ -712,9 +821,9 @@
         <link port="DiscreteClock.output" relation="relation"/>
     </entity>
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 215.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 33, 1119, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 33, 1119, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[885, 404]">
         </property>
@@ -737,7 +846,9 @@
             <property name="DecoratorAttributesFor_ManInTheMiddleAttack" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ManInTheMiddleAttack">
                 </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="Attack == &quot;ManInTheMiddleAttack&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+                    </property>
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -747,7 +858,9 @@
             <property name="DecoratorAttributesFor_FabricationAttack" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FabricationAttack">
                 </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="Attack == &quot;FabricationAttack&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+                    </property>
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
@@ -757,11 +870,13 @@
             <property name="DecoratorAttributesFor_InterruptionAttack" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="InterruptionAttack">
                 </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="Attack == &quot;InterruptionAttack&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+                    </property>
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in">
                 </property>
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: ManInTheMiddleAttack">
@@ -769,11 +884,13 @@
             <property name="DecoratorAttributesFor_InterruptionAttack2" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ReplayAttack">
                 </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="Attack == &quot;ReplayAttack&quot;">
+                    <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+                    </property>
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in">
                 </property>
             </property>
         </port>
@@ -800,7 +917,7 @@
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 146, 853, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 146, 853, 632}, maximized=false}">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -1135,7 +1252,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[94.5, 30.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 400.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 39, 934, 634}, maximized=false}">
         </property>
@@ -1594,15 +1711,15 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 55.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.00000000000003, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 400.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={342, 247, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8712798031925719">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3018867924528301">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.775390625, 233.1563519021738}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.66601562499994, 224.58743772644928}">
         </property>
         <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
             <property name="value" class="ptolemy.data.expr.Parameter" value="">
@@ -1650,20 +1767,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 170.0]">
             </property>
         </entity>
-        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
-            </property>
-            <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="meanTime" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
-            </property>
-            <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
-            </property>
-        </entity>
         <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
             <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
             </property>
@@ -1675,6 +1778,13 @@
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 230.0]">
+            </property>
+        </entity>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="5.0">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
             </property>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1693,9 +1803,9 @@
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="in.output" relation="relation4"/>
         <link port="out.input" relation="relation2"/>
@@ -1711,9 +1821,9 @@
         <link port="Merge.input" relation="relation6"/>
         <link port="Merge.input" relation="relation7"/>
         <link port="Merge.output" relation="relation5"/>
-        <link port="PoissonClock.output" relation="relation9"/>
         <link port="Uniform.output" relation="relation7"/>
-        <link port="Uniform.trigger" relation="relation9"/>
+        <link port="Uniform.trigger" relation="relation8"/>
+        <link port="DiscreteClock.output" relation="relation8"/>
     </entity>
     <entity name="InterruptionAttack" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,1.0,0.2,1.0}">
@@ -1798,7 +1908,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[93.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.00000000000003, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 400.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 266, 934, 634}, maximized=false}">
         </property>
@@ -2110,15 +2220,15 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[87.5, 28.625]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 400.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={359, 113, 934, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8712798031925719">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6614151750862969">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.775390625, 233.1563519021738}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{236.654296875, 155.494044384058}">
         </property>
         <property name="recordingStart" class="ptolemy.data.expr.Parameter" value="10">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2675,12 +2785,16 @@
         <link port="ModalModel.end" relation="relation5"/>
         <link port="ReplayStart.output" relation="relation"/>
     </entity>
+    <entity name="SmoothSignal" class="ptolemy.domains.qss.lib.SmoothSignal">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 125.0]">
+        </property>
+    </entity>
     <relation name="relation7_2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[220.0, 155.0]">
+        <vertex name="vertex1" value="[220.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -2688,28 +2802,32 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[105.0, 105.0]">
+        <vertex name="vertex1" value="[105.0, 125.0]">
         </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[220.0, 195.0]">
+        <vertex name="vertex1" value="[220.0, 215.0]">
         </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Position.input" relation="relation7_2"/>
     <link port="Position.input" relation="relation4"/>
     <link port="LeadingCar.position" relation="relation7_2"/>
     <link port="LeadingCar.speed" relation="relation2"/>
     <link port="LeadingCar.desiredSpeed" relation="relation"/>
-    <link port="Speed.input" relation="relation"/>
+    <link port="Speed.input" relation="relation6"/>
     <link port="Speed.input" relation="relation2"/>
     <link port="Speed.input" relation="relation3"/>
     <link port="Urban Driving Cycle.desiredSpeed" relation="relation"/>
     <link port="FollowingCar.leadingCarSpeed" relation="relation5"/>
     <link port="FollowingCar.speed" relation="relation3"/>
     <link port="FollowingCar.position" relation="relation4"/>
+    <link port="SmoothSignal.input" relation="relation"/>
+    <link port="SmoothSignal.output" relation="relation6"/>
     <link relation1="relation2" relation2="relation5"/>
 </entity>
