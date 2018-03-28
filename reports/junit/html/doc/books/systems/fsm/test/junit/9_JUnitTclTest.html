@@ -186,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.7 57114 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.11 56844 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.7 57114 10.20.0.195 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.11 56844 10.20.0.79 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '359385950';
+        cur['env.TRAVIS_BUILD_ID'] = '359403067';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '145';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '146';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4f988a94539575ea327d4852ec9533c2347d3104';
+        cur['env.TRAVIS_COMMIT'] = '3f5a90a885b91824fd2af7028936fb7109b8fac3';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'configure.in changed.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Cleaning /org/hlacerti because the new code breaks backward compatibility\n(dynamic multi-instances are no longer implemented):\n\n- /org/hlacerti/legacy is moved to /org/hlacerti/models/legacy\n- All models in /org/hlacerti/demo and the last version of the manual are\n  moved to /org/hlacerti/models/legacy/DynamicMultiInstance\n- /org/hlacerti/lib/test/ was removed (/org/hlacerti/test/ remains).\n- No changes made in makefiles since the models will not be used as demos.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'f31ce91404f0...4f988a945395';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '4f988a945395...3f5a90a885b9';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '359385955';
+        cur['env.TRAVIS_JOB_ID'] = '359403077';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '145.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '146.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.fsm.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.fsm.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2637894367321451395.properties propsfile=/home/travis/build/icyphy/ptII/junit7191096852176239099.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.fsm.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.fsm.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6024413736720005338.properties propsfile=/home/travis/build/icyphy/ptII/junit8619577135714504408.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -489,7 +489,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="9_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="9_JUnitTclTest.html">21</a></td><td>0</td><td>0</td><td>0</td><td>3.580</td><td>2018-03-28T14:34:34</td><td>travis-job-acee2cd0-643c-47e8-aa55-cde0eb78a483</td>
+<td><a title="Display all tests" href="9_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="9_JUnitTclTest.html">21</a></td><td>0</td><td>0</td><td>0</td><td>4.730</td><td>2018-03-28T15:29:32</td><td>travis-job-0d54a9ac-e72c-402e-88af-83487ef94645</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -498,67 +498,67 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.571</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.707</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml (RunModel)</td><td>Success</td><td></td><td>0.270</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml (RunModel)</td><td>Success</td><td></td><td>0.371</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.414</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.479</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.171</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.101</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml (RunModel)</td><td>Success</td><td></td><td>0.145</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml (RunModel)</td><td>Success</td><td></td><td>0.158</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml (RunModel)</td><td>Success</td><td></td><td>0.214</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml (RunModel)</td><td>Success</td><td></td><td>0.207</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.169</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml (RunModel)</td><td>Success</td><td></td><td>0.264</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml (RunModel)</td><td>Success</td><td></td><td>0.302</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml (RunModel)</td><td>Success</td><td></td><td>0.501</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml (RunModel)</td><td>Success</td><td></td><td>0.079</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml (RunModel)</td><td>Success</td><td></td><td>0.062</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml (RunModel)</td><td>Success</td><td></td><td>0.072</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml (RunModel)</td><td>Success</td><td></td><td>0.088</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml (RunModel)</td><td>Success</td><td></td><td>0.097</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml (RunModel)</td><td>Success</td><td></td><td>0.144</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml (RunModel)</td><td>Success</td><td></td><td>0.314</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml (RunModel)</td><td>Success</td><td></td><td>0.441</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml (RunModel)</td><td>Success</td><td></td><td>0.239</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml (RunModel)</td><td>Success</td><td></td><td>0.354</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml (RunModel)</td><td>Success</td><td></td><td>0.185</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml (RunModel)</td><td>Success</td><td></td><td>0.289</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml (RunModel)</td><td>Success</td><td></td><td>0.130</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml (RunModel)</td><td>Success</td><td></td><td>0.193</td>
 </tr>
 </table>
 <div class="Properties">

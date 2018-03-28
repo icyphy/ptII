@@ -186,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.7 57114 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.11 56844 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.7 57114 10.20.0.195 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.11 56844 10.20.0.79 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '359385950';
+        cur['env.TRAVIS_BUILD_ID'] = '359403067';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '145';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '146';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4f988a94539575ea327d4852ec9533c2347d3104';
+        cur['env.TRAVIS_COMMIT'] = '3f5a90a885b91824fd2af7028936fb7109b8fac3';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'configure.in changed.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Cleaning /org/hlacerti because the new code breaks backward compatibility\n(dynamic multi-instances are no longer implemented):\n\n- /org/hlacerti/legacy is moved to /org/hlacerti/models/legacy\n- All models in /org/hlacerti/demo and the last version of the manual are\n  moved to /org/hlacerti/models/legacy/DynamicMultiInstance\n- /org/hlacerti/lib/test/ was removed (/org/hlacerti/test/ remains).\n- No changes made in makefiles since the models will not be used as demos.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'f31ce91404f0...4f988a945395';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '4f988a945395...3f5a90a885b9';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '359385955';
+        cur['env.TRAVIS_JOB_ID'] = '359403077';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '145.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '146.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.ptera.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.ptera.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3444660446552798441.properties propsfile=/home/travis/build/icyphy/ptII/junit2108349129828722389.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.ptera.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.ptera.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8341540788112605372.properties propsfile=/home/travis/build/icyphy/ptII/junit6110300326041841167.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -489,7 +489,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="16_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="16_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>0.073</td><td>2018-03-28T14:35:44</td><td>travis-job-acee2cd0-643c-47e8-aa55-cde0eb78a483</td>
+<td><a title="Display all tests" href="16_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="16_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>0.075</td><td>2018-03-28T15:30:47</td><td>travis-job-0d54a9ac-e72c-402e-88af-83487ef94645</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -504,10 +504,10 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.005</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.004</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 </table>
 <div class="Properties">
