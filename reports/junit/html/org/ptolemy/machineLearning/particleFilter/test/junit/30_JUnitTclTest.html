@@ -1,13 +1,13 @@
 <html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Unit Test Results: doc.books.systems.pn.test.junit.JUnitTclTest</title>
+<title>Unit Test Results: org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest</title>
 <link rel="stylesheet" type="text/css" title="Style" href="../../../../../../stylesheet.css">
 <script type="text/javascript" language="JavaScript">
         var TestCases = new Array();
         var cur;
         
-    cur = TestCases['doc.books.systems.pn.test.junit.JUnitTclTest'] = new Array();
+    cur = TestCases['org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest'] = new Array();
     
         cur['ant.core.lib'] = '/usr/share/ant/lib/ant.jar';
     
@@ -408,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.pn.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.pn.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8618869524865228066.properties propsfile=/home/travis/build/icyphy/ptII/junit7949004007443394828.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7501383563892016495.properties propsfile=/home/travis/build/icyphy/ptII/junit7959005917558248843.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -436,7 +436,7 @@
     
         cur['user.country'] = 'US';
     
-        cur['user.dir'] = '/home/travis/build/icyphy/ptII/doc/books/systems/pn/test';
+        cur['user.dir'] = '/home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test';
     
         cur['user.home'] = '/home/travis';
     
@@ -483,39 +483,54 @@
 </tr>
 </table>
 <hr size="1">
-<h3>Class doc.books.systems.pn.test.junit.JUnitTclTest</h3>
+<h3>Class org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest</h3>
 <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Error">
-<td><a title="Display all tests" href="15_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="15_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="15_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>36.252</td><td>2018-03-28T18:39:19</td><td>travis-job-822f6762-4b58-4b67-8f4c-dfa32e56218e</td>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="30_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="30_JUnitTclTest.html">7</a></td><td>0</td><td>0</td><td>0</td><td>89.307</td><td>2018-03-28T18:43:58</td><td>travis-job-822f6762-4b58-4b67-8f4c-dfa32e56218e</td>
 </tr>
 </table>
-<h2>Errors</h2>
+<h2>Tests</h2>
 <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
 <tr valign="top">
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
-<tr valign="top" class="Error">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)</td><td>Error</td><td>N/A<br>
-<br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:131)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 16. Should have been: 1<br>  in .ResourcePool.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.actor.process.ProcessThread._iterateActor(ProcessThread.java:339)<br>	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)<br>
-</code></td><td>1.764</td>
+<tr valign="top" class="TableRowColor">
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.007</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/JointParticleFilter.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/JointParticleFilter.xml (RunModel)</td><td>Success</td><td></td><td>8.575</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/OnlineTrajectoryOptimization.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/OnlineTrajectoryOptimization.xml (RunModel)</td><td>Success</td><td></td><td>37.914</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopSingleRobotTargetLocalization.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopSingleRobotTargetLocalization.xml (RunModel)</td><td>Success</td><td></td><td>16.586</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopTwoRobotTargetLocalization.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopTwoRobotTargetLocalization.xml (RunModel)</td><td>Success</td><td></td><td>26.124</td>
 </tr>
 </table>
 <div class="Properties">
-<a href="javascript:displayProperties('doc.books.systems.pn.test.junit.JUnitTclTest');">
+<a href="javascript:displayProperties('org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest');">
                     Properties &raquo;
                 </a>
 </div>
 <div class="Properties">
-<a href="./15_JUnitTclTest-out.html">
+<a href="./30_JUnitTclTest-out.html">
                         System.out &raquo;
                     </a>
 </div>
 <div class="Properties">
-<a href="./15_JUnitTclTest-err.html">
+<a href="./30_JUnitTclTest-err.html">
                         System.err &raquo;
                     </a>
 </div>
