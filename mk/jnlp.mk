@@ -1874,7 +1874,18 @@ bcvtb_l4j.xml: $(MKL4J)
 bcvtb.exe: bcvtb_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
 
-PTBOOK_PDF=PtolemyII_DigitalV1_02.pdf
+BOOK_PDF=PtolemyII_DigitalV1_02.pdf
+BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
+INSTALLER_SRCS=$(PTII)/vendors/installer
+$(INSTALLER_SRCS):
+	mkdir -p $@
+BOOK_LOCAL_SRC=$(INSTALLER_SRCS)/$(BOOK_PDF)
+$(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
+	if [ ! -f $@ ]; then \
+		echo "Creating $@: `date`"; \
+		wget --quiet -O $@ $(BOOK_URL); \
+        fi
+
 ptbook_l4j.xml: doc/books/systems/$(PTBOOK_PDF)
 	$(MKL4J) ptbook ptolemy.actor.gui.BrowserLauncher \
 		 doc/img/pdf.ico \
@@ -1883,15 +1894,9 @@ ptbook_l4j.xml: doc/books/systems/$(PTBOOK_PDF)
 ptbook.exe: ptbook_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) ptbook_l4j.xml`
 
-doc/books/systems/$(PTBOOK_PDF):
-	if [ -f $(HOME)/Downloads/$(PTBOOK_PDF) ]; then \
-		cp $(HOME)/Downloads/$(PTBOOK_PDF) .; \
-	else \
-		echo "Downloading $(PTBOOK_PDF)"; \
-		wget https://ptolemy.eecs.berkeley.edu/books/Systems/$(PTBOOK_PDF); \
-	fi; \
-	mv $(PTBOOK_PDF) $@
-	chmod a+x doc/books/systems/$(PTBOOK_PDF)
+doc/books/systems/$(PTBOOK_PDF): $(BOOK_LOCAL_SRC)
+	cp $< $@
+	chmod a+x $@
 
 capecode_l4j.xml: $(MKL4J)
 	$(MKL4J) capecode ptolemy.vergil.VergilApplication \

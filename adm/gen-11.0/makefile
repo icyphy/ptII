@@ -365,7 +365,7 @@ $(OPENCV_DLL): $(OPENCV_DLL_SRC)
 	cp $(OPENCV_DLL_SRC) $(OPENCV_DLL)
 
 $(OPENCV_DLL_SRC):
-	@echo "Creating $@: `date`";
+	@echo "Downloading $@: `date`";
 	wget --quiet -O $@ https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
 # If you update the NODE_VERSION, then be sure to edit IzpackSetup.java.
@@ -378,21 +378,21 @@ node:
 NODE_DARWIN = node/node-v$(NODE_VERSION)-darwin-x64.tar.gz
 $(NODE_DARWIN): node
 	if [ ! -f "$@" ]; then \
-		echo "Creating node darwin $@: `date`"; \
+		echo "Downloading node darwin $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
 	fi
 
 NODE_LINUX = node/node-v$(NODE_VERSION)-linux-x64.tar.xz
 $(NODE_LINUX): node
 	if [ ! -f "$@" ]; then \
-		echo "Creating node linux $@: `date`"; \
+		echo "Downloading node linux $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz); \
 	fi
 
 NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
 $(NODE_WIN): node
 	if [ ! -f "$@" ]; then \
-		echo "Creating node win $@: `date`"; \
+		echo "Downloading node win $@: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
 	fi
 
@@ -449,6 +449,8 @@ $(PTIIDIST): $(IZPACK_DIR) $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX)
 	(cd $(PTIIDIST)/vendors/node; tar -zxf $(GENDIR)/$(NODE_DARWIN))
 	(cd $(PTIIDIST)/vendors/node; tar -Jxf $(GENDIR)/$(NODE_LINUX))
 	(cd $(PTIIDIST)/vendors/node; unzip -q $(GENDIR)/$(NODE_WIN))
+	(cd $(PTIIDIST)/vendors; ln -s $(PTIIHOME)/vendors/installer .)
+	ls -l $(PTIIDIST)/vendors/installer
 	# Remove the duktape binaries.
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 	#
@@ -690,6 +692,7 @@ $(PTIIDIST)/jar_dist:
 		$(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes; \
 		echo "About to make jar_dist, PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`"; \
 		$(MAKE) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` -k jar_dist); \
+		echo "Done creating PTIIDIST/jar_dist: `date`"; \
 	fi
 
 
@@ -783,7 +786,7 @@ $(PTII_SRC): $(PTII_FULL)
 		PTII=`$(GENDIR)/ptcygpwd`  ./configure --enable-verbose; make -k clean; \
 		touch mk/ptII.mk.in; \
 		echo "(0)About to remove class files in `pwd`"; \
-		find . -name "*.class" -ls -exec rm {} \; ;\
+		find . -name "*.class" -exec rm {} \; ;\
 		cd ptolemy; \
 		echo "(1)About to remove jars in `pwd`"; \
 		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -o -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
@@ -1856,7 +1859,7 @@ BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
 BOOK_LOCAL_SRC=$(INSTALLER_SRCS)/$(BOOK_PDF)
 $(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		echo "Creating $@: `date`"; \
+		echo "Downloading Ptolemy Book: $@: `date`"; \
 		wget --quiet -O $@ $(BOOK_URL); \
         fi
 
@@ -1865,7 +1868,6 @@ book_pdf: $(PTIIDIST_BOOK_PDF)
 
 $(PTIIDIST_BOOK_PDF): $(BOOK_LOCAL_SRC)
 	cp $< $@
-
 
 update_ftp_index:
 	scp index2.htm $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/index.htm
@@ -3771,7 +3773,7 @@ jre:
 WINJRE32_TAR=$(INSTALLER_SRCS)/WinJre32.tar.gz
 $(WINJRE32_TAR): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		echo "Creating $@: `date`"; \
+		echo "Downloading WinJre32 $@: `date`"; \
 		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
 	fi
 
@@ -3781,7 +3783,7 @@ jre32: $(WINJRE32_TAR)
 WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
 $(WINJRE64_TAR): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
-		echo "Creating $@: `date`"; \
+		echo "Downloading WinJre64 $@: `date`"; \
 		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
 	fi
 
@@ -4108,7 +4110,7 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 capecode_setup_mac_app: $(CAPECODE_SETUP_MAC).app
 $(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
 	df -k
-	du -k $PTII | sort -nr
+	du -k $(PTII) | sort -nr
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
 	find $@ -type d -exec touch {} \; 
