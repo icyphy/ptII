@@ -162,6 +162,10 @@
       <configure>
         <?moml
           <group>
+          <!-- Standard TerraSwarm accessors. -->
+          <entity name="Accessors" class="org.terraswarm.accessor.AccessorLibrary">
+            <configure source="https://accessors.org"/>
+          </entity>
           <input source="ptolemy/actor/lib/aspect/aspect.xml"/>
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
         <!-- Backtracking actors -->
