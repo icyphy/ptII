@@ -43,7 +43,7 @@
     <!--vergilDocs-->
     . Contents:
     <ul>
-      <li> <a href="#domain">Application Domain-Specific Modeling</a>: Application Domain-specific modeling and design.
+      <li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
       </li>
 
       <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
@@ -83,60 +83,27 @@
 
       <!--/vergilDocs-->
 
-      <li><i>Modeling of wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
-	<!--/ptinyKeplerDocs-->
-	<!--/bcvtbDocs-->
-	(see also
-	<a href="../visualsense/intro.htm">VisualSense introduction</a>).
-	<!--ptinyKeplerDocs-->
-	<br>
-
-	The wireless domain in Ptolemy II
-	provides discrete-event modeling of wireless communication systems.
-	It is useful for modeling and design of communication protocols,
-	networking strategies, and applications such as sensor networks.
-	<!--/ptinyKeplerDocs-->
-	The <a href="../visualsense/intro.htm">VisualSense</a> package
-	is a subset of Ptolemy II that includes the wireless domain and channel models
-	plus domains that support the design of nodes in a wireless network.
-	<!--ptinyKeplerDocs-->
-	The <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
-	example models a sound localization problem, where single sound source
-	moves through a field of sound sensors. In the example, sound sensors detect the sound
-	and communicate via a radio channel to a sensor fusion component that
-	localizes the sound by triangulation. Two distinct channel models are used,
-	one that models sound propagation and one that models radio communication.
-
-	<br>
-
-
-
-	<!--/ptinyKeplerDocs-->
       </li>
 
       <!--ptinyKeplerDocs-->
       <!--bcvtbDocs-->
       <li>
-	<i>Modeling of hybrid systems</i>:
+	<i>Hybrid systems</i>:
 	<!-- GR does not get included in demosPtiny.htm -->
 	<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
 	(see also
 	<a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">BouncingBall</a>,
 	<a href="../../domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a>,
 	<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>,
-	and
 	<a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Hybrid Plant</a>).
 
 	<!--/ptinyKeplerDocs-->
-
+    <br>
 	<i>Hybrid systems</i> are a special case of modal models
 	where finite-state machines (FSMs) are combined with the continuous-time models
 	to get mixed continuous-time and discrete-event models.
 	<!--ptinyKeplerDocs-->
 	<!-- GR does not get included in demosPtiny.htm -->
-	The <a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
-	example models a physical system consisting of two point masses
-	on springs that stick together when they collide.
 	<!--vergilDocs-->
 
 	<br>
@@ -154,36 +121,44 @@
 	).
 	<br>
 
-
 	Stochastic hybrid systems add random behavior to continuous-time models mixed
-	with discrete events. The
-	<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-	<!--/bcvtbDocs-->
-	<!-- NoiseSpectrum uses DEDirector, which is not shipped with bcvtb -->
-	(and <a
-		href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise
-	  Spectrum</a>
-
-	<!-- SinusoidInNoise includes continuous.lib.ContinuousSpectrum, which -->
-	<!-- uses DEDirectory, which is not shipped with BCVTB -->
-	,
-	<a
-	   href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid
-	  In Noise</a>
-	<!--bcvtbDocs-->
-	) models
-	show bandlimited Gaussian noise processe.
-	<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
-	models spontaneous mode transitions governed by a Poisson process.
-	The <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
-	example uses similar spontaneous mode transitions to model random delay in mode transitions.
-	The <a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a> example
-	models a stochastic differential equation describing a random walk process.
-
+	with discrete events. These models show bandlimited Gaussian noise processes in continuous-time models,
+	spontaneous mode transitions governed by a Poisson process,
+	random delay in mode transitions,
+	and Brownian motion.
 	<!--vergilDocs-->
 
 	<br>
+	
+	<li><i>Communication Security</i>: <a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
+	<br>
+	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
+	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
+	and then an aspect is woven with the model to specify the impairments imposed by the channel.
 
+      <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
+	<!--/ptinyKeplerDocs-->
+	<!--/bcvtbDocs-->
+	(see also
+	<a href="../visualsense/intro.htm">VisualSense introduction</a>).
+	<!--ptinyKeplerDocs-->
+	<br>
+
+	The wireless domain in Ptolemy II
+	provides discrete-event modeling of wireless communication systems.
+	It is useful for modeling and design of communication protocols,
+	networking strategies, and applications such as sensor networks.
+	<!--/ptinyKeplerDocs-->
+	The <a href="../visualsense/intro.htm">VisualSense</a> package
+	is a subset of Ptolemy II that includes the wireless domain and channel models
+	plus domains that support the design of nodes in a wireless network.
+	<!--ptinyKeplerDocs-->
+
+	<br>
+
+
+
+	<!--/ptinyKeplerDocs-->
 
 
       </li>
@@ -197,15 +172,10 @@
 	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
 	<br>
 
-
 	Ptolemy II includes an extensive library and models of computation suitable for
 	digital signal processing, communication systems design, and image and video processing.
-	The <a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
-	example shows spectral estimation of sinusoids in noise.
-	It illustrates models the use of synchronous dataflow (SDF) for signal
-	processing, and also shows many basic capabilities like
-	hierarchical models,
-	the Expression actor, and the signal processing actor library.
+	These demos show spectral estimation, adaptive filters, and model-based sound synthesis.
+	They illustrate the use of synchronous dataflow (SDF) for signal processing.
 
 
       </li>
