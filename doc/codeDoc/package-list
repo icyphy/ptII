@@ -46,7 +46,6 @@ lbnl.lib.xml.src
 lbnl.test.junit
 lbnl.util
 org.hlacerti.lib
-org.hlacerti.lib.test.junit
 org.hlacerti.test.junit
 org.json
 org.ptolemy.classloading
