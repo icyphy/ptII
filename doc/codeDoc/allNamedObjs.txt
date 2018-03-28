@@ -1158,6 +1158,7 @@ ptolemy.data.expr.StringParameter
 ptolemy.data.expr.StringConstantParameter
 ptolemy.data.expr.NameParameter
 ptolemy.data.expr.SingletonParameter
+ptolemy.data.expr.ChoiceStringParameter
 ptolemy.data.expr.AbstractInitializableParameter
 ptolemy.data.expr.TemporaryVariable
 ptolemy.data.expr.ChoiceParameter
