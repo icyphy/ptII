@@ -1244,21 +1244,24 @@ PTVIEWER_DIR=viewer
 PTVIEWER_PACKAGES=ptolemy.media.viewer
 
 # Handle Java 9 fails.
-case "$JVERSION" in
-        9*)    # We use to need to add a module so that
-               # javax.xml.bind.DatatypeConverter can be found.
-               # However, we no longer need that class.
+AC_MSG_CHECKING(Java 9 and later)
+echo "$JVERSION" | egrep '9*|[1-9][0-9]*' > /dev/null
+status=$?
+if test $status -eq 1 ; then
+    PT_MSG_RESULT(Java 9 or later is not present)
+else
+    PT_MSG_RESULT(Java 9 or later present, so certain internal sun.* packages are not accessible)
+    # We use to need to add a module so that
+    # javax.xml.bind.DatatypeConverter can be found.
+    # However, we no longer need that class.
 
-               # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
-               # JAVAC_MODULES="--add-modules java.xml.bind"
-               PTVIEWER_DIR=
-               PTVIEWER_PACKAGES=
-               updateExcludes "ptolemy/copernicus/applet/"
-               updateExcludes "ptolemy/media/viewer"
-
-               ;;
-esac
-
+    # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+    # JAVAC_MODULES="--add-modules java.xml.bind"
+    PTVIEWER_DIR=
+    PTVIEWER_PACKAGES=
+    updateExcludes "ptolemy/copernicus/applet/"
+    updateExcludes "ptolemy/media/viewer/"
+fi
 
 
 #####################################################################
