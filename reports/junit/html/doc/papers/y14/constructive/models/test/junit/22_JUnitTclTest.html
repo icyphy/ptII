@@ -186,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.11 56844 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.21 41932 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.11 56844 10.20.0.79 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.21 41932 10.20.2.9 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '359403067';
+        cur['env.TRAVIS_BUILD_ID'] = '359459548';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '146';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '147';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '3f5a90a885b91824fd2af7028936fb7109b8fac3';
+        cur['env.TRAVIS_COMMIT'] = '623dae9647cc28b54845067b683732c401f4f329';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Cleaning /org/hlacerti because the new code breaks backward compatibility\n(dynamic multi-instances are no longer implemented):\n\n- /org/hlacerti/legacy is moved to /org/hlacerti/models/legacy\n- All models in /org/hlacerti/demo and the last version of the manual are\n  moved to /org/hlacerti/models/legacy/DynamicMultiInstance\n- /org/hlacerti/lib/test/ was removed (/org/hlacerti/test/ remains).\n- No changes made in makefiles since the models will not be used as demos.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Don\'t run make in the $(PTHLACERTI_DIR) directory, the makefiles are broken.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '4f988a945395...3f5a90a885b9';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '3f5a90a885b9...623dae9647cc';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '359403077';
+        cur['env.TRAVIS_JOB_ID'] = '359459556';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '146.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '147.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.papers.y14.constructive.models.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.papers.y14.constructive.models.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2066100647504392990.properties propsfile=/home/travis/build/icyphy/ptII/junit8102778201604021042.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.papers.y14.constructive.models.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.papers.y14.constructive.models.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3905772429884518502.properties propsfile=/home/travis/build/icyphy/ptII/junit3285524278494290998.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -489,7 +489,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="22_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="22_JUnitTclTest.html">20</a></td><td>0</td><td>0</td><td>0</td><td>59.719</td><td>2018-03-28T15:31:13</td><td>travis-job-0d54a9ac-e72c-402e-88af-83487ef94645</td>
+<td><a title="Display all tests" href="22_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="22_JUnitTclTest.html">20</a></td><td>0</td><td>0</td><td>0</td><td>45.448</td><td>2018-03-28T17:21:31</td><td>travis-job-5b4806d1-7fcc-4b6f-ba05-8f9291d87a4e</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -501,61 +501,61 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.005</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml (RunModel)</td><td>Success</td><td></td><td>4.620</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml (RunModel)</td><td>Success</td><td></td><td>3.586</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml (RunModel)</td><td>Success</td><td></td><td>12.424</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml (RunModel)</td><td>Success</td><td></td><td>10.243</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml (RunModel)</td><td>Success</td><td></td><td>21.697</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml (RunModel)</td><td>Success</td><td></td><td>19.885</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml (RunModel)</td><td>Success</td><td></td><td>0.723</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml (RunModel)</td><td>Success</td><td></td><td>0.429</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml (RunModel)</td><td>Success</td><td></td><td>1.140</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml (RunModel)</td><td>Success</td><td></td><td>0.547</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml (RunModel)</td><td>Success</td><td></td><td>1.279</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml (RunModel)</td><td>Success</td><td></td><td>0.665</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml (RunModel)</td><td>Success</td><td></td><td>10.165</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml (RunModel)</td><td>Success</td><td></td><td>5.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml (RunModel)</td><td>Success</td><td></td><td>0.869</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml (RunModel)</td><td>Success</td><td></td><td>0.446</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml (RunModel)</td><td>Success</td><td></td><td>1.067</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml (RunModel)</td><td>Success</td><td></td><td>0.585</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml (RunModel)</td><td>Success</td><td></td><td>0.376</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml (RunModel)</td><td>Success</td><td></td><td>0.253</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml (RunModel)</td><td>Success</td><td></td><td>0.386</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml (RunModel)</td><td>Success</td><td></td><td>0.258</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml (RunModel)</td><td>Success</td><td></td><td>0.279</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml (RunModel)</td><td>Success</td><td></td><td>0.211</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml (RunModel)</td><td>Success</td><td></td><td>0.573</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml (RunModel)</td><td>Success</td><td></td><td>0.406</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml (RunModel)</td><td>Success</td><td></td><td>3.649</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml (RunModel)</td><td>Success</td><td></td><td>2.541</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml (RunModel)</td><td>Success</td><td></td><td>0.034</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml (RunModel)</td><td>Success</td><td></td><td>0.198</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml (RunModel)</td><td>Success</td><td></td><td>0.152</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml (RunModel)</td><td>Success</td><td></td><td>0.084</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml (RunModel)</td><td>Success</td><td></td><td>0.058</td>
 </tr>
 </table>
 <div class="Properties">
