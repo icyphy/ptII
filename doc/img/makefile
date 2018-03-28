@@ -105,16 +105,28 @@ OTHER_FILES_TO_BE_JARED = \
 	codegena.gif \
 	eclipseAccessorsCheckOutAs.png \
 	eclipseAccessorsNewProject.png \
+	eclipseBranchSelection.png \
 	eclipseBuildPathPreference.png \
-	eclipseCheckOutAs.png \
-	eclipseNewJavaProject.png \
+	eclipseCloneGitRepository.png \
+	eclipseCreateAJavaProjectNoVC.png \
+	eclipseCreateAJavaProject.png \
+	eclipseGitRepositories.png \
+	eclipseInitialWorkspace.png \
+	eclipseJavaSettingsNoVC.png \
+	eclipseJavaSettings.png \
+	eclipseJavaSettingsWindows.png \
+	eclipseLocalDestination.png \
 	eclipseNewJavaProject2.png \
-	eclipseNewJavaProjectSVN.png \
+	eclipseNewJavaProject.png \
 	eclipseNewProject.png \
 	eclipsePreferencesGeneralWorkspace.png \
 	eclipsePreferencesGeneralWorkspaceWindows.png \
-	eclipseWorkspaceLauncherWindows.png \
+	eclipseSettingBuildPaths.png \
+	eclipseShowView.png \
+	eclipseSourceGitRepository.png \
+	eclipseWelcomeTab.png \
 	eclipseWorkspaceLauncher.png \
+	eclipseWorkspaceLauncherWindows.png \
 	navnext.gif \
 	navprev.gif \
 	navtoc.gif \
