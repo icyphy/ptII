@@ -31,7 +31,8 @@
 
 # configure sets PTBSH_MLC_DIR to mlc if BSH, the Java Bean Shell.
 # configure sets PTJSON_DIR to json if JSON, the JavaScript Object Notation was found.
-DIRS = $(PTBSH_MLC_DIR) $(PTJSON_DIR) $(PTHLACERTI_DIR) ptolemy terraswarm
+# Don't run make in the $(PTHLACERTI_DIR) directory, the makefiles are broken
+DIRS = $(PTBSH_MLC_DIR) $(PTJSON_DIR) ptolemy terraswarm
 
 # Root of Ptolemy II directory
 ROOT =		..

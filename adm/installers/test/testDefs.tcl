@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2015 The Regents of the University of California.
+# @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,10 +47,20 @@ if [info exist env(PTII)] {
 if {![info exist PTII]} {
     # If we are here, then we are probably running jacl and we can't
     # read environment variables
-    set PTII [file join [pwd] .. .. .. ..]
+    set PTII [file join [pwd] .. .. .. ]
 }
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]
+} {}
+
+if {[string compare iterToTokenValues [info procs iterToTokenValues]] != 0} \
+        then {
+    source [file join $PTII util testsuite enums.tcl]
+} {}
+
+if {[string compare sdfModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
 } {}

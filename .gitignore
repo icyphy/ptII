@@ -28,8 +28,8 @@ PtolemyII_Digital*.pdf
 tmp
 __db.*
 
-# Path globs
-**/test/*.tcl
+# Path Globs
+**/test/alljtests.tcl
 
 # Root globs and globs in directories that may not exist in the repository
 /.antlr-eclipse

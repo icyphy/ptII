@@ -1,10 +1,10 @@
-# Tests for the Nightly Build
+# Build the installers
 #
 # @Author: Christopher Brooks
 #
 # $Id: Release.tcl 63463 2012-05-02 02:47:37Z hudson $
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2012-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -36,7 +36,8 @@
 # Get rid of any previous lists of .java files etc.
 exec make clean
 
-set timeOutSeconds 14567
+# Use a different timeout so that we can detect when Coverity fails.
+set timeOutSeconds 10042
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
@@ -45,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up the test definitions.
 if {[string compare test [info procs nightlyMake]] == 1} then {
-    source nightlyMake.tcl
+    source ../../test/nightlyMake.tcl 
 } {}
 
 # This is a bit of a hack.
@@ -80,60 +81,38 @@ set ptsetup ptII${windows_version}_setup_windows
 set startingDirectory [pwd]
 cd $gendir
 
-# test nightly-1.1 {clean} {
-#     puts "adm/test/Nightly.tcl: about to clean"
-#     set matches [nightlyMake clean]
-#     list $matches [file exists $ptII_full]
-# } {{} 0}
+test installers-1.1 {clean} {
+    puts "adm/test/Nightly.tcl: about to clean"
+    set matches [nightlyMake clean]
+    list $matches [file exists $ptII_full]
+} {{} 0}
 
-# test nightly-1.2 {all} {
-#     set matches [nightlyMake all]
-#     list $matches [file exists $ptII_full]
-# } {{} 1}
+test installers-1.2 {all} {
+    set matches [nightlyMake all]
+    list $matches [file exists $ptII_full]
+} {{} 1}
 
-test nightly-1.3 {jnlp} {
-    set filename $PTII/adm/dists/ptII$version/vergil.jnlp
+test installers-1.4 {src.jar} {
+    set filename $gendir/ptII$version.src.jar
     file delete -force $filename
     set r0  [file exists $filename]
 
-    set matches [nightlyMake jnlp]
+    set matches [nightlyMake src.jar]
 
-    puts "nightly-1.3: $filename"
+    puts "nightly-1.4: $filename"
     list $r0 $matches [file exists $filename]
 } {0 {} 1}
 
-# test nightly-1.4 {src.jar} {
-#     set filename $gendir/ptII$version.src.jar
-#     file delete -force $filename
-#     set r0  [file exists $filename]
+test installers-1.5 {setup} {
+    set filename $gendir/$ptsetup.exe
+    file delete -force $filename
+    set r0  [file exists $filename]
 
-#     set matches [nightlyMake src.jar]
+    set matches [nightlyMake setup]
 
-#     puts "nightly-1.4: $filename"
-#     list $r0 $matches [file exists $filename]
-# } {0 {} 1}
-
-# test nightly-1.5 {setup} {
-#     set filename $gendir/$ptsetup.exe
-#     file delete -force $filename
-#     set r0  [file exists $filename]
-
-#     set matches [nightlyMake setup]
-
-#     puts "nightly-1.5: $filename"
-#     list $r0 $matches [file exists $filename]
-# } {0 {} 1}
-
-# test nightly-1.6 {capeCodeNonGUI tar file} {
-#     set filename $gendir/capeCodeNonGUI.tar.gz
-#     file delete -force $filename
-#     set r0  [file exists $filename]
-
-#     set matches [nightlyMake capeCodeNonGUI.tar.gz]
-
-#     puts "nightly-1.6: $filename"
-#     list $r0 $matches [file exists $filename]
-# } {0 {} 1}
+    puts "nightly-1.5: $filename"
+    list $r0 $matches [file exists $filename]
+} {0 {} 1}
 
 set VERBOSE 0
 cd $startingDirectory
