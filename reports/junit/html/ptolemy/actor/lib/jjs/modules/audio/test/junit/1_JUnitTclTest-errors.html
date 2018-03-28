@@ -184,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 46146 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.19 44584 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 46146 10.20.0.255 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.19 44584 10.20.0.5 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -200,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '359385950';
+        cur['env.TRAVIS_BUILD_ID'] = '359403067';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '145';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '146';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4f988a94539575ea327d4852ec9533c2347d3104';
+        cur['env.TRAVIS_COMMIT'] = '3f5a90a885b91824fd2af7028936fb7109b8fac3';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'configure.in changed.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Cleaning /org/hlacerti because the new code breaks backward compatibility\n(dynamic multi-instances are no longer implemented):\n\n- /org/hlacerti/legacy is moved to /org/hlacerti/models/legacy\n- All models in /org/hlacerti/demo and the last version of the manual are\n  moved to /org/hlacerti/models/legacy/DynamicMultiInstance\n- /org/hlacerti/lib/test/ was removed (/org/hlacerti/test/ remains).\n- No changes made in makefiles since the models will not be used as demos.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'f31ce91404f0...4f988a945395';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '4f988a945395...3f5a90a885b9';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '359385954';
+        cur['env.TRAVIS_JOB_ID'] = '359403076';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '145.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '146.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -404,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.audio.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.audio.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8561313002295936688.properties propsfile=/home/travis/build/icyphy/ptII/junit5569048415436040477.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.audio.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.audio.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2696007434328882470.properties propsfile=/home/travis/build/icyphy/ptII/junit4843028969280083850.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -485,7 +485,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="1_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="1_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="1_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>21.556</td><td>2018-03-28T14:33:07</td><td>travis-job-af77270f-f6a9-44b7-89c2-e07e33ee9c2e</td>
+<td><a title="Display all tests" href="1_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="1_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="1_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>23.075</td><td>2018-03-28T15:27:21</td><td>travis-job-25db1662-5bc5-41e5-8cd9-7f62a849eea9</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -497,7 +497,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:131)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: REST: The timeout period of 5000ms has been exceeded while executing GET /process?INPUT_TEXT=this+is+a+test+of+speech+synthesis&amp;INPUT_TYPE=TEXT&amp;OUTPUT_TYPE=AUDIO&amp;AUDIO=AIFF_FILE&amp;LOCALE=en_US for host mary.dfki.de<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$1607$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$1605$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$1604$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientExceptionHandler$1.run(HttpClientHelper.java:281)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>16.282</td>
+</code></td><td>18.010</td>
 </tr>
 </table>
 <div class="Properties">

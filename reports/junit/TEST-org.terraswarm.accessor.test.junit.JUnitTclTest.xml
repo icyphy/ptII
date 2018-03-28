@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="0" hostname="travis-job-af77270f-f6a9-44b7-89c2-e07e33ee9c2e" name="org.terraswarm.accessor.test.junit.JUnitTclTest" skipped="0" tests="29" time="653.488" timestamp="2018-03-28T14:21:50">
+<testsuite errors="1" failures="0" hostname="travis-job-25db1662-5bc5-41e5-8cd9-7f62a849eea9" name="org.terraswarm.accessor.test.junit.JUnitTclTest" skipped="0" tests="29" time="663.554" timestamp="2018-03-28T15:14:32">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="145.4" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="146.4" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 46146 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.19 44584 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -48,7 +48,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 46146 10.20.0.255 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.19 44584 10.20.0.5 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -65,12 +65,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher892095761604805393.properties propsfile=/home/travis/build/icyphy/ptII/junit311908718783252908.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5461565210469917432.properties propsfile=/home/travis/build/icyphy/ptII/junit7871814297240146821.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="f31ce91404f0...4f988a945395" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="4f988a945395...3f5a90a885b9" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -111,7 +111,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="145" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="146" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -126,12 +126,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="359385950" />
+    <property name="env.TRAVIS_BUILD_ID" value="359403067" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="4f988a94539575ea327d4852ec9533c2347d3104" />
+    <property name="env.TRAVIS_COMMIT" value="3f5a90a885b91824fd2af7028936fb7109b8fac3" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -161,7 +161,7 @@
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="configure.in changed." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Cleaning /org/hlacerti because the new code breaks backward compatibility&#xa;(dynamic multi-instances are no longer implemented):&#xa;&#xa;- /org/hlacerti/legacy is moved to /org/hlacerti/models/legacy&#xa;- All models in /org/hlacerti/demo and the last version of the manual are&#xa;  moved to /org/hlacerti/models/legacy/DynamicMultiInstance&#xa;- /org/hlacerti/lib/test/ was removed (/org/hlacerti/test/ remains).&#xa;- No changes made in makefiles since the models will not be used as demos." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -200,7 +200,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="359385954" />
+    <property name="env.TRAVIS_JOB_ID" value="359403076" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -218,28 +218,28 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)" time="12.039" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)" time="50.171" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)" time="14.205" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)" time="52.702" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.005" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)" time="12.573" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)" time="13.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)" time="15.968" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)" time="12.841" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)" time="72.661" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)" time="13.193" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)" time="12.764" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)" time="12.705" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)" time="12.979" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)" time="13.047" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)" time="12.509" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)" time="12.843" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)" time="12.922" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)" time="16.26" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)" time="15.87" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)" time="12.909" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)" time="13.216" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)" time="32.072">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)" time="12.753" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)" time="13.206" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)" time="16.675" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)" time="13.402" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)" time="72.728" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)" time="13.093" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)" time="13.266" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)" time="12.995" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)" time="12.922" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)" time="13.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)" time="13.596" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)" time="12.958" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)" time="12.959" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)" time="15.98" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)" time="15.612" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)" time="13.099" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)" time="13.4" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)" time="31.989">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:131)
@@ -290,28 +290,28 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of th
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)" time="72.285" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)" time="13.173" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)" time="15.492" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)" time="47.381" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)" time="72.648" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)" time="31.634" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)" time="18.231" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)" time="72.387" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)" time="13.271" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)" time="15.898" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)" time="48.005" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)" time="72.391" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)" time="32.228" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)" time="18.647" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl
-testDefs.tcl: setting time out to 9000 seconds at Wed Mar 28 14:21:50 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Wed Mar 28 15:14:33 UTC 2018
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181 (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
-5916 ms. Memory: 752640K Free: 481232K (64%)
+6334 ms. Memory: 715264K Free: 471274K (66%)
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181 (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
-4932 ms. Memory: 748544K Free: 394386K (53%)
+5654 ms. Memory: 790016K Free: 586697K (74%)
 reloadAllAccessors: .WebSocketClientJS
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181 (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
-4511 ms. Memory: 766464K Free: 556806K (73%)
+5095 ms. Memory: 776192K Free: 172050K (22%)
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
@@ -319,7 +319,7 @@ WebSocketClient: Connection failed. Will try again: Connection refused: localhos
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
-8361 ms. Memory: 787456K Free: 346696K (44%)
+8538 ms. Memory: 787456K Free: 364418K (46%)
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
@@ -327,7 +327,7 @@ WebSocketClient: Connection failed. Will try again: Connection refused: localhos
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
-8660 ms. Memory: 839168K Free: 632944K (75%)
+8662 ms. Memory: 857088K Free: 685521K (80%)
 reloadAllAccessors: .WebSocketClient2JS
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
@@ -336,59 +336,59 @@ WebSocketClient: Connection failed. Will try again: Connection refused: localhos
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182 (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
-8228 ms. Memory: 839680K Free: 478905K (57%)
-03/28/18 02:22:53
+8412 ms. Memory: 857600K Free: 554093K (65%)
+03/28/18 03:15:39
 Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
------------------ Wed Mar 28 14:22:53 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
-559 ms. Memory: 840192K Free: 419776K (50%)
+----------------- Wed Mar 28 15:15:39 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+596 ms. Memory: 809472K Free: 391434K (48%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
-630 ms. Memory: 840704K Free: 697654K (83%)
------------------ Wed Mar 28 14:22:59 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+691 ms. Memory: 857600K Free: 723239K (84%)
+----------------- Wed Mar 28 15:15:46 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
 reloadAllAccessors: .AccessViolation
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
-629 ms. Memory: 840704K Free: 424084K (50%)
+767 ms. Memory: 857600K Free: 447025K (52%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
------------------ Wed Mar 28 14:23:05 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
-885 ms. Memory: 840192K Free: 576694K (69%)
+----------------- Wed Mar 28 15:15:52 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+912 ms. Memory: 835584K Free: 583115K (70%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
-774 ms. Memory: 840192K Free: 378640K (45%)
------------------ Wed Mar 28 14:23:12 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+776 ms. Memory: 835584K Free: 384033K (46%)
+----------------- Wed Mar 28 15:15:59 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
 reloadAllAccessors: .AccessViolation2
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
-704 ms. Memory: 817152K Free: 554884K (68%)
+775 ms. Memory: 831488K Free: 585817K (70%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
------------------ Wed Mar 28 14:23:18 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
-1723 ms. Memory: 872960K Free: 555346K (64%)
+----------------- Wed Mar 28 15:16:05 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+1497 ms. Memory: 844800K Free: 411871K (49%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
-1387 ms. Memory: 863232K Free: 598372K (69%)
------------------ Wed Mar 28 14:23:27 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+1628 ms. Memory: 827904K Free: 449055K (54%)
+----------------- Wed Mar 28 15:16:14 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
 reloadAllAccessors: .Accessor1
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
-1567 ms. Memory: 869888K Free: 503658K (58%)
+1940 ms. Memory: 886784K Free: 601123K (68%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
------------------ Wed Mar 28 14:23:34 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
-787 ms. Memory: 871936K Free: 643900K (74%)
+----------------- Wed Mar 28 15:16:22 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+995 ms. Memory: 877056K Free: 714322K (81%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
-647 ms. Memory: 871936K Free: 444111K (51%)
------------------ Wed Mar 28 14:23:41 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+675 ms. Memory: 877056K Free: 513765K (59%)
+----------------- Wed Mar 28 15:16:29 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
 reloadAllAccessors: .Accessor2
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
-723 ms. Memory: 867328K Free: 613937K (71%)
+974 ms. Memory: 883712K Free: 692028K (78%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
------------------ Wed Mar 28 14:23:47 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
-20703 ms. Memory: 867328K Free: 291792K (34%)
+----------------- Wed Mar 28 15:16:35 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+20757 ms. Memory: 883712K Free: 369243K (42%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
-20791 ms. Memory: 820224K Free: 495298K (60%)
------------------ Wed Mar 28 14:24:34 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+20699 ms. Memory: 885760K Free: 616754K (70%)
+----------------- Wed Mar 28 15:17:22 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
 reloadAllAccessors: .CallbackWithSuppress
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
-20550 ms. Memory: 820224K Free: 216507K (26%)
+20561 ms. Memory: 885760K Free: 341600K (39%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
------------------ Wed Mar 28 14:25:00 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+----------------- Wed Mar 28 15:17:48 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
 DerivedA: base set up (Thread[Thread-41,5,main])
 DerivedA: derived set up (Thread[Thread-41,5,main])
 DerivedA: base set up (Thread[Thread-41,5,main])
@@ -406,7 +406,7 @@ DerivedA: derived set up (Thread[Derived,1,main])
 DerivedA: base init (Thread[Derived,1,main])
 DerivedA: derived init (Thread[Derived,1,main])
 DerivedA: derived wrapped up (Thread[Derived,1,main])
-666 ms. Memory: 884224K Free: 552520K (62%)
+787 ms. Memory: 890880K Free: 476306K (53%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
 DerivedA: base set up (Thread[Thread-41,5,main])
 DerivedA: derived set up (Thread[Thread-41,5,main])
@@ -421,8 +421,8 @@ DerivedA: derived set up (Thread[Thread-41,5,main])
 DerivedA: base init (Thread[Thread-41,5,main])
 DerivedA: derived init (Thread[Thread-41,5,main])
 DerivedA: derived wrapped up (Thread[Thread-41,5,main])
-632 ms. Memory: 884224K Free: 343320K (39%)
------------------ Wed Mar 28 14:25:07 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+678 ms. Memory: 890880K Free: 266489K (30%)
+----------------- Wed Mar 28 15:17:55 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
 reloadAllAccessors: .Derived
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedA.js
 DerivedA: base set up (Thread[Thread-41,5,main])
@@ -443,9 +443,9 @@ DerivedA: derived set up (Thread[Thread-41,5,main])
 DerivedA: base init (Thread[Thread-41,5,main])
 DerivedA: derived init (Thread[Thread-41,5,main])
 DerivedA: derived wrapped up (Thread[Thread-41,5,main])
-728 ms. Memory: 878592K Free: 449142K (51%)
+933 ms. Memory: 891904K Free: 437553K (49%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
------------------ Wed Mar 28 14:25:13 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+----------------- Wed Mar 28 15:18:01 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
 DerivedB2: printing non-prototype properties (Thread[Derived2,1,main])
 DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
 DerivedB2: setup: function () {
@@ -473,7 +473,7 @@ DerivedB2: inputHandler: function () {
     this.send('output', false);
 } (Thread[Derived2,1,main])
 DerivedB2: sending false (Thread[Derived2,1,main])
-752 ms. Memory: 882176K Free: 530220K (60%)
+877 ms. Memory: 889344K Free: 563057K (63%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
 DerivedB2: printing non-prototype properties (Thread[Thread-46,5,main])
 DerivedB2: ssuper: [object Object] (Thread[Thread-46,5,main])
@@ -502,8 +502,8 @@ DerivedB2: inputHandler: function () {
     this.send('output', false);
 } (Thread[Thread-46,5,main])
 DerivedB2: sending false (Thread[Thread-46,5,main])
-624 ms. Memory: 882176K Free: 321487K (36%)
------------------ Wed Mar 28 14:25:20 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+663 ms. Memory: 889344K Free: 357225K (40%)
+----------------- Wed Mar 28 15:18:08 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
 reloadAllAccessors: .Derived2
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedB.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
@@ -534,194 +534,194 @@ DerivedB2: inputHandler: function () {
     this.send('output', false);
 } (Thread[Thread-46,5,main])
 DerivedB2: sending false (Thread[Thread-46,5,main])
-641 ms. Memory: 862720K Free: 421622K (49%)
+1144 ms. Memory: 863232K Free: 743566K (86%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
------------------ Wed Mar 28 14:25:26 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
-702 ms. Memory: 875008K Free: 493133K (56%)
+----------------- Wed Mar 28 15:18:15 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+743 ms. Memory: 863232K Free: 423785K (49%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
-576 ms. Memory: 875008K Free: 289031K (33%)
------------------ Wed Mar 28 14:25:32 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+859 ms. Memory: 888320K Free: 646449K (73%)
+----------------- Wed Mar 28 15:18:22 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
 reloadAllAccessors: .Derived3
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedC.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
-640 ms. Memory: 811520K Free: 329115K (41%)
+712 ms. Memory: 888320K Free: 363454K (41%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
------------------ Wed Mar 28 14:25:38 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
-710 ms. Memory: 809984K Free: 324902K (40%)
+----------------- Wed Mar 28 15:18:28 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+734 ms. Memory: 887296K Free: 435891K (49%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
-708 ms. Memory: 819712K Free: 451433K (55%)
------------------ Wed Mar 28 14:25:45 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+790 ms. Memory: 884736K Free: 628243K (71%)
+----------------- Wed Mar 28 15:18:35 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
 reloadAllAccessors: .Derived4
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedD.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
-984 ms. Memory: 743424K Free: 382878K (52%)
+654 ms. Memory: 884736K Free: 341000K (39%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
------------------ Wed Mar 28 14:25:51 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
-1095 ms. Memory: 849920K Free: 703081K (83%)
+----------------- Wed Mar 28 15:18:40 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+687 ms. Memory: 851968K Free: 390268K (46%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
-623 ms. Memory: 849920K Free: 498012K (59%)
------------------ Wed Mar 28 14:25:58 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+850 ms. Memory: 868352K Free: 570557K (66%)
+----------------- Wed Mar 28 15:18:48 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
 reloadAllAccessors: .Derived5
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedE.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
-671 ms. Memory: 846848K Free: 520571K (61%)
+667 ms. Memory: 868352K Free: 287614K (33%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
------------------ Wed Mar 28 14:26:04 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
-621 ms. Memory: 857088K Free: 511633K (60%)
+----------------- Wed Mar 28 15:18:53 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+961 ms. Memory: 861696K Free: 318952K (37%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
-618 ms. Memory: 856064K Free: 618504K (72%)
------------------ Wed Mar 28 14:26:11 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+1222 ms. Memory: 891392K Free: 723104K (81%)
+----------------- Wed Mar 28 15:19:01 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
 reloadAllAccessors: .Derived6
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedF.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
-673 ms. Memory: 856064K Free: 336457K (39%)
+650 ms. Memory: 891392K Free: 439034K (49%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
------------------ Wed Mar 28 14:26:17 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
-659 ms. Memory: 856576K Free: 320108K (37%)
+----------------- Wed Mar 28 15:19:07 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+847 ms. Memory: 892416K Free: 479540K (54%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
-716 ms. Memory: 856064K Free: 430978K (50%)
------------------ Wed Mar 28 14:26:24 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+706 ms. Memory: 896000K Free: 654160K (73%)
+----------------- Wed Mar 28 15:19:14 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
 reloadAllAccessors: .Derived8
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedH.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
-761 ms. Memory: 859648K Free: 463173K (54%)
+697 ms. Memory: 896000K Free: 365844K (41%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
------------------ Wed Mar 28 14:26:30 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
-703 ms. Memory: 859648K Free: 451606K (53%)
+----------------- Wed Mar 28 15:19:20 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+819 ms. Memory: 895488K Free: 407644K (46%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
-672 ms. Memory: 859648K Free: 238516K (28%)
------------------ Wed Mar 28 14:26:37 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+737 ms. Memory: 899072K Free: 585209K (65%)
+----------------- Wed Mar 28 15:19:27 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
 reloadAllAccessors: .Derived9
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedI.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
-784 ms. Memory: 866816K Free: 282110K (33%)
+651 ms. Memory: 899072K Free: 291191K (32%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
------------------ Wed Mar 28 14:26:43 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
-1762 ms. Memory: 866816K Free: 295891K (34%)
+----------------- Wed Mar 28 15:19:33 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+1625 ms. Memory: 899072K Free: 347560K (39%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
-2042 ms. Memory: 864768K Free: 679772K (79%)
------------------ Wed Mar 28 14:26:52 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+1753 ms. Memory: 903168K Free: 538878K (60%)
+----------------- Wed Mar 28 15:19:42 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
 reloadAllAccessors: .DerivedAgain
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainA.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
-1631 ms. Memory: 864768K Free: 392432K (45%)
+1831 ms. Memory: 903168K Free: 252751K (28%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
------------------ Wed Mar 28 14:26:59 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
-1728 ms. Memory: 865280K Free: 424556K (49%)
+----------------- Wed Mar 28 15:19:49 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+1619 ms. Memory: 906752K Free: 322689K (36%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
-1722 ms. Memory: 874496K Free: 589237K (67%)
------------------ Wed Mar 28 14:27:08 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+1697 ms. Memory: 910336K Free: 525629K (58%)
+----------------- Wed Mar 28 15:19:58 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
 reloadAllAccessors: .DerivedAgain2
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainB.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
-1704 ms. Memory: 874496K Free: 302476K (35%)
+1628 ms. Memory: 910336K Free: 239903K (26%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
------------------ Wed Mar 28 14:27:15 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
-688 ms. Memory: 875008K Free: 352271K (40%)
+----------------- Wed Mar 28 15:20:05 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+921 ms. Memory: 908288K Free: 589680K (65%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
-712 ms. Memory: 885760K Free: 531779K (60%)
------------------ Wed Mar 28 14:27:22 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+652 ms. Memory: 908288K Free: 378256K (42%)
+----------------- Wed Mar 28 15:20:12 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
 reloadAllAccessors: .DerivedAgain4
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainD.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
-791 ms. Memory: 885760K Free: 241822K (27%)
+827 ms. Memory: 910848K Free: 510292K (56%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
------------------ Wed Mar 28 14:27:28 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
-858 ms. Memory: 885760K Free: 296987K (34%)
+----------------- Wed Mar 28 15:20:18 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+876 ms. Memory: 915968K Free: 591106K (65%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
-861 ms. Memory: 896000K Free: 490337K (55%)
------------------ Wed Mar 28 14:27:35 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+776 ms. Memory: 915968K Free: 370655K (40%)
+----------------- Wed Mar 28 15:20:25 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
 reloadAllAccessors: .DerivedAgain5
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainE.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
-691 ms. Memory: 896000K Free: 189299K (21%)
+1000 ms. Memory: 918016K Free: 508054K (55%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
------------------ Wed Mar 28 14:27:41 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+----------------- Wed Mar 28 15:20:31 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
 REST: Making an HTTP request. (Thread[GetDate,1,main])
-23993 ms. Memory: 939520K Free: 256493K (27%)
+24136 ms. Memory: 931840K Free: 416736K (45%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
------------------ Wed Mar 28 14:28:13 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
-20551 ms. Memory: 938496K Free: 363962K (39%)
+----------------- Wed Mar 28 15:21:03 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+20624 ms. Memory: 967168K Free: 824195K (85%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
-20619 ms. Memory: 948224K Free: 618174K (65%)
------------------ Wed Mar 28 14:29:00 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+20579 ms. Memory: 967168K Free: 619988K (64%)
+----------------- Wed Mar 28 15:21:50 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
 reloadAllAccessors: .HandlerWithSuppress
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.js
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
-20557 ms. Memory: 948224K Free: 338084K (36%)
+20568 ms. Memory: 967168K Free: 338657K (35%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
------------------ Wed Mar 28 14:29:25 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
-852 ms. Memory: 947200K Free: 482018K (51%)
+----------------- Wed Mar 28 15:22:15 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+785 ms. Memory: 966656K Free: 490248K (51%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
-812 ms. Memory: 947200K Free: 282183K (30%)
------------------ Wed Mar 28 14:29:32 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+859 ms. Memory: 972288K Free: 764151K (79%)
+----------------- Wed Mar 28 15:22:23 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
 reloadAllAccessors: .HttpRequest
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
-919 ms. Memory: 955392K Free: 471393K (49%)
+872 ms. Memory: 972288K Free: 487047K (50%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
------------------ Wed Mar 28 14:29:38 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
+----------------- Wed Mar 28 15:22:29 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
 JavaScript: { data: 1 } (Thread[JSON,1,main])
 JavaScript3: 1 (Thread[JSON,1,main])
-2492 ms. Memory: 984064K Free: 584899K (59%)
+2470 ms. Memory: 971264K Free: 341838K (35%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
 JavaScript: { data: 1 } (Thread[Thread-114,5,main])
 JavaScript3: 1 (Thread[Thread-114,5,main])
-2387 ms. Memory: 990720K Free: 662832K (67%)
------------------ Wed Mar 28 14:29:49 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
+2568 ms. Memory: 977408K Free: 428841K (44%)
+----------------- Wed Mar 28 15:22:40 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
 reloadAllAccessors: .JSON
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
------------------ Wed Mar 28 14:29:54 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
-12277 ms. Memory: 993280K Free: 682032K (69%)
+----------------- Wed Mar 28 15:22:45 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+12354 ms. Memory: 979968K Free: 456920K (47%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
-11827 ms. Memory: 992256K Free: 565351K (57%)
------------------ Wed Mar 28 14:30:24 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+12249 ms. Memory: 1005568K Free: 619609K (62%)
+----------------- Wed Mar 28 15:23:15 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
 reloadAllAccessors: .ReadURL
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
-11740 ms. Memory: 996864K Free: 295029K (30%)
+11764 ms. Memory: 1009152K Free: 353072K (35%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
------------------ Wed Mar 28 14:30:41 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
-20627 ms. Memory: 996352K Free: 467998K (47%)
+----------------- Wed Mar 28 15:23:33 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+20553 ms. Memory: 1008640K Free: 530635K (53%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
-20562 ms. Memory: 996352K Free: 264654K (27%)
------------------ Wed Mar 28 14:31:28 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+20562 ms. Memory: 1008640K Free: 330589K (33%)
+----------------- Wed Mar 28 15:24:19 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
 reloadAllAccessors: .SendNullToOwnInput
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
-20885 ms. Memory: 1021952K Free: 770900K (75%)
+20653 ms. Memory: 1011200K Free: 552563K (55%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
------------------ Wed Mar 28 14:31:54 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+----------------- Wed Mar 28 15:24:45 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
 TextDisplayHelper: 0
 TextDisplayHelper: 1
 TextDisplayHelper: 2
 TextDisplayHelper: 3
-6612 ms. Memory: 1024512K Free: 496187K (48%)
+6472 ms. Memory: 1012736K Free: 292391K (29%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
 TextDisplayHelper: 0
 TextDisplayHelper: 1
 TextDisplayHelper: 2
 TextDisplayHelper: 3
-6436 ms. Memory: 1025024K Free: 679756K (66%)
------------------ Wed Mar 28 14:32:13 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+6994 ms. Memory: 1029120K Free: 754316K (73%)
+----------------- Wed Mar 28 15:25:05 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
 reloadAllAccessors: .Stop
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
 TextDisplayHelper: 0
 TextDisplayHelper: 1
 TextDisplayHelper: 2
 TextDisplayHelper: 3
-6641 ms. Memory: 1026048K Free: 638567K (62%)
+6658 ms. Memory: 1029632K Free: 712980K (69%)
 ----------------- testing /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
------------------ Wed Mar 28 14:32:26 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
-2554 ms. Memory: 1026048K Free: 324389K (32%)
+----------------- Wed Mar 28 15:25:17 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+2627 ms. Memory: 1029632K Free: 402882K (39%)
 ----------------- testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
-2532 ms. Memory: 1026048K Free: 136330K (13%)
------------------ Wed Mar 28 14:32:36 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+2622 ms. Memory: 1029632K Free: 717656K (70%)
+----------------- Wed Mar 28 15:25:28 UTC 2018 About to sleep for 5 seconds before rerunning in org/terraswarm/accessor.  Test is: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
 reloadAllAccessors: .Stop2
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
-2528 ms. Memory: 1025536K Free: 370385K (36%)
+2743 ms. Memory: 1029632K Free: 452596K (44%)
 ]]></system-out>
-  <system-err><![CDATA[[vert.x-eventloop-thread-0] WARN io.netty.util.internal.MacAddressUtil - Failed to find a usable hardware address from the network interfaces; using random bytes: 79:bf:28:5a:95:4c:ca:c2
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.252, 0.253]
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.153, 0.152]
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.123, 0.124]
+  <system-err><![CDATA[[vert.x-eventloop-thread-0] WARN io.netty.util.internal.MacAddressUtil - Failed to find a usable hardware address from the network interfaces; using random bytes: 64:d2:e1:46:c1:1d:7a:41
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.233, 0.234]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.148, 0.149]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.138]
 WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
