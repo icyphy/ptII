@@ -2846,15 +2846,21 @@ else
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JAITest.java ; then
-       PT_MSG_RESULT(JAI found in the default classpath)
-       PTJAI_OK=1
+        PT_MSG_RESULT(JAI found in the default classpath)
+        PTJAI_OK=1
     else
+        AC_MSG_WARN(JAI not found in the default classpath)
+        AC_MSG_CHECKING(for JAI in $PTII/vendors)
         TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
         if test -f "$TMP_JAI_DIR/lib/jai_core.jar"; then
+            PT_MSG_RESULT(Found jai* directory $TMP_JAI_DIR)
+            AC_MSG_CHECKING(for JAI using jars in $TMP_JAI_DIR/lib)
             if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
                 PT_MSG_RESULT(JAI found in $TMP_JAI_DIR)
                 PTJAI_OK=1
                 JAI_DIR="$TMP_JAI_DIR"
+            else
+                AC_MSG_WARN(JAI not found in $TMP_JAI_DIR)
             fi
         fi
     fi
@@ -2864,7 +2870,7 @@ else
         # PTJAI_PACKAGES is used in ptII/doc/makefile
         PTJAI_PACKAGES=ptolemy.actor.lib.jai
 
-        AC_MSG_CHECKING([for the jai jar files])
+        AC_MSG_CHECKING([for the JAI jar files, possibly again])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
 	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
@@ -2872,18 +2878,8 @@ else
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
 	       PT_MSG_RESULT($JAI_JARS)
-	       # Here, we should not be adding JAI_JAR to Eclipse
-	       # if jai.jar was in the jre
-               case "`uname -s`" in
-	       Darwin) 
-  	            AC_MSG_WARN([Not including
-   $JAI_JARS_DIR/{jai_core.jar,jai_codec.jar}
-   to the Eclipse classpath under Darwin because it is already present.]);;
-               *)
-	           updateClasspath "$JAI_JARS_DIR/jai_core.jar"
-		   updateClasspath "$JAI_JARS_DIR/jai_codec.jar"
-		   ;;
-               esac
+               updateClasspath "$JAI_JARS_DIR/jai_core.jar"
+               updateClasspath "$JAI_JARS_DIR/jai_codec.jar"
 	    else 
        	       AC_MSG_WARN([Either we could not find 
     javax.media.jai.RenderOp or else it was already in the JRE.
