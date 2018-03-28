@@ -3963,7 +3963,6 @@ OPENCV_JAR=
 # We only need to look for OpenCVif the org/ptolemy/opencv directory is present
 OPENCV_USER_DIR="$PTII/org/ptolemy/opencv"
 
-
 if test ! -d "$OPENCV_USER_DIR" ; then
     PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API.])
@@ -3995,6 +3994,7 @@ else
         if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
             if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
                 PT_MSG_RESULT($OPENCV_JAR)
+                PTOPENCV_DIR=opencv
                 updateClasspath "$OPENCV_JAR"
             else
                 AC_MSG_WARN([Failed to run OpenCV test program in $PTII/config with
@@ -4091,7 +4091,6 @@ else
    # Print a message to summarize what's happening and make any extraneous "ok" lines less confusing.
    PT_MSG_RESULT(ok)
 fi
-
 
 #--------------------------------------------------------------------
 #       oscP5 Open Sound Control/processing.org interface
