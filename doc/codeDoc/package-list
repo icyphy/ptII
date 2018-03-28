@@ -399,8 +399,6 @@ ptolemy.component.domains.ptinyos
 ptolemy.component.test
 ptolemy.configs.test
 ptolemy.configs.test.junit
-ptolemy.copernicus.applet
-ptolemy.copernicus.applet.test.junit
 ptolemy.copernicus.gui
 ptolemy.copernicus.gui.test.junit
 ptolemy.copernicus.interpreted
@@ -691,8 +689,6 @@ ptolemy.media.javasound.demo.ReaderProcessWriter
 ptolemy.media.javasound.demo.Sines
 ptolemy.media.javasound.demo.SoftClip
 ptolemy.media.test.junit
-ptolemy.media.viewer
-ptolemy.media.viewer.test.junit
 ptolemy.moml
 ptolemy.moml.filter
 ptolemy.moml.filter.test
