@@ -942,7 +942,8 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 ALL_L4J_JARS = \
 	vergil_l4j.jar
 
-# All the jar files, include the application jars
+# All the jar files, include the application jars.
+# Include lib/opencv-320.jar because the Windows installer depends on it.
 ALL_JNLP_JARS = \
 	$(ALL_L4J_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
@@ -956,7 +957,8 @@ ALL_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR) \
 	$(SPACE_MAIN_JAR) \
-	$(VIPTOS_MAIN_JAR)
+	$(VIPTOS_MAIN_JAR) \
+	lib/opencv-320.jar
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
