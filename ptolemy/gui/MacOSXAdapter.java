@@ -113,8 +113,8 @@ public class MacOSXAdapter implements InvocationHandler {
         } catch (NoSuchMethodException ex2) {
             if (!_printedNoSuchMethodExceptionMessageAboutMenu) {
                 _printedNoSuchMethodExceptionMessageAboutMenu = true;
-                System.out.println("Warning: Failed to get the setEnabledAboutMenu method."
-                                   + "This is a know limitation of Java 9 and later.");
+                System.out.println("Warning: Failed to get the setEnabledAboutMenu method.  "
+                                   + "This is a known limitation of Java 9 and later.");
             }
         } catch (Exception ex3) {
             top.report("The about menu could not be set.", ex3);
@@ -216,7 +216,7 @@ public class MacOSXAdapter implements InvocationHandler {
         } catch (ClassNotFoundException ex) {
                 if (!_printedNoClassDefFoundMessageApplicationListener) {
                     System.err.println("Warning The com.apple.eawt.ApplicationListener class was not found.  "
-                                       + "This is a know limitation of Java 9 and later.");
+                                       + "This is a known limitation of Java 9 and later.");
                     _printedNoClassDefFoundMessageApplicationListener = true;
                 }
         } catch (Exception ex2) {
