@@ -175,6 +175,7 @@
     <exclude name="**/adm/test/junit/*"/>
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
+    <exclude name="**/KielerJUnitTest.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/ModelKnownFailedTests.*" />
@@ -1020,7 +1021,7 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capecode"
+  <target name="test.capecode" depends="initReports"
 	  description="Run the Cape Code tests.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
@@ -1029,7 +1030,6 @@ For example:
       This target runs the Cape Code accessors tests
       timeout = ${timeout.long} milliseconds
     </echo>
-    <mkdir dir="reports/junit"/>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
@@ -1053,16 +1053,15 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capecode.xml"
+  <target name="test.capecode.xml" depends="initReports"
 	  description="Run the Cape Code tests with xml output.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capecode ==
+      ==test.capecode.xml ==
       This target runs the Cape Code accessors tests and generates JUnit xml output.
       timeout = ${timeout.long} milliseconds
     </echo>
-    <mkdir dir="reports/junit"/>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
@@ -1461,7 +1460,6 @@ For example:
      Target to be invoked by the nightly build that create installers in the adm/gen-X.Y subdirectory.
      This test generates .xml files in reports/junit.  The installers target sends its output to stdout.
     </echo>
-    <mkdir dir="reports/junit"/>
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1475,7 +1473,7 @@ For example:
       <formatter type="${junit.formatter}" usefile="true"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <test  name="adm.installers.test.junit.JUnitTclTest" 
+      <test  name="adm.installers.test.junit.JUnitTclTest"
 	     todir="${junit.output.dir}"
 	     />
     </junit>
@@ -1589,7 +1587,7 @@ For example:
     </junit>
   </target>
 
-  <target name="test.mocha"
+  <target name="test.mocha" depends="initReports"
           description="Use mocha to test node.js and generate output on stdout.">
     <echo>
       ==test.mocha==
@@ -1611,7 +1609,7 @@ For example:
     </exec>
   </target>
   
-  <target name="test.mocha.xml"
+  <target name="test.mocha.xml" depends="initReports"
           description="Use mocha to test node.js and generate JUnit compatible xml output.">
     <echo>
       ==test.mocha.xml==
@@ -1622,7 +1620,6 @@ For example:
       See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
       The output will appear in reports/junit/mochaJUnit.xml
     </echo>
-    <mkdir dir="reports/junit"/>
     <pathconvert refid="test.mocha.files"
 		 pathsep=" "
 		 property="converted"/>
@@ -1673,59 +1670,6 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
-	</fileset>
-      </batchtest>
-      <formatter type="${junit.formatter}" />
-      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
-      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-    </junit>
-  </target>
-
-  <target name="test.report.short" depends="build, initReports"
-	  description="Run the short-running junit tests in a directory or directories, results in $PTII/reports.">
-    <echo>
-      ==test.report.short==
-      This target runs test specified by a file name and generates 
-      ${junit.formatter} output in ${junit.output.dir}.
-
-      The default is to run all the fairly short-running tests.
-      On a fast machine, these tests take around 30 minutes.
-
-      To run different tests, use -Dtest.batch, for example:
-         ant test.short -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
-
-       test - builds and runs test.short, test.long and test.longest
-       test.32bit - runs the 32-bit JVM tests in auto32/
-       test.long - runs tests that are fairly long (called by the test target)
-       test.longest - runs tests that are longest (called by the test target)
-       test.report.all - runs batch of tests specified by a path with wildcards (output=files)
-       test.report.short - runs tests that are fairly fast, generates JUnit xml
-       test.short - runs tests that are fairly fast (~30 min., called by the test target)
-       test.single target runs single test specified by its class name (output=stdout)
-
-      test.batch = ${test.batch}
-      timeout.long = ${timeout.long}
-    </echo>
-    <junit fork="yes"
-	   jvm="ptolemy/util/test/junit/javachdir"
-	   printsummary="withOutAndErr"
-	   showoutput="yes"
-	   timeout="${timeout.long}">
-      <classpath>
-	<path refid="ptII.classpath" />
-	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
-      </classpath>
-      <batchtest todir="${junit.output.dir}">
-	<fileset defaultexcludes="yes"
-		 dir="${basedir}">
-	  <include name="${test.batch}" />
-	  <patternset refid="ptII.excludes" />
-	  <patternset refid="test.32bit.excludes" />
-	  <patternset refid="test.excludes" />
-	  <!-- Exclude the long running tests -->
-	  <patternset refid="test.long.excludes" />
-	  <!-- Exclude the longest running tests -->
-	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}" />
