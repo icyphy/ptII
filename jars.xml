@@ -9,6 +9,7 @@
 
   <patternset id="ptII.jars">
     <include name="ant/apache-ant-license.jar" />
+    <include name="bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar" />
     <include name="com/cureos/cureos.jar" />
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="com/jhlabs/jhlabs.jar" />
@@ -588,6 +589,15 @@
 
   <target name="jars"
 	  description="Build jar files.">
+
+    <!-- bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar-->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html"/>
+      </fileset>
+    </jar>
 
     <!-- contrib/contrib.jar -->
     <jar defaultexcludes="yes"

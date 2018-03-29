@@ -199,6 +199,7 @@ CORE_NONGUI_JARS = \
 	$(PTMATLAB_JARS)
 
 CORE_JNLP_GUI_JARS = \
+	bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/vergil/vergil.jar \
