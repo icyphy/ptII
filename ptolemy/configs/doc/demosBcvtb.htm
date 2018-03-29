@@ -46,7 +46,7 @@
     <!--vergilDocs-->
     . Contents:
     <ul>
-      <li> <a href="#domain">Application Domain-Specific Modeling</a>: Application Domain-specific modeling and design.
+      <li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
       </li>
 
       <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
@@ -96,63 +96,23 @@
 	).
 	<br>
 
-
 	Stochastic hybrid systems add random behavior to continuous-time models mixed
-	with discrete events. The
-	<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-	<!--bcvtbDocs-->
-	) models
-	show bandlimited Gaussian noise processe.
-	<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
-	models spontaneous mode transitions governed by a Poisson process.
-	The <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
-	example uses similar spontaneous mode transitions to model random delay in mode transitions.
-	The <a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a> example
-	models a stochastic differential equation describing a random walk process.
-
+	with discrete events. These models show bandlimited Gaussian noise processes in continuous-time models,
+	spontaneous mode transitions governed by a Poisson process,
+	random delay in mode transitions,
+	and Brownian motion.
 	<!--vergilDocs-->
 
 	<br>
-
-
-
-      </li>
-
-      <li><i>Signal Processing</i>:
-	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
-	(See also
-	<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
-	<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>,
-	<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
-	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
+	
+	<li><i>Communication Security</i>: <a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
 	<br>
+	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
+	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
+	and then an aspect is woven with the model to specify the impairments imposed by the channel.
 
-
-	Ptolemy II includes an extensive library and models of computation suitable for
-	digital signal processing, communication systems design, and image and video processing.
-	The <a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
-	example shows spectral estimation of sinusoids in noise.
-	It illustrates models the use of synchronous dataflow (SDF) for signal
-	processing, and also shows many basic capabilities like
-	hierarchical models,
-	the Expression actor, and the signal processing actor library.
-
-
-      </li>
-
-    </ul>
-
-
-    <h2>
-      <a name="heterogeneous">Heterogeneous Models</a>
-    </h2>
-
-
-    A particular capability of Ptolemy II is the ability to mix models of computation.
-    These examples illustrate some of these capabilities.
-    <ul>
-
-
+      <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
+	<!--/ptinyKeplerDocs-->
       <!--bcvtbDocs-->
       <li><i>Mixed-Signal Modeling</i>:
 	<!--bcvtbDocs-->
