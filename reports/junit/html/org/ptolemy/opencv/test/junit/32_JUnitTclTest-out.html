@@ -1,0 +1,48 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu Mar 29 21:35:20 UTC 2018
+
+
+==== $PTII/org/ptolemy/opencv/test/SimpleSample.tcl: SimpleSample-2.1 A simple sample model
+==== Contents of test case:
+
+    # Based on http://docs.opencv.org/2.4/doc/tutorials/introduction/desktop_java/java_dev_intro.html.
+
+    # Uses nativeLibraryName from 1.1 above.
+    java::call org.ptolemy.opencv.OpenCVLoader loadOpenCV $nativeLibraryName
+    set scalar [java::new {org.opencv.core.Scalar double} 0]
+    set m [java::new org.opencv.core.Mat 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar]
+    set mr1 [$m row 1]
+    $mr1 setTo [java::new {org.opencv.core.Scalar double} 1]
+    set mc5 [$m col 5]
+    $mc5 setTo [java::new {org.opencv.core.Scalar double} 5]
+    $m dump
+
+==== Test generated error:
+ambiguous constructor signature "org.opencv.core.Mat"
+    while executing
+"java::new org.opencv.core.Mat 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar"
+    invoked from within
+"set m [java::new org.opencv.core.Mat 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar]"
+    ("uplevel" body line 7)
+    invoked from within
+"uplevel $contents_of_test"
+03/29/18 09:35:20
+Failed: 1  Total Tests: 2  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Sleeping 10 seconds.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Sleeping 10 seconds.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
