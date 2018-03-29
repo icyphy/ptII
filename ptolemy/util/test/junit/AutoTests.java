@@ -30,11 +30,13 @@ package ptolemy.util.test.junit;
 
 import java.lang.reflect.Method;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import ptolemy.moml.MoMLSimpleApplication;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -67,6 +69,37 @@ import ptolemy.util.StringUtilities;
  */
 @RunWith(JUnitParamsRunner.class)
 public class AutoTests extends ModelTests {
+
+    /** If the VertxHelperBase class is present, then invoke the
+     *  closeVertx() method so that this process does not wait around
+     *  for the Vert.x threads.
+     */
+    @AfterClass
+    public static void afterClass() {
+        try {
+            Class clazz = Class
+                    .forName("ptolemy.actor.lib.jjs.VertxHelperBase");
+            if (clazz != null) {
+                Method method = clazz.getMethod("closeVertx");
+		System.out.println("AutoTests.java: About to close Vertx.");
+		try {
+		    System.out.println("AutoTests.java: Sleeping 10 seconds.");
+		    Thread.sleep(10000);
+		} catch (InterruptedException ex) {
+		    // Ignored.
+		}
+                method.invoke(null);
+		System.out.println("AutoTests.java: Vertx closed.");
+            }
+        } catch (NoClassDefFoundError ex) {
+            // Ignore this, it means that MoMLSimpleApplication was invoked without the Vert.x jar files.
+        } catch (Throwable throwable) {
+            System.err.println(
+                    "AutoTests: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: "
+                            + throwable);
+        }
+
+    }
 
     /**
      * Execute a model and time out after 900000 ms.
