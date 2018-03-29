@@ -184,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.5 60112 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.6 41594 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.5 60112 10.20.0.96 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.6 41594 10.20.0.114 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -200,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '359970203';
+        cur['env.TRAVIS_BUILD_ID'] = '360002534';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '157';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '158';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'cdf19261afbaec15c2ddcced7037892d3daf0389';
+        cur['env.TRAVIS_COMMIT'] = '39840235d646d136184959895c2df1ac088145e5';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Include lib/opencv-320.jar because the Windows installer depends on it.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'When including tests, use JUnitTclTest.java, not JUnitTclTest.* and avoid running the tests twice!  Modified test.single to take a string suitable for fileset so that we can include patterns.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'e9afd99b7ac6...cdf19261afba';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'cdf19261afba...39840235d646';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '359970207';
+        cur['env.TRAVIS_JOB_ID'] = '360002538';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '157.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '158.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -404,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7267915618225808123.properties propsfile=/home/travis/build/icyphy/ptII/junit8195486646291762497.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8620097482259195372.properties propsfile=/home/travis/build/icyphy/ptII/junit888294619699366116.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -429,6 +429,8 @@
         cur['timeout.npm'] = '45000';
     
         cur['timeout.short'] = '1000000';
+    
+        cur['usefile'] = 'false';
     
         cur['user.country'] = 'US';
     
@@ -485,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="2_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="2_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>33.115</td><td>2018-03-29T19:27:32</td><td>travis-job-9141078e-0083-4d43-8656-fbecdc76a4e3</td>
+<td><a title="Display all tests" href="2_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="2_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>32.983</td><td>2018-03-29T19:56:32</td><td>travis-job-0f41c815-3d60-48ab-abb9-c415dd9796fe</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -494,16 +496,16 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.005</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)</td><td>Success</td><td></td><td>12.630</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)</td><td>Success</td><td></td><td>12.667</td>
 </tr>
 </table>
 <div class="Properties">
