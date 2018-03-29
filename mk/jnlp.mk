@@ -248,6 +248,7 @@ PTXBEE_JARS = \
 # but not hyvisual.
 
 CAPECODE_ONLY_JNLP_JARS = \
+	ant/apache-ant-license.jar \
 	com/cureos/cureos.jar \
 	com/jhlabs/jhlabs.jar \
 	doc/codeDocCapeCode.jar \
@@ -279,7 +280,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
-	lib/opencv-320.jar \
+	$(OPENCV_JAR) \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTSLF4J_API_JAR) \
 	$(PTSLF4J_SIMPLE_JAR) \
