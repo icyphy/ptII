@@ -329,6 +329,11 @@
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
+
+	    <file src="../dists/ptII11.0.devel/jar_dist/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar"
+                  targetdir="$INSTALL_PATH/bin/Vergil.app/Contents/MacOS"
+                  os="mac"/>
+
 <!--LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.mail.jar"
                   targetdir="$INSTALL_PATH/lib"/>
