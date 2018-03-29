@@ -1427,18 +1427,37 @@
     </ul>
 
     <h2><a name="hlacerti">High Level Architecture</a></h2>
+    <!-- To update: 
+         find $PTII/org/hlacerti -name "*.xml" | awk -F / '{ base=substr($NF,1,length($NF)-4); if (base == $(NF-1)) {printf("<li><a href=\"../../.."); printorg=0; for(i=1;i<=NF;i++) {if ($i == "org") {printorg=1}; if (printorg == 1) { printf("/%s", $i)}} printf("\">%s</a> (New in Ptolemy II 11.0)</li>\n", base) }}'
+         -->
     <ul><!-- Alphabetical Please -->
-      <li><a href="../../../org/hlacerti/demo/Billard/Billard.xml">Billard</a> (New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/BillardHit/BillardHit.xml">BillardHit</a> (New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/f14HLA/f14HLA.xml">f14HLA</a> (New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/IntegrationTests/IntegrationTests.xml">IntegrationTests</a> (New in Ptolemy II 11.0)</li>
-      <!-- ../../../org/hlacerti/demo/legacy/legacy.xml These models does not work with current version, see readme --> 
-      <li><a href="../../../org/hlacerti/demo/MicrostepReset/MicrostepReset.xml">MicrostepReset</a> (New in Ptolemy II 11.0)</li>
-      <!-- ../../../org/hlacerti/demo/ModelUpdater/ModelUpdater.xml -->
-      <li><a href="../../../org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml">MultiDataTypes</a> (New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml">SimpleProducerConsumerMulti</a> (New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.xml">SimpleProducerMultipleConsumerTAR</a> (New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml">SynchronizeToRealTime</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/Billard/2Billes1Fed/2Billes1Fed.xml">2Billes1Fed</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/Billard/2Billes2Fed/2Billes2Fed.xml">2Billes2Fed</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/Billard/Billard.xml">Billard</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/Billard/Others/Others.xml">Others</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/BillardHit/BillardHit.xml">BillardHit</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/f14HLA/f14HLA.xml">f14HLA</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/IntegrationTests.xml">IntegrationTests</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml">TimeAdvancing1Federate</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml">TimeAdvancing2Federates</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml">TimeAdvancing2FederatesIntervalEvents</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepReset.xml">MicrostepReset</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetNER/MicrostepResetNER.xml">MicrostepResetNER</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetNERbis/MicrostepResetNERbis.xml">MicrostepResetNERbis</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetTAR/MicrostepResetTAR.xml">MicrostepResetTAR</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/MultiDataTypes/MultiDataTypes.xml">MultiDataTypes</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml">SimpleProducerConsumerMulti</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.xml">SimpleProducerMultipleConsumerTAR</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/DynamicMultiInstance/SynchronizeToRealTime/SynchronizeToRealTime.xml">SynchronizeToRealTime</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/MonoInstance/CoSimulationFunctional/CoSimulationFunctional.xml">CoSimulationFunctional</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/MonoInstance/f14HLA/f14HLA.xml">f14HLA</a> (New in Ptolemy II 11.0)</li>
+<li><a href="../../../org/hlacerti/models/legacy/MonoInstance/MultiDataTypes/MultiDataTypes.xml">MultiDataTypes</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/MonoInstance/MultiProducerConsumer/MultiProducerConsumer.xml">MultiProducerConsumer</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/MonoInstance/SimpleProducerConsumer/SimpleProducerConsumer.xml">SimpleProducerConsumer</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/MonoInstance/SynchronizeToRealTime/SynchronizeToRealTime.xml">SynchronizeToRealTime</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/StaticMultiInstance/2Billes2Fed/2Billes2Fed.xml">2Billes2Fed</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/StaticMultiInstance/Billard/Billard.xml">Billard</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/models/legacy/StaticMultiInstance/CoSimulationFunctional/CoSimulationFunctional.xml">CoSimulationFunctional</a> (New in Ptolemy II 11.0)</li>
       <ul>
 
         <!--vergilDocs-->
