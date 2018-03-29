@@ -170,7 +170,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     # to gh-pages. The timeouts should vary so as to avoid git
     # conflicts.
 
-    timeout 2400 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    timeout 2100 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
  
     # Free up space for clone of gh-pages
     df -k
@@ -198,7 +198,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2100 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 2400 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $PTII/logs/test.capecode.xml.txt
