@@ -876,6 +876,7 @@ For example:
 
   <target name="junitreport"
           description="Read reports/**/TEST-*.xml files and create reports/junit/html/">
+
     <junitreport todir="./reports">
       <fileset dir="./reports">
         <include name="**/TEST-*.xml"/>
@@ -1025,6 +1026,7 @@ For example:
       This target runs the Cape Code accessors tests
       timeout = ${timeout.long} milliseconds
     </echo>
+    <mkdir dir="reports/junit"/>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
@@ -1057,6 +1059,7 @@ For example:
       This target runs the Cape Code accessors tests and generates JUnit xml output.
       timeout = ${timeout.long} milliseconds
     </echo>
+    <mkdir dir="reports/junit"/>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
@@ -1455,6 +1458,7 @@ For example:
      Target to be invoked by the nightly build that create installers in the adm/gen-X.Y subdirectory.
      This test generates .xml files in reports/junit.  The installers target sends its output to stdout.
     </echo>
+    <mkdir dir="reports/junit"/>
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1615,7 +1619,7 @@ For example:
       See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
       The output will appear in reports/junit/mochaJUnit.xml
     </echo>
-
+    <mkdir dir="reports/junit"/>
     <pathconvert refid="test.mocha.files"
 		 pathsep=" "
 		 property="converted"/>
