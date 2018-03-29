@@ -110,8 +110,14 @@ public class MacOSXAdapter implements InvocationHandler {
                         "Warning: Failed to enable " + "the about menu. "
                                 + "(applets and -sandbox always causes this)");
             }
-        } catch (Exception ex) {
-            top.report("The about menu could not be set.", ex);
+        } catch (NoSuchMethodException ex2) {
+            if (!_printedNoSuchMethodExceptionMessageAboutMenu) {
+                _printedNoSuchMethodExceptionMessageAboutMenu = true;
+                System.out.println("Warning: Failed to get the setEnabledAboutMenu method."
+                                   + "This is a know limitation of Java 9 and later.");
+            }
+        } catch (Exception ex3) {
+            top.report("The about menu could not be set.", ex3);
         }
     }
 
@@ -151,11 +157,11 @@ public class MacOSXAdapter implements InvocationHandler {
             try {
                 applicationClass = Class.forName(applicationClassName);
             } catch (NoClassDefFoundError ex) {
-                if (!_printedNoClassDefFoundMessage) {
+                if (!_printedNoClassDefFoundMessageApplication) {
                     System.out.println("Warning: Failed to find the \""
                             + applicationClassName + "\" class: " + ex
                             + " (applets and -sandbox always causes this)");
-                    _printedNoClassDefFoundMessage = true;
+                    _printedNoClassDefFoundMessageApplication = true;
                 }
                 return;
             } catch (ExceptionInInitializerError ex) {
@@ -208,7 +214,11 @@ public class MacOSXAdapter implements InvocationHandler {
                         new Object[] { osxAdapterProxy });
             }
         } catch (ClassNotFoundException ex) {
-            top.report("The a com.apple.eawt class was not found?", ex);
+                if (!_printedNoClassDefFoundMessageApplicationListener) {
+                    System.err.println("Warning The com.apple.eawt.ApplicationListener class was not found.  "
+                                       + "This is a know limitation of Java 9 and later.");
+                    _printedNoClassDefFoundMessageApplicationListener = true;
+                }
         } catch (Exception ex2) {
             top.report(
                     "There was a problem invoking the addApplicationListener method",
@@ -228,8 +238,17 @@ public class MacOSXAdapter implements InvocationHandler {
     /** True if we have printed the securityException message. */
     private static boolean _printedSecurityExceptionMessage = false;
 
+    /** True if we have printed the NoClassDefFound message for com.apple.eawt.Application. */
+    private static boolean _printedNoClassDefFoundMessageApplication = false;
+
+    /** True if we have printed the NoClassDefFound message for com.apple.eawt.ApplicationListener. */
+    private static boolean _printedNoClassDefFoundMessageApplicationListener = false;
+
     /** True if we have printed the NoClassDefFound message. */
     private static boolean _printedNoClassDefFoundMessage = false;
+
+    /** True if we can't find the setEnabledAboutMenu method and have printed the message. */
+    private static boolean _printedNoSuchMethodExceptionMessageAboutMenu = false;
 
     /**  The name of a method in com.apple.eawt.ApplicationListener,
      *  for example "handleQuit".
