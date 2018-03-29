@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":9,"i7":10,"i8":9,"i9":9,"i10":9,"i11":10,"i12":10,"i13":10,"i14":9,"i15":10,"i16":10,"i17":10,"i18":9,"i19":10,"i20":9,"i21":9,"i22":9,"i23":9,"i24":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":9,"i7":10,"i8":10,"i9":9,"i10":9,"i11":9,"i12":10,"i13":10,"i14":10,"i15":9,"i16":10,"i17":10,"i18":10,"i19":9,"i20":10,"i21":9,"i22":9,"i23":9,"i24":9,"i25":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -223,6 +223,10 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#Z:Z_maxOrder">_maxOrder</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#NIL">NIL</a></span></code>
 <div class="block">A token that represents a missing value.</div>
@@ -369,6 +373,15 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
 </td>
 </tr>
 <tr id="i8" class="altColor">
+<td class="colFirst"><code>(package private) <a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a>[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#align-ptolemy.data.SmoothToken-ptolemy.data.SmoothToken-">align</a></span>(<a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a>&nbsp;arg1,
+     <a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a>&nbsp;arg2)</code>
+<div class="block">Given two SmoothTokens, align them by finding the maximum time
+  of the tokens, extrapolating the other token to that time, and returning
+  an array of tokens with the extrapolated values and derivatives.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a>[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#align-ptolemy.data.Token:A-">align</a></span>(<a href="../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a>[]&nbsp;args)</code>
 <div class="block">Given an array of Tokens, align them by finding the maximum time
@@ -377,7 +390,7 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
   an array of tokens with the extrapolated values and derivatives.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a>[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#align-ptolemy.data.Token:A-ptolemy.actor.util.Time-">align</a></span>(<a href="../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a>[]&nbsp;args,
      <a href="../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;time)</code>
@@ -387,97 +400,97 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
   an array of tokens with the extrapolated values and derivatives.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>static double</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#derivativeValue-ptolemy.data.DoubleToken-int-">derivativeValue</a></span>(<a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.data">DoubleToken</a>&nbsp;token,
                int&nbsp;n)</code>
 <div class="block">Return the n-th derivative of the specified token.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>double[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#derivativeValues--">derivativeValues</a></span>()</code>
 <div class="block">Return the derivatives of the token as a double[], or null if there are
   no derivatives.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#equals-java.lang.Object-">equals</a></span>(java.lang.Object&nbsp;object)</code>
 <div class="block">Return true if the argument's class is SmoothToken and it has the
   same value and derivatives as this token.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#extrapolate-ptolemy.actor.util.Time-">extrapolate</a></span>(<a href="../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;time)</code>
 <div class="block">Return a SmoothToken at the specified time whose value and derivatives
   are the result of extrapolating this token to the specified time.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#getOrderLimit--">getOrderLimit</a></span>()</code>
 <div class="block">Get the maximum order of any token (the number of derivatives).</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#getTime--">getTime</a></span>()</code>
 <div class="block">Return the time for which the values of this smooth token are valid.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#hashCode--">hashCode</a></span>()</code>
 <div class="block">Return the hash code for the SmoothToken object.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#isNil--">isNil</a></span>()</code>
 <div class="block">Return true if the token is nil, (aka null or missing).</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#maxOrder-ptolemy.data.DoubleToken-ptolemy.data.DoubleToken-">maxOrder</a></span>(<a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.data">DoubleToken</a>&nbsp;arg1,
         <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.data">DoubleToken</a>&nbsp;arg2)</code>
 <div class="block">Return the maximum number of specified derivatives for the two tokens.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#negate--">negate</a></span>()</code>
 <div class="block">Return a new token that is the negative of this one.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#order-ptolemy.data.DoubleToken-">order</a></span>(<a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.data">DoubleToken</a>&nbsp;token)</code>
 <div class="block">Return the number of specified derivatives for the token.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>static void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#setOrderLimit-int-">setOrderLimit</a></span>(int&nbsp;maxOrder)</code>
 <div class="block">Set the maximum order of any token (the number of derivatives).</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#smoothToken-double-">smoothToken</a></span>(double&nbsp;value)</code>
 <div class="block">Return a SmoothToken with the specified value at time zero and no derivatives.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#smoothToken-double-double:A-">smoothToken</a></span>(double&nbsp;value,
            double[]&nbsp;derivatives)</code>
 <div class="block">Return a SmoothToken with the specified value at time zero and derivatives.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/data/SmoothToken.html#toString--">toString</a></span>()</code>
 <div class="block">Return the value of this token as a string that can be parsed
@@ -530,7 +543,7 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
 <a name="NIL">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>NIL</h4>
 <pre>public static final&nbsp;<a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a> NIL</pre>
@@ -540,6 +553,15 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
   sources.  In database parlance, missing tokens are sometimes called
   null tokens.  Since null is a Java keyword, we use the term "nil".
   The toString() method on a nil token returns the string "nil".</div>
+</li>
+</ul>
+<a name="Z:Z_maxOrder">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_maxOrder</h4>
+<pre>static&nbsp;int _maxOrder</pre>
 </li>
 </ul>
 </li>
@@ -709,6 +731,29 @@ extends <a href="../../ptolemy/data/DoubleToken.html" title="class in ptolemy.da
 <dd><code>args</code> - The tokens to be aligned.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>An array of aligned tokens.</dd>
+</dl>
+</li>
+</ul>
+<a name="align-ptolemy.data.SmoothToken-ptolemy.data.SmoothToken-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>align</h4>
+<pre><a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a>[]&nbsp;align(<a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a>&nbsp;arg1,
+                    <a href="../../ptolemy/data/SmoothToken.html" title="class in ptolemy.data">SmoothToken</a>&nbsp;arg2)</pre>
+<div class="block">Given two SmoothTokens, align them by finding the maximum time
+  of the tokens, extrapolating the other token to that time, and returning
+  an array of tokens with the extrapolated values and derivatives.
+  The returned array will have size 2, and
+  all the tokens will have the same maximum time.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>arg1</code> - The first SmoothToken to be aligned.</dd>
+<dd><code>arg2</code> - The second SmoothToken to be aligned.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>An array of tokens with the extrapolated values and
+  derivatives.</dd>
 </dl>
 </li>
 </ul>

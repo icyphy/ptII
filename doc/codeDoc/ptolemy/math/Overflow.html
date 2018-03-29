@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":9,"i3":9,"i4":10,"i5":9,"i6":9,"i7":9,"i8":10,"i9":9,"i10":10,"i11":6,"i12":9,"i13":9,"i14":9,"i15":9,"i16":9,"i17":10};
+var methods = {"i0":9,"i1":10,"i2":10,"i3":9,"i4":9,"i5":10,"i6":9,"i7":9,"i8":9,"i9":10,"i10":9,"i11":10,"i12":6,"i13":9,"i14":9,"i15":9,"i16":9,"i17":9,"i18":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -387,38 +387,43 @@ implements java.lang.Cloneable</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>(package private) static void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#Z:Z_addOverflow-ptolemy.math.Overflow-java.lang.String-">_addOverflow</a></span>(<a href="../../ptolemy/math/Overflow.html" title="class in ptolemy.math">Overflow</a>&nbsp;type,
+            java.lang.String&nbsp;name)</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.Object</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#clone--">clone</a></span>()</code>
 <div class="block">Return this, that is, return the reference to this object.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#equals-java.lang.Object-">equals</a></span>(java.lang.Object&nbsp;object)</code>
 <div class="block">Determine if the argument represents the same Overflow as this
   object.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/Overflow.html" title="class in ptolemy.math">Overflow</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#forName-java.lang.String-">forName</a></span>(java.lang.String&nbsp;name)</code>
 <div class="block">Return an instance of this class with the specified name.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/Overflow.html" title="class in ptolemy.math">Overflow</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#getName-java.lang.String-">getName</a></span>(java.lang.String&nbsp;name)</code>
 <div class="block">Return an instance of this class with the specified name,
   or null if none exists.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#hashCode--">hashCode</a></span>()</code>
 <div class="block">Return a hash code value for this object.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>static boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#isOutOfRange-java.math.BigInteger-ptolemy.math.Precision-">isOutOfRange</a></span>(java.math.BigInteger&nbsp;bigInt,
             <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
@@ -426,7 +431,7 @@ implements java.lang.Cloneable</pre>
  an "underflow" or an "overflow" under the given Precision constraint.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>static boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#isOverflow-java.math.BigInteger-ptolemy.math.Precision-">isOverflow</a></span>(java.math.BigInteger&nbsp;value,
           <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
@@ -434,7 +439,7 @@ implements java.lang.Cloneable</pre>
  an "overflow" under the given Precision constraint.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>static boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#isUnderflow-java.math.BigInteger-ptolemy.math.Precision-">isUnderflow</a></span>(java.math.BigInteger&nbsp;bigInt,
            <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
@@ -442,25 +447,25 @@ implements java.lang.Cloneable</pre>
  an "underflow" under the given Precision constraint.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.math.BigInteger</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#minusInfinity-ptolemy.math.Quantization-">minusInfinity</a></span>(<a href="../../ptolemy/math/Quantization.html" title="class in ptolemy.math">Quantization</a>&nbsp;quant)</code>
 <div class="block">Return the value of minus infinity, or null if unrepresentable.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>static java.util.Iterator</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#nameIterator--">nameIterator</a></span>()</code>
 <div class="block">Return an iterator for the names of all overflow types.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.math.BigInteger</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#plusInfinity-ptolemy.math.Quantization-">plusInfinity</a></span>(<a href="../../ptolemy/math/Quantization.html" title="class in ptolemy.math">Quantization</a>&nbsp;quant)</code>
 <div class="block">Return the value of plus infinity, or null if unrepresentable.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>abstract <a href="../../ptolemy/math/FixPoint.html" title="class in ptolemy.math">FixPoint</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#quantize-java.math.BigInteger-ptolemy.math.Precision-">quantize</a></span>(java.math.BigInteger&nbsp;integerValue,
         <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
@@ -468,14 +473,14 @@ implements java.lang.Cloneable</pre>
   value and Precision constraint.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/FixPoint.html" title="class in ptolemy.math">FixPoint</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#quantizeGrow-java.math.BigInteger-ptolemy.math.Precision-">quantizeGrow</a></span>(java.math.BigInteger&nbsp;integerValue,
             <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
 <div class="block">Quantize a FixPoint value using a "grow" overflow strategy.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/FixPoint.html" title="class in ptolemy.math">FixPoint</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#quantizeMinimum-java.math.BigInteger-ptolemy.math.Precision-">quantizeMinimum</a></span>(java.math.BigInteger&nbsp;bigInt,
                <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;p)</code>
@@ -483,28 +488,28 @@ implements java.lang.Cloneable</pre>
  value bigInt using as few bits as possible.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/FixPoint.html" title="class in ptolemy.math">FixPoint</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#quantizeModulo-java.math.BigInteger-ptolemy.math.Precision-">quantizeModulo</a></span>(java.math.BigInteger&nbsp;integerValue,
               <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
 <div class="block">Quantize a FixPoint value using a "modulo" overflow strategy.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/FixPoint.html" title="class in ptolemy.math">FixPoint</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#quantizeSaturate-java.math.BigInteger-ptolemy.math.Precision-">quantizeSaturate</a></span>(java.math.BigInteger&nbsp;integerValue,
                 <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
 <div class="block">Quantize a FixPoint value using a "saturate" overflow strategy.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>static <a href="../../ptolemy/math/FixPoint.html" title="class in ptolemy.math">FixPoint</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#quantizeToZero-java.math.BigInteger-ptolemy.math.Precision-">quantizeToZero</a></span>(java.math.BigInteger&nbsp;integerValue,
               <a href="../../ptolemy/math/Precision.html" title="class in ptolemy.math">Precision</a>&nbsp;precision)</code>
 <div class="block">Quantize a FixPoint value using a "to Zero" overflow strategy.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/Overflow.html#toString--">toString</a></span>()</code>
 <div class="block">Return the string representation of this overflow.</div>
@@ -1013,7 +1018,7 @@ implements java.lang.Cloneable</pre>
 <a name="toString--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>toString</h4>
 <pre>public&nbsp;java.lang.String&nbsp;toString()</pre>
@@ -1024,6 +1029,16 @@ implements java.lang.Cloneable</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>A String.</dd>
 </dl>
+</li>
+</ul>
+<a name="Z:Z_addOverflow-ptolemy.math.Overflow-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_addOverflow</h4>
+<pre>static&nbsp;void&nbsp;_addOverflow(<a href="../../ptolemy/math/Overflow.html" title="class in ptolemy.math">Overflow</a>&nbsp;type,
+                         java.lang.String&nbsp;name)</pre>
 </li>
 </ul>
 </li>

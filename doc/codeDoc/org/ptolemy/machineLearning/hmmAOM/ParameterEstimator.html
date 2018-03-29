@@ -329,18 +329,26 @@ extends <a href="../../../../ptolemy/actor/lib/aspect/AtomicCommunicationAspect.
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>(package private) double</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/ptolemy/machineLearning/hmmAOM/ParameterEstimator.html#likelihood">likelihood</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/ptolemy/machineLearning/hmmAOM/ParameterEstimator.html#likelihoodThreshold">likelihoodThreshold</a></span></code>
 <div class="block">The user-provided threshold on the minimum desired improvement
  on likelihood per iteration.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/ptolemy/machineLearning/hmmAOM/ParameterEstimator.html#maxIterations">maxIterations</a></span></code>
 <div class="block">The user-provided maximum number of allowed iterations of the
  Alpha-Beta Recursion.</div>
 </td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) java.util.HashMap</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/ptolemy/machineLearning/hmmAOM/ParameterEstimator.html#newEstimates">newEstimates</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
@@ -915,11 +923,29 @@ extends <a href="../../../../ptolemy/actor/lib/aspect/AtomicCommunicationAspect.
 <a name="Z:Z_transitionMatrix">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>_transitionMatrix</h4>
 <pre>protected&nbsp;double[][] _transitionMatrix</pre>
 <div class="block">Initial guess array for the state transition matrix for the Alpha-Beta Recursion.</div>
+</li>
+</ul>
+<a name="newEstimates">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>newEstimates</h4>
+<pre>java.util.HashMap newEstimates</pre>
+</li>
+</ul>
+<a name="likelihood">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>likelihood</h4>
+<pre>double likelihood</pre>
 </li>
 </ul>
 </li>

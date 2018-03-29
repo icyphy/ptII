@@ -131,7 +131,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../ptolemy/actor/CompositeActor.html" title="class in ptolemy.actor">CompositeActor</a>, <a href="../../ptolemy/actor/gui/Configuration.html" title="class in ptolemy.actor.gui">Configuration</a>, <a href="../../ptolemy/actor/gui/Effigy.html" title="class in ptolemy.actor.gui">Effigy</a>, <a href="../../ptolemy/actor/gui/EffigyFactory.html" title="class in ptolemy.actor.gui">EffigyFactory</a>, <a href="../../ptolemy/moml/EntityLibrary.html" title="class in ptolemy.moml">EntityLibrary</a>, <a href="../../ptolemy/actor/lib/ExceptionManagerModel.html" title="class in ptolemy.actor.lib">ExceptionManagerModel</a>, <a href="../../ptolemy/domains/modal/kernel/FSMActor.html" title="class in ptolemy.domains.modal.kernel">FSMActor</a>, <a href="../../ptolemy/actor/gui/ModelDirectory.html" title="class in ptolemy.actor.gui">ModelDirectory</a>, <a href="../../ptolemy/data/ontologies/Ontology.html" title="class in ptolemy.data.ontologies">Ontology</a>, <a href="../../ptolemy/data/ontologies/OntologySolverModel.html" title="class in ptolemy.data.ontologies">OntologySolverModel</a>, <a href="../../ptolemy/cg/lib/syntactic/SyntacticGraph.html" title="class in ptolemy.cg.lib.syntactic">SyntacticGraph</a>, <a href="../../ptolemy/actor/gui/Tableau.html" title="class in ptolemy.actor.gui">Tableau</a>, <a href="../../ptolemy/kernel/test/TestCompositeEntity.html" title="class in ptolemy.kernel.test">TestCompositeEntity</a></dd>
+<dd><a href="../../ptolemy/actor/CompositeActor.html" title="class in ptolemy.actor">CompositeActor</a>, <a href="../../ptolemy/actor/gui/Configuration.html" title="class in ptolemy.actor.gui">Configuration</a>, <a href="../../ptolemy/actor/gui/Effigy.html" title="class in ptolemy.actor.gui">Effigy</a>, <a href="../../ptolemy/actor/gui/EffigyFactory.html" title="class in ptolemy.actor.gui">EffigyFactory</a>, <a href="../../ptolemy/moml/EntityLibrary.html" title="class in ptolemy.moml">EntityLibrary</a>, <a href="../../ptolemy/actor/lib/ExceptionManagerModel.html" title="class in ptolemy.actor.lib">ExceptionManagerModel</a>, <a href="../../ptolemy/domains/modal/kernel/FSMActor.html" title="class in ptolemy.domains.modal.kernel">FSMActor</a>, <a href="../../ptolemy/actor/gui/ModelDirectory.html" title="class in ptolemy.actor.gui">ModelDirectory</a>, <a href="../../ptolemy/data/ontologies/Ontology.html" title="class in ptolemy.data.ontologies">Ontology</a>, <a href="../../ptolemy/data/ontologies/OntologySolverModel.html" title="class in ptolemy.data.ontologies">OntologySolverModel</a>, <a href="../../ptolemy/cg/lib/syntactic/SyntacticGraph.html" title="class in ptolemy.cg.lib.syntactic">SyntacticGraph</a>, <a href="../../ptolemy/actor/gui/Tableau.html" title="class in ptolemy.actor.gui">Tableau</a></dd>
 </dl>
 <hr>
 <br>
@@ -246,6 +246,16 @@ extends <a href="../../ptolemy/kernel/ComponentEntity.html" title="class in ptol
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) <a href="../../ptolemy/kernel/util/NamedList.html" title="class in ptolemy.kernel.util">NamedList</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/kernel/CompositeEntity.html#Z:Z_containedEntities">_containedEntities</a></span></code>
+<div class="block">List of contained entities.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) <a href="../../ptolemy/kernel/util/NamedList.html" title="class in ptolemy.kernel.util">NamedList</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/kernel/CompositeEntity.html#Z:Z_containedRelations">_containedRelations</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>protected java.util.List&lt;ptolemy.kernel.CompositeEntity.LinkRecord&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/kernel/CompositeEntity.html#Z:Z_levelCrossingLinks">_levelCrossingLinks</a></span></code>
 <div class="block">Level-crossing links within this composite for which this composite
@@ -253,6 +263,13 @@ extends <a href="../../ptolemy/kernel/ComponentEntity.html" title="class in ptol
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a name="fields.inherited.from.class.ptolemy.kernel.Entity">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;ptolemy.kernel.<a href="../../ptolemy/kernel/Entity.html" title="class in ptolemy.kernel">Entity</a></h3>
+<code><a href="../../ptolemy/kernel/Entity.html#Z:Z_portList">_portList</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a name="fields.inherited.from.class.ptolemy.kernel.util.NamedObj">
 <!--   -->
@@ -747,13 +764,32 @@ extends <a href="../../ptolemy/kernel/ComponentEntity.html" title="class in ptol
 <a name="Z:Z_levelCrossingLinks">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>_levelCrossingLinks</h4>
 <pre>protected&nbsp;java.util.List&lt;ptolemy.kernel.CompositeEntity.LinkRecord&gt; _levelCrossingLinks</pre>
 <div class="block">Level-crossing links within this composite for which this composite
   is responsible.  This data structure is populated when exportMoML()
   is called.</div>
+</li>
+</ul>
+<a name="Z:Z_containedEntities">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_containedEntities</h4>
+<pre><a href="../../ptolemy/kernel/util/NamedList.html" title="class in ptolemy.kernel.util">NamedList</a> _containedEntities</pre>
+<div class="block">List of contained entities.</div>
+</li>
+</ul>
+<a name="Z:Z_containedRelations">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_containedRelations</h4>
+<pre><a href="../../ptolemy/kernel/util/NamedList.html" title="class in ptolemy.kernel.util">NamedList</a> _containedRelations</pre>
 </li>
 </ul>
 </li>

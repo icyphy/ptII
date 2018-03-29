@@ -178,13 +178,16 @@ extends java.lang.Object</pre>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>protected static java.util.Set&lt;java.util.List&lt;<a href="../../../../../ptolemy/kernel/Relation.html" title="class in ptolemy.kernel">Relation</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/vergil/basic/layout/kieler/PtolemyModelUtil.html#Z:Z_getRelationGroups-java.util.Set-">_getRelationGroups</a></span>(java.util.Set&lt;<a href="../../../../../ptolemy/kernel/Relation.html" title="class in ptolemy.kernel">Relation</a>&gt;&nbsp;relations)</code>
-<div class="block">For a set of relations get a set of relation groups, i.e.</div>
+<div class="block">For a set of relations get a set of relation groups, i.e. for each
+ relation construct a list of relations that are all interconnected,
+ either directly or indirectly.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected static boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../ptolemy/vergil/basic/layout/kieler/PtolemyModelUtil.html#Z:Z_isConnected-ptolemy.kernel.util.NamedObj-">_isConnected</a></span>(<a href="../../../../../ptolemy/kernel/util/NamedObj.html" title="class in ptolemy.kernel.util">NamedObj</a>&nbsp;namedObj)</code>
-<div class="block">Check whether the given Ptolemy model object has any connections, i.e.</div>
+<div class="block">Check whether the given Ptolemy model object has any connections, i.e. is
+ connected to any other components via some link.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">

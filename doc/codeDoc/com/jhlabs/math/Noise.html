@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":9,"i4":9,"i5":9,"i6":9,"i7":9,"i8":9,"i9":9,"i10":9,"i11":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -121,6 +121,41 @@ implements <a href="../../../com/jhlabs/math/Function1D.html" title="interface i
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static float[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#g1">g1</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static float[][]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#g2">g2</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static float[][]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#g3">g3</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static int[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#p">p</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#start">start</a></span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -215,6 +250,10 @@ implements <a href="../../../com/jhlabs/math/Function1D.html" title="interface i
 </td>
 </tr>
 <tr id="i9" class="rowColor">
+<td class="colFirst"><code>(package private) static void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#normalize3-float:A-">normalize3</a></span>(float[]&nbsp;v)</code>&nbsp;</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>static float</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#turbulence2-float-float-float-">turbulence2</a></span>(float&nbsp;x,
            float&nbsp;y,
@@ -222,7 +261,7 @@ implements <a href="../../../com/jhlabs/math/Function1D.html" title="interface i
 <div class="block">Compute turbulence using Perlin noise.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>static float</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../com/jhlabs/math/Noise.html#turbulence3-float-float-float-float-">turbulence3</a></span>(float&nbsp;x,
            float&nbsp;y,
@@ -247,6 +286,59 @@ implements <a href="../../../com/jhlabs/math/Function1D.html" title="interface i
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="p">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>p</h4>
+<pre>static&nbsp;int[] p</pre>
+</li>
+</ul>
+<a name="g3">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>g3</h4>
+<pre>static&nbsp;float[][] g3</pre>
+</li>
+</ul>
+<a name="g2">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>g2</h4>
+<pre>static&nbsp;float[][] g2</pre>
+</li>
+</ul>
+<a name="g1">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>g1</h4>
+<pre>static&nbsp;float[] g1</pre>
+</li>
+</ul>
+<a name="start">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>start</h4>
+<pre>static&nbsp;boolean start</pre>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -437,6 +529,15 @@ implements <a href="../../../com/jhlabs/math/Function1D.html" title="interface i
                          float&nbsp;b)</pre>
 </li>
 </ul>
+<a name="normalize3-float:A-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>normalize3</h4>
+<pre>static&nbsp;void&nbsp;normalize3(float[]&nbsp;v)</pre>
+</li>
+</ul>
 <a name="findRange-com.jhlabs.math.Function1D-float:A-">
 <!--   -->
 </a>
@@ -530,13 +631,13 @@ implements <a href="../../../com/jhlabs/math/Function1D.html" title="interface i
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

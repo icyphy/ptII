@@ -210,7 +210,19 @@ extends java.lang.Object</pre>
 <tr class="altColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#DCT_TYPE_NORMALIZED">DCT_TYPE_NORMALIZED</a></span></code>
-<div class="block">To select the forward transform :</div>
+<div class="block">To select the forward transform :
+  
+               N - 1 <br>
+   X[k] = e[k]  sum  x[n] * cos ((2n + 1)k * PI / 2N) <br>
+               n = 0 <br>
+  
+  
+  and the inverse transform :
+              N - 1 <br>
+   x(n) = (2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)<br>
+              k = 0 <br>
+  
+  use this DCT type.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -256,37 +268,68 @@ extends java.lang.Object</pre>
 <tr class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#WINDOW_TYPE_BARTLETT">WINDOW_TYPE_BARTLETT</a></span></code>
-<div class="block">To select the Bartlett (triangular) window,</div>
+<div class="block">To select the Bartlett (triangular) window,
+  
+   w[n] = 2n/M      for 0 &le; n &le; M/2 <br>
+   w[n] = 2 - 2n/M  for M/2 &lt; n &le; M
+  
+  use this window type.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#WINDOW_TYPE_BLACKMAN">WINDOW_TYPE_BLACKMAN</a></span></code>
-<div class="block">To select the Blackman window,</div>
+<div class="block">To select the Blackman window,
+  
+   w[n] = 0.42 - 0.5 cos(2 * PI * n /M)  + <br>
+          0.08 cos (4 * PI * n / M) <br>
+   for 0 &le; n &le; M
+  
+  use this window type.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#WINDOW_TYPE_BLACKMAN_HARRIS">WINDOW_TYPE_BLACKMAN_HARRIS</a></span></code>
-<div class="block">To select the 4-term Blackman-Harris window,</div>
+<div class="block">To select the 4-term Blackman-Harris window,
+  
+   w[n] = 0.35875 - 0.48829 cos(2 * PI * n /M)  + <br>
+          0.14128 cos (4 * PI * n / M) - 0.01168 cos(6 * PI * n / M) <br>
+   for 0 &le; n &le; M
+  
+  use this window type.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#WINDOW_TYPE_HAMMING">WINDOW_TYPE_HAMMING</a></span></code>
-<div class="block">To select the Hamming window,</div>
+<div class="block">To select the Hamming window,
+  
+   w[n] = 0.54 - 0.46 cos(2 * PI * n / M) <br>
+   for 0 &le; n &le; M
+  
+  use this window type.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#WINDOW_TYPE_HANNING">WINDOW_TYPE_HANNING</a></span></code>
-<div class="block">To select the Hanning window,</div>
+<div class="block">To select the Hanning window,
+  
+   w[n] = 0.5 - 0.5 cos(2 * PI * n / M)  <br>
+   for 0 &le; n &le; M
+  
+  use this window type.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#WINDOW_TYPE_RECTANGULAR">WINDOW_TYPE_RECTANGULAR</a></span></code>
-<div class="block">To select the rectangular window,</div>
+<div class="block">To select the rectangular window,
+  
+   w[n] = 1 for 0 &le; n &le; M
+  
+  use this window type.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -670,7 +713,8 @@ extends java.lang.Object</pre>
 <tr id="i47" class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/math/SignalProcessing.html#order-int-">order</a></span>(int&nbsp;size)</code>
-<div class="block">Return the "order" of a transform size, i.e.</div>
+<div class="block">Return the "order" of a transform size, i.e. the base-2 logarithm
+  of the size.</div>
 </td>
 </tr>
 <tr id="i48" class="altColor">

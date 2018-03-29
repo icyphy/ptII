@@ -42,7 +42,7 @@
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../ptolemy/data/package-summary.html">Prev&nbsp;Package</a></li>
-<li><a href="../../../ptolemy/data/expr/test/package-summary.html">Next&nbsp;Package</a></li>
+<li><a href="../../../ptolemy/data/ontologies/package-summary.html">Next&nbsp;Package</a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?ptolemy/data/expr/package-summary.html" target="_top">Frames</a></li>
@@ -187,7 +187,12 @@
 <tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/ASTPtFunctionDefinitionNode.html" title="class in ptolemy.data.expr">ASTPtFunctionDefinitionNode</a></td>
 <td class="colLast">
-<div class="block">The parse tree created from function definitions of the form:</div>
+<div class="block">The parse tree created from function definitions of the form:
+ 
+ function (x) x + 5
+ 
+
+ which defines a function of one argument.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -424,8 +429,7 @@
 <tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/GeneralToken.html" title="class in ptolemy.data.expr">GeneralToken</a></td>
 <td class="colLast">
-<div class="block">This is a token that reports its type as "general."
- Otherwise, this class is identical to its parent class.</div>
+<div class="block">This is a token that reports its type as "general."</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -551,29 +555,33 @@ JavaCC parser generator.</div>
 </td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><a href="../../../ptolemy/data/expr/PtParser.JJCalls.html" title="class in ptolemy.data.expr">PtParser.JJCalls</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/PtParserTokenManager.html" title="class in ptolemy.data.expr">PtParserTokenManager</a></td>
 <td class="colLast">
 <div class="block">Token Manager.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/ScopeExtendingAttribute.html" title="class in ptolemy.data.expr">ScopeExtendingAttribute</a></td>
 <td class="colLast">
 <div class="block">An attribute that extends its container's scope.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/SimpleCharStream.html" title="class in ptolemy.data.expr">SimpleCharStream</a></td>
 <td class="colLast">
 <div class="block">An implementation of interface CharStream, where the stream is assumed to
  contain only ASCII characters (without unicode processing).</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/SimpleNode.html" title="class in ptolemy.data.expr">SimpleNode</a></td>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/SingletonParameter.html" title="class in ptolemy.data.expr">SingletonParameter</a></td>
 <td class="colLast">
 <div class="block">This subclass of Parameter is identical to Parameter except that it
@@ -582,61 +590,60 @@ JavaCC parser generator.</div>
  is first removed.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/StringConstantParameter.html" title="class in ptolemy.data.expr">StringConstantParameter</a></td>
 <td class="colLast">
 <div class="block">This class is identical to StringParameter except that its visibility
  is set to "NOT_EDITABLE" by default.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/StringParameter.html" title="class in ptolemy.data.expr">StringParameter</a></td>
 <td class="colLast">
 <div class="block">This subclass of Parameter is almost identical to Parameter except that it
  sets itself to string mode in the constructor.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/TemporaryVariable.html" title="class in ptolemy.data.expr">TemporaryVariable</a></td>
 <td class="colLast">
 <div class="block">This is identical to a Variable except that creating it does not
  increment the workspace version.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/Token.html" title="class in ptolemy.data.expr">Token</a></td>
 <td class="colLast">
 <div class="block">Describes the input token stream.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/UnknownToken.html" title="class in ptolemy.data.expr">UnknownToken</a></td>
 <td class="colLast">
-<div class="block">This is a token that reports its type as "unknown."
- Otherwise, this class is identical to its parent class.</div>
+<div class="block">This is a token that reports its type as "unknown."</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/UtilityFunctions.html" title="class in ptolemy.data.expr">UtilityFunctions</a></td>
 <td class="colLast">
 <div class="block">This class provides additional functions for use in the Ptolemy II
  expression language.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/Variable.html" title="class in ptolemy.data.expr">Variable</a></td>
 <td class="colLast">
 <div class="block">A Variable is an Attribute that contains a token, and can be set by an
  expression that can refer to other variables.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/XMLParser.html" title="class in ptolemy.data.expr">XMLParser</a></td>
 <td class="colLast">
 <div class="block">This class parses a XML string token to a DOM document.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../ptolemy/data/expr/XMLParser.EntityResolver.html" title="class in ptolemy.data.expr">XMLParser.EntityResolver</a></td>
 <td class="colLast">
 <div class="block">The entity resolver that tries to first load a DTD file locally, and if
@@ -745,7 +752,7 @@ and then rerun configure.
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../ptolemy/data/package-summary.html">Prev&nbsp;Package</a></li>
-<li><a href="../../../ptolemy/data/expr/test/package-summary.html">Next&nbsp;Package</a></li>
+<li><a href="../../../ptolemy/data/ontologies/package-summary.html">Next&nbsp;Package</a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?ptolemy/data/expr/package-summary.html" target="_top">Frames</a></li>

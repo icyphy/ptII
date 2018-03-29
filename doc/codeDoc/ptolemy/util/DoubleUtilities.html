@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9};
+var methods = {"i0":9,"i1":9,"i2":9,"i3":9,"i4":9,"i5":9,"i6":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -122,6 +122,45 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#EXPONENT_BIAS">EXPONENT_BIAS</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static long</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#EXPONENT_MASK">EXPONENT_MASK</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static long</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#IMPLICIT_BIT">IMPLICIT_BIT</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static long</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#SIGN_MASK">SIGN_MASK</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#SIGNIFICAND_BITS">SIGNIFICAND_BITS</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static long</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#SIGNIFICAND_MASK">SIGNIFICAND_MASK</a></span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
@@ -140,6 +179,32 @@ extends java.lang.Object</pre>
 <div class="block">Convert a BigInteger to a double using a fast implementation.</div>
 </td>
 </tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>(package private) static double</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#ensureNonNegative-double-">ensureNonNegative</a></span>(double&nbsp;value)</code>
+<div class="block">Returns its argument if it is non-negative, zero if it is negative.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>(package private) static long</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#getSignificand-double-">getSignificand</a></span>(double&nbsp;d)</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>(package private) static boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#isFinite-double-">isFinite</a></span>(double&nbsp;d)</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>(package private) static boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#isNormal-double-">isNormal</a></span>(double&nbsp;d)</code>&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>(package private) static double</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#nextDown-double-">nextDown</a></span>(double&nbsp;d)</code>&nbsp;</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>(package private) static double</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/util/DoubleUtilities.html#scaleNormalize-double-">scaleNormalize</a></span>(double&nbsp;x)</code>&nbsp;</td>
+</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -156,16 +221,147 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="SIGNIFICAND_MASK">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SIGNIFICAND_MASK</h4>
+<pre>static final&nbsp;long SIGNIFICAND_MASK</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../constant-values.html#ptolemy.util.DoubleUtilities.SIGNIFICAND_MASK">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="EXPONENT_MASK">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>EXPONENT_MASK</h4>
+<pre>static final&nbsp;long EXPONENT_MASK</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../constant-values.html#ptolemy.util.DoubleUtilities.EXPONENT_MASK">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="SIGN_MASK">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SIGN_MASK</h4>
+<pre>static final&nbsp;long SIGN_MASK</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../constant-values.html#ptolemy.util.DoubleUtilities.SIGN_MASK">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="SIGNIFICAND_BITS">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SIGNIFICAND_BITS</h4>
+<pre>static final&nbsp;int SIGNIFICAND_BITS</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../constant-values.html#ptolemy.util.DoubleUtilities.SIGNIFICAND_BITS">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="EXPONENT_BIAS">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>EXPONENT_BIAS</h4>
+<pre>static final&nbsp;int EXPONENT_BIAS</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../constant-values.html#ptolemy.util.DoubleUtilities.EXPONENT_BIAS">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a name="IMPLICIT_BIT">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>IMPLICIT_BIT</h4>
+<pre>static final&nbsp;long IMPLICIT_BIT</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../constant-values.html#ptolemy.util.DoubleUtilities.IMPLICIT_BIT">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ============ METHOD DETAIL ========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.detail">
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="nextDown-double-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>nextDown</h4>
+<pre>static&nbsp;double&nbsp;nextDown(double&nbsp;d)</pre>
+</li>
+</ul>
+<a name="getSignificand-double-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSignificand</h4>
+<pre>static&nbsp;long&nbsp;getSignificand(double&nbsp;d)</pre>
+</li>
+</ul>
+<a name="isFinite-double-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isFinite</h4>
+<pre>static&nbsp;boolean&nbsp;isFinite(double&nbsp;d)</pre>
+</li>
+</ul>
+<a name="isNormal-double-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isNormal</h4>
+<pre>static&nbsp;boolean&nbsp;isNormal(double&nbsp;d)</pre>
+</li>
+</ul>
+<a name="scaleNormalize-double-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>scaleNormalize</h4>
+<pre>static&nbsp;double&nbsp;scaleNormalize(double&nbsp;x)</pre>
+</li>
+</ul>
 <a name="bigToDouble-java.math.BigInteger-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>bigToDouble</h4>
 <pre>public static&nbsp;double&nbsp;bigToDouble(java.math.BigInteger&nbsp;x)</pre>
@@ -175,6 +371,23 @@ extends java.lang.Object</pre>
 <dd><code>x</code> - The BigInteger to be converted.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the value of the BigInteger as a double.</dd>
+</dl>
+</li>
+</ul>
+<a name="ensureNonNegative-double-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>ensureNonNegative</h4>
+<pre>static&nbsp;double&nbsp;ensureNonNegative(double&nbsp;value)</pre>
+<div class="block">Returns its argument if it is non-negative, zero if it is negative.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>value</code> - The value to be checked.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>If value is non-negative, return the value.  If the value
+ is negative, then return zero.</dd>
 </dl>
 </li>
 </ul>
@@ -231,13 +444,13 @@ extends java.lang.Object</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

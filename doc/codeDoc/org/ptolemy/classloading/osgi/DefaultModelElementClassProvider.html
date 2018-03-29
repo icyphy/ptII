@@ -147,13 +147,16 @@ implements <a href="../../../../org/ptolemy/classloading/ModelElementClassProvid
 <tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/ptolemy/classloading/osgi/DefaultModelElementClassProvider.html#DefaultModelElementClassProvider-java.lang.Class...-">DefaultModelElementClassProvider</a></span>(java.lang.Class&lt;? extends <a href="../../../../ptolemy/kernel/util/NamedObj.html" title="class in ptolemy.kernel.util">NamedObj</a>&gt;...&nbsp;knownClasses)</code>
 <div class="block">Create a provider that does not care about class versions,
- i.e.</div>
+ i.e. it will only check on class names to check if it can provide
+ a requested class.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../org/ptolemy/classloading/osgi/DefaultModelElementClassProvider.html#DefaultModelElementClassProvider-org.ptolemy.commons.VersionSpecification-java.lang.Class...-">DefaultModelElementClassProvider</a></span>(<a href="../../../../org/ptolemy/commons/VersionSpecification.html" title="class in org.ptolemy.commons">VersionSpecification</a>&nbsp;version,
                                 java.lang.Class&lt;? extends <a href="../../../../ptolemy/kernel/util/NamedObj.html" title="class in ptolemy.kernel.util">NamedObj</a>&gt;...&nbsp;knownClasses)</code>
-<div class="block">Create a provider that cares about class versions, i.e.</div>
+<div class="block">Create a provider that cares about class versions, i.e. it will
+ check on class names and on the requested version to check if it
+ can provide a requested class.</div>
 </td>
 </tr>
 </table>

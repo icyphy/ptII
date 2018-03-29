@@ -335,7 +335,8 @@ extends java.awt.Graphics</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../ptolemy/plot/EPSGraphics.html#drawString-java.lang.String-int-int-">drawString</a></span>(java.lang.String&nbsp;str,
           int&nbsp;x,
           int&nbsp;y)</code>
-<div class="block">Draw a string.</div>
+<div class="block">Draw a string.  "(" is converted to "\(" and
+  ")" is converted to "\) so as to avoid EPS Syntax errors.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">

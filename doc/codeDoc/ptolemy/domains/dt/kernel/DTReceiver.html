@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":42,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":42,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.ptolemy.domains.sdf.kernel.SDFReceiver">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -161,6 +161,17 @@ extends <a href="../../../../ptolemy/domains/sdf/kernel/SDFReceiver.html" title=
 <!--   -->
 </a>
 <h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#overrideHasToken">overrideHasToken</a></span></code>&nbsp;</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a name="fields.inherited.from.class.ptolemy.domains.sdf.kernel.SDFReceiver">
 <!--   -->
@@ -213,26 +224,32 @@ extends <a href="../../../../ptolemy/domains/sdf/kernel/SDFReceiver.html" title=
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#Z:Z_debugViewReceiverInfo--">_debugViewReceiverInfo</a></span>()</code>
+<div class="block">For debugging purposes.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#calculateDeltaTime--">calculateDeltaTime</a></span>()</code>
 <div class="block">Calculate the constant time increment for this receiver.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#determineEnds--">determineEnds</a></span>()</code>
 <div class="block">Determine the source and destination ports that use this
   receiver in their communications.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#get--">get</a></span>()</code>
 <div class="block">Remove the first token (the oldest one) from the receiver and
   return it.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>double</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#getCurrentTime--">getCurrentTime</a></span>()</code>
 <div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
@@ -241,19 +258,19 @@ extends <a href="../../../../ptolemy/domains/sdf/kernel/SDFReceiver.html" title=
 </div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>double</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#getDeltaTime--">getDeltaTime</a></span>()</code>
 <div class="block">Return the time interval between tokens for this receiver.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#getModelTime--">getModelTime</a></span>()</code>
 <div class="block">Return the local time associated with this receiver.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/actor/TypedIOPort.html" title="class in ptolemy.actor">TypedIOPort</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#getSourcePort--">getSourcePort</a></span>()</code>
 <div class="block">Return the port that feeds this Receiver
@@ -261,7 +278,7 @@ extends <a href="../../../../ptolemy/domains/sdf/kernel/SDFReceiver.html" title=
   during the determineEnds() method call.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#getTokenFlowRate--">getTokenFlowRate</a></span>()</code>
 <div class="block">Return the token flow rate for this receiver
@@ -272,19 +289,25 @@ extends <a href="../../../../ptolemy/domains/sdf/kernel/SDFReceiver.html" title=
   receiver.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#hasToken--">hasToken</a></span>()</code>
 <div class="block">Return true if get() will succeed in returning a token.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#initializeLocalTime-ptolemy.actor.util.Time-">initializeLocalTime</a></span>(<a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;time)</code>
+<div class="block">Initialize the local time to the specified time.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#put-ptolemy.data.Token-">put</a></span>(<a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a>&nbsp;token)</code>
 <div class="block">Put a token to the receiver.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/dt/kernel/DTReceiver.html#reset--">reset</a></span>()</code>
 <div class="block">Reset this receiver to its initial state, which includes
@@ -321,6 +344,23 @@ extends <a href="../../../../ptolemy/domains/sdf/kernel/SDFReceiver.html" title=
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="overrideHasToken">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>overrideHasToken</h4>
+<pre>boolean overrideHasToken</pre>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -569,7 +609,7 @@ public&nbsp;double&nbsp;getCurrentTime()</pre>
 <a name="reset--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>reset</h4>
 <pre>public&nbsp;void&nbsp;reset()
@@ -583,6 +623,34 @@ public&nbsp;double&nbsp;getCurrentTime()</pre>
 <dd><code><a href="../../../../ptolemy/actor/AbstractReceiver.html#reset--">reset</a></code>&nbsp;in class&nbsp;<code><a href="../../../../ptolemy/actor/AbstractReceiver.html" title="class in ptolemy.actor">AbstractReceiver</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - If there is no director.</dd>
+</dl>
+</li>
+</ul>
+<a name="Z:Z_debugViewReceiverInfo--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_debugViewReceiverInfo</h4>
+<pre>void&nbsp;_debugViewReceiverInfo()</pre>
+<div class="block">For debugging purposes. Display pertinent information about
+   this receiver.</div>
+</li>
+</ul>
+<a name="initializeLocalTime-ptolemy.actor.util.Time-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>initializeLocalTime</h4>
+<pre>void&nbsp;initializeLocalTime(<a href="../../../../ptolemy/actor/util/Time.html" title="class in ptolemy.actor.util">Time</a>&nbsp;time)</pre>
+<div class="block">Initialize the local time to the specified time.
+  FIXME: The specified time is assumed to have value 0.0.
+  Instead, the director should have a startTime parameter.
+  This method is designed for the newReceiver method of DTDirector only.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>time</code> - The desired local time.</dd>
 </dl>
 </li>
 </ul>
@@ -639,13 +707,13 @@ public&nbsp;double&nbsp;getCurrentTime()</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.ptolemy.domains.sdf.kernel.SDFReceiver">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

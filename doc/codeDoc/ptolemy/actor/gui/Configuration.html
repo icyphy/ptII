@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":9,"i4":9,"i5":9,"i6":10,"i7":9,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":9,"i4":9,"i5":9,"i6":10,"i7":9,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -133,6 +133,10 @@ var activeTableTab = "activeTableTab";
 <dl>
 <dt>All Implemented Interfaces:</dt>
 <dd>java.lang.Cloneable, <a href="../../../ptolemy/actor/ApplicationConfigurer.html" title="interface in ptolemy.actor">ApplicationConfigurer</a>, <a href="../../../ptolemy/actor/InstanceOpener.html" title="interface in ptolemy.actor">InstanceOpener</a>, <a href="../../../ptolemy/kernel/util/Changeable.html" title="interface in ptolemy.kernel.util">Changeable</a>, <a href="../../../ptolemy/kernel/util/Debuggable.html" title="interface in ptolemy.kernel.util">Debuggable</a>, <a href="../../../ptolemy/kernel/util/DebugListener.html" title="interface in ptolemy.kernel.util">DebugListener</a>, <a href="../../../ptolemy/kernel/util/Derivable.html" title="interface in ptolemy.kernel.util">Derivable</a>, <a href="../../../ptolemy/kernel/util/Instantiable.html" title="interface in ptolemy.kernel.util">Instantiable</a>, <a href="../../../ptolemy/kernel/util/ModelErrorHandler.html" title="interface in ptolemy.kernel.util">ModelErrorHandler</a>, <a href="../../../ptolemy/kernel/util/MoMLExportable.html" title="interface in ptolemy.kernel.util">MoMLExportable</a>, <a href="../../../ptolemy/kernel/util/Moveable.html" title="interface in ptolemy.kernel.util">Moveable</a>, <a href="../../../ptolemy/kernel/util/Nameable.html" title="interface in ptolemy.kernel.util">Nameable</a></dd>
+</dl>
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><a href="../../../thales/actor/gui/SingleWindowConfiguration.html" title="class in thales.actor.gui">SingleWindowConfiguration</a></dd>
 </dl>
 <hr>
 <br>
@@ -431,12 +435,18 @@ implements <a href="../../../ptolemy/actor/ApplicationConfigurer.html" title="in
 </td>
 </tr>
 <tr id="i18" class="altColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/gui/Configuration.html#removeConfiguration-ptolemy.actor.gui.Configuration-">removeConfiguration</a></span>(<a href="../../../ptolemy/actor/gui/Configuration.html" title="class in ptolemy.actor.gui">Configuration</a>&nbsp;configuration)</code>
+<div class="block">Remove the configuration from the list of configurations.</div>
+</td>
+</tr>
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/gui/Configuration.html#setContainer-ptolemy.kernel.CompositeEntity-">setContainer</a></span>(<a href="../../../ptolemy/kernel/CompositeEntity.html" title="class in ptolemy.kernel">CompositeEntity</a>&nbsp;container)</code>
 <div class="block">If the argument is not null, then throw an exception.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/gui/Configuration.html#showAll--">showAll</a></span>()</code>
 <div class="block">Find all instances of Tableau deeply contained in the directory
@@ -1071,6 +1081,20 @@ implements <a href="../../../ptolemy/actor/ApplicationConfigurer.html" title="in
 <pre>public&nbsp;void&nbsp;showAll()</pre>
 <div class="block">Find all instances of Tableau deeply contained in the directory
   and call show() on them.  If there is no directory, then do nothing.</div>
+</li>
+</ul>
+<a name="removeConfiguration-ptolemy.actor.gui.Configuration-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeConfiguration</h4>
+<pre>void&nbsp;removeConfiguration(<a href="../../../ptolemy/actor/gui/Configuration.html" title="class in ptolemy.actor.gui">Configuration</a>&nbsp;configuration)</pre>
+<div class="block">Remove the configuration from the list of configurations.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>configuration</code> - The configuration to be removed.</dd>
+</dl>
 </li>
 </ul>
 <a name="Z:Z_removeEntity-ptolemy.kernel.ComponentEntity-">

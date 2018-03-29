@@ -277,7 +277,10 @@ extends <a href="../../../ptolemy/actor/lib/Transformer.html" title="class in pt
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/actor/lib/VectorDisassembler.html#fire--">fire</a></span>()</code>
 <div class="block">If there is a token at the input, read one column or row vector
-  (i.e.</div>
+  (i.e. a DoubleMatrixToken with one column or row) from the
+  input port, and for each channel i of the output port,
+  send send the ith element of this column or row vector to this
+  channel.</div>
 </td>
 </tr>
 </table>

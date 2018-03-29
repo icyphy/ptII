@@ -48,7 +48,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../diva/canvas/connector/ConnectorListener.html" title="interface in diva.canvas.connector"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../diva/canvas/connector/ConnectorTarget.html" title="interface in diva.canvas.connector"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../diva/canvas/connector/ConnectorManipulator.TargetHighlighter.html" title="class in diva.canvas.connector"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?diva/canvas/connector/ConnectorManipulator.html" target="_top">Frames</a></li>
@@ -72,14 +72,14 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -152,6 +152,72 @@ extends <a href="../../../diva/canvas/interactor/Manipulator.html" title="class 
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static class&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/canvas/connector/ConnectorManipulator.TargetHighlighter.html" title="class in diva.canvas.connector">ConnectorManipulator.TargetHighlighter</a></span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) <a href="../../../diva/canvas/connector/ConnectorTarget.html" title="interface in diva.canvas.connector">ConnectorTarget</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/canvas/connector/ConnectorManipulator.html#Z:Z_connectorTarget">_connectorTarget</a></span></code>
+<div class="block">The thing that we use to find sites</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) <a href="../../../diva/canvas/event/LayerMotionListener.html" title="interface in diva.canvas.event">LayerMotionListener</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/canvas/connector/ConnectorManipulator.html#Z:Z_layerMotionListener">_layerMotionListener</a></span></code>
+<div class="block">Layer motion listeners</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) <a href="../../../diva/canvas/event/LayerMotionListener.html" title="interface in diva.canvas.event">LayerMotionListener</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/canvas/connector/ConnectorManipulator.html#Z:Z_targetHighlighter">_targetHighlighter</a></span></code>
+<div class="block">The highlighter listener</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/canvas/connector/ConnectorManipulator.html#Z:Z_targetProperty">_targetProperty</a></span></code>
+<div class="block">The property name that is tested to see if a
+ figure is a possible drop target.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../diva/canvas/connector/ConnectorManipulator.html#Z:Z_targetPropertyValue">_targetPropertyValue</a></span></code>
+<div class="block">The value of the property that is tested to see if a
+ figure is a possible drop target.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -352,6 +418,66 @@ extends <a href="../../../diva/canvas/interactor/Manipulator.html" title="class 
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="Z:Z_layerMotionListener">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_layerMotionListener</h4>
+<pre><a href="../../../diva/canvas/event/LayerMotionListener.html" title="interface in diva.canvas.event">LayerMotionListener</a> _layerMotionListener</pre>
+<div class="block">Layer motion listeners</div>
+</li>
+</ul>
+<a name="Z:Z_connectorTarget">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_connectorTarget</h4>
+<pre><a href="../../../diva/canvas/connector/ConnectorTarget.html" title="interface in diva.canvas.connector">ConnectorTarget</a> _connectorTarget</pre>
+<div class="block">The thing that we use to find sites</div>
+</li>
+</ul>
+<a name="Z:Z_targetHighlighter">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_targetHighlighter</h4>
+<pre><a href="../../../diva/canvas/event/LayerMotionListener.html" title="interface in diva.canvas.event">LayerMotionListener</a> _targetHighlighter</pre>
+<div class="block">The highlighter listener</div>
+</li>
+</ul>
+<a name="Z:Z_targetProperty">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_targetProperty</h4>
+<pre>java.lang.String _targetProperty</pre>
+<div class="block">The property name that is tested to see if a
+ figure is a possible drop target.</div>
+</li>
+</ul>
+<a name="Z:Z_targetPropertyValue">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_targetPropertyValue</h4>
+<pre>java.lang.String _targetPropertyValue</pre>
+<div class="block">The value of the property that is tested to see if a
+ figure is a possible drop target.</div>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -626,7 +752,7 @@ extends <a href="../../../diva/canvas/interactor/Manipulator.html" title="class 
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../diva/canvas/connector/ConnectorListener.html" title="interface in diva.canvas.connector"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../diva/canvas/connector/ConnectorTarget.html" title="interface in diva.canvas.connector"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../diva/canvas/connector/ConnectorManipulator.TargetHighlighter.html" title="class in diva.canvas.connector"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?diva/canvas/connector/ConnectorManipulator.html" target="_top">Frames</a></li>
@@ -650,14 +776,14 @@ extends <a href="../../../diva/canvas/interactor/Manipulator.html" title="class 
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

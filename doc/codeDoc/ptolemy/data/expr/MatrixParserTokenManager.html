@@ -138,14 +138,46 @@ implements <a href="../../../ptolemy/data/expr/MatrixParserConstants.html" title
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#curChar">curChar</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#curLexState">curLexState</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>java.io.PrintStream</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#debugStream">debugStream</a></span></code>
 <div class="block">Debug output.</div>
 </td>
 </tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#defaultLexState">defaultLexState</a></span></code>&nbsp;</td>
+</tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected <a href="../../../ptolemy/data/expr/SimpleCharStream.html" title="class in ptolemy.data.expr">SimpleCharStream</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#input_stream">input_stream</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static long[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjbitVec0">jjbitVec0</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjmatchedKind">jjmatchedKind</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjmatchedPos">jjmatchedPos</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjnewStateCnt">jjnewStateCnt</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static int[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjnextStates">jjnextStates</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjround">jjround</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
@@ -154,6 +186,18 @@ implements <a href="../../../ptolemy/data/expr/MatrixParserConstants.html" title
 </td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) static long[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjtoSkip">jjtoSkip</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) static long[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjtoSpecial">jjtoSpecial</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) static long[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#jjtoToken">jjtoToken</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../ptolemy/data/expr/MatrixParserTokenManager.html#lexStateNames">lexStateNames</a></span></code>
 <div class="block">Lexer state names.</div>
@@ -273,6 +317,24 @@ implements <a href="../../../ptolemy/data/expr/MatrixParserConstants.html" title
 <div class="block">Debug output.</div>
 </li>
 </ul>
+<a name="jjbitVec0">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjbitVec0</h4>
+<pre>static final&nbsp;long[] jjbitVec0</pre>
+</li>
+</ul>
+<a name="jjnextStates">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjnextStates</h4>
+<pre>static final&nbsp;int[] jjnextStates</pre>
+</li>
+</ul>
 <a name="jjstrLiteralImages">
 <!--   -->
 </a>
@@ -293,6 +355,33 @@ implements <a href="../../../ptolemy/data/expr/MatrixParserConstants.html" title
 <div class="block">Lexer state names.</div>
 </li>
 </ul>
+<a name="jjtoToken">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjtoToken</h4>
+<pre>static final&nbsp;long[] jjtoToken</pre>
+</li>
+</ul>
+<a name="jjtoSkip">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjtoSkip</h4>
+<pre>static final&nbsp;long[] jjtoSkip</pre>
+</li>
+</ul>
+<a name="jjtoSpecial">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjtoSpecial</h4>
+<pre>static final&nbsp;long[] jjtoSpecial</pre>
+</li>
+</ul>
 <a name="input_stream">
 <!--   -->
 </a>
@@ -305,10 +394,64 @@ implements <a href="../../../ptolemy/data/expr/MatrixParserConstants.html" title
 <a name="curChar">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>curChar</h4>
 <pre>protected&nbsp;char curChar</pre>
+</li>
+</ul>
+<a name="curLexState">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>curLexState</h4>
+<pre>int curLexState</pre>
+</li>
+</ul>
+<a name="defaultLexState">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>defaultLexState</h4>
+<pre>int defaultLexState</pre>
+</li>
+</ul>
+<a name="jjnewStateCnt">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjnewStateCnt</h4>
+<pre>int jjnewStateCnt</pre>
+</li>
+</ul>
+<a name="jjround">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjround</h4>
+<pre>int jjround</pre>
+</li>
+</ul>
+<a name="jjmatchedPos">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jjmatchedPos</h4>
+<pre>int jjmatchedPos</pre>
+</li>
+</ul>
+<a name="jjmatchedKind">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>jjmatchedKind</h4>
+<pre>int jjmatchedKind</pre>
 </li>
 </ul>
 </li>

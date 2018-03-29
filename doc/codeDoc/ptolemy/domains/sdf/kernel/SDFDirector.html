@@ -279,45 +279,51 @@ implements <a href="../../../../ptolemy/actor/util/PeriodicDirector.html" title=
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#Z:Z_allowDisconnectedGraphs">_allowDisconnectedGraphs</a></span></code>
+<div class="block">Cache of the value of allowDisconnectedGraphs.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>protected int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#Z:Z_iterationCount">_iterationCount</a></span></code>
 <div class="block">The iteration count.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>protected <a href="../../../../ptolemy/actor/util/PeriodicDirectorHelper.html" title="class in ptolemy.actor.util">PeriodicDirectorHelper</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#Z:Z_periodicDirectorHelper">_periodicDirectorHelper</a></span></code>
 <div class="block">Helper class supporting the <i>period</i> parameter.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#allowDisconnectedGraphs">allowDisconnectedGraphs</a></span></code>
 <div class="block">A parameter representing whether disconnected graphs are
   permitted.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#allowRateChanges">allowRateChanges</a></span></code>
 <div class="block">A parameter representing whether dynamic rate changes are
   permitted.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../ptolemy/data/IntToken.html" title="class in ptolemy.data">IntToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#AUTO_INTTOKEN">AUTO_INTTOKEN</a></span></code>
 <div class="block">The value used to signify special behavior for the
   iterations parameter.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#AUTO_NAME">AUTO_NAME</a></span></code>
 <div class="block">The name of the AUTO iterations parameter choice: "AUTO".</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#constrainBufferSizes">constrainBufferSizes</a></span></code>
 <div class="block">If true, then buffer sizes are fixed according to the schedule,
@@ -325,45 +331,45 @@ implements <a href="../../../../ptolemy/actor/util/PeriodicDirector.html" title=
   exceed the schedule size result in an exception.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#iterations">iterations</a></span></code>
 <div class="block">A Parameter representing the number of times that postfire may be
   called before it returns false.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#ITERATIONS_NAME">ITERATIONS_NAME</a></span></code>
 <div class="block">The name of the iterations parameter: "iterations".</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#period">period</a></span></code>
 <div class="block">The time period of each iteration.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#synchronizeToRealTime">synchronizeToRealTime</a></span></code>
 <div class="block">Specify whether the execution should synchronize to the
   real time.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>static <a href="../../../../ptolemy/data/IntToken.html" title="class in ptolemy.data">IntToken</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#UNBOUNDED_INTTOKEN">UNBOUNDED_INTTOKEN</a></span></code>
 <div class="block">The UNBOUNDED iterations choice is equivalent to IntToken.ZERO.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#UNBOUNDED_NAME">UNBOUNDED_NAME</a></span></code>
 <div class="block">The name of the UNBOUNDED iterations parameter choice: "UNBOUNDED".</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/kernel/SDFDirector.html#vectorizationFactor">vectorizationFactor</a></span></code>
 <div class="block">A Parameter representing the requested vectorization factor.</div>
@@ -847,11 +853,21 @@ implements <a href="../../../../ptolemy/actor/util/PeriodicDirector.html" title=
 <a name="Z:Z_periodicDirectorHelper">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>_periodicDirectorHelper</h4>
 <pre>protected&nbsp;<a href="../../../../ptolemy/actor/util/PeriodicDirectorHelper.html" title="class in ptolemy.actor.util">PeriodicDirectorHelper</a> _periodicDirectorHelper</pre>
 <div class="block">Helper class supporting the <i>period</i> parameter.</div>
+</li>
+</ul>
+<a name="Z:Z_allowDisconnectedGraphs">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_allowDisconnectedGraphs</h4>
+<pre>boolean _allowDisconnectedGraphs</pre>
+<div class="block">Cache of the value of allowDisconnectedGraphs.</div>
 </li>
 </ul>
 </li>

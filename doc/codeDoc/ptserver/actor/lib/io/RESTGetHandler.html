@@ -200,6 +200,18 @@ if the operation is not supported (for example, delete).</div>
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) java.io.File</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptserver/actor/lib/io/RESTGetHandler.html#Z:Z_destinationFile">_destinationFile</a></span></code>
+<div class="block">The file to write to.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptserver/actor/lib/io/RESTGetHandler.html#Z:Z_readyToFire">_readyToFire</a></span></code>
+<div class="block">A flag indicating if the actor is ready to fire.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/expr/FileParameter.html" title="class in ptolemy.data.expr">FileParameter</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptserver/actor/lib/io/RESTGetHandler.html#destinationFileName">destinationFileName</a></span></code>
 <div class="block">The file name to write to.</div>
@@ -505,7 +517,7 @@ if the operation is not supported (for example, delete).</div>
 <a name="sourceModel">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>sourceModel</h4>
 <pre>public&nbsp;<a href="../../../../ptolemy/data/expr/FileParameter.html" title="class in ptolemy.data.expr">FileParameter</a> sourceModel</pre>
@@ -515,6 +527,29 @@ if the operation is not supported (for example, delete).</div>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../ptolemy/data/expr/FileParameter.html" title="class in ptolemy.data.expr"><code>FileParameter</code></a></dd>
 </dl>
+</li>
+</ul>
+<a name="Z:Z_destinationFile">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_destinationFile</h4>
+<pre>java.io.File _destinationFile</pre>
+<div class="block">The file to write to.</div>
+</li>
+</ul>
+<a name="Z:Z_readyToFire">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_readyToFire</h4>
+<pre>boolean _readyToFire</pre>
+<div class="block">A flag indicating if the actor is ready to fire.  True if the source
+ model is valid, the destination file is available for writing, and the
+ resource requested is specified in a valid way.  These are checked in
+ initialize().  False otherwise.</div>
 </li>
 </ul>
 </li>

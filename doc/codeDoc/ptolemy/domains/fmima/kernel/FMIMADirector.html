@@ -193,6 +193,10 @@ extends <a href="../../../../ptolemy/domains/sr/kernel/SRDirector.html" title="c
 <th class="colLast" scope="col">Field and Description</th>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/fmima/kernel/FMIMADirector.html#Z:Z_defaultPeriod">_defaultPeriod</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>protected boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/fmima/kernel/FMIMADirector.html#Z:Z_isFirstFire">_isFirstFire</a></span></code>
 <div class="block">A boolean variable used to flag the first fire() execution.</div>
@@ -412,13 +416,22 @@ extends <a href="../../../../ptolemy/domains/sr/kernel/SRDirector.html" title="c
 <a name="Z:Z_isFirstFire">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>_isFirstFire</h4>
 <pre>protected&nbsp;boolean _isFirstFire</pre>
 <div class="block">A boolean variable used to flag the first fire() execution.
  It is true before the first fire. It is set to true in postfire.
  It is set to false before returning in fire.</div>
+</li>
+</ul>
+<a name="Z:Z_defaultPeriod">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_defaultPeriod</h4>
+<pre><a href="../../../../ptolemy/data/expr/Parameter.html" title="class in ptolemy.data.expr">Parameter</a> _defaultPeriod</pre>
 </li>
 </ul>
 </li>

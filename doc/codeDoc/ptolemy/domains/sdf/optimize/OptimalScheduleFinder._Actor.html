@@ -17,6 +17,12 @@
     catch(err) {
     }
 //-->
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var altColor = "altColor";
+var rowColor = "rowColor";
+var tableTab = "tableTab";
+var activeTableTab = "activeTableTab";
 </script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -67,15 +73,15 @@
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a name="skip.navbar.top">
@@ -115,6 +121,69 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#Z:Z_name">_name</a></span></code>
+<div class="block">The name of the actor.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) <a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._ListOfPorts.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._ListOfPorts</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#Z:Z_ports">_ports</a></span></code>
+<div class="block">A list of ports of the actor, both input and output ports.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#Z:Z_repetitionCount">_repetitionCount</a></span></code>
+<div class="block">Count for the actor in the repetition vector of the graph.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#Z:Z_stateIndex">_stateIndex</a></span></code>
+<div class="block">index for the actor into the global state vector</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#exclusiveBuffers">exclusiveBuffers</a></span></code>
+<div class="block">The number of frame buffers the actor requires in an exclusive firing.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#exclusiveExecutionTime">exclusiveExecutionTime</a></span></code>
+<div class="block">Execution time (estimate) for the actor for an exclusive firing.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#sharedBuffers">sharedBuffers</a></span></code>
+<div class="block">The number of frame buffers the actor requires in a shared firing.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#sharedExecutionTime">sharedExecutionTime</a></span></code>
+<div class="block">Execution time (estimate) for the actor for a shared firing.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -148,6 +217,56 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr id="i0" class="altColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#addPort-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._Port-">addPort</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Port.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._Port</a>&nbsp;port)</code>
+<div class="block">Add a port to the actor.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>(package private) int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#assignStateIndex-int-">assignStateIndex</a></span>(int&nbsp;index)</code>
+<div class="block">Assign stateIndex to actor and its ports and returns the index for
+ the next component.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#fire-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">fire</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</code>
+<div class="block">adapt state 'state' according to a shared firing.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#fireExclusive-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">fireExclusive</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</code>
+<div class="block">adapt state 'state' according to an exclusive firing.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>(package private) boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#isEnabled-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">isEnabled</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</code>
+<div class="block">Test whether the actor is enabled for a shared firing in given state <i>state</i>.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>(package private) boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#isExclusiveEnabled-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">isExclusiveEnabled</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</code>
+<div class="block">Test whether the actor is enabled for an exclusive firing in given state <i>state</i>.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>(package private) void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Actor.html#setInitialState-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">setInitialState</a></span>(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</code>
+<div class="block">Initialize state of to initial state of the network.</div>
+</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -163,6 +282,94 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="sharedBuffers">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>sharedBuffers</h4>
+<pre>int sharedBuffers</pre>
+<div class="block">The number of frame buffers the actor requires in a shared firing.</div>
+</li>
+</ul>
+<a name="exclusiveBuffers">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>exclusiveBuffers</h4>
+<pre>int exclusiveBuffers</pre>
+<div class="block">The number of frame buffers the actor requires in an exclusive firing.</div>
+</li>
+</ul>
+<a name="sharedExecutionTime">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>sharedExecutionTime</h4>
+<pre>int sharedExecutionTime</pre>
+<div class="block">Execution time (estimate) for the actor for a shared firing.</div>
+</li>
+</ul>
+<a name="exclusiveExecutionTime">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>exclusiveExecutionTime</h4>
+<pre>int exclusiveExecutionTime</pre>
+<div class="block">Execution time (estimate) for the actor for an exclusive firing.</div>
+</li>
+</ul>
+<a name="Z:Z_stateIndex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_stateIndex</h4>
+<pre>int _stateIndex</pre>
+<div class="block">index for the actor into the global state vector</div>
+</li>
+</ul>
+<a name="Z:Z_ports">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_ports</h4>
+<pre><a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._ListOfPorts.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._ListOfPorts</a> _ports</pre>
+<div class="block">A list of ports of the actor, both input and output ports.</div>
+</li>
+</ul>
+<a name="Z:Z_name">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>_name</h4>
+<pre>java.lang.String _name</pre>
+<div class="block">The name of the actor.</div>
+</li>
+</ul>
+<a name="Z:Z_repetitionCount">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>_repetitionCount</h4>
+<pre>int _repetitionCount</pre>
+<div class="block">Count for the actor in the repetition vector of the graph.</div>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -191,6 +398,120 @@ extends java.lang.Object</pre>
 <dd><code>exclusiveBuffersNeeded</code> - number of frame buffers needed for exclusive firing</dd>
 <dd><code>sharedExecutionTimeNeeded</code> - execution time needed for share firing</dd>
 <dd><code>exclusiveExecutionTimeNeeded</code> - execution time needed for exclusive firing</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method.detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="assignStateIndex-int-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assignStateIndex</h4>
+<pre>int&nbsp;assignStateIndex(int&nbsp;index)</pre>
+<div class="block">Assign stateIndex to actor and its ports and returns the index for
+ the next component.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>index</code> - index to assign to the actor</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>index to assign to next actor</dd>
+</dl>
+</li>
+</ul>
+<a name="isEnabled-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isEnabled</h4>
+<pre>boolean&nbsp;isEnabled(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</pre>
+<div class="block">Test whether the actor is enabled for a shared firing in given state <i>state</i>.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>state</code> - state</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if enabled</dd>
+</dl>
+</li>
+</ul>
+<a name="isExclusiveEnabled-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isExclusiveEnabled</h4>
+<pre>boolean&nbsp;isExclusiveEnabled(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</pre>
+<div class="block">Test whether the actor is enabled for an exclusive firing in given state <i>state</i>.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>state</code> - state</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if enabled</dd>
+</dl>
+</li>
+</ul>
+<a name="fire-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fire</h4>
+<pre>void&nbsp;fire(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</pre>
+<div class="block">adapt state 'state' according to a shared firing. Assumes it is enabled.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>state</code> - state</dd>
+</dl>
+</li>
+</ul>
+<a name="fireExclusive-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>fireExclusive</h4>
+<pre>void&nbsp;fireExclusive(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</pre>
+<div class="block">adapt state 'state' according to an exclusive firing. Assumes it is enabled.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>state</code> - state</dd>
+</dl>
+</li>
+</ul>
+<a name="addPort-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._Port-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addPort</h4>
+<pre>void&nbsp;addPort(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._Port.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._Port</a>&nbsp;port)</pre>
+<div class="block">Add a port to the actor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>port</code> - port to add</dd>
+</dl>
+</li>
+</ul>
+<a name="setInitialState-ptolemy.domains.sdf.optimize.OptimalScheduleFinder._State-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>setInitialState</h4>
+<pre>void&nbsp;setInitialState(<a href="../../../../ptolemy/domains/sdf/optimize/OptimalScheduleFinder._State.html" title="class in ptolemy.domains.sdf.optimize">OptimalScheduleFinder._State</a>&nbsp;state)</pre>
+<div class="block">Initialize state of to initial state of the network. Specifically, set
+ the count for this actor to the number of firings in one iteration.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>state</code> - state to initialize</dd>
 </dl>
 </li>
 </ul>
@@ -247,15 +568,15 @@ extends java.lang.Object</pre>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a name="skip.navbar.bottom">
