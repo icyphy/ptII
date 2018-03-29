@@ -112,6 +112,9 @@
     @ANT_CLASSPATH@
   </path>
 
+  <!-- Whether output is sent to a file.  Used by test.single -->
+  <property name="usefile" value="false"/>
+  
   <!-- The optional jar files as a property, used in subant. -->
   <pathconvert property="ptII.classpath.optional.property" refid="ptII.classpath.optional"/>
 
@@ -154,8 +157,8 @@
        $PTII/org/terraswarm/accessor/accessors/web/build.xml for
        non-CapeCode tests.-->
   <patternset id="test.capecode.includes">
-    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
-    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
+    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.java" />
+    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
   </patternset>
   
   <!-- Exclude Cape Code tests from short, long and longest. -->
@@ -190,13 +193,13 @@
   <!-- Include tests that take a long time to run.
        These tests should be excluded by test.long.excludes -->
   <patternset id="test.long.includes">
-    <include name="**/JUnitCGJavaTest.*" />
-    <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
-    <include name="**/ptolemy/domains/ptides/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/plot/test/junit/JUnitTclTest*" />
+    <include name="**/JUnitCGJavaTest.java" />
+    <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/configs/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/ptides/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/plot/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <!-- Exclude long running tests. -->
@@ -216,7 +219,7 @@
   <!-- Include tests that take longest time to run.
        These tests should be excluded by test.longest.excludes -->
   <patternset id="test.longest.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java" />
   </patternset>
 
   <!-- Exclude longest running tests. -->
@@ -632,7 +635,7 @@ For example:
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
-      <formatter type="${junit.formatter}" usefile="false"/>
+      <formatter type="${junit.formatter}" usefile="${usefile}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <!-- ptolemy.ptII.batchMode is checked in MessageHandler -->
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
@@ -1011,7 +1014,7 @@ For example:
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
@@ -1524,7 +1527,7 @@ For example:
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
@@ -1575,7 +1578,7 @@ For example:
 	  <patternset refid="test.long.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
@@ -1783,7 +1786,7 @@ For example:
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
@@ -1795,13 +1798,15 @@ For example:
       ==test.single==
       Run a single JUnit test by classname (ptolemy.actor.lib.test.junit.JUnitTclTest).
 
-      To run a different test, use -Dtest.name=ptolemy...JUnitTclTest   and
+      To run a different test, use -Dtest.name=ptolemy...JUnitTclTest.java and
          -Djunit.single.formatter=xml|brief|plain|failure (default is plain)
       For example:
       * Run all the tests in actor/lib/test
           ant test.single
       * Run all the tests in kernel/test
-          ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest
+          ant test.single -Dtest.name=ptolemy/kernel/test/junit/JUnitTclTest.java
+      * Run all the tests in kernel and subdirectories, generating output in reports/junit
+          ant test.single "-Dtest.name=ptolemy/kernel/*/test/junit/JUnitTclTest.java" -Djunit.single.formatter=xml -Dusefile=true
       Various other test targets are available:
        test - builds and runs test.short, test.long and test.longest
        test.32bit - runs the 32-bit JVM tests in auto32/
@@ -1823,10 +1828,15 @@ For example:
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
-      <formatter type="${junit.single.formatter}" usefile="false"/>
+      <formatter type="${junit.single.formatter}" usefile="${usefile}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <test  name="${test.name}" />
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <include name="${test.name}" />
+        </fileset>
+      </batchtest>
     </junit>
   </target>
 
