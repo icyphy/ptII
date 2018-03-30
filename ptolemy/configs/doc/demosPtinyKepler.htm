@@ -47,7 +47,7 @@
     <!--vergilDocs-->
     . Contents:
     <ul>
-      <li> <a href="#domain">Application Domain-Specific Modeling</a>: Application Domain-specific modeling and design.
+      <li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
       </li>
 
       <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
@@ -97,180 +97,34 @@
 	).
 	<br>
 
-
 	Stochastic hybrid systems add random behavior to continuous-time models mixed
-	with discrete events. The
-	<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-	<!--/bcvtbDocs-->
-	<!-- NoiseSpectrum uses DEDirector, which is not shipped with bcvtb -->
-	(and <a
-		href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise
-	  Spectrum</a>
-
-	<!-- SinusoidInNoise includes continuous.lib.ContinuousSpectrum, which -->
-	<!-- uses DEDirectory, which is not shipped with BCVTB -->
-	,
-	<a
-	   href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid
-	  In Noise</a>
-	<!--bcvtbDocs-->
-	) models
-	show bandlimited Gaussian noise processe.
-	<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
-	models spontaneous mode transitions governed by a Poisson process.
-	The <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
-	example uses similar spontaneous mode transitions to model random delay in mode transitions.
-	The <a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a> example
-	models a stochastic differential equation describing a random walk process.
-
+	with discrete events. These models show bandlimited Gaussian noise processes in continuous-time models,
+	spontaneous mode transitions governed by a Poisson process,
+	random delay in mode transitions,
+	and Brownian motion.
 	<!--vergilDocs-->
 
 	<br>
+	
+	<li><i>Communication Security</i>: <a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
+	<br>
+	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
+	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
+	and then an aspect is woven with the model to specify the impairments imposed by the channel.
 
-
-
-      </li>
-
-      <li><i>Signal Processing</i>:
-	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
-	(See also
-	<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
-	<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>,
-	<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
-	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
+      <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
+	<!--ptinyKeplerDocs-->
 	<br>
 
-
-	Ptolemy II includes an extensive library and models of computation suitable for
-	digital signal processing, communication systems design, and image and video processing.
-	The <a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
-	example shows spectral estimation of sinusoids in noise.
-	It illustrates models the use of synchronous dataflow (SDF) for signal
-	processing, and also shows many basic capabilities like
-	hierarchical models,
-	the Expression actor, and the signal processing actor library.
-
-
-      </li>
-
-    </ul>
-
-
-    <h2>
-      <a name="heterogeneous">Heterogeneous Models</a>
-    </h2>
-
-
-    A particular capability of Ptolemy II is the ability to mix models of computation.
-    These examples illustrate some of these capabilities.
-    <ul>
-
-
-      <!--/bcvtbDocs-->
-      <li><i>Modal Models</i>:
-	<a href="../../domains/de/demo/ModalModel/ModalModel.xml">ModalModel</a>
-	<br>
-
-
-	A modal model is one whose behavior depends on its "mode"
-	of operation. A modal model in Ptolemy II heterogeneously combines the
-	<i>finite state machine</i> (FSM) domain
-	combined hierarchically with other models. A state in the FSM represents
-	a mode of operation, and can have a refinement that gives the behavior
-	in that mode.
-	The refinement can be another FSM or some other model using some other
-	Ptolemy domain. The <a href="../../domains/de/demo/ModalModel/ModalModel.xml">ModalModel</a> example combines DE, FSM, and SDF to model a
-	system where regularly sampled signals are perturbed by irregular
-	events in time.
-
+	The wireless domain in Ptolemy II
+	provides discrete-event modeling of wireless communication systems.
+	It is useful for modeling and design of communication protocols,
+	networking strategies, and applications such as sensor networks.
+	<!--ptinyKeplerDocs-->
 
 	<br>
 
 
-
-      </li>
-      
-      <!--bcvtbDocs-->
-      <li><i>Mixed-Signal Modeling</i>:
-	<!--/bcvtbDocs-->
-	<!-- SigmaDelta uses DEDirector, which is not in bcvtb -->
-	<a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">SigmaDelta</a>
-	<br>
-	This example shows how to combine continuous-time modeling
-	with discrete-event modeling to get mixed-signal modeling.
-	The example models a MEMS accelerometer where a digital circuit
-	implements feedback control and A/D conversion (a design due to
-	Mark Lemkin).
-
-	(see also
-	<!--bcvtbDocs-->
-	<a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
-	<!--/bcvtbDocs-->
-	)
-	<!--bcvtbDocs-->
-      </li>
-
-    </ul>
-
-
-    <h2>
-      <a name="basic">Basic Modeling Capabilities</a>
-    </h2>
-
-
-    Many common models of computation have been implemented in
-    Ptolemy II.  This section illustrates some of them.
-    <ul>
-
-
-
-      <li><i>Synchronous Dataflow</i>:
-	<a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">Spectrum</a> (See also
-	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>,
-	<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
-	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
-	<br>
-
-	This example shows simple spectral estimation of the product
-	of two sinusoids in noise.  It illustrates models the use of synchronous dataflow (SDF) for signal
-	processing, and also shows many basic capabilities like
-	hierarchical models,
-	the Expression actor, and the signal processing actor library.
-	In SDF, the firing of actors is statically scheduled, and at the start of execution,
-	boundedness and deadlock conditions are checked.
-
-
-	<br>
-
-
-
-      </li>
-
-      <li><i>Continuous-Time Modeling</i>:
-	<a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz</a> (see also
-	<a href="../../domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml">Lorenz with DifferentialSystem</a>,
-	<a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">SquareWave</a>,
-	<a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>)
-	<br>
-
-	This example shows a continuous-time
-	nonlinear feedback system that exhibits
-	chaotic behavior (this system is called a Lorenz attractor).
-	It illustrates the <i>continuous</i> domain,
-	which uses an underlying solver for ordinary differential equations
-	and cleanly supports mixtures of discrete events and continuous-time
-	signals.
-
-
-	<br>
-
-
-
-      </li>
-      <!--/bcvtbDocs-->
-      <li><i>Discrete-Event Modeling</i>:
-	<a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection</a>
-	(see also
 
 	<!--ptinyKeplerDocs-->
 	<!--/bcvtbDocs-->

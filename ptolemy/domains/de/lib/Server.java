@@ -240,6 +240,7 @@ public class Server extends DETransformer {
                     _nextTimeFree.subtractToDouble(currentTime);
         }
 
+        long nextQueueCounter = _queueCounter;
         // Consume the input.
         if (input.hasToken(0)) {
             double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
@@ -258,8 +259,11 @@ public class Server extends DETransformer {
         }
 
         // If appropriate, produce output.
-        if (_queue.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
-            Job job = this.dequeue();
+        Job job = this.peekQueue();
+        if (job != null && currentTime.compareTo(_nextTimeFree) == 0 &&
+                /* We check the queueCounter to ensure at least a microstep delay */
+                job.queueCounter < nextQueueCounter) {
+            job = this.dequeue();
             Token outputToken = job.payload;
             output.send(0, outputToken);
             // Indicate that the server is free.

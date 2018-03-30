@@ -199,6 +199,7 @@ CORE_NONGUI_JARS = \
 	$(PTMATLAB_JARS)
 
 CORE_JNLP_GUI_JARS = \
+	bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/vergil/vergil.jar \
@@ -213,7 +214,7 @@ CORE_JNLP_JARS = \
 #
 # Jar files that will appear in a DSP only JNLP Ptolemy II Runtime.
 #
-# doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
+# doc/design/usingVergil/usingVergil.jar is used in capecode, dsp, ptiny and full,
 # but not hyvisual.
 DSP_ONLY_JNLP_JARS = \
 	doc/design/usingVergil/usingVergil.jar 
@@ -248,9 +249,11 @@ PTXBEE_JARS = \
 # but not hyvisual.
 
 CAPECODE_ONLY_JNLP_JARS = \
+	ant/apache-ant-license.jar \
 	com/cureos/cureos.jar \
 	com/jhlabs/jhlabs.jar \
 	doc/codeDocCapeCode.jar \
+	doc/design/usingVergil/usingVergil.jar \
 	edu/umich/eecs/april/april.jar \
 	lib/svgSalamander.jar \
 	org/json/json.jar \
@@ -268,7 +271,9 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
+	ptolemy/actor/lib/jjs/node/node.jar \
 	ptolemy/actor/lib/mail/mail.jar \
+	ptolemy/demo/CapeCodeDemos.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	ptolemy/cg/cgAccessor.jar \
 	org/ptolemy/ptango/ptango.jar \
@@ -279,7 +284,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
-	lib/opencv-320.jar \
+	$(OPENCV_JAR) \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTSLF4J_API_JAR) \
 	$(PTSLF4J_SIMPLE_JAR) \
@@ -938,7 +943,8 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 ALL_L4J_JARS = \
 	vergil_l4j.jar
 
-# All the jar files, include the application jars
+# All the jar files, include the application jars.
+# Include lib/opencv-320.jar because the Windows installer depends on it.
 ALL_JNLP_JARS = \
 	$(ALL_L4J_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
@@ -952,7 +958,8 @@ ALL_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR) \
 	$(SPACE_MAIN_JAR) \
-	$(VIPTOS_MAIN_JAR)
+	$(VIPTOS_MAIN_JAR) \
+	lib/opencv-320.jar
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -2041,7 +2048,7 @@ echo_classpath_jars:
 # make vergil_run_full
 # We run in the /tmp directory to avoid looking in $PTII
 vergil_run:
-	(cd /tmp; $(JAVA) -Xmx4000m $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication -$(CONFIGURATION))
+	(cd /tmp; jar -xf $(PTII)/ptolemy/actor/lib/jjs/modules/modules.jar; jar -xf $(PTII)/ptolemy/actor/lib/jjs/node/node.jar; $(JAVA) -Xmx4000m $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication -$(CONFIGURATION))
 vergil_run_bcvtb:
 	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=bcvtb
 vergil_run_capecode:

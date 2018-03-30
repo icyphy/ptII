@@ -16,6 +16,7 @@
 *.jar
 *.lnk
 *.mex*
+*.mf
 *.out
 *.tmp
 *._*

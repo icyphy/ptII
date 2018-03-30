@@ -4019,8 +4019,9 @@ $(PTINY_APP):
 	@echo "#"
 	@echo "# Now building Ptiny.app $@"
 	@echo "# `date`"
+	# TRAVIS=true causes $PTII/bin/makeapp to download MacJVM.tar.gz
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app Ptiny.app Vergil.app); ls -l $(PTIIDIST)/jdk; \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; TRAVIS=true make PTII=$(PTIIDIST) CapeCode.app Ptiny.app Vergil.app); ls -l $(PTIIDIST)/jdk; \
         fi
 
 CAPECODE_APP = $(PTIIDIST)/bin/CapeCode.app
@@ -4029,8 +4030,9 @@ $(CAPECODE_APP):
 	@echo "#"
 	@echo "# Now building CapeCode.app $@"
 	@echo "# `date`"
+	# TRAVIS=true causes $PTII/bin/makeapp to download MacJVM.tar.gz
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app; ls -l $(PTIIDIST)/jdk); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; TRAVIS=true make PTII=$(PTIIDIST) CapeCode.app; ls -l $(PTIIDIST)/jdk); \
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
@@ -4038,7 +4040,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 	@echo "#"
 	@echo "# Now building target setup_mac_jar: (PTSETUP_MAC).jar: $@"
 	@echo "# `date`"
-	ls -ldg $(PTINY_APP) $(PTIIDIST)/jdk
+	-ls -ldg $(PTINY_APP) $(PTIIDIST)/jdk
 	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -4051,7 +4053,7 @@ $(PTSETUP_LINUX).jar: $(PTSETUP_LINUX).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(P
 	@echo "#"
 	@echo "# Now building target setup_linux_jar: (PTSETUP_LINUX).jar: $@"
 	@echo "# `date`"
-	ls -ldg $(PTINY_APP) $(PTIIDIST)/jdk
+	-ls -ldg $(PTINY_APP) $(PTIIDIST)/jdk
 	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \

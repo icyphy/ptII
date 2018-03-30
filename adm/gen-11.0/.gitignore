@@ -14,7 +14,11 @@
 /capeCode*.tar.gz
 /capeCode*.xml
 /capeCode*.zip
+/izpackInstall.xml
 /MacJVM.tar
+/node/*.tar.gz
+/node/*.xz
+/node/*.zip
 /ptII*.app
 /ptII*.src.tar
 /ptII*.tar
