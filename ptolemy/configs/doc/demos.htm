@@ -46,10 +46,10 @@
       <li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
       </li>
 
-      <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
+      <li> <a href="#basic">Models of Computation</a>: A rich suite of semantic models for actors.
       </li>
 
-      <li> <a href="#basic">Basic Modeling Capabilities</a>: Commonly used models of computation.
+      <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
       </li>
 
       <li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
@@ -69,7 +69,7 @@
 
 
     <h2>
-      <a name="domain">Application Domain-Specific Modeling</a>
+      <a name="domain">Domain-Specific Modeling</a>
     </h2>
 
 
@@ -87,8 +87,23 @@
 
       <!--ptinyKeplerDocs-->
       <!--bcvtbDocs-->
-      <li>
-	<i>Hybrid systems</i>:
+      
+    <li><i>Signal Processing</i>:
+    <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
+	(See also
+	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+	<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
+	<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>
+	)
+	<br>
+	Ptolemy II includes a library and models of computation suitable for
+    signal processing, communication systems design, and image and video processing.
+	These demos show spectral estimation, adaptive filters, and model-based sound synthesis.
+	They illustrate the use of synchronous dataflow (SDF) for signal processing.
+    </li>
+
+
+    <li><i>Hybrid systems</i>:
 	<!-- GR does not get included in demosPtiny.htm -->
 	<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
 	(see also
@@ -96,7 +111,6 @@
 	<a href="../../domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a>,
 	<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>,
 	<a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Hybrid Plant</a>).
-
 	<!--/ptinyKeplerDocs-->
     <br>
 	<i>Hybrid systems</i> are a special case of modal models
@@ -105,45 +119,25 @@
 	<!--ptinyKeplerDocs-->
 	<!-- GR does not get included in demosPtiny.htm -->
 	<!--vergilDocs-->
-
 	<br>
-
-
-      </li>
-
-      <li>
-	<i>Stochastic hybrid systems</i>:
-	<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-	(see also
-	<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>,
-	<a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
-	<a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a>
-	).
-	<br>
-
-	Stochastic hybrid systems add random behavior to continuous-time models mixed
-	with discrete events. These models show bandlimited Gaussian noise processes in continuous-time models,
-	spontaneous mode transitions governed by a Poisson process,
-	random delay in mode transitions,
-	and Brownian motion.
-	<!--vergilDocs-->
-
-	<br>
+    </li>
 	
-	<li><i>Communication Security</i>: <a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
+	
+	<li><i>Communication Security</i>: 
+	<a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
 	<br>
 	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
 	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
 	and then an aspect is woven with the model to specify the impairments imposed by the channel.
+	</li>
+	
 
-      <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
+    <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
 	<!--/ptinyKeplerDocs-->
 	<!--/bcvtbDocs-->
 	(see also
 	<a href="../visualsense/intro.htm">VisualSense introduction</a>).
-	<!--ptinyKeplerDocs-->
 	<br>
-
 	The wireless domain in Ptolemy II
 	provides discrete-event modeling of wireless communication systems.
 	It is useful for modeling and design of communication protocols,
@@ -152,92 +146,54 @@
 	The <a href="../visualsense/intro.htm">VisualSense</a> package
 	is a subset of Ptolemy II that includes the wireless domain and channel models
 	plus domains that support the design of nodes in a wireless network.
-	<!--ptinyKeplerDocs-->
-
 	<br>
+    </li>
 
 
-
-	<!--/ptinyKeplerDocs-->
-
-
-      </li>
-
-      <li><i>Signal Processing</i>:
-	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
-	(See also
-	<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
-	<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>,
-	<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
-	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
-	<br>
-
-	Ptolemy II includes an extensive library and models of computation suitable for
-	digital signal processing, communication systems design, and image and video processing.
-	These demos show spectral estimation, adaptive filters, and model-based sound synthesis.
-	They illustrate the use of synchronous dataflow (SDF) for signal processing.
-
-
-      </li>
-
-    </ul>
-
-
-    <h2>
-      <a name="heterogeneous">Heterogeneous Models</a>
-    </h2>
-
-
-    A particular capability of Ptolemy II is the ability to mix models of computation.
-    These examples illustrate some of these capabilities.
-    <ul>
-
-
-      <!--/bcvtbDocs-->
-      <li><i>Modal Models</i>:
-	<a href="../../domains/de/demo/ModalModel/ModalModel.xml">ModalModel</a>
-	<br>
-
-
-	A modal model is one whose behavior depends on its "mode"
-	of operation. A modal model in Ptolemy II heterogeneously combines the
-	<i>finite state machine</i> (FSM) domain
-	combined hierarchically with other models. A state in the FSM represents
-	a mode of operation, and can have a refinement that gives the behavior
-	in that mode.
-	The refinement can be another FSM or some other model using some other
-	Ptolemy domain. The <a href="../../domains/de/demo/ModalModel/ModalModel.xml">ModalModel</a> example combines DE, FSM, and SDF to model a
-	system where regularly sampled signals are perturbed by irregular
-	events in time.
-
-
-	<br>
-
-
-
-      </li>
-      
-      <!--bcvtbDocs-->
-      <li><i>Mixed-Signal Modeling</i>:
-	<!--/bcvtbDocs-->
-	<!-- SigmaDelta uses DEDirector, which is not in bcvtb -->
-	<a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">SigmaDelta</a>
-	<br>
-	This example shows how to combine continuous-time modeling
-	with discrete-event modeling to get mixed-signal modeling.
-	The example models a MEMS accelerometer where a digital circuit
-	implements feedback control and A/D conversion (a design due to
-	Mark Lemkin).
-
+    <li>
+	<i>Stochastic hybrid systems</i>:
+	<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
 	(see also
-	<!--bcvtbDocs-->
-	<a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
-	<!--/bcvtbDocs-->
-	)
-	<!--bcvtbDocs-->
-      </li>
+	<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>,
+	<a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
+	<a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a>
+	).
+	<br>
+	Stochastic hybrid systems add random behavior to continuous-time models mixed
+	with discrete events. These models show bandlimited Gaussian noise processes in continuous-time models,
+	spontaneous mode transitions governed by a Poisson process,
+	random delay in mode transitions,
+	and Brownian motion.
+	<!--vergilDocs-->
+	<br>
+	</li>
+	
+	<li>
+	<i>Complex Systems</i>:
+	<a href="../../demo/ElectricPowerSystem/Overview.xml">ElectricPowerSystem</a>
+	<br>
+	A variety of models of a simplified aircraft electric power system illustrate various capabilities
+	of Ptolemy II and the relationship between executable and non-executable models.
+	<!--vergilDocs-->
+	<br>
+	</li>
+
+	    <li>
+	<i>Statistics</i>:
+	<a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">HiddenMarkovModelAnalysis</a>
+	(see also
+	<a href="../../demo/ProbabilisticModels/GMMConvergenceAnalysis.xml">GMMConvergenceAnalysis</a>
+	).
+	<br>
+	Statistical analysis examples include estimation of model parameters from random samples.
+	<!--vergilDocs-->
+	<br>
+	</li>
+
 
     </ul>
+
+
 
 
     <h2>
@@ -481,6 +437,62 @@
 	<!--ptinyKeplerDocs-->
 
 
+      </li>
+
+    </ul>
+
+    <h2>
+      <a name="heterogeneous">Heterogeneous Models</a>
+    </h2>
+
+
+    A particular capability of Ptolemy II is the ability to mix models of computation.
+    These examples illustrate some of these capabilities.
+    <ul>
+
+
+      <!--/bcvtbDocs-->
+      <li><i>Modal Models</i>:
+	<a href="../../domains/de/demo/ModalModel/ModalModel.xml">ModalModel</a>
+	<br>
+
+
+	A modal model is one whose behavior depends on its "mode"
+	of operation. A modal model in Ptolemy II heterogeneously combines the
+	<i>finite state machine</i> (FSM) domain
+	combined hierarchically with other models. A state in the FSM represents
+	a mode of operation, and can have a refinement that gives the behavior
+	in that mode.
+	The refinement can be another FSM or some other model using some other
+	Ptolemy domain. The <a href="../../domains/de/demo/ModalModel/ModalModel.xml">ModalModel</a> example combines DE, FSM, and SDF to model a
+	system where regularly sampled signals are perturbed by irregular
+	events in time.
+
+
+	<br>
+
+
+
+      </li>
+      
+      <!--bcvtbDocs-->
+      <li><i>Mixed-Signal Modeling</i>:
+	<!--/bcvtbDocs-->
+	<!-- SigmaDelta uses DEDirector, which is not in bcvtb -->
+	<a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">SigmaDelta</a>
+	<br>
+	This example shows how to combine continuous-time modeling
+	with discrete-event modeling to get mixed-signal modeling.
+	The example models a MEMS accelerometer where a digital circuit
+	implements feedback control and A/D conversion (a design due to
+	Mark Lemkin).
+
+	(see also
+	<!--bcvtbDocs-->
+	<a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
+	<!--/bcvtbDocs-->
+	)
+	<!--bcvtbDocs-->
       </li>
 
     </ul>

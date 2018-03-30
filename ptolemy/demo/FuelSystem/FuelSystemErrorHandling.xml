@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemErrorHandling" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -11,12 +11,10 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1090, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1090, 874}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 764]">
     </property>
@@ -381,31 +379,31 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 185.0}">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="full" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="full">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 105.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="empty" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="empty">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 260.0}">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -872,7 +870,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="LFT,LMT,TT">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={428, 465, 888, 414}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={531, 486, 888, 414}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[888, 370]">
         </property>
@@ -904,7 +902,7 @@
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-4.999999999999449E-5" max="25.0"/>
+<yRange min="-5.000000000000837E-5" max="25.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -1007,6 +1005,24 @@
             </property>
             <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="14.0">
             </property>
+            <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-4.999999999999449E-5">
+            </property>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <entity name="normal" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="full" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="empty" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                </entity>
+            </entity>
         </entity>
         <entity name="TT" class="Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 375.0]">
@@ -1015,10 +1031,46 @@
             </property>
             <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="7.04">
+            </property>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <entity name="normal" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="full" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="empty" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                </entity>
+            </entity>
         </entity>
         <entity name="LFT" class="Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 160.0]">
             </property>
+            <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.000000000000837E-5">
+            </property>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <entity name="normal" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="full" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                    <entity name="empty" class="ptolemy.domains.modal.kernel.State">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </entity>
+                </entity>
+            </entity>
         </entity>
         <entity name="LMT_inConst" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="0">
@@ -1276,21 +1328,21 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 55.0}">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="flight" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="flight">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 190.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -1547,21 +1599,21 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 125}">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="empty" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="empty">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 250.0}">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -1760,19 +1812,19 @@
                     <entity name="lastWasSensor" class="ptolemy.domains.modal.kernel.State">
                         <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 110}">
                         </property>
-                    </entity>
-                    <entity name="lastWasClock" class="ptolemy.domains.modal.kernel.State">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                    </entity>
+                    <entity name="lastWasClock" class="ptolemy.domains.modal.kernel.State">
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 220}">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -1878,27 +1930,27 @@
                     <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                         <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 95.0}">
                         </property>
-                    </entity>
-                    <entity name="firstMiss" class="ptolemy.domains.modal.kernel.State">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                    </entity>
+                    <entity name="firstMiss" class="ptolemy.domains.modal.kernel.State">
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 195.0]">
                         </property>
-                    </entity>
-                    <entity name="errorState" class="ptolemy.domains.modal.kernel.State">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
+                    </entity>
+                    <entity name="errorState" class="ptolemy.domains.modal.kernel.State">
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 285.0]">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -2181,21 +2233,21 @@
                         </property>
                         <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[259.83122229144186, -305.3804887362557]">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <entity name="errorState" class="ptolemy.domains.modal.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="errorState">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, -310.0}">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <relation name="relation23" class="ptolemy.domains.modal.kernel.Transition">
@@ -2379,72 +2431,72 @@
                                 </property>
                                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[268.9612898900441, 40.249999999999986]">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="flight_noTrans" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="flight_noTrans">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[263.96128989004364, 125.24999999999997]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="emptyLMT" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="emptyLMT">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[438.96128989004416, 125.24999999999997]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="fullTT" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="fullTT">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[263.9612898900441, 225.24999999999997]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="fulllTT_" class="ptolemy.domains.modal.kernel.State">
                                 <display name="fullTT_2"/>
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="fulllTT_">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[433.96128989004416, 220.24999999999997]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="lowFT" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="lowFT">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[258.9612898900441, 315.24999999999994]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="lowFT_" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="lowFT_">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[553.9612898900443, 315.24999999999994]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="emptyTT" class="ptolemy.domains.modal.kernel.State">
@@ -2452,31 +2504,31 @@
                                 </property>
                                 <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[553.9612898900443, 415.24999999999994]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="okFT" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="okFT">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[258.9612898900441, 395.24999999999994]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="lowFTagain" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="lowFTagain">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[263.96128989004376, 480.24999999999994]">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -3904,21 +3956,21 @@
                                 </property>
                                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 55.0}">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="error_lowFT" class="ptolemy.domains.modal.kernel.State">
                                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="error_lowFT">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 130.0}">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <entity name="error_emptyMT" class="ptolemy.domains.modal.kernel.State">
@@ -3926,11 +3978,11 @@
                                 </property>
                                 <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
-                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, 245.0}">
                                 </property>
                                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                                </property>
+                                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                 </property>
                             </entity>
                             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -4184,8 +4236,6 @@
                         </entity>
                         <entity name="error_emptyMT" class="ptolemy.domains.modal.modal.Refinement">
                             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -500.0]">
                                 </property>
                             </property>
