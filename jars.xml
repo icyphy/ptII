@@ -8,6 +8,8 @@
 <project basedir="." name="ptII">
 
   <patternset id="ptII.jars">
+    <include name="ant/apache-ant-license.jar" />
+    <include name="bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar" />
     <include name="com/cureos/cureos.jar" />
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="com/jhlabs/jhlabs.jar" />
@@ -92,6 +94,7 @@
          are plenty of jjs/modules/*/demo/ directories. -->
     <include name="ptolemy/actor/lib/jjs/modules/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/modules.jar" />
+    <include name="ptolemy/actor/lib/jjs/node/node.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
     <include name="ptolemy/actor/lib/joystick/joystick.jar" />
@@ -122,6 +125,7 @@
     <include name="ptolemy/data/type/demo/demo.jar" />
     <include name="ptolemy/data/unit/demo/demo.jar" />
     <include name="ptolemy/demo/demo.jar" />
+    <include name="ptolemy/demo/CapeCodeDemos.jar" />
     <include name="ptolemy/distributed/client/client.jar" />
     <include name="ptolemy/distributed/demo/demo.jar" />
     <include name="ptolemy/distributed/distributed.jar" />
@@ -585,6 +589,15 @@
 
   <target name="jars"
 	  description="Build jar files.">
+
+    <!-- bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar-->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html"/>
+      </fileset>
+    </jar>
 
     <!-- contrib/contrib.jar -->
     <jar defaultexcludes="yes"
@@ -1797,16 +1810,47 @@
 	 >
       <fileset dir="${basedir}">
         <include name="ptolemy/actor/lib/jjs/modules/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*.txt"/>
         <include name="ptolemy/actor/lib/jjs/modules/*/*.class"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.htm"/>
         <include name="ptolemy/actor/lib/jjs/modules/*/*.js"/>
         <include name="ptolemy/actor/lib/jjs/modules/*/*.json"/>
-        <include name="ptolemy/actor/lib/jjs/modules/*/*.xml"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.md"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.txt"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*akefile"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.html"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.jpg"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.pdf"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.txt"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.wav"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.xml"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*akefile"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*akefile"/>
         <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.html"/>
         <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.js"/>
         <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.xml"/>
         <include name="ptolemy/actor/lib/jjs/modules/testing/chai/*.js"/>
         <include name="ptolemy/actor/lib/jjs/modules/testing/mocha/*.js"/>
         <include name="ptolemy/actor/lib/jjs/modules/testing/windowMock/*.js"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/node/node.jar -->
+    <!-- Updated with
+	 (cd ptolemy/actor/lib/jjs/node; $PTII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@ptolemy/actor/lib/jjs/node@' | grep -v test/auto | sed -e 's@node/[^/]*/\*@node/*/*@' -e 's@node/[^/]*/demo/[^/]*/\*@node/*/demo/*@' | sort | uniq)
+    -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/node/node.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/jjs/node/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/node/*.txt"/>
+        <include name="ptolemy/actor/lib/jjs/node/*akefile"/>
+        <include name="ptolemy/actor/lib/jjs/node/apiai/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/node/apiai/*.json"/>
+        <include name="ptolemy/actor/lib/jjs/node/apiai/*.md"/>
+        <include name="ptolemy/actor/lib/jjs/node/apiai/module/*.js"/>
       </fileset>
     </jar>
 
@@ -2136,6 +2180,7 @@
 	<include name="ptolemy/demo/*/*.fmu"/>
 	<include name="ptolemy/demo/*/*.htm"/>
 	<include name="ptolemy/demo/*/*.html"/>
+	<include name="ptolemy/demo/*/*.js"/>
 	<include name="ptolemy/demo/*/*.mo"/>
 	<include name="ptolemy/demo/*/*.pdf"/>
 	<include name="ptolemy/demo/*/*.png"/>
@@ -2143,6 +2188,31 @@
 	<include name="ptolemy/demo/*/*.xml"/>
       </fileset>
     </jar>
+
+    <!-- ptolemy/demo/CapeCodeDemos.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/demo/CapeCodeDemos.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/demo/CapeCode/Sounds/*.wav"/>
+	<include name="ptolemy/demo/CapeCode/*.docx"/>
+	<include name="ptolemy/demo/CapeCode/*.pdf"/>
+	<include name="ptolemy/demo/CapeCode/*.xml"/>
+        <include name="ptolemy/demo/Office/*.js"/>
+        <include name="ptolemy/demo/Office/*.xml"/>
+        <include name="ptolemy/demo/Office/OfficeServices/README.txt"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.css"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.js"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.json"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.pdf"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.sh"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.xml"/>
+        <include name="ptolemy/demo/Office/AprilTags/README.txt"/>
+	<include name="ptolemy/demo/Office/OfficeServices/AprilTags/*.png"/>
+	<include name="ptolemy/demo/Office/OfficeServices/Sounds/*.wav"/>
+      </fileset>
+    </jar>
+
 
     <!-- ptolemy/domains/experimentalDomains.jar -->
     <jar defaultexcludes="yes"
@@ -3720,6 +3790,15 @@
     <!-- ptolemy/actor/lib/database/ojdbc6.jar -->
 
     <!-- ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar -->
+
+    <!-- ant/apache-ant-license.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ant/apache-ant-license.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ant/apache-ant-license.htm"/>
+      </fileset>
+    </jar>
 
     <!-- com/cureos/cureos.jar -->
     <jar defaultexcludes="yes"
