@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SoundSpectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -16,9 +16,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 972, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 993, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 522]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -119,7 +119,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 261.0}">
     </property>
     <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
         <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
@@ -168,29 +168,29 @@
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 140.0]">
         </property>
     </entity>
     <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 140.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2^order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 150.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
         </property>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 280.0">
         </property>
@@ -198,7 +198,7 @@
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 378, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 378, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -231,7 +231,7 @@
     <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {508, 378, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={508, 378, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -241,7 +241,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/128.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 150.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -267,8 +267,6 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="215.0, 125.0">
         </vertex>
@@ -281,6 +279,8 @@
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="AudioCapture.output" relation="relation"/>
     <link port="Chop.input" relation="relation"/>
     <link port="Chop.output" relation="relation8"/>
@@ -290,10 +290,10 @@
     <link port="AbsoluteValue.output" relation="relation4"/>
     <link port="SequenceToArray.input" relation="relation4"/>
     <link port="SequenceToArray.output" relation="relation9"/>
-    <link port="MultiplyDivide.multiply" relation="relation7"/>
     <link port="MultiplyDivide.multiply" relation="relation8"/>
+    <link port="MultiplyDivide.multiply" relation="relation5"/>
     <link port="MultiplyDivide.output" relation="relation6"/>
-    <link port="Pulse.output" relation="relation7"/>
+    <link port="Pulse.output" relation="relation5"/>
     <link port="ArrayPlotter.input" relation="relation2"/>
     <link port="SequenceToArray2.input" relation="relation8"/>
     <link port="SequenceToArray2.output" relation="relation2"/>

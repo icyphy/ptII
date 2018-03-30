@@ -47,13 +47,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 480.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 23, 1170, 873}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[936, 763]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9702075257129573">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.36297817887976, 135.06130649556536}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.21748979401565, 135.06130649556536}">
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, 375.0]">
@@ -159,7 +159,7 @@
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             <display name="Background Color"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, -230.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -330,6 +330,28 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="  Informal&#10;Documents">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, -210.0]">
+        </property>
+    </property>
+    <property name="Annotation17" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click on bubbles to open&#10;models, especially the yellow&#10;bubbles, which are executable models.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -215.0]">
+        </property>
+    </property>
+    <property name="Annotation18" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Electric Power System Models">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -240.0]">
         </property>
     </property>
     <entity name="Physical Plant" class="ptolemy.data.ontologies.FiniteConcept">
