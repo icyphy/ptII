@@ -201,6 +201,9 @@
     <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
   </path>
 
+  <!-- Whether output is sent to a file.  Used by test.single -->
+  <property name="usefile" value="false"/>
+
   <!-- The optional jar files as a property, used in subant. -->
   <pathconvert property="ptII.classpath.optional.property" refid="ptII.classpath.optional"/>
 
@@ -219,6 +222,7 @@
     <pathelement location="${env.HOME}/.ptolemyII" />
     <!-- Java 1.6 and later: * in the classpath matches *.jar files -->
     <pathelement location="${env.HOME}/.ptolemyII/*" />
+    <pathelement location="${basedir}" />
     <path refid="ptII.classpath.optional"/>
     <!-- Include ptolemy/moml/test so that ptolemy/moml/test/MoMLParserNoPackage.tcl passes -->
     <pathelement location="ptolemy/moml/test"/>
@@ -321,14 +325,25 @@
     <exclude name="**/junit/JUnitAuto32Test.*" />
   </patternset>
 
-  <!-- Tests for Cape Code. -->
-  <patternset id="test.capeCode.includes">
+  <!-- Tests for Cape Code. See
+       $PTII/org/terraswarm/accessor/accessors/web/build.xml for
+       non-CapeCode tests.-->
+  <patternset id="test.capecode.includes">
+    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.java" />
+    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
+  </patternset>
+  
+  <!-- Exclude Cape Code tests from short, long and longest. -->
+  <patternset id="test.capecode.excludes">
     <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
   </patternset>
   
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
+    <exclude name="**/adm/coverity/test/junit/*"/>
+    <exclude name="**/adm/installers/test/junit/*"/>
+    <exclude name="**/adm/test/junit/*"/>
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
@@ -350,17 +365,19 @@
   <!-- Include tests that take a long time to run.
        These tests should be excluded by test.long.excludes -->
   <patternset id="test.long.includes">
-    <include name="**/JUnitCGJavaTest.*" />
-    <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
-    <include name="**/ptolemy/domains/ptides/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/plot/test/junit/JUnitTclTest*" />
+    <include name="**/JUnitCGJavaTest.java" />
+    <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/configs/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/ptides/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/plot/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <!-- Exclude long running tests. -->
   <patternset id="test.long.excludes">
+    <exclude name="**/adm/coverity/test/junit/*"/>
+    <exclude name="**/adm/installers/test/junit/*"/>
     <exclude name="**/adm/test/junit/JUnitTclTest.*" />
     <exclude name="**/JUnitCGJavaTest.*" />
     <exclude name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
@@ -374,7 +391,7 @@
   <!-- Include tests that take longest time to run.
        These tests should be excluded by test.longest.excludes -->
   <patternset id="test.longest.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java" />
   </patternset>
 
   <!-- Exclude longest running tests. -->
@@ -703,8 +720,9 @@ For example:
 	  depends="initReports"
 	  description="Run Doccheck (http://java.sun.com/j2se/javadoc/doccheck/) to detect JavaDoc bugs." >
 
-    <javadoc additionalparam="-notimestamp"
+    <javadoc additionalparam="-notimestamp -quiet"
              destdir="${ptII.reports}/doccheck"
+             docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
@@ -780,11 +798,11 @@ For example:
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
-      <formatter type="${junit.formatter}" usefile="false"/>
+      <formatter type="${junit.formatter}" usefile="${usefile}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <!-- ptolemy.ptII.batchMode is checked in MessageHandler -->
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <test  name="adm.test.junit.JUnitTclTest" />
+      <test  name="adm.installers.test.junit.JUnitTclTest" />
     </junit>
   </target>
 
@@ -827,8 +845,9 @@ For example:
     java.maxmemory.large, which could cause problems for 32-bit
     jvms. -->
 
-    <javadoc additionalparam="-notimestamp"
+    <javadoc additionalparam="-quiet"
              destdir="doc/codeDoc"
+             docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory.large}"
@@ -870,11 +889,11 @@ For example:
   <target name="javadoc.base"
 	  depends="javadoc.doclets">
     <echo>Generate javadoc without building the actor documentation and the actor/demonstration index</echo>
-    <javadoc additionalparam="-notimestamp -tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
-	     destdir="doc/codeDoc"
+    <javadoc additionalparam="-notimestamp -quiet -tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
+             destdir="doc/codeDoc"
+	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
-	     packagenames="${javadoc.packagenames}"
 	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
@@ -953,7 +972,7 @@ For example:
 
   <target name="jsdoc-install"
 	  depends="-check-jsdoc, -check-node-works, -check-npm-works, -check-if-npmjs-org-is-up, -jsdoc-no-network-message"
-          if="${node.works}"
+          if="${npmjs-org-is-up}"
 	  unless="jsdoc.command.exists">
     <mkdir dir="${basedir}/node_modules"/>
     <exec executable="${npm.executable}"
@@ -1021,6 +1040,17 @@ For example:
     </exec>
   </target>
 
+  <target name="junitreport"
+          description="Read reports/**/TEST-*.xml files and create reports/junit/html/">
+
+    <junitreport todir="./reports">
+      <fileset dir="./reports">
+        <include name="**/TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="./reports/junit/html"/>
+    </junitreport>
+  </target>
+
   <!-- Ojdcheck
        We have a local copy at
        svn co svn+ssh://source.eecs.berkeley.edu/chess/ojdcheck 
@@ -1028,7 +1058,8 @@ For example:
   <target name="ojdcheck"
 	  depends="initReports"
 	  description="Ojdcheck - An updated version of DocCheck. See http://github.com/egonw/ojdcheck">
-    <javadoc additionalparam="-notimestamp -xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
+    <javadoc additionalparam="-notimestamp -quiet -xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
+             docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
@@ -1047,6 +1078,10 @@ For example:
           depends="jsdoc-update, -ptdoc-no-node, -ptdoc-no-npm"
           description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy"
           if="${npm.works}">
+    <echo>
+      If the ptdoc target fails, then try running:
+          ant build-project build-bin
+    </echo>
     <subant target="ptdoc" genericantfile="${basedir}/org/terraswarm/accessor/accessors/web/build.xml">
       <dirset dir="." includes="org/terraswarm/accessor/accessors/web"/>
     </subant>
@@ -1135,24 +1170,25 @@ For example:
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
 
-  <target name="test.capeCode"
+  <target name="test.capecode" depends="initReports"
 	  description="Run the Cape Code tests.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capeCode ==
+      ==test.capecode ==
       This target runs the Cape Code accessors tests
       timeout = ${timeout.long} milliseconds
     </echo>
@@ -1169,7 +1205,7 @@ For example:
       <batchtest filtertrace="off">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capeCode.includes" />
+	  <patternset refid="test.capecode.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1179,12 +1215,12 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capeCode.xml"
+  <target name="test.capecode.xml" depends="initReports"
 	  description="Run the Cape Code tests with xml output.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capeCode ==
+      ==test.capecode.xml ==
       This target runs the Cape Code accessors tests and generates JUnit xml output.
       timeout = ${timeout.long} milliseconds
     </echo>
@@ -1200,7 +1236,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capeCode.includes" />
+	  <patternset refid="test.capecode.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1288,6 +1324,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1321,6 +1358,7 @@ For example:
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1388,6 +1426,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1478,6 +1517,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1595,7 +1635,7 @@ For example:
       <formatter type="${junit.formatter}" usefile="true"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <test  name="adm.test.junit.JUnitTclTest" 
+      <test  name="adm.installers.test.junit.JUnitTclTest"
 	     todir="${junit.output.dir}"
 	     />
     </junit>
@@ -1642,11 +1682,12 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the longest running tests -->
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
@@ -1692,11 +1733,12 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
@@ -1707,7 +1749,7 @@ For example:
     </junit>
   </target>
 
-  <target name="test.mocha"
+  <target name="test.mocha" depends="initReports"
           description="Use mocha to test node.js and generate output on stdout.">
     <echo>
       ==test.mocha==
@@ -1729,7 +1771,7 @@ For example:
     </exec>
   </target>
   
-  <target name="test.mocha.xml"
+  <target name="test.mocha.xml" depends="initReports"
           description="Use mocha to test node.js and generate JUnit compatible xml output.">
     <echo>
       ==test.mocha.xml==
@@ -1755,7 +1797,9 @@ For example:
     </exec>
   </target>
 
-  <target name="test.report" depends="build, initReports"
+  <target name="test.report" depends="test.report.all"/>
+
+  <target name="test.report.all" depends="build, initReports, installers"
 	  description="Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.">
     <echo>
       ==test.report==
@@ -1849,7 +1893,7 @@ For example:
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="off" />
+      <formatter type="plain" usefile="${usefile}" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
@@ -1861,13 +1905,15 @@ For example:
       ==test.single==
       Run a single JUnit test by classname (ptolemy.actor.lib.test.junit.JUnitTclTest).
 
-      To run a different test, use -Dtest.name=ptolemy...JUnitTclTest   and
+      To run a different test, use -Dtest.name=ptolemy...JUnitTclTest.java and
          -Djunit.single.formatter=xml|brief|plain|failure (default is plain)
       For example:
       * Run all the tests in actor/lib/test
           ant test.single
       * Run all the tests in kernel/test
-          ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest
+          ant test.single -Dtest.name=ptolemy/kernel/test/junit/JUnitTclTest.java
+      * Run all the tests in kernel and subdirectories, generating output in reports/junit
+          ant test.single "-Dtest.name=ptolemy/kernel/*/test/junit/JUnitTclTest.java" -Djunit.single.formatter=xml -Dusefile=true
       Various other test targets are available:
        test - builds and runs test.short, test.long and test.longest
        test.32bit - runs the 32-bit JVM tests in auto32/
@@ -1889,10 +1935,15 @@ For example:
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
-      <formatter type="${junit.single.formatter}" usefile="false"/>
+      <formatter type="${junit.single.formatter}" usefile="${usefile}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <test  name="${test.name}" />
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <include name="${test.name}" />
+        </fileset>
+      </batchtest>
     </junit>
   </target>
 
