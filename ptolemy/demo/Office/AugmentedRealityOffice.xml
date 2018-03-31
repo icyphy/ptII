@@ -131,7 +131,7 @@
             </property>
         </property>
     </property>
-    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="192.168.1.217:8099">
+    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="localhost:8099">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -153,7 +153,7 @@
     <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OfficeServicesMap.pdf">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 540.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/OfficeServicesMap.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -188,9 +188,9 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The file below shows the&#10;AR tags associated with&#10;each office service. Take&#10;a picture with your phone.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The file below shows the&#10;AR tags associated with&#10;each office service. You&#10;can print this out or take&#10;a picture with your phone.&#10;The Sound service is tag 19.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 435.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -225,6 +225,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Augmented Reality Office">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 30.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this first. Leave it running.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 525.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this second. Leave it running.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 600.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
@@ -510,7 +530,7 @@
         </port>
     </entity>
     <entity name="TagToAccessor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 270.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 34, 934, 632}, maximized=false}">
         </property>
@@ -684,7 +704,7 @@
             </port>
         </entity>
         <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 43, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 616, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -721,7 +741,7 @@
             </port>
         </entity>
         <entity name="TagToAccessorAccessor2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 43, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={700, 617, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -729,7 +749,7 @@
             </property>
         </entity>
         <entity name="TimedDisplay2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 43, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 26, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -864,7 +884,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="camera" class="ptolemy.data.expr.Parameter" value="HD Pro Webcam C920 0x14200000046d082d">
+        <property name="camera" class="ptolemy.data.expr.Parameter" value="default camera">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

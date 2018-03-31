@@ -126,7 +126,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the AudioSynthesis model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 190.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioSynthesis.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -183,6 +183,14 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This relies on an external web&#10;service that may no longer work.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 220.0]">
         </property>
     </property>
 </entity>

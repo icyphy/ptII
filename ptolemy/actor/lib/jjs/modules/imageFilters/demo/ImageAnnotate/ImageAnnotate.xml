@@ -9,16 +9,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1093, 584}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1093, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[859, 474]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[859, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8926638135683717">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{429.5, 237.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{477.54296875, 273.96373720921673}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -27,13 +27,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects motion in a video signal and positions an SVG&#10;graphic at the center of gravity of the motion. It also rotates the&#10;graphic at a rate proportional  to the amount of motion detected.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[125.0, 15.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[115.0, -10.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each image uses the&#10;most recent motion&#10;to determine the offset.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-80.0, -90.12071228027344]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-85.0, -90.0}">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="MostRecent">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 340.0]">
         </property>
     </property>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -55,7 +55,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[796.0, 132.55535125732422]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{900.0, 150.0}">
         </property>
     </entity>
     <entity name="MotionDetector" class="org.terraswarm.accessor.JSAccessor">
@@ -101,7 +101,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[226.0, 297.5553512573242]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 90.0}">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -124,7 +124,7 @@
         </port>
     </entity>
     <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.0, 297.5553512573242]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 265.0}">
         </property>
     </entity>
     <entity name="ImageAnnotate" class="org.terraswarm.accessor.JSAccessor">
@@ -170,7 +170,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[681.0, 132.55535125732422]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{760.0, 150.0}">
         </property>
         <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="&lt;svg&gt;&#10;  &lt;desc&gt;Star shape&lt;/desc&gt;&#10; &lt;polygon style=&quot;fill:red; stroke:blue; stroke-width:4;&quot;&#10;                 points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&#10;&lt;/svg&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -228,7 +228,7 @@
         </port>
     </entity>
     <entity name="MovingAverage" class="ptolemy.actor.lib.MovingAverage">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[521.0, 297.5553512573242]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 265.0}">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -282,7 +282,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[71.0, 307.5553512573242]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 100.0}">
         </property>
         <property name="maxFrameRate" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
@@ -294,7 +294,7 @@
         </port>
     </entity>
     <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[521.0, 142.55535125732422]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{595.0, 100.0}">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -304,43 +304,43 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.0, 142.55535125732422]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 100.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[141.0, 307.5553512573242]">
+        <vertex name="vertex1" value="{165.0, 100.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.input&quot;,x=330.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;Camera.image&quot;,x=175.0,y=315.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;MostRecent.trigger&quot;,x=495.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={495.0,365.0,245.0,365.0} },{ head={id=&quot;ImageAnnotate.image&quot;,x=785.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={695.0,160.0,695.0,205.0,245.0,205.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.input&quot;,x=260.0,y=90.0}, tail={id=&quot;relation2.vertex1&quot;,x=165.0,y=100.0}, points={} },{ head={id=&quot;Camera.image&quot;,x=70.0,y=100.0}, tail={id=&quot;relation2.vertex1&quot;,x=165.0,y=100.0}, points={} },{ head={id=&quot;MostRecent.trigger&quot;,x=450.0,y=265.0}, tail={id=&quot;relation2.vertex1&quot;,x=165.0,y=100.0}, points={450.0,315.0,345.0,315.0,345.0,170.0,165.0,170.0} },{ head={id=&quot;ImageAnnotate.image&quot;,x=760.0,y=150.0}, tail={id=&quot;relation2.vertex1&quot;,x=165.0,y=100.0}, points={165.0,170.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=330.0,y=305.0}, tail={id=&quot;MostRecent.input&quot;,x=495.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=260.0,y=90.0}, tail={id=&quot;MostRecent.input&quot;,x=450.0,y=265.0}, points={360.0,90.0,360.0,265.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=900.0,y=140.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=785.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=900.0,y=150.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=760.0,y=150.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=330.0,y=305.0}, tail={id=&quot;Scale.input&quot;,x=495.0,y=150.0}, points={405.0,315.0,405.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=260.0,y=90.0}, tail={id=&quot;Scale.input&quot;,x=450.0,y=100.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.rotation&quot;,x=785.0,y=140.0}, tail={id=&quot;Accumulator.output&quot;,x=625.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.rotation&quot;,x=760.0,y=150.0}, tail={id=&quot;Accumulator.output&quot;,x=595.0,y=100.0}, points={670.0,160.0,670.0,100.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MovingAverage.output&quot;,x=625.0,y=305.0}, tail={id=&quot;ImageAnnotate.translate&quot;,x=785.0,y=140.0}, points={710.0,305.0,710.0,170.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.translate&quot;,x=760.0,y=150.0}, tail={id=&quot;MovingAverage.output&quot;,x=590.0,y=265.0}, points={670.0,180.0,670.0,265.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MovingAverage.input&quot;,x=625.0,y=305.0}, tail={id=&quot;MostRecent.output&quot;,x=495.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MostRecent.output&quot;,x=450.0,y=265.0}, tail={id=&quot;MovingAverage.input&quot;,x=590.0,y=265.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=495.0,y=150.0}, tail={id=&quot;Accumulator.input&quot;,x=625.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Accumulator.input&quot;,x=595.0,y=100.0}, tail={id=&quot;Scale.output&quot;,x=450.0,y=100.0}, points={} } }">
         </property>
     </relation>
     <link port="ImageDisplay.input" relation="relation3"/>

@@ -4,18 +4,18 @@
 <entity name="AudioClipPlayer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 112, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 112, 987, 768}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[753, 658]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2426858995066439">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.949235802457, 272.90721909066906}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please turn your speakers on and run the model.&#10;You should hear jazz music from a .mp3 download&#10;from the Ptolemy website.  After 8 seconds, there&#10;is a 2 second silence, and then a guitar from a&#10;local .wav file is played.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[137.5, 9.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 15.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -23,13 +23,13 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[72.5, 39.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 40.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the AudioRecorder model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the AudioRecorder model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 370.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioRecorder.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -62,7 +62,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 370.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -74,19 +74,19 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[182.5, 179.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 205.0]">
         </property>
     </entity>
     <entity name="StartEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[52.5, 179.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 205.0]">
         </property>
     </entity>
     <entity name="FirstStop" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="8.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[167.5, 234.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 270.0]">
         </property>
     </entity>
     <entity name="ClipPlayer2" class="org.terraswarm.accessor.JSAccessor">
@@ -128,9 +128,16 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[412.5, 184.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 145.0]">
+        </property>
+        <property name="start" class="ptolemy.actor.parameters.PortParameter" value="true">
         </property>
         <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
@@ -141,69 +148,68 @@
         <port name="done" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SecondURL" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;$CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/strum.wav&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[52.5, 109.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 135.0]">
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[272.5, 184.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 205.0]">
         </property>
     </entity>
     <entity name="SecondStop" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[167.5, 304.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 340.0]">
         </property>
     </entity>
     <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[267.5, 304.921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 275.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=182.5,y=179.921875}, tail={id=&quot;StartEvent.output&quot;,x=52.5,y=179.921875}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=182.5,y=179.921875}, tail={id=&quot;Merge.input&quot;,x=272.5,y=184.921875,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=160.0,y=360.0}, tail={id=&quot;StartEvent.output&quot;,x=35.0,y=360.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[232.5, 109.921875]">
+        <vertex name="vertex1" value="[220.0, 135.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=232.5,y=109.921875}, tail={id=&quot;Merge.input&quot;,x=272.5,y=184.921875,index=2}, points={232.5,184.921875} },{ head={id=&quot;ClipPlayer2.clipURL&quot;,x=412.5,y=184.921875}, tail={id=&quot;relation6.vertex1&quot;,x=232.5,y=109.921875}, points={322.5,174.921875,322.5,109.921875} },{ head={id=&quot;SecondURL.output&quot;,x=52.5,y=109.921875}, tail={id=&quot;relation6.vertex1&quot;,x=232.5,y=109.921875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ClipPlayer2.clipURL&quot;,x=390.0,y=300.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=290.0}, points={} },{ head={id=&quot;SecondURL.output&quot;,x=35.0,y=290.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=290.0}, points={} },{ head={id=&quot;Merge.input&quot;,x=255.0,y=360.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=290.0}, points={210.0,355.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=267.5,y=304.921875,index=2}, tail={id=&quot;FirstStop.output&quot;,x=167.5,y=234.921875}, points={232.5,299.921875,232.5,234.921875} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FirstStop.output&quot;,x=150.0,y=180.0}, tail={id=&quot;Merge2.input&quot;,x=250.0,y=185.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=267.5,y=304.921875,index=2}, tail={id=&quot;SecondStop.output&quot;,x=167.5,y=304.921875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SecondStop.output&quot;,x=150.0,y=250.0}, tail={id=&quot;Merge2.input&quot;,x=250.0,y=185.0,index=2}, points={210.0,250.0,210.0,185.0} } }">
         </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=255.0,y=360.0,index=2}, tail={id=&quot;Const.output&quot;,x=160.0,y=360.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ClipPlayer2.stop&quot;,x=412.5,y=184.921875}, tail={id=&quot;Merge2.output&quot;,x=267.5,y=304.921875}, points={322.5,194.921875,322.5,304.921875} } }">
-        </property>
     </relation>
-    <link port="Const.output" relation="relation5"/>
+    <link port="Const.output" relation="relation4"/>
     <link port="Const.trigger" relation="relation"/>
     <link port="StartEvent.output" relation="relation"/>
     <link port="FirstStop.output" relation="relation3"/>
     <link port="ClipPlayer2.clipURL" relation="relation6"/>
+    <link port="ClipPlayer2.start" relation="relation5"/>
     <link port="ClipPlayer2.stop" relation="relation7"/>
     <link port="SecondURL.output" relation="relation6"/>
-    <link port="Merge.input" relation="relation5"/>
     <link port="Merge.input" relation="relation6"/>
+    <link port="Merge.input" relation="relation4"/>
+    <link port="Merge.output" relation="relation5"/>
     <link port="SecondStop.output" relation="relation2"/>
     <link port="Merge2.input" relation="relation3"/>
     <link port="Merge2.input" relation="relation2"/>

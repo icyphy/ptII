@@ -15,7 +15,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[72.5, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
@@ -31,19 +31,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model opens a shell into which you type a city name or address.&#10;It then invokes a GeoCoder (a Google service) to convert the address into&#10;a location (latitude and longitude). It then invokes a weather service&#10;(http://openweathermap.org) to retrieve the current weather information&#10;for the specified location.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[287.5, 67.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 10.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: You need to obtain &quot;keys&quot; for the Google Geocoding API and&#10;for openweathermap.org. &#10;Get the GeoCoding key from&#10;https://developers.google.com/maps/documentation/geocoding/intro&#10;and place it in $HOME/.ptKeystore/geoCodingKey&#10;Get the Weather key from&#10;http://openweathermap.org/appid&#10;and place it in $HOME/.ptKeystore/weatherKey&#10;&#10;Keys for Terraswarm members are available at:&#10;https://www.terraswarm.org/testbeds/wiki/Main/AccessControlAndKeyDistribution&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: You need to obtain &quot;keys&quot; for the Google Geocoding API and for openweathermap.org. &#10;Get the GeoCoding key from&#10;    https://developers.google.com/maps/documentation/geocoding/intro&#10;and place it in $HOME/.ptKeystore/geoCodingKey. Get the Weather key from&#10;    http://openweathermap.org/appid&#10;and place it in $HOME/.ptKeystore/weatherKey&#10;&#10;Keys for Terraswarm members are available at:&#10;https://www.terraswarm.org/testbeds/wiki/Main/AccessControlAndKeyDistribution&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.5, 157.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 105.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -51,7 +51,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[127.5, 67.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 455.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -61,7 +61,7 @@
         </property>
     </entity>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={537, 476, 646, 420}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={721, 74, 646, 420}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[257.5, 347.5]">
