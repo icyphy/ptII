@@ -91,7 +91,7 @@
     <li><i>Signal Processing</i>:
     <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
 	(See also
-	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>,
 	<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
 	<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>
 	)
@@ -107,12 +107,16 @@
 	<!-- GR does not get included in demosPtiny.htm -->
 	<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
 	(see also
+	<a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Hybrid Plant</a>,
 	<a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">BouncingBall</a>,
 	<a href="../../domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a>,
-	<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>,
-	<a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Hybrid Plant</a>).
+	<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>
+	).
 	<!--/ptinyKeplerDocs-->
     <br>
+    <font color="red">NOTE: Some of these models require installation of Java 3D
+	  (see https://java3d.dev.java.net/).</font>
+	<br>
 	<i>Hybrid systems</i> are a special case of modal models
 	where finite-state machines (FSMs) are combined with the continuous-time models
 	to get mixed continuous-time and discrete-event models.
@@ -123,14 +127,56 @@
     </li>
 	
 	
+	<li><i>Internet of Things</i>:
+    <a href="../../demo/Office/Office.xml">Office</a>
+	(See also
+    <a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>,
+    <a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>
+	)
+	<br>
+	CapeCode is a subset of Ptolemy II for building IoT applications. The models in the Office
+	demo illustrate create web servers, creating Internet services, and accessing those internet
+	services by dynamically instantiating accessors, which are actors written in JavaScript.
+    </li>
+    
+	
 	<li><i>Communication Security</i>: 
-	<a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
+	<a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>
+	(See also
+	<a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml">SecureSocket</a>
+	)
 	<br>
 	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
 	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
 	and then an aspect is woven with the model to specify the impairments imposed by the channel.
 	</li>
 	
+	
+	<li><i>Image Processing</i>:
+    <a href="../../actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>
+	(See also
+	<a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml">AprilTags</a>,
+	<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml">ImageFilters</a>
+	)
+	<br>
+	These demos illustrate the ability to capture images from your camera and manipulate them.
+    </li>
+
+
+	<li><i>Audio</i>:
+    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml">Audio</a>
+	(See also
+	<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">KarplusStrong</a>,
+	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
+	)
+	<br>
+	Using the accessors of CapeCode, Ptolemy II provides capabilities for capturing, playing, and
+	manipulating audio data.
+    </li>
+
 
     <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
 	<!--/ptinyKeplerDocs-->
@@ -197,7 +243,7 @@
 
 
     <h2>
-      <a name="basic">Basic Modeling Capabilities</a>
+      <a name="basic">Models of Computation</a>
     </h2>
 
 
@@ -509,6 +555,18 @@
     This section illustrates that infrastructure.
     <ul>
 
+
+    </li>
+      <li><i>User Interface</i>:
+	<a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml">UserInterface</a>
+	<br>
+	Ptolemy II models can use the default browser on the host to construct displays and/or retrieve user
+	input using HTML 5, JavaScript, and CSS.
+	<br>
+    </li>
+
+
+
       <!--/bcvtbDocs-->
       <li><i>The Type System</i>:
 	<a href="../../data/type/demo/Router/Router.xml">Router</a>.
@@ -547,10 +605,10 @@
 	<br>
 
 
+
 	<!--/vergilDocs-->
 	<!--We don't include hoc in Ptiny-->
       </li>
-      
       <li><i>Model Transformation</i>:
 	<a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a>
 	(see also
@@ -762,20 +820,6 @@
 
       </li>
 
-      <li><i>Audio</i>:
-	<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">KarplusStrong</a> (see also <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>).
-	<br>
-
-
-	Ptolemy II includes actors that interface to the audio system on
-	the executing machine, assuming it has one.
-	This example shows the Karplus-Strong algorithm, which synthesizes
-	a musical sound that closely resembles a plucked string instrument.
-	It illustrates the audio capabilities of Ptolemy II.
-
-	<br>
-
-
 
 	<!--/ptinyKeplerDocs-->
 	<!--/bcvtbDocs-->
@@ -804,6 +848,7 @@
 
       </li>
 
+<!-- The following don't work for me.
       <li><i>Image and Video Processing</i>:
 	<a href="../../actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml">AdaptiveMedian</a>
 	(see also
@@ -817,12 +862,9 @@
 	JMF (Java media framework), then you can use a library of actors
 	that operates on images and video signals, including video captured
 	from a video camera.
-	<!--vergilDocs-->
-
 	<br>
-
-
-      </li>
+    </li>
+-->
 
       <li><i>Fixed-Point Arithmetic</i>:
 	<a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>

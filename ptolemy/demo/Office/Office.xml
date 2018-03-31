@@ -28,7 +28,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Client Services">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 110.0]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -52,7 +52,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Office Services">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 322.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 320.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -72,16 +72,16 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These services are instantiated&#10;by the space, typically in an edge&#10;computer. Each service publishes&#10;an accessor to the KeyValueStore&#10;service. Client services use that&#10;KeyValueStore to discover services&#10;available in a space.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535.0, 340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 320.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 45, 1060, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={190, 93, 946, 802}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[826, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 692]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.980272224349679">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0356016200014895">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{540.2109155654907, 316.977063536644}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{456.81267261505127, 302.1564497906938}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -90,15 +90,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Smart Office Space">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, -25.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This collection of swarmlets provide services in an office space and&#10;clients that can access those services. Some of these require additional&#10;hardware, but most of them you can instantiate on your laptop.&#10;Start with the KeyValueStoreServer.">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 30.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This collection of swarmlets provide services in an office space and&#10;clients that can access those services. Some of these require additional&#10;hardware, but most of them you can instantiate on your laptop.&#10;Double click on AugmentedRealityOffce and follow the instructions in&#10;red there to run this demo.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 5.0]">
         </property>
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -286,7 +288,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 197.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 200.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityOffice.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

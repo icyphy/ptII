@@ -19,9 +19,13 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.0, 272.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test example that toggles a hue light on and off&#10;every 3 seconds with a random color each time.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 25.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test example that toggles a hue&#10;light on and off every 3 seconds with a&#10;random color each time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 20.0]">
         </property>
     </property>
     <property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
@@ -144,6 +148,16 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo will only work if you have a Hue&#10;bridge on your local network and you set&#10;the bridge IP address and the lightID to an ID&#10;for a light under the control of that bridge.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 20.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

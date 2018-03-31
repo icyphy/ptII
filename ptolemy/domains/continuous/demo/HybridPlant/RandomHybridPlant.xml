@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RandomHybridPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -261,13 +261,13 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 89, 984, 589}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 133, 1005, 633}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 384]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 522]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9540682973113">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.3767504837988, 237.1184545211138}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.37675048379884, 309.4403209896379}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Filling the bottle at&#10;the maximum rate.">
@@ -315,41 +315,41 @@
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 195.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="maxRate" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="processing">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 290.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="inflowRate" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="processing">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 235.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 75.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -367,6 +367,8 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -386,6 +388,8 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -411,6 +415,8 @@
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -462,6 +468,8 @@
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
@@ -477,13 +485,13 @@
             <link port="init.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="processing" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 176, 813, 588}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 176, 834, 632}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 478]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 261.0}">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 40.0]">
@@ -548,39 +556,13 @@
                 </property>
             </entity>
             <entity name="RMBuffer" class="ptolemy.domains.continuous.lib.Integrator">
+                <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="3.0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 175.0]">
-                </property>
-            </entity>
-            <entity name="Detect Empty Buffer" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
-                <property name="level" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
-                </property>
-                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
                 </property>
             </entity>
             <entity name="Bottle" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 245.0]">
-                </property>
-            </entity>
-            <entity name="Detect Full Bottle" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
-                <property name="level" class="ptolemy.data.expr.Parameter" value="targetContainerLevel">
-                </property>
-                <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
-                </property>
-                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 245.0]">
                 </property>
             </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -605,7 +587,7 @@
                 </property>
             </entity>
             <entity name="BottleLevel" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 442, 213}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 442, 213}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[442, 169]">
                 </property>
@@ -624,13 +606,25 @@
 </plot>?>
                 </configure>
             </entity>
+            <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+                <display name="Detect Empty Bottle"/>
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 175.0]">
+                </property>
+            </entity>
+            <entity name="LevelCrossingDetector2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+                <display name="Detect Full Bottle"/>
+                <property name="level" class="ptolemy.data.expr.Parameter" value="targetContainerLevel">
+                </property>
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 245.0]">
+                </property>
+            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="[330.0, 175.0]">
                 </vertex>
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -646,18 +640,18 @@
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="jobDone" relation="relation3"/>
             <link port="emptyBuffer" relation="relation5"/>
             <link port="RMBufferLevel" relation="relation4"/>
             <link port="Const.output" relation="relation6"/>
             <link port="RMBuffer.derivative" relation="relation"/>
             <link port="RMBuffer.state" relation="relation2"/>
-            <link port="Detect Empty Buffer.output" relation="relation5"/>
-            <link port="Detect Empty Buffer.trigger" relation="relation2"/>
             <link port="Bottle.derivative" relation="relation7"/>
             <link port="Bottle.state" relation="relation8"/>
-            <link port="Detect Full Bottle.output" relation="relation3"/>
-            <link port="Detect Full Bottle.trigger" relation="relation8"/>
             <link port="AddSubtract.plus" relation="relation6"/>
             <link port="AddSubtract.minus" relation="relation7"/>
             <link port="AddSubtract.output" relation="relation"/>
@@ -665,6 +659,10 @@
             <link port="PeriodicSampler.input" relation="relation2"/>
             <link port="PeriodicSampler.output" relation="relation4"/>
             <link port="BottleLevel.input" relation="relation8"/>
+            <link port="LevelCrossingDetector.output" relation="relation5"/>
+            <link port="LevelCrossingDetector.trigger" relation="relation2"/>
+            <link port="LevelCrossingDetector2.output" relation="relation3"/>
+            <link port="LevelCrossingDetector2.trigger" relation="relation8"/>
         </entity>
         <relation name="jobRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -687,55 +685,6 @@
         <link port="processing.emptyBuffer" relation="emptyBufferRelation"/>
         <link port="processing.RMBufferLevel" relation="RMBufferLevelRelation"/>
     </entity>
-    <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-        <property name="persistentTrigger" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="QueueIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 200.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="size" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="SetupTime Delay" class="ptolemy.domains.de.lib.TimedDelay">
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="setupTime">
-        </property>
-        <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 200.0]">
-        </property>
-    </entity>
-    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 260.0]">
-        </property>
-    </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 265.0]">
         </property>
@@ -756,8 +705,8 @@
 <title>Queue Status</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="46.6001040512"/>
-<yRange min="0.0" max="10.0"/>
+<xRange min="0.0" max="49.682739736500004"/>
+<yRange min="0.0" max="16.0"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -791,6 +740,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 200.0]">
         </property>
     </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
+        <property name="persistentTrigger" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="SetupTimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="setupTime">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[455.0, 300.0]">
         </vertex>
@@ -799,36 +764,36 @@
         <vertex name="vertex1" value="[100.0, 300.0]">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ModalModel.job" relation="relation2"/>
+    <link port="ModalModel.job" relation="relation5"/>
     <link port="ModalModel.jobDone" relation="relation3"/>
     <link port="ModalModel.RMBufferLevel" relation="relation10"/>
-    <link port="Queue.input" relation="relation"/>
-    <link port="Queue.output" relation="relation6"/>
-    <link port="Queue.trigger" relation="relation8"/>
-    <link port="Queue.size" relation="relation5"/>
-    <link port="SetupTime Delay.input" relation="relation6"/>
-    <link port="SetupTime Delay.output" relation="relation2"/>
-    <link port="SingleEvent.output" relation="relation9"/>
-    <link port="Merge.input" relation="relation9"/>
+    <link port="Merge.input" relation="relation7"/>
     <link port="Merge.input" relation="relation4"/>
-    <link port="Merge.output" relation="relation8"/>
+    <link port="Merge.output" relation="relation"/>
     <link port="QueueStatus.input" relation="relation3"/>
-    <link port="QueueStatus.input" relation="relation5"/>
+    <link port="QueueStatus.input" relation="relation8"/>
     <link port="BufferLevel.input" relation="relation10"/>
-    <link port="PoissonClock.output" relation="relation"/>
+    <link port="PoissonClock.output" relation="relation9"/>
+    <link port="SingleEvent.output" relation="relation7"/>
+    <link port="Queue.input" relation="relation9"/>
+    <link port="Queue.output" relation="relation6"/>
+    <link port="Queue.trigger" relation="relation"/>
+    <link port="Queue.size" relation="relation8"/>
+    <link port="SetupTimeDelay.input" relation="relation6"/>
+    <link port="SetupTimeDelay.output" relation="relation5"/>
     <link relation1="relation3" relation2="relation4"/>
 </entity>
