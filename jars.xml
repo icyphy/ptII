@@ -81,6 +81,8 @@
     <include name="ptolemy/actor/lib/database/database.jar" />
     <include name="ptolemy/actor/lib/fmi/fmi.jar" />
     <include name="ptolemy/actor/lib/fmi/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/gem5/gem5.jar" />
+    <include name="ptolemy/actor/lib/gem5/demo/demo.jar" />
     <include name="ptolemy/actor/lib/hoc/demo/demo.jar" />
     <include name="ptolemy/actor/lib/io/comm/comm.jar" />
     <include name="ptolemy/actor/lib/io/comm/demo/demo.jar" />
@@ -5190,6 +5192,26 @@
 	<include name="lib/jna-license.htm"/>
 	<include name="ptolemy/actor/lib/fmi/*.class"/>
 	<include name="ptolemy/actor/lib/fmi/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/gem5/gem5.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/gem5/gem5.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/gem5/*.class"/>
+	<include name="ptolemy/actor/lib/gem5/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/gem5/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/gem5/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/gem5/demo/*/*.xml"/>
+	<include name="ptolemy/actor/lib/gem5/demo/*/*.fmu"/>
       </fileset>
     </jar>
 

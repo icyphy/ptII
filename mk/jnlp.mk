@@ -251,7 +251,6 @@ PTXBEE_JARS = \
 CAPECODE_ONLY_JNLP_JARS = \
 	ant/apache-ant-license.jar \
 	com/cureos/cureos.jar \
-	com/jhlabs/jhlabs.jar \
 	doc/codeDocCapeCode.jar \
 	doc/design/usingVergil/usingVergil.jar \
 	edu/umich/eecs/april/april.jar \
@@ -311,6 +310,7 @@ CAPECODE_JNLP_JARS = \
 	$(DOC_CODEDOC_JAR) \
 	$(EXPORT_JARS) \
 	$(PDFRENDERER_JARS) \
+	com/jhlabs/jhlabs.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
@@ -826,7 +826,10 @@ FULL_JNLP_JARS = \
 	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
-	$(FULL_ONLY_JNLP_JARS)
+	$(FULL_ONLY_JNLP_JARS) \
+	com/jhlabs/jhlabs.jar
+
+
 
 #######
 # Space
