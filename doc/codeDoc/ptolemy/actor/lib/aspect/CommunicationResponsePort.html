@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -264,31 +264,37 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#fire--">fire</a></span>()</code>
-<div class="block">Store the token from the input port internally.</div>
+<td class="colFirst"><code>java.lang.Object</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#clone-ptolemy.kernel.util.Workspace-">clone</a></span>(<a href="../../../../ptolemy/kernel/util/Workspace.html" title="class in ptolemy.kernel.util">Workspace</a>&nbsp;workspace)</code>
+<div class="block">Clone the actor into the specified workspace.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#fire--">fire</a></span>()</code>
+<div class="block">Store all available input tokens.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#getToken--">getToken</a></span>()</code>
 <div class="block">Get the token from parameter but do not remove it.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#hasToken--">hasToken</a></span>()</code>
 <div class="block">Check whether the contained parameter contains a token.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#initialize--">initialize</a></span>()</code>
 <div class="block">Initialize actor and clear Parameter value in case it was set
   in a previous execution.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../../ptolemy/data/Token.html" title="class in ptolemy.data">Token</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../ptolemy/actor/lib/aspect/CommunicationResponsePort.html#takeToken--">takeToken</a></span>()</code>
 <div class="block">Get token from parameter and remove it from the parameter.</div>
@@ -300,7 +306,7 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;ptolemy.actor.<a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class in ptolemy.actor">TypedAtomicActor</a></h3>
-<code><a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_containedTypeConstraints--">_containedTypeConstraints</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_customTypeConstraints--">_customTypeConstraints</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_defaultTypeConstraints--">_defaultTypeConstraints</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_fireAt-double-">_fireAt</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_fireAt-ptolemy.actor.util.Time-">_fireAt</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#attributeTypeChanged-ptolemy.kernel.util.Attribute-">attributeTypeChanged</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#clone--">clone</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#clone-ptolemy.kernel.util.Workspace-">clone</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#isBackwardTypeInferenceEnabled--">isBackwardTypeInferenceEnabled</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#newPort-java.lang.String-">newPort</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#typeConstraintList--">typeConstraintList</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#typeConstraints--">typeConstraints</a></code></li>
+<code><a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_containedTypeConstraints--">_containedTypeConstraints</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_customTypeConstraints--">_customTypeConstraints</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_defaultTypeConstraints--">_defaultTypeConstraints</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_fireAt-double-">_fireAt</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#Z:Z_fireAt-ptolemy.actor.util.Time-">_fireAt</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#attributeTypeChanged-ptolemy.kernel.util.Attribute-">attributeTypeChanged</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#clone--">clone</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#isBackwardTypeInferenceEnabled--">isBackwardTypeInferenceEnabled</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#newPort-java.lang.String-">newPort</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#typeConstraintList--">typeConstraintList</a>, <a href="../../../../ptolemy/actor/TypedAtomicActor.html#typeConstraints--">typeConstraints</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.ptolemy.actor.AtomicActor">
@@ -444,6 +450,31 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="clone-ptolemy.kernel.util.Workspace-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clone</h4>
+<pre>public&nbsp;java.lang.Object&nbsp;clone(<a href="../../../../ptolemy/kernel/util/Workspace.html" title="class in ptolemy.kernel.util">Workspace</a>&nbsp;workspace)
+                       throws java.lang.CloneNotSupportedException</pre>
+<div class="block">Clone the actor into the specified workspace.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code><a href="../../../../ptolemy/actor/TypedAtomicActor.html#clone-ptolemy.kernel.util.Workspace-">clone</a></code>&nbsp;in class&nbsp;<code><a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class in ptolemy.actor">TypedAtomicActor</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>workspace</code> - The workspace for the new object.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>A new actor.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.CloneNotSupportedException</code> - If a derived class contains
+   an attribute that cannot be cloned.</dd>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../ptolemy/kernel/util/NamedObj.html#exportMoML-java.io.Writer-int-java.lang.String-"><code>NamedObj.exportMoML(Writer, int, String)</code></a>, 
+<a href="../../../../ptolemy/kernel/util/NamedObj.html#setDeferringChangeRequests-boolean-"><code>NamedObj.setDeferringChangeRequests(boolean)</code></a></dd>
+</dl>
+</li>
+</ul>
 <a name="initialize--">
 <!--   -->
 </a>
@@ -488,7 +519,7 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <div class="block">Get token from parameter and remove it from the parameter.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The token.</dd>
+<dd>The token, or null if there are no tokens.</dd>
 </dl>
 </li>
 </ul>
@@ -500,7 +531,7 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <h4>fire</h4>
 <pre>public&nbsp;void&nbsp;fire()
           throws <a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></pre>
-<div class="block">Store the token from the input port internally.</div>
+<div class="block">Store all available input tokens.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../ptolemy/actor/Executable.html#fire--">fire</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../ptolemy/actor/Executable.html" title="interface in ptolemy.actor">Executable</a></code></dd>
@@ -522,9 +553,9 @@ extends <a href="../../../../ptolemy/actor/TypedAtomicActor.html" title="class i
 <div class="block">Get the token from parameter but do not remove it.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The token.</dd>
+<dd>The token, or null if there are no tokens.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - If token cannot be accessed.</dd>
+<dd><code><a href="../../../../ptolemy/kernel/util/IllegalActionException.html" title="class in ptolemy.kernel.util">IllegalActionException</a></code> - Not thrown.</dd>
 </dl>
 </li>
 </ul>
