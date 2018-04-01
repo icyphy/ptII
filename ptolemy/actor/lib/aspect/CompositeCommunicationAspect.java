@@ -40,6 +40,7 @@ import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CommunicationAspectAttributes;
 import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
@@ -246,7 +247,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot fire a non-opaque actor.");
+                        "CompositeCommunicationAspect requires a director.");
             }
 
             _transferPortParameterInputs();
@@ -404,15 +405,17 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
             List<Token> tokens = _tokens.get(port);
             if (tokens == null) {
                 tokens = new ArrayList<Token>();
+                _tokens.put(port, tokens);
             }
             tokens.add(recordToken);
-            _tokens.put(port, tokens);
             if (_justMonitor) {
                 receiver.put(token);
             }
 
-            ((CompositeActor) getContainer()).getDirector()
-                    .fireAtCurrentTime(this);
+            Director director = ((CompositeActor) getContainer()).getDirector();
+            // Do not use fireAtCurrentTime(this) because if the container is synchronized
+            // to real time, then the time of the firing will be dependent on real time.
+            director.fireAt(this, director.getModelTime());
 
             if (_debugging) {
                 _debug("At time " + getDirector().getModelTime()
