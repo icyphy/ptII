@@ -29,12 +29,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.aspect;
 
+import java.util.LinkedList;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** This actor implements an output port in a composite communication aspect
  *  (@link CompositeCommunicationAspect).
@@ -62,9 +65,23 @@ public class CommunicationResponsePort extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
-        _token = null;
+        _tokens = new LinkedList<Token>();
     }
 
+   
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CommunicationResponsePort newObject = (CommunicationResponsePort) super.clone(workspace);
+        newObject._tokens = new LinkedList<Token>();
+        return newObject;
+    }
+    
     /** The input port. */
     public TypedIOPort input;
 
@@ -74,43 +91,42 @@ public class CommunicationResponsePort extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _tokens.clear();
     }
 
     /** Check whether the contained parameter contains a token.
      *  @return True if the contained parameter contains a token.
      */
     public boolean hasToken() {
-        return (_token != null);
+        return (!_tokens.isEmpty());
     }
 
     /** Get token from parameter and remove it from the parameter.
-     *  @return The token.
+     *  @return The token, or null if there are no tokens.
      */
     public Token takeToken() {
-        Token token = _token;
-        _token = null;
-        return token;
+        return _tokens.poll();
     }
 
-    /** Store the token from the input port internally.
+    /** Store all available input tokens.
      *  @exception IllegalActionException Not thrown here.
      */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.hasToken(0)) {
-            _token = input.get(0);
+        while (input.hasToken(0)) {
+            _tokens.add(input.get(0));
         }
     }
 
     /** Get the token from parameter but do not remove it.
-     *  @return The token.
-     *  @exception IllegalActionException If token cannot be accessed.
+     *  @return The token, or null if there are no tokens.
+     *  @exception IllegalActionException Not thrown.
      */
     public Token getToken() throws IllegalActionException {
-        return _token;
+        return _tokens.peek();
     }
 
-    private Token _token;
+    private LinkedList<Token> _tokens;
 
 }
