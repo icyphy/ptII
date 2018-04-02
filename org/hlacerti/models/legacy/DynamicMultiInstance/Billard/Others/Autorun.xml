@@ -54,7 +54,7 @@
         </property>
     </property>
     <entity name="BIllard" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/TwoBilliardBalls.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/Billard/2Billes1Fed/TwoBilliardBalls.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
@@ -72,7 +72,7 @@
         </property>
     </entity>
     <entity name="PoolTable" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/PoolTable3.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/Billard/2Billes1Fed/PoolTable3.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
@@ -90,7 +90,7 @@
         </property>
     </entity>
     <entity name="PoolTable2" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/demo/Billard/Others/Synchro.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/Billard/Others/Synchro.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
         </property>

@@ -27,7 +27,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 100.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/Billard/Others/Autorun.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/Billard/Others/Autorun.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -58,7 +58,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 130.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/Billard/Others/DisplayWithFedName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/Billard/Others/DisplayWithFedName.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -89,7 +89,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 160.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/Billard/Others/Synchro.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/Billard/Others/Synchro.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

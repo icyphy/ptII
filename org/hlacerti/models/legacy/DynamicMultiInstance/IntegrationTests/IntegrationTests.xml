@@ -27,7 +27,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -54,7 +54,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 105.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -79,7 +79,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 145.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

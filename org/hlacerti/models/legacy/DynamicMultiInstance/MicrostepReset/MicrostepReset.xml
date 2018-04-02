@@ -9,7 +9,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 100.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetNER/MicrostepResetNER.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetNER/MicrostepResetNER.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -34,7 +34,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 130.0}">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetNERbis/MicrostepResetNERbis.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetNERbis/MicrostepResetNERbis.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -59,7 +59,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 160.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetTAR/MicrostepResetTAR.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetTAR/MicrostepResetTAR.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
