@@ -723,6 +723,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
+	ptolemy/actor/lib/gem5/gem5.jar \
+	ptolemy/actor/lib/gem5/demo/demo.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
@@ -962,6 +964,7 @@ ALL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
 	$(SPACE_MAIN_JAR) \
 	$(VIPTOS_MAIN_JAR) \
+	com/jhlabs/jhlabs.jar \
 	lib/opencv-320.jar
 
 # Makefile variables used to set up keys for jar signing.
