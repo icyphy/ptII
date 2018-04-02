@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 6.88 seconds.
+     [exec] Finished running in 4.68 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -306,24 +306,24 @@ build-bin:
      [exec] ./makebat -q "`basename tinicomm.bat .bat`"
      [exec] rm -f "tinic.bat"
      [exec] ./makebat -q "`basename tinic.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "tiniconverter.bat"
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
      [exec] rm -f "startjini.gui.bat"
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
      [exec] rm -f "vergil.bat"
      [exec] ./makebat -q "`basename vergil.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f makeapp
      [exec] ln -s ptinvoke makeapp
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Sun Apr  1 18:47:50 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Mon Apr  2 15:34:56 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Sun Apr  1 18:47:53 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Mon Apr  2 15:34:59 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -332,4 +332,4 @@ build:
 BUILD FAILED
 Target "test.report.short" does not exist in the project "ptII". 
 
-Total time: 1 minute 43 seconds
+Total time: 1 minute 19 seconds
