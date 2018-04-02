@@ -49,10 +49,10 @@
       <li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
       </li>
 
-      <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
+      <li> <a href="#basic">Models of Computation</a>: A rich suite of semantic models for actors.
       </li>
 
-      <li> <a href="#basic">Basic Modeling Capabilities</a>: Commonly used models of computation.
+      <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
       </li>
 
       <li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
@@ -67,7 +67,7 @@
 
 
     <h2>
-      <a name="domain">Application Domain-Specific Modeling</a>
+      <a name="domain">Domain-Specific Modeling</a>
     </h2>
 
 
@@ -80,39 +80,65 @@
 
 
 	<!--vergilDocs-->
-
 	<br>
-
-
-      </li>
-
-      <li>
-	<i>Stochastic hybrid systems</i>:
-	<a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-	(see also
-	<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>,
-	<a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
-	<a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a>
-	).
-	<br>
-
-	Stochastic hybrid systems add random behavior to continuous-time models mixed
-	with discrete events. These models show bandlimited Gaussian noise processes in continuous-time models,
-	spontaneous mode transitions governed by a Poisson process,
-	random delay in mode transitions,
-	and Brownian motion.
-	<!--vergilDocs-->
-
-	<br>
+    </li>
 	
-	<li><i>Communication Security</i>: <a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>.
+	
+	<li><i>Internet of Things</i>:
+    <a href="../../demo/Office/Office.xml">Office</a>
+	(See also
+    <a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>,
+    <a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>
+	)
+	<br>
+	CapeCode is a subset of Ptolemy II for building IoT applications. The models in the Office
+	demo illustrate create web servers, creating Internet services, and accessing those internet
+	services by dynamically instantiating accessors, which are actors written in JavaScript.
+    </li>
+    
+	
+	<li><i>Communication Security</i>: 
+	<a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>
+	(See also
+	<a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml">SecureSocket</a>
+	)
 	<br>
 	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
 	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
 	and then an aspect is woven with the model to specify the impairments imposed by the channel.
+	</li>
+	
+	
+	<li><i>Image Processing</i>:
+    <a href="../../actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>
+	(See also
+	<a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml">AprilTags</a>,
+	<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml">ImageFilters</a>
+	)
+	<br>
+	These demos illustrate the ability to capture images from your camera and manipulate them.
+    </li>
 
-      <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
+
+	<li><i>Audio</i>:
+    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml">Audio</a>
+	(See also
+	<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">KarplusStrong</a>,
+	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
+	)
+	<br>
+	Using the accessors of CapeCode, Ptolemy II provides capabilities for capturing, playing, and
+	manipulating audio data.
+    </li>
+
+
+    <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
 	<!--/ptinyKeplerDocs-->
+	<!--bcvtbDocs-->
+	<!--ptinyKeplerDocs-->
       <!--bcvtbDocs-->
       <li><i>Mixed-Signal Modeling</i>:
 	<!--bcvtbDocs-->
@@ -122,63 +148,6 @@
 
     </ul>
 
-
-    <h2>
-      <a name="basic">Basic Modeling Capabilities</a>
-    </h2>
-
-
-    Many common models of computation have been implemented in
-    Ptolemy II.  This section illustrates some of them.
-    <ul>
-
-
-
-      <li><i>Synchronous Dataflow</i>:
-	<a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">Spectrum</a> (See also
-	<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>,
-	<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
-	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
-	<br>
-
-	This example shows simple spectral estimation of the product
-	of two sinusoids in noise.  It illustrates models the use of synchronous dataflow (SDF) for signal
-	processing, and also shows many basic capabilities like
-	hierarchical models,
-	the Expression actor, and the signal processing actor library.
-	In SDF, the firing of actors is statically scheduled, and at the start of execution,
-	boundedness and deadlock conditions are checked.
-
-
-	<br>
-
-
-
-      </li>
-
-      <li><i>Continuous-Time Modeling</i>:
-	<a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz</a> (see also
-	<a href="../../domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml">Lorenz with DifferentialSystem</a>,
-	<a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">SquareWave</a>,
-	<a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>)
-	<br>
-
-	This example shows a continuous-time
-	nonlinear feedback system that exhibits
-	chaotic behavior (this system is called a Lorenz attractor).
-	It illustrates the <i>continuous</i> domain,
-	which uses an underlying solver for ordinary differential equations
-	and cleanly supports mixtures of discrete events and continuous-time
-	signals.
-
-
-	<br>
-
-
-
-      </li>
-	<!--bcvtbDocs-->
-	<!--ptinyKeplerDocs-->
     <!--bcvtbDocs-->
 
     <h2>
@@ -190,6 +159,18 @@
     set of generic capabilities that are available in all models.
     This section illustrates that infrastructure.
     <ul>
+
+
+    </li>
+      <li><i>User Interface</i>:
+	<a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml">UserInterface</a>
+	<br>
+	Ptolemy II models can use the default browser on the host to construct displays and/or retrieve user
+	input using HTML 5, JavaScript, and CSS.
+	<br>
+    </li>
+
+
 
 	<!--bcvtbDocs-->
 
@@ -211,6 +192,7 @@
 	used to make models much more compact.
 
 	<br>
+
 
 
 	<!--vergilDocs-->
@@ -336,41 +318,15 @@
 
       </li>
 
-      <li><i>Audio</i>:
-	<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">KarplusStrong</a> (see also <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>).
-	<br>
-
-
-	Ptolemy II includes actors that interface to the audio system on
-	the executing machine, assuming it has one.
-	This example shows the Karplus-Strong algorithm, which synthesizes
-	a musical sound that closely resembles a plucked string instrument.
-	It illustrates the audio capabilities of Ptolemy II.
-
-	<br>
-
-
 
 	<!--/ptinyKeplerDocs-->
 	<!--bcvtbDocs-->
 
 	<!--vergilDocs-->
-
-	<br>
-
-
       </li>
 
-      <li><i>Fixed-Point Arithmetic</i>:
-	<a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>
-	(see also
-	<a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>)
-	<br>
-
-
-	Ptolemy II data types include a fixed-point data type, where
-	a model can explicitly control the binary representation of numbers
-	and the mechanisms used to handle overflow and rounding.
+      <li> <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>:
+	Communication library.
 
       </li>
 
@@ -378,21 +334,10 @@
 
 
 
-    <h2>
-      <a name="libraries">Actor Libraries</a>
-    </h2>
-
-
-    Ptolemy II includes several actor libraries that provide sophisticated
-    functions. A few of those are illustrated by the models here.
-    <ul>
-
-
-
-      <li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a>:
-	Actors that operate on matrices and arrays.
-
-      </li>
-      <!--/ptinyKeplerDocs-->
+    <!--vergilDocs-->
+  </body>
+</html>
+</body>
+</html>
 </body>
 </html>
