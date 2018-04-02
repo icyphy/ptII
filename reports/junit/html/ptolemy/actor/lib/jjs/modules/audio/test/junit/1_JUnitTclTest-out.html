@@ -7,7 +7,7 @@
 <pre>No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/knownFailedTests/AudioError.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-1384 ms. Memory: 179712K Free: 54292K (30%)
+1300 ms. Memory: 187392K Free: 64805K (35%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
 AutoTests.java: About to close Vertx.
@@ -15,7 +15,15 @@ AutoTests.java: Sleeping 10 seconds.
 AutoTests.java: Vertx closed.
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
 REST: Making an HTTP request. (Thread[SpeechSynthesisTest,1,main])
-12030 ms. Memory: 548352K Free: 270734K (49%)
+31096 ms. Memory: 625664K Free: 442903K (71%)
+----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+REST: Making an HTTP request. (Thread[Thread-9,5,main])
+29931 ms. Memory: 724480K Free: 408279K (56%)
+reloadAllAccessors: .SpeechSynthesisTest
+This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+REST: Making an HTTP request. (Thread[Thread-9,5,main])
+30242 ms. Memory: 757760K Free: 358905K (47%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Sleeping 10 seconds.
 AutoTests.java: Vertx closed.
