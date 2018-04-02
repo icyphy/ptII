@@ -191,7 +191,7 @@ missingDemos: demosModels.txt models.txt
 	@rm -f /tmp/models.txt /tmp/demosModels.txt
 
 update: $(DERIVED_FILES)
-	git commit -m "Master files changed" $(DERIVED_FILES)
+	-git commit -m "Master files changed" $(DERIVED_FILES)
 	rm -f doc.jar
 	$(MAKE) doc.jar
 	# The first commit will change completeDemosPtiny.htm, which will cause completeDemosBcvtb.htm to be updated
