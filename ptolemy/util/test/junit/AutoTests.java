@@ -174,11 +174,13 @@ public class AutoTests extends ModelTests {
                 _delay(fullPath);
 
                 if (fullPath.indexOf("org/terraswarm/accessors/test") != -1) {
+                    // Number of ms. to sleep before reloading.
+                    int sleepTime = 2500;
                     System.out.println(
-                            "----------------- About to sleep for 5 seconds before reloading accessors in org/terraswarm/accessors/test"
+                            "----------------- About to sleep for " sleepTime / 1000 + " seconds before reloading accessors in org/terraswarm/accessors/test"
                                     + fullPath);
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(sleepTime);
                     } catch (InterruptedException ex) {
                         System.err.println(
                                 "Sleep before reloading of accessors was interrupted: "
