@@ -132,7 +132,7 @@ public class AutoTests extends ModelTests {
             AutoTests._checkForJSAccessor();
         }
         if (modelFileIsOK(fullPath)) {
-            System.out.println("----------------- testing " + fullPath);
+            System.out.println("----------------- testing " + (new java.util.Date()) + " " + fullPath);
             System.out.flush();
             if (_applicationConstructor == null) {
                 // Delay instantiating MoMLSimpleApplication so that we
@@ -260,14 +260,14 @@ public class AutoTests extends ModelTests {
 
     private static void _delay(String fullPath) {
         String accessorTests = "org/terraswarm/accessor";
-        int delay = 5000;
+        int delay = 2500;
         if (fullPath.indexOf(accessorTests) != -1) {
             System.out.println("----------------- " + (new java.util.Date())
                     + " About to sleep for " + delay / 1000
                     + " seconds before rerunning in " + accessorTests
                     + ".  Test is: " + fullPath);
             try {
-                Thread.sleep(5000);
+                Thread.sleep(delay);
             } catch (InterruptedException ex) {
                 System.err.println(
                         "Sleep before reloading of accessors was interrupted: "
