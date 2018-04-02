@@ -133,7 +133,7 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
     # that are slightly out of date.
     ant javadoc jsdoc 2>&1 | grep -v GITHUB_TOKEN > $LOG 
     (cd doc; make install) 2>&1 | grep -v GITHUB_TOKEN >> $LOG 
-    updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
+    # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
 # Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
@@ -158,7 +158,8 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     for jar in $jars
     do
         echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://icyphy.github.io/ptII/doc/$jar
+        # wget --quiet -O $PTII/doc/$jar https://icyphy.github.io/ptII/doc/$jar
+        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
         ls -l $PTII/doc/$jar
         (cd $PTII; jar -xf $PTII/doc/$jar)
     done
