@@ -74,7 +74,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 140.00000000000003]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetNER/DistributedSender.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/models/legacy/DynamicMultiInstance/MicrostepReset/MicrostepResetNER/DistributedSender.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
