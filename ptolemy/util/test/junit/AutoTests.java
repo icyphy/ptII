@@ -82,12 +82,6 @@ public class AutoTests extends ModelTests {
             if (clazz != null) {
                 Method method = clazz.getMethod("closeVertx");
 		System.out.println("AutoTests.java: About to close Vertx.");
-		try {
-		    System.out.println("AutoTests.java: Sleeping 10 seconds.");
-		    Thread.sleep(10000);
-		} catch (InterruptedException ex) {
-		    // Ignored.
-		}
                 method.invoke(null);
 		System.out.println("AutoTests.java: Vertx closed.");
             }
