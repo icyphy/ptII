@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="0" hostname="travis-job-d7c0d827-e204-4a6e-9d99-fdf9e0c84c9c" name="ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest" skipped="0" tests="7" time="271.597" timestamp="2018-04-02T15:59:53">
+<testsuite errors="2" failures="0" hostname="travis-job-291caaee-c479-4515-b45e-f1e54d013dd2" name="ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest" skipped="0" tests="7" time="176.284" timestamp="2018-04-02T16:20:09">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="167.4" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="168.4" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.7 47680 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.13 43212 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.7 47680 10.20.0.161 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.13 43212 10.20.0.103 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3679722767832934198.properties propsfile=/home/travis/build/icyphy/ptII/junit7699098081454028358.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1426665711310659464.properties propsfile=/home/travis/build/icyphy/ptII/junit8371356957193243822.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="3a50f3795c8e...66d520d6f31c" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="66d520d6f31c...36db94c5944c" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.6.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.7.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.7.4.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.8.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-groovy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-ruby-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.4.2.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="167" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="168" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="361223244" />
+    <property name="env.TRAVIS_BUILD_ID" value="361230643" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="66d520d6f31c8eb6747ed55fc087f85725302861" />
+    <property name="env.TRAVIS_COMMIT" value="36db94c5944cf03531b1288bca5fc8f143bcfb8d" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -201,7 +201,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="361223248" />
+    <property name="env.TRAVIS_JOB_ID" value="361230649" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -219,31 +219,26 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.004" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml (RunModel)" time="119.667" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml (RunModel)" time="31.916">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml (RunModel)" time="41.746">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:164)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .WebServer.TrainableTest2
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .KeyValueStoreClient.TrainableTest
 Because:
-Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .WebServer.TrainableTest4
-Because:
-Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 
-  in .WebServer.DE Director
+  in .KeyValueStoreClient.DE Director
 Because:
-Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .WebServer.TrainableTest2
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .KeyValueStoreClient.TrainableTest
 Because:
-Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -251,26 +246,26 @@ Error: TrainableTest2: The input handler of this accessor was never invoked. Usu
 	at ptolemy.actor.Manager.execute(Manager.java:407)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .WebServer.TrainableTest2
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .KeyValueStoreClient.TrainableTest
 Because:
-Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
-Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
-Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$15503$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$15501$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$4805$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$4803$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -278,8 +273,63 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml (RunModel)" time="35.943" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml (RunModel)" time="63.535" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml (RunModel)" time="34.929" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml (RunModel)" time="24.522">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:164)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WebServerBasic.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$16204$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$16202$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml (RunModel)" time="54.679" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test
@@ -288,372 +338,89 @@ AutoTests.java: Sleeping 10 seconds.
 AutoTests.java: Vertx closed.
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-preinitialize() finished: 11313 ms. Memory: 723456K Free: 385383K (53%)
 WebServer: WebServer: Creating new server. (Thread[KeyValueStoreClient,1,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
-Manager.initialize() finished: 19793 ms. Memory: 762368K Free: 247700K (32%)
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************0 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************1 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************2 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************3 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************4 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************5 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************6 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************7 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************8 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************9 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************10 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************11 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************12 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************13 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
+Manager.initialize() finished: 13667 ms. Memory: 746496K Free: 303821K (41%)
 WebServer: WebServer: Stopping the server. (Thread[KeyValueStoreClient,1,main])
 JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[KeyValueStoreClient,1,main])
-34921 ms. Memory: 764416K Free: 544305K (71%)
------------------ testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml
-preinitialize() finished: 10495 ms. Memory: 783872K Free: 385272K (49%)
-WebServer: WebServer: Creating new server. (Thread[Thread-5,5,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
-Manager.initialize() finished: 17360 ms. Memory: 819200K Free: 733071K (89%)
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************0 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************1 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************2 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************3 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************4 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************5 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************6 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************7 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************8 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************9 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************10 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************11 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************12 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************13 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: WebServer: Stopping the server. (Thread[Thread-5,5,main])
-JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[Thread-5,5,main])
-32549 ms. Memory: 819200K Free: 588510K (72%)
-reloadAllAccessors: .KeyValueStoreClient
-This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
------------------ Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml
-WebServer: WebServer: Creating new server. (Thread[Thread-5,5,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
-Manager.initialize() finished: 15669 ms. Memory: 854016K Free: 605108K (71%)
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************0 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************1 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************2 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************3 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************4 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************5 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************6 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************7 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************8 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************9 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************10 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************11 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************12 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-ConstructLookup: ************13 (Thread[Thread-5,5,main])
-KeyValueResponse: handling body (Thread[Thread-5,5,main])
-KeyValueStore2: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: Server received request. (Thread[Thread-5,5,main])
-KeyValueStore: Making an HTTP request. (Thread[Thread-5,5,main])
-WebServer: WebServer: Stopping the server. (Thread[Thread-5,5,main])
-JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[Thread-5,5,main])
-30871 ms. Memory: 854016K Free: 458152K (54%)
+28780 ms. Memory: 746496K Free: 280972K (38%)
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
 WebServer: WebServer: Creating new server. (Thread[WebServer,1,main])
 WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
-Manager.initialize() finished: 10830 ms. Memory: 911872K Free: 389056K (43%)
 REST: Making an HTTP request. (Thread[WebServer,1,main])
+WebServer: Server received request. (Thread[WebServer,1,main])
 WebServer: WebServer: Stopping the server. (Thread[WebServer,1,main])
-25937 ms. Memory: 911872K Free: 351096K (39%)
+10053 ms. Memory: 834560K Free: 499683K (60%)
+----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+WebServer: WebServer: Creating new server. (Thread[Thread-10,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
+REST: Making an HTTP request. (Thread[Thread-10,5,main])
+WebServer: Server received request. (Thread[Thread-10,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-10,5,main])
+9576 ms. Memory: 876032K Free: 472727K (54%)
+reloadAllAccessors: .WebServer
+This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+WebServer: WebServer: Creating new server. (Thread[Thread-10,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
+REST: Making an HTTP request. (Thread[Thread-10,5,main])
+WebServer: Server received request. (Thread[Thread-10,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-10,5,main])
+8206 ms. Memory: 906752K Free: 335536K (37%)
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml
 WebServer: WebServer: Creating new server. (Thread[WebServerBasic,1,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-1,1,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
 REST: Making an HTTP request. (Thread[WebServerBasic,1,main])
-WebServer: Server received request. (Thread[WebServerBasic,1,main])
-JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[WebServerBasic,1,main])
 WebServer: WebServer: Stopping the server. (Thread[WebServerBasic,1,main])
-9123 ms. Memory: 960512K Free: 417035K (43%)
------------------ testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml
-WebServer: WebServer: Creating new server. (Thread[Thread-15,5,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-1,1,main])
-REST: Making an HTTP request. (Thread[Thread-15,5,main])
-WebServer: Server received request. (Thread[Thread-15,5,main])
-JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-15,5,main])
-WebServer: WebServer: Stopping the server. (Thread[Thread-15,5,main])
-9681 ms. Memory: 981504K Free: 495774K (51%)
-reloadAllAccessors: .WebServerBasic
------------------ Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml
-WebServer: WebServer: Creating new server. (Thread[Thread-15,5,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-1,1,main])
-REST: Making an HTTP request. (Thread[Thread-15,5,main])
-WebServer: Server received request. (Thread[Thread-15,5,main])
-JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-15,5,main])
-WebServer: WebServer: Stopping the server. (Thread[Thread-15,5,main])
-9257 ms. Memory: 982528K Free: 346877K (35%)
+20961 ms. Memory: 953856K Free: 463850K (49%)
 ----------------- testing /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
 WebServer: WebServer: Creating new server. (Thread[WebServerTimeout,1,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-3,1,main])
 REST: Making an HTTP request. (Thread[WebServerTimeout,1,main])
 WebServer: Server received request. (Thread[WebServerTimeout,1,main])
 The total body: <html><h1>Internal Server Error (code 500)</h1><p>Server failed to generate a response within its internal timeout period.</p></html>
 TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
 JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[WebServerTimeout,1,main])
 WebServer: WebServer: Stopping the server. (Thread[WebServerTimeout,1,main])
-18551 ms. Memory: 1024000K Free: 472234K (46%)
+16331 ms. Memory: 955392K Free: 287320K (30%)
 ----------------- testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
-WebServer: WebServer: Creating new server. (Thread[Thread-20,5,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
-REST: Making an HTTP request. (Thread[Thread-20,5,main])
-WebServer: Server received request. (Thread[Thread-20,5,main])
+WebServer: WebServer: Creating new server. (Thread[Thread-18,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-3,1,main])
+REST: Making an HTTP request. (Thread[Thread-18,5,main])
+WebServer: Server received request. (Thread[Thread-18,5,main])
 The total body: <html><h1>Internal Server Error (code 500)</h1><p>Server failed to generate a response within its internal timeout period.</p></html>
 TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
-JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-20,5,main])
-WebServer: WebServer: Stopping the server. (Thread[Thread-20,5,main])
-18919 ms. Memory: 1025024K Free: 292078K (28%)
+JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-18,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-18,5,main])
+16813 ms. Memory: 1011712K Free: 342407K (34%)
 reloadAllAccessors: .WebServerTimeout
 ----------------- Reloaded Accessors and testing again /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
-WebServer: WebServer: Creating new server. (Thread[Thread-20,5,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
-REST: Making an HTTP request. (Thread[Thread-20,5,main])
-WebServer: Server received request. (Thread[Thread-20,5,main])
+WebServer: WebServer: Creating new server. (Thread[Thread-18,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-3,1,main])
+REST: Making an HTTP request. (Thread[Thread-18,5,main])
+WebServer: Server received request. (Thread[Thread-18,5,main])
 The total body: <html><h1>Internal Server Error (code 500)</h1><p>Server failed to generate a response within its internal timeout period.</p></html>
 TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
-JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-20,5,main])
-WebServer: WebServer: Stopping the server. (Thread[Thread-20,5,main])
-17068 ms. Memory: 1059328K Free: 350520K (33%)
+JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-18,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-18,5,main])
+17035 ms. Memory: 1018368K Free: 346363K (34%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Sleeping 10 seconds.
 AutoTests.java: Vertx closed.
 ]]></system-out>
-  <system-err><![CDATA[[vert.x-eventloop-thread-0] WARN io.netty.util.internal.MacAddressUtil - Failed to find a usable hardware address from the network interfaces; using random bytes: cc:29:dd:f6:cc:55:35:30
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.009, 22.008, 23.036, 24.029, 22.04, 19.008, 24.009, 20.057000000000002, 23.007, 21.037, 21.011, 19.033, 17.07, 17.014, 15.015, 18.019000000000002, 18.058, 20.013]
-WARNING: TriggeredRamp: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.045, 23.031000000000002, 23.014, 19.01, 17.006, 22.008, 15.008000000000001, 18.012, 20.033, 24.008, 15.044, 20.006, 16.015, 24.039, 18.033, 21.028000000000002, 22.033, 21.006, 17.022000000000002, 16.051000000000002]
-WARNING: TriggeredRamp: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.026, 19.01, 23.053, 17.006, 17.019000000000002, 22.008, 16.049, 15.008000000000001, 21.03, 18.008, 22.035, 24.042, 23.016000000000002, 20.045, 24.009, 15.032, 19.037, 21.006, 16.012, 20.013]
-WARNING: TriggeredRamp: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.0]
-WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.0]
-java.lang.RuntimeException: Execution failed
+  <system-err><![CDATA[java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-  in .WebServer.TrainableTest2
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .KeyValueStoreClient.TrainableTest
 Because:
-Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-  in .WebServer.TrainableTest4
-Because:
-Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
 
-  in .WebServer.DE Director
+  in .KeyValueStoreClient.DE Director
 Because:
-Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-  in .WebServer.TrainableTest2
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .KeyValueStoreClient.TrainableTest
 Because:
-Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -661,40 +428,95 @@ Error: TrainableTest2: The input handler of this accessor was never invoked. Usu
 	at ptolemy.actor.Manager.execute(Manager.java:407)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-  in .WebServer.TrainableTest2
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .KeyValueStoreClient.TrainableTest
 Because:
-Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
-Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
 	... 8 more
-Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$15503$18508$\^function\_.L:1#wrapup(<function>:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$15501$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$4805$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$4803$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.06]
+[vert.x-eventloop-thread-2] WARN io.netty.util.internal.MacAddressUtil - Failed to find a usable hardware address from the network interfaces; using random bytes: 7e:bf:1b:ce:21:c0:a8:29
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.24]
+WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.0]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.062000000000001]
+WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.0]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.037]
+WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.0]
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.074]
-WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.081]
-WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .WebServerBasic.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebServerBasic.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$16204$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$16202$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
