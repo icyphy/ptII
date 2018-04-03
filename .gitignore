@@ -29,6 +29,8 @@ PtolemyII_Digital*.pdf
 tmp
 __db.*
 
+RTIG.log
+
 # Path Globs
 **/test/alljtests.tcl
 
