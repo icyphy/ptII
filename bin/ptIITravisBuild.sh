@@ -259,7 +259,8 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
 
     echo "Invoking ant: `date`"
     # The timeouts should vary so as to avoid git conflicts.
-    timeout 1800 ant build test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    # Use build-all so that we build in lbnl.
+    timeout 1800 ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
