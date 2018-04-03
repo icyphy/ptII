@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-9c4bac04-273b-498c-9854-3b29011672bd" name="ptolemy.actor.lib.jai.test.junit.JUnitTclTest" skipped="0" tests="30" time="3.857" timestamp="2018-04-03T21:17:39">
+<testsuite errors="0" failures="0" hostname="travis-job-765ffdf9-5042-44d0-8c18-e6d0164d4849" name="ptolemy.actor.lib.jai.test.junit.JUnitTclTest" skipped="0" tests="30" time="4.021" timestamp="2018-04-03T23:46:05">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="183.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="188.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.16 37554 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.32 48158 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.16 37554 10.20.0.227 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.32 48158 10.20.1.34 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jai.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jai.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3275967908832954435.properties propsfile=/home/travis/build/icyphy/ptII/junit2225950481175795824.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jai.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jai.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher198885293786693593.properties propsfile=/home/travis/build/icyphy/ptII/junit2826498571983419479.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="2f11b34f2215...01108af8d384" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="0192034355cf...fb3a2148592e" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -113,7 +113,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="183" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="188" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -128,12 +128,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="361825801" />
+    <property name="env.TRAVIS_BUILD_ID" value="361849314" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="01108af8d38499d39eb315dcbc67bc9b849dc3db" />
+    <property name="env.TRAVIS_COMMIT" value="fb3a2148592e86076bc262645622c22210c07a7c" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -164,7 +164,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/&#xa;* org/hlacerti/test/auto:&#xa;  - Model updated: MultiDataTypes&#xa;  - New tests added: FederatesDifferentTimeManagement, StaticMultiInstance&#xa;    SimplePublisherSubscriber, StaticMultiInstanceJoker&#xa;  - All models NameFolder have a file NameFolder.xml inside.&#xa;* org/hlacerti: INSTALL_VergilCERTI.txt, makefile and lib/makelfile are updated." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Fixed up makefiles." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -203,7 +203,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="361825809" />
+    <property name="env.TRAVIS_JOB_ID" value="361849319" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -222,120 +222,120 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml (RunModel)" time="0.65" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml (RunModel)" time="0.064" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml (RunModel)" time="0.034" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml (RunModel)" time="0.654" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml (RunModel)" time="0.08" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml (RunModel)" time="0.05" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml (RunModel)" time="0.055" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml (RunModel)" time="0.063" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml (RunModel)" time="0.072" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml (RunModel)" time="0.317" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml (RunModel)" time="0.048" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml (RunModel)" time="0.062" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml (RunModel)" time="0.044" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml (RunModel)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml (RunModel)" time="0.026" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml (RunModel)" time="1.283" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml (RunModel)" time="0.05" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml (RunModel)" time="0.089" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml (RunModel)" time="0.112" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml (RunModel)" time="0.03" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml (RunModel)" time="0.046" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml (RunModel)" time="0.312" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml (RunModel)" time="0.045" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml (RunModel)" time="0.079" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml (RunModel)" time="0.056" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml (RunModel)" time="0.047" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml (RunModel)" time="1.306" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml (RunModel)" time="0.053" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml (RunModel)" time="0.108" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml (RunModel)" time="0.046" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml (RunModel)" time="0.107" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Tue Apr 03 21:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml
-364 ms. Memory: 146944K Free: 134613K (92%)
+----------------- testing Tue Apr 03 23:46:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIAffineTransform.xml
+378 ms. Memory: 116224K Free: 104643K (90%)
 reloadAllAccessors: .JAIAffineTransform
------------------ testing Tue Apr 03 21:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml
-48 ms. Memory: 146944K Free: 129239K (88%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBMPWriter.xml
+53 ms. Memory: 116224K Free: 100058K (86%)
 reloadAllAccessors: .JAIBMPWriter
------------------ testing Tue Apr 03 21:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml
-16 ms. Memory: 146944K Free: 125195K (85%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandCombine.xml
+26 ms. Memory: 116224K Free: 96339K (83%)
 reloadAllAccessors: .JAIBandCombine
------------------ testing Tue Apr 03 21:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml
-16 ms. Memory: 146944K Free: 121143K (82%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBandSelect.xml
+17 ms. Memory: 116224K Free: 92183K (79%)
 reloadAllAccessors: .JAIBandSelect
------------------ testing Tue Apr 03 21:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml
-20 ms. Memory: 146944K Free: 117083K (80%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBorder.xml
+15 ms. Memory: 116224K Free: 88204K (76%)
 reloadAllAccessors: .JAIBorder
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml
-27 ms. Memory: 146944K Free: 113038K (77%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIBoxFilter.xml
+16 ms. Memory: 116224K Free: 84461K (73%)
 reloadAllAccessors: .JAIBoxFilter
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml
-19 ms. Memory: 146944K Free: 108871K (74%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConstantJAIPNGWriter.xml
+17 ms. Memory: 116224K Free: 81240K (70%)
 reloadAllAccessors: .JAIConstantJAIPNGWriter
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml
-16 ms. Memory: 146944K Free: 104811K (71%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIConvolve.xml
+26 ms. Memory: 116224K Free: 105002K (90%)
 reloadAllAccessors: .JAIConvolve
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml
-22 ms. Memory: 146944K Free: 100766K (69%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAICrop.xml
+13 ms. Memory: 116224K Free: 100595K (87%)
 reloadAllAccessors: .JAICrop
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml
-14 ms. Memory: 146944K Free: 96256K (66%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDCTJAIIDCTJAIDataConvert.xml
+15 ms. Memory: 116224K Free: 96236K (83%)
 reloadAllAccessors: .JAIDCTJAIIDCTJAIDataConvert
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml
-34 ms. Memory: 146944K Free: 91786K (62%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDFTJAIIDFTJAIDataConvert.xml
+24 ms. Memory: 116224K Free: 91720K (79%)
 reloadAllAccessors: .JAIDFTJAIIDFTJAIDataConver
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml
-265 ms. Memory: 146944K Free: 127055K (86%)
+----------------- testing Tue Apr 03 23:46:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIDoubleMatrix.xml
+258 ms. Memory: 116224K Free: 78346K (67%)
 reloadAllAccessors: .JAIDoubleMatrix
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml
-15 ms. Memory: 146944K Free: 122275K (83%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIEdgeDetection.xml
+35 ms. Memory: 146944K Free: 130251K (89%)
 reloadAllAccessors: .JAIEdgeDetection
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml
-13 ms. Memory: 146944K Free: 118648K (81%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIImageReader.xml
+22 ms. Memory: 146944K Free: 126355K (86%)
 reloadAllAccessors: .JAIImageReader
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml
-14 ms. Memory: 146944K Free: 114997K (78%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIInvert.xml
+21 ms. Memory: 146944K Free: 122672K (83%)
 reloadAllAccessors: .JAIInvert
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml
-48 ms. Memory: 146944K Free: 109953K (75%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIJPEGWriter.xml
+54 ms. Memory: 146944K Free: 117776K (80%)
 reloadAllAccessors: .JAIJPEGWriter
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml
-16 ms. Memory: 146944K Free: 105623K (72%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAILog.xml
+24 ms. Memory: 146944K Free: 113471K (77%)
 reloadAllAccessors: .JAILog
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml
-21 ms. Memory: 146944K Free: 100664K (69%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMagnitudeJAIPhase.xml
+20 ms. Memory: 146944K Free: 108165K (74%)
 reloadAllAccessors: .JAIMagnitudeJAIPhase
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml
-15 ms. Memory: 146944K Free: 96445K (66%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIMedianFilter.xml
+21 ms. Memory: 146944K Free: 104410K (71%)
 reloadAllAccessors: .JAIMedianFilter
------------------ testing Tue Apr 03 21:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml
-1276 ms. Memory: 208384K Free: 171071K (82%)
+----------------- testing Tue Apr 03 23:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPNMWriter.xml
+1295 ms. Memory: 146944K Free: 117625K (80%)
 reloadAllAccessors: .JAIPNMWriter
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml
-15 ms. Memory: 208384K Free: 166347K (80%)
+----------------- testing Tue Apr 03 23:46:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIPeriodicShift.xml
+13 ms. Memory: 146944K Free: 113651K (77%)
 reloadAllAccessors: .JAIPeriodicShift
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml
-16 ms. Memory: 208384K Free: 161768K (78%)
+----------------- testing Tue Apr 03 23:46:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIRotate.xml
+15 ms. Memory: 146944K Free: 109200K (74%)
 reloadAllAccessors: .JAIRotate
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml
-14 ms. Memory: 208384K Free: 157527K (76%)
+----------------- testing Tue Apr 03 23:46:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAIScale.xml
+25 ms. Memory: 146944K Free: 105272K (72%)
 reloadAllAccessors: .JAIScale
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml
-42 ms. Memory: 208384K Free: 153318K (74%)
+----------------- testing Tue Apr 03 23:46:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITiffWriter.xml
+35 ms. Memory: 146944K Free: 101835K (69%)
 reloadAllAccessors: .JAITiffWriter
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml
-51 ms. Memory: 208384K Free: 145112K (70%)
+----------------- testing Tue Apr 03 23:46:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranslate.xml
+36 ms. Memory: 146944K Free: 94768K (64%)
 reloadAllAccessors: .JAITranslate
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml
-16 ms. Memory: 208384K Free: 141517K (68%)
+----------------- testing Tue Apr 03 23:46:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/JAITranspose.xml
+23 ms. Memory: 146944K Free: 91316K (62%)
 reloadAllAccessors: .JAITranspose
------------------ testing Tue Apr 03 21:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml
-92 ms. Memory: 208384K Free: 129413K (62%)
+----------------- testing Tue Apr 03 23:46:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jai/test/auto/SDFVQSequenceDisplay.xml
+80 ms. Memory: 146944K Free: 81660K (56%)
 reloadAllAccessors: .SDFVQSequenceDisplay
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
