@@ -4,68 +4,17 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.384, 0.383]
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.163, 0.162]
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.164, 0.165]
+<pre>WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.009]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.166, 0.167]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.168, 0.167]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0200000000000005, 5.021]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.014, 5.015000000000001]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0120000000000005, 5.013]
 WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the react function: java.net.SocketTimeoutException: connect timed out
-  in .HttpRequest.HttpRequest
-Because:
-java.net.SocketTimeoutException: connect timed out
-	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2224)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1102)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: java.lang.RuntimeException: java.net.SocketTimeoutException: connect timed out
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:397)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
-	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
-	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
-	... 8 more
-Caused by: java.net.SocketTimeoutException: connect timed out
-	at java.net.PlainSocketImpl.socketConnect(Native Method)
-	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
-	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
-	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
-	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
-	at java.net.Socket.connect(Socket.java:589)
-	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
-	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)
-	at sun.net.www.http.HttpClient.openServer(HttpClient.java:558)
-	at sun.net.www.http.HttpClient.&lt;init&gt;(HttpClient.java:242)
-	at sun.net.www.http.HttpClient.New(HttpClient.java:339)
-	at sun.net.www.http.HttpClient.New(HttpClient.java:357)
-	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1220)
-	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1156)
-	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1050)
-	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:984)
-	at sun.net.www.protocol.http.HttpURLConnection.followRedirect0(HttpURLConnection.java:2719)
-	at sun.net.www.protocol.http.HttpURLConnection.followRedirect(HttpURLConnection.java:2641)
-	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1824)
-	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1492)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$26216$4617AAAAI$\^eval\_.httpRequest(&lt;eval&gt;:165)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$26214$195$\^function\_.L:1#fire(&lt;function&gt;:7)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$26212$73967A$require.L:1#react(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1775)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	... 12 more
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
 </pre>
