@@ -1,0 +1,33 @@
+Federate: Fed2TAR - Federation: TimeAdvancing2FederatesTAR
+preinitialize() - Launch RTIG process
+initialize() - federation joined
+INNER initialize: _hlaAttributesToPublish is empty
+INNER initialize: _hlaAttributesToSubscribeTo is empty
+initializeTimeValues() - Effective HLA lookahead is 0.1
+INNER callback: timeConstrainedEnabled(): timeConstrained = true
+INNER callback: timeRegulationEnabled(): timeRegulator = true
+_initializeTimeAspects() - initialize() - Time Management policies: is Constrained = true and is Regulator = true
+INNER callback: announceSynchronizationPoint(): inPause = true
+_doInitialSynchronization() - initialize() - Synchronisation point Simulating satisfied
+_doInitialSynchronization() - initialize() - Waiting for simulation phase
+INNER callback: federationSynchronized(): inPause = false
+
+     starting proposeTime(0.0) t_ptII = 0.0 doubleValue=0.0; t_hla = 0.0
+     starting proposeTime(8.0) t_ptII = 0.0 doubleValue=0.0; t_hla = 0.0
+    proposeTime(8.0) - calling _timeSteppedBasedTimeAdvance(8.0)
+
+start _timeSteppedBasedTimeAdvance(8.0):  print proposedTime.toString=8.0
+Before While g(t') > h+TS; g(t')= 8.0; h+TS= 2.0 @ _timeSteppedBasedTimeAdvance(8.0): 
+  TAR(2.0) in _timeSteppedBasedTimeAdvance(8.0): 
+      waiting TAG() by calling tick2() in _timeSteppedBasedTimeAdvance(8.0): 
+  TAG(2.0 * (HLA time unit=1.0)) received in INNER callback: timeAdvanceGrant()
+  TAR(4.0) in _timeSteppedBasedTimeAdvance(8.0): 
+      waiting TAG() by calling tick2() in _timeSteppedBasedTimeAdvance(8.0): 
+  TAG(4.0 * (HLA time unit=1.0)) received in INNER callback: timeAdvanceGrant()
+  TAR(6.0) in _timeSteppedBasedTimeAdvance(8.0): 
+      waiting TAG() by calling tick2() in _timeSteppedBasedTimeAdvance(8.0): 
+  TAG(6.0 * (HLA time unit=1.0)) received in INNER callback: timeAdvanceGrant()
+  TAR(8.0) in _timeSteppedBasedTimeAdvance(8.0): 
+      waiting TAG() by calling tick2() in _timeSteppedBasedTimeAdvance(8.0): 
+  TAG(8.0 * (HLA time unit=1.0)) received in INNER callback: timeAdvanceGrant()
+returns proposedTime=8.0from _timeSteppedBasedTimeAdvance(8.0): 
