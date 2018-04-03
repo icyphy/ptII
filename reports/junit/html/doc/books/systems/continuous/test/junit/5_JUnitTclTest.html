@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.13 43384 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.2 49942 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.13 43384 10.20.0.69 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.2 49942 10.20.0.46 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '361745286';
+        cur['env.TRAVIS_BUILD_ID'] = '361759565';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '177';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '179';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'd655497a100e6cadc773c2f5569e8c9bb3ee773a';
+        cur['env.TRAVIS_COMMIT'] = 'f0b2eef7811f539c4ab7a143bb4607e364f7b6ff';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Merge branch \'master\' of https://github.com/icyphy/ptII';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/\n* org/hlacerti/lib/HlaTimedEvent.java:\n  - Replaces \'OriginatedEvent.java’.\n  - Allows for Static multi-instances; Dynamic multi-instances are no longer supported.\n* org/hlacerti/lib/HlaSubscriber.java,\n  org/hlacerti/lib/HlaPublisher.java:\n  - Remove dynamic multi-instance support.\n  - Add HLA specific information to HLA actors (attribute handle, etc.)\n  - Code refactoring.\n* org/hlacerti/HlaSubscriberIcon.xml\n  org/hlacerti/HlaPublisherIcon.xml\n  - Add instance name parameter.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '44c1f900e3fe...d655497a100e';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'd0f006acfa29...f0b2eef7811f';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '361745291';
+        cur['env.TRAVIS_JOB_ID'] = '361759573';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '177.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '179.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4912147492307318747.properties propsfile=/home/travis/build/icyphy/ptII/junit1906760950836235404.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8964602830800950880.properties propsfile=/home/travis/build/icyphy/ptII/junit1696937738908117398.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="5_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="5_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>9.389</td><td>2018-04-03T17:39:56</td><td>travis-job-c00d0dc8-d46b-41a2-95cd-bce3634d835a</td>
+<td><a title="Display all tests" href="5_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="5_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>12.095</td><td>2018-04-03T18:14:48</td><td>travis-job-6dbd16b4-ea06-4c12-92a7-7d1603321448</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -505,46 +506,46 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml (RunModel)</td><td>Success</td><td></td><td>2.828</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml (RunModel)</td><td>Success</td><td></td><td>3.073</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml (RunModel)</td><td>Success</td><td></td><td>0.142</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml (RunModel)</td><td>Success</td><td></td><td>0.246</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.399</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.446</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml (RunModel)</td><td>Success</td><td></td><td>0.224</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml (RunModel)</td><td>Success</td><td></td><td>0.253</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml (RunModel)</td><td>Success</td><td></td><td>0.174</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml (RunModel)</td><td>Success</td><td></td><td>0.215</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml (RunModel)</td><td>Success</td><td></td><td>0.119</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml (RunModel)</td><td>Success</td><td></td><td>0.117</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml (RunModel)</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml (RunModel)</td><td>Success</td><td></td><td>0.056</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml (RunModel)</td><td>Success</td><td></td><td>0.067</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml (RunModel)</td><td>Success</td><td></td><td>0.065</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml (RunModel)</td><td>Success</td><td></td><td>4.729</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml (RunModel)</td><td>Success</td><td></td><td>6.918</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml (RunModel)</td><td>Success</td><td></td><td>0.066</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml (RunModel)</td><td>Success</td><td></td><td>0.024</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml (RunModel)</td><td>Success</td><td></td><td>0.085</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml (RunModel)</td><td>Success</td><td></td><td>0.084</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml (RunModel)</td><td>Success</td><td></td><td>0.046</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml (RunModel)</td><td>Success</td><td></td><td>0.034</td>
 </tr>
 </table>
 <div class="Properties">
