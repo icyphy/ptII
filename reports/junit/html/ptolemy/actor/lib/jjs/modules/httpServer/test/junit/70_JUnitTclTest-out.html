@@ -9,11 +9,12 @@ No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/a
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Tue Apr 03 20:28:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml
+----------------- testing Tue Apr 03 21:04:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+preinitialize() finished: 10302 ms. Memory: 741888K Free: 199527K (27%)
 WebServer: WebServer: Creating new server. (Thread[KeyValueStoreClient,1,main])
 WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
-Manager.initialize() finished: 16439 ms. Memory: 781824K Free: 333895K (43%)
+Manager.initialize() finished: 17700 ms. Memory: 759296K Free: 552564K (73%)
 KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
 WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
 ConstructLookup: ************0 (Thread[KeyValueStoreClient,1,main])
@@ -23,45 +24,63 @@ KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
 WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
 ConstructLookup: ************1 (Thread[KeyValueStoreClient,1,main])
 KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************2 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************3 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************4 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
-KeyValueStore2: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-KeyValueStore: Making an HTTP request. (Thread[KeyValueStoreClient,1,main])
-WebServer: Server received request. (Thread[KeyValueStoreClient,1,main])
-ConstructLookup: ************5 (Thread[KeyValueStoreClient,1,main])
-KeyValueResponse: handling body (Thread[KeyValueStoreClient,1,main])
 WebServer: WebServer: Stopping the server. (Thread[KeyValueStoreClient,1,main])
 JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[KeyValueStoreClient,1,main])
-22643 ms. Memory: 781824K Free: 216631K (28%)
------------------ testing Tue Apr 03 20:28:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+19929 ms. Memory: 759296K Free: 450632K (59%)
+----------------- testing Tue Apr 03 21:04:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
 WebServer: WebServer: Creating new server. (Thread[WebServer,1,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
 REST: Making an HTTP request. (Thread[WebServer,1,main])
+WebServer: Server received request. (Thread[WebServer,1,main])
 WebServer: WebServer: Stopping the server. (Thread[WebServer,1,main])
-24573 ms. Memory: 849408K Free: 359042K (42%)
------------------ testing Tue Apr 03 20:29:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml
+11328 ms. Memory: 849408K Free: 401149K (47%)
+reloadAllAccessors: .WebServer
+This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+----------------- Reloaded Accessors and testing again Tue Apr 03 21:05:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+WebServer: WebServer: Creating new server. (Thread[Thread-10,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
+REST: Making an HTTP request. (Thread[Thread-10,5,main])
+WebServer: Server received request. (Thread[Thread-10,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-10,5,main])
+10303 ms. Memory: 897024K Free: 276579K (31%)
+----------------- testing Tue Apr 03 21:05:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml
 WebServer: WebServer: Creating new server. (Thread[WebServerBasic,1,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-1,1,main])
 REST: Making an HTTP request. (Thread[WebServerBasic,1,main])
+WebServer: Server received request. (Thread[WebServerBasic,1,main])
+JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[WebServerBasic,1,main])
 WebServer: WebServer: Stopping the server. (Thread[WebServerBasic,1,main])
-8012 ms. Memory: 921600K Free: 364973K (40%)
------------------ testing Tue Apr 03 20:29:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+7902 ms. Memory: 899584K Free: 92334K (10%)
+reloadAllAccessors: .WebServerBasic
+----------------- Reloaded Accessors and testing again Tue Apr 03 21:05:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml
+WebServer: WebServer: Creating new server. (Thread[Thread-14,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-1,1,main])
+REST: Making an HTTP request. (Thread[Thread-14,5,main])
+WebServer: Server received request. (Thread[Thread-14,5,main])
+JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-14,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-14,5,main])
+7505 ms. Memory: 955904K Free: 646453K (68%)
+----------------- testing Tue Apr 03 21:05:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
 WebServer: WebServer: Creating new server. (Thread[WebServerTimeout,1,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
 REST: Making an HTTP request. (Thread[WebServerTimeout,1,main])
-TextDisplayHelper: 'Connection refused: localhost/127.0.0.1:8097'
+WebServer: Server received request. (Thread[WebServerTimeout,1,main])
+The total body: &lt;html&gt;&lt;h1&gt;Internal Server Error (code 500)&lt;/h1&gt;&lt;p&gt;Server failed to generate a response within its internal timeout period.&lt;/p&gt;&lt;/html&gt;
+TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
+JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[WebServerTimeout,1,main])
 WebServer: WebServer: Stopping the server. (Thread[WebServerTimeout,1,main])
-24546 ms. Memory: 982528K Free: 422903K (43%)
+17446 ms. Memory: 1004032K Free: 250964K (25%)
+reloadAllAccessors: .WebServerTimeout
+----------------- Reloaded Accessors and testing again Tue Apr 03 21:06:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+WebServer: WebServer: Creating new server. (Thread[Thread-18,5,main])
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
+REST: Making an HTTP request. (Thread[Thread-18,5,main])
+WebServer: Server received request. (Thread[Thread-18,5,main])
+The total body: &lt;html&gt;&lt;h1&gt;Internal Server Error (code 500)&lt;/h1&gt;&lt;p&gt;Server failed to generate a response within its internal timeout period.&lt;/p&gt;&lt;/html&gt;
+TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
+JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[Thread-18,5,main])
+WebServer: WebServer: Stopping the server. (Thread[Thread-18,5,main])
+17803 ms. Memory: 1030656K Free: 758218K (74%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 </pre>
