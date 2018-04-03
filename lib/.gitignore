@@ -1,3 +1,4 @@
+!*.jar
 /cachedir
 /libbcvtb.dylib
 /libbcvtb.jnilib
