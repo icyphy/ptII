@@ -29,9 +29,9 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =    org/hlacerti/demo
+ME =    org/hlacerti/models
 
-DIRS = 	MonoInstance StaticMultiInstance
+DIRS = 	MonoInstance StaticMultiInstance DynamicMultiInstance
 
 # Root of the Java directory
 ROOT =      ../../../..
@@ -48,7 +48,8 @@ PTPACKAGE =     legacy
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	MonoInstance/MonoInstance.jar \
-	StaticMultiInstance/StaticMultiInstance.jar
+	StaticMultiInstance/StaticMultiInstance.jar \
+	DynamicMultiInstance/DynamicMultiInstance.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
