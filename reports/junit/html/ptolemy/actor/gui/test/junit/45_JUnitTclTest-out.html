@@ -1,0 +1,86 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl
+testDefs.tcl: setting time out to 9000 seconds at Tue Apr 03 00:39:17 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl
+22 ms. Memory: 116224K Free: 97330K (84%)
+13 ms. Memory: 116224K Free: 94502K (81%)
+sleeping 2 seconds: 15 ms. Memory: 116224K Free: 89809K (77%)
+12 ms. Memory: 116224K Free: 89809K (77%)
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl
+7 ms. Memory: 331776K Free: 175891K (53%)
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl
+test 1.0: filterSize: 13, newFilterSize: 15
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl
+Reading /home/travis/build/icyphy/ptII/ptolemy/configs/full/configuration.xml
+Checking complete demos of ptolemy/configs/doc/completeDemos.htm
+Warning: ptolemy/configs/kepler/doc-index.htm not found: java.io.IOException: File not found: 'ptolemy/configs/kepler/doc-index.htm'
+ caused by:
+java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.htm
+ AND:
+java.io.IOException: File '/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ptolemy/configs/kepler/doc-index.htm' does not exist.
+ AND:
+java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.htm
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl
+sleeping 3 seconds: /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl
+5 ms. Memory: 681472K Free: 213154K (31%)
+sleeping 2 seconds: 8 ms. Memory: 732160K Free: 297925K (41%)
+.test
+sleeping 2 seconds: 8 ms. Memory: 734208K Free: 301580K (41%)
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="test" class="ptolemy.actor.TypedCompositeActor"&gt;
+    &lt;property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel"&gt;
+    &lt;/property&gt;
+    &lt;doc&gt;This test has no placeable elements, but writes to standard out.&lt;/doc&gt;
+    &lt;property name="step" class="ptolemy.data.expr.Parameter" value="1"&gt;
+    &lt;/property&gt;
+    &lt;property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector"&gt;
+        &lt;property name="iterations" class="ptolemy.data.expr.Parameter" value="5"&gt;
+        &lt;/property&gt;
+        &lt;property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1"&gt;
+        &lt;/property&gt;
+    &lt;/property&gt;
+    &lt;entity name="ramp" class="ptolemy.actor.lib.Ramp"&gt;
+        &lt;property name="init" class="ptolemy.actor.parameters.PortParameter" value="0"&gt;
+        &lt;/property&gt;
+        &lt;property name="step" class="ptolemy.actor.parameters.PortParameter" value="step"&gt;
+        &lt;/property&gt;
+        &lt;property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0"&gt;
+        &lt;/property&gt;
+    &lt;/entity&gt;
+    &lt;entity name="rec" class="ptolemy.actor.lib.Recorder"&gt;
+        &lt;property name="capacity" class="ptolemy.data.expr.Parameter" value="-1"&gt;
+        &lt;/property&gt;
+    &lt;/entity&gt;
+    &lt;relation name="r1" class="ptolemy.actor.TypedIORelation"&gt;
+        &lt;property name="width" class="ptolemy.data.expr.Parameter" value="1"&gt;
+        &lt;/property&gt;
+    &lt;/relation&gt;
+    &lt;link port="ramp.output" relation="r1"/&gt;
+    &lt;link port="rec.input" relation="r1"/&gt;
+&lt;/entity&gt;
+
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl
+04/03/18 12:39:38
+Failed: 0  Total Tests: 55  ((Passed: 55, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
