@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.22 58142 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.13 43384 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.22 58142 10.20.0.155 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.13 43384 10.20.0.69 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '361728876';
+        cur['env.TRAVIS_BUILD_ID'] = '361745286';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '176';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '177';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '44c1f900e3fea217a13c5d9280ad87031c442960';
+        cur['env.TRAVIS_COMMIT'] = 'd655497a100e6cadc773c2f5569e8c9bb3ee773a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Copy test logs to reports/junit, not report/junit.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Merge branch \'master\' of https://github.com/icyphy/ptII';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '6ba41fcf487c...44c1f900e3fe';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '44c1f900e3fe...d655497a100e';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '361728887';
+        cur['env.TRAVIS_JOB_ID'] = '361745291';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '176.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '177.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner lbnl.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-lbnl.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1512624778360247979.properties propsfile=/home/travis/build/icyphy/ptII/junit6659845072516138923.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner lbnl.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-lbnl.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7187466121745022884.properties propsfile=/home/travis/build/icyphy/ptII/junit5316833219227388765.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>0.928</td><td>2018-04-03T17:01:52</td><td>travis-job-0b81d3a4-9adc-44cc-b087-28e5947e437f</td>
+<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>0.958</td><td>2018-04-03T17:44:26</td><td>travis-job-c00d0dc8-d46b-41a2-95cd-bce3634d835a</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -502,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/lbnl/test/auto/CRoom.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/lbnl/test/auto/CRoom.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Error: Simulation process did not start.<br>Error when starting external process.<br>Error message           : Cannot run program "cclient" (in directory "/home/travis/build/icyphy/ptII/lbnl/test/auto/."): error=2, No such file or directory<br>Current directory       : /home/travis/build/icyphy/ptII/lbnl/test/auto/.<br>ProcessBuilder arguments: [cclient, 60]<br>Check configuration of '.CRoom.Room'.<br>  in .CRoom.Room<br>	at lbnl.actor.lib.Simulator._startSimulation(Simulator.java:831)<br>	at lbnl.actor.lib.Simulator.preinitialize(Simulator.java:667)<br>	at ptolemy.actor.Director.preinitialize(Director.java:1302)<br>	at ptolemy.actor.Director.preinitialize(Director.java:1257)<br>	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:763)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>0.453</td>
+</code></td><td>0.504</td>
 </tr>
 </table>
 <div class="Properties">
