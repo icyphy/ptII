@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # This script is called by $PTII/.travis.yml as part of the Travis-ci
 # build at https://travis-ci.org/icyphy/ptII/
@@ -6,6 +6,7 @@
 # This script depends on a number of environment variables being passed to it.
 
 # The script invokes various builds depending on various environment variables.
+
 
 # To test, set the environment variable:
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
@@ -15,6 +16,7 @@
 #   PT_TRAVIS_TEST_CAPECODE_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
+
 # Because we are using if statements, we use a script, see
 # https://groups.google.com/forum/#!topic/travis-ci/uaAP9zEdiCg
 # http://steven.casagrande.io/articles/travis-ci-and-if-statements/
@@ -23,15 +25,15 @@ if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
 fi    
 
-# Usage: updateGhPages source-file-or-directory directory-in-gh-pages
-
+if [ ! -d $PTII/reports/junit ]; then
+    mkdir -p $PTII/reports/junit
+fi    
 
 # If the output is more than 10k lines, then Travis fails, so we
 # redirect voluminuous output into a log file.
 
 # Number of lines to show from the log file.
 lastLines=50
-
 
 # Copy the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
@@ -177,12 +179,12 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
     
-    # Copy any jar files that may have previously been created so that the build is faster.
+    # Copy any jar files that may have previously been created so that
+    # the build is faster.
     jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
     for jar in $jars
     do
         echo "Downloading $jar: `date`"
-        # wget --quiet -O $PTII/doc/$jar https://icyphy.github.io/ptII/doc/$jar
         wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
         ls -l $PTII/doc/$jar
         (cd $PTII; jar -xf $PTII/doc/$jar)
@@ -204,7 +206,8 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
-    updateGhPages $LOG logs/
+    cp $LOG $PTII/reports/junit
+    updateGhPages -junitreport $PTII/reports/junit reports/
 
     ls -l $PTII/adm/gen-11.0
 
@@ -224,28 +227,42 @@ fi
 
 # Run the CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
-    LOG=$PTII/logs/test.capecode.xml.txt
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
     
     timeout 2400 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $PTII/logs/test.capecode.xml.txt
-    cp $LOG $PTII/reports/junit
+    tail -$lastLines $LOG
     updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
 # Run the short tests.
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
-    LOG=$PTII/logs/test.report.short.txt
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.report.short.txt
     echo "$0: Output will appear in $LOG"
 
+    # Copy just codeDoc.jar from the release.
+    # doc/test/docManager.tcl needs this.
+    jar=codeDoc.jar
+    if [ ! $PTII/doc/codeDoc.jar ]; then
+        echo "Downloading $jar: `date`"
+        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
+        ls -l $PTII/doc/$jar
+    fi
+    echo "Unjarring $PTII/doc/$jar: `date`"
+    (cd $PTII; jar -xf $PTII/doc/$jar)
+
+    echo "Invoking ant: `date`"
     # The timeouts should vary so as to avoid git conflicts.
     timeout 1800 ant build test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
-    cp $LOG $PTII/reports/junit
     updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
