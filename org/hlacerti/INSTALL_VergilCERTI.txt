@@ -32,11 +32,11 @@ To launch VergilCERTI, we need to set te CERTI environment variables, in Eclipse
 			Name: PATH
 			Value: <path_for_scripts_and_binaries>/bin:${env_var:PATH}
 
-			NAME LD_LYBRARY_PATH
-			Value: <path_for_scripts_and_binaries>/lib:${env_var:LD_LYBRARY_PATH}
+			NAME LD_LIBRARY_PATH
+			Value: <path_for_scripts_and_binaries>/lib:${env_var:LD_LIBRARY_PATH}
 
-			NAME DYLD_LYBRARY_PATH
-			Value: <path_for_scripts_and_binaries>/lib:${env_var:DYLD_LYBRARY_PATH}
+			NAME DYLD_LIBRARY_PATH
+			Value: <path_for_scripts_and_binaries>/lib:${env_var:DYLD_LIBRARY_PATH}
 			
 		Where <path_for_scripts_and_binaries> is the absolute path that you
 		have specified when you have installed CERTI (see INSTALL_CERTI.txt
