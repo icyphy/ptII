@@ -156,47 +156,35 @@ public class AutoTests extends ModelTests {
             _delay(fullPath);
 
             Object instance = _applicationConstructor.newInstance(fullPath);
-
-            System.out.println("----------------- testing again " + fullPath);
-            System.out.flush();
             Method rerunMethod = _applicationClass.getMethod("rerun",
-                    (Class<?>[]) null);
-            rerunMethod.invoke(instance, (Object[]) null);
+                                                             (Class<?>[]) null);
 
             // If JSAccessor is present and the model contains one, then
             // reload all the JSAccessors and rerun the model
-            if (_jsAccessorClass != null) {
+
+            if (_jsAccessorClass == null) {
+                // JsAccessor is not present, just rerun.
+                System.out.println("----------------- testing again " + fullPath);
+                System.out.flush();
+                rerunMethod.invoke(instance, (Object[]) null);
+
+            } else {
+                // JSAccessor is present, reload and rerun.
+                
                 _applicationToplevelMethod = _applicationClass
                         .getMethod("toplevel", new Class[] {});
-
-                // If a model is in org/terraswarm/accessors/test, the delay before reloading.
-                // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
-                _delay(fullPath);
-
-                if (fullPath.indexOf("org/terraswarm/accessors/test") != -1) {
-                    // Number of ms. to sleep before reloading.
-                    int sleepTime = 2500;
-                    System.out.println(
-                            "----------------- About to sleep for " sleepTime / 1000 + " seconds before reloading accessors in org/terraswarm/accessors/test"
-                                    + fullPath);
-                    try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException ex) {
-                        System.err.println(
-                                "Sleep before reloading of accessors was interrupted: "
-                                        + ex);
-                    }
-                }
                 Object toplevel = _applicationToplevelMethod.invoke(instance,
                         (Object[]) null);
+
                 if (_jsAccessorReloadAllAccessorsMethod == null) {
                     throw new InternalError(
                             "Found the JSAccessor class, but not the reloadAllAccessors() method?");
                 }
+                // Reload all the accessors and invoke rerun.
                 if (((Boolean) _jsAccessorReloadAllAccessorsMethod.invoke(null,
                         new Object[] { toplevel })).booleanValue()) {
                     System.out.println(
-                            "----------------- Reloaded Accessors and testing again "
+                            "----------------- Reloaded Accessors and testing again " + (new java.util.Date()) + " "
                                     + fullPath);
                     System.out.flush();
                     rerunMethod.invoke(instance, (Object[]) null);
