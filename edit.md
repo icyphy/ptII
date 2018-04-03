@@ -6,7 +6,7 @@ layout: default
 The static pages like this one are edited via the `gh-pages` branch of the [Github ptII repo](https://github.com/icyphy/ptII)
 
 ```
-      git clone --depth=50 --branch=master --single-branch --branch=gh-pages https://github.com/icyphy/ptII gh-pages 
+      git clone --depth=1 --single-branch --branch=gh-pages https://github.com/icyphy/ptII gh-pages 
 ```
 
 See [https://pages.github.com/](https://pages.github.com/) for details.
