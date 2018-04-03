@@ -33,7 +33,7 @@ ME =        org/hlacerti/demo
 
 DIRS =  Billard f14HLA \
 	IntegrationTests \
-        SynchronizeToRealTime \
+        SynchronizeToRealTime 
 # Root of the Java directory
 ROOT =      ../../..
 
@@ -51,7 +51,7 @@ PTCLASSALLJARS = \
 	Billard/Billard.jar \
 	f14HLA/f14HLA.jar \
 	IntegrationTests/IntegrationTests.jar \
-	SynchronizeToRealTime/SynchronizeToRealTime.jar \
+	SynchronizeToRealTime/SynchronizeToRealTime.jar 
 	
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
