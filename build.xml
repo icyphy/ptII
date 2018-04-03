@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="junitreport" name="ptII-gh-pages">
+
+  <target name="junitreport"
+          description="Read reports/**/TEST-*.xml files and create reports/junit/html/">
+
+    <junitreport todir="./reports">
+      <fileset dir="./reports">
+        <include name="**/TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="./reports/junit/html"/>
+    </junitreport>
+  </target>
+</project>
