@@ -184,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 54486 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.9 58036 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 54486 10.20.0.150 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.9 58036 10.20.0.85 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -200,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '361759565';
+        cur['env.TRAVIS_BUILD_ID'] = '361764273';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '179';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '180';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'f0b2eef7811f539c4ab7a143bb4607e364f7b6ff';
+        cur['env.TRAVIS_COMMIT'] = 'aef323e4e2b3e719972b2519a39b602a222c6159';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/\n* org/hlacerti/lib/HlaTimedEvent.java:\n  - Replaces \'OriginatedEvent.java’.\n  - Allows for Static multi-instances; Dynamic multi-instances are no longer supported.\n* org/hlacerti/lib/HlaSubscriber.java,\n  org/hlacerti/lib/HlaPublisher.java:\n  - Remove dynamic multi-instance support.\n  - Add HLA specific information to HLA actors (attribute handle, etc.)\n  - Code refactoring.\n* org/hlacerti/HlaSubscriberIcon.xml\n  org/hlacerti/HlaPublisherIcon.xml\n  - Add instance name parameter.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/\n* org/hlacerti/lib/StructuralInformation.java is no longer used and is removed\n* org/hlacerti/lib: the following files do not change: HlaManagerIcon.xml,\n  hlaentities.xml, AutomaticSimulation.java, README.txt.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'd0f006acfa29...f0b2eef7811f';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'f0b2eef7811f...aef323e4e2b3';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '361759570';
+        cur['env.TRAVIS_JOB_ID'] = '361764277';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '179.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '180.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -404,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8502649679207058932.properties propsfile=/home/travis/build/icyphy/ptII/junit4278126630841421419.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3410334925917978627.properties propsfile=/home/travis/build/icyphy/ptII/junit6198172406873747857.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -487,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="80_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="80_JUnitTclTest.html">5</a></td><td><a title="Display only errors" href="80_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>35.021</td><td>2018-04-03T18:42:43</td><td>travis-job-c22f27d3-363f-4804-9470-f8a81e25813a</td>
+<td><a title="Display all tests" href="80_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="80_JUnitTclTest.html">5</a></td><td><a title="Display only errors" href="80_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>33.090</td><td>2018-04-03T19:10:08</td><td>travis-job-c8df7e0e-0c23-4656-9de8-4ce078bae942</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -496,22 +496,22 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/TestNestedSuites.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/TestNestedSuites.xml (RunModel)</td><td>Success</td><td></td><td>21.738</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/TestNestedSuites.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/TestNestedSuites.xml (RunModel)</td><td>Success</td><td></td><td>21.144</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/Testing.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/Testing.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n &lt;testsuites&gt;\n &lt;testsuite name=\"Root Suite\" tests=\"0\"&gt;\n &lt;testsuite name=\"Common host: Basic\" tests=\"7\"&gt;\n &lt;testcase name=\"this.getParameter() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.getParameter() returns value set by this.setParameter().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided but type being boolean.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns value provided by provideInput().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"latestOutput contains value provided by inputHandlers and send().\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Composite accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Composite accessor produces correct output when manually scheduled.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite accessor produces correct output when automatically scheduled.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Spontaneous accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;failure message=\"Error: timeout of 3000ms exceeded Ensure the done() callback is being called in this test.\"/&gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Inheritance\" tests=\"4\"&gt;\n &lt;testcase name=\"Inheritance, function overriding, and variable visiility should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Implementing an interface should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Exported fields of base classes can be accessed and initialize() is properly scoped.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Two-level inheritance should work properly.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuites&gt;\n". Should have been: "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n &lt;testsuites&gt;\n &lt;testsuite name=\"Root Suite\" tests=\"0\"&gt;\n &lt;testsuite name=\"Common host: Basic\" tests=\"7\"&gt;\n &lt;testcase name=\"this.getParameter() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.getParameter() returns value set by this.setParameter().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided but type being boolean.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns value provided by provideInput().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"latestOutput contains value provided by inputHandlers and send().\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Composite accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Composite accessor produces correct output when manually scheduled.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite accessor produces correct output when automatically scheduled.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Spontaneous accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Inheritance\" tests=\"4\"&gt;\n &lt;testcase name=\"Inheritance, function overriding, and variable visiility should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Implementing an interface should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Exported fields of base classes can be accessed and initialize() is properly scoped.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Two-level inheritance should work properly.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuites&gt;\n"<br>  in .Testing.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>12.803</td>
+</code></td><td>11.437</td>
 </tr>
 </table>
 <div class="Properties">

@@ -184,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 54486 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.9 58036 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 54486 10.20.0.150 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.9 58036 10.20.0.85 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -200,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '361759565';
+        cur['env.TRAVIS_BUILD_ID'] = '361764273';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '179';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '180';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'f0b2eef7811f539c4ab7a143bb4607e364f7b6ff';
+        cur['env.TRAVIS_COMMIT'] = 'aef323e4e2b3e719972b2519a39b602a222c6159';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/\n* org/hlacerti/lib/HlaTimedEvent.java:\n  - Replaces \'OriginatedEvent.java’.\n  - Allows for Static multi-instances; Dynamic multi-instances are no longer supported.\n* org/hlacerti/lib/HlaSubscriber.java,\n  org/hlacerti/lib/HlaPublisher.java:\n  - Remove dynamic multi-instance support.\n  - Add HLA specific information to HLA actors (attribute handle, etc.)\n  - Code refactoring.\n* org/hlacerti/HlaSubscriberIcon.xml\n  org/hlacerti/HlaPublisherIcon.xml\n  - Add instance name parameter.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/\n* org/hlacerti/lib/StructuralInformation.java is no longer used and is removed\n* org/hlacerti/lib: the following files do not change: HlaManagerIcon.xml,\n  hlaentities.xml, AutomaticSimulation.java, README.txt.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'd0f006acfa29...f0b2eef7811f';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'f0b2eef7811f...aef323e4e2b3';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '361759570';
+        cur['env.TRAVIS_JOB_ID'] = '361764277';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '179.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '180.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -404,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8109221369862385243.properties propsfile=/home/travis/build/icyphy/ptII/junit964382726449107904.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2573841912259278018.properties propsfile=/home/travis/build/icyphy/ptII/junit3769926984983737225.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -486,8 +486,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Pass">
-<td><a title="Display all tests" href="73_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="73_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>33.562</td><td>2018-04-03T18:33:29</td><td>travis-job-c22f27d3-363f-4804-9470-f8a81e25813a</td>
+<tr valign="top" class="Error">
+<td><a title="Display all tests" href="73_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="73_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="73_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>19.552</td><td>2018-04-03T19:01:01</td><td>travis-job-c8df7e0e-0c23-4656-9de8-4ce078bae942</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -502,10 +502,14 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)</td><td>Success</td><td></td><td>33.125</td>
+<tr valign="top" class="Error">
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .MQTTPubSub.Test<br>
+<br>  in .MQTTPubSub.DE Director<br>Because:<br>The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .MQTTPubSub.Test<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .MQTTPubSub.Test<br>	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>
+</code></td><td>19.070</td>
 </tr>
 </table>
 <div class="Properties">
@@ -516,6 +520,11 @@
 <div class="Properties">
 <a href="./73_JUnitTclTest-out.html">
                         System.out &raquo;
+                    </a>
+</div>
+<div class="Properties">
+<a href="./73_JUnitTclTest-err.html">
+                        System.err &raquo;
                     </a>
 </div>
 </body>
