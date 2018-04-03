@@ -231,7 +231,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $PTII/logs/test.capecode.xml.txt
-    cp $LOG $PTII/report/junit
+    cp $LOG $PTII/reports/junit
     updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
@@ -245,7 +245,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
-    cp $LOG $PTII/report/junit
+    cp $LOG $PTII/reports/junit
     updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
