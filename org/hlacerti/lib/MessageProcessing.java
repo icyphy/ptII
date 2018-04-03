@@ -53,14 +53,21 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * Deals with message processing.
- * @author david
+ * <p>This class implements the functionalities to encode/decode
+ * HLA values received from HLA/CERTI.</p>
+ * 
+ *  @author David Come, Contributors: Gilles Lasnier
+ *  @version $Id: MessageProcessing.java 214 2018-04-01 13:32:02Z j.cardoso $
+ *  @since Ptolemy II 11.0
+ *
+ *  @Pt.ProposedRating Yellow (glasnier)
+ *  @Pt.AcceptedRating Red (glasnier)
  */
 public class MessageProcessing {
-    /** This generic method should call the {@link EncodingHelpers} API provided
-     *  by CERTI to handle type decoding operations for HLA value attribute that
-     *  has been reflected.
-     *  @param hs The targeted HLA subcriber actor.
+    /** This generic method calls the {@link EncodingHelpers} API provided
+     *  by CERTI to handle type decoding operations for HLA value attribute
+     *  that has been reflected (RAV).
+     *  @param hs The targeted HLA subscriber actor.
      *  @param type The type to decode the token.
      *  @param buffer The encoded value to decode.
      *  @return The decoded value as an object.
@@ -133,7 +140,7 @@ public class MessageProcessing {
         }
     }
 
-    /** This generic method call the {@link EncodingHelpers} API or the
+    /** This generic method calls the {@link EncodingHelpers} API or the
      *  {@link MessageBuffer} API provided by CERTI to handle data encoding
      *  operation for updated value of HLA attribute that will be published
      *  to the federation.
@@ -146,12 +153,7 @@ public class MessageProcessing {
     public static byte[] encodeHlaValue(HlaPublisher hp, Token tok)
             throws IllegalActionException {
         byte[] encodedValue = null;
-        Token t = null;
-        double recordTimestamp = -1.0;
-        int recordMicrostep = -1;
-        double sourceTimestamp = -1.0;
-
-        t = tok;
+        Token t = tok;
 
         // Get the corresponding type of the HLA attribute value.
         BaseType type = (BaseType) t.getType();
