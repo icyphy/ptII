@@ -31,7 +31,7 @@
 
 ME =		org/hlacerti/demo/f14HLA
 
-DIRS = 	AllFederatesNER AllFederatesTAR initialCentralizedF14 priseStick
+DIRS = 	AllFederatesNER AllFederatesTAR initialCentralizedF14
 
 # Root of the Java directory
 ROOT =		../../../..
