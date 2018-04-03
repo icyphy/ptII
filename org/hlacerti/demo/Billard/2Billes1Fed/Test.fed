@@ -1,0 +1,37 @@
+;; Billard
+
+(Fed
+  (Federation Test)
+  (FedVersion v1.3)
+  (Federate "fed" "Public")
+  (Spaces
+	(Space "Geo"
+		(Dimension X)
+		(Dimension Y)
+	)
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class Bille
+		(Attribute PositionX RELIABLE TIMESTAMP)
+		(Attribute PositionY RELIABLE TIMESTAMP)
+		(Class Boule
+			(Attribute Color RELIABLE TIMESTAMP)
+		)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+      (Class Bing RELIABLE TIMESTAMP
+	(Sec_Level "Public")
+	(Parameter BoulNum)
+	(Parameter DX)
+	(Parameter DY)
+      )
+    )
+  )
+)
