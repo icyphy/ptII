@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # This script is called by $PTII/.travis.yml as part of the Travis-ci
 # build at https://travis-ci.org/icyphy/ptII/
@@ -26,7 +26,12 @@ fi
 # Usage: updateGhPages source-file-or-directory directory-in-gh-pages
 
 
-TIMEOUT_INSTALLERS=2400
+# If the output is more than 10k lines, then Travis fails, so we
+# redirect voluminuous output into a log file.
+
+# Number of lines to show from the log file.
+lastLines=50
+
 
 # Copy the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
@@ -120,7 +125,7 @@ function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 # Below here, the if statements should be in alphabetical order
 # according to variable name.
 
-# These two builds produce less than 10K lines, so we don't save the
+# This build produces less than 10K lines, so we don't save the
 # output to a log file.
 if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     ant build-all;
@@ -128,9 +133,12 @@ fi
 
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
     LOG=$PTII/logs/docs.txt
-    # Create the Javadoc jar files for use by the installer Note that
-    # there is a chance that the installer will use javadoc jar files
-    # that are slightly out of date.
+    # Create the Javadoc jar files for use by the installer and deploy
+    # them to Github pages.
+
+    # Note that there is a chance that the installer will use javadoc
+    # jar files that are slightly out of date.
+
     ant javadoc jsdoc 2>&1 | grep -v GITHUB_TOKEN > $LOG 
     (cd doc; make install) 2>&1 | grep -v GITHUB_TOKEN >> $LOG 
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
@@ -142,13 +150,12 @@ if [ ! -z "$PT_TRAVIS_P" ]; then
     echo "$0: Output will appear in $LOG"
     ant -p 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
-    echo "$0: Start of last 100 lines of $LOG"
-    tail -100 $LOG
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
     updateGhPages $LOG logs/
 fi
 
-# Build the installers.  For this to complete in the time alloted by
-# Travis, the prime_installer target below needs to run.
+# Build the installers.
 if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
@@ -166,7 +173,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
 
     # Number of seconds to run the subprocess.  Can't be more than 50
     # minutes or 3000 seconds.  45 minutes is cutting it a bit close,
-    # so we go with a maximum of 40 minutes or 2400 seconds.  We can't
+    # so we go with a maximum of 35 minutes or 2100 seconds.  We can't
     # use Travis' timeout feature because we want to copy the output
     # to gh-pages. The timeouts should vary so as to avoid git
     # conflicts.
@@ -178,8 +185,8 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     rm -rf $PTII/adm/dists
     ant clean
 
-    echo "$0: Start of last 100 lines of $LOG"
-    tail -100 $LOG
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
     updateGhPages $LOG logs/
 
     ls -l $PTII/adm/gen-11.0
@@ -189,6 +196,9 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
 fi
 
 # Prime the cache in $PTII/vendors/installer so that the installers target is faster.
+
+# This target is not regularly run, but remains if we have issues
+# getting the build working with an empty cache
 if [ ! -z "$PT_TRAVIS_PRIME_INSTALLER" ]; then
     make -C $PTII/adm/gen-11.0 USER=travis PTIIHOME=$PTII COMPRESS=gzip prime_installer
     ls $PTII/vendors/installer
@@ -201,8 +211,8 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     
     timeout 2400 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
-    echo "$0: Start of last 100 lines of $LOG"
-    tail -100 $PTII/logs/test.capecode.xml.txt
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $PTII/logs/test.capecode.xml.txt
     updateGhPages $LOG logs/
     ant junitreport
     updateGhPages $PTII/reports/junit reports/
@@ -216,8 +226,8 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     # The timeouts should vary so as to avoid git conflicts.
     timeout 1800 ant build test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
-    echo "$0: Start of last 100 lines of $LOG"
-    tail -100 $LOG
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
     updateGhPages $LOG logs
     ant junitreport
     updateGhPages $PTII/reports/junit reports/
