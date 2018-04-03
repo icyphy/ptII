@@ -1,0 +1,29 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Error: Simulation process did not start.
+Error when starting external process.
+Error message           : Cannot run program "cclient" (in directory "/home/travis/build/icyphy/ptII/lbnl/test/auto/."): error=2, No such file or directory
+Current directory       : /home/travis/build/icyphy/ptII/lbnl/test/auto/.
+ProcessBuilder arguments: [cclient, 60]
+Check configuration of '.CRoom.Room'.
+  in .CRoom.Room
+	at lbnl.actor.lib.Simulator._startSimulation(Simulator.java:831)
+	at lbnl.actor.lib.Simulator.preinitialize(Simulator.java:667)
+	at ptolemy.actor.Director.preinitialize(Director.java:1302)
+	at ptolemy.actor.Director.preinitialize(Director.java:1257)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:763)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+</pre>
+</body>
+</html>
