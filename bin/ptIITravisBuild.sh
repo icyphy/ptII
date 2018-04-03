@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # This script is called by $PTII/.travis.yml as part of the Travis-ci
 # build at https://travis-ci.org/icyphy/ptII/
@@ -41,19 +41,28 @@ lastLines=50
 # The reason we need this is because the Travis deploy to gh-pages seems
 # to overwrite everything in the repo.
 # Usage:
-#   updateGhPages fileOrDirectory1 [fileOrDirectory2 ...] destinationDirectory
+#   updateGhPages [-junitreport] fileOrDirectory1 [fileOrDirectory2 ...] destinationDirectory
+#   -junitreport is optional, and if present, then "ant junitreport" is run.
 #
 updateGhPages () {
-    length=$(($#-1))
-    sources=${@:1:$length}
-    destination=${@: -1}
+    if [ $1 = "-junitreport" ]; then
+        length=$(($#-2))
+        sources=${@:2:$length}
+        destination=${@: -1}
+    else
+        length=$(($#-1))
+        sources=${@:1:$length}
+        destination=${@: -1}
+    fi
+
+    echo "length: $length, sources: $sources, destination: $destination";
 
     if [ -z "$GITHUB_TOKEN" ]; then
         echo "$0: GITHUB_TOKEN was not set, so $sources will not be copied to $destination in the gh-pages repo."
         return 
     fi
 
-    df -k
+    df -k .
     TMP=/tmp/ptIITravisBuild_gh_pages.$$
     if [ ! -d $TMP ]; then
         mkdir $TMP
@@ -70,7 +79,7 @@ updateGhPages () {
     git clone --depth=1 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
     set -x
 
-    df -k
+    df -k .
     # Commit and Push the Changes
     cd gh-pages
     echo "$destination" | grep '.*/$'
@@ -83,6 +92,10 @@ updateGhPages () {
     fi        
 
     cp -Rf $sources $destination
+
+    if [ $1 = "-junitreport" ]; then
+        ant junitreport
+    fi
 
     # JUnit xml output will include the values of the environment,
     # which can include GITHUB_TOKEN, which is supposed to be secret.
@@ -108,7 +121,8 @@ updateGhPages () {
 
     git add -f .
     date
-    git pull
+    git status
+    # git pull
     date
     git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git pull
@@ -141,6 +155,9 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
 
     ant javadoc jsdoc 2>&1 | grep -v GITHUB_TOKEN > $LOG 
     (cd doc; make install) 2>&1 | grep -v GITHUB_TOKEN >> $LOG 
+
+    # No need to check in the log each time because this target is
+    # easy to re-run.
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
@@ -181,7 +198,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     timeout 2100 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
  
     # Free up space for clone of gh-pages
-    df -k
+    df -k .
     rm -rf $PTII/adm/dists
     ant clean
 
@@ -195,8 +212,9 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     # a 100Mb limit unless we use Git LFS.
 fi
 
-# Prime the cache in $PTII/vendors/installer so that the installers target is faster.
-
+# Prime the cache in $PTII/vendors/installer so that the installers
+# target is faster.
+#
 # This target is not regularly run, but remains if we have issues
 # getting the build working with an empty cache
 if [ ! -z "$PT_TRAVIS_PRIME_INSTALLER" ]; then
@@ -213,9 +231,8 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $PTII/logs/test.capecode.xml.txt
-    updateGhPages $LOG logs/
-    ant junitreport
-    updateGhPages $PTII/reports/junit reports/
+    cp $LOG $PTII/report/junit
+    updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
 # Run the short tests.
@@ -228,8 +245,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
-    updateGhPages $LOG logs
-    ant junitreport
-    updateGhPages $PTII/reports/junit reports/
+    cp $LOG $PTII/report/junit
+    updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
