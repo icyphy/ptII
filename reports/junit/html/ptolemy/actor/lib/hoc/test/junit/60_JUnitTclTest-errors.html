@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.16 37554 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.37 39116 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.16 37554 10.20.0.227 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.37 39116 10.20.1.105 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '361825801';
+        cur['env.TRAVIS_BUILD_ID'] = '361903254';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '183';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '189';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '01108af8d38499d39eb315dcbc67bc9b849dc3db';
+        cur['env.TRAVIS_COMMIT'] = '65b91be39589571c52c7a2bbc3c68c98fdb5a16a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'New release of the PTII HLA/CERTI cooperation framework: org/hlacerti/\n* org/hlacerti/test/auto:\n  - Model updated: MultiDataTypes\n  - New tests added: FederatesDifferentTimeManagement, StaticMultiInstance\n    SimplePublisherSubscriber, StaticMultiInstanceJoker\n  - All models NameFolder have a file NameFolder.xml inside.\n* org/hlacerti: INSTALL_VergilCERTI.txt, makefile and lib/makelfile are updated.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'short: download codeDoc.jar for doc/test/docManager.tcl.  Moved test output files to reports/junit so that we only run updateGhPages once per target.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '2f11b34f2215...01108af8d384';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'fb3a2148592e...65b91be39589';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '361825809';
+        cur['env.TRAVIS_JOB_ID'] = '361903259';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '183.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '189.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6000590210869982624.properties propsfile=/home/travis/build/icyphy/ptII/junit4133425773384323089.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1878555912963347418.properties propsfile=/home/travis/build/icyphy/ptII/junit5643591310746964748.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="60_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="60_JUnitTclTest.html">58</a></td><td><a title="Display only errors" href="60_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>22.750</td><td>2018-04-03T21:17:09</td><td>travis-job-9c4bac04-273b-498c-9854-3b29011672bd</td>
+<td><a title="Display all tests" href="60_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="60_JUnitTclTest.html">58</a></td><td><a title="Display only errors" href="60_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>23.251</td><td>2018-04-04T00:24:08</td><td>travis-job-81e8ca6f-fe97-43a1-8c47-460ccf500432</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -502,7 +503,7 @@
 <td><a name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)"></a>[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Inside thread was interrupted.<br>  in .MulticoreExecution.ThreadedComposite.ThreadedDirector<br>	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:646)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)<br>	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.056</td>
+</code></td><td>1.047</td>
 </tr>
 </table>
 <div class="Properties">
