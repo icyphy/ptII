@@ -4263,11 +4263,11 @@ update_moog:
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocHyVisual 
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocViptos
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocVisualSense
-	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDoc $(PTEXTERNAL_NIGHTLY)/doc
-	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocCapeCode $(PTEXTERNAL_NIGHTLY)/doc
-	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocHyVisual $(PTEXTERNAL_NIGHTLY)/doc
-	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocVisualSense $(PTEXTERNAL_NIGHTLY)/doc
-	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocViptos $(PTEXTERNAL_NIGHTLY)/doc
+	#ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDoc $(PTEXTERNAL_NIGHTLY)/doc
+	# ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocCapeCode $(PTEXTERNAL_NIGHTLY)/doc
+	# ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocHyVisual $(PTEXTERNAL_NIGHTLY)/doc
+	# ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocVisualSense $(PTEXTERNAL_NIGHTLY)/doc
+	# ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocViptos $(PTEXTERNAL_NIGHTLY)/doc
 	#
 	# Copy over doc/coding/eclipse.htm and doc/eclipse/
 	ssh -l $(USER) moog mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/coding
