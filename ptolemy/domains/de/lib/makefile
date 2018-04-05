@@ -105,7 +105,8 @@ OTHER_FILES_TO_BE_JARED = \
 	TimeGapIcon.xml \
 	TimedDelayIcon.xml \
 	TimerIcon.xml \
-	VariableDelayIcon.xml
+	VariableDelayIcon.xml \
+	WaitingTimeIcon.xml \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
