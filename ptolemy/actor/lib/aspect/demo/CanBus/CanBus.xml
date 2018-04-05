@@ -3,9 +3,9 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CanBus" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 175.0]">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="205.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="220.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="85.0">
         </property>
@@ -16,7 +16,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
@@ -43,13 +43,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 110.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 54, 821, 623}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 54, 1099, 804}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[587, 513]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[865, 694]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0162926011620959">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1602748333824504">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.5322265625, 195.9176787405303}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{395.4471882870593, 338.6522818796474}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Multicast OK">
@@ -58,9 +58,9 @@
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="102.5, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 275.0]">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="145.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="169.99999999999997">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="90.0">
         </property>
@@ -100,7 +100,7 @@
         </property>
     </property>
     <property name="Rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[347.5, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 95.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="90.0">
         </property>
@@ -129,11 +129,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 335.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A very simple scenario: just one collision. The transmission delay is d=1.1&#10;- There is a collision at time t=1.0; actor A has higher priority and its&#10;output is multicasted for B1 and B2 (received at 1+d=2.1)&#10;- at t=2.1 the the bus is free;  DC2 try to send again: the bus is free, it suceed. &#10;The msg is sent through the Can bus to C (will be received at 2.1+d=3.2)&#10;&#10;You can change the priority of actors CanBusPr.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A very simple scenario: just one collision. The transmission delay is d=1.1&#10;- There is a collision at time t=1.0; actor A has higher priority and its&#10;output is multicasted for B1 and B2 (received at 1+d=2.1)&#10;- at t=2.1 the the bus is free;  DC2 try to send again: the bus is free, it succeeds. &#10;The msg is sent through the Can bus to C (will be received at 2.1+d=3.2)&#10;&#10;You can change the priorities of messages by clicking on the CanBusPriority actors.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 345.0]">
         </property>
@@ -143,7 +143,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="J. Cardoso &amp; D. Marciano">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 470.0]">
         </property>
     </property>
     <entity name="DC" class="ptolemy.actor.lib.DiscreteClock">
@@ -154,54 +154,126 @@
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 170.0}">
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="period" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
     </entity>
     <entity name="DC2" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="offsetDC2">
         </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 270.0]">
         </property>
-    </entity>
-    <entity name="A" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[152.0, 170.0]">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={295, 166, 934, 634}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
-        </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-        </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{59.0, 72.0}">
-            </property>
-        </property>
-        <port name="iA" class="ptolemy.actor.TypedIOPort">
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 265.0}">
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
-        <port name="oA" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 230.0]">
+        <port name="period" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
-            <vertex name="vertex1" value="[60.0, 265.0]">
-            </vertex>
-        </relation>
-        <link port="iA" relation="relation3"/>
-        <link port="oA" relation="relation3"/>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
     </entity>
     <entity name="B1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[347.5, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 97.5]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
@@ -223,7 +295,17 @@
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="CanBus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CanBus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: CanBus">
+            </property>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="oB1" class="ptolemy.actor.TypedIOPort">
@@ -243,25 +325,49 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[352.5, 272.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 270.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="CanBus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CanBus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: CanBus">
+            </property>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="B1,B2,C,A,DC2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={966, 89, 270, 195}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1033, 88, 394, 278}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[270, 151]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[394, 234]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[457.5, 207.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 210.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -269,8 +375,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="3.200000004"/>
-<yRange min="1.0" max="2.0"/>
+<xRange min="1.0" max="2.1000000020000003"/>
+<yRange min="1.0" max="4.0"/>
 <default marks="various"/>
 </plot>?>
         </configure>
@@ -298,7 +404,17 @@
             </property>
             <property name="qm" class="ptolemy.data.expr.Parameter" value="CanBus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CanBus">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: CanBus">
+            </property>
+            <property name="DecoratorAttributesFor_CanBus" class="ptolemy.actor.lib.aspect.CanBus$CanBusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CanBus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="canPriority" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </property>
         </port>
         <port name="oB2" class="ptolemy.actor.TypedIOPort">
@@ -312,12 +428,13 @@
         <link port="oB2" relation="relation"/>
     </entity>
     <entity name="CanBus" class="ptolemy.actor.lib.aspect.CanBus">
-        <property name="bitRate (kbit/s)" class="ptolemy.data.expr.Parameter" value="0.098181818">
+        <property name="bitRate" class="ptolemy.data.expr.Parameter" value="0.098181818">
+            <display name="bitRate (kbit/s)"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[447.5, 77.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 77.5]">
         </property>
     </entity>
-    <entity name="CanBusPr" class="ptolemy.actor.lib.aspect.CanBusPriority">
+    <entity name="CanBusPriority" class="ptolemy.actor.lib.aspect.CanBusPriority">
         <property name="CanId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>A actor (used with the CanBus communication aspect) that attributes a given priority to a given output signal.</doc>
@@ -327,10 +444,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 170.0]">
         </property>
     </entity>
     <entity name="CanBusPr2" class="ptolemy.actor.lib.aspect.CanBusPriority">
+        <display name="CanBusPriority"/>
         <property name="CanId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <doc>A actor (used with the CanBus communication aspect) that attributes a given priority to a given output signal.</doc>
@@ -340,15 +458,13 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 270.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[282.5, 202.5]">
+        <vertex name="vertex1" value="[280.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -363,14 +479,12 @@
         <vertex name="vertex1" value="[257.5, 232.5]">
         </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DC.output" relation="relation3"/>
     <link port="DC2.output" relation="relation8"/>
-    <link port="A.iA" relation="relation3"/>
-    <link port="A.oA" relation="relation7"/>
     <link port="B1.iB1" relation="relation5"/>
     <link port="B1.oB1" relation="relation4"/>
     <link port="C.input" relation="relation"/>
@@ -382,8 +496,8 @@
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="B2.iB2" relation="relation5"/>
     <link port="B2.oB2" relation="relation2"/>
-    <link port="CanBusPr.input" relation="relation7"/>
-    <link port="CanBusPr.output" relation="relation5"/>
+    <link port="CanBusPriority.input" relation="relation3"/>
+    <link port="CanBusPriority.output" relation="relation5"/>
     <link port="CanBusPr2.input" relation="relation8"/>
     <link port="CanBusPr2.output" relation="relation"/>
 </entity>

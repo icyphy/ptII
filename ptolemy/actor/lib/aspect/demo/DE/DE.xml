@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 83, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -19,11 +19,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an opaque composite with a DE Director&#10;and two Ramp actors.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-55.0, -95.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-55.0, -95.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JustDE">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -31,11 +31,11 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is an opaque composite with a DE Director&#10;and two Ramp actors. The composite also contains&#10;a FixedPriorityScheduler which is used to&#10;schedule the execution of the Ramps. A parameter&#10;on the Ramps specifies the execution time.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[10.0, 50.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[10.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DEAndFPScheduling">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -91,6 +91,8 @@
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
             </property>
+            <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+            </property>
         </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
             <property name="init" class="ptolemy.actor.parameters.PortParameter" value="5">
@@ -111,6 +113,8 @@
                 </property>
                 <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+            </property>
+            <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
             </property>
         </entity>
         <entity name="FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">

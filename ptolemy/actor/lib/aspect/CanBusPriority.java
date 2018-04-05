@@ -49,6 +49,7 @@ import ptolemy.kernel.util.Workspace;
  *  @author D. Marciano, P. Derler
  *  @version $Id$
    @since Ptolemy II 10.0
+   @deprecated This does not do anything!
 
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)

@@ -2265,11 +2265,8 @@ public class JavaScript extends AbstractPlaceableActor
     /** Initial script as a token. */
     protected static final StringToken _INITIAL_SCRIPT = new StringToken(
             "// Put your JavaScript program here.\n"
-                    + "// Add ports and parameters.\n"
-                    + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
                     + "// Refer to parameters in scope using dollar-sign{parameterName}.\n"
-                    + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
-                    + "// Send to output ports using send(value, portName, channel).\n");
+                    + "// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification\n");
 
     /** The instance returned when evaluating the script. */
     protected Object _instance;

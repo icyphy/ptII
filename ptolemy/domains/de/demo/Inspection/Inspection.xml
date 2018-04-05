@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -24,7 +24,7 @@
     </property>
     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[898, 522]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[72, 77]">
     </property>
@@ -34,7 +34,7 @@
     </property>
     <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1013, 610}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1132, 632}, maximized=false}">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -166,9 +166,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 50.0}">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0894748872680422">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 250.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.6920318603516, 239.98925781250003}">
     </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
@@ -215,7 +215,7 @@
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="5.1235144603"/>
+<yRange min="0.0" max="3.5533223604"/>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
@@ -243,8 +243,8 @@
 <title>Waiting Time Histogram</title>
 <xLabel>waiting times</xLabel>
 <yLabel>passengers</yLabel>
-<xRange min="0.1" max="5.199999999999999"/>
-<yRange min="0.0" max="26.0"/>
+<xRange min="0.1" max="3.6000000000000005"/>
+<yRange min="0.0" max="23.0"/>
 <noGrid/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
@@ -376,7 +376,7 @@
         <link port="Const.trigger" relation="relation9"/>
     </entity>
     <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={589, 407, 724, 96}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 338, 758, 167}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 52]">
         </property>
@@ -391,12 +391,6 @@
         <property name="time" class="ptolemy.data.expr.Parameter" value="executionTime">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 420.0">
         </property>

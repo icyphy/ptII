@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 30, 1013, 759}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 30, 1034, 759}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 649]">
     </property>
@@ -445,11 +445,11 @@ GraphicalLocator)</text></svg></configure>
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 255.0">
@@ -458,11 +458,11 @@ GraphicalLocator)</text></svg></configure>
             </property>
         </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="init" class="ptolemy.actor.parameters.PortParameter" value="PI/2.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 330.0">

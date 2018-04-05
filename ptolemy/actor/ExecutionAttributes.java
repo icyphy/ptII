@@ -47,6 +47,8 @@ Container for decorator attributes that are provided to actors by
 a ExecutionAspect. The resource scheduler decorates actors
 in a model with the attributes contained by this object.
 
+This provides an "enable" attribute.
+
  @author  Patricia Derler
  @author  Edward A. Lee
  @version $Id$

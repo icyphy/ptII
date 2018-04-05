@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.172108994944517">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.6575249565972, 268.24951171875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.6575249565972, 268.24951171875}">
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -35,7 +35,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From time 20 to 40&#10;replace the value with&#10;a fixed number 6.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 450.0]">
         </property>
     </property>
     <property name="Attack" class="ptolemy.data.expr.ChoiceStringParameter" value="ManInTheMiddleAttack">
@@ -66,7 +66,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 15, start&#10;replaying data&#10;recorded from time 10.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 450.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,7 +76,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 5 time units,&#10;replace the value&#10;with a random one&#10;between 0 and 20.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 455.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -86,7 +86,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From time 20 to 40,&#10;drop the value.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 445.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -94,7 +94,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that for most of these, the position of the following car crosses the&#10;possition of the leading car, indicating a crash.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 495.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 495.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -118,9 +118,9 @@
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The attacks are implemented by the following models (open them to see):">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The attacks are implemented by the following aspect models (open them to see):">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 335.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1391,11 +1391,11 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -110.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="attack" class="ptolemy.domains.modal.kernel.State">
@@ -1403,11 +1403,11 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, -110.0}">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -2395,31 +2395,31 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 74.99999566543127]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="recording" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="recording2">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[328.5, 136.79273587863716]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="replaying" class="ptolemy.domains.modal.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="replaying2">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[468.5, 136.79273587863716]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">

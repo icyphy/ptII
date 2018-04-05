@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Pendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 48.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 360]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 522]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[114, 147]">
     </property>
@@ -41,11 +41,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 15.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 794, 470}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 815, 632}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 180.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 261.0}">
     </property>
     <entity name="Sphere" class="ptolemy.domains.gr.lib.Sphere3D">
         <property name="radius" class="ptolemy.data.expr.Parameter" value="bob_radius">
@@ -54,13 +54,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
         </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 170.0}">
         </property>
     </entity>
     <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
@@ -78,7 +72,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="zAngle" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="196.00000095367432, 190.5">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 190.0]">
         </property>
     </entity>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
@@ -104,7 +98,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="457.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 190.0]">
         </property>
     </entity>
     <entity name="Cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
@@ -116,13 +110,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
         </property>
-        <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 255.0]">
         </property>
     </entity>
     <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
@@ -134,7 +122,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="pivotLocation" class="ptolemy.actor.parameters.PortParameter" value="[0.0, 0.35, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="318.0000009536743, 264.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 265.0}">
         </property>
     </entity>
     <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
@@ -181,13 +169,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     </entity>
     <entity name="damped pendulum ODE" class="ptolemy.actor.TypedCompositeActor">
         <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-            </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
@@ -196,6 +182,8 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+            </property>
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
             </property>
@@ -500,34 +488,34 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Sphere.sceneGraphOut" relation="relation4"/>
     <link port="Translate.sceneGraphIn" relation="relation4"/>
     <link port="Translate.sceneGraphOut" relation="relation11"/>
-    <link port="ViewScreen.sceneGraphIn" relation="relation8"/>
-    <link port="ViewScreen.sceneGraphIn" relation="relation9"/>
     <link port="ViewScreen.sceneGraphIn" relation="relation0"/>
-    <link port="Cylinder.sceneGraphOut" relation="relation3"/>
-    <link port="Rotate.sceneGraphIn" relation="relation3"/>
+    <link port="ViewScreen.sceneGraphIn" relation="relation3"/>
+    <link port="ViewScreen.sceneGraphIn" relation="relation5"/>
+    <link port="Cylinder.sceneGraphOut" relation="relation2"/>
     <link port="Rotate.sceneGraphIn" relation="relation11"/>
-    <link port="Rotate.sceneGraphOut" relation="relation9"/>
+    <link port="Rotate.sceneGraphIn" relation="relation2"/>
+    <link port="Rotate.sceneGraphOut" relation="relation5"/>
     <link port="Rotate.angle" relation="relation"/>
     <link port="Text.sceneGraphOut" relation="relation17"/>
     <link port="Scale3D.sceneGraphIn" relation="relation17"/>
     <link port="Scale3D.sceneGraphOut" relation="relation20"/>
     <link port="Translate2.sceneGraphIn" relation="relation20"/>
-    <link port="Translate2.sceneGraphOut" relation="relation8"/>
+    <link port="Translate2.sceneGraphOut" relation="relation3"/>
     <link port="damped pendulum ODE.output" relation="relation"/>
     <link port="Stage.output" relation="relation0"/>
 </entity>

@@ -59,8 +59,7 @@ public class ExecutionAspectHelper {
             CompositeEntity container) {
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
         for (Object entity : container.entityList(ComponentEntity.class)) {
-            if (!(entity instanceof ActorExecutionAspect
-                    || entity instanceof Director)) {
+            if (!(entity instanceof ActorExecutionAspect)) {
                 toDecorate.add((NamedObj) entity);
                 if (entity instanceof CompositeEntity) {
                     toDecorate.addAll(ExecutionAspectHelper

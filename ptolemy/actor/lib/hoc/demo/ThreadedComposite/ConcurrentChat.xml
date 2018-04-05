@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConcurrentChat" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 22, 837, 690}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 23, 858, 690}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 580]">
     </property>
@@ -40,6 +40,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 550.0}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Say &quot;nothing&quot;&#10;periodically.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 295.0]">
         </property>
     </property>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
@@ -94,7 +104,7 @@
         <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
             <property name="prompt" class="ptolemy.actor.parameters.PortParameter" value="&gt;&gt; ">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 654, 388}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 646, 420}, maximized=false}">
             </property>
             <doc>Produce strings from an interactive shell on the screen</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 145}">
@@ -138,7 +148,7 @@
         <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
             <property name="prompt" class="ptolemy.actor.parameters.PortParameter" value="&gt;&gt; ">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 405, 654, 388}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 405, 646, 420}, maximized=false}">
             </property>
             <doc>Produce strings from an interactive shell on the screen</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 145}">
