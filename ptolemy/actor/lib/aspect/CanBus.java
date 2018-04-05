@@ -111,6 +111,7 @@ import ptolemy.kernel.util.Workspace;
  *  @author D. Marciano, G. Lasnier, P. Derler
  *  @version $Id$
  *  @since Ptolemy II 10.0
+ *  @deprecated This does not appear to work!
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)
  */

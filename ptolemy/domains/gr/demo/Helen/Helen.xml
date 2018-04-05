@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Helen" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="100">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 30}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 30, 600, 456}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 30, 834, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates mapping of a texture&#10;(from a PNG encoded photograph) onto a cube,&#10;and the tumbling of that cube using the&#10;axis rotator.">
@@ -49,17 +49,11 @@
         </property>
         <property name="texture" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/gr/demo/Helen/Helen.png">
         </property>
-        <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 90.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-PI/100">
         </property>
@@ -68,7 +62,7 @@
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-PI/100">
         </property>
@@ -81,7 +75,7 @@
         </property>
     </entity>
     <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-PI/100">
         </property>

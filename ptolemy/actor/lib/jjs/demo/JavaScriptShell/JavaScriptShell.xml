@@ -8,14 +8,18 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[754, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6752582897810824">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{218.05531067607006, 140.5908203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.0, 262.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 30.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -23,84 +27,106 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 345.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.11376953125, 39.2816162109375]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open the JavaScript actor&#10;to see how this is realized.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 130.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run the model and type in JavaScript expressions, such as:&#10;  a = 42&#10;  a + 42">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 65.0]">
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={695, 476, 646, 420}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[89.11376953125, 214.2816162109375]">
         </property>
-    </entity>
-    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    this.input('expression');&#10;}&#10;exports.fire = function() {&#10;    var result = eval.call(this, this.get('expression'));&#10;    if (result == null) {&#10;      result = &quot;null&quot;;&#10;    }&#10;    this.send('output', result);&#10;}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 190.0}">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
-            </property>
-        </port>
-        <port name="expression" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;JavaScript Shell&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 150.0]">
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[339.11376953125, 219.2816162109375]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 300.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
+    <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    this.input('expression');&#10;    this.output('output');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('expression', function() {&#10;		var result = eval.call(this, this.get('expression'));&#10;    	if (result == null) {&#10;      		result = &quot;null&quot;;&#10;    	}&#10;    	this.send('output', result);&#10;	});&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[219.11376953125, 214.2816162109375]">
+        </property>
+        <port name="expression" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=225.0,y=125.0}, tail={id=&quot;Merge.input&quot;,x=315.0,y=195.0,index=3}, points={275.0,125.0,275.0,185.0} } }">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.output&quot;,x=210.0,y=190.0}, tail={id=&quot;Merge.input&quot;,x=315.0,y=195.0,index=3}, points={} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=315.0,y=195.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=175.0,y=280.0}, points={355.0,195.0,355.0,280.0} } }">
-        </property>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=65.0,y=190.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=175.0,y=280.0}, points={0.0,180.0,0.0,280.0} } }">
-        </property>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.error&quot;,x=210.0,y=190.0}, tail={id=&quot;Merge.input&quot;,x=315.0,y=195.0,index=3}, points={200.0,245.0,275.0,245.0,275.0,195.0} } }">
-        </property>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.expression&quot;,x=210.0,y=190.0}, tail={id=&quot;InteractiveShell.output&quot;,x=65.0,y=190.0}, points={} } }">
-        </property>
+        <vertex name="vertex1" value="{20.0, 300.0}">
+        </vertex>
     </relation>
-    <link port="InteractiveShell.input" relation="relation8"/>
-    <link port="InteractiveShell.output" relation="relation"/>
-    <link port="JavaScript.error" relation="relation9"/>
-    <link port="JavaScript.output" relation="relation3"/>
-    <link port="JavaScript.expression" relation="relation"/>
+    <link port="InteractiveShell.input" relation="relation"/>
+    <link port="InteractiveShell.output" relation="relation5"/>
     <link port="SingleEvent.output" relation="relation7"/>
     <link port="Merge.input" relation="relation7"/>
+    <link port="Merge.input" relation="relation2"/>
     <link port="Merge.input" relation="relation3"/>
-    <link port="Merge.input" relation="relation9"/>
     <link port="Merge.output" relation="relation4"/>
     <link port="MicrostepDelay.input" relation="relation4"/>
-    <link port="MicrostepDelay.output" relation="relation8"/>
+    <link port="MicrostepDelay.output" relation="relation"/>
+    <link port="JavaScript2.error" relation="relation3"/>
+    <link port="JavaScript2.expression" relation="relation5"/>
+    <link port="JavaScript2.output" relation="relation2"/>
 </entity>

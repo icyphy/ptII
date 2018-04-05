@@ -68,11 +68,11 @@ with the following parameters:
      Priority -1 means higher priority than any non-negative number.
 </ul>
 
-For usage and supported directors {@link ptolemy.actor.ActorExecutionAspect}.
+For usage and supported directors, see {@link ptolemy.actor.ActorExecutionAspect}.
 
 When using this ExecutionAspect in the Ptides domain, the platform
 time in Ptides will be used to schedule execution times. When
- the Ptides director requests that an actor fire, if this resource is
+the Ptides director requests that an actor fire, if this resource is
 free, it will immediately schedule it. Otherwise, it will queue it to be
 executed when the resource becomes free. When the resource becomes free,
 the actor with the highest priority (the lower priority number) will

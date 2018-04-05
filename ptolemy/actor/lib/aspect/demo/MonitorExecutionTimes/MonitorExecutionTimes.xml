@@ -10,15 +10,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 23, 980, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[746, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.00000000000003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{363.0, 252.00000000000003}">
     </property>
-    <property name="ExecutionTime" class="ptolemy.data.expr.Parameter" value="0.6450102964303">
+    <property name="ExecutionTime" class="ptolemy.data.expr.Parameter" value="0.6469581722789">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -52,7 +52,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Monitor execution times and report&#10;violations that exceed a threshold.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Monitor response times under a premptive, priority-driven scheduler&#10;and report violations that exceed a threshold.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
         </property>
@@ -72,7 +72,19 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 385.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This sets the execution time for the&#10;_next_ execution of the Scale actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 345.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Try setting the priority of Uniform to 0.&#10;This will result in far more frequent excess response times.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 455.0]">
         </property>
     </property>
     <entity name="Monitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
@@ -202,9 +214,11 @@
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={885, 24, 504, 338}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={885, 24, 499, 368}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="title" class="ptolemy.data.expr.StringParameter" value="Execution Time Reports">
             </property>
@@ -275,7 +289,7 @@
             </property>
             <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
             </property>
-            <property name="priority" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </property>
         <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
@@ -367,11 +381,11 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.9171423265" max="29.0841708543"/>
-<yRange min="0.9171423265" max="29.0841708543"/>
+<title>Executions Completed</title>
+<xLabel>time</xLabel>
+<yLabel>time</yLabel>
+<xRange min="0.6784472587" max="28.5027826024"/>
+<yRange min="0.6784472587" max="28.5027826024"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
@@ -386,18 +400,18 @@
         <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="1.1">
         </property>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 415.0}">
         </property>
         <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
             <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
             </property>
-            <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
             </property>
         </property>
         <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">

@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SolarSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 979, 761}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1000, 761}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[766, 651]">
     </property>
@@ -112,7 +112,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model of the solar&#10;system takes liberties&#10;with scale to create a&#10;meaningful plot. To get&#10;accurate proportions,&#10;set sunScaleFactor = 1.0&#10;and diameterScaleFactor&#10;to orbitScaleFactor.&#10;Even then, the&#10;minimumDiameter parameter&#10;needs to be reasonably&#10;large or most planets&#10;become invisible.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model of the solar&#10;system takes liberties&#10;with scale to create a&#10;meaningful display. To get&#10;accurate proportions,&#10;set sunScaleFactor = 1.0&#10;and diameterScaleFactor&#10;to orbitScaleFactor. Even&#10;then, the minimumDiameter&#10;parameter needs to be&#10;reasonably large or most&#10;planets become invisible.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 260.0]">
         </property>
@@ -288,13 +288,7 @@
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(30, roundToInt(radius * 300))">
         </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 50.0]">
         </property>
     </entity>
     <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
@@ -321,12 +315,6 @@
         <property name="emissiveColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
-        </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 70.0]">
         </property>
@@ -372,12 +360,6 @@
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
         </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 125.0]">
         </property>
     </entity>
@@ -421,12 +403,6 @@
         <property name="emissiveColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
-        </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 180.0]">
         </property>
@@ -472,12 +448,6 @@
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
         </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 235.0]">
         </property>
     </entity>
@@ -522,12 +492,6 @@
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
         </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 290.0]">
         </property>
     </entity>
@@ -571,12 +535,6 @@
         <property name="emissiveColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
-        </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 345.0]">
         </property>
@@ -630,12 +588,6 @@
         </property>
         <property name="wireFrame" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 550.0]">
         </property>
     </entity>
@@ -679,12 +631,6 @@
         <property name="emissiveColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
-        </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 455.0]">
         </property>
@@ -730,12 +676,6 @@
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
         </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 510.0]">
         </property>
     </entity>
@@ -779,12 +719,6 @@
         <property name="emissiveColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="divisions" class="ptolemy.data.expr.Parameter" value="max(20, roundToInt(radius * 300))">
-        </property>
-        <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 565.0]">
         </property>

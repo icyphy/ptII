@@ -80,6 +80,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
+                // FIXME: No priority here!!!
                 return new ExecutionTimeAttributes(target, this);
             } catch (KernelException ex) {
                 // This should not occur.

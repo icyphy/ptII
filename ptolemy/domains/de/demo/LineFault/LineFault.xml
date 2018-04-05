@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[568.5, 630.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1309, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 1309, 874}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 764]">
     </property>
@@ -31,7 +31,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(at x=0)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-125.0, -65.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-125.0, -65.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SubstationA">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -41,7 +41,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(at X=20000 meters)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-95.0, -70.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-95.0, -70.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="LineFaultGenerator">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -51,7 +51,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(at x=60000)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, -70.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[0.0, -70.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SubstationB">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -66,6 +66,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 840.0]">
         </property>
     </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Turning off synchronized clocks&#10;(double click on Synchronized Clocks icon)&#10;and the accuracy becomes quite bad.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 530.0]">
+        </property>
+    </property>
     <entity name="LineFaultGenerator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[393.5, 400.5]">
         </property>
@@ -75,13 +83,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-245.0, 250.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 61, 813, 620}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 61, 834, 632}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 510]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0902772256988">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{5.2400568181818, 226.5369318181818}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{5.240056818181756, 232.04011931818155}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -111,7 +119,7 @@
             <display name="DiscreteClock- Fault events"/>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300+2*10">
             </property>
-            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="stopTime">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{300}">
             </property>
@@ -136,12 +144,16 @@
             </property>
         </entity>
         <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
             <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.000000000000001">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 110.0]">
             </property>
         </entity>
         <entity name="Discrete TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
             <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.000000000000001">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 180.0]">
@@ -2018,7 +2030,7 @@
 <xLabel>Oracle time in seconds</xLabel>
 <yLabel>Substation time in seconds</yLabel>
 <xRange min="0.0" max="330.0"/>
-<yRange min="-6.760999999855244E-7" max="1.2600025911524426E-8"/>
+<yRange min="-6.766000000268946E-7" max="1.3700002909899922E-8"/>
 </plot>?>
         </configure>
     </entity>
@@ -2233,29 +2245,29 @@
                     <display name="Initial"/>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 25.0]">
                     </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                 </entity>
                 <entity name="state2" class="ptolemy.domains.modal.kernel.State">
                     <display name="OneReceived"/>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 90.0]">
                     </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                 </entity>
                 <entity name="state3" class="ptolemy.domains.modal.kernel.State">
                     <display name="TwoReceived"/>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 165.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">

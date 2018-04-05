@@ -24,13 +24,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 149, 1333, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 709}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1099, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 599]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.796002626845216">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8658241987423073">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{459.0429687499992, 171.6113030159549}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{465.67138671875006, 188.88638030087273}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120.0">
@@ -112,7 +112,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulated Target on a Map">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-55.0, 90.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-60.0, 210.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Rectangle">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="property">
@@ -142,7 +142,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a Search Robot &#10;equipped with a &#10;Range Sensor">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-180.0, 580.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-77.5, 220.00000000000003]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Rectangle2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="property">
@@ -172,7 +172,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read a saved floor map and&#10;create a Map decorator.&#10;&#10;You can try deleting the map aspect&#10;to see how the execution changes.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-135.0, 30.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-125.0, 90.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Rectangle3">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="property">
@@ -200,9 +200,9 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Estimate the target's position using the range sensor&#10;and send position estimate as a set of particles.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Estimate the target's&#10;position using the range&#10;sensor and send position&#10;estimate as a set of particles.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[65.0, 137.5]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[185.0, 132.5]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Rectangle4">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="property">
@@ -210,9 +210,9 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The target motion&#10;that is known to the search&#10;robot.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The target motion that is&#10;known to the search robot.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{650.0, -135.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-270.0, -15.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="KnownTargetModel">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -222,11 +222,15 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The exact target &#10;motion model">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-70.0, 25.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-175.0, -15.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="OracleTargetModel">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model simulates a search robot, which is trying to localize a target robot using &#10;a range measurement to the target. The motion is constrained by a map of the space,&#10;which is read from a PGM image and converted to an occupancy grid (following the &#10;ROS specification for maps). The occupancy grid is made available to the particle filter,&#10;as well as to the robots.&#10;&#10;The range sensor is currently unaware of the map constraints, effectively simulating a &#10;range reading that can &quot;go through walls&quot;.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model simulates a search robot, which is trying to localize a target robot using &#10;a range measurement (distance) to the target. The motion is constrained by a map of the&#10;space, which is read from a PGM image and converted to an occupancy grid (following the &#10;ROS specification for maps). The occupancy grid is made available to the particle filter,&#10;as well as to the robots.&#10;&#10;The range sensor is currently unaware of the map constraints, effectively simulating a &#10;range reading that can &quot;go through walls&quot;.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, -155.0}">
         </property>
@@ -234,7 +238,7 @@
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="[Red] Particles&#10;[Green] Target&#10;[Blue] Search Robot&#10;[White] Map Region">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-60.0, 905.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-70.0, 175.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ImageDisplay">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -261,7 +265,7 @@
         </property>
     </property>
     <entity name="RandomWalk Controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 155.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 934, 634}, maximized=false}">
         </property>
@@ -273,7 +277,7 @@
         </property>
         <port name="controlOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, -495.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, -495.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -310,7 +314,7 @@
         <link port="Expression.s" relation="relation"/>
     </entity>
     <entity name="Search Robot" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 165.0]">
         </property>
         <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{x=32.0, y=11.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -331,13 +335,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, -285.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 266, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 266, 1266, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1032, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000001">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0548422667464958">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{90.01005632267442, -68.99822856104669}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{186.43261718750006, -56.80308410286207}">
         </property>
         <port name="controlInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -430,7 +434,7 @@
         <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="{initialPosition.x, initialPosition.y}">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="8.1">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="119.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, -130.0}">
             </property>
@@ -524,7 +528,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="31.999048191017884">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="32.21248056692854">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -537,7 +541,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="10.996421357407492">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="10.848253110117886">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -595,11 +599,11 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 565]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1090.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1090.0, 155.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{477.5, 285.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 315.0]">
         </property>
     </entity>
     <entity name="PGMReader" class="ptolemy.actor.lib.image.PGMReader">
@@ -613,7 +617,7 @@
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="Nout">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{780.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 145.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -716,6 +720,10 @@
         </property>
     </entity>
     <entity name="ParticleVisualizer" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var BufferedImage = Java.type('java.awt.image.BufferedImage');&#10;var image;&#10;var imageWithParticles;&#10;var width;&#10;var height;&#10;var redColor = 4294901760;&#10;var blueColor = 4278190335;&#10;var greenColor = 4278255360;&#10;var iconWidth = 3;&#10;exports.setup = function() {&#10;	this.input('map');&#10;	this.parameter('binaryImage',{'type':'boolean', 'value':true});&#10;	this.parameter('resolution',{'type':'number', 'value':0.05}); &#10;	this.output('image');&#10;	this.input('particles');&#10;	this.input('searchRobot');&#10;	this.input('target');&#10;}&#10;&#10;exports.initialize = function() {&#10;	&#10;	&#10;	&#10;	this.addInputHandler('map', getOccupancyGrid);&#10;	this.addInputHandler('particles', function() {&#10;		if (!width || !height) {&#10;			width = 800;&#10;			height = 400;&#10;			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;			for (var i = 0; i &lt; width; i++) {&#10;		   for (var j = 0; j &lt; height; j++) {&#10;		   		image.setRGB(i,j,255);&#10;		   }}&#10;		}&#10;		// add particles to view.&#10;	var particleIn = this.get('particles');&#10;	var res = this.getParameter('resolution');  &#10;	if (particleIn != null) { &#10;		imageWithParticles = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;		//copy the base map and add particles on top of it&#10;		for (var i = 0; i &lt; width; i++) {&#10;		   for (var j = 0; j &lt; height; j++) {&#10;		   		imageWithParticles.setRGB(i,j,image.getRGB(i,j));&#10;		   }&#10;		} &#10;		for (var i = 0 ; i &lt; particleIn.length; i++) {&#10;			var px = particleIn[i].x;&#10;			var py = particleIn[i].y;&#10;			var pixelY = Math.floor(py/res); &#10;			var pixelX = Math.floor(px/res);&#10;			if (pixelX &gt;= 1 &amp;&amp; pixelX &lt; width-1 &amp;&amp; &#10;			pixelY &gt;=1 &amp; pixelY &lt; height-1) { &#10;				imageWithParticles.setRGB(pixelX, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX+1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX-1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY-1,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY+1,redColor);&#10;			}&#10;		}  &#10;		this.send('image',imageWithParticles); &#10;	}&#10;	&#10;	var searchRobotLoc = this.get('searchRobot');&#10;	if (searchRobotLoc!=null) {&#10;		var x = searchRobotLoc.x;&#10;		var y = searchRobotLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,blueColor);&#10;					}&#10;				}&#10;			}&#10;	}&#10;	var targetLoc = this.get('target');&#10;	if (targetLoc!=null) {&#10;		var x = targetLoc.x;&#10;		var y = targetLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (var i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (var j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,greenColor);&#10;					}&#10;				}&#10;			}&#10;	    }&#10;	});&#10;}&#10;&#10;function getOccupancyGrid() {&#10;	&#10;	var mapObject = this.get('map'); &#10;	var imageData = mapObject.grid;&#10;	width = mapObject.width;&#10;	height = mapObject.height;  &#10;	var binaryThresholding = this.getParameter('binaryImage');&#10;	image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;	for (var y = 0; y &lt; height; y++) {&#10;		for (var x = 0; x &lt; width; x++) { &#10;			var index = x + y*width;&#10;			var pixel = imageData[index];&#10;			&#10;			if (pixel &lt; 0) {&#10;				// Opaque red for unknown&#10;				image.setRGB(x, y, 4294901760);&#10;			} else {&#10;				var intensity;&#10;				if ( binaryThresholding ) {&#10;					if ( pixel &gt;= 255) {&#10;						intensity = 255;&#10;					} else if ( pixel &lt;= 100) {&#10;						intensity = 0;&#10;					} else {&#10;						intensity = 127;&#10;					}&#10;				} else {&#10;					intensity = pixel;&#10;				}&#10;				// To make the color opaque:&#10;				var alpha = 4278190080; &#10;				var color = alpha + intensity * (65536 + 256 + 1);&#10;				image.setRGB(x, y, color);&#10;			}&#10;		}&#10;	} &#10;	this.send('image', image);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -728,7 +736,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{965.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 155.0]">
         </property>
         <property name="binaryImage" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -757,13 +765,13 @@
         </property>
         <property name="processNoise" class="ptolemy.data.expr.Parameter" value="{0.0,0.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 165.0]">
         </property>
     </entity>
     <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="{20,7}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="8.1">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="119.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 270.0]">
         </property>
@@ -821,12 +829,20 @@
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="state" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
         <entity name="x_update" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x &lt; 31.0 ? x + Vx : x">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-            </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="21.399999999999995">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -839,8 +855,6 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="7.139999999999997">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -849,20 +863,20 @@
         </entity>
     </entity>
     <entity name="ParticleFilter" class="org.ptolemy.ssm.ParticleFilter">
-        <property name="t" class="ptolemy.data.expr.Parameter" value="8.1">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="119.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{603.5, 145.5}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 145.0]">
         </property>
         <property name="DecoratorAttributesFor_KnownTargetModel" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="KnownTargetModel">
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="20.13243108666112">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="30.848922728488322">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="14.064604798431144">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="8.078323738441808">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
@@ -927,7 +941,7 @@
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="RangeSensor_z" class="ptolemy.data.expr.Parameter" value="10.9722297816211">
+        <property name="RangeSensor_z" class="ptolemy.data.expr.Parameter" value="1.8301889274564">
         </property>
         <port name="r1" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -944,7 +958,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="20.52626583623464">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="31.040463874483205">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -957,7 +971,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="12.309926508522729">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="9.005942257366812">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1023,7 +1037,7 @@
     <entity name="Map" class="org.ptolemy.ssm.Map">
         <property name="map" class="ptolemy.actor.parameters.PortParameter" value="{width = 2, height=1, grid={0,0}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{765.0, 320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 330.0]">
         </property>
     </entity>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">

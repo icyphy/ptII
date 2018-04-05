@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PersistentIO" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -21,7 +21,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="clock outputs token &#10;every 1 time unit&#10;starting at time 5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-215.0, -10.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-215.0, -10.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="period1_2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -31,7 +31,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="clock outputs token &#10;every 1 time unit&#10;until time 5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-215.0, -10.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-215.0, -10.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="period1_1">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -41,7 +41,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="clock outputs token &#10;every 1 time unit">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-220.0, 5.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-220.0, 5.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="period1_3">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -51,7 +51,17 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates the use of persistent ports.&#10;By setting the defaultValue of a port, the values&#10;become persistent; i.e. the last value received, or if&#10;no value has been received, the default value, is &#10;produced on the output.&#10;&#10;Inputs are directly connected to the outputs inside&#10;the CompositeActor. Some inputs and outputs&#10;are persistent. The inputs receive triggers from &#10;different clocks. When either input or output of a &#10;connection is persistent, a token is plotted,&#10;whenever the CompositeActor is triggered &#10;(even if the connected upstream input port on the &#10;CompositeActor did not receive a token).&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[265.0, 275.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[265.0, 275.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ports that have the&#10;defaultValue parameter&#10;set become persistent.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-7.5, 57.5]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Through">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <entity name="Through" class="ptolemy.actor.TypedCompositeActor">
