@@ -57,11 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 	INSTALL_CERTI.txt \
 	INSTALL_JCERTI.txt \
 	INSTALL_VergilCERTI.txt \
-	README_HLAPtides.txt \
-	manual-ptii-hla.pdf \
-	manual-ptii-hla-r72244.pdf \
-	manual-ptii-hla-r73687.pdf \
-	manual-ptii-hla-r74778.pdf
+	README_HLAPtides.txt 
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -74,7 +70,8 @@ MISC_FILES = lib
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	test
+	test \
+        models
 
 all: jclass
 install: jclass jars

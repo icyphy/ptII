@@ -1,6 +1,6 @@
 /* This actor implements a subscriber in a HLA/CERTI federation.
 
-@Copyright (c) 2013-2016 The Regents of the University of California.
+@Copyright (c) 2013-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -58,11 +58,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// HlaSubcriber
+//// HlaSubscriber
 
 /**
  * This actor implements a subscriber in a HLA/CERTI federation.
@@ -74,14 +73,15 @@ import ptolemy.kernel.util.Workspace;
  * value in the subscriber tokens queue and to program its next firing
  * times, using the _fireAt() method.</p>
  *
- * <p>The name of this actor is mapped to the name of the HLA attribute in the
- * federation and need to match the Federate Object Model (FOM) specified for
- * the Federation. The data type of the output port has to be the same type of
- * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM.
+ * <p>The parameter <i>attributeName</i> of this actor is mapped to
+ * the name of the HLA attribute of an HLA object class in the federation.
+ * This parameter needs to match the Federate Object Model (FOM) specified
+ * for this federation. The data type of the output port has to be the same
+ * type of the HLA attribute. The parameter <i>classObjectName</i> needs to
+ * match the object class describes in the FOM.
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
- *  @version $Id$
+ *  @version $Id: HlaSubscriber.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 10.0
  *
  *  @Pt.ProposedRating Yellow (glasnier)
@@ -103,17 +103,40 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         // The single output port of the actor.
         output = new TypedIOPort(this, "output", false, true);
+
+        // HLA attribute name.
+        attributeName = new Parameter(this, "attributeName");
+        attributeName.setDisplayName("Name of the attribute to receive");
+        attributeName.setTypeEquals(BaseType.STRING);
+        attributeName.setExpression("\"HLAattributName\"");
+
+        // HLA object class in FOM.
+        classObjectName = new Parameter(this, "classObjectName");
+        classObjectName.setDisplayName("Object class in FOM");
+        classObjectName.setTypeEquals(BaseType.STRING);
+        classObjectName.setExpression("\"HLAobjectClass\"");
+
+        // HLA class instance name.
+        classInstanceName = new Parameter(this, "classInstanceName");
+        classInstanceName.setDisplayName("Name of the HLA class instance");
+        classInstanceName.setTypeEquals(BaseType.STRING);
+        classInstanceName.setExpression("\"HLAclassInstanceName\"");
+
+        // Propagate parameter changes after parameter instantiations.
+        attributeChanged(classObjectName);
+        attributeChanged(classInstanceName);
+        attributeChanged(attributeName);
+
+        // Basic token types available.
         typeSelector = new StringParameter(this, "typeSelector");
         typeSelector.setDisplayName("type of the parameter");
-        //types available for tokens
         typeSelector.addChoice("int");
         typeSelector.addChoice("double");
         typeSelector.addChoice("string");
         typeSelector.addChoice("boolean");
 
-        //If the user were to change the output port's type directly,
-        //we want to change on the type selector
-        //Also usefull for setting a value to typeSelector after reading the MomL file
+        // Allow the user to change the output port's type directly.
+        // Useful for setting a value to typeSelector after reading the MomL file.
         output.addTypeListener(new TypeListener() {
             @Override
             public void typeChanged(TypeEvent event) {
@@ -121,103 +144,102 @@ public class HlaSubscriber extends TypedAtomicActor {
             }
         });
 
-        //set handle to impossible values
-        _attributeHandle = Integer.MIN_VALUE;
-        _classHandle = Integer.MIN_VALUE;
-        _objectHandle = Integer.MIN_VALUE;
-
+        // CERTI message buffer encapsulation.
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
         useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
         attributeChanged(useCertiMessageBuffer);
 
-        objectName = new Parameter(this, "objectName");
-        objectName.setVisibility(Settable.NOT_EDITABLE);
-        objectName.setDisplayName("Object name provided by the RTI");
-        objectName.setTypeEquals(BaseType.STRING);
-        objectName.setExpression("\"objectName\"");
-
-        parameterName = new Parameter(this, "parameterName");
-        parameterName.setDisplayName("Name of the parameter to receive");
-        parameterName.setTypeEquals(BaseType.STRING);
-        parameterName.setExpression("\"parameterName\"");
-
-        attributeChanged(objectName);
-        attributeChanged(parameterName);
-
-        _reflectedAttributeValues = new LinkedList<TimedEvent>();
+        // Initialize default private values.
+        _reflectedAttributeValues = new LinkedList<HlaTimedEvent>();
         _useCertiMessageBuffer = false;
+
+        // Set handle to impossible values <= XXX: FIXME: GiL: true ?
+        _attributeHandle = Integer.MIN_VALUE;
+        _classHandle = Integer.MIN_VALUE;
+        _objectInstanceId = Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** The HLA attribute name the HLASubscriber is mapped to. */
+    public Parameter attributeName;
+
+    /** The object class of the HLA attribute to subscribe to. */
+    public Parameter classObjectName;
+
+    /** The name of the HLA class instance for this HlaSubscriber. */
+    public Parameter classInstanceName;
+
+    /** The output port. */
+    public TypedIOPort output;
+
+    /** The type of the output port specified through the user interface. */
+    public StringParameter typeSelector;
+
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     public Parameter useCertiMessageBuffer;
 
-    /** The output port. */
-    public TypedIOPort output = null;
-
-    /**
-     * The HLA Parameter the HLASubscriber is interested in.
-     */
-    public Parameter parameterName;
-
-    /**
-     *  Name of the object who owns the attribute.
-     */
-    public Parameter objectName;
-
-    /**
-     * Parameter used to set up the type of the output port. Synched with
-     * outport port's type (changes go both way).
-     */
-    public StringParameter typeSelector;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Call the attributeChanged method of the parent. Check if the
-     *  user as set the object class of the HLA attribute to subscribe to.
+     *  user as set all information relative to HLA to subscribe to.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If there is zero or more than one
-     *  {@link HlaManager} per Ptolemy model.
+     *  @exception IllegalActionException If one of the parameters
+     *  is empty.
      */
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == useCertiMessageBuffer) {
+
+        if (attribute == attributeName || attribute == classInstanceName
+                || attribute == classObjectName) {
+
+            String sAttributeName = ((StringToken) attributeName.getToken())
+                    .stringValue();
+            if (sAttributeName.compareTo("") == 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have empty name !");
+            }
+
+            String sClassInstanceName = ((StringToken) classInstanceName
+                    .getToken()).stringValue();
+            if (sClassInstanceName.compareTo("") == 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have empty name !");
+            }
+
+            String sClassObjectName = ((StringToken) classObjectName.getToken())
+                    .stringValue();
+            if (sClassObjectName.compareTo("") == 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have empty name !");
+            }
+
+            // FIXME: XXX: uncomment or remove when proposal to name HLA actors
+            // has been accepted or rejected
+            /*
+            // Update the name and the displayName of the actor.
+            try {
+                this.setName(sClassObjectName 
+                        + "." + sAttributeName + "." + sClassInstanceName);
+                this.setDisplayName(sClassObjectName 
+                        + "." + sAttributeName + "." + sClassInstanceName);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this,
+                "An actor has already the same name, please check your HLA specification");
+            }
+            */
+
+        } else if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
-        } else if (attribute == parameterName || attribute == objectName) {
-            try {
-                StringToken objNameTo = (StringToken) objectName.getToken();
-                StringToken paramNameTok = (StringToken) parameterName
-                        .getToken();
-                String param = "";
-                String objectName = "";
-                if (objNameTo == null) {
-                    throw new IllegalActionException(this,
-                            "objectName Cant be null");
-                } else {
-                    objectName = objNameTo.stringValue();
-                }
-                if (paramNameTok == null) {
-                    throw new IllegalActionException(this,
-                            "paramName Cant be null");
-                } else {
-                    param = paramNameTok.stringValue();
-                }
-
-                if (!"objectName".equals(objectName)
-                        || !"parameterName".equals(param)) {
-                    setDisplayName(objectName + " " + param);
-                }
-
-            } catch (IllegalActionException illegalActionException) {
-            }
         } else if (attribute == typeSelector) {
             String newPotentialTypeName = typeSelector.stringValue();
+            // XXX: FIXME: What is the purpose of this test ?
             if (newPotentialTypeName == null) {
                 return;
             }
@@ -227,8 +249,8 @@ public class HlaSubscriber extends TypedAtomicActor {
                     && !newPotentialType.equals(output.getType())) {
                 output.setTypeEquals(newPotentialType);
             }
-
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -240,16 +262,17 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        //take care of all public members ?
+        // Manage public members.
         HlaSubscriber newObject = (HlaSubscriber) super.clone(workspace);
 
-        //take care of private members
-        newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();
+        // Manage private members.
+        newObject._reflectedAttributeValues = new LinkedList<HlaTimedEvent>();
+        newObject._hlaManager = _hlaManager;
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
 
-        newObject.setAttributeHandle(getAttributeHandle());
-        newObject.setClassHandle(getClassHandle());
-        newObject.setObjectHandle(Integer.MIN_VALUE);
+        newObject._attributeHandle = _attributeHandle;
+        newObject._classHandle = _classHandle;
+        newObject._objectInstanceId = Integer.MIN_VALUE;
 
         return newObject;
     }
@@ -263,10 +286,11 @@ public class HlaSubscriber extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        //find the HlaManager by looking into container
-        //and recursively in container's container if needed
+        // Find the HlaManager by looking into container
+        // (recursively if needed).
         CompositeActor ca = (CompositeActor) this.getContainer();
         List<HlaManager> hlaManagers = null;
+
         while (ca != null) {
             hlaManagers = ca.attributeList(HlaManager.class);
             if (hlaManagers.size() < 1) {
@@ -279,12 +303,13 @@ public class HlaSubscriber extends TypedAtomicActor {
         if (hlaManagers == null || hlaManagers.size() < 1) {
             throw new IllegalActionException(this,
                     "A HlaManager attribute is required to use this actor");
-        } else {
-            if (hlaManagers.size() > 1) {
-                throw new IllegalActionException(this,
-                        "Only one HlaManager attribute is allowed per model");
-            }
+        } else if (hlaManagers.size() > 1) {
+            throw new IllegalActionException(this,
+                    "Only one HlaManager attribute is allowed per model");
         }
+        // Here, we are sure that there is one and only one instance of the
+        // HlaManager in the Ptolemy model.
+        _hlaManager = hlaManagers.get(0);
 
     }
 
@@ -297,106 +322,126 @@ public class HlaSubscriber extends TypedAtomicActor {
         super.fire();
         Time currentTime = getDirector().getModelTime();
 
-        Iterator<TimedEvent> it = _reflectedAttributeValues.iterator();
-        while (it.hasNext()) {
-            TimedEvent te = it.next();
-            if (te.timeStamp.compareTo(currentTime) == 0) {
+        Iterator<HlaTimedEvent> it = _reflectedAttributeValues.iterator();
 
-                Token content = _buildToken((Object[]) te.contents);
-                int origin = -1;
-                if (te instanceof OriginatedEvent) {
-                    OriginatedEvent oe = (OriginatedEvent) te;
-                    origin = oe.objectID;
+        // Get first event on RAV list.
+        it.hasNext();
+        TimedEvent te = it.next();
+
+        if (te.timeStamp.compareTo(currentTime) == 0) {
+            // Build token with HLA value.
+            Token content = _buildToken((Object[]) te.contents);
+
+            // XXX: FIXME: to remove after cleaning ?
+            int fromObjectInstanceId = -1;
+            if (te instanceof HlaTimedEvent) {
+                HlaTimedEvent he = (HlaTimedEvent) te;
+                fromObjectInstanceId = he.getHlaObjectInstanceId();
+            }
+
+            // Either it is NOT a HlaTimedEvent and we let it go,
+            // either it is and it has to match the HLA object instance
+            // ID of this HlaSubscriber.
+
+            // XXX: FIXME: what to do if this is not a HlaTimedEvent? (-1 case) 
+            if (fromObjectInstanceId == -1
+                    || fromObjectInstanceId == _objectInstanceId) {
+                this.outputPortList().get(0).send(0, content);
+
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " Called fire() - An updated value"
+                            + " of the HLA attribute \"" + getAttributeName()
+                            + " from " + fromObjectInstanceId
+                            + "\" has been sent at \"" + te.timeStamp + "\" ("
+                            + content.toString() + ")");
                 }
 
-                //either it is NOT OriginatedEvent and we let it go
-                //either it is and it has to match the origin
-                if (origin == -1 || origin == getObjectHandle()) {
-                    this.outputPortList().get(0).send(0, content);
+            }
 
-                    if (_debugging) {
-                        _debug(this.getDisplayName()
-                                + " Called fire() - An updated value"
-                                + " of the HLA attribute \""
-                                + getParameterName() + " from " + origin
-                                + "\" has been sent at \"" + te.timeStamp
-                                + "\" (" + content.toString() + ")");
+            it.remove();
+        }
 
-                    } //end debug
-                } //end test fire
-                it.remove();
-            } //end current time
-        } //end of while
-    } //end of fire
+        // Refire if token to process at same time
+        if (it.hasNext()) {
+            TimedEvent tNext = it.next();
+            if (tNext.timeStamp.compareTo(currentTime) == 0) {
+                // Refiring the actor to handle the other tokens
+                // that are still in channels
+                getDirector().fireAt(this, currentTime);
+            }
+        }
+    } // End of fire.
 
-    /**
-     * Return a string that is used to identify the HlaSubscriber.
-     * @return A string that is used to identify the HlaSubscriber.
-     */
-    public String getIdentity() {
-        return _getObjectName() + "-" + getParameterName();
-    }
-
-    /** Return the attribute handle value.
-     * @return the attributeHandle
-     * @see #setAttributeHandle
+    /** Return the HLA attribute handle.
+     * @return The HLA attribute handle.
+     * @see #setAttributeHandle.
      */
     public int getAttributeHandle() {
         return _attributeHandle;
     }
 
-    /** Return the class handle value.
-     * @return the classHandle
-     * @see #setClassHandle
+    /** Return the HLA class handle.
+     * @return the HLA class handle.
+     * @see #setClassHandle.
      */
     public int getClassHandle() {
         return _classHandle;
     }
 
-    /** Returns the object handle value.
-     * @return the objectHandle
-     * @see #setObjectHandle
+    /** Returns the HLA object instance.
+     * @return The HLA object instance handle.
+     * @see #setObjectInstanceId.
      */
-    public int getObjectHandle() {
-        return _objectHandle;
+    public int getObjectInstanceId() {
+        return _objectInstanceId;
     }
 
-    /** Set the attribute handle value.
-     * @param attributeHandle the attributeHandle to set
-     * @see #getAttributeHandle
+    /** Set the HLA attribute handle.
+     * @param attributeHandle The attributeHandle to set.
+     * @see #getAttributeHandle.
      */
     public void setAttributeHandle(int attributeHandle) {
         _attributeHandle = attributeHandle;
     }
 
-    /** Set the class handle value.
-     * @param classHandle the classHandle to set
-     * @see #getClassHandle
+    /** Set the HLA class handle.
+     * @param classHandle The classHandle to set.
+     * @see #getClassHandle.
      */
     public void setClassHandle(int classHandle) {
         _classHandle = classHandle;
     }
 
-    /** Set the object handle value.
-     * @param objectHandle the objectHandle to set
-     * @see #getObjectHandle
+    /** Set the HLA object instance.
+     * @param objectInstanceId The HLA object instance to set.
+     * @see #getObjectInstanceHandle.
      */
-    public void setObjectHandle(int objectHandle) {
-        _objectHandle = objectHandle;
+    public void setObjectInstanceId(int objectInstanceId) {
+        _objectInstanceId = objectInstanceId;
     }
 
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the tokens queue. Then, program the next firing time of this actor to
      *  send the token at its expected time. This method is called by the
      *  {@link HlaManager} attribute.
-     *  @param event The event containing the updated value of the HLA attribute
-     *  and its time-stamp.
+     *  @param event The event containing the updated value of the HLA 
+     *  attribute and its time-stamp.
      *  @exception IllegalActionException Not thrown here.
      */
-    public void putReflectedHlaAttribute(TimedEvent event)
+    public void putReflectedHlaAttribute(HlaTimedEvent event)
             throws IllegalActionException {
         // Add the update value to the queue.
         _reflectedAttributeValues.add(event);
+
+        if (_debugging) {
+            _debug(this.getFullName()
+                    + ": putReflectedHlaAttribute: event timestamp = "
+                    + event.timeStamp.toString());
+            _debug(this.getFullName()
+                    + ": putReflectedHlaAttribute: event value = "
+                    + event.contents.toString());
+        }
 
         // Program the next firing time for the received update value.
         _fireAt(event.timeStamp);
@@ -404,36 +449,72 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the HLA subscriber actor uses the CERTI message
      *  buffer API.
-     *  @return true if the HLA publisher actor uses the CERTI message and false if
-    *  it doesn't.
-    *  @exception IllegalActionException
+     *  @return true if the HLA actor uses the CERTI message and false if
+     *  it doesn't.
      */
-    public boolean useCertiMessageBuffer() throws IllegalActionException {
+    public boolean useCertiMessageBuffer() {
         return _useCertiMessageBuffer;
     }
 
-    /**
-     * Return the kind of HLA Attribute the HLASuscriber is handling.
-     * @return The kind of HLA Attribute the HLASuscriber is handling.
+    /** Return the HLA attribute name mapped to this HlaSubscriber.
+     *  @return the HLA attribute name.
+     *  @exception IllegalActionException if a bad token string value is provided.
      */
-    public String getParameterName() {
-        String parameter = "";
+    public String getAttributeName() throws IllegalActionException {
+        String name = "";
         try {
-            parameter = ((StringToken) parameterName.getToken()).stringValue();
+            name = ((StringToken) attributeName.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
+            throw new IllegalActionException(this,
+                    "Bad attributeName token string value");
         }
-        return parameter;
+        return name;
     }
 
+    /** Return HLA class instance name this HlaSubscriber belongs to.
+     * @return The HLA class instance name.
+     * @throws IllegalActionException if a bad token string value is provided.
+     */
+    public String getClassInstanceName() throws IllegalActionException {
+        String name = "";
+        try {
+            name = ((StringToken) classInstanceName.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+            throw new IllegalActionException(this,
+                    "Bad classInstanceName token string value");
+        }
+        return name;
+    }
+
+    /** Return the HLA class object name (in FOM) of the HLA attribute handled
+     *  by the HlaSubscriber.
+     *  @return The HLA class object name.
+     *  @exception IllegalActionException if a bad token string value is provided.
+     */
+    public String getClassObjectName() throws IllegalActionException {
+        String name = "";
+        try {
+            name = ((StringToken) classObjectName.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+            throw new IllegalActionException(this,
+                    "Bad classObjectName token string value");
+        }
+        return name;
+    }
+
+    /** Manage the correct termination of the {@link HlaSubscriber}. Reset
+     *  HLA handles and object instance ID.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-
-        //set handle to impossible values
-        setAttributeHandle(Integer.MIN_VALUE);
-        setClassHandle(Integer.MIN_VALUE);
-        setObjectHandle(Integer.MIN_VALUE);
+        // Set HLA handles to impossible values
+        _attributeHandle = Integer.MIN_VALUE;
+        _classHandle = Integer.MIN_VALUE;
+        _objectInstanceId = Integer.MIN_VALUE;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -482,43 +563,30 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         return value;
     }
-    ///////////////////////////////////////////////////////////////////
-    ////                         private method                    ////
 
-    /**
-     * Return the object name used in the HLA Federation
-     */
-    private String _getObjectName() {
-        try {
-            return ((StringToken) objectName.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-        }
-        return "";
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** List of updated values for the HLA attribute. */
-    private LinkedList<TimedEvent> _reflectedAttributeValues;
+    private LinkedList<HlaTimedEvent> _reflectedAttributeValues;
+
+    /** A reference to the associated {@link HlaManager}. */
+    private HlaManager _hlaManager;
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
 
-    /**
-     * Handle provided by the RTI for the attribute the object is publishing
-     */
+    /** HLA attribute handle provided by the RTI for the attribute 
+     *  to subscribe to. */
     private int _attributeHandle;
 
-    /*
-     * Handle provided by the RTI for the class ob the object
-     * owning the attribute we are receiving
-     */
+    /** HLA class handle provided by the RTI for the class object owning
+     *  the HLA attribute */
     private int _classHandle;
 
-    /**
-     * Handle provided by the RTI for the object owning the attribute we are
-     * publishing
-     */
-    private int _objectHandle;
+    /** HLA object instance "ID" provided by the RTI. */
+    private int _objectInstanceId;
 }
