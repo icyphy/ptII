@@ -6,4 +6,6 @@
 <!-- Note that this library is included in modal models as part  -->
 <!-- of its custom library.  -->
 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+    </property>
 </property>
