@@ -2518,7 +2518,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 System.out.println(
                         "WARNING: The execution aspects in this model can "
                                 + "influence the timing of actors by delaying the \n"
-                                + "execution, which can potentially reverse causality. "
+                                + "execution, potentially changing the behavior. "
                                 + "There is no guarantee that actors fire at the \n"
                                 + "time they request to be fired. \n"
                                 + "Use Ptides for deterministic DE behavior that is "
