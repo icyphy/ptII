@@ -51,9 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CompositeQM.xml \
-	CheckExecutionTimeConstraints.xml
-
+	CompositeQM.xml
+	
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 
@@ -74,8 +73,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil CompositeQM.xml \
-	CheckExecutionTimeConstraints.xml
-
+	vergil CompositeQM.xml
+	
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
