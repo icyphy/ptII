@@ -28,5 +28,7 @@
 <input source="ptolemy/vergil/kernel/attributes/decorative.xml"/>
 <input source="ptolemy/configs/utilityParameters.xml"/>
 <input source="ptolemy/configs/utilityPorts.xml"/>
+<!-- actor/lib/jjs/JavaScript requires Nashorn and Java 1.8 -->
+<input source="ptolemy/actor/lib/jjs/js.xml"/>
 <input source="ptolemy/configs/utilityAnalysis.xml"/>
 </group>
