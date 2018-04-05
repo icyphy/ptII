@@ -20,14 +20,72 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="Annotation1" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HlaSubscriber">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="attr.:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-99.0, -8.0]">
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, -16.0]">
+        </property>
+    </property>
+    <property name="ParameterValue1" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="attributeName">
+        </property>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -16.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="class:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, -8.0]">
+        </property>
+    </property>
+    <property name="ParameterValue2" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="classObjectName">
+        </property>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -8.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="inst.:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 0.0]">
+        </property>
+    </property>
+    <property name="ParameterValue3" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="classInstanceName">
+        </property>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 0.0]">
         </property>
     </property>
 </property>

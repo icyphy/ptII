@@ -1,0 +1,146 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TimeAdvancing2FederatesInternalEvents" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={994, 33, 733, 1046}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[517, 928]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9542619542619543">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.65032679738567, 440.0}">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clément Michel">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 845.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Feature:&#10;             Time Management&#10;&#10;Expected result:&#10;             This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -45.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the time advancement in HLA using NER and TAR&#10;and internal events. &#10;&#10;Goal of this model: test the time advancing in a federation&#10;with two federates  Fed1TAR and Fed2NER when Fed2NER&#10;produces internal events.&#10;&#10;Note: In each federate, the user can set the Time Management&#10;Service to NER or TAR.&#10;&#10;* Federate Fed1TAR is:&#10;    - Time Regulator (TR) and Time Constrained (TC)&#10;    - using TAR with timestep=1.0&#10;    - stopTime=10&#10;&#10;* Federate Fed2NER is:&#10;    - Time Regulator (TR) and Time Constrained (TC)&#10;    - using NER with lookahead=0.1&#10;    - stopTime=8&#10;&#10;For observing how the time advances in each federate, do&#10;a right-click on HlaManager icone and choose Listen To Attribute.&#10;&#10;&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 205.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 600.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Fed1TAR model: last federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 640.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancingFed1TAR.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 680.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Fed2NERwithInternalEvents model: first federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 620.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancingFed2NERwithInternalEvents.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
+            </property>
+        </property>
+    </property>
+    <property name="Director" class="ptolemy.actor.Director">
+        <doc>Simple director that executes actors in the order in which they were created.</doc>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 735.0]">
+        </property>
+    </property>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.259259259259323, 783.7211328976035]">
+        </property>
+    </entity>
+    <entity name="Fed1TAR" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="TimeAdvancingFed1TAR.xml">
+        </property>
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 735.0]">
+        </property>
+    </entity>
+    <entity name="Fed2NERwithInternalEvents" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="TimeAdvancingFed2NERwithInternalEvents.xml">
+        </property>
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 795.0]">
+        </property>
+    </entity>
+</entity>

@@ -81,7 +81,7 @@ import ptolemy.util.StringUtilities;
  * Then an exception is throwed.
  *
  * @author Gilles Lasnier, Christopher Brooks
- * @version $Id$
+ * @version $Id: CertiRtig.java 214 2018-04-01 13:32:02Z j.cardoso $
  *
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (glasnier)
@@ -110,6 +110,7 @@ public class CertiRtig extends NamedObj {
      *  failed or if the RTIG subprocess it not running.
      */
     public void exec() throws IllegalActionException {
+        // XXX: FIXME: remove debug print
         System.out.println("CertiRtig: " + _hlaManager.getFullName()
                 + ": About to invoke rtig: " + "\ncommand: "
                 + java.util.Arrays.toString(_commandArray) + "\nenvironment: "
@@ -197,7 +198,8 @@ public class CertiRtig extends NamedObj {
         _environmentArray = new String[1];
         String osName = StringUtilities.getProperty("os.name");
 
-        System.out.println("CertRtig: the os.name property is: " + osName);
+        // XXX: FIXME: remove debug print
+        System.out.println("CertiRtig: the os.name property is: " + osName);
 
         // Only set the environment variable that is appropriate for
         // the platform.
@@ -365,7 +367,11 @@ public class CertiRtig extends NamedObj {
                 }
             } catch (IOException e) {
                 throw new InternalErrorException(_actor, e,
-                        getName() + " IOExeception throwed: " + _stringBuffer);
+                        getName() + " IOExeception throwed.");
+            }
+
+            if (_debugging) {
+                _debug("_read(): " + _stringBuffer.toString());
             }
 
             if (_stringBuffer.toString()

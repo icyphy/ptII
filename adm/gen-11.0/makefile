@@ -4112,7 +4112,7 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 capecode_setup_mac_app: $(CAPECODE_SETUP_MAC).app
 $(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
 	df -k
-	du -k $(PTII) | sort -nr
+	du -k $(PTII) | sort -nr | head -100
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
 	find $@ -type d -exec touch {} \; 

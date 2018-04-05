@@ -1,0 +1,22 @@
+;; Test federation for checking the microstep error when
+;; the timestamp of a RAV is equal to an internal event.
+
+	(Fed
+	 (Federation MicrostepError)
+	 (FedVersion v1.0)
+	 (Spaces)
+	 (Objects
+	  (Class ObjectRoot
+	   (Attribute privilegeToDelete reliable timestamp)
+	   (Class RTIprivate)
+	   (Class ValueTransfer
+		(Attribute val RELIABLE TIMESTAMP)
+	   )
+	  )
+	 )
+	 (Interactions
+	  (Class InteractionRoot BEST_EFFORT RECEIVE
+	   (Class RTIprivate BEST_EFFORT RECEIVE)
+	  )
+	 )
+	)
