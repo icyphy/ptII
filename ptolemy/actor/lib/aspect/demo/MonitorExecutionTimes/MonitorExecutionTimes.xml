@@ -1,0 +1,469 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MonitorExecutionTimes" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 23, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.00000000000003}">
+    </property>
+    <property name="ExecutionTime" class="ptolemy.data.expr.Parameter" value="0.6450102964303">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 445.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Scale actor execution time is a random number uniformly distributed&#10;between 0.5 and 1.1.  This results in occasional excess response time.&#10;However, if you set the priority of the Uniform actor to a lower number&#10;(higher priority) than that of Scale, then the excess respose time becomes&#10;quite frequent.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 235.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Monitor execution times and report&#10;violations that exceed a threshold.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The FixedPriorityScheduler aspect causes the execution&#10;of Scale and Uniform to take time.&#10;&#10;The Monitor aspect watches the input and output of the&#10;Scale actor and reports the response time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 385.0]">
+        </property>
+    </property>
+    <entity name="Monitor" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
+        <property name="justMonitor" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 95.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Calculate the time between an input at in1&#10;and an input at in2, and if it exceeds 1.0, then&#10;report the violation.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 5.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 934, 632}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
+        </property>
+        <entity name="in1" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 100.0}">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+        </entity>
+        <entity name="in2" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 210.0}">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+        </entity>
+        <entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 150.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in &gt; 1.0) ? &#10;   (&quot;*** Excess response time: &quot; + in)&#10;:  (&quot;Response time OK: &quot; + in)">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 150.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={885, 24, 504, 338}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="title" class="ptolemy.data.expr.StringParameter" value="Execution Time Reports">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 150.0]">
+            </property>
+            <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+                </property>
+                <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in1.output" relation="relation7"/>
+        <link port="in2.output" relation="relation6"/>
+        <link port="WaitingTime.output" relation="relation2"/>
+        <link port="WaitingTime.waiter" relation="relation7"/>
+        <link port="WaitingTime.waitee" relation="relation6"/>
+        <link port="Expression.output" relation="relation"/>
+        <link port="Expression.in" relation="relation2"/>
+        <link port="Display.input" relation="relation"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="ExecutionTime">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: Monitor">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_CompositeCommunicationAspect" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Monitor">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in2">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: Monitor">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={884, 370, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.9171423265" max="29.0841708543"/>
+<yRange min="0.9171423265" max="29.0841708543"/>
+<default connected="no" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="privateSeed" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="1.1">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 415.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+    </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ExecutionTime">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 415.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+    </entity>
+    <entity name="FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
+        </property>
+        <property name="DecoratorAttributesFor_FixedPriorityScheduler2" class="ptolemy.actor.lib.aspect.PriorityResourceAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="FixedPriorityScheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
+            </property>
+            <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[135.0, 195.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="Scale.input" relation="relation4"/>
+    <link port="Scale.output" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="Uniform.output" relation="relation"/>
+    <link port="Uniform.trigger" relation="relation4"/>
+    <link port="SetVariable.input" relation="relation"/>
+</entity>
