@@ -82,6 +82,8 @@ public class CommunicationRequestPort extends Const {
 
         value.setTypeEquals(new RecordType(new String[] { "receiver", "token" },
                 new Type[] { BaseType.OBJECT, BaseType.GENERAL }));
+        // Make the value non-persistent because normally it cannot be saved.
+        value.setPersistent(false);
     }
 
     /** Do not set a value before initialization.
