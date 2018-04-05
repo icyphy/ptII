@@ -199,8 +199,6 @@
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
             <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
-            <!-- actor/lib/jjs/JavaScript requires Nashorn and Java 1.8 -->
-            <input source="ptolemy/actor/lib/jjs/js.xml"/>
             <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
 	    <!-- Machine Learning library still under development  -->
 	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
