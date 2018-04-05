@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-0ae89442-5516-42e8-9534-f1a69ebcd178" name="ptolemy.actor.lib.conversions.test.junit.JUnitTclTest" skipped="0" tests="27" time="2.213" timestamp="2018-04-05T19:03:09">
+<testsuite errors="0" failures="0" hostname="travis-job-9ff89204-b9b6-4984-b0dd-9a61b78818c6" name="ptolemy.actor.lib.conversions.test.junit.JUnitTclTest" skipped="0" tests="27" time="1.856" timestamp="2018-04-05T23:04:35">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="190.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="191.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.3 57492 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.7 38328 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.3 57492 10.20.0.56 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.7 38328 10.20.0.49 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.conversions.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.conversions.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7099577387581383756.properties propsfile=/home/travis/build/icyphy/ptII/junit2403998471459322490.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.conversions.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.conversions.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6559446527627102851.properties propsfile=/home/travis/build/icyphy/ptII/junit8705411291919670678.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="65b91be39589...e63ae317a2e6" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="e63ae317a2e6...c6a8fa855276" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -113,7 +113,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="190" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="191" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -128,12 +128,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="362769332" />
+    <property name="env.TRAVIS_BUILD_ID" value="362870622" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="e63ae317a2e61a3080eee4d907a957c6e973b8d0" />
+    <property name="env.TRAVIS_COMMIT" value="c6a8fa8552765d6bfdf7df7fda35f5b9ce01190d" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -164,7 +164,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Pass on demos, mostly aspects" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Transfer outputs from CommunicationResponsePort if it is associated with an output port." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -203,7 +203,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="362769337" />
+    <property name="env.TRAVIS_JOB_ID" value="362870627" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -221,122 +221,122 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl (RunTclFile)" time="0.39" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl (RunTclFile)" time="0.102" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl (RunTclFile)" time="0.037" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl (RunTclFile)" time="0.09" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl (RunTclFile)" time="0.171" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl (RunTclFile)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl (RunTclFile)" time="0.078" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.004" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.009" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml (RunModel)" time="0.134" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml (RunModel)" time="0.124" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml (RunModel)" time="0.049" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml (RunModel)" time="0.018" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml (RunModel)" time="0.137" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/IntArrayToString.xml (RunModel)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToCartesianAndBack.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml (RunModel)" time="0.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml (RunModel)" time="0.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml (RunModel)" time="0.042" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml (RunModel)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml (RunModel)" time="0.038" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl (RunTclFile)" time="0.379" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl (RunTclFile)" time="0.056" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl (RunTclFile)" time="0.053" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl (RunTclFile)" time="0.081" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl (RunTclFile)" time="0.105" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl (RunTclFile)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl (RunTclFile)" time="0.068" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml (RunModel)" time="0.116" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml (RunModel)" time="0.059" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml (RunModel)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml (RunModel)" time="0.019" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml (RunModel)" time="0.015" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml (RunModel)" time="0.153" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/IntArrayToString.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToCartesianAndBack.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml (RunModel)" time="0.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml (RunModel)" time="0.011" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml (RunModel)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml (RunModel)" time="0.014" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 05 19:03:09 UTC 2018
-73 ms. Memory: 116224K Free: 87047K (75%)
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 05 23:04:35 UTC 2018
+66 ms. Memory: 116224K Free: 87044K (75%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl
-16 ms. Memory: 116224K Free: 85504K (74%)
-17 ms. Memory: 116224K Free: 109229K (94%)
+7 ms. Memory: 116224K Free: 85504K (74%)
+8 ms. Memory: 116224K Free: 109140K (94%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl
-6 ms. Memory: 116224K Free: 108034K (93%)
-6 ms. Memory: 116224K Free: 106840K (92%)
+12 ms. Memory: 116224K Free: 107939K (93%)
+10 ms. Memory: 116224K Free: 106738K (92%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl
-10 ms. Memory: 116224K Free: 105016K (90%)
-11 ms. Memory: 116224K Free: 104410K (90%)
-10 ms. Memory: 116224K Free: 103821K (89%)
-8 ms. Memory: 116224K Free: 103821K (89%)
-11 ms. Memory: 116224K Free: 103232K (89%)
+9 ms. Memory: 116224K Free: 104937K (90%)
+13 ms. Memory: 116224K Free: 104337K (90%)
+3 ms. Memory: 116224K Free: 103728K (89%)
+10 ms. Memory: 116224K Free: 103728K (89%)
+8 ms. Memory: 116224K Free: 103136K (89%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl
-5 ms. Memory: 116224K Free: 102045K (88%)
-28 ms. Memory: 116224K Free: 99668K (86%)
-20 ms. Memory: 116224K Free: 99063K (85%)
-10 ms. Memory: 116224K Free: 98450K (85%)
-10 ms. Memory: 116224K Free: 97852K (84%)
-4 ms. Memory: 116224K Free: 97260K (84%)
+5 ms. Memory: 116224K Free: 101919K (88%)
+8 ms. Memory: 116224K Free: 99534K (86%)
+8 ms. Memory: 116224K Free: 98926K (85%)
+11 ms. Memory: 116224K Free: 98333K (85%)
+12 ms. Memory: 116224K Free: 97733K (84%)
+6 ms. Memory: 116224K Free: 97141K (84%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl
-6 ms. Memory: 116224K Free: 95484K (82%)
+13 ms. Memory: 116224K Free: 95340K (82%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl
-15 ms. Memory: 116224K Free: 93700K (81%)
-4 ms. Memory: 116224K Free: 93086K (80%)
-12 ms. Memory: 116224K Free: 92497K (80%)
-4 ms. Memory: 116224K Free: 91900K (79%)
-4 ms. Memory: 116224K Free: 90705K (78%)
-04/05/18 07:03:10
+14 ms. Memory: 116224K Free: 93531K (80%)
+3 ms. Memory: 116224K Free: 92938K (80%)
+3 ms. Memory: 116224K Free: 92322K (79%)
+2 ms. Memory: 116224K Free: 91690K (79%)
+3 ms. Memory: 116224K Free: 91081K (78%)
+04/05/18 11:04:36
 Failed: 0  Total Tests: 22  ((Passed: 22, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu Apr 05 19:03:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml
-6 ms. Memory: 146944K Free: 119415K (81%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml
+12 ms. Memory: 146944K Free: 119244K (81%)
 reloadAllAccessors: .AnythingToDouble
------------------ testing Thu Apr 05 19:03:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml
-27 ms. Memory: 146944K Free: 112648K (77%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml
+9 ms. Memory: 146944K Free: 113666K (77%)
 reloadAllAccessors: .ArrayOfStringsToArrayOfDoubles
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml
-4 ms. Memory: 146944K Free: 108929K (74%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml
+3 ms. Memory: 146944K Free: 108750K (74%)
 reloadAllAccessors: .ComplexToCartesianAndBack
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml
-13 ms. Memory: 146944K Free: 105825K (72%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml
+3 ms. Memory: 146944K Free: 105637K (72%)
 reloadAllAccessors: .ExpressionToToken
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml
-4 ms. Memory: 146944K Free: 102050K (69%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml
+3 ms. Memory: 146944K Free: 101911K (69%)
 reloadAllAccessors: .ExpressionToToken2
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml
-3 ms. Memory: 146944K Free: 98331K (67%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml
+3 ms. Memory: 146944K Free: 98168K (67%)
 reloadAllAccessors: .FixToDoubleAndBack
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml
-22 ms. Memory: 146944K Free: 139582K (95%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml
+9 ms. Memory: 146944K Free: 139133K (95%)
 reloadAllAccessors: .InUnitsOf
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/IntArrayToString.xml
-3 ms. Memory: 146944K Free: 135345K (92%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/IntArrayToString.xml
+5 ms. Memory: 146944K Free: 135294K (92%)
 reloadAllAccessors: .IntArrayToString
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToCartesianAndBack.xml
-5 ms. Memory: 146944K Free: 131222K (89%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToCartesianAndBack.xml
+4 ms. Memory: 146944K Free: 130708K (89%)
 reloadAllAccessors: .PolarToCartesianAndBack
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml
-6 ms. Memory: 146944K Free: 126697K (86%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml
+16 ms. Memory: 146944K Free: 126066K (86%)
 reloadAllAccessors: .PolarToComplexAndBack
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml
-5 ms. Memory: 146944K Free: 121951K (83%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml
+8 ms. Memory: 146944K Free: 121046K (82%)
 reloadAllAccessors: .Round
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml
-4 ms. Memory: 146944K Free: 118823K (81%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml
+4 ms. Memory: 146944K Free: 118158K (80%)
 reloadAllAccessors: .RoundFire
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml
-10 ms. Memory: 146944K Free: 114209K (78%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml
+6 ms. Memory: 146944K Free: 113933K (78%)
 reloadAllAccessors: .StringToBoolean
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml
-12 ms. Memory: 146944K Free: 109808K (75%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml
+4 ms. Memory: 146944K Free: 109708K (75%)
 reloadAllAccessors: .StringToDouble
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml
-3 ms. Memory: 146944K Free: 106252K (72%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml
+3 ms. Memory: 146944K Free: 106343K (72%)
 reloadAllAccessors: .StringToInt
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml
-4 ms. Memory: 146944K Free: 103012K (70%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml
+3 ms. Memory: 146944K Free: 103443K (70%)
 reloadAllAccessors: .StringToIntArray
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml
-4 ms. Memory: 146944K Free: 98834K (67%)
+----------------- testing Thu Apr 05 23:04:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml
+4 ms. Memory: 146944K Free: 98808K (67%)
 reloadAllAccessors: .StringToUnsignedByteArray
------------------ testing Thu Apr 05 19:03:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml
-4 ms. Memory: 146944K Free: 95059K (65%)
+----------------- testing Thu Apr 05 23:04:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml
+3 ms. Memory: 146944K Free: 95009K (65%)
 reloadAllAccessors: .TokenToExpression
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
