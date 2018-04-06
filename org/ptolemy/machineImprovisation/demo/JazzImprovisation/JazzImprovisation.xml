@@ -4,13 +4,13 @@
 <entity name="JazzImprovisation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 50, 1359, 856}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 877}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1131, 740]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 767]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8390804597701149">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0513657413570712">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-4543.006849315068, -1615.9999999999995}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-4642.216011253971, -1690.9920740127563}">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5000">
@@ -106,7 +106,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5180.0, -1245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5205.0, -1765.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -120,27 +120,20 @@
     <entity name="FactorOracleGenerator" class="org.ptolemy.machineImprovisation.FactorOracleGenerator">
         <property name="repetitionFactor" class="ptolemy.actor.parameters.PortParameter" value="replicationProbability">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-4917.5, -1635.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4970.0, -1695.0]">
         </property>
         <port name="pitchMoML" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
         </port>
-        <port name="durationMoML" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
-            </property>
-        </port>
     </entity>
-    <entity name="ChordFollower2" class="org.ptolemy.machineImprovisation.ChordFollower">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4595.0, -1535.0]">
+    <entity name="ChordFollower" class="org.ptolemy.machineImprovisation.ChordFollower">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4555.0, -1545.0]">
         </property>
         <port name="incomingDuration" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <port name="chordSequence" class="ptolemy.actor.TypedIOPort">
@@ -156,8 +149,6 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
             </property>
         </port>
         <port name="nextChord" class="ptolemy.actor.TypedIOPort">
@@ -270,21 +261,21 @@ Then delete this annotation.</text>
             <entity name="stop" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 225.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="runClock" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="runClock">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 230.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -361,7 +352,7 @@ Then delete this annotation.</text>
         <link port="runClock.stop" relation="stopRelation"/>
     </entity>
     <entity name="ReadTrainingMelody" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5045.0, -1635.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5125.0, -1640.0]">
         </property>
         <property name="bars" class="ptolemy.data.expr.Parameter" value="47.25">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -794,55 +785,7 @@ Then delete this annotation.</text>
             </property>
         </property>
         <property name="MobileModelIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -20.0]">
-                </property>
-            </property>
-            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
-                </property>
-            </property>
-            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 20.0]">
-                </property>
-            </property>
-            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 20.0]">
-                </property>
-            </property>
-            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -10.0]">
-                </property>
-            </property>
-            <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
-                </property>
-            </property>
-            <property name="rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -5.0]">
-                </property>
-            </property>
-            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -10.0]">
-                </property>
-            </property>
-            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 0.0]">
-                </property>
-            </property>
-            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -10.0]">
-                </property>
-            </property>
-            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -5.0]">
-                </property>
-            </property>
-            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -10.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 266, 834, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 266, 934, 632}, maximized=false}">
             </property>
             <property name="rectangle9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 2.0]">
@@ -1044,55 +987,7 @@ Then delete this annotation.</text>
             </property>
         </property>
         <property name="MobileModelIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -20.0]">
-                </property>
-            </property>
-            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
-                </property>
-            </property>
-            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 20.0]">
-                </property>
-            </property>
-            <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 20.0]">
-                </property>
-            </property>
-            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -10.0]">
-                </property>
-            </property>
-            <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 0.0]">
-                </property>
-            </property>
-            <property name="rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -5.0]">
-                </property>
-            </property>
-            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -10.0]">
-                </property>
-            </property>
-            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 0.0]">
-                </property>
-            </property>
-            <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -10.0]">
-                </property>
-            </property>
-            <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -5.0]">
-                </property>
-            </property>
-            <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -10.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 265, 834, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 265, 934, 632}, maximized=false}">
             </property>
             <property name="rectangle9" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 2.0]">
@@ -1266,7 +1161,7 @@ Then delete this annotation.</text>
             </property>
         </property>
         <doc>The inside model of this composite actor can be dynamically defined.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-4642.5, -1705.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4650.0, -1705.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1305,7 +1200,7 @@ Then delete this annotation.</text>
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4375.0, -1515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4370.0, -1510.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -1314,7 +1209,7 @@ Then delete this annotation.</text>
         </port>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-4822.5, -1735.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4825.0, -1745.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -1330,21 +1225,21 @@ Then delete this annotation.</text>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-4462.5, -1530.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4255.0, -1545.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1113, 42, 320, 843}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 42, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Improvised Sequence">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4475.0, -1695.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4375.0, -1695.0]">
         </property>
     </entity>
     <entity name="Plots" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4535.0, -1315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4530.0, -1360.0]">
         </property>
         <port name="original" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1438,7 +1333,7 @@ Then delete this annotation.</text>
 <xLabel>beat</xLabel>
 <yLabel>note</yLabel>
 <xRange min="2.0" max="48.0"/>
-<yRange min="-1.0" max="81.0"/>
+<yRange min="-0.01" max="81.0"/>
 <default connected="no" marks="dots"/>
 </plot>?>
             </configure>
@@ -1501,7 +1396,7 @@ Then delete this annotation.</text>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-4655.0, -1545.0]">
+        <vertex name="vertex1" value="[-4765.0, -1535.0]">
         </vertex>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
@@ -1539,7 +1434,7 @@ Then delete this annotation.</text>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-4535.0, -1545.0]">
+        <vertex name="vertex1" value="[-4445.0, -1555.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -1549,16 +1444,16 @@ Then delete this annotation.</text>
     <link port="FactorOracleGenerator.noteSequence" relation="relation25"/>
     <link port="FactorOracleGenerator.pitchMoML" relation="relation8"/>
     <link port="FactorOracleGenerator.durationMoML" relation="relation12"/>
-    <link port="ChordFollower2.incomingDuration" relation="relation13"/>
-    <link port="ChordFollower2.chordSequence" relation="relation34_10"/>
-    <link port="ChordFollower2.acceptedTuples" relation="relation7"/>
-    <link port="ChordFollower2.trigger" relation="relation6"/>
-    <link port="ChordFollower2.nextChord" relation="relation"/>
-    <link port="ChordFollower2.reset" relation="relation14"/>
-    <link port="ChordFollower2.startLick" relation="relation10"/>
-    <link port="ChordFollower2.currentBeat" relation="relation4"/>
-    <link port="ChordFollower2.incomingNote" relation="relation3"/>
-    <link port="ChordFollower2.resetBeat" relation="relation14"/>
+    <link port="ChordFollower.incomingDuration" relation="relation13"/>
+    <link port="ChordFollower.chordSequence" relation="relation34_10"/>
+    <link port="ChordFollower.acceptedTuples" relation="relation7"/>
+    <link port="ChordFollower.trigger" relation="relation6"/>
+    <link port="ChordFollower.nextChord" relation="relation"/>
+    <link port="ChordFollower.reset" relation="relation14"/>
+    <link port="ChordFollower.startLick" relation="relation10"/>
+    <link port="ChordFollower.currentBeat" relation="relation4"/>
+    <link port="ChordFollower.incomingNote" relation="relation3"/>
+    <link port="ChordFollower.resetBeat" relation="relation14"/>
     <link port="ClockSignal.start" relation="relation12"/>
     <link port="ClockSignal.clk" relation="relation6"/>
     <link port="ClockSignal.stop" relation="relation15"/>

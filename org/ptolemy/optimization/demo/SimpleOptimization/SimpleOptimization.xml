@@ -2,34 +2,52 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimpleOptimization" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[117.5, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model solves the optimization problem&#10;&#10;min (x -1.0 )^2 , subject to |x| &lt; 3.0&#10; x&#10;&#10;CompositeOptimizer has two mode. To find the maximum &#10;value of the function subject to constraints instead,&#10;double click on the CompositeOptimizer and pick MAX&#10;as the mode. The maximization problem is not convex, and&#10;one of the maxima will be returned.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[22.5, 195.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model solves the optimization problem&#10;&#10;min (x -1.0 )^2 , subject to |x| &lt; 3.0&#10;  x&#10;&#10;The CompositeOptimizer can also find the maximum &#10;value of the function subject to constraints;&#10;double click on the CompositeOptimizer and pick MAX&#10;as the mode. The maximization problem is not convex, and&#10;one of the maxima will be returned.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 738, 563}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 763, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[504, 453]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[529, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.0, 226.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.5, 261.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 400.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside to see how&#10;to specify the function&#10;to optimize.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[62.5, 20.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="CompositeOptimizer">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Minimization or Maximization">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 35.0]">
         </property>
     </property>
     <entity name="CompositeOptimizer" class="org.ptolemy.optimization.CompositeOptimizer">
@@ -46,17 +64,17 @@
         </property>
         <port name="f(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="g(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerComposite">
@@ -76,17 +94,17 @@
             </property>
             <port name="f(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 190.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 200.0]">
                 </property>
             </port>
             <port name="g(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 130.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 135.0]">
                 </property>
             </port>
             <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 190.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 200.0]">
                 </property>
             </port>
             <entity name="f_x" class="ptolemy.actor.lib.Expression">
@@ -124,7 +142,7 @@
                 </port>
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={952, 324, 484, 208}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 324, 499, 208}, maximized=false}">
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -138,16 +156,10 @@
                 </property>
                 <vertex name="vertex1" value="{0.0, 200.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Constraint.x&quot;,x=75.0,y=135.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={0.0,135.0} },{ head={id=&quot;f_x.x&quot;,x=75.0,y=200.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={} },{ head={id=&quot;x._location&quot;,x=-40.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={} },{ head={id=&quot;Display.input&quot;,x=40.0,y=75.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={0.0,75.0} } }">
-                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;g(x)._location&quot;,x=170.0,y=130.0}, tail={id=&quot;Constraint.output&quot;,x=75.0,y=135.0}, points={} } }">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;f(x)._location&quot;,x=170.0,y=190.0}, tail={id=&quot;f_x.output&quot;,x=75.0,y=200.0}, points={} } }">
-                </property>
             </relation>
             <link port="f(x)" relation="relation2"/>
             <link port="g(x)" relation="relation"/>
@@ -171,7 +183,7 @@
         </property>
     </entity>
     <entity name="Optimal Value" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={956, 105, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 105, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>

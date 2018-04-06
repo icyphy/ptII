@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LinearRegression" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.13156127929688, 35.3125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{81.13156127929688, 35.3125}">
         </property>
     </property>
     <property name="sampleSize" class="ptolemy.data.expr.Parameter" value="100">
@@ -29,7 +29,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -5.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1110, 709}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 23, 1110, 709}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[876, 599]">
     </property>
@@ -38,9 +38,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{438.0, 299.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model carries out constrained simple linear regression on a data set, drawn from a black box model. &#10;n data points, {(xi, yi), i = 1,..., sampleSize} are obtained from a black-box system. &#10;The goal is to fit a linear model &#10;&#10;y = a*x + b &#10;&#10;to the data, also known as the &quot;best&quot; line, in the least-square sense. The corresponding optimization &#10;problem becomes: find {a*,b*} such that the residual sum of squares (RSS), &#10;&#10;\sum_{i=1}^samplesSize{(yi - (a*xi+b))^2}&#10;&#10;is minimized, subject to constraints, g(a,b,x)&gt;0. The CompositeOptimizer performs gradient descent &#10;estimation of the optimal parameter set {a*,b*}, subject to g(.).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[26.131561279296875, 55.3125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{26.131561279296875, 55.3125}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -56,7 +58,16 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[21.131561279296875, 525.3125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{21.131561279296875, 525.3125}">
+        </property>
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
+        <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="Include decorations"/>
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Linear Regression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 20.0]">
         </property>
     </property>
     <entity name="CompositeOptimizer" class="org.ptolemy.optimization.CompositeOptimizer">
@@ -77,7 +88,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 340.0}">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -480,7 +491,7 @@ variables. </text></svg></configure>
         </entity>
     </entity>
     <entity name="Data Source" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 420.0}">
         </property>
         <property name="sampleSize" class="ptolemy.data.expr.Parameter" value="100">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -630,11 +641,11 @@ variables. </text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[516.1315612792969, 340.3125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{595.0, 340.0}">
         </property>
     </entity>
     <entity name="DrawBestLine" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 400.0}">
         </property>
         <property name="sampleSize" class="ptolemy.data.expr.Parameter" value="100">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -871,11 +882,11 @@ variables. </text></svg></configure>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="data, linear fit">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={802, 556, 699, 339}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={741, 556, 699, 339}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[699, 295]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{840.0, 420.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -885,7 +896,7 @@ variables. </text></svg></configure>
 <xLabel>x</xLabel>
 <yLabel>y</yLabel>
 <xRange min="0.0" max="9.89999999999998"/>
-<yRange min="1.7193966734522688" max="25.121336547036275"/>
+<yRange min="0.8949577241202427" max="23.807432193345797"/>
 <default connected="no" marks="dots"/>
 </plot>?>
         </configure>
@@ -893,24 +904,30 @@ variables. </text></svg></configure>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[175.0, 460.0]">
+        <vertex name="vertex1" value="{165.0, 350.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Data Source.xi&quot;,x=50.0,y=420.0}, tail={id=&quot;relation7.vertex1&quot;,x=165.0,y=350.0}, points={115.0,410.0,115.0,350.0} },{ head={id=&quot;ArrayPlotterXY.x&quot;,x=840.0,y=420.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=165.0,y=350.0}, points={790.0,405.0,790.0,295.0,165.0,295.0} },{ head={id=&quot;DrawBestLine.x&quot;,x=540.0,y=400.0}, tail={id=&quot;relation7.vertex1&quot;,x=165.0,y=350.0}, points={165.0,410.0} },{ head={id=&quot;CompositeOptimizer.xSamples&quot;,x=255.0,y=340.0}, tail={id=&quot;relation7.vertex1&quot;,x=165.0,y=350.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[326.1315612792969, 340.3125]">
+        <vertex name="vertex1" value="{395.0, 340.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DrawBestLine.parameterFit&quot;,x=455.0,y=405.0}, tail={id=&quot;relation5.vertex1&quot;,x=315.0,y=335.0}, points={315.0,395.0} },{ head={id=&quot;CompositeOptimizer.optimalValue&quot;,x=205.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=315.0,y=335.0}, points={} },{ head={id=&quot;Least-Squares Parameter Fits {a*,b*}.input&quot;,x=505.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=315.0,y=335.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DrawBestLine.parameterFit&quot;,x=540.0,y=400.0}, tail={id=&quot;relation5.vertex1&quot;,x=395.0,y=340.0}, points={395.0,390.0} },{ head={id=&quot;Least-Squares Parameter Fits {a*,b*}.input&quot;,x=595.0,y=340.0}, tail={id=&quot;relation5.vertex1&quot;,x=395.0,y=340.0}, points={} },{ head={id=&quot;CompositeOptimizer.optimalValue&quot;,x=255.0,y=340.0}, tail={id=&quot;relation5.vertex1&quot;,x=395.0,y=340.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DrawBestLine.ys&quot;,x=540.0,y=400.0}, tail={id=&quot;ArrayPlotterXY.y&quot;,x=840.0,y=420.0,index=2}, points={775.0,400.0,775.0,425.0} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[121.13156127929688, 485.3125]">
+        <vertex name="vertex1" value="{150.0, 430.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CompositeOptimizer.ySamples&quot;,x=255.0,y=340.0}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=430.0}, points={150.0,340.0} },{ head={id=&quot;ArrayPlotterXY.y&quot;,x=840.0,y=420.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=430.0}, points={} },{ head={id=&quot;Data Source.yi&quot;,x=50.0,y=420.0}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=430.0}, points={} } }">
+        </property>
     </relation>
     <link port="CompositeOptimizer.optimalValue" relation="relation5"/>
     <link port="CompositeOptimizer.ySamples" relation="relation3"/>

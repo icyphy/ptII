@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-300.0, -445.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 22, 1276, 804}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 23, 1276, 804}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1042, 694]">
     </property>
@@ -79,7 +79,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A robot that&#10;moves in a circle.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-35.0, 30.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-35.0, 30.0}">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Robot2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -89,7 +89,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A sensor whose output&#10;is a noisy estimate of&#10;the distance to the target.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-95.0, 30.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-95.0, 30.0}">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Sensor">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -123,7 +123,7 @@
         </property>
     </entity>
     <entity name="ParticleFilterRange" class="org.ptolemy.machineLearning.particleFilter.ParticleFilterRange">
-        <property name="t" class="ptolemy.data.expr.Parameter" value="5.5">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*80-40,random()*80-40}">
         </property>
@@ -133,7 +133,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, -210.0}">
         </property>
-        <property name="z_m" class="ptolemy.data.expr.Parameter" value="7.912707945462">
+        <property name="z_m" class="ptolemy.data.expr.Parameter" value="33.7711960278698">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -161,6 +161,8 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-15.175208008303029">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -171,6 +173,8 @@
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+            </property>
+            <property name="y" class="ptolemy.data.expr.Parameter" value="8.926583893086438">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -285,7 +289,7 @@
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Move to a new location each period.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-35.0, 80.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-35.0, 80.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DiscreteClock">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -295,7 +299,7 @@
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Calculate the new location&#10;using the current time, speed,&#10;and initialPosition parameters.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, 85.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[0.0, 85.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -637,9 +641,9 @@
             </property>
             <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="particles, robot position, target position">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="target position, robot position, particles">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 979, 874}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 23, 979, 874}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[979, 830]">
             </property>
@@ -654,8 +658,8 @@
 <title>Range-Only Stationary Target Localization</title>
 <xLabel>x</xLabel>
 <yLabel>y</yLabel>
-<xRange min="-40.0" max="40.0"/>
-<yRange min="-40.0" max="40.0"/>
+<xRange min="-51.25403008" max="44.0"/>
+<yRange min="-47.06828426360313" max="48.18574581639687"/>
 <default connected="no" marks="various"/>
 </plot>?>
             </configure>
