@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="13" failures="0" hostname="travis-job-1531abd4-6528-4456-8e10-438e6d506842" name="ptolemy.actor.lib.jjs.modules.socket.test.junit.JUnitTclTest" skipped="0" tests="30" time="295.654" timestamp="2018-04-06T14:09:02">
+<testsuite errors="18" failures="0" hostname="travis-job-e5dd8aaa-5713-4aca-b1df-1e9dccb81e64" name="ptolemy.actor.lib.jjs.modules.socket.test.junit.JUnitTclTest" skipped="0" tests="30" time="249.126" timestamp="2018-04-06T14:43:46">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="193.4" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="194.4" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.33 57510 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.2 38190 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.33 57510 10.20.0.25 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.2 38190 10.20.0.19 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.socket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.socket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher771632202660565538.properties propsfile=/home/travis/build/icyphy/ptII/junit2770750946946875623.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.socket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.socket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8959496040317214188.properties propsfile=/home/travis/build/icyphy/ptII/junit6053456307720949234.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="b1a3979ef584...f4ee33ce075a" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="f4ee33ce075a...edba8e016fb9" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="193" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="194" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="363115321" />
+    <property name="env.TRAVIS_BUILD_ID" value="363127567" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="f4ee33ce075a3af5ffa2f4b3262f90d4e1ec39b0" />
+    <property name="env.TRAVIS_COMMIT" value="edba8e016fb9df3f6189638608e0d7f762ab785b" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -162,7 +162,7 @@
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Testing email notification." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Reverted jcerti to commit fe33d803 (17 feb 2017)" />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -201,7 +201,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="363115325" />
+    <property name="env.TRAVIS_JOB_ID" value="363127571" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -219,12 +219,12 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/knownFailedTests/SocketLong.xml (RunModel)" time="13.267" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/knownFailedTests/SocketUnsignedInt.xml (RunModel)" time="7.463" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/knownFailedTests/SocketLong.xml (RunModel)" time="11.723" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/knownFailedTests/SocketUnsignedInt.xml (RunModel)" time="7.625" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message1.xml (RunModel)" time="5.797" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message2.xml (RunModel)" time="5.292">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message1.xml (RunModel)" time="5.181" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message2.xml (RunModel)" time="5.003">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -252,7 +252,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message3.xml (RunModel)" time="5.349">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message3.xml (RunModel)" time="5.084">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -280,7 +280,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message4.xml (RunModel)" time="7.096">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message4.xml (RunModel)" time="6.861">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -308,61 +308,26 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket1.xml (RunModel)" time="3.398">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket1.xml (RunModel)" time="1.207">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: &quot;Failed to connect: \nConnection refused: localhost/127.0.0.1:4001\nConnection refused: ptolemy.kernel.util.IllegalActionException: Failed to connect: \nConnection refused: localhost/127.0.0.1:4001\nConnection refused\n  in .Socket1.JavaScript\nBecause:\nConnection refused: localhost/127.0.0.1:4001&quot;. Should have been: &quot;Failed to connect: \nConnection refused: localhost/127.0.0.1:4001: ptolemy.kernel.util.IllegalActionException: Failed to connect: \nConnection refused: localhost/127.0.0.1:4001\n  in .Socket1.JavaScript\nBecause:\nConnection refused: localhost/127.0.0.1:4001&quot;
   in .Socket1.Test
-
-  in .Socket1.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket1.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket1.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket2.xml (RunModel)" time="6.397">
-    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
-	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
-	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test3
-
-  in .Socket2.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test2
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test2
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-</error>
-  </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket3.xml (RunModel)" time="5.65">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket2.xml (RunModel)" time="5.781" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket3.xml (RunModel)" time="5.441">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -388,24 +353,23 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketByte.xml (RunModel)" time="6.238" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDouble.xml (RunModel)" time="6.414">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketByte.xml (RunModel)" time="5.952">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
+  in .SocketByte.Test
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test2
+  in .SocketByte.Test2
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test3
+  in .SocketByte.Test3
 
-  in .SocketDouble.DE Director
+  in .SocketByte.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
+  in .SocketByte.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -414,25 +378,28 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
+  in .SocketByte.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArray.xml (RunModel)" time="6.154">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDouble.xml (RunModel)" time="5.504" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArray.xml (RunModel)" time="6.097">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketDoubleArray.Test2
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test3
 
   in .SocketDoubleArray.DE Director
 Because:
-The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
@@ -441,13 +408,13 @@ The test produced only 2 tokens, yet the correctValues parameter was expecting 3
 	at ptolemy.actor.Manager.execute(Manager.java:407)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:409)
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArrayBatched.xml (RunModel)" time="6.179">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArrayBatched.xml (RunModel)" time="6.347">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -477,22 +444,64 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketFloat.xml (RunModel)" time="13.716" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImage.xml (RunModel)" time="15.096" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImagePNG.xml (RunModel)" time="10.248" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImageRaw.xml (RunModel)" time="7.813">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketFloat.xml (RunModel)" time="13.17">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketFloat.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketFloat.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImage.xml (RunModel)" time="9.899">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketImageRaw.Test2
+  in .SocketImage.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketImage.Test2
 
-  in .SocketImageRaw.DE Director
+  in .SocketImage.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketImageRaw.Test2
+  in .SocketImage.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -501,29 +510,26 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketImageRaw.Test2
+  in .SocketImage.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml (RunModel)" time="6.771" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketShort.xml (RunModel)" time="5.922">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImagePNG.xml (RunModel)" time="6.01">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test
+  in .SocketImagePNG.Test
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test3
+  in .SocketImagePNG.Test2
 
-  in .SocketShort.DE Director
+  in .SocketImagePNG.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test
+  in .SocketImagePNG.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -532,13 +538,74 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test
+  in .SocketImagePNG.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketStringArray.xml (RunModel)" time="5.916" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketTypicalUsage.xml (RunModel)" time="6.765">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImageRaw.xml (RunModel)" time="14.96" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml (RunModel)" time="6.963">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test2
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test3
+
+  in .SocketInt.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketShort.xml (RunModel)" time="6.496" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketStringArray.xml (RunModel)" time="6.558">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketStringArray.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketStringArray.Test2
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketStringArray.Test3
+
+  in .SocketStringArray.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketStringArray.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketStringArray.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketTypicalUsage.xml (RunModel)" time="6.817">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -564,7 +631,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedByte.xml (RunModel)" time="5.839">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedByte.xml (RunModel)" time="6.043">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -594,160 +661,239 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedShort.xml (RunModel)" time="6.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml (RunModel)" time="10.139" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml (RunModel)" time="31.741" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketTwoClients.xml (RunModel)" time="36.404" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml (RunModel)" time="32.235" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml (RunModel)" time="16.198" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedShort.xml (RunModel)" time="5.921" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml (RunModel)" time="4.961">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test2
+
+  in .TCPSocketDoubleArrayBatched.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml (RunModel)" time="16.353">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest3: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest3
+Because:
+Error: TrainableTest3: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest4
+Because:
+Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .TCPSocketSecureServerClient.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$27056$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$27054$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketTwoClients.xml (RunModel)" time="20.62">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .TCPSocketTwoClients.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$30871$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$30869$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml (RunModel)" time="30.264" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml (RunModel)" time="16.132" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/knownFailedTests/SocketLong.xml
-6861 ms. Memory: 402944K Free: 289133K (72%)
+6097 ms. Memory: 381952K Free: 326474K (85%)
 Known Failure: java.lang.reflect.InvocationTargetException
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/knownFailedTests/SocketUnsignedInt.xml
-5304 ms. Memory: 506368K Free: 204336K (40%)
+5490 ms. Memory: 660480K Free: 538985K (82%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Fri Apr 06 14:09:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message1.xml
+----------------- testing Fri Apr 06 14:44:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message1.xml
 Client: Sending data: -1,0,1,128,256 (Thread[Message1,1,main])
-4180 ms. Memory: 697856K Free: 562638K (81%)
+3987 ms. Memory: 662528K Free: 258370K (39%)
 reloadAllAccessors: .Message1
------------------ testing Fri Apr 06 14:09:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message2.xml
-4090 ms. Memory: 739840K Free: 381318K (52%)
------------------ testing Fri Apr 06 14:09:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message3.xml
-4174 ms. Memory: 778240K Free: 340021K (44%)
------------------ testing Fri Apr 06 14:09:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message4.xml
-5939 ms. Memory: 763392K Free: 631419K (83%)
------------------ testing Fri Apr 06 14:09:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket1.xml
-2876 ms. Memory: 763392K Free: 301908K (40%)
------------------ testing Fri Apr 06 14:09:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket2.xml
-4822 ms. Memory: 809984K Free: 470449K (58%)
------------------ testing Fri Apr 06 14:09:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket3.xml
-4677 ms. Memory: 825344K Free: 298218K (36%)
------------------ testing Fri Apr 06 14:10:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketByte.xml
-Client: Sending data: -1,0,1,128,256 (Thread[SocketByte,1,main])
-Client3: Sending data: 127 (Thread[SocketByte,1,main])
-4633 ms. Memory: 825856K Free: 221935K (27%)
-reloadAllAccessors: .SocketByte
------------------ testing Fri Apr 06 14:10:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDouble.xml
-4382 ms. Memory: 878592K Free: 348412K (40%)
------------------ testing Fri Apr 06 14:10:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArray.xml
-Client: Sending data: 1.1,1.2 (Thread[SocketDoubleArray,1,main])
-Client3: Sending data: 2.2 (Thread[SocketDoubleArray,1,main])
-4675 ms. Memory: 879104K Free: 273535K (31%)
------------------ testing Fri Apr 06 14:10:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArrayBatched.xml
-4844 ms. Memory: 925696K Free: 410956K (44%)
------------------ testing Fri Apr 06 14:10:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketFloat.xml
-Client: Sending data: -1,0,1,128,-2147483648 (Thread[SocketFloat,1,main])
-Client3: Sending data: 3.14159 (Thread[SocketFloat,1,main])
-12446 ms. Memory: 926208K Free: 344498K (37%)
-reloadAllAccessors: .SocketFloat
------------------ testing Fri Apr 06 14:10:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImage.xml
+----------------- testing Fri Apr 06 14:44:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message2.xml
+3856 ms. Memory: 726016K Free: 80497K (11%)
+----------------- testing Fri Apr 06 14:44:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message3.xml
+3785 ms. Memory: 756736K Free: 537943K (71%)
+----------------- testing Fri Apr 06 14:44:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Message4.xml
+5832 ms. Memory: 747008K Free: 327690K (44%)
+----------------- testing Fri Apr 06 14:44:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket1.xml
+790 ms. Memory: 754688K Free: 496963K (66%)
+----------------- testing Fri Apr 06 14:44:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket2.xml
+4450 ms. Memory: 814592K Free: 648034K (80%)
+reloadAllAccessors: .Socket2
+----------------- testing Fri Apr 06 14:44:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket3.xml
+4615 ms. Memory: 794624K Free: 437328K (55%)
+----------------- testing Fri Apr 06 14:44:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketByte.xml
+4531 ms. Memory: 860672K Free: 569975K (66%)
+----------------- testing Fri Apr 06 14:44:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDouble.xml
+Client: Sending data: 1.1 (Thread[SocketDouble,1,main])
+Client3: Sending data: 2.2 (Thread[SocketDouble,1,main])
+4157 ms. Memory: 860672K Free: 494568K (57%)
+reloadAllAccessors: .SocketDouble
+----------------- testing Fri Apr 06 14:44:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArray.xml
+4567 ms. Memory: 861184K Free: 437992K (51%)
+----------------- testing Fri Apr 06 14:44:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArrayBatched.xml
+4517 ms. Memory: 912384K Free: 570937K (63%)
+----------------- testing Fri Apr 06 14:45:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketFloat.xml
+11707 ms. Memory: 913920K Free: 516723K (57%)
+----------------- testing Fri Apr 06 14:45:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImage.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 No physical cameras found, using WebcamDummyDriver.
-4955 ms. Memory: 928256K Free: 228436K (25%)
-reloadAllAccessors: .SocketImage
+5280 ms. Memory: 969216K Free: 619987K (64%)
+----------------- testing Fri Apr 06 14:45:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImagePNG.xml
+4630 ms. Memory: 971776K Free: 547857K (56%)
+----------------- testing Fri Apr 06 14:45:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImageRaw.xml
+Client: Sending data: {type="class ptolemy.data.AWTImageToken", width="176", height="144"} (Thread[SocketImageRaw,1,main])
+Client: Sending data: {type="class ptolemy.data.AWTImageToken", width="176", height="144"} (Thread[SocketImageRaw,1,main])
+6253 ms. Memory: 972800K Free: 450647K (46%)
+reloadAllAccessors: .SocketImageRaw
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
------------------ Reloaded Accessors and testing again Fri Apr 06 14:10:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImage.xml
-5176 ms. Memory: 1014272K Free: 674807K (67%)
------------------ testing Fri Apr 06 14:10:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImagePNG.xml
-Client: Sending data: {type="class ptolemy.data.AWTImageToken", width="176", height="144"} (Thread[SocketImagePNG,1,main])
-4488 ms. Memory: 1016832K Free: 612481K (60%)
-reloadAllAccessors: .SocketImagePNG
------------------ Reloaded Accessors and testing again Fri Apr 06 14:11:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImagePNG.xml
-Client: Sending data: {type="class ptolemy.data.AWTImageToken", width="176", height="144"} (Thread[Thread-56,5,main])
-4268 ms. Memory: 1017344K Free: 337095K (33%)
------------------ testing Fri Apr 06 14:11:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImageRaw.xml
-6434 ms. Memory: 1018368K Free: 289159K (28%)
------------------ testing Fri Apr 06 14:11:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml
-Client: Sending data: -1,0,1,128,-2147483648 (Thread[SocketInt,1,main])
-Client3: Sending data: 3.14159 (Thread[SocketInt,1,main])
-4298 ms. Memory: 1144832K Free: 491125K (43%)
-reloadAllAccessors: .SocketInt
------------------ testing Fri Apr 06 14:11:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketShort.xml
-4492 ms. Memory: 1147392K Free: 479826K (42%)
------------------ testing Fri Apr 06 14:11:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketStringArray.xml
-Client: Sending data: a,b (Thread[SocketStringArray,1,main])
-Client2: Sending data: c (Thread[SocketStringArray,1,main])
-4370 ms. Memory: 1147392K Free: 426648K (37%)
-reloadAllAccessors: .SocketStringArray
------------------ testing Fri Apr 06 14:11:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketTypicalUsage.xml
-Server: Server listening on port: 4000 (Thread[vert.x-eventloop-thread-1,1,main])
-Server: Server connected on a new socket number: 0 (Thread[vert.x-eventloop-thread-1,1,main])
-4417 ms. Memory: 1207296K Free: 685181K (57%)
------------------ testing Fri Apr 06 14:11:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedByte.xml
-4537 ms. Memory: 1208320K Free: 672194K (56%)
------------------ testing Fri Apr 06 14:11:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedShort.xml
+----------------- Reloaded Accessors and testing again Fri Apr 06 14:45:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketImageRaw.xml
+Client: Sending data: {type="class ptolemy.data.AWTImageToken", width="176", height="144"} (Thread[Thread-57,5,main])
+6893 ms. Memory: 972800K Free: 158140K (16%)
+----------------- testing Fri Apr 06 14:45:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml
+4525 ms. Memory: 1094656K Free: 388617K (36%)
+----------------- testing Fri Apr 06 14:45:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketShort.xml
+Client: Sending data: -1,0,1,128,32768 (Thread[SocketShort,1,main])
+Client3: Sending data: 3.14159 (Thread[SocketShort,1,main])
+Client: Sending data: -1,0,1,128,32768 (Thread[SocketShort,1,main])
+Client3: Sending data: 3.14159 (Thread[SocketShort,1,main])
+4883 ms. Memory: 1096192K Free: 353285K (32%)
+reloadAllAccessors: .SocketShort
+----------------- testing Fri Apr 06 14:46:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketStringArray.xml
+4816 ms. Memory: 1095168K Free: 326741K (30%)
+----------------- testing Fri Apr 06 14:46:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketTypicalUsage.xml
+4659 ms. Memory: 1159168K Free: 581938K (50%)
+----------------- testing Fri Apr 06 14:46:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedByte.xml
+4428 ms. Memory: 1159168K Free: 567481K (49%)
+----------------- testing Fri Apr 06 14:46:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketUnsignedShort.xml
 Client: Sending data: -1,0,1,65535,65536 (Thread[SocketUnsignedShort,1,main])
 Client3: Sending data: 3.14159 (Thread[SocketUnsignedShort,1,main])
-4545 ms. Memory: 1208320K Free: 641414K (53%)
+Client: Sending data: -1,0,1,65535,65536 (Thread[SocketUnsignedShort,1,main])
+Client3: Sending data: 3.14159 (Thread[SocketUnsignedShort,1,main])
+4443 ms. Memory: 1159168K Free: 528421K (46%)
 reloadAllAccessors: .SocketUnsignedShort
------------------ testing Fri Apr 06 14:11:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml
-3743 ms. Memory: 1208320K Free: 402548K (33%)
-reloadAllAccessors: .TCPSocketDoubleArrayBatched
------------------ Reloaded Accessors and testing again Fri Apr 06 14:11:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml
-4708 ms. Memory: 1266176K Free: 548632K (43%)
------------------ testing Fri Apr 06 14:12:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml
-12371 ms. Memory: 1251840K Free: 211772K (17%)
-reloadAllAccessors: .TCPSocketSecureServerClient
------------------ Reloaded Accessors and testing again Fri Apr 06 14:12:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml
-13062 ms. Memory: 1320448K Free: 467597K (35%)
------------------ testing Fri Apr 06 14:12:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketTwoClients.xml
-TextDisplayHelper: { id: 1,
-  remoteHost: '127.0.0.1',
-  remotePort: 51462,
-  status: 'open' }
-TextDisplayHelper: { id: 2,
-  remoteHost: '127.0.0.1',
-  remotePort: 51464,
-  status: 'open' }
-TextDisplayHelper: 1
-TextDisplayHelper: 0
-TextDisplayHelper: 2
-TextDisplayHelper: 1
-TextDisplayHelper: 1
-TextDisplayHelper: 2
-TextDisplayHelper: 2
-TextDisplayHelper: 1
-TextDisplayHelper: 3
-TextDisplayHelper: 4
-TextDisplayHelper: 2
-TextDisplayHelper: 1
-TextDisplayHelper: 2
-TextDisplayHelper: 5
-TextDisplayHelper: 6
-TextDisplayHelper: 7
-14845 ms. Memory: 1395200K Free: 545212K (39%)
-reloadAllAccessors: .TCPSocketTwoClients
------------------ Reloaded Accessors and testing again Fri Apr 06 14:12:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketTwoClients.xml
-TextDisplayHelper: { id: 1,
-  remoteHost: '127.0.0.1',
-  remotePort: 34004,
-  status: 'open' }
-TextDisplayHelper: { id: 2,
-  remoteHost: '127.0.0.1',
-  remotePort: 34006,
-  status: 'open' }
-TextDisplayHelper: 1
-TextDisplayHelper: 0
-TextDisplayHelper: 2
-TextDisplayHelper: 1
-TextDisplayHelper: 1
-TextDisplayHelper: 2
-TextDisplayHelper: 2
-TextDisplayHelper: 1
-TextDisplayHelper: 3
-TextDisplayHelper: 4
-TextDisplayHelper: 2
-TextDisplayHelper: 1
-TextDisplayHelper: 2
-TextDisplayHelper: 5
-TextDisplayHelper: 7
-TextDisplayHelper: 6
-13735 ms. Memory: 1398272K Free: 405101K (29%)
------------------ testing Fri Apr 06 14:13:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml
+----------------- testing Fri Apr 06 14:46:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml
+3854 ms. Memory: 1158656K Free: 300687K (26%)
+----------------- testing Fri Apr 06 14:46:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml
+11870 ms. Memory: 1226752K Free: 355174K (29%)
+----------------- testing Fri Apr 06 14:46:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketTwoClients.xml
+14222 ms. Memory: 1296896K Free: 554258K (43%)
+----------------- testing Fri Apr 06 14:47:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml
 TextDisplayHelper: 65535
 TextDisplayHelper: 0
 TextDisplayHelper: 1
@@ -760,9 +906,9 @@ TextDisplayHelper: 2
 TextDisplayHelper: 0
 TextDisplayHelper: 1
 TextDisplayHelper: 3
-12065 ms. Memory: 1473024K Free: 646273K (44%)
+12418 ms. Memory: 1347072K Free: 742781K (55%)
 reloadAllAccessors: .TCPSocketUnsignedShort
------------------ Reloaded Accessors and testing again Fri Apr 06 14:13:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml
+----------------- Reloaded Accessors and testing again Fri Apr 06 14:47:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml
 TextDisplayHelper: 65535
 TextDisplayHelper: 0
 TextDisplayHelper: 1
@@ -775,62 +921,16 @@ TextDisplayHelper: 2
 TextDisplayHelper: 0
 TextDisplayHelper: 1
 TextDisplayHelper: 3
-12534 ms. Memory: 1461248K Free: 412829K (28%)
------------------ testing Fri Apr 06 14:13:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml
-7223 ms. Memory: 1518080K Free: 912353K (60%)
+11651 ms. Memory: 1348608K Free: 549943K (41%)
+----------------- testing Fri Apr 06 14:47:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml
+5830 ms. Memory: 1348096K Free: 189778K (14%)
 reloadAllAccessors: .TCPSocketUnsignedShortSimple
------------------ Reloaded Accessors and testing again Fri Apr 06 14:13:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml
-5665 ms. Memory: 1499136K Free: 721293K (48%)
+----------------- Reloaded Accessors and testing again Fri Apr 06 14:47:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml
+6004 ms. Memory: 1408000K Free: 401102K (28%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
-  <system-err><![CDATA[Apr 06, 2018 2:09:14 PM io.vertx.core.impl.ContextImpl
-SEVERE: Unhandled exception
-java.lang.IllegalArgumentException: Invalid send data type: long
-	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.<init>(SocketHelper.java:566)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$1078$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:630)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$1076$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:582)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper.lambda$null$2(SocketHelper.java:394)
-	at io.vertx.core.net.impl.NetServerImpl.lambda$connected$11(NetServerImpl.java:457)
-	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
-	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
-	at io.vertx.core.net.impl.NetServerImpl.connected(NetServerImpl.java:453)
-	at io.vertx.core.net.impl.NetServerImpl.access$200(NetServerImpl.java:57)
-	at io.vertx.core.net.impl.NetServerImpl$1.initChannel(NetServerImpl.java:209)
-	at io.netty.channel.ChannelInitializer.initChannel(ChannelInitializer.java:113)
-	at io.netty.channel.ChannelInitializer.handlerAdded(ChannelInitializer.java:105)
-	at io.netty.channel.DefaultChannelPipeline.callHandlerAdded0(DefaultChannelPipeline.java:606)
-	at io.netty.channel.DefaultChannelPipeline.access$000(DefaultChannelPipeline.java:46)
-	at io.netty.channel.DefaultChannelPipeline$PendingHandlerAddedTask.execute(DefaultChannelPipeline.java:1412)
-	at io.netty.channel.DefaultChannelPipeline.callHandlerAddedForAllHandlers(DefaultChannelPipeline.java:1131)
-	at io.netty.channel.DefaultChannelPipeline.invokeHandlerAddedIfNeeded(DefaultChannelPipeline.java:656)
-	at io.netty.channel.AbstractChannel$AbstractUnsafe.register0(AbstractChannel.java:510)
-	at io.netty.channel.AbstractChannel$AbstractUnsafe.register(AbstractChannel.java:476)
-	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:80)
-	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:74)
-	at io.vertx.core.net.impl.VertxEventLoopGroup.register(VertxEventLoopGroup.java:53)
-	at io.netty.bootstrap.ServerBootstrap$ServerBootstrapAcceptor.channelRead(ServerBootstrap.java:255)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
-	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-
-Apr 06, 2018 2:09:14 PM io.vertx.core.impl.ContextImpl
+  <system-err><![CDATA[Apr 06, 2018 2:43:55 PM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.<init>(SocketHelper.java:566)
@@ -869,11 +969,11 @@ java.lang.IllegalArgumentException: Invalid send data type: long
 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.lang.Thread.run(Thread.java:748)
 
-Apr 06, 2018 2:09:14 PM io.vertx.core.impl.ContextImpl
+Apr 06, 2018 2:43:55 PM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.<init>(SocketHelper.java:566)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$1078$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:630)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1079$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:630)
 	at jdk.nashorn.internal.scripts.Script$Recompilation$1076$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:582)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
@@ -915,7 +1015,53 @@ java.lang.IllegalArgumentException: Invalid send data type: long
 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.lang.Thread.run(Thread.java:748)
 
-Apr 06, 2018 2:09:14 PM io.vertx.core.impl.ContextImpl
+Apr 06, 2018 2:43:56 PM io.vertx.core.impl.ContextImpl
+SEVERE: Unhandled exception
+java.lang.IllegalArgumentException: Invalid send data type: long
+	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.<init>(SocketHelper.java:566)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1079$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:630)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1076$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:582)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper.lambda$null$2(SocketHelper.java:394)
+	at io.vertx.core.net.impl.NetServerImpl.lambda$connected$11(NetServerImpl.java:457)
+	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
+	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
+	at io.vertx.core.net.impl.NetServerImpl.connected(NetServerImpl.java:453)
+	at io.vertx.core.net.impl.NetServerImpl.access$200(NetServerImpl.java:57)
+	at io.vertx.core.net.impl.NetServerImpl$1.initChannel(NetServerImpl.java:209)
+	at io.netty.channel.ChannelInitializer.initChannel(ChannelInitializer.java:113)
+	at io.netty.channel.ChannelInitializer.handlerAdded(ChannelInitializer.java:105)
+	at io.netty.channel.DefaultChannelPipeline.callHandlerAdded0(DefaultChannelPipeline.java:606)
+	at io.netty.channel.DefaultChannelPipeline.access$000(DefaultChannelPipeline.java:46)
+	at io.netty.channel.DefaultChannelPipeline$PendingHandlerAddedTask.execute(DefaultChannelPipeline.java:1412)
+	at io.netty.channel.DefaultChannelPipeline.callHandlerAddedForAllHandlers(DefaultChannelPipeline.java:1131)
+	at io.netty.channel.DefaultChannelPipeline.invokeHandlerAddedIfNeeded(DefaultChannelPipeline.java:656)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.register0(AbstractChannel.java:510)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.register(AbstractChannel.java:476)
+	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:80)
+	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:74)
+	at io.vertx.core.net.impl.VertxEventLoopGroup.register(VertxEventLoopGroup.java:53)
+	at io.netty.bootstrap.ServerBootstrap$ServerBootstrapAcceptor.channelRead(ServerBootstrap.java:255)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+
+Apr 06, 2018 2:43:56 PM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.<init>(SocketHelper.java:566)
@@ -1158,50 +1304,17 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	... 6 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: "Failed to connect: \nConnection refused: localhost/127.0.0.1:4001\nConnection refused: ptolemy.kernel.util.IllegalActionException: Failed to connect: \nConnection refused: localhost/127.0.0.1:4001\nConnection refused\n  in .Socket1.JavaScript\nBecause:\nConnection refused: localhost/127.0.0.1:4001". Should have been: "Failed to connect: \nConnection refused: localhost/127.0.0.1:4001: ptolemy.kernel.util.IllegalActionException: Failed to connect: \nConnection refused: localhost/127.0.0.1:4001\n  in .Socket1.JavaScript\nBecause:\nConnection refused: localhost/127.0.0.1:4001"
   in .Socket1.Test
-
-  in .Socket1.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket1.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket1.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test3
-
-  in .Socket2.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test2
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .Socket2.Test2
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -1228,16 +1341,16 @@ java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
+  in .SocketByte.Test
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test2
+  in .SocketByte.Test2
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test3
+  in .SocketByte.Test3
 
-  in .SocketDouble.DE Director
+  in .SocketByte.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
+  in .SocketByte.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -1246,21 +1359,23 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
+  in .SocketByte.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketDoubleArray.Test2
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test3
 
   in .SocketDoubleArray.DE Director
 Because:
-The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
@@ -1269,9 +1384,9 @@ The test produced only 2 tokens, yet the correctValues parameter was expecting 3
 	at ptolemy.actor.Manager.execute(Manager.java:407)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
   in .SocketDoubleArray.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:409)
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
 java.lang.RuntimeException: Execution failed
@@ -1300,27 +1415,104 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketFloat.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketFloat.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketFloat.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	... 9 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
 [Thread-48] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketImageRaw.Test2
+  in .SocketImage.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketImage.Test2
 
-  in .SocketImageRaw.DE Director
+  in .SocketImage.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketImageRaw.Test2
+  in .SocketImage.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -1329,7 +1521,63 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketImageRaw.Test2
+  in .SocketImage.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketImagePNG.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketImagePNG.Test2
+
+  in .SocketImagePNG.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketImagePNG.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketImagePNG.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test2
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test3
+
+  in .SocketInt.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketInt.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
@@ -1337,16 +1585,16 @@ java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test
+  in .SocketStringArray.Test
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test2
+  in .SocketStringArray.Test2
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test3
+  in .SocketStringArray.Test3
 
-  in .SocketShort.DE Director
+  in .SocketStringArray.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test
+  in .SocketStringArray.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -1355,7 +1603,7 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketShort.Test
+  in .SocketStringArray.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
@@ -1407,7 +1655,143 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
-WARNING: JavaScriptDiscreteClock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.066, 6.066]
-WARNING: JavaScriptDiscreteClock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.078, 5.078]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test2
+
+  in .TCPSocketDoubleArrayBatched.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .TCPSocketDoubleArrayBatched.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest3: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest3
+Because:
+Error: TrainableTest3: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest4
+Because:
+Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .TCPSocketSecureServerClient.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketSecureServerClient.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$27056$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$27054$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .TCPSocketTwoClients.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .TCPSocketTwoClients.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$30871$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$30869$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
 ]]></system-err>
 </testsuite>
