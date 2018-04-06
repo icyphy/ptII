@@ -162,3 +162,9 @@ deploy:
     skip_cleanup: true    
     verbose: true
 
+notifications:
+  email:
+    recipients:
+      - cxh@eecs.berkeley.edu
+    on_success: always # default: change
+    on_failure: always # default: always
