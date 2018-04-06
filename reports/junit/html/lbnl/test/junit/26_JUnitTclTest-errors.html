@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 49538 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.26 42020 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 49538 10.20.0.23 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.26 42020 10.20.0.198 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '363115321';
+        cur['env.TRAVIS_BUILD_ID'] = '363127567';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '193';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '194';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'f4ee33ce075a3af5ffa2f4b3262f90d4e1ec39b0';
+        cur['env.TRAVIS_COMMIT'] = 'edba8e016fb9df3f6189638608e0d7f762ab785b';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Testing email notification.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Reverted jcerti to commit fe33d803 (17 feb 2017)';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'b1a3979ef584...f4ee33ce075a';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'f4ee33ce075a...edba8e016fb9';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '363115326';
+        cur['env.TRAVIS_JOB_ID'] = '363127572';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '193.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '194.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner lbnl.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-lbnl.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1685052560181241229.properties propsfile=/home/travis/build/icyphy/ptII/junit4709695565942123162.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner lbnl.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-lbnl.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8639852740378584288.properties propsfile=/home/travis/build/icyphy/ptII/junit720187377740198673.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>6.347</td><td>2018-04-06T13:53:10</td><td>travis-job-bee44a19-2019-446b-bff4-269b86dd9a21</td>
+<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>6.199</td><td>2018-04-06T14:28:33</td><td>travis-job-17f3b6fb-283c-4730-9e08-34733cca0955</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -502,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/lbnl/test/auto/CRoom.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/lbnl/test/auto/CRoom.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: SocketTimeoutException while reading from client in .CRoom.Room: <br>Accept timed out.<br>Try to increase the value of the parameter 'socketTimeout'.<br>It could be that the client "$PTII/lbnl/demo/CRoom/cclient" is not executing properly.  From the command line, try running:<br>  $PTII/lbnl/demo/CRoom/cclient 60<br>You should see something like:<br>  Simulation model has time step       60<br>  Error: Failed to obtain socket file descriptor. sockfd=-1.<br>The error message is expected because Ptolemy is not present.<br>Also, make sure that the directory that contains<br>"bcvtb.dll" (on Windows), "libbcvtb.so" (on Linux) or<br>"libbcvtb.dylib" (on Mac OS X) is on yourPATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, <br>Linux and Mac OS X respectively.<br>That directory contains the shared library used by the simulator.<br>Client subprocess exit value (should be 0): 127<br>  in .CRoom.Room<br>Because:<br>Accept timed out<br>	at lbnl.actor.lib.Simulator._readFromServer(Simulator.java:549)<br>	at lbnl.actor.lib.Simulator.initialize(Simulator.java:850)<br>	at ptolemy.actor.Director.initialize(Director.java:938)<br>	at ptolemy.actor.Director.initialize(Director.java:907)<br>	at ptolemy.actor.sched.StaticSchedulingDirector.initialize(StaticSchedulingDirector.java:159)<br>	at ptolemy.domains.sdf.kernel.SDFDirector.initialize(SDFDirector.java:544)<br>	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)<br>	at ptolemy.actor.Manager.initialize(Manager.java:724)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: java.net.SocketTimeoutException: Accept timed out<br>	at java.net.PlainSocketImpl.socketAccept(Native Method)<br>	at java.net.AbstractPlainSocketImpl.accept(AbstractPlainSocketImpl.java:409)<br>	at java.net.ServerSocket.implAccept(ServerSocket.java:545)<br>	at java.net.ServerSocket.accept(ServerSocket.java:513)<br>	at lbnl.actor.lib.net.Server.read(Server.java:231)<br>	at lbnl.actor.lib.Simulator._readFromServer(Simulator.java:477)<br>
-</code></td><td>5.925</td>
+</code></td><td>5.765</td>
 </tr>
 </table>
 <div class="Properties">
