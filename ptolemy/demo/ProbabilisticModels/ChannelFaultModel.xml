@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ChannelFaultModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[92.5, 48.86927795410156]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1147, 785}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1147, 785}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[913, 675]">
     </property>
@@ -35,7 +35,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the order in which fault &quot;aspects&quot; are associated to an &#10;input port changes the behavior of the connection. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-280.0, 24.739639282226562]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-280.0, 24.739639282226562]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Receiver4">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -45,7 +45,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Fault Aspects">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-50.0, 29.739639282226562]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-50.0, 29.739639282226562]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Stuck-At">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -78,7 +78,7 @@
     </class>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, 568.8692779541016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 570.0}">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -153,7 +153,7 @@
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[92.5, 558.8692779541016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 560.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -296,7 +296,7 @@
         </configure>
     </entity>
     <entity name="Receiver2" class="Receiver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 315.0]">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -389,7 +389,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 25.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[367.5, 58.86927795410156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 55.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={311, 156, 934, 634}, maximized=false}">
         </property>
@@ -400,8 +400,6 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{365.0, 249.181640625}">
         </property>
         <entity name="i1" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 95.0}">
             </property>
         </entity>
@@ -458,11 +456,11 @@ drops a each with 20% chance.</text></svg></configure>
                 <entity name="idle" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 110.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -492,8 +490,6 @@ drops a each with 20% chance.</text></svg></configure>
             <link port="_Controller.out" relation="outRelation"/>
         </entity>
         <entity name="i2" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 160.0}">
             </property>
         </entity>
@@ -544,8 +540,6 @@ drops a each with 20% chance.</text></svg></configure>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{365.0, 249.181640625}">
         </property>
         <entity name="i1" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 165.0}">
             </property>
         </entity>
@@ -630,21 +624,21 @@ drops a each with 20% chance.</text></svg></configure>
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 120.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="stuck" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 125.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -786,21 +780,21 @@ drops a each with 20% chance.</text></svg></configure>
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 120.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="stuck" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 125.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -870,8 +864,6 @@ drops a each with 20% chance.</text></svg></configure>
             </property>
         </entity>
         <entity name="i2" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 245.0]">
             </property>
         </entity>
@@ -897,16 +889,12 @@ drops a each with 20% chance.</text></svg></configure>
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.trigger&quot;,x=185.0,y=535.0}, tail={id=&quot;DiscreteClock.output&quot;,x=55.0,y=525.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[282.5, 568.8692779541016]">
+        <vertex name="vertex1" value="[290.0, 570.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Receiver3.port&quot;,x=510.0,y=350.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={245.0,350.0} },{ head={id=&quot;Ramp.output&quot;,x=185.0,y=535.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={} },{ head={id=&quot;Receiver2.port&quot;,x=515.0,y=285.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={245.0,285.0} },{ head={id=&quot;Receiver1.port&quot;,x=475.0,y=535.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
