@@ -11,9 +11,10 @@
 # To test, set the environment variable:
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
 
@@ -163,6 +164,17 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
+# This build produces less than 10K lines, so we don't save the
+# output to a log file.
+if [ ! -z "$PT_TRAVIS_GITHUB_ISSUE_JUNIT" ]; then
+    mkdir node_modules
+    npm install @icyphy/github-issue-junit
+    export JUNIT_LABEL=junit-results
+    export JUNIT_RESULTS_NOT_DRY_RUN=false
+    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
+    (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
+fi
+
 # Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
 if [ ! -z "$PT_TRAVIS_P" ]; then
     LOG=$PTII/logs/ant_p.txt
@@ -172,47 +184,6 @@ if [ ! -z "$PT_TRAVIS_P" ]; then
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
     updateGhPages $LOG logs/
-fi
-
-# Build the installers.
-if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
-    LOG=$PTII/logs/installers.txt
-    echo "$0: Output will appear in $LOG"
-    
-    # Copy any jar files that may have previously been created so that
-    # the build is faster.
-    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
-    for jar in $jars
-    do
-        echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
-        ls -l $PTII/doc/$jar
-        (cd $PTII; jar -xf $PTII/doc/$jar)
-    done
-
-    # Number of seconds to run the subprocess.  Can't be more than 50
-    # minutes or 3000 seconds.  45 minutes is cutting it a bit close,
-    # so we go with a maximum of 35 minutes or 2100 seconds.  We can't
-    # use Travis' timeout feature because we want to copy the output
-    # to gh-pages. The timeouts should vary so as to avoid git
-    # conflicts.
-
-    timeout 2100 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
- 
-    # Free up space for clone of gh-pages
-    df -k .
-    rm -rf $PTII/adm/dists
-    ant clean
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    cp $LOG $PTII/reports/junit
-    updateGhPages -junitreport $PTII/reports/junit reports/
-
-    ls -l $PTII/adm/gen-11.0
-
-    # We use Travis-ci deploy to upload the release because GitHub has
-    # a 100Mb limit unless we use Git LFS.
 fi
 
 # Prime the cache in $PTII/vendors/installer so that the installers
@@ -237,7 +208,57 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
     updateGhPages -junitreport $PTII/reports/junit reports/
+
+    # test.capecode.xml runs the longest, so at the end, update the issue with the results.
+    mkdir node_modules
+    npm install @icyphy/github-issue-junit
+    export JUNIT_LABEL=junit-results
+    export JUNIT_RESULTS_NOT_DRY_RUN=false
+    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
+    (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 fi
+
+# Build the installers.
+if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
+    LOG=$PTII/logs/installers.txt
+    echo "$0: Output will appear in $LOG"
+    
+    # Copy any jar files that may have previously been created so that
+    # the build is faster.
+    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
+    for jar in $jars
+    do
+        echo "Downloading $jar: `date`"
+        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
+        ls -l $PTII/doc/$jar
+        (cd $PTII; jar -xf $PTII/doc/$jar)
+    done
+
+    # Number of seconds to run the subprocess.  Can't be more than 50
+    # minutes or 3000 seconds.  45 minutes is cutting it a bit close,
+    # so we go with a maximum of 35 minutes or 2100 seconds.  We can't
+    # use Travis' timeout feature because we want to copy the output
+    # to gh-pages. The timeouts should vary so as to avoid git
+    # conflicts.
+
+    timeout 2100 ant test.installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+ 
+    # Free up space for clone of gh-pages
+    df -k .
+    rm -rf $PTII/adm/dists
+    ant clean
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    cp $LOG $PTII/reports/junit
+    updateGhPages -junitreport $PTII/reports/junit reports/
+
+    ls -l $PTII/adm/gen-11.0
+
+    # We use Travis-ci deploy to upload the release because GitHub has
+    # a 100Mb limit unless we use Git LFS.
+fi
+
 
 # Run the short tests.
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
