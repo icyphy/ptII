@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="doc.books.systems.continuous.test.junit.JUnitTclTest" skipped="0" tests="16" time="11.895" timestamp="2018-04-07T13:47:55">
+<testsuite errors="0" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="doc.books.systems.continuous.test.junit.JUnitTclTest" skipped="0" tests="16" time="12.057" timestamp="2018-04-07T16:21:56">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher45387160982432260.properties propsfile=/home/travis/build/icyphy/ptII/junit4217535239358358984.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4079084087204390659.properties propsfile=/home/travis/build/icyphy/ptII/junit9048386594939373657.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -223,63 +223,63 @@
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml (RunModel)" time="3.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml (RunModel)" time="0.202" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml (RunModel)" time="0.438" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml (RunModel)" time="0.253" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml (RunModel)" time="0.192" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml (RunModel)" time="0.119" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml (RunModel)" time="0.052" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml (RunModel)" time="0.046" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml (RunModel)" time="6.814" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml (RunModel)" time="0.064" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml (RunModel)" time="0.082" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml (RunModel)" time="3.166" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml (RunModel)" time="0.2" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml (RunModel)" time="0.449" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml (RunModel)" time="0.239" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml (RunModel)" time="0.202" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml (RunModel)" time="0.155" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml (RunModel)" time="0.071" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml (RunModel)" time="0.037" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml (RunModel)" time="6.777" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml (RunModel)" time="0.092" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml (RunModel)" time="0.06" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 13:47:56 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml
-2547 ms. Memory: 208896K Free: 87764K (42%)
+----------------- testing Sat Apr 07 16:21:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml
+2584 ms. Memory: 331776K Free: 277014K (83%)
 reloadAllAccessors: .BouncingBall
------------------ testing Sat Apr 07 13:47:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml
-92 ms. Memory: 332800K Free: 316635K (95%)
+----------------- testing Sat Apr 07 16:22:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml
+102 ms. Memory: 331776K Free: 255847K (77%)
 reloadAllAccessors: .ContinuousInsideDE
------------------ testing Sat Apr 07 13:47:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml
-297 ms. Memory: 332800K Free: 280064K (84%)
+----------------- testing Sat Apr 07 16:22:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml
+300 ms. Memory: 331776K Free: 221392K (67%)
 reloadAllAccessors: .ContinuousTransferFunction
------------------ testing Sat Apr 07 13:47:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml
-190 ms. Memory: 332800K Free: 257945K (78%)
+----------------- testing Sat Apr 07 16:22:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml
+154 ms. Memory: 331776K Free: 199273K (60%)
 reloadAllAccessors: .ContinuousTransferFunctionEquiv
------------------ testing Sat Apr 07 13:47:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml
-147 ms. Memory: 332800K Free: 235825K (71%)
+----------------- testing Sat Apr 07 16:22:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml
+155 ms. Memory: 331776K Free: 177139K (53%)
 reloadAllAccessors: .FixedPointNoLimitation
------------------ testing Sat Apr 07 13:48:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml
-84 ms. Memory: 332800K Free: 223537K (67%)
+----------------- testing Sat Apr 07 16:22:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml
+106 ms. Memory: 331776K Free: 164850K (50%)
 reloadAllAccessors: .ImpulseResponse
------------------ testing Sat Apr 07 13:48:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml
-14 ms. Memory: 332800K Free: 216164K (65%)
+----------------- testing Sat Apr 07 16:22:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml
+11 ms. Memory: 331776K Free: 157461K (47%)
 reloadAllAccessors: .IntegratorInitialState
------------------ testing Sat Apr 07 13:48:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml
-18 ms. Memory: 332800K Free: 208791K (63%)
+----------------- testing Sat Apr 07 16:22:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml
+20 ms. Memory: 331776K Free: 150073K (45%)
 reloadAllAccessors: .LevelCrossingDetectorFeedback
------------------ testing Sat Apr 07 13:48:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml
-6657 ms. Memory: 481280K Free: 211922K (44%)
+----------------- testing Sat Apr 07 16:22:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml
+6602 ms. Memory: 580096K Free: 220516K (38%)
 reloadAllAccessors: .Lorenz
------------------ testing Sat Apr 07 13:48:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml
-17 ms. Memory: 481280K Free: 199292K (41%)
+----------------- testing Sat Apr 07 16:22:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml
+21 ms. Memory: 580096K Free: 202884K (35%)
 reloadAllAccessors: .NotPiecewiseContinuous
------------------ testing Sat Apr 07 13:48:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml
-6 ms. Memory: 481280K Free: 191428K (40%)
+----------------- testing Sat Apr 07 16:22:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml
+11 ms. Memory: 580096K Free: 193053K (33%)
 reloadAllAccessors: .PeriodicSamplerIntegrator
------------------ testing Sat Apr 07 13:48:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml
-23 ms. Memory: 481280K Free: 175699K (37%)
+----------------- testing Sat Apr 07 16:22:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml
+33 ms. Memory: 580096K Free: 178292K (31%)
 reloadAllAccessors: .PiecewiseContinuous
------------------ testing Sat Apr 07 13:48:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml
-17 ms. Memory: 481280K Free: 163903K (34%)
+----------------- testing Sat Apr 07 16:22:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml
+9 ms. Memory: 580096K Free: 168461K (29%)
 reloadAllAccessors: .TestTrigger
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

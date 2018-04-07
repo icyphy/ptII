@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest" skipped="0" tests="9" time="172.073" timestamp="2018-04-07T13:54:26">
+<testsuite errors="0" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest" skipped="0" tests="9" time="172.126" timestamp="2018-04-07T16:28:51">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4213531859231773828.properties propsfile=/home/travis/build/icyphy/ptII/junit5450050679174447721.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4161467689886537476.properties propsfile=/home/travis/build/icyphy/ptII/junit8531324438366756820.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -221,37 +221,37 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml (RunModel)" time="30.815" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml (RunModel)" time="20.132" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml (RunModel)" time="30.087" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml (RunModel)" time="30.208" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml (RunModel)" time="30.144" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml (RunModel)" time="30.227" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml (RunModel)" time="30.793" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml (RunModel)" time="20.136" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml (RunModel)" time="30.094" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml (RunModel)" time="30.258" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml (RunModel)" time="30.135" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml (RunModel)" time="30.242" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 13:54:26 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml
-30491 ms. Memory: 146944K Free: 121837K (83%)
+----------------- testing Sat Apr 07 16:28:51 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml
+30467 ms. Memory: 146944K Free: 120624K (82%)
 reloadAllAccessors: .MultiReaderSingleWriter
------------------ testing Sat Apr 07 13:54:57 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml
-20082 ms. Memory: 146944K Free: 103452K (70%)
+----------------- testing Sat Apr 07 16:29:22 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml
+20090 ms. Memory: 146944K Free: 103222K (70%)
 reloadAllAccessors: .MultiReaderWriter
------------------ testing Sat Apr 07 13:55:17 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml
-30061 ms. Memory: 146944K Free: 98633K (67%)
+----------------- testing Sat Apr 07 16:29:42 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml
+30029 ms. Memory: 146944K Free: 98403K (67%)
 reloadAllAccessors: .RemoteSocketSingleReaderWriter
------------------ testing Sat Apr 07 13:55:47 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml
-30134 ms. Memory: 146944K Free: 82068K (56%)
+----------------- testing Sat Apr 07 16:30:12 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml
+30184 ms. Memory: 146944K Free: 80255K (55%)
 reloadAllAccessors: .RoundtripReaderWriter
------------------ testing Sat Apr 07 13:56:17 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml
-30083 ms. Memory: 146944K Free: 129074K (88%)
+----------------- testing Sat Apr 07 16:30:42 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml
+30072 ms. Memory: 146944K Free: 126313K (86%)
 reloadAllAccessors: .SingleReaderMultiWriter
------------------ testing Sat Apr 07 13:56:47 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml
-30196 ms. Memory: 146944K Free: 118659K (81%)
+----------------- testing Sat Apr 07 16:31:13 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml
+30198 ms. Memory: 146944K Free: 115792K (79%)
 reloadAllAccessors: .SingleReaderWriter
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
@@ -311,7 +311,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-54] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@4ac779cd: java.net.BindException: Address already in use
+[Thread-54] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@4708289d: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -342,7 +342,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-63] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@4ac779cd: java.net.BindException: Address already in use
+[Thread-63] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@4708289d: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -377,7 +377,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-85] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@3bb3a7b6: java.net.BindException: Address already in use
+[Thread-85] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@1e4cc226: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -412,7 +412,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-107] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@83e6abb: java.net.BindException: Address already in use
+[Thread-107] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@40dc036a: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -443,7 +443,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-116] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@83e6abb: java.net.BindException: Address already in use
+[Thread-116] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@40dc036a: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -474,7 +474,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-125] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@83e6abb: java.net.BindException: Address already in use
+[Thread-125] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@40dc036a: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)

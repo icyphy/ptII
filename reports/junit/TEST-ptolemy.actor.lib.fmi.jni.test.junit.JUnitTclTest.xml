@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="3" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="ptolemy.actor.lib.fmi.jni.test.junit.JUnitTclTest" skipped="0" tests="7" time="48.959" timestamp="2018-04-07T14:08:52">
+<testsuite errors="3" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="ptolemy.actor.lib.fmi.jni.test.junit.JUnitTclTest" skipped="0" tests="7" time="57.341" timestamp="2018-04-07T16:44:00">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.fmi.jni.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.fmi.jni.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8767103331026095542.properties propsfile=/home/travis/build/icyphy/ptII/junit2944718470722125248.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.fmi.jni.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.fmi.jni.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5899724793645973996.properties propsfile=/home/travis/build/icyphy/ptII/junit5656096088168819046.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -222,10 +222,10 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOuts.xml (RunModel)" time="47.476" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml (RunModel)" time="0.876">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOuts.xml (RunModel)" time="55.998" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml (RunModel)" time="0.628">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -266,7 +266,7 @@ Caused by: java.lang.UnsatisfiedLinkError: Expecting an absolute path of the lib
 	at ptolemy.data.expr.UtilityFunctions.loadLibrary(UtilityFunctions.java:971)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIDqME20.xml (RunModel)" time="0.091">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIDqME20.xml (RunModel)" time="0.104">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -307,7 +307,7 @@ Caused by: java.lang.UnsatisfiedLinkError: Expecting an absolute path of the lib
 	at ptolemy.data.expr.UtilityFunctions.loadLibrary(UtilityFunctions.java:971)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIVanDerPolME20.xml (RunModel)" time="0.065">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIVanDerPolME20.xml (RunModel)" time="0.159">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
@@ -353,15 +353,15 @@ No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/a
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 14:08:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOuts.xml
-46121 ms. Memory: 664064K Free: 75942K (11%)
+----------------- testing Sat Apr 07 16:44:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOuts.xml
+54660 ms. Memory: 663040K Free: 309643K (47%)
 reloadAllAccessors: .FourInFourOutsDymola
------------------ testing Sat Apr 07 14:09:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml
-21 ms. Memory: 647168K Free: 431862K (67%)
------------------ testing Sat Apr 07 14:09:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIDqME20.xml
-14 ms. Memory: 647168K Free: 399894K (62%)
------------------ testing Sat Apr 07 14:09:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIVanDerPolME20.xml
-5 ms. Memory: 647168K Free: 373321K (58%)
+----------------- testing Sat Apr 07 16:44:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml
+17 ms. Memory: 663040K Free: 146976K (22%)
+----------------- testing Sat Apr 07 16:44:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIDqME20.xml
+6 ms. Memory: 663040K Free: 104705K (16%)
+----------------- testing Sat Apr 07 16:44:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/jni/test/auto/FMUJNIVanDerPolME20.xml
+7 ms. Memory: 663040K Free: 62434K (9%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="doc.books.systems.modal.test.junit.JUnitTclTest" skipped="0" tests="17" time="3.254" timestamp="2018-04-07T13:48:25">
+<testsuite errors="0" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="doc.books.systems.modal.test.junit.JUnitTclTest" skipped="0" tests="17" time="3.441" timestamp="2018-04-07T16:22:29">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.modal.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.modal.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2051594318002194430.properties propsfile=/home/travis/build/icyphy/ptII/junit8635321654467329033.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.modal.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.modal.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3414061563386787798.properties propsfile=/home/travis/build/icyphy/ptII/junit3898307256747538684.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -222,68 +222,68 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml (RunModel)" time="1.085" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml (RunModel)" time="0.336" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml (RunModel)" time="0.089" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml (RunModel)" time="0.144" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml (RunModel)" time="0.145" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml (RunModel)" time="0.131" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml (RunModel)" time="0.326" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml (RunModel)" time="0.162" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml (RunModel)" time="0.113" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml (RunModel)" time="0.075" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml (RunModel)" time="0.048" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.005" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml (RunModel)" time="1.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml (RunModel)" time="0.386" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml (RunModel)" time="0.131" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml (RunModel)" time="0.146" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml (RunModel)" time="0.1" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml (RunModel)" time="0.106" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml (RunModel)" time="0.395" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml (RunModel)" time="0.222" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml (RunModel)" time="0.138" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml (RunModel)" time="0.06" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml (RunModel)" time="0.07" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml (RunModel)" time="0.045" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml (RunModel)" time="0.047" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml (RunModel)" time="0.019" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 13:48:26 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml
-621 ms. Memory: 146944K Free: 94023K (64%)
+----------------- testing Sat Apr 07 16:22:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml
+576 ms. Memory: 146944K Free: 93800K (64%)
 reloadAllAccessors: .FSK
------------------ testing Sat Apr 07 13:48:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml
-223 ms. Memory: 146944K Free: 130097K (89%)
+----------------- testing Sat Apr 07 16:22:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml
+276 ms. Memory: 146944K Free: 131829K (90%)
 reloadAllAccessors: .Fibonacci
------------------ testing Sat Apr 07 13:48:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml
-29 ms. Memory: 146944K Free: 116111K (79%)
+----------------- testing Sat Apr 07 16:22:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml
+43 ms. Memory: 146944K Free: 117994K (80%)
 reloadAllAccessors: .History
------------------ testing Sat Apr 07 13:48:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml
-34 ms. Memory: 146944K Free: 89196K (61%)
+----------------- testing Sat Apr 07 16:22:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml
+35 ms. Memory: 146944K Free: 91338K (62%)
 reloadAllAccessors: .Merge
------------------ testing Sat Apr 07 13:48:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml
-46 ms. Memory: 208384K Free: 190250K (91%)
+----------------- testing Sat Apr 07 16:22:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml
+25 ms. Memory: 208384K Free: 192830K (93%)
 reloadAllAccessors: .ModalClocks
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml
-32 ms. Memory: 208384K Free: 175538K (84%)
+----------------- testing Sat Apr 07 16:22:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml
+39 ms. Memory: 208384K Free: 178937K (86%)
 reloadAllAccessors: .ModalDelay
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml
-224 ms. Memory: 208384K Free: 112635K (54%)
+----------------- testing Sat Apr 07 16:22:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml
+291 ms. Memory: 208384K Free: 116227K (56%)
 reloadAllAccessors: .ModalModelExample
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml
-52 ms. Memory: 208384K Free: 86148K (41%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml
+114 ms. Memory: 208384K Free: 89979K (43%)
 reloadAllAccessors: .ModalSDF
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml
-12 ms. Memory: 208384K Free: 194030K (93%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml
+15 ms. Memory: 208384K Free: 198213K (95%)
 reloadAllAccessors: .Preemptive
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml
-22 ms. Memory: 208384K Free: 180333K (87%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml
+20 ms. Memory: 208384K Free: 183542K (88%)
 reloadAllAccessors: .PreemptiveFixed
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml
-15 ms. Memory: 208384K Free: 166246K (80%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml
+23 ms. Memory: 208384K Free: 170298K (82%)
 reloadAllAccessors: .Reset
------------------ testing Sat Apr 07 13:48:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml
-11 ms. Memory: 208384K Free: 157146K (75%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml
+12 ms. Memory: 208384K Free: 161190K (77%)
 reloadAllAccessors: .ResettableTimer
------------------ testing Sat Apr 07 13:48:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml
-8 ms. Memory: 208384K Free: 144714K (69%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml
+12 ms. Memory: 208384K Free: 148798K (71%)
 reloadAllAccessors: .SpontaneousFSM
------------------ testing Sat Apr 07 13:48:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml
-5 ms. Memory: 208384K Free: 138470K (66%)
+----------------- testing Sat Apr 07 16:22:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml
+5 ms. Memory: 208384K Free: 142571K (68%)
 reloadAllAccessors: .Timeout
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

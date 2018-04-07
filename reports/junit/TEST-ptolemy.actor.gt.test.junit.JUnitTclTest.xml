@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="ptolemy.actor.gt.test.junit.JUnitTclTest" skipped="0" tests="16" time="7.402" timestamp="2018-04-07T14:07:30">
+<testsuite errors="0" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="ptolemy.actor.gt.test.junit.JUnitTclTest" skipped="0" tests="16" time="8.503" timestamp="2018-04-07T16:42:34">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5771009621045968670.properties propsfile=/home/travis/build/icyphy/ptII/junit8148491906253918806.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5165791749832659681.properties propsfile=/home/travis/build/icyphy/ptII/junit5206809311605112743.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -221,24 +221,24 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)" time="0.466" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)" time="0.16" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)" time="0.18" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)" time="0.383" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)" time="0.596" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)" time="0.201" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)" time="0.634" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)" time="0.361" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)" time="0.234" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)" time="0.16" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)" time="3.407" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)" time="0.133" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)" time="0.06" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)" time="0.388" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)" time="0.134" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)" time="0.158" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)" time="0.386" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)" time="0.469" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)" time="0.203" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)" time="0.864" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)" time="0.462" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)" time="0.318" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)" time="0.143" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)" time="4.266" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)" time="0.141" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)" time="0.051" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl
-testDefs.tcl: setting time out to 9000 seconds at Sat Apr 07 14:07:30 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Sat Apr 07 16:42:34 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl
@@ -249,21 +249,21 @@ testDefs.tcl: setting time out to 9000 seconds at Sat Apr 07 14:07:30 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl
-04/07/18 02:07:34
+04/07/18 04:42:38
 Failed: 0  Total Tests: 61  ((Passed: 61, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 14:07:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml
-1745 ms. Memory: 681984K Free: 512227K (75%)
+----------------- testing Sat Apr 07 16:42:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml
+2207 ms. Memory: 680448K Free: 558674K (82%)
 reloadAllAccessors: .DiningPhilosophers
------------------ testing Sat Apr 07 14:07:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml
-39 ms. Memory: 681984K Free: 467491K (69%)
+----------------- testing Sat Apr 07 16:42:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml
+27 ms. Memory: 680448K Free: 510141K (75%)
 reloadAllAccessors: .GTThreadedComposite
------------------ testing Sat Apr 07 14:07:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml
+----------------- testing Sat Apr 07 16:42:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml
 TestModel: results differed from known good results by only the VersionAttribute
-18 ms. Memory: 681984K Free: 442588K (65%)
+16 ms. Memory: 680448K Free: 485278K (71%)
 reloadAllAccessors: .InitializationBug
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

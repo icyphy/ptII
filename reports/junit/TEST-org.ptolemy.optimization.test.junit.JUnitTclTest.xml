@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="org.ptolemy.optimization.test.junit.JUnitTclTest" skipped="0" tests="6" time="7.028" timestamp="2018-04-07T13:54:09">
+<testsuite errors="0" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="org.ptolemy.optimization.test.junit.JUnitTclTest" skipped="0" tests="6" time="7.434" timestamp="2018-04-07T16:28:33">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.optimization.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.optimization.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher333608998400979061.properties propsfile=/home/travis/build/icyphy/ptII/junit5208887677605246196.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.optimization.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.optimization.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2965888712904115066.properties propsfile=/home/travis/build/icyphy/ptII/junit4841136264475477538.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -221,27 +221,27 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.005" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LeastSquaresNodeLocalization.xml (RunModel)" time="2.519" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LinearRegression.xml (RunModel)" time="3.914" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/SimpleOptimization.xml (RunModel)" time="0.135" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LeastSquaresNodeLocalization.xml (RunModel)" time="2.568" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LinearRegression.xml (RunModel)" time="4.231" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/SimpleOptimization.xml (RunModel)" time="0.121" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 13:54:09 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LeastSquaresNodeLocalization.xml
+----------------- testing Sat Apr 07 16:28:34 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LeastSquaresNodeLocalization.xml
 TableauFrame._addMenus: configuration == null?
-1769 ms. Memory: 119296K Free: 83072K (70%)
+1803 ms. Memory: 142336K Free: 106197K (75%)
 reloadAllAccessors: .LeastSquaresNodeLocalization
------------------ testing Sat Apr 07 13:54:12 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LinearRegression.xml
+----------------- testing Sat Apr 07 16:28:36 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/LinearRegression.xml
 TableauFrame._addMenus: configuration == null?
-3638 ms. Memory: 206336K Free: 185090K (90%)
+3872 ms. Memory: 216064K Free: 199763K (92%)
 reloadAllAccessors: .LinearRegression
------------------ testing Sat Apr 07 13:54:15 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/SimpleOptimization.xml
-13 ms. Memory: 206336K Free: 169941K (82%)
+----------------- testing Sat Apr 07 16:28:41 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/optimization/test/auto/SimpleOptimization.xml
+41 ms. Memory: 216064K Free: 186980K (87%)
 reloadAllAccessors: .SimpleOptimization
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

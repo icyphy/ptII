@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-565768a0-2e63-4454-bd94-0d439c78d5cc" name="ptolemy.actor.lib.aspect.test.junit.JUnitTclTest" skipped="0" tests="14" time="27.218" timestamp="2018-04-07T14:08:02">
+<testsuite errors="0" failures="0" hostname="travis-job-220d7b49-2c58-43bf-bc19-5678ee2ef332" name="ptolemy.actor.lib.aspect.test.junit.JUnitTclTest" skipped="0" tests="14" time="27.298" timestamp="2018-04-07T16:43:09">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.9 32960 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.6 50934 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.9 32960 10.20.0.20 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.6 50934 10.20.0.59 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,7 +66,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.aspect.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.aspect.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7951536404410868802.properties propsfile=/home/travis/build/icyphy/ptII/junit4434390531352911015.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.aspect.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.aspect.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher199568518010479309.properties propsfile=/home/travis/build/icyphy/ptII/junit5739343284743186590.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -222,76 +222,76 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.003" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CQMDifferentDatatypes.xml (RunModel)" time="0.359" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModeling.xml (RunModel)" time="4.517" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModelingAllAttacksInOneModel.xml (RunModel)" time="3.061" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CheckExecutionTimeConstraints.xml (RunModel)" time="0.126" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQM.xml (RunModel)" time="0.116" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQMjustMonitor.xml (RunModel)" time="0.102" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/DE2Test.xml (RunModel)" time="0.465" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/MonitorStateEntiryInFSM.xml (RunModel)" time="0.053" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/RefiringActorInDE.xml (RunModel)" time="0.091" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/ScheduleEmbeddedActors.xml (RunModel)" time="0.041" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/TestMultipleCommunicationAspectSends.xml (RunModel)" time="17.8" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.004" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CQMDifferentDatatypes.xml (RunModel)" time="0.378" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModeling.xml (RunModel)" time="4.613" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModelingAllAttacksInOneModel.xml (RunModel)" time="3.088" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CheckExecutionTimeConstraints.xml (RunModel)" time="0.095" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQM.xml (RunModel)" time="0.122" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQMjustMonitor.xml (RunModel)" time="0.105" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/DE2Test.xml (RunModel)" time="0.482" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/MonitorStateEntiryInFSM.xml (RunModel)" time="0.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/RefiringActorInDE.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/ScheduleEmbeddedActors.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/TestMultipleCommunicationAspectSends.xml (RunModel)" time="17.679" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat Apr 07 14:08:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CQMDifferentDatatypes.xml
-22 ms. Memory: 116224K Free: 85240K (73%)
+----------------- testing Sat Apr 07 16:43:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CQMDifferentDatatypes.xml
+27 ms. Memory: 116224K Free: 85228K (73%)
 reloadAllAccessors: .CompositeCommunicationAspectDifferentDatatypes
------------------ testing Sat Apr 07 14:08:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModeling.xml
-3355 ms. Memory: 332288K Free: 303336K (91%)
+----------------- testing Sat Apr 07 16:43:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModeling.xml
+3340 ms. Memory: 332800K Free: 241320K (73%)
 reloadAllAccessors: .CarTrackingAttackModeling
------------------ testing Sat Apr 07 14:08:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModelingAllAttacksInOneModel.xml
-2291 ms. Memory: 479232K Free: 447535K (93%)
+----------------- testing Sat Apr 07 16:43:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CarTrackingAttackModelingAllAttacksInOneModel.xml
+2518 ms. Memory: 580096K Free: 486540K (84%)
 reloadAllAccessors: .CarTrackingAttackModelingAllAttacksInOneModel
------------------ testing Sat Apr 07 14:08:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CheckExecutionTimeConstraints.xml
+----------------- testing Sat Apr 07 16:43:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CheckExecutionTimeConstraints.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
 execution, potentially changing the behavior. There is no guarantee that actors fire at the 
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-34 ms. Memory: 479232K Free: 421757K (88%)
+21 ms. Memory: 580096K Free: 457682K (79%)
 reloadAllAccessors: .CheckExecutionTimeConstraints
------------------ testing Sat Apr 07 14:08:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQM.xml
-24 ms. Memory: 479232K Free: 395371K (83%)
+----------------- testing Sat Apr 07 16:43:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQM.xml
+25 ms. Memory: 580096K Free: 427909K (74%)
 reloadAllAccessors: .CompositeQM
------------------ testing Sat Apr 07 14:08:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQMjustMonitor.xml
-19 ms. Memory: 479232K Free: 371776K (78%)
+----------------- testing Sat Apr 07 16:43:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/CompositeQMjustMonitor.xml
+17 ms. Memory: 580096K Free: 408207K (70%)
 reloadAllAccessors: .CompositeQMjustMonitor
------------------ testing Sat Apr 07 14:08:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/DE2Test.xml
+----------------- testing Sat Apr 07 16:43:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/DE2Test.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
 execution, potentially changing the behavior. There is no guarantee that actors fire at the 
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-124 ms. Memory: 479232K Free: 245763K (51%)
+149 ms. Memory: 580096K Free: 283450K (49%)
 reloadAllAccessors: .DE2Test
------------------ testing Sat Apr 07 14:08:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/MonitorStateEntiryInFSM.xml
-12 ms. Memory: 479232K Free: 230046K (48%)
+----------------- testing Sat Apr 07 16:43:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/MonitorStateEntiryInFSM.xml
+16 ms. Memory: 580096K Free: 267050K (46%)
 reloadAllAccessors: .MonitorStateEntiryInFSM
------------------ testing Sat Apr 07 14:08:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/RefiringActorInDE.xml
+----------------- testing Sat Apr 07 16:43:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/RefiringActorInDE.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
 execution, potentially changing the behavior. There is no guarantee that actors fire at the 
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-26 ms. Memory: 479232K Free: 209069K (44%)
+43 ms. Memory: 580096K Free: 244064K (42%)
 reloadAllAccessors: .RefiringActorInDE
------------------ testing Sat Apr 07 14:08:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/ScheduleEmbeddedActors.xml
-16 ms. Memory: 479232K Free: 195963K (41%)
+----------------- testing Sat Apr 07 16:43:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/ScheduleEmbeddedActors.xml
+11 ms. Memory: 580096K Free: 230925K (40%)
 reloadAllAccessors: .ScheduleEmbeddedActors
------------------ testing Sat Apr 07 14:08:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/TestMultipleCommunicationAspectSends.xml
+----------------- testing Sat Apr 07 16:43:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/TestMultipleCommunicationAspectSends.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-6984 ms. Memory: 445440K Free: 78554K (18%)
+6946 ms. Memory: 545280K Free: 174099K (32%)
 reloadAllAccessors: .TestMultipleCommunicationAspectSends
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
------------------ Reloaded Accessors and testing again Sat Apr 07 14:08:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/TestMultipleCommunicationAspectSends.xml
-6455 ms. Memory: 687104K Free: 600966K (87%)
+----------------- Reloaded Accessors and testing again Sat Apr 07 16:43:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/aspect/test/auto/TestMultipleCommunicationAspectSends.xml
+6583 ms. Memory: 681472K Free: 509716K (75%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
