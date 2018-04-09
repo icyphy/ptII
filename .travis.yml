@@ -130,26 +130,26 @@ deploy:
   #     branch: master
   #   skip-cleanup: true
   #   verbose: true
-  # - provider: releases
-  #   api_key: $GITHUB_TOKEN
-  #   file_glob: true
-  #   file:
-  #     - $PTII/adm/gen-11.0/capecode0.2.devel.setup.linux.tar.gz
-  #     - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.app.tar.gz
-  #     - $PTII/adm/gen-11.0/capecode0_2_devel_setup_windows_64.exe
-  #     - $PTII/adm/gen-11.0/ptII11.0.devel.setup.linux.tar.gz
-  #     - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.app.tar.gz
-  #     - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows_64.exe
-  #     - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.exe
-  #     - $PTII/adm/gen-11.0/ptII11.0.devel.src.tar
-  #     - $PTII/adm/gen-11.0/ptII11.0.devel.src.zip
-  #   on:
-  #     tags: true
-  #     condition: $PT_TRAVIS_INSTALLERS = true
-  #   overwrite: true
-  #   skip_cleanup: true    
-  #   verbose: true
-  # Update 
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file:
+      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.linux.tar.gz
+      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.0/capecode0_2_devel_setup_windows_64.exe
+      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.linux.tar.gz
+      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows_64.exe
+      - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.exe
+      - $PTII/adm/gen-11.0/ptII11.0.devel.src.tar
+      - $PTII/adm/gen-11.0/ptII11.0.devel.src.zip
+    on:
+      tags: true
+      condition: $PT_TRAVIS_INSTALLERS = true
+    overwrite: true
+    skip_cleanup: true    
+    verbose: true
+  # Update codeDoc tar files.
   - provider: releases
     api_key: $GITHUB_TOKEN
     file_glob: true
