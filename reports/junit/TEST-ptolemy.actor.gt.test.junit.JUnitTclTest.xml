@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-5e796f59-9276-45d4-9e18-c311f95df9f8" name="ptolemy.actor.gt.test.junit.JUnitTclTest" skipped="0" tests="16" time="7.879" timestamp="2018-04-09T21:23:55">
+<testsuite errors="0" failures="0" hostname="travis-job-febfcba2-4e22-41f8-b99d-8056de84c256" name="ptolemy.actor.gt.test.junit.JUnitTclTest" skipped="0" tests="16" time="7.236" timestamp="2018-04-09T22:43:41">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="198.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="200.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.2 45192 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.33 59876 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.2 45192 10.20.0.105 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.33 59876 10.20.0.153 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4111040632877837604.properties propsfile=/home/travis/build/icyphy/ptII/junit5782848243280779175.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8992548350297732180.properties propsfile=/home/travis/build/icyphy/ptII/junit3094820006604527226.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="690f02b23811...f26e6be4bc00" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="c36d8d93bf94...092d7f6ce644" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -113,7 +113,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="198" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="200" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -128,12 +128,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="364315675" />
+    <property name="env.TRAVIS_BUILD_ID" value="364339830" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="f26e6be4bc003773549f14da495f9692ce4d2e83" />
+    <property name="env.TRAVIS_COMMIT" value="092d7f6ce644290ce23bd89f3d22ba7b72603b1b" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -164,7 +164,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Typo: properly test for existence of $PTII/doc/codeDoc.jar." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Temporarily reduce what the installer target is doing so that we can have a successful build and cache the OpenCV installation." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -203,7 +203,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="364315680" />
+    <property name="env.TRAVIS_JOB_ID" value="364339835" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -221,24 +221,24 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)" time="0.369" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)" time="0.16" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)" time="0.191" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)" time="0.326" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)" time="0.528" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)" time="0.192" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)" time="0.741" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)" time="0.503" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)" time="0.265" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)" time="0.186" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.006" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)" time="3.753" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)" time="0.127" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)" time="0.314" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)" time="0.141" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)" time="0.153" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)" time="0.046" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)" time="0.282" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)" time="0.402" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)" time="0.133" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)" time="0.688" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)" time="0.449" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)" time="0.261" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)" time="0.15" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)" time="3.629" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)" time="0.132" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)" time="0.055" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl
-testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 21:23:55 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 22:43:41 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl
@@ -249,21 +249,21 @@ testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 21:23:55 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl
-04/09/18 09:23:59
+04/09/18 10:43:44
 Failed: 0  Total Tests: 61  ((Passed: 61, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Mon Apr 09 21:23:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml
-1905 ms. Memory: 683520K Free: 466192K (68%)
+----------------- testing Mon Apr 09 22:43:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml
+1838 ms. Memory: 685568K Free: 398138K (58%)
 reloadAllAccessors: .DiningPhilosophers
------------------ testing Mon Apr 09 21:24:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml
-25 ms. Memory: 683520K Free: 420996K (62%)
+----------------- testing Mon Apr 09 22:43:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml
+43 ms. Memory: 685568K Free: 358596K (52%)
 reloadAllAccessors: .GTThreadedComposite
------------------ testing Mon Apr 09 21:24:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml
+----------------- testing Mon Apr 09 22:43:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml
 TestModel: results differed from known good results by only the VersionAttribute
-10 ms. Memory: 683520K Free: 396092K (58%)
+18 ms. Memory: 685568K Free: 339887K (50%)
 reloadAllAccessors: .InitializationBug
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
