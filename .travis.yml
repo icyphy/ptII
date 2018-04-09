@@ -145,7 +145,7 @@ deploy:
       - $PTII/adm/gen-11.0/ptII11.0.devel.src.zip
     on:
       tags: true
-      condition: $PT_TRAVIS_INSTALLERS = true
+      condition: $PT_TRAVIS_TEST_INSTALLERS = true
     overwrite: true
     skip_cleanup: true    
     verbose: true
