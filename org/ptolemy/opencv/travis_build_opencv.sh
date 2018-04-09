@@ -36,11 +36,11 @@ if [ ! -d $INSTALL_FLAG ]; then
     if [ ! -d $OPENCV_BUILD ]; then
 	OPENCV_TAR=/tmp/opencv-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_TAR ]; then
-	    wget --quiet -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
+	    wget -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
 	fi
 	OPENCV_CONTRIB_TAR=/tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
-	    wget --quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
+	    wget -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
 	fi
 
 	if [ ! -d $SRC ]; then
@@ -134,6 +134,8 @@ fi
 sudo cp -r $INSTALL_PREFIX/include/* /usr/local/include/
 sudo cp -r $INSTALL_PREFIX/lib/* /usr/local/lib/
 sudo cp $INSTALL_PREFIX/share/OpenCV/java/*so /usr/lib/jni/
+sudo mkdir -p /usr/share/OpenCV/java/
+sudo cp $INSTALL_PREFIX/share/OpenCV/java/*  /usr/share/OpenCV/java/
 sudo sh -c "echo \"$INSTALL_PREFIX/lib\" > /etc/ld.so.conf.d/opencv.conf"
 sudo sh -c "echo \"$INSTALL_PREFIX/share/OpenCV/java\" > /etc/ld.so.conf.d/opencv-java.conf"
 sudo ldconfig
