@@ -5,7 +5,7 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl
-testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 13:44:31 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 21:10:24 UTC 2018
 
 
 ==== $PTII/org/ptolemy/opencv/test/SimpleSample.tcl: SimpleSample-2.1 A simple sample model
@@ -16,7 +16,8 @@ testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 13:44:31 UTC 2018
     # Uses nativeLibraryName from 1.1 above.
     java::call org.ptolemy.opencv.OpenCVLoader loadOpenCV $nativeLibraryName
     set scalar [java::new {org.opencv.core.Scalar double} 0]
-    set m [java::new org.opencv.core.Mat 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar]
+    // OpenCV 3.4.1 requires the cast of the Mat constructor.
+    set m [java::new {org.opencv.core.Mat int int int org.opencv.core.Scalar} 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar]
     set mr1 [$m row 1]
     $mr1 setTo [java::new {org.opencv.core.Scalar double} 1]
     set mc5 [$m col 5]
@@ -24,15 +25,13 @@ testDefs.tcl: setting time out to 9000 seconds at Mon Apr 09 13:44:31 UTC 2018
     $m dump
 
 ==== Test generated error:
-ambiguous constructor signature "org.opencv.core.Mat"
+invalid command name "//"
     while executing
-"java::new org.opencv.core.Mat 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar"
-    invoked from within
-"set m [java::new org.opencv.core.Mat 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar]"
+"// OpenCV 3.4.1 requires the cast of the Mat constructor."
     ("uplevel" body line 7)
     invoked from within
 "uplevel $contents_of_test"
-04/09/18 01:44:31
+04/09/18 09:10:24
 Failed: 1  Total Tests: 2  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test

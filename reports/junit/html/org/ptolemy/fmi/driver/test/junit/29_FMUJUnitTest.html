@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.4 54950 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.2 45192 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.4 54950 10.20.0.75 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.2 45192 10.20.0.105 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364117369';
+        cur['env.TRAVIS_BUILD_ID'] = '364315675';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '196';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '198';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'e627a41986543b10165903a3b745f87cac7c1ecd';
+        cur['env.TRAVIS_COMMIT'] = 'f26e6be4bc003773549f14da495f9692ce4d2e83';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Update an issue with the JUnit summary.  When generating the installer, output the test results as xml so that we can get a summary.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Typo: properly test for existence of $PTII/doc/codeDoc.jar.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'edba8e016fb9df3f6189638608e0d7f762ab785b...e627a41986543b10165903a3b745f87cac7c1ecd';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '690f02b23811...f26e6be4bc00';
     
-        cur['env.TRAVIS_EVENT_TYPE'] = 'cron';
+        cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364117374';
+        cur['env.TRAVIS_JOB_ID'] = '364315680';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '196.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '198.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.fmi.driver.test.junit.FMUJUnitTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.fmi.driver.test.junit.FMUJUnitTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3630222487580165607.properties propsfile=/home/travis/build/icyphy/ptII/junit2204209028050143920.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.fmi.driver.test.junit.FMUJUnitTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.fmi.driver.test.junit.FMUJUnitTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1463149299106505546.properties propsfile=/home/travis/build/icyphy/ptII/junit7866434123774416099.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="29_FMUJUnitTest.html">FMUJUnitTest</a></td><td><a title="Display all tests" href="29_FMUJUnitTest.html">20</a></td><td>0</td><td>0</td><td>0</td><td>1.237</td><td>2018-04-09T13:43:25</td><td>travis-job-a1c7c4fd-532d-4993-a391-86a2c5facfdd</td>
+<td><a title="Display all tests" href="29_FMUJUnitTest.html">FMUJUnitTest</a></td><td><a title="Display all tests" href="29_FMUJUnitTest.html">20</a></td><td>0</td><td>0</td><td>0</td><td>1.178</td><td>2018-04-09T21:09:22</td><td>travis-job-5e796f59-9276-45d4-9e18-c311f95df9f8</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -499,64 +500,64 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateBouncingBall"></a>cosimulateBouncingBall</td><td>Success</td><td></td><td>0.462</td>
+<td><a name="cosimulateVanDerPol"></a>cosimulateVanDerPol</td><td>Success</td><td></td><td>0.294</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateBouncingBall20"></a>cosimulateBouncingBall20</td><td>Success</td><td></td><td>0.159</td>
+<td><a name="cosimulateVanDerPol20"></a>cosimulateVanDerPol20</td><td>Success</td><td></td><td>0.070</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateDq"></a>cosimulateDq</td><td>Success</td><td></td><td>0.021</td>
+<td><a name="modelExchangeBouncingBall"></a>modelExchangeBouncingBall</td><td>Success</td><td></td><td>0.028</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateDq20"></a>cosimulateDq20</td><td>Success</td><td></td><td>0.046</td>
+<td><a name="modelExchangeBouncingBall20"></a>modelExchangeBouncingBall20</td><td>Success</td><td></td><td>0.041</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeBouncingBall"></a>modelExchangeBouncingBall</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="modelExchangeDq"></a>modelExchangeDq</td><td>Success</td><td></td><td>0.020</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeBouncingBall20"></a>modelExchangeBouncingBall20</td><td>Success</td><td></td><td>0.036</td>
+<td><a name="modelExchangeDq20"></a>modelExchangeDq20</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeDq20"></a>modelExchangeDq20</td><td>Success</td><td></td><td>0.021</td>
+<td><a name="modelExchangeInc"></a>modelExchangeInc</td><td>Success</td><td></td><td>0.026</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeInc"></a>modelExchangeInc</td><td>Success</td><td></td><td>0.012</td>
+<td><a name="modelExchangeInc20"></a>modelExchangeInc20</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeInc20"></a>modelExchangeInc20</td><td>Success</td><td></td><td>0.017</td>
+<td><a name="modelExchangeValues"></a>modelExchangeValues</td><td>Success</td><td></td><td>0.023</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeValues"></a>modelExchangeValues</td><td>Success</td><td></td><td>0.017</td>
+<td><a name="modelExchangeValues20"></a>modelExchangeValues20</td><td>Success</td><td></td><td>0.033</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeValues20"></a>modelExchangeValues20</td><td>Success</td><td></td><td>0.035</td>
+<td><a name="modelExchangeVanDerPol"></a>modelExchangeVanDerPol</td><td>Success</td><td></td><td>0.020</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeVanDerPol"></a>modelExchangeVanDerPol</td><td>Success</td><td></td><td>0.047</td>
+<td><a name="modelExchangeVanDerPol20"></a>modelExchangeVanDerPol20</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeVanDerPol20"></a>modelExchangeVanDerPol20</td><td>Success</td><td></td><td>0.038</td>
+<td><a name="cosimulateInc"></a>cosimulateInc</td><td>Success</td><td></td><td>0.011</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateInc"></a>cosimulateInc</td><td>Success</td><td></td><td>0.022</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="cosimulateInc20"></a>cosimulateInc20</td><td>Success</td><td></td><td>0.031</td>
+<td><a name="cosimulateInc20"></a>cosimulateInc20</td><td>Success</td><td></td><td>0.014</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="cosimulateValues"></a>cosimulateValues</td><td>Success</td><td></td><td>0.034</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateValues20"></a>cosimulateValues20</td><td>Success</td><td></td><td>0.026</td>
+<td><a name="cosimulateValues20"></a>cosimulateValues20</td><td>Success</td><td></td><td>0.042</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateVanDerPol"></a>cosimulateVanDerPol</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="cosimulateBouncingBall"></a>cosimulateBouncingBall</td><td>Success</td><td></td><td>0.196</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateVanDerPol20"></a>cosimulateVanDerPol20</td><td>Success</td><td></td><td>0.037</td>
+<td><a name="cosimulateBouncingBall20"></a>cosimulateBouncingBall20</td><td>Success</td><td></td><td>0.162</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeDq"></a>modelExchangeDq</td><td>Success</td><td></td><td>0.022</td>
+<td><a name="cosimulateDq"></a>cosimulateDq</td><td>Success</td><td></td><td>0.020</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="cosimulateDq20"></a>cosimulateDq20</td><td>Success</td><td></td><td>0.013</td>
 </tr>
 </table>
 <div class="Properties">
