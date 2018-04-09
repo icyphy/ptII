@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="0" hostname="travis-job-1eeca2e6-28ba-4e4d-842e-ba10a75cadd7" name="ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest" skipped="0" tests="10" time="208.047" timestamp="2018-04-09T22:42:28">
+<testsuite errors="3" failures="0" hostname="travis-job-7406579d-14a0-4f59-b287-36f362805d89" name="ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest" skipped="0" tests="10" time="659.872" timestamp="2018-04-09T23:28:24">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="200.3" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="201.3" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.2 43984 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.3 54432 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.2 43984 10.20.0.70 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.3 54432 10.20.0.53 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7903398341147453567.properties propsfile=/home/travis/build/icyphy/ptII/junit8039260497558491261.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6423524496876551285.properties propsfile=/home/travis/build/icyphy/ptII/junit6744040643593518024.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="c36d8d93bf94...092d7f6ce644" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="092d7f6ce644...2ac2410d68bf" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="200" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="201" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/usr/share/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="364339830" />
+    <property name="env.TRAVIS_BUILD_ID" value="364359581" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="092d7f6ce644290ce23bd89f3d22ba7b72603b1b" />
+    <property name="env.TRAVIS_COMMIT" value="2ac2410d68bf00d06614a7816447665f504afc68" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -162,7 +162,7 @@
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Temporarily reduce what the installer target is doing so that we can have a successful build and cache the OpenCV installation." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Reverted last changes to .travis.yml and ptIITravisBuild.sh now that the installer job cache updated." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -201,7 +201,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="364339833" />
+    <property name="env.TRAVIS_JOB_ID" value="364359584" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
     <property name="java.maxmemory.large" value="8000m" />
@@ -220,27 +220,24 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml (RunModel)" time="31.649" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml (RunModel)" time="36.41" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml (RunModel)" time="19.984" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml (RunModel)" time="41.494" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml (RunModel)" time="11.594" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml (RunModel)" time="54.362" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml (RunModel)" time="12.199">
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml (RunModel)" time="31.541" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml (RunModel)" time="499.394">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .WebSocketsServerClient.Test
+  in .FullDuplex2.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .FullDuplex2.Test2
 
-  in .WebSocketsServerClient.DE Director
+  in .FullDuplex2.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .WebSocketsServerClient.Test
+  in .FullDuplex2.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -249,17 +246,122 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .WebSocketsServerClient.Test
+  in .FullDuplex2.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 </error>
   </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml (RunModel)" time="20.454" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml (RunModel)" time="21.711">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient3JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WebSocketClient3JS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient3JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient3JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$6227$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$6225$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml (RunModel)" time="21.24">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WebSocketClientJS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7936$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7934$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml (RunModel)" time="53.177" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml (RunModel)" time="11.987" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Mon Apr 09 22:42:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
+----------------- testing Mon Apr 09 23:28:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 WebSocketClient3: WebSocketClient3: WebSocketClient.js: connect(): portValue: -1, which is less than 0. This could be a signal to close a previously open socket.  Returning. (Thread[FullDuplex,1,main])
 WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[FullDuplex,1,main])
@@ -363,10 +465,10 @@ WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[
 WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[FullDuplex,1,main])
 WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[FullDuplex,1,main])
 WebSocketClient3: Connection closed because model is no longer running. (Thread[FullDuplex,1,main])
-13247 ms. Memory: 316416K Free: 205921K (65%)
+13362 ms. Memory: 377856K Free: 265736K (70%)
 reloadAllAccessors: .FullDuplex
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
------------------ Reloaded Accessors and testing again Mon Apr 09 22:42:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
+----------------- Reloaded Accessors and testing again Mon Apr 09 23:28:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
 WebSocketClient3: WebSocketClient3: WebSocketClient.js: connect(): portValue: -1, which is less than 0. This could be a signal to close a previously open socket.  Returning. (Thread[Thread-5,5,main])
 WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[Thread-5,5,main])
 WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[Thread-5,5,main])
@@ -469,339 +571,71 @@ WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[
 WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[Thread-5,5,main])
 WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[Thread-5,5,main])
 WebSocketClient3: Connection closed because model is no longer running. (Thread[Thread-5,5,main])
-12411 ms. Memory: 396800K Free: 72666K (18%)
------------------ testing Mon Apr 09 22:43:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
-WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -2, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -3, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -4, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -5, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -6, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -7, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -8, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -9, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -10, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -11, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -12, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -13, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -14, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -15, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -16, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -17, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -18, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -19, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -20, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -21, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -22, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -23, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -24, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -25, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -26, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -27, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -28, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -29, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -30, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -31, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -32, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -33, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -34, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -35, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -36, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -37, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -38, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -39, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -40, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -41, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -42, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -43, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -44, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -45, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -46, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -47, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -48, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -49, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -50, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -51, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -52, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -53, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -54, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -55, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -56, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -57, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -58, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -59, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -60, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -61, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -62, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -63, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -64, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -65, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -66, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -67, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -68, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -69, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -70, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -71, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -72, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -73, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -74, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -75, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -76, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -77, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -78, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -79, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -80, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -81, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -82, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -83, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -84, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -85, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -86, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -87, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -88, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -89, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -90, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -91, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -92, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -93, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -94, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -95, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -96, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[FullDuplex2,1,main])
-WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[FullDuplex2,1,main])
+12575 ms. Memory: 496640K Free: 209359K (42%)
+----------------- testing Mon Apr 09 23:28:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
 WebSocketClient3: Connection closed because model is no longer running. (Thread[FullDuplex2,1,main])
-17332 ms. Memory: 536576K Free: 136334K (25%)
-reloadAllAccessors: .FullDuplex2
------------------ Reloaded Accessors and testing again Mon Apr 09 22:43:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
-WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -2, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -3, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -4, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -5, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -6, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -7, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -8, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -9, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -10, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -11, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -12, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -13, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -14, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -15, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -16, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -17, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -18, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -19, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -20, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -21, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -22, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -23, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -24, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -25, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -26, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -27, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -28, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -29, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -30, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -31, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -32, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -33, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -34, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -35, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -36, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -37, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -38, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -39, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -40, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -41, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -42, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -43, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -44, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -45, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -46, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -47, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -48, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -49, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -50, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -51, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -52, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -53, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -54, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -55, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -56, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -57, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -58, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -59, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -60, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -61, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -62, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -63, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -64, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -65, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -66, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -67, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -68, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -69, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -70, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -71, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -72, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -73, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -74, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -75, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -76, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -77, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -78, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -79, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -80, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -81, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -82, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -83, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -84, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -85, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -86, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -87, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -88, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -89, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -90, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -91, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -92, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -93, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -94, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -95, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -96, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[Thread-11,5,main])
-WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[Thread-11,5,main])
-WebSocketClient3: Connection closed because model is no longer running. (Thread[Thread-11,5,main])
-16910 ms. Memory: 668160K Free: 427317K (64%)
------------------ testing Mon Apr 09 22:43:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
+497960 ms. Memory: 707072K Free: 471876K (67%)
+----------------- testing Mon Apr 09 23:37:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
-8451 ms. Memory: 755712K Free: 217955K (29%)
+8525 ms. Memory: 707584K Free: 142221K (20%)
 reloadAllAccessors: .WebSocketClient2JS
------------------ Reloaded Accessors and testing again Mon Apr 09 22:43:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
-WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-15,5,main])
-8589 ms. Memory: 774144K Free: 223853K (29%)
------------------ testing Mon Apr 09 22:43:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-2,1,main])
+----------------- Reloaded Accessors and testing again Mon Apr 09 23:37:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
+WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-14,5,main])
+8492 ms. Memory: 743424K Free: 179455K (24%)
+----------------- testing Mon Apr 09 23:37:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient3JS,1,main])
-19420 ms. Memory: 791552K Free: 320154K (40%)
-reloadAllAccessors: .WebSocketClient3JS
------------------ Reloaded Accessors and testing again Mon Apr 09 22:44:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8183/nConnection refused (Thread[vert.x-eventloop-thread-2,1,main])
-WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-19,5,main])
-18946 ms. Memory: 825344K Free: 331790K (40%)
------------------ testing Mon Apr 09 22:44:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+19699 ms. Memory: 765952K Free: 397499K (52%)
+----------------- testing Mon Apr 09 23:37:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
-4373 ms. Memory: 857600K Free: 278758K (33%)
-reloadAllAccessors: .WebSocketClientJS
------------------ Reloaded Accessors and testing again Mon Apr 09 22:44:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-23,5,main])
-3811 ms. Memory: 861184K Free: 350285K (41%)
------------------ testing Mon Apr 09 22:44:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8184/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+19206 ms. Memory: 816640K Free: 370075K (45%)
+----------------- testing Mon Apr 09 23:38:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8184/nConnection refused (Thread[vert.x-eventloop-thread-2,1,main])
 TextDisplayHelper: '0123456789'
 WebSocketServer: WebSocketServer message(): abcdefg, typeof message: string (Thread[WebSocketSendReceive,1,main])
 TextDisplayHelper: { message: 'abcdefg', socketID: 0 }
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketSendReceive,1,main])
 JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[WebSocketSendReceive,1,main])
 JavaScriptTrueToken: JavaScriptTrueToken.wrapup() (Thread[WebSocketSendReceive,1,main])
-24119 ms. Memory: 940032K Free: 628659K (67%)
+23414 ms. Memory: 864768K Free: 335618K (39%)
 reloadAllAccessors: .WebSocketSendReceive
------------------ Reloaded Accessors and testing again Mon Apr 09 22:45:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8184/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+----------------- Reloaded Accessors and testing again Mon Apr 09 23:38:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8184/nConnection refused (Thread[vert.x-eventloop-thread-2,1,main])
 TextDisplayHelper: '0123456789'
-WebSocketServer: WebSocketServer message(): abcdefg, typeof message: string (Thread[Thread-27,5,main])
+WebSocketServer: WebSocketServer message(): abcdefg, typeof message: string (Thread[Thread-24,5,main])
 TextDisplayHelper: { message: 'abcdefg', socketID: 0 }
-WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-27,5,main])
-JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[Thread-27,5,main])
-JavaScriptTrueToken: JavaScriptTrueToken.wrapup() (Thread[Thread-27,5,main])
-23050 ms. Memory: 961536K Free: 462080K (48%)
------------------ testing Mon Apr 09 22:45:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
-WSClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8087/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-24,5,main])
+JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[Thread-24,5,main])
+JavaScriptTrueToken: JavaScriptTrueToken.wrapup() (Thread[Thread-24,5,main])
+23556 ms. Memory: 900096K Free: 267755K (30%)
+----------------- testing Mon Apr 09 23:39:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml
+WSClient: Connection to socket is open. (Thread[vert.x-eventloop-thread-3,1,main])
 WSClient: Connection closed because model is no longer running. (Thread[WebSocketsServerClient,1,main])
-11309 ms. Memory: 962048K Free: 319451K (33%)
+11251 ms. Memory: 901632K Free: 595913K (66%)
+reloadAllAccessors: .WebSocketsServerClient
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
   <system-err><![CDATA[WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.021]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.01, 15.011000000000001]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.015]
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.017]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.14100000000000001]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.036000000000001, 15.037]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.026]
-Apr 09, 2018 10:45:51 PM io.vertx.core.impl.ContextImpl
-SEVERE: Unhandled exception
-java.lang.RuntimeException: WSClient: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:8087/nConnection refused
-	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
-	at ptolemy.actor.lib.jjs.HelperBase._error(HelperBase.java:152)
-	at ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper.access$3800(WebSocketHelper.java:76)
-	at ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper$HttpClientExceptionHandler.handle(WebSocketHelper.java:809)
-	at ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper$HttpClientExceptionHandler.handle(WebSocketHelper.java:799)
-	at io.vertx.core.http.impl.HttpClientImpl$WebSocketStream.lambda$subscribe$0(HttpClientImpl.java:1071)
-	at io.vertx.core.impl.FutureImpl.tryFail(FutureImpl.java:165)
-	at io.vertx.core.http.impl.HttpClientImpl.lambda$null$4(HttpClientImpl.java:958)
-	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
-	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
-	at io.vertx.core.http.impl.HttpClientImpl.lambda$getConnectionForWebsocket$5(HttpClientImpl.java:957)
-	at io.vertx.core.http.impl.ConnectionManager$1.handleFailure(ConnectionManager.java:146)
-	at io.vertx.core.http.impl.pool.Pool$1.onConnectFailure(Pool.java:236)
-	at io.vertx.core.http.impl.HttpChannelConnector.connectFailed(HttpChannelConnector.java:328)
-	at io.vertx.core.http.impl.HttpChannelConnector.lambda$connect$2(HttpChannelConnector.java:210)
-	at io.vertx.core.net.impl.ChannelProvider.lambda$connect$0(ChannelProvider.java:54)
-	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
-	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
-	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:327)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:343)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.015]
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .WebSocketsServerClient.Test
+  in .FullDuplex2.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .FullDuplex2.Test2
 
-  in .WebSocketsServerClient.DE Director
+  in .FullDuplex2.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .WebSocketsServerClient.Test
+  in .FullDuplex2.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -810,9 +644,109 @@ The fire() method of this actor was never called. Usually, this is an error indi
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .WebSocketsServerClient.Test
+  in .FullDuplex2.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebSocketClient3JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .WebSocketClient3JS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebSocketClient3JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebSocketClient3JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$6227$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$6225$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebSocketClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .WebSocketClientJS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebSocketClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WebSocketClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7936$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7934$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.024000000000001, 15.026]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.025, 15.034]
 ]]></system-err>
 </testsuite>
