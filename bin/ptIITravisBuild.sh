@@ -270,7 +270,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     # Copy just codeDoc.jar from the release.
     # doc/test/docManager.tcl needs this.
     jar=codeDoc.jar
-    if [ ! $PTII/doc/codeDoc.jar ]; then
+    if [ ! -f $PTII/doc/codeDoc.jar ]; then
         echo "Downloading $jar: `date`"
         wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
         ls -l $PTII/doc/$jar
