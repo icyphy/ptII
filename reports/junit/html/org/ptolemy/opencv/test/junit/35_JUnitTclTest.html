@@ -186,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.33 59876 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.28 34484 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.33 59876 10.20.0.153 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.28 34484 10.20.1.248 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -202,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364339830';
+        cur['env.TRAVIS_BUILD_ID'] = '364359581';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '200';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '201';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '092d7f6ce644290ce23bd89f3d22ba7b72603b1b';
+        cur['env.TRAVIS_COMMIT'] = '2ac2410d68bf00d06614a7816447665f504afc68';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Temporarily reduce what the installer target is doing so that we can have a successful build and cache the OpenCV installation.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Reverted last changes to .travis.yml and ptIITravisBuild.sh now that the installer job cache updated.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'c36d8d93bf94...092d7f6ce644';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '092d7f6ce644...2ac2410d68bf';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364339835';
+        cur['env.TRAVIS_JOB_ID'] = '364359586';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '200.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '201.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -408,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.opencv.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.opencv.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3539757487547076164.properties propsfile=/home/travis/build/icyphy/ptII/junit9005607081581451336.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.opencv.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.opencv.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4733408770453284712.properties propsfile=/home/travis/build/icyphy/ptII/junit7774950251949626352.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -491,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>0.707</td><td>2018-04-09T22:30:11</td><td>travis-job-febfcba2-4e22-41f8-b99d-8056de84c256</td>
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>0.815</td><td>2018-04-09T23:11:11</td><td>travis-job-228dd1fd-486c-4183-85fe-7928ce6ba4f3</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -503,16 +503,16 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>
 <br>
 <code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>0.255</td>
+</code></td><td>0.342</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.007</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.014</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 </table>
 <div class="Properties">
