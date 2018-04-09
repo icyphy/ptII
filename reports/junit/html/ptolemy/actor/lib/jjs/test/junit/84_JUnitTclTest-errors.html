@@ -79,6 +79,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -183,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.4 49590 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.2 43984 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.4 49590 10.20.0.162 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.2 43984 10.20.0.70 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -199,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '361903254';
+        cur['env.TRAVIS_BUILD_ID'] = '364339830';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '189';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '200';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '65b91be39589571c52c7a2bbc3c68c98fdb5a16a';
+        cur['env.TRAVIS_COMMIT'] = '092d7f6ce644290ce23bd89f3d22ba7b72603b1b';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'short: download codeDoc.jar for doc/test/docManager.tcl.  Moved test output files to reports/junit so that we only run updateGhPages once per target.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Temporarily reduce what the installer target is doing so that we can have a successful build and cache the OpenCV installation.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'fb3a2148592e...65b91be39589';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'c36d8d93bf94...092d7f6ce644';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '361903258';
+        cur['env.TRAVIS_JOB_ID'] = '364339833';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '189.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '200.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -403,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher919745953540479148.properties propsfile=/home/travis/build/icyphy/ptII/junit970017703663680304.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1772863625033399313.properties propsfile=/home/travis/build/icyphy/ptII/junit6924365508847865154.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -486,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="84_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="84_JUnitTclTest.html">94</a></td><td><a title="Display only errors" href="84_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>159.816</td><td>2018-04-04T00:31:34</td><td>travis-job-3537eb0f-1a34-45db-b47a-6f4077675d2f</td>
+<td><a title="Display all tests" href="84_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="84_JUnitTclTest.html">94</a></td><td><a title="Display only errors" href="84_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>143.031</td><td>2018-04-09T22:45:57</td><td>travis-job-1eeca2e6-28ba-4e4d-842e-ba10a75cadd7</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -498,7 +499,7 @@
 <td><a name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml (RunModel)"></a>[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: date("Tue Jan 01 00:00:00.000000000 +0000 1957"). Should have been: date("Tue Jan 01 00:00:00.000000000 -0800 1957")<br>  in .JavaScriptReceiveDate.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)<br>	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)<br>	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.140</td>
+</code></td><td>0.910</td>
 </tr>
 </table>
 <div class="Properties">
