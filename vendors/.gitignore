@@ -15,6 +15,7 @@
 /JMF-*
 /jogl/jogamp-all-platforms*
 /jsdoc
+/opencv
 /openmpi-*
 /mosquitto-*
 /ptinyos
