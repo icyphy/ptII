@@ -2112,23 +2112,51 @@ else
         AC_MSG_CHECKING([for Eclipse installation])
         # Use changequote to protect the square brackets in sed
 
-        # We cd to *clipse so that we get the case right in the jar files.
-        if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
-        # Remove /cygdrive	
+	AC_PATH_PROG(ECLIPSE, eclipse)
+	if test -f "$ECLIPSE"; then
+	    startdir=$PTII
+	    cd "$srcdir/config"
+	    if "$JAVAC" RootDirectory.java ; then
+		AC_MSG_CHECKING([the value of the Eclipse root directory ])
+		if env "$JAVA" -classpath "$PTII/config" RootDirectory "$ECLIPSE"> /dev/null; then
+
+		   ECLIPSE_DIR_TMP=`"$JAVA" -classpath "$PTII/config" RootDirectory "$ECLIPSE"`
+
+		    # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
-           TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+		    # Remove /cygdrive so we can compile with MSVC
+		    TMP_ECLIPSE_DIR=`echo "$ECLIPSE_DIR_TMP" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 changequote([, ])dnl
-        else 
-           TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
-        fi
-	if test -d "/Applications/eclipse"; then
-	    TMP_ECLIPSE_DIR=/Applications/eclipse
-        else
+
+		    PT_MSG_RESULT('$TMP_ECLIPSE_DIR')
+		else	
+		    AC_MSG_WARN(['"$JAVA" -classpath "$PTII/config" RootDirectory "$ECLIPSE"' failed.
+    We will not be able to compile the Eclipse interface in ptolemy/backtrack/]);
+		fi
+	    else
+		AC_MSG_WARN(['cd "$PTII/config"; $JAVAC RootDirectory.java' failed.
+    We will not be able to compile the Eclipse interface in ptolemy/backtrack]);
+	    fi
+	    cd "$startdir"
+	else
+	    # We cd to *clipse so that we get the case right in the jar files.
+            if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
+            # Remove /cygdrive	
 changequote(<<, >>)dnl
-            TMP_ECLIPSE_DIR=`ls -1dr /Applications/[Ee]clipse* | head -1`
+                TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
-            if ! test -d "$TMP_ECLIPSE_DIR" -a -d /usr/lib/eclipse; then
-                TMP_ECLIPSE_DIR=/usr/lib/eclipse
+            else 
+                TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
+            fi
+	    if test -d "/Applications/eclipse"; then
+	        TMP_ECLIPSE_DIR=/Applications/eclipse
+            else
+changequote(<<, >>)dnl
+                TMP_ECLIPSE_DIR=`ls -1dr /Applications/[Ee]clipse* | head -1`
+changequote([, ])dnl
+                if ! test -d "$TMP_ECLIPSE_DIR" -a -d /usr/lib/eclipse; then
+                    TMP_ECLIPSE_DIR=/usr/lib/eclipse
+                fi
             fi
         fi
         AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
