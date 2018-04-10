@@ -4,13 +4,13 @@
 <entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={255, 82, 898, 531}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2311, 497, 898, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[664, 421]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[664, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5219948546857813">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{163.84960937499997, 86.67251110951833}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{163.84960937499997, 119.85264956039751}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -32,7 +32,7 @@
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
             <display name="Time Management Service"/>
         </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARtimeStep">
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="0.1">
             <display name="*** If TAR is used, time step (s)"/>
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
@@ -63,7 +63,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -35.0]">
         </property>
     </property>
-    <property name="TARtimeStep" class="ptolemy.data.expr.Parameter" value="0.010">
+    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.005">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -82,25 +82,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 20.0]">
         </property>
     </property>
-    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.005">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 30.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The federate &quot;AutoPilot&quot; (controller) sends the command to the&#10;Elevator Deflector of federate &quot;Aircraft&quot;.">
         </property>
@@ -108,9 +89,9 @@
         </property>
     </property>
     <entity name="AutoPilotDE" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 75.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 446, 886, 331}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 446, 886, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 221]">
         </property>
@@ -524,9 +505,9 @@
             </port>
         </entity>
         <entity name="Elevator Command" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="AddS,Add,gain2">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Elevator Command">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 558, 507, 280}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 721, 507, 280}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 236]">
             </property>
@@ -548,7 +529,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.005" max="11.995000000000001"/>
-<yRange min="-1.6878121449772725" max="1.1618434660573933"/>
+<yRange min="-1.687812144977273" max="1.1618434660573933"/>
 </plot>?>
             </configure>
         </entity>
