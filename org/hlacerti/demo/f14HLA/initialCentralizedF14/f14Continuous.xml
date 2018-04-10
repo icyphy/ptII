@@ -22,13 +22,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={900, 299, 885, 645}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={900, 48, 885, 530}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[651, 535]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[651, 420]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.950925595936592">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{363.0400390625, 332.9413651155421}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{363.0400390625, 272.4739634116615}">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -231,7 +231,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is based on the F-14 Longitudinal Flight Control model (f14.mdl)&#10;from Matlab. The composite actor NzPilotG uses the d/dt actor (derivative).&#10;&#10;The Aircraft Model provides the vertical velocity w and the pitch rate q. The Angle&#10;of Attack alpha and the pitch rate q as well as the stick pitch command sent by the &#10;pilot are used by the AutoPilot (the analogous controller) to command the Elevator &#10;Deflector of the aircraft.&#10;&#10;The pilot g force indicates the stresses on the pilot (that can be destructive).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is based on the F-14 Longitudinal Flight Control model (f14.mdl)&#10;from Matlab. The composite actor NzPilotG uses the d/dt actor (derivative).&#10;&#10;The Aircraft Model provides the vertical velocity w and the pitch rate q. The Angle&#10;of Attack alpha and the pitch rate q as well as the stick pitch command sent by the &#10;pilot are used by the AutoPilot (the analogous controller) to command the Elevator &#10;Deflector of the aircraft.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 305.0]">
         </property>
@@ -1394,7 +1394,7 @@
         <link port="Feedforward0.output" relation="_R2"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Stick,AngleOfAttack,PilotG">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Stick,AngleOfAttack">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 74, 726, 343}, maximized=false}">
         </property>
