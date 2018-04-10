@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.38 49680 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.28 55870 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.38 49680 10.20.0.224 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.28 55870 10.20.0.11 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364423777';
+        cur['env.TRAVIS_BUILD_ID'] = '364429051';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '205';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '206';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'c581a6411edd0b6796670f2308e2cc9597b3c96c';
+        cur['env.TRAVIS_COMMIT'] = 'c2484a81845b0b48f39a5a4bc02cc6dd4ddc6f54';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating MultiDataTypes with new MultiDataTypesConsumer.xml.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating SimplePublisherSubscriber.xml (removing a dead link).';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '747db09e578d...c581a6411edd';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'c581a6411edd...c2484a81845b';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364423789';
+        cur['env.TRAVIS_JOB_ID'] = '364429059';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '205.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '206.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2688980322447578671.properties propsfile=/home/travis/build/icyphy/ptII/junit3293585463400950597.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3383714637776866770.properties propsfile=/home/travis/build/icyphy/ptII/junit3429536187214618723.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="28_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="28_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="28_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>1.307</td><td>2018-04-10T03:34:21</td><td>travis-job-dc659e6e-6f74-46aa-9231-ffe7c5441217</td>
+<td><a title="Display all tests" href="28_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="28_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="28_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>1.211</td><td>2018-04-10T04:08:03</td><td>travis-job-a9257e48-7a4d-4dfb-97fc-dee984c698dd</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -502,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Execution failed.<br>  in .MultiDataTypes.Producer<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .MultiDataTypesProducer.producer<br>	at ptolemy.actor.lib.hoc.ModelReference.fire(ModelReference.java:588)<br>	at ptolemy.vergil.actor.lib.VisualModelReference.fire(VisualModelReference.java:389)<br>	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)<br>	at ptolemy.actor.Director.fire(Director.java:360)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .MultiDataTypesProducer.producer<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference.fire(ModelReference.java:586)<br>
-</code></td><td>0.790</td>
+</code></td><td>0.699</td>
 </tr>
 </table>
 <div class="Properties">

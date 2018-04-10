@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.38 49680 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.28 55870 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.38 49680 10.20.0.224 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.28 55870 10.20.0.11 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364423777';
+        cur['env.TRAVIS_BUILD_ID'] = '364429051';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '205';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '206';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'c581a6411edd0b6796670f2308e2cc9597b3c96c';
+        cur['env.TRAVIS_COMMIT'] = 'c2484a81845b0b48f39a5a4bc02cc6dd4ddc6f54';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating MultiDataTypes with new MultiDataTypesConsumer.xml.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating SimplePublisherSubscriber.xml (removing a dead link).';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '747db09e578d...c581a6411edd';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'c581a6411edd...c2484a81845b';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364423789';
+        cur['env.TRAVIS_JOB_ID'] = '364429059';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '205.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '206.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.opencv.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.opencv.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2429461387304581028.properties propsfile=/home/travis/build/icyphy/ptII/junit1352320781629767093.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.opencv.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.opencv.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4620462486725088621.properties propsfile=/home/travis/build/icyphy/ptII/junit1820526185167520039.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>0.753</td><td>2018-04-10T03:35:46</td><td>travis-job-dc659e6e-6f74-46aa-9231-ffe7c5441217</td>
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>0.670</td><td>2018-04-10T04:09:12</td><td>travis-job-a9257e48-7a4d-4dfb-97fc-dee984c698dd</td>
 </tr>
 </table>
 <h2>Failures</h2>
@@ -502,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/opencv/test/SimpleSample.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>
 <br>
 <code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>0.277</td>
+</code></td><td>0.254</td>
 </tr>
 </table>
 <div class="Properties">
