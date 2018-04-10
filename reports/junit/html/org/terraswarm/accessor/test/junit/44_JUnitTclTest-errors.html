@@ -79,6 +79,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -183,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.8 57160 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.22 40266 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.8 57160 10.20.0.60 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.22 40266 10.20.1.96 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -199,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364467333';
+        cur['env.TRAVIS_BUILD_ID'] = '364512120';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '207';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '208';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '88032569e7a8823cef51e006cead5fa8ef884575';
+        cur['env.TRAVIS_COMMIT'] = '44d466bec570206f2d0c27a1050dcf6558217b8a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating 3Federates4Values2Instances2Jokers/DistributedReceiver1.xml\nwith the correct number of HlaSubscribers.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating test/auto/StaticMultiInstanceJoker/3Federates4Values2Instances2Jokers/.\nThis federation run when the models are launched by hand.\nBut when using StaticMultiInstanceJoker.xml federate Sender2 is not launched and the test fails.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'c2484a81845b...88032569e7a8';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '88032569e7a8...44d466bec570';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364467336';
+        cur['env.TRAVIS_JOB_ID'] = '364512123';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '207.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '208.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -403,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7938114594509643695.properties propsfile=/home/travis/build/icyphy/ptII/junit7704635250625176304.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7005908133356504212.properties propsfile=/home/travis/build/icyphy/ptII/junit2763323823971878864.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -486,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="44_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="44_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="44_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>358.873</td><td>2018-04-10T07:02:33</td><td>travis-job-fadb1a43-fd73-4330-87bc-1544bb9dd6de</td>
+<td><a title="Display all tests" href="44_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="44_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="44_JUnitTclTest-errors.html">1</a></td><td><a title="Display only failures" href="44_JUnitTclTest-fails.html">1</a></td><td>0</td><td>338.615</td><td>2018-04-10T09:17:58</td><td>travis-job-20d24bb9-6cad-4d53-9872-02c640a1ce3e</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -497,8 +498,8 @@
 <tr valign="top" class="Error">
 <td><a name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:190)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: REST: Protocol family unavailable: date.jsontest.com/2607:f8b0:4001:c0e:0:0:0:79:80<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$25250$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$25248$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$25247$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientExceptionHandler$1.run(HttpClientHelper.java:281)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.moml.MoMLSimpleApplication.rerun(MoMLSimpleApplication.java:339)<br>
-</code></td><td>16.868</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:190)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: REST: Protocol family unavailable: date.jsontest.com/2607:f8b0:4001:c15:0:0:0:79:80<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$18936$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$18934$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$18933$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientExceptionHandler$1.run(HttpClientHelper.java:281)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.moml.MoMLSimpleApplication.rerun(MoMLSimpleApplication.java:339)<br>
+</code></td><td>17.896</td>
 </tr>
 </table>
 <div class="Properties">
