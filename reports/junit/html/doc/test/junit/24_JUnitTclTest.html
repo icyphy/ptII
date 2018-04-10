@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.21 59154 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.4 48944 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.21 59154 10.20.1.156 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.4 48944 10.20.0.103 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364512120';
+        cur['env.TRAVIS_BUILD_ID'] = '364514273';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '208';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '209';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '44d466bec570206f2d0c27a1050dcf6558217b8a';
+        cur['env.TRAVIS_COMMIT'] = '62268f8eda5362c07085e666466b697765bb9b27';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating test/auto/StaticMultiInstanceJoker/3Federates4Values2Instances2Jokers/.\nThis federation run when the models are launched by hand.\nBut when using StaticMultiInstanceJoker.xml federate Sender2 is not launched and the test fails.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Unchecking \'Generating HLA report\' in test models DistributedSender?.xml.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '88032569e7a8...44d466bec570';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '44d466bec570...62268f8eda53';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364512125';
+        cur['env.TRAVIS_JOB_ID'] = '364514278';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '208.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '209.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7689557122588016363.properties propsfile=/home/travis/build/icyphy/ptII/junit5927647987217399881.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6234532445750884869.properties propsfile=/home/travis/build/icyphy/ptII/junit1334381317797228024.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="24_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="24_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="24_JUnitTclTest-fails.html">1</a></td><td>0</td><td>54.109</td><td>2018-04-10T09:19:15</td><td>travis-job-ebe87d8d-fad5-4655-a604-98793430df6b</td>
+<td><a title="Display all tests" href="24_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="24_JUnitTclTest.html">4</a></td><td>0</td><td><a title="Display only failures" href="24_JUnitTclTest-fails.html">1</a></td><td>0</td><td>66.550</td><td>2018-04-10T09:54:35</td><td>travis-job-4567c57e-3026-40aa-9302-00e26c9c2fc7</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -502,16 +503,16 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/doc/test/docManager.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/doc/test/docManager.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;<br>
 <br>
 <code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>53.786</td>
+</code></td><td>66.220</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.007</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 </table>
 <div class="Properties">
