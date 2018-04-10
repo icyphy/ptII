@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6390654729420788">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{498.67968749999994, 89.58493353028064}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{498.67968749999994, 89.5849335302807}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -41,11 +41,11 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 1PublisherBadAttributeName:  a Publisher using a bad HLA attribute name">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- SimplePublisherSubscriber/1PublisherBadAttributeName:  a Publisher using a bad HLA attribute name">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 140.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1PublisherBadAttributeName/1PublisherBadAttributeName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SimplePublisherSubscriber/1PublisherBadAttributeName/1PublisherBadAttributeName.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -72,11 +72,11 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 1SubscriberBadAttributeName: a Subscriber using a bad HLA attribute name">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- SimplePublisherSubscriber/1SubscriberBadAttributeName: a Subscriber using a bad HLA attribute name">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 160.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1SubscriberBadAttributeName/1SubscriberBadAttributeName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SimplePublisherSubscriber/1SubscriberBadAttributeName/1SubscriberBadAttributeName.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -111,11 +111,11 @@
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 1PublisherBadClassName: a Publisher using a bad HLA class name">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- SimplePublisherSubscriber/1PublisherBadClassName: a Publisher using a bad HLA class name">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 180.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1PublisherBadClassName/1PublisherBadClassName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SimplePublisherSubscriber/1PublisherBadClassName/1PublisherBadClassName.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -142,11 +142,11 @@
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 1SubscriberBadClassName: a Subscriber using a bad HLA class name">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- SimplePublisherSubscriber/1SubscriberBadClassName: a Subscriber using a bad HLA class name">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 200.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1SubscriberBadClassName/1SubscriberBadClassName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SimplePublisherSubscriber/1SubscriberBadClassName/1SubscriberBadClassName.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
