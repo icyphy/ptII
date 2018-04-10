@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.28 34484 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.30 48868 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.28 34484 10.20.1.248 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.30 48868 10.20.0.212 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364359581';
+        cur['env.TRAVIS_BUILD_ID'] = '364375634';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '201';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '202';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '2ac2410d68bf00d06614a7816447665f504afc68';
+        cur['env.TRAVIS_COMMIT'] = '6f3c0597f0382d7e87b9dcbf833805649e4679dd';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Reverted last changes to .travis.yml and ptIITravisBuild.sh now that the installer job cache updated.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Deploy if PT_TRAVIS_TEST_INSTALLERS is true.  Formerly, this was PT_TRAVIS_INSTALERS>';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '092d7f6ce644...2ac2410d68bf';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '2ac2410d68bf...6f3c0597f038';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364359586';
+        cur['env.TRAVIS_JOB_ID'] = '364375639';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '201.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '202.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.tutorial.graph.junit.ShortestPathFinderTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.tutorial.graph.junit.ShortestPathFinderTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1095073110884209684.properties propsfile=/home/travis/build/icyphy/ptII/junit5168212776554945125.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.tutorial.graph.junit.ShortestPathFinderTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.tutorial.graph.junit.ShortestPathFinderTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3766328454941473086.properties propsfile=/home/travis/build/icyphy/ptII/junit5587961056904851172.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="25_ShortestPathFinderTest.html">ShortestPathFinderTest</a></td><td><a title="Display all tests" href="25_ShortestPathFinderTest.html">1</a></td><td>0</td><td>0</td><td>0</td><td>0.169</td><td>2018-04-09T23:09:43</td><td>travis-job-228dd1fd-486c-4183-85fe-7928ce6ba4f3</td>
+<td><a title="Display all tests" href="25_ShortestPathFinderTest.html">ShortestPathFinderTest</a></td><td><a title="Display all tests" href="25_ShortestPathFinderTest.html">1</a></td><td>0</td><td>0</td><td>0</td><td>0.152</td><td>2018-04-10T00:05:04</td><td>travis-job-ac48981e-d91e-49cf-9565-b632c9dc7560</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -499,7 +500,7 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="testCalculateDistance"></a>testCalculateDistance</td><td>Success</td><td></td><td>0.095</td>
+<td><a name="testCalculateDistance"></a>testCalculateDistance</td><td>Success</td><td></td><td>0.069</td>
 </tr>
 </table>
 <div class="Properties">
