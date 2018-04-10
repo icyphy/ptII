@@ -4,13 +4,13 @@
 <entity name="f14CentralizedControllerDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 92, 1124, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 36, 1124, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[890, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9190871487337631">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.735885499208, 177.37466822411136}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.73588549920805, 177.37466822411142}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -112,7 +112,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AircraftSAct Model provides the vertical velocity w and the pitch rate q. &#10;The Angle of Attack alpha and the pitch rate q as well as the stick pitch command sent by the &#10;pilot are used by the AutoPilotDE (controller) to command the Elevator Deflector of the aircraft. &#10;The sensors and the actuator are represented in the AircraftSAct model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 175.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -125,7 +125,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 245.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2*T">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="T">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -160,13 +160,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 15.0]">
         </property>
     </property>
     <entity name="AircraftSAct" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 80.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 117, 935, 683}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 166, 935, 683}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 573]">
         </property>
@@ -414,19 +414,67 @@
                     </property>
                 </port>
                 <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                     </property>
                     <port name="impulse" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                        </property>
+                    </port>
+                    <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="state" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                         </property>
                     </port>
                     <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                         </property>
                     </port>
@@ -436,20 +484,32 @@
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                         </property>
-                    </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                         </property>
-                    </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -555,19 +615,67 @@
                     </property>
                 </port>
                 <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    <port name="plus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="minus" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                     <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                     </property>
                     <port name="impulse" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                        </property>
+                    </port>
+                    <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
+                    <port name="state" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                         </property>
                     </port>
                     <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                         </property>
                     </port>
@@ -577,20 +685,32 @@
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                         </property>
-                    </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    <port name="input" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                         </property>
-                    </property>
+                    </port>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
+                    </port>
                 </entity>
                 <relation name="node0" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -698,19 +818,67 @@
                 </property>
             </port>
             <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
+                <port name="plus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
+                <port name="minus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
             </entity>
             <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
+                <port name="plus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
+                <port name="minus" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
             </entity>
             <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
                 <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
                 </property>
                 <port name="impulse" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                    </property>
+                </port>
+                <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
+                <port name="state" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
                 </port>
                 <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                     </property>
                 </port>
@@ -720,20 +888,32 @@
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
             </entity>
             <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="20.0">
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
             </entity>
             <relation name="node0" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -979,7 +1159,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6833037186649111">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.97297428759566, 104.30663314176246}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.97297428759566, 104.3066331417624}">
         </property>
         <property name="Kf" class="ptolemy.data.expr.Parameter" value="-1.746">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1373,35 +1553,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="AddS,Add,gain2">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={766, 665, 492, 235}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[492, 191]">
-            </property>
-            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-1.0E-7, -1.0E-7, -1.0E-7}">
-                </property>
-            </port>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="25.150000000000002"/>
-<yRange min="-1.610254217061772" max="1.6102542176320733"/>
-</plot>?>
-            </configure>
-        </entity>
         <entity name="Register" class="ptolemy.domains.de.lib.Register">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -90.0]">
             </property>
@@ -1506,8 +1657,6 @@
             <vertex name="vertex1" value="[-290.0, -140.0]">
             </vertex>
         </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -1520,7 +1669,13 @@
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="ElevCom" relation="relation9"/>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{515.0, -135.0}">
+            </vertex>
+        </relation>
+        <link port="ElevCom" relation="relation15"/>
         <link port="stickS" relation="relation24"/>
         <link port="alphaS" relation="relation23"/>
         <link port="qS" relation="relation12"/>
@@ -1552,10 +1707,7 @@
         <link port="Scale2.output" relation="relation21"/>
         <link port="Add2.plus" relation="relation21"/>
         <link port="Add2.plus" relation="relation10"/>
-        <link port="Add2.output" relation="relation9"/>
-        <link port="TimedPlotter.input" relation="relation2"/>
-        <link port="TimedPlotter.input" relation="relation22"/>
-        <link port="TimedPlotter.input" relation="relation20"/>
+        <link port="Add2.output" relation="relation15"/>
         <link port="Register.input" relation="relation3"/>
         <link port="Register.output" relation="relation11"/>
         <link port="Register.trigger" relation="relation20"/>
@@ -1630,13 +1782,13 @@
     <entity name="ElevComAoA" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="ElevCom,AoA">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 24, 492, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={923, 624, 595, 312}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[492, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[595, 268]">
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 130.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1649,7 +1801,7 @@
         </configure>
     </entity>
     <entity name="ElevatorCommand" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={679, 548, 650, 352}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={248, 502, 650, 352}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 308]">
         </property>
@@ -1683,12 +1835,6 @@
         <vertex name="vertex1" value="[365.0, 70.0]">
         </vertex>
     </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[55.0, 90.0]">
-        </vertex>
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -1705,12 +1851,18 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[55.0, 130.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="AircraftSAct.alphaS" relation="relation5"/>
-    <link port="AircraftSAct.qS" relation="relation13"/>
+    <link port="AircraftSAct.qS" relation="relation10"/>
     <link port="AircraftSAct.ElevatorC" relation="relation9"/>
     <link port="Anemo.w" relation="relation2"/>
     <link port="Anemo.wS" relation="relation5"/>
-    <link port="Anemo.qS" relation="relation13"/>
+    <link port="Anemo.qS" relation="relation10"/>
     <link port="Anemo.q" relation="relation"/>
     <link port="AutoPilotDE.ElevCom" relation="relation3"/>
     <link port="AutoPilotDE.stickS" relation="relation4"/>
@@ -1718,6 +1870,7 @@
     <link port="AutoPilotDE.qS" relation="relation"/>
     <link port="PilotStick.stick" relation="relation4"/>
     <link port="ElevComAoA.input" relation="relation3"/>
+    <link port="ElevComAoA.input" relation="relation6"/>
     <link port="ElevatorCommand.input" relation="relation8"/>
     <link port="CurrentTime.output" relation="relation7"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
@@ -1725,4 +1878,5 @@
     <link port="RecordAssembler.value" relation="relation3"/>
     <link port="RecordAssembler.timestep" relation="relation7"/>
     <link relation1="relation9" relation2="relation3"/>
+    <link relation1="relation5" relation2="relation6"/>
 </entity>
