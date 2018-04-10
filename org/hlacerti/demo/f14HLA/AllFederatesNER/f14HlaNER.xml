@@ -7,13 +7,13 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This file contains links to the Ptolemy federates of the F14 HLA PRISE demo.&#10;Each Ptolemy HLA/CERTI Federate i a Ptolemy model. &#10;&#10;To run the F14 distributed simulation, click on the link below in the order&#10;they appear:&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This file contains links to the Ptolemy federates of the F14 HLA PRISE demo.&#10;Each Ptolemy HLA/CERTI Federate is a Ptolemy model. &#10;&#10;To run the F14 distributed simulation, click on the link below in the order&#10;they appear:&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 60.0}">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.13725491,0.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Aircraft Model">
         </property>
@@ -39,16 +39,16 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={577, 219, 742, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1058, 210, 742, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[508, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9456218214304363">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9081027096494666">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.18887271842027, 334.7213329878009}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.85302734375, 345.90643776276977}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.13725491,0.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AutoPilot Model">
         </property>
@@ -75,9 +75,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.08627451,0.6666667,0.07058824,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PilotStick Model &#10;(only if you don't have the real stick, use this simulated one)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PilotStick Model ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 195.0]">
         </property>
@@ -114,9 +114,9 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All Federates in this demo use NER time management for advancing the&#10;time. &#10;&#10;You can change the time management to TAR in HlaManager interface and&#10;set different value of parameter TARtimeStep, the HLA time step. Each federate&#10;can have a different time step. Usually lookahead &lt;= TARtimeStep.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All Federates in this demo use NER time management for advancing the&#10;time. See also ../AllFederatesTAR.&#10;&#10;You can change the time management to TAR in HlaManager interface and&#10;set different value of parameter TARtimeStep, the HLA time step. Each federate&#10;can have a different time step. Usually lookahead &lt;= TARtimeStep.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 225.0]">
         </property>
     </property>
 </entity>

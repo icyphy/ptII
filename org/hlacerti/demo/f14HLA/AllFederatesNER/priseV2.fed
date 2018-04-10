@@ -7,12 +7,15 @@
   (Spaces
   )
   (Objects
-    (Class myObjectClass
+    (Class AIRCRAFT
 		(Attribute elevCom RELIABLE TIMESTAMP)
 		(Attribute alpha RELIABLE TIMESTAMP)
                 (Attribute q RELIABLE TIMESTAMP)
 		(Attribute nz RELIABLE TIMESTAMP)
 	)
+    (Class ACTUATOR
+        (Attribute elevCom  RELIABLE TIMESTAMP)
+        )
     (Class TRIM_DATA
         (Attribute RIGHT_ENGINE_THRUST_EQ        RELIABLE TIMESTAMP)
         (Attribute LEFT_ENGINE_THRUST_EQ         RELIABLE TIMESTAMP)
@@ -46,6 +49,7 @@
         (Attribute LEFT_ENGINE_COMMANDED_THROTTLE       RELIABLE TIMESTAMP)
 	)
 	(Class ACTUATORS
+        (Attribute elevCom  RELIABLE TIMESTAMP)
         (Attribute RIGHT_AILERON_EFFECTIVE_DEFLECTION   RELIABLE TIMESTAMP)
         (Attribute LEFT_AILERON_EFFECTIVE_DEFLECTION    RELIABLE TIMESTAMP)
         (Attribute RIGHT_ELEVATOR_EFFECTIVE_DEFLECTION  RELIABLE TIMESTAMP)
