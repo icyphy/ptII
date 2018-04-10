@@ -945,6 +945,7 @@ CFLAGS
 CC
 PTCC
 PTECLIPSE
+ECLIPSE
 JAVADOC
 MVN
 GAWK
@@ -977,6 +978,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -1121,6 +1123,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE}'
@@ -1373,6 +1376,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1510,7 +1522,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1663,6 +1675,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -5965,19 +5978,91 @@ $as_echo "$as_me: WARNING: You are running Java $JVERSION, which does not
 $as_echo_n "checking for Eclipse installation... " >&6; }
         # Use changequote to protect the square brackets in sed
 
-        # We cd to *clipse so that we get the case right in the jar files.
-        if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
-        # Remove /cygdrive
-           TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
-        else
-           TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
-        fi
-	if test -d "/Applications/eclipse"; then
-	    TMP_ECLIPSE_DIR=/Applications/eclipse
-        else
-            TMP_ECLIPSE_DIR=`ls -1dr /Applications/[Ee]clipse* | head -1`
-            if ! test -d "$TMP_ECLIPSE_DIR" -a -d /usr/lib/eclipse; then
-                TMP_ECLIPSE_DIR=/usr/lib/eclipse
+	# Extract the first word of "eclipse", so it can be a program name with args.
+set dummy eclipse; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ECLIPSE+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ECLIPSE in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ECLIPSE="$ECLIPSE" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ECLIPSE="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ECLIPSE=$ac_cv_path_ECLIPSE
+if test -n "$ECLIPSE"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ECLIPSE" >&5
+$as_echo "$ECLIPSE" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+	if test -f "$ECLIPSE"; then
+	    startdir=$PTII
+	    cd "$srcdir/config"
+	    if "$JAVAC" RootDirectory.java ; then
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking the value of the Eclipse root directory " >&5
+$as_echo_n "checking the value of the Eclipse root directory ... " >&6; }
+		if env "$JAVA" -classpath "$PTII/config" RootDirectory "$ECLIPSE"> /dev/null; then
+
+		   ECLIPSE_DIR_TMP=`"$JAVA" -classpath "$PTII/config" RootDirectory "$ECLIPSE"`
+
+		    # Use changequote to protect the square brackets in sed
+		    # Remove /cygdrive so we can compile with MSVC
+		    TMP_ECLIPSE_DIR=`echo "$ECLIPSE_DIR_TMP" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+
+		    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$TMP_ECLIPSE_DIR'" >&5
+$as_echo "'$TMP_ECLIPSE_DIR'" >&6; }; fi
+		else
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" RootDirectory \"$ECLIPSE\"' failed.
+    We will not be able to compile the Eclipse interface in ptolemy/backtrack/" >&5
+$as_echo "$as_me: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" RootDirectory \"$ECLIPSE\"' failed.
+    We will not be able to compile the Eclipse interface in ptolemy/backtrack/" >&2;};
+		fi
+	    else
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'cd \"$PTII/config\"; $JAVAC RootDirectory.java' failed.
+    We will not be able to compile the Eclipse interface in ptolemy/backtrack" >&5
+$as_echo "$as_me: WARNING: 'cd \"$PTII/config\"; $JAVAC RootDirectory.java' failed.
+    We will not be able to compile the Eclipse interface in ptolemy/backtrack" >&2;};
+	    fi
+	    cd "$startdir"
+	else
+	    # We cd to *clipse so that we get the case right in the jar files.
+            if test -d "c:/Program Files/Eclipse" -o -d "c:/Program Files/eclipse"; then
+            # Remove /cygdrive
+                TMP_ECLIPSE_DIR="`cd c:/Program\ Files/*clipse; pwd | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+            else
+                TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
+            fi
+	    if test -d "/Applications/eclipse"; then
+	        TMP_ECLIPSE_DIR=/Applications/eclipse
+            else
+                TMP_ECLIPSE_DIR=`ls -1dr /Applications/[Ee]clipse* | head -1`
+                if ! test -d "$TMP_ECLIPSE_DIR" -a -d /usr/lib/eclipse; then
+                    TMP_ECLIPSE_DIR=/usr/lib/eclipse
+                fi
             fi
         fi
 
