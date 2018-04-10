@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="StaticMultiInstanceRamp" class="ptolemy.actor.TypedCompositeActor">
+<entity name="StaticMultiInstance" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={595, 183, 930, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 177, 930, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 522]">
     </property>
@@ -41,11 +41,11 @@
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 2Values2Instances/StaticMultiInstance.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstance/2Values2Instances/StaticMultiInstance.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -135.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="2Values2Instances/StaticMultiInstance.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Values2Instances/StaticMultiInstance.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -109,11 +109,11 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 1Value2Instances/StaticMultiInstance.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstance/1Value2Instances/StaticMultiInstance.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -85.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1Value2Instances/StaticMultiInstance.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/1Value2Instances/StaticMultiInstance.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -140,11 +140,11 @@
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 2Values1Instance/StaticMultiInstance.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstance/2Values1Instance/StaticMultiInstance.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -110.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="2Values1Instance/StaticMultiInstance.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Values1Instance/StaticMultiInstance.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -171,11 +171,11 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 2Classes2Values2Instances/StaticMultiInstance.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstance/2Classes2Values2Instances/StaticMultiInstance.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -60.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="2Classes2Values2Instances/StaticMultiInstance.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Classes2Values2Instances/StaticMultiInstance.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -202,11 +202,11 @@
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DuplicateClassInstanceName/StaticMultiInstance.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstance/DuplicateClassInstanceName/StaticMultiInstance.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1205.0, -30.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="DuplicateClassInstanceName/StaticMultiInstance.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/DuplicateClassInstanceName/StaticMultiInstance.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
