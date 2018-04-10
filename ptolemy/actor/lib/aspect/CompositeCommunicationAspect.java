@@ -411,8 +411,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
         }
         if (token != null) {
             RecordToken recordToken = new RecordToken(
-                    new String[] { "receiver", "token" },
-                    new Token[] { new ObjectToken(receiver), token });
+                    new String[] { "receiver", "token", "sender" },
+                    new Token[] { new ObjectToken(receiver), token, new ObjectToken(source) });
             List<Token> tokens = _tokens.get(port);
             if (tokens == null) {
                 tokens = new ArrayList<Token>();
