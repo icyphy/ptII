@@ -4,56 +4,18 @@
 <entity name="f14Aircraft" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={413, 380, 793, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={189, 314, 809, 446}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[575, 336]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0704788892338144">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3594974819687196">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{175.4272894689879, 155.5779217560279}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{144.7973690623577, 106.32986022170992}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -40.0]">
-        </property>
-    </property>
-    <property name="Ta" class="ptolemy.data.expr.Parameter" value="0.05">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 75.0]">
-        </property>
-    </property>
-    <property name="Uo" class="ptolemy.data.expr.Parameter" value="689.4">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 15.0]">
         </property>
     </property>
     <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="Ts/10">
@@ -68,7 +30,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 75.0]">
         </property>
     </property>
     <property name="Ts" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -87,7 +49,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 60.0]">
         </property>
     </property>
     <property name="T" class="ptolemy.data.expr.Parameter" value="12.5786">
@@ -106,25 +68,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 15.0]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AircraftSAct Model provides the vertical velocity w and the pitch rate q. The Angle&#10;of Attack alpha and the pitch rate q as well as the stick pitch command sent by the &#10;pilot are used by the AutoPilotDE (controller) to command the Elevator Deflector of the aircraft. &#10;The sensors and the actuator are represented in the AircraftSAct model.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 180.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="alphaS = sampled (w/U0)&#10;qS = sampled w&#10;Nz is just used for indicate the pilot G force.&#10;Outputs q and alpha(AoA) are the continuous&#10;variables before sampling, used for plotting.&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 45.0]">
         </property>
     </property>
     <property name="aircraft" class="org.hlacerti.lib.HlaManager">
@@ -150,36 +94,7 @@
         <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Generate HLA reports ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -50.0]">
-        </property>
-    </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.5">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -5.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier - SUPAERO ISAE - gilles.lasnier@gmail.com&#10;               Janette Cardoso - SUPAERO ISAE - janette.cardoso@isae.fr&#10;               Pierre Siron - SUPAERO ISAE / ONERA - pierre.siron@isae.fr&#10;&#10;Update: CIELE Ingénierie - www.ciele.fr&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 20.0]">
         </property>
     </property>
     <property name="TARtimeStep" class="ptolemy.data.expr.Parameter" value="0.010">
@@ -198,7 +113,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 0.0]">
         </property>
     </property>
     <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.005">
@@ -217,7 +132,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The federate &quot;Aircraft&quot; provides the Angle of Attack alpha and the pitch rate to&#10;federate &quot;AutoPilot&quot; (controller). The sensors and the actuator are represented &#10;in the AircraftSAct model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 165.0]">
         </property>
     </property>
     <entity name="AircraftSAct" class="ptolemy.actor.TypedCompositeActor">
@@ -229,7 +152,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.229467814251874">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{114.630859375, 187.24242533440957}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{114.63085937499994, 187.24242533440957}">
         </property>
         <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -1137,7 +1060,7 @@
         <entity name="internalContinuous" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="ElevComC, wC, qC">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={790, 567, 596, 334}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1193, 671, 596, 334}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 290]">
             </property>
@@ -1152,9 +1075,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-0.18" max="2.625"/>
-<yRange min="-1.6575202748690743" max="1.3694077291000877"/>
-<default connected="no"/>
+<xRange min="0.0" max="12.0"/>
+<yRange min="-1.8331599325296006" max="2.416003486406215"/>
 </plot>?>
             </configure>
         </entity>
@@ -1210,13 +1132,13 @@
         <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;alpha&quot;">
             <display name="Name of the attribute to receive"/>
         </property>
-        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;AIRCRAFT&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance2&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ac1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 95.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1228,13 +1150,13 @@
         <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;q&quot;">
             <display name="Name of the attribute to receive"/>
         </property>
-        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;AIRCRAFT&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance2&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ac1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 135.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1246,60 +1168,28 @@
         <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;elevCom&quot;">
             <display name="Name of the attribute to receive"/>
         </property>
-        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ACTUATOR&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;elevComInstance&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;autop&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
         </property>
-    </entity>
-    <entity name="AircraftTimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="alphaS, qS">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={909, 254, 431, 287}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[431, 243]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 45.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="2.5"/>
-<yRange min="-1.4632789056304114" max="0.0"/>
-<default connected="no" marks="various"/>
-</plot>?>
-        </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[195.0, 115.0]">
-        </vertex>
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[205.0, 135.0]">
-        </vertex>
     </relation>
-    <link port="AircraftSAct.alphaS" relation="relation3"/>
-    <link port="AircraftSAct.qS" relation="relation2"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AircraftSAct.alphaS" relation="relation2"/>
+    <link port="AircraftSAct.qS" relation="relation3"/>
     <link port="AircraftSAct.ElevatorC" relation="relation"/>
-    <link port="alpha.input" relation="relation3"/>
-    <link port="q.input" relation="relation2"/>
+    <link port="alpha.input" relation="relation2"/>
+    <link port="q.input" relation="relation3"/>
     <link port="HlaSubAutoPilot.output" relation="relation"/>
-    <link port="AircraftTimedPlotter.input" relation="relation3"/>
-    <link port="AircraftTimedPlotter.input" relation="relation2"/>
 </entity>

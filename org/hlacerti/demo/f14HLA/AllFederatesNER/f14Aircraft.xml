@@ -4,13 +4,13 @@
 <entity name="f14Aircraft" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={665, 204, 895, 453}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2256, 486, 895, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[661, 343]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[661, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.459586330003086">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6614531085077244">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{148.789473852434, 40.50603413958119}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{129.912841796875, 80.5146064348118}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
@@ -85,32 +85,13 @@
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
             <display name="Time Management Service"/>
         </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARtimeStep">
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="0.1">
             <display name="*** If TAR is used, time step (s)"/>
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
             <display name="lookahead (in ms)"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, -40.0]">
-        </property>
-    </property>
-    <property name="TARtimeStep" class="ptolemy.data.expr.Parameter" value="0.010">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -55.0]">
         </property>
     </property>
     <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.005">
@@ -1246,7 +1227,7 @@
 <plot>
 <title>TimedPlotter</title>
 <xRange min="0.0" max="12.0"/>
-<yRange min="-1.4384757896228793" max="1.0475134942967057"/>
+<yRange min="-1.4384757896228793" max="1.0475134942967055"/>
 </plot>?>
             </configure>
         </entity>

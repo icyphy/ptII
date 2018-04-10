@@ -39,7 +39,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1058, 210, 742, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 252, 742, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[508, 522]">
     </property>
@@ -114,9 +114,9 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All Federates in this demo use NER time management for advancing the&#10;time. See also ../AllFederatesTAR.&#10;&#10;You can change the time management to TAR in HlaManager interface and&#10;set different value of parameter TARtimeStep, the HLA time step. Each federate&#10;can have a different time step. Usually lookahead &lt;= TARtimeStep.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All Federates in this demo use NER time management for advancing the&#10;time. See also ../AllFederatesTAR.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 220.0]">
         </property>
     </property>
 </entity>
