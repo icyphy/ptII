@@ -2165,7 +2165,7 @@ changequote([, ])dnl
             ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
 
         if test "$ECLIPSE_DIR" = "no"; then
-	    AC_MSG_WARN([configure called with --without-eclipse-plugins,
+	    AC_MSG_WARN([configure called with --without-eclipse
    not building in ptolemy/apps/eclipse and ptolemy/backtrack.])
            updateExcludes "ptolemy/apps/eclipse/"
         else
