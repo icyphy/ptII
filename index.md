@@ -11,6 +11,7 @@ Below are instructions for accessing the current development version of Ptolemy 
 * [Javadoc](doc/codeDoc/) output for Java files
 * [JsDoc](doc/codeDoc/js/index.html) output for Javascript
 * [Travis Build](https://travis-ci.org/icyphy/ptII)
+ * [PtII specific Travis Notes](https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis)
  * [Downloads](downloads/index.html)
  * [Logs](logs/index.html)
  * [Reports](reports/index.html)
