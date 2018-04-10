@@ -11,7 +11,7 @@
     (Class ObjectRoot
       (Attribute privilegeToDelete reliable timestamp)
       (Class RTIprivate)
-	(Class myObjectClass
+	(Class HLAobjectClass
 		(Attribute val RELIABLE TIMESTAMP)
 		(Attribute val1 RELIABLE TIMESTAMP)
 		(Attribute val2 RELIABLE TIMESTAMP)
