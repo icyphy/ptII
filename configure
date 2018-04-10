@@ -6075,9 +6075,9 @@ fi
 
 
         if test "$ECLIPSE_DIR" = "no"; then
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: configure called with --without-eclipse-plugins,
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: configure called with --without-eclipse
    not building in ptolemy/apps/eclipse and ptolemy/backtrack." >&5
-$as_echo "$as_me: WARNING: configure called with --without-eclipse-plugins,
+$as_echo "$as_me: WARNING: configure called with --without-eclipse
    not building in ptolemy/apps/eclipse and ptolemy/backtrack." >&2;}
            updateExcludes "ptolemy/apps/eclipse/"
         else
