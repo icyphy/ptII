@@ -5,59 +5,16 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl
-testDefs.tcl: setting time out to 9000 seconds at Tue Apr 10 20:53:06 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Tue Apr 10 21:56:36 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl
-30 ms. Memory: 116224K Free: 96722K (83%)
-12 ms. Memory: 116224K Free: 94836K (82%)
-
-
-==== $PTII/ptolemy/actor/gui/test/CompositeActorApplication.tcl: CompositeActorApplication-2.0 test command line options
-==== Contents of test case:
-
-    set cmdArgs [java::new {java.lang.String[]} 2 {{-version} {-help}}]
-    jdkCapture {
-	java::call ptolemy.actor.gui.CompositeActorApplication main $cmdArgs
-    } stdout
-    regsub  {.*ms. Memory:.*} $stdout {} result2
-    regsub  {^Version.*$} $result2 {VersionXXX} result3
-    regsub {.*Usage:} $result3 {XXXUsage:} result4
-
-    # FIXME: sometimes there is a newline before VersionXXX orafter -version?
-    list [string range $result4 [string first VersionXXX $result4] [expr {[string last -version $result4] + [string length {-version}]}]]
-
-==== Result was:
-{VersionXXX
-
-XXXUsage: ptolemy [ options ]
-
-Options that take values:
- -class &lt;classname&gt;
- -&lt;parameter name&gt; &lt;parameter value&gt;
-
-Boolean flags:
- -help -test -version
-}
----- Result should have been:
-{VersionXXX
-XXXUsage: ptolemy [ options ]
-
-Options that take values:
- -class &lt;classname&gt;
- -&lt;parameter name&gt; &lt;parameter value&gt;
-
-Boolean flags:
- -help -test -version
-}
-@@@@@ known results is more than 7 lines long, so we run diff
-1a2
-&gt; 
-@@@@@ Done running diffText
----- CompositeActorApplication-2.0 FAILED
-sleeping 2 seconds: 7 ms. Memory: 116224K Free: 88865K (76%)
-41 ms. Memory: 116224K Free: 87575K (75%)
+21 ms. Memory: 116224K Free: 96737K (83%)
+4 ms. Memory: 116224K Free: 94819K (82%)
+6 ms. Memory: 116224K Free: 94124K (81%)
+sleeping 2 seconds: 33 ms. Memory: 116224K Free: 89500K (77%)
+22 ms. Memory: 116224K Free: 88521K (76%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl
-17 ms. Memory: 208384K Free: 174126K (84%)
+12 ms. Memory: 208384K Free: 171628K (82%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl
 test 1.0: filterSize: 13, newFilterSize: 15
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl
@@ -74,10 +31,10 @@ java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.ht
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl
 sleeping 3 seconds: /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl
-17 ms. Memory: 536064K Free: 185969K (35%)
-sleeping 2 seconds: 12 ms. Memory: 610816K Free: 302854K (50%)
+7 ms. Memory: 549888K Free: 488203K (89%)
+sleeping 2 seconds: 4 ms. Memory: 716288K Free: 240548K (34%)
 .test
-sleeping 2 seconds: 8 ms. Memory: 728576K Free: 598985K (82%)
+sleeping 2 seconds: 4 ms. Memory: 730112K Free: 145304K (20%)
 &lt;?xml version="1.0" standalone="no"?&gt;
 &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
@@ -116,8 +73,8 @@ sleeping 2 seconds: 8 ms. Memory: 728576K Free: 598985K (82%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl
-04/10/18 08:53:31
-Failed: 1  Total Tests: 55  ((Passed: 54, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+04/10/18 09:56:56
+Failed: 0  Total Tests: 55  ((Passed: 55, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 AutoTests.java: About to close Vertx.
