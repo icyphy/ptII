@@ -127,7 +127,8 @@ public class AccessorLibrary extends EntityLibrary {
                 // NOTE: This does not seem like the right thing to do!
                 // removeAllEntities();
 
-                if (_configureSource != null && !_configureSource.equals("")) {
+                if (_configureSource != null && !_configureSource.equals("")
+                        && JSAccessor.getAccessorNetworkAccessAllowed()) {
                     // FIXME: This will only work if the _configureSource is
                     // "https://accessors.org" or a sublibrary.
                     // Should be generalized to be able to list accessor

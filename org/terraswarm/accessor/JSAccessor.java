@@ -1257,7 +1257,7 @@ public class JSAccessor extends JavaScript {
 
     /** Return true if the PT_NO_NET environment variable is set.
      */
-    private static boolean _doNotUpdateOrRunJSDoc() {
+    public static boolean getAccessorNetworkAccessAllowed() {
         String PT_NO_NET = "";
         try {
             PT_NO_NET = System.getenv("PT_NO_NET");
@@ -1265,9 +1265,15 @@ public class JSAccessor extends JavaScript {
             // Ignore
         }
         if (PT_NO_NET != null && PT_NO_NET.length() > 0) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
+    }
+
+    /** Return true if updates or JS docs should run.
+     */
+    private static boolean _doNotUpdateOrRunJSDoc() {
+        return !getAccessorNetworkAccessAllowed();
     }
 
     /** Get the PtDoc for an accessor or create a link to a html file.
