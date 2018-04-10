@@ -37,7 +37,7 @@
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
             <display name="lookahead (s)"/>
         </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Generate HLA reports ?"/>
         </property>
         <property name="hlaReportPath" class="ptolemy.data.expr.FileParameter" value="testsResults">
