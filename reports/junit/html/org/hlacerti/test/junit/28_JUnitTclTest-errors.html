@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.8 49318 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.10 54120 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.8 49318 10.20.0.95 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.10 54120 10.20.0.112 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364406980';
+        cur['env.TRAVIS_BUILD_ID'] = '364411013';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '203';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '204';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '07519f0f1f0b5460979da20bcaf63805311354f7';
+        cur['env.TRAVIS_COMMIT'] = '747db09e578d837cb24ace8eda035c5f8f06168a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'PT_NO_NET should work for accessors all the way';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Missed a couple items in class path';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '6f3c0597f038...07519f0f1f0b';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '07519f0f1f0b...747db09e578d';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364406985';
+        cur['env.TRAVIS_JOB_ID'] = '364411018';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '203.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '204.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2928039800261374965.properties propsfile=/home/travis/build/icyphy/ptII/junit4533966112256542772.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2438594715629204629.properties propsfile=/home/travis/build/icyphy/ptII/junit5611261949701099331.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="28_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="28_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="28_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>0.875</td><td>2018-04-10T02:12:35</td><td>travis-job-6295ab2d-1c01-4a01-aed7-bb2278209d15</td>
+<td><a title="Display all tests" href="28_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="28_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="28_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>0.740</td><td>2018-04-10T02:48:52</td><td>travis-job-d514c2df-3f8d-4bc8-8cb1-563a1911e5a3</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -502,7 +503,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Error evaluating expression:<br>MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer.modelFileOrURL<br>Because:<br>Failed to read model from: file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer<br>Because:<br>XML element "property" triggers exception. in file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml at line 93 and column 32<br>Caused by:<br> ptolemy.kernel.util.IllegalActionException: Cannot change whether this port is a multiport. That property is fixed by the class definition.<br>  in .MultiDataTypesProducer.val3.input<br>  in .MultiDataTypes.Producer.modelFileOrURL<br>Because:<br>Error evaluating expression:<br>MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer.modelFileOrURL<br>Because:<br>Failed to read model from: file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer<br>Because:<br>XML element "property" triggers exception. in file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml at line 93 and column 32<br>Caused by:<br> ptolemy.kernel.util.IllegalActionException: Cannot change whether this port is a multiport. That property is fixed by the class definition.<br>  in .MultiDataTypesProducer.val3.input<br>	at ptolemy.data.expr.Variable.validate(Variable.java:1619)<br>	at ptolemy.moml.MoMLParser.endDocument(MoMLParser.java:867)<br>	at com.microstar.xml.XmlParser.doParse(XmlParser.java:162)<br>	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)<br>	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1660)<br>	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1595)<br>	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1537)<br>	at ptolemy.moml.MoMLSimpleApplication.&lt;init&gt;(MoMLSimpleApplication.java:123)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Error evaluating expression:<br>MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer.modelFileOrURL<br>Because:<br>Failed to read model from: file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer<br>Because:<br>XML element "property" triggers exception. in file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml at line 93 and column 32<br>Caused by:<br> ptolemy.kernel.util.IllegalActionException: Cannot change whether this port is a multiport. That property is fixed by the class definition.<br>  in .MultiDataTypesProducer.val3.input<br>	at ptolemy.data.expr.Variable._evaluate(Variable.java:1891)<br>	at ptolemy.data.expr.Variable._propagate(Variable.java:1984)<br>	at ptolemy.data.expr.Variable.validate(Variable.java:1596)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Failed to read model from: file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml<br>  in .MultiDataTypes.Producer<br>Because:<br>XML element "property" triggers exception. in file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml at line 93 and column 32<br>Caused by:<br> ptolemy.kernel.util.IllegalActionException: Cannot change whether this port is a multiport. That property is fixed by the class definition.<br>  in .MultiDataTypesProducer.val3.input<br>	at ptolemy.actor.lib.hoc.ModelReference.attributeChanged(ModelReference.java:361)<br>	at ptolemy.vergil.actor.lib.VisualModelReference.attributeChanged(VisualModelReference.java:205)<br>	at ptolemy.data.expr.Variable._setTokenAndNotify(Variable.java:2271)<br>	at ptolemy.data.expr.Variable._evaluate(Variable.java:1873)<br>Caused by: com.microstar.xml.XmlException: XML element "property" triggers exception. in file:/home/travis/build/icyphy/ptII/org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml at line 93 and column 32<br>Caused by:<br> ptolemy.kernel.util.IllegalActionException: Cannot change whether this port is a multiport. That property is fixed by the class definition.<br>  in .MultiDataTypesProducer.val3.input<br>	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3854)<br>	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)<br>	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)<br>	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)<br>	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)<br>	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)<br>	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)<br>	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)<br>	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)<br>	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)<br>	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)<br>	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1660)<br>	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1595)<br>	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1537)<br>	at ptolemy.actor.lib.hoc.ModelReference.attributeChanged(ModelReference.java:351)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Cannot change whether this port is a multiport. That property is fixed by the class definition.<br>  in .MultiDataTypesProducer.val3.input<br>	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5733)<br>	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3309)<br>
-</code></td><td>0.329</td>
+</code></td><td>0.304</td>
 </tr>
 </table>
 <div class="Properties">
