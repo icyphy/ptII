@@ -93,16 +93,19 @@
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point register ?"/>
         </property>
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Generate HLA reports ?"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2837, 360, 978, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={769, 471, 915, 493}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[762, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[686, 358]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5153266154605032">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0462969487703475">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{205.13132440476187, 145.77734374999997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.04404633620686, 145.77734375}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
