@@ -19,10 +19,10 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/diva.jar"/>
 	<classpathentry kind="lib" path="lib/g4ltl.jar"/>
-	<classpathentry kind="lib" path="lib/hazelcast-3.6.3.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-annotations-2.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-2.7.4.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-databind-2.7.4.jar"/>
+	<classpathentry kind="lib" path="lib/hazelcast-3.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.9.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.9.3.jar"/>
 	<classpathentry kind="lib" path="lib/java_cup.jar"/>
 	<classpathentry kind="lib" path="lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet-api-3.0.1.jar"/>
@@ -40,16 +40,16 @@
 	<classpathentry kind="lib" path="lib/matlabMacOSX.jar"/>
 	<classpathentry kind="lib" path="lib/matlabSunOS.jar"/>
 	<classpathentry kind="lib" path="lib/matlabWindows.jar"/>
-	<classpathentry kind="lib" path="lib/netty-buffer-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-codec-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-codec-dns-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-codec-http-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-codec-http2-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-common-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-handler-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-resolver-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-resolver-dns-4.1.8.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-transport-4.1.8.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-buffer-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-codec-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-codec-dns-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-codec-http-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-codec-http2-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-common-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-handler-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-resolver-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-resolver-dns-4.1.19.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-transport-4.1.19.Final.jar"/>
 	<classpathentry kind="lib" path="lib/nrjavaserial-3.11.0.devel.jar"/>
 	<classpathentry kind="lib" path="lib/ojdcheck.jar"/>
 	<classpathentry kind="lib" path="lib/opencv-320.jar"/>
@@ -72,14 +72,12 @@
 	<classpathentry kind="lib" path="lib/smackx.jar"/>
 	<classpathentry kind="lib" path="lib/sootclasses.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-codegen-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-core-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-hazelcast-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-lang-groovy-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-lang-js-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-lang-ruby-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-service-proxy-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/vertx-web-3.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/vertx-codegen-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/vertx-core-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/vertx-hazelcast-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/vertx-lang-js-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/vertx-service-proxy-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/vertx-web-3.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/webcam-capture-0.3.12.jar"/>
 	<classpathentry kind="lib" path="lib/xbjlib-1.1.0.nrjavaserial.jar"/>
 
