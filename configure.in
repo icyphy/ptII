@@ -2246,12 +2246,33 @@ changequote([, ])dnl
 		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
                     updateClasspath "$jarpath"
  	        else   
-                    ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
-		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath.
-  $ECLIPSE_DIR contains the following jars:
-  $ECLIPSE_DIR_JARS])
-	            eclipsejarpath=
-		    break
+		    # If the jar name contains swt, then try just eclipse.swt_
+		    # FIXME: Duplicated code here and below.
+		    echo "$jar" | egrep swt >& /dev/null
+		    status=$?
+		    if test "$status" -eq 0; then
+		        tmpjar="eclipse.swt_"
+		        jarpath=`$FIND "$ECLIPSE_DIR" -name "*${tmpjar}*.jar" | grep -v source_ | head -1`
+   	                if test -f "$jarpath"; then
+	                    ANT_ECLIPSE_CLASSPATH="$ANT_ECLIPSE_CLASSPATH <pathelement location=\"$jarpath\"/> "
+  	                    eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
+                            updateClasspath "$jarpath"
+			else
+                            ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		    AC_MSG_WARN([Failed to find $jar or $tmpjar in $ECLIPSE_DIR: $jarpath
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS])
+    	                    eclipsejarpath=
+		            break
+			fi
+	            else
+                        ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		        AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath.
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS])
+	                eclipsejarpath=
+   		        break
+                    fi
 	        fi
 
 
@@ -2295,9 +2316,29 @@ changequote([, ])dnl
 #			Darwin) updateClasspath "$jarpath";;
 #	   		esac 
  	            else   
-		        AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
-			failedToFindEclipseDocJars=1
-		        break
+  		        # If the jar name contains swt, then try just eclipse.swt_
+		        # FIXME: Duplicated code here and below.
+		        echo "$jar" | egrep swt >& /dev/null
+		        status=$?
+		        if test "$status" -eq 0; then
+		            tmpjar="eclipse.swt_"
+		            jarpath=`$FIND "$ECLIPSE_DIR" -name "*${tmpjar}*.jar" | grep -v source_ | head -1`
+   	                    if test -f "$jarpath"; then
+			        ANT_ECLIPSE_CLASSPATH="$ANT_ECLIPSE_CLASSPATH <pathelement location=\"$jarpath\"/> "
+	                        PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+			    else
+                                ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		                AC_MSG_WARN([Failed to find $jar or $tmpjar in $ECLIPSE_DIR: $jarpath
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS])
+			        failedToFindEclipseDocJars=1
+		                break
+			    fi
+		        else
+			    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+			    failedToFindEclipseDocJars=1
+		            break
+                        fi
 	            fi
 	        done	
                 if test ! -z "$PTBACKTRACK_ECLIPSE_DOC_JARS" -a -z "$failedToFindEclipseDocJars"; then 
