@@ -73,7 +73,7 @@ install:
   # If $PTII/vendors/certi/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
   - org/hlacerti/build-certi.sh || true
   - source $PTII/vendors/certi/share/scripts/myCERTI_env.sh || true
-  - echo "CERTI_HOME: $CERTI_HOME"
+  - echo "CERTI_HOME: $CERTI_HOME" || true
 
   # List the contents of vendors and cached directories
   - ls $PTII/vendors
