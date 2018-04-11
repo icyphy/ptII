@@ -209,7 +209,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ValueTransfer&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance1&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance41&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 105.0]">
@@ -222,7 +222,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ValueTransfer&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance1&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance41&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
