@@ -79,6 +79,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -183,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.12 36936 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.3 53740 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.12 36936 10.20.0.28 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.3 53740 10.20.0.214 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -199,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365044480';
+        cur['env.TRAVIS_BUILD_ID'] = '365100438';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '221';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '222';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '6371cf6e0a6dd3c7c54bd8f36a7ba284775d6be2';
+        cur['env.TRAVIS_COMMIT'] = '44e16e91ac53e6685eec6cf1af8c51488fd70692';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = '- Updating links in test files org/hlacerti/test/auto/*.xml\n- Using a same /StaticMultiInstance.fed (with 2 classes) in all StaticMultiInstance sub-directories\n- As for the moment, in order to have successful tests in the nightly build, .fed files must be added\n  to /Users/j.cardoso/pthlaSierra/certi-tools/share/federations.\n  May be it could be easier to have a same .fed file for a familly of tests (as StaticMultiInstance).';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = '- Using a same SimplePublisherSubscriber.fed for all tests in SimplePublisherSubscriber\n- Putting tests in /org/hlacerti/test/auto.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '39e1c39a1f5f...6371cf6e0a6d';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '6371cf6e0a6d...44e16e91ac53';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365044483';
+        cur['env.TRAVIS_JOB_ID'] = '365100441';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '221.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '222.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -403,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2683163626465651150.properties propsfile=/home/travis/build/icyphy/ptII/junit3122520714401884085.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.mqtt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2388007710844532680.properties propsfile=/home/travis/build/icyphy/ptII/junit7865468725446762703.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -486,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="73_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="73_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>32.861</td><td>2018-04-11T10:46:08</td><td>travis-job-e506b01d-7b9a-4f99-923f-17314ebc817f</td>
+<td><a title="Display all tests" href="73_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="73_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>32.063</td><td>2018-04-11T13:09:46</td><td>travis-job-cfa63806-26c2-4f40-bbda-114094aa334b</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -501,10 +502,10 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)</td><td>Success</td><td></td><td>32.406</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml (RunModel)</td><td>Success</td><td></td><td>31.612</td>
 </tr>
 </table>
 <div class="Properties">
