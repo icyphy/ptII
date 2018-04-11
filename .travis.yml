@@ -70,6 +70,11 @@ install:
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
+  # If $PTII/vendors/certi/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
+  - org/hlacerti/build-certi.sh || true
+  - source $PTII/vendors/certi/share/scripts/myCERTI_env.sh || true
+  - echo "CERTI_HOME: $CERTI_HOME"
+
   # List the contents of vendors and cached directories
   - ls $PTII/vendors
   - ls -l $PTII/vendors/adm/gen-11.0/node || true
@@ -103,6 +108,7 @@ script:
 cache:
   directories:
     - $PTII/vendors/adm/gen-11.0/node
+    - $PTII/vendors/certi
     - $PTII/vendors/installer
     - $PTII/vendors/jai-1_1_2_01
     - $PTII/vendors/JMF-2.1.1e
