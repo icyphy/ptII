@@ -79,6 +79,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -183,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.25 39812 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.4 58244 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.25 39812 10.20.0.144 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.4 58244 10.20.0.54 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -199,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '364830503';
+        cur['env.TRAVIS_BUILD_ID'] = '364873538';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '217';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '219';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4dc093b303ee6db4ac40163050d610caa2964015';
+        cur['env.TRAVIS_COMMIT'] = 'f6ae4bf699dbad078029942bed2bf1c553b50b3c';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updated database host to swarmnuc2008.eecs.berkeley.edu, see https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating#Systems_Administrator_details.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'It is ok if /bin/ is not found in the path.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '916a16b204d4...4dc093b303ee';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '74c820d1b339...f6ae4bf699db';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '364830506';
+        cur['env.TRAVIS_JOB_ID'] = '364873541';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '217.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '219.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -403,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher408131010752072139.properties propsfile=/home/travis/build/icyphy/ptII/junit3102724107957111192.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.testing.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3786394834986305275.properties propsfile=/home/travis/build/icyphy/ptII/junit1545291143357175031.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -486,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="80_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="80_JUnitTclTest.html">5</a></td><td><a title="Display only errors" href="80_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>29.830</td><td>2018-04-10T22:03:17</td><td>travis-job-e7a93e0b-8e20-42eb-bbd3-6fb071dea72c</td>
+<td><a title="Display all tests" href="80_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="80_JUnitTclTest.html">5</a></td><td><a title="Display only errors" href="80_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>33.411</td><td>2018-04-11T00:21:48</td><td>travis-job-5cf505ba-f54c-4d27-8f51-c840d46d3ebd</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -498,7 +499,7 @@
 <td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/Testing.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/test/auto/Testing.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n &lt;testsuites&gt;\n &lt;testsuite name=\"Root Suite\" tests=\"0\"&gt;\n &lt;testsuite name=\"Common host: Basic\" tests=\"7\"&gt;\n &lt;testcase name=\"this.getParameter() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.getParameter() returns value set by this.setParameter().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided but type being boolean.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns value provided by provideInput().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"latestOutput contains value provided by inputHandlers and send().\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Composite accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Composite accessor produces correct output when manually scheduled.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite accessor produces correct output when automatically scheduled.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Spontaneous accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;failure message=\"Error: timeout of 3000ms exceeded Ensure the done() callback is being called in this test.\"/&gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Inheritance\" tests=\"4\"&gt;\n &lt;testcase name=\"Inheritance, function overriding, and variable visiility should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Implementing an interface should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Exported fields of base classes can be accessed and initialize() is properly scoped.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Two-level inheritance should work properly.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuites&gt;\n". Should have been: "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n &lt;testsuites&gt;\n &lt;testsuite name=\"Root Suite\" tests=\"0\"&gt;\n &lt;testsuite name=\"Common host: Basic\" tests=\"7\"&gt;\n &lt;testcase name=\"this.getParameter() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.getParameter() returns value set by this.setParameter().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns default value.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns null if no input yet provided but type being boolean.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"this.get() returns value provided by provideInput().\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"latestOutput contains value provided by inputHandlers and send().\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Composite accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Composite accessor produces correct output when manually scheduled.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite accessor produces correct output when automatically scheduled.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Spontaneous accessors\" tests=\"2\"&gt;\n &lt;testcase name=\"Spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Composite spontaneous accessor produces correct outputs after 1 and 2 seconds.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\"Common host: Inheritance\" tests=\"4\"&gt;\n &lt;testcase name=\"Inheritance, function overriding, and variable visiility should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Implementing an interface should work properly.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Exported fields of base classes can be accessed and initialize() is properly scoped.\" &gt; &lt;/testcase&gt;\n &lt;testcase name=\"Two-level inheritance should work properly.\" &gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuites&gt;\n"<br>  in .Testing.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>10.974</td>
+</code></td><td>12.051</td>
 </tr>
 </table>
 <div class="Properties">
