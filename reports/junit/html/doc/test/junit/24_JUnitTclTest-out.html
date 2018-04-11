@@ -5,7 +5,7 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/doc/test/docManager.tcl
-testDefs.tcl: setting time out to 9000 seconds at Wed Apr 11 22:25:53 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Wed Apr 11 23:22:41 UTC 2018
  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -49,90 +49,6 @@ Skipping viptos because TOSROOT is not set in the environment, so we are assumin
     Or, under Solaris, run java -verbose -classpath 
            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
            tcl.lang.Shell xxx.tcl
-
-
-==== $PTII/doc/test/docManager.tcl: ptdb/configuration.xml-6.1 Test docClassNameToURL
-==== Contents of test case:
-
-	# In general, if we call getName on a public field in an actor,
-	# then the name that is returned should be the same as the name
-	# of the field.
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	for {set iterator [$entityList iterator]}  {[$iterator hasNext] == 1} {} {
-		set entity [$iterator next]
-		if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		    set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		    set className [$actor getClassName]
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  true false false false]
-		    if [java::isnull $url] {
-			lappend results "\nFailed to find ptdoc for $className.  Try doing (cd $PTII/doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)"
-		    }
-
-
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  false true false false]
-		    if [java::isnull $url] {
-			lappend results "\nFailed to find javadoc for $className"
-		    }
-
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  false true false false]
-		    if [java::isnull $url] {
-			lappend results "\nFailed to find source for $className"
-		    }
-
-
-		    # For actor index, it is ok to return null
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  false false false true]
-		}
-	    }
-    list $results	
-    
-==== Result was:
-{{
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Interpolator.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Pulse.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequence.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Recorder.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.ArrayPeakSearch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Commutator.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Distributor.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Multiplexor.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Select.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Switch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSelect.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSwitch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.Chop.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequencer.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Accumulator.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Average.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Counter.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Differential.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Gaussian.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.DelayLine.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.GradientAdaptiveLattice.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.IIR.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.LinearDifferenceEquationSystem.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.RecursiveLattice.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.DB.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.FFT.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.IFFT.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.PhaseUnwrap.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.Autocorrelation.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.ComputeHistogram.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequencer.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.manual.ptolemy.actor.lib.Backtrack.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSwitch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Counter.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)}}
----- Result should have been:
-{}
----- ptdb/configuration.xml-6.1 FAILED
  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -154,90 +70,6 @@ Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMe
     Or, under Solaris, run java -verbose -classpath 
            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
            tcl.lang.Shell xxx.tcl
-
-
-==== $PTII/doc/test/docManager.tcl: full/configuration.xml-6.1 Test docClassNameToURL
-==== Contents of test case:
-
-	# In general, if we call getName on a public field in an actor,
-	# then the name that is returned should be the same as the name
-	# of the field.
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	for {set iterator [$entityList iterator]}  {[$iterator hasNext] == 1} {} {
-		set entity [$iterator next]
-		if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		    set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		    set className [$actor getClassName]
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  true false false false]
-		    if [java::isnull $url] {
-			lappend results "\nFailed to find ptdoc for $className.  Try doing (cd $PTII/doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)"
-		    }
-
-
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  false true false false]
-		    if [java::isnull $url] {
-			lappend results "\nFailed to find javadoc for $className"
-		    }
-
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  false true false false]
-		    if [java::isnull $url] {
-			lappend results "\nFailed to find source for $className"
-		    }
-
-
-		    # For actor index, it is ok to return null
-		    set url [java::call ptolemy.vergil.actor.DocManager  docClassNameToURL  $configuration $className  false false false true]
-		}
-	    }
-    list $results	
-    
-==== Result was:
-{{
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Interpolator.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Pulse.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequence.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Recorder.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.ArrayPeakSearch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Commutator.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Distributor.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Multiplexor.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Select.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Switch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSelect.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSwitch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.Chop.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequencer.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Accumulator.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Average.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Counter.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Differential.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Gaussian.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.DelayLine.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.GradientAdaptiveLattice.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.IIR.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.LinearDifferenceEquationSystem.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.RecursiveLattice.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.DB.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.FFT.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.IFFT.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.PhaseUnwrap.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib.Autocorrelation.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.ComputeHistogram.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Sequencer.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.manual.ptolemy.actor.lib.Backtrack.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Ramp.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSwitch.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.Counter.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)} {
-Failed to find ptdoc for ptolemy.backtrack.automatic.ptolemy.actor.lib.OrderedMerge.  Try doing (cd /home/travis/build/icyphy/ptII/doc/test/../../doc; rm codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml; make docs)}}
----- Result should have been:
-{}
----- full/configuration.xml-6.1 FAILED
  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -281,8 +113,8 @@ Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     Or, under Solaris, run java -verbose -classpath 
            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
            tcl.lang.Shell xxx.tcl
-04/11/18 10:26:59
-Failed: 2  Total Tests: 15  ((Passed: 13, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/doc/test
+04/11/18 11:23:57
+Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/doc/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
 AutoTests.java: About to close Vertx.
