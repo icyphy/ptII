@@ -6192,15 +6192,39 @@ $as_echo_n "checking for jars used by backtracking in $ECLIPSE_DIR... " >&6; }
 		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
                     updateClasspath "$jarpath"
  	        else
-                    ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
-		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath.
-  $ECLIPSE_DIR contains the following jars:
-  $ECLIPSE_DIR_JARS" >&5
+		    # If the jar name contains swt, then try just eclipse.swt_
+		    # FIXME: Duplicated code here and below.
+		    echo "$jar" | egrep swt >& /dev/null
+		    status=$?
+		    if test "$status" -eq 0; then
+		        tmpjar="eclipse.swt_"
+		        jarpath=`$FIND "$ECLIPSE_DIR" -name "*${tmpjar}*.jar" | grep -v source_ | head -1`
+   	                if test -f "$jarpath"; then
+	                    ANT_ECLIPSE_CLASSPATH="$ANT_ECLIPSE_CLASSPATH <pathelement location=\"$jarpath\"/> "
+  	                    eclipsejarpath="$eclipsejarpath$CLASSPATHSEPARATOR$jarpath"
+                            updateClasspath "$jarpath"
+			else
+                            ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar or $tmpjar in $ECLIPSE_DIR: $jarpath
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS" >&5
+$as_echo "$as_me: WARNING: Failed to find $jar or $tmpjar in $ECLIPSE_DIR: $jarpath
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS" >&2;}
+    	                    eclipsejarpath=
+		            break
+			fi
+	            else
+                        ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath.
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS" >&5
 $as_echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath.
-  $ECLIPSE_DIR contains the following jars:
-  $ECLIPSE_DIR_JARS" >&2;}
-	            eclipsejarpath=
-		    break
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS" >&2;}
+	                eclipsejarpath=
+   		        break
+                    fi
 	        fi
 
 
@@ -6247,10 +6271,33 @@ $as_echo_n "checking for Eclipse jars used with javadoc... " >&6; }
 #			Darwin) updateClasspath "$jarpath";;
 #	   		esac
  	            else
-		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
+  		        # If the jar name contains swt, then try just eclipse.swt_
+		        # FIXME: Duplicated code here and below.
+		        echo "$jar" | egrep swt >& /dev/null
+		        status=$?
+		        if test "$status" -eq 0; then
+		            tmpjar="eclipse.swt_"
+		            jarpath=`$FIND "$ECLIPSE_DIR" -name "*${tmpjar}*.jar" | grep -v source_ | head -1`
+   	                    if test -f "$jarpath"; then
+			        ANT_ECLIPSE_CLASSPATH="$ANT_ECLIPSE_CLASSPATH <pathelement location=\"$jarpath\"/> "
+	                        PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+			    else
+                                ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar or $tmpjar in $ECLIPSE_DIR: $jarpath
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS" >&5
+$as_echo "$as_me: WARNING: Failed to find $jar or $tmpjar in $ECLIPSE_DIR: $jarpath
+    $ECLIPSE_DIR contains the following jars:
+    $ECLIPSE_DIR_JARS" >&2;}
+			        failedToFindEclipseDocJars=1
+		                break
+			    fi
+		        else
+			    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
 $as_echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
-			failedToFindEclipseDocJars=1
-		        break
+			    failedToFindEclipseDocJars=1
+		            break
+                        fi
 	            fi
 	        done
                 if test ! -z "$PTBACKTRACK_ECLIPSE_DOC_JARS" -a -z "$failedToFindEclipseDocJars"; then
