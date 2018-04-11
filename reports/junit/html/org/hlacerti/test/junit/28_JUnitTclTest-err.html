@@ -27,29 +27,6 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): 
 	at ptolemy.actor.Manager.initialize(Manager.java:710)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
-  in .DistributedSender1.HlaManager
-	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
-	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
-	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
-	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
-	at ptolemy.actor.Manager.initialize(Manager.java:710)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
-  in .DistributedSender1.HlaManager
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
-	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
-Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
-  in .DistributedSender1.HlaManager
-	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
-	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
-	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
-	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
-	at ptolemy.actor.Manager.initialize(Manager.java:710)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -82,6 +59,29 @@ CertiRtig: initialize(): No CERTI_HOME variable set
 	... 5 more
 Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
   in .DistributedReceiver1.HlaManager
+	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
+	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
+  in .DistributedSender1.HlaManager
+	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
+	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
+  in .DistributedSender1.HlaManager
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
+	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
+Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
+  in .DistributedSender1.HlaManager
 	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
 	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
 	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
@@ -197,29 +197,6 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): 
 	at ptolemy.actor.Manager.initialize(Manager.java:710)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
-  in .DistributedSender1.HlaManager
-	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
-	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
-	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
-	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
-	at ptolemy.actor.Manager.initialize(Manager.java:710)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
-  in .DistributedSender1.HlaManager
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
-	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
-Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
-  in .DistributedSender1.HlaManager
-	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
-	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
-	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
-	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
-	at ptolemy.actor.Manager.initialize(Manager.java:710)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -252,6 +229,29 @@ CertiRtig: initialize(): No CERTI_HOME variable set
 	... 5 more
 Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
   in .DistributedReceiver1.HlaManager
+	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
+	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
+  in .DistributedSender1.HlaManager
+	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
+	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
+  in .DistributedSender1.HlaManager
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
+	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
+Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set
+  in .DistributedSender1.HlaManager
 	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)
 	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)
 	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)
