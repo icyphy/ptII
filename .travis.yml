@@ -43,11 +43,12 @@ install:
 
   # Below are the packages that are needed, in alphabetical order:
   #   genisoimage for building Darwin dmg files under Linux.
+  #   eclipse and eclipse-rcp for backtracking.
   #   Java3D
   #   libv4l for  Bridj for the camera.
   #   p7zip-full for installing jogl as part of the installers.
   #   pdflatex for the DOP Center image.
-  - sudo apt-get install -y genisoimage libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
+  - sudo apt-get install -y genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
 
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
