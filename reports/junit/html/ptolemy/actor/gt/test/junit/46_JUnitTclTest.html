@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.21 33210 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.32 44822 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.21 33210 10.20.0.115 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.32 44822 10.20.1.1 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365044480';
+        cur['env.TRAVIS_BUILD_ID'] = '365100438';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '221';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '222';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '6371cf6e0a6dd3c7c54bd8f36a7ba284775d6be2';
+        cur['env.TRAVIS_COMMIT'] = '44e16e91ac53e6685eec6cf1af8c51488fd70692';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = '- Updating links in test files org/hlacerti/test/auto/*.xml\n- Using a same /StaticMultiInstance.fed (with 2 classes) in all StaticMultiInstance sub-directories\n- As for the moment, in order to have successful tests in the nightly build, .fed files must be added\n  to /Users/j.cardoso/pthlaSierra/certi-tools/share/federations.\n  May be it could be easier to have a same .fed file for a familly of tests (as StaticMultiInstance).';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = '- Using a same SimplePublisherSubscriber.fed for all tests in SimplePublisherSubscriber\n- Putting tests in /org/hlacerti/test/auto.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '39e1c39a1f5f...6371cf6e0a6d';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '6371cf6e0a6d...44e16e91ac53';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365044485';
+        cur['env.TRAVIS_JOB_ID'] = '365100443';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '221.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '222.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5097142453454515854.properties propsfile=/home/travis/build/icyphy/ptII/junit3291577721355855447.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gt.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gt.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2443731522594017191.properties propsfile=/home/travis/build/icyphy/ptII/junit1203565823709543736.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="46_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="46_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>8.879</td><td>2018-04-11T10:48:56</td><td>travis-job-84055c56-89cd-43d1-a053-5b40806ce9a9</td>
+<td><a title="Display all tests" href="46_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="46_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>6.746</td><td>2018-04-11T13:10:22</td><td>travis-job-c5b04fa6-3d95-46da-91b0-dd3de1569c8f</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -499,52 +500,52 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.451</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DefaultModelAttribute.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.363</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.193</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/DesignPatternImporter.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.158</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.250</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel1.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.168</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.060</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/GeneratedModel2.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.041</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.422</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match2LevelHierarchyFlattening.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.346</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.594</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3Actors.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.404</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.214</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match3ActorsRelationCollapsing.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.138</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.812</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4Actors.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.632</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.423</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/Match4ActorsSubclasses.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.304</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.391</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.204</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.217</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/MatchHierarchy2Actors2Composites.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.156</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.012</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)</td><td>Success</td><td></td><td>4.111</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/DiningPhilosophers.xml (RunModel)</td><td>Success</td><td></td><td>3.247</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.152</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/GTThreadedComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.111</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)</td><td>Success</td><td></td><td>0.046</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gt/test/auto/InitializationBug.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
 </tr>
 </table>
 <div class="Properties">
