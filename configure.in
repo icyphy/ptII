@@ -2246,7 +2246,10 @@ changequote([, ])dnl
 		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
                     updateClasspath "$jarpath"
  	        else   
-		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+                    ECLIPSE_DIR_JARS=`$FIND $ECLIPSE_DIR -name "*.jar"`
+		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath.
+  $ECLIPSE_DIR contains the following jars:
+  $ECLIPSE_DIR_JARS])
 	            eclipsejarpath=
 		    break
 	        fi
