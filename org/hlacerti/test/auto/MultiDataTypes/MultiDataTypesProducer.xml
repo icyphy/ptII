@@ -26,13 +26,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 412, 1052, 635}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 300, 1070, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[836, 517]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[836, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2214329351828275">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.12744695490056, 229.7247587922332}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.12744695490056, 231.77153510551952}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
