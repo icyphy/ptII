@@ -12,6 +12,10 @@
 		(Attribute val1 RELIABLE TIMESTAMP)
 		(Attribute val2 RELIABLE TIMESTAMP)
 	   )
+	   (Class AnotherValueTransfer
+		(Attribute val3 RELIABLE TIMESTAMP)
+		(Attribute val4 RELIABLE TIMESTAMP)
+	   )
 	  )
 	 )
 	 (Interactions
