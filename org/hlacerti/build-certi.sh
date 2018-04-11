@@ -1,6 +1,12 @@
 #!/bin/bash
 # Install CERTI and JCerti
 
+MYCERTI=$PTII/vendors/certi/share/scripts/myCERTI_env.sh
+if [ -f "$MYCERTI" ]; then
+    echo "$0: $MYCERTI found, no need to build CERTI."
+    echo "In your shell, invoke \"source $MYCERTI\" to set up.";
+    exit
+fi
 
 SRC=$HOME/src
 if [ ! -d $SRC ]; then
@@ -17,6 +23,15 @@ if [ ! -f $CERTI_SRC ]; then
     (cd $SRC; tar -zxf $CERTI_TAR);
 fi
     
+OS=`uname -s`
+case $OS in
+    *Linux*)
+        sudo apt-get install -y cmake flex bison;;
+    *)
+        echo "You may need to install cmake, flex and bison";
+esac
+
+
 cd $CERTI_SRC
 mkdir build
 cd build
