@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="StaticMultiInstance" class="ptolemy.actor.TypedCompositeActor">
+<entity name="2Values2Instances" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 937, 894}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 955, 886}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 776]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0802282793116365">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.09710549934726, 713.5546875000001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.09710549934726, 713.5546875000002}">
     </property>
     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
@@ -128,7 +128,7 @@
         </property>
     </property>
     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedReceiver1.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/2Values2Instances/DistributedReceiver1.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
@@ -142,7 +142,7 @@
         </property>
     </entity>
     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedSender1.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/2Values2Instances/DistributedSender1.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
