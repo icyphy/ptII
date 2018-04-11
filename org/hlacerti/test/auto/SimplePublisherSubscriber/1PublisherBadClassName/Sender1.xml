@@ -4,13 +4,13 @@
 <entity name="Sender1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={793, 344, 803, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={793, 344, 821, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[587, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[587, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5568953159913994">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-309.77343749999994, 6.337156087521635}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-309.77343749999994, 8.906371858752152}">
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
         <display name="Lookahead"/>
@@ -55,10 +55,10 @@
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Sender1&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;1PublisherBadClassName&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SimplePublisherSubscriber&quot;">
             <display name="Federation's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1PublisherBadClassName.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SimplePublisherSubscriber.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">

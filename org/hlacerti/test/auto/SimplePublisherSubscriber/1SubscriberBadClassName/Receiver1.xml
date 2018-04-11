@@ -4,7 +4,7 @@
 <entity name="Receiver1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={818, 243, 917, 757}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={818, 243, 935, 749}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 639]">
     </property>
@@ -55,10 +55,10 @@
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver1&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;1SubscriberBadClassName&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SimplePublisherSubscriber&quot;">
             <display name="Federation's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1SubscriberBadClassName.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SimplePublisherSubscriber.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
