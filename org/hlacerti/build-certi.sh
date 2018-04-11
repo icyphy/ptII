@@ -26,7 +26,12 @@ fi
 OS=`uname -s`
 case $OS in
     *Linux*)
-        sudo apt-get install -y cmake flex bison;;
+        # CERTI fails to compile with gcc-5, so try clang.
+        # See https://lists.gnu.org/archive/html/certi-devel/2015-10/msg00007.html
+        echo "Installing packages"
+        sudo apt-get install -y cmake flex bison clang
+        CMAKE_COMPILER="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang"
+        ;;
     *)
         echo "You may need to install cmake, flex and bison";
 esac
@@ -36,7 +41,7 @@ cd $CERTI_SRC
 mkdir build
 cd build
 echo "$0: running cmake in `pwd`"
-cmake -DCMAKE_INSTALL_PREFIX=$PTII/vendors/certi $CERTI_SRC
+cmake -DCMAKE_INSTALL_PREFIX=$PTII/vendors/certi $CMAKE_COMPILER $CERTI_SRC
 make
 mkdir $PTII/vendors/certi
 make install
