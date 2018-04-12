@@ -222,7 +222,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="text/plain">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="application/json">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -491,7 +491,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('sound', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	// Send a startup sound.&#10;	thiz.send('sound', 'Sounds/bell.wav');&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		if (received.message) {&#10;			var spec = JSON.parse(received.message);&#10;			if (spec.sound) {&#10;				thiz.send('sound', 'Sounds/' + spec.sound + '.wav');&#10;			}&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('sound', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	// Send a startup sound.&#10;	thiz.send('sound', 'Sounds/bell.wav');&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		if (received.message) {&#10;			var spec = received.message;&#10;			if (typeof spec === 'string') {&#10;				try {&#10;					spec = JSON.parse(received.message);&#10;				} catch (err) {&#10;					error(err);&#10;				}&#10;			}&#10;			if (spec.sound) {&#10;				thiz.send('sound', 'Sounds/' + spec.sound + '.wav');&#10;			}&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -503,7 +503,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 170.0]">
         </property>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -520,7 +520,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 210.0]">
         </property>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+    <entity name="Errors2" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={578, 653, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
@@ -562,10 +562,12 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ClipPlayer.trigger" relation="relation11"/>
     <link port="ClipPlayer.fileOrURL" relation="relation11"/>
     <link port="ClipPlayer.output" relation="relation2"/>
-    <link port="WebSocketServer.error" relation="relation4"/>
+    <link port="WebSocketServer.error" relation="relation10"/>
     <link port="WebSocketServer.toSend" relation="relation9"/>
     <link port="WebSocketServer.received" relation="relation8"/>
     <link port="SingleEvent.output" relation="relation3"/>
@@ -582,8 +584,10 @@
     <link port="Errors.input" relation="relation6"/>
     <link port="ConstructResponse.trigger" relation="relation2"/>
     <link port="ConstructResponse.response" relation="relation9"/>
+    <link port="ChooseSound.error" relation="relation4"/>
     <link port="ChooseSound.received" relation="relation8"/>
     <link port="ChooseSound.sound" relation="relation11"/>
     <link port="Display.input" relation="relation11"/>
-    <link port="Display2.input" relation="relation4"/>
+    <link port="Errors2.input" relation="relation4"/>
+    <link port="Errors2.input" relation="relation10"/>
 </entity>
