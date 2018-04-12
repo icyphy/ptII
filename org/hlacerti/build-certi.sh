@@ -13,14 +13,16 @@ if [ ! -d $SRC ]; then
     mkdir -p $SRC
 fi    
 
-CERTI_SRC=$SRC/CERTI-3.5.1-Source
+CERTI_SRC=$SRC/certi-4.0.0
 if [ ! -f $CERTI_SRC ]; then
-    CERTI_TAR=/tmp/certi.tar.gz
-    if [ ! -f $CERTI_TAR ]; then
-        wget -O $CERTI_TAR http://download.savannah.gnu.org/releases/certi/CERTI-3.5.1-Source.tar.gz
-    fi
-    echo "$0: untaring $CERTI_TAR in $SRC"
-    (cd $SRC; tar -zxf $CERTI_TAR);
+    git clone -b br_jbch_4.0.0 https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
+
+    # CERTI_TAR=/tmp/certi.tar.gz
+    # if [ ! -f $CERTI_TAR ]; then
+    #     wget -O $CERTI_TAR http://download.savannah.gnu.org/releases/certi/CERTI-3.5.1-Source.tar.gz
+    # fi
+    # echo "$0: untaring $CERTI_TAR in $SRC"
+    # (cd $SRC; tar -zxf $CERTI_TAR);
 fi
     
 OS=`uname -s`
@@ -30,7 +32,7 @@ case $OS in
         # See https://lists.gnu.org/archive/html/certi-devel/2015-10/msg00007.html
         echo "Installing packages"
         sudo apt-get install -y cmake flex bison clang
-        CMAKE_COMPILER="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang"
+        #CMAKE_COMPILER="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang"
         ;;
     *)
         echo "You may need to install cmake, flex and bison";
