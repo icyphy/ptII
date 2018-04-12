@@ -63,13 +63,7 @@
     
         cur['env.CASHER_DIR'] = '/home/travis/.casher';
     
-        cur['env.CERTI_FOM_PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/share/federations';
-    
-        cur['env.CERTI_HOME'] = '/home/travis/build/icyphy/ptII/vendors/certi';
-    
-        cur['env.CERTI_HOST'] = 'localhost';
-    
-        cur['env.CERTI_VERSION'] = '4.0.0';
+        cur['env.CERTI_HOME_TRAVIS'] = '/home/travis/pthla/certi-tools/bin';
     
         cur['env.CI'] = 'true';
     
@@ -81,8 +75,6 @@
     
         cur['env.DISPLAY'] = ':99.0';
     
-        cur['env.DYLD_LIBRARY_PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/lib:';
-    
         cur['env.ELIXIR_VERSION'] = '1.4.5';
     
         cur['env.GEM_HOME'] = '/home/travis/.rvm/gems/ruby-2.4.1';
@@ -90,6 +82,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -121,7 +114,7 @@
     
         cur['env.LC_CTYPE'] = 'en_US.UTF-8';
     
-        cur['env.LD_LIBRARY_PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:';
+        cur['env.LD_LIBRARY_PATH'] = '/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:';
     
         cur['env.LOGNAME'] = 'travis';
     
@@ -147,7 +140,7 @@
     
         cur['env.PAGER'] = 'cat';
     
-        cur['env.PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/build/icyphy/ptII/vendors/certi/bin/bin/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin';
+        cur['env.PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin';
     
         cur['env.PERLBREW_BASHRC_VERSION'] = '0.80';
     
@@ -195,9 +188,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.2 39792 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.19 39638 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.2 39792 10.20.0.3 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.19 39638 10.20.1.132 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +204,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365729988';
+        cur['env.TRAVIS_BUILD_ID'] = '365749963';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '243';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '244';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4faa934f0fc5f7c7cda8cab634db1d8bc783e959';
+        cur['env.TRAVIS_COMMIT'] = '670565b83f493831f596391cc9ae69ca4c5b009c';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Display better messages for Darwin.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Ignore libJNIFMU.*';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'da58c4629fe2...4faa934f0fc5';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '4faa934f0fc5...670565b83f49';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365729993';
+        cur['env.TRAVIS_JOB_ID'] = '365749972';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '243.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '244.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -305,7 +298,7 @@
     
         cur['java.io.tmpdir'] = '/tmp';
     
-        cur['java.library.path'] = '/home/travis/build/icyphy/ptII/vendors/certi/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+        cur['java.library.path'] = '/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
     
         cur['java.maxmemory'] = '1400m';
     
@@ -417,7 +410,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2158713631405326187.properties propsfile=/home/travis/build/icyphy/ptII/junit3250774193819415870.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher919575973100461467.properties propsfile=/home/travis/build/icyphy/ptII/junit4125281201111352027.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +493,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">7</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">3</a></td><td>0</td><td>0</td><td>2.207</td><td>2018-04-12T17:51:57</td><td>travis-job-6aca3b80-bffa-44b4-83a9-c106bc158d0d</td>
+<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">7</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">4</a></td><td>0</td><td>0</td><td>2.323</td><td>2018-04-12T18:39:22</td><td>travis-job-2084e13e-cc97-463c-a2f6-1711e1f25154</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -515,31 +508,35 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml (RunModel)</td><td>Success</td><td></td><td>0.758</td>
+<tr valign="top" class="Error">
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .1Value2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
+<br>  in .1Value2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .1Value2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .1Value2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
+</code></td><td>0.764</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[1] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>
-<br>  in .2Classes2Values2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)<br>	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)<br>	at ptolemy.actor.Manager.initialize(Manager.java:724)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>Caused by: hla.rti.RTIinternalError: RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory serial:0<br>	at certi.rti.impl.CertiRtiAmbassador.&lt;init&gt;(CertiRtiAmbassador.java:150)<br>	at certi.rti.jlc.CertiRtiFactory.createRtiAmbassador(CertiRtiFactory.java:46)<br>	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:649)<br>
-</code></td><td>0.323</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
+<br>  in .2Classes2Values2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
+</code></td><td>0.358</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[2] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>
-<br>  in .2Values1Instance.Director<br>Because:<br>Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)<br>	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)<br>	at ptolemy.actor.Manager.initialize(Manager.java:724)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>Caused by: hla.rti.RTIinternalError: RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory serial:0<br>	at certi.rti.impl.CertiRtiAmbassador.&lt;init&gt;(CertiRtiAmbassador.java:150)<br>	at certi.rti.jlc.CertiRtiFactory.createRtiAmbassador(CertiRtiFactory.java:46)<br>	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:649)<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
+<br>  in .2Values1Instance.Director<br>Because:<br>Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
 </code></td><td>0.311</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[3] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>
-<br>  in .2Values2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.<br>  in .DistributedReceiver1.HlaManager<br>Because:<br>RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory<br>	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)<br>	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)<br>	at ptolemy.actor.Manager.initialize(Manager.java:724)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>Caused by: hla.rti.RTIinternalError: RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory serial:0<br>	at certi.rti.impl.CertiRtiAmbassador.&lt;init&gt;(CertiRtiAmbassador.java:150)<br>	at certi.rti.jlc.CertiRtiFactory.createRtiAmbassador(CertiRtiFactory.java:46)<br>	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:649)<br>
-</code></td><td>0.304</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
+<br>  in .2Values2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
+</code></td><td>0.341</td>
 </tr>
 </table>
 <div class="Properties">
