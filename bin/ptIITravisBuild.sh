@@ -94,6 +94,12 @@ updateGhPages () {
         fi
     fi        
 
+    echo "Removing any report/junit *.xml files that are older than 7 days."
+    files=`find reports/junit -name "*.xml" -mtime +7 -print`
+    ls -l $files
+    git rm -f $files
+    git commit -m "Removed report/junit/ *.xml files that are older than 7 days." $files
+
     cp -Rf $sources $destination
 
     if [ $1 = "-junitreport" ]; then
