@@ -42,6 +42,15 @@ do
 done
 
 cd $directory
-echo "javachdir: pwd: `pwd`"
+echo "javachdir: pwd: `pwd`  Invoking with -Djava.net.preferIPv4Stack=true"
 # echo $@
-java $@
+
+# When running
+# ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml, set
+# java.net.preferIPv4Stack to true and avoid:
+#
+# Caused by: java.lang.RuntimeException: REST2: Protocol family unavailable: www.example.com/2606:2800:220:1:248:1893:25c8:1946:443
+#
+# See https://docs.oracle.com/javase/7/docs/api/java/net/doc-files/net-properties.html
+
+java -Djava.net.preferIPv4Stack=true $@
