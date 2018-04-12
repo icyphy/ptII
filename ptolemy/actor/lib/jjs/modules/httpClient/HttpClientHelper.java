@@ -272,8 +272,8 @@ public class HttpClientHelper extends VertxHelperBase {
                         + "See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: ";
             }
             final String finalMessage = message;
-            // System.err.println("****** Received an error for request " + _requestNumber + ": " + throwable);
-            // throwable.printStackTrace();
+            System.err.println("HttpClientHelper.java: Received an error for request " + _requestNumber + ": " + throwable);
+            throwable.printStackTrace();
             // True argument indicates that this request is done.
             _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                 @Override
