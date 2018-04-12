@@ -1693,8 +1693,9 @@ Accessor.prototype.react = function (name) {
                         // }
 
                         throw new Error('commonHost.js, react(), invoking a specific handler for \"' +
-                                        name + '\": Exception occurred in input handler,' +
-                                        ' which has now has been removed.  Exception was: ' +
+                                        name + '\": Exception occurred in input handler for accessor ' +
+                                        thiz.accessorName +
+                                        ', which has now has been removed.  Exception was: ' +
                                         exception +
                                         ' Stacktrace was: ' + stacktrace);
                     }
