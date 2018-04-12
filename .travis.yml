@@ -19,7 +19,7 @@ env:
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
-    - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools/bin
+    - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools
     - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
     - TRAVIS_TAG=nightly
 
