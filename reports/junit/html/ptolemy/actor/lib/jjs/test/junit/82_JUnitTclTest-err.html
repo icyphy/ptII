@@ -1,0 +1,27 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: date("Tue Jan 01 00:00:00.000000000 +0000 1957"). Should have been: date("Tue Jan 01 00:00:00.000000000 -0800 1957")
+  in .JavaScriptReceiveDate.Test2
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.8]
+WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.6]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+</pre>
+</body>
+</html>

@@ -4,15 +4,14 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>Warning: '.ResourcePool.Test2' The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
-java.lang.RuntimeException: Execution failed
+<pre>java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
-Value was: 16. Should have been: 1
-  in .ResourcePool.Test2
-	at ptolemy.actor.lib.Test.fire(Test.java:268)
-	at ptolemy.actor.process.ProcessThread._iterateActor(ProcessThread.java:339)
-	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)
+Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 6 tokens, yet the correctValues parameter was expecting 7 tokens.
+  in .Barrier.Test2
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:409)
+	at ptolemy.actor.process.ProcessThread.wrapup(ProcessThread.java:304)
+	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:231)
+Warning: '.ResourcePool.Test2' The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 </pre>
 </body>
 </html>
