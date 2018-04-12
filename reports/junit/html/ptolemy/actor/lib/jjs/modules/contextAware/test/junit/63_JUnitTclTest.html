@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.6 46178 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.8 47592 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.6 46178 10.20.0.3 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.8 47592 10.20.2.69 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365749963';
+        cur['env.TRAVIS_BUILD_ID'] = '365783767';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '244';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '245';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '670565b83f493831f596391cc9ae69ca4c5b009c';
+        cur['env.TRAVIS_COMMIT'] = '328c94926723bc15e160bf06887a1e68271d92a9';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Ignore libJNIFMU.*';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Merge branch \'master\' of https://github.com/icyphy/ptII';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '4faa934f0fc5...670565b83f49';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '670565b83f49...328c94926723';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365749969';
+        cur['env.TRAVIS_JOB_ID'] = '365783773';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '244.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '245.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -405,7 +406,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher961544083388640928.properties propsfile=/home/travis/build/icyphy/ptII/junit8568113059652480251.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8162594119744280372.properties propsfile=/home/travis/build/icyphy/ptII/junit9114535337927177874.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -487,8 +488,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Pass">
-<td><a title="Display all tests" href="63_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="63_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>10.958</td><td>2018-04-12T18:42:08</td><td>travis-job-9c37507c-1bf2-458b-b436-0e84f747e98a</td>
+<tr valign="top" class="Error">
+<td><a title="Display all tests" href="63_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="63_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="63_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>9.519</td><td>2018-04-12T19:59:58</td><td>travis-job-4bc49781-95cf-4ca7-a20c-e5f9ac45dad8</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -497,16 +498,19 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)</td><td>Success</td><td></td><td>10.506</td>
+<tr valign="top" class="Error">
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:190)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: ContextAware: Protocol family unavailable: sizzling-fire-8605.firebaseio.com/2600:1901:0:94b6:0:0:0:0:443<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$991$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$989$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$988$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientExceptionHandler$1.run(HttpClientHelper.java:281)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.moml.MoMLSimpleApplication.rerun(MoMLSimpleApplication.java:339)<br>
+</code></td><td>9.085</td>
 </tr>
 </table>
 <div class="Properties">

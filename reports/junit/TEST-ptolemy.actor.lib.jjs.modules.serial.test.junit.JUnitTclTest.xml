@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-9c37507c-1bf2-458b-b436-0e84f747e98a" name="ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest" skipped="0" tests="10" time="189.093" timestamp="2018-04-12T18:52:57">
+<testsuite errors="0" failures="0" hostname="travis-job-4bc49781-95cf-4ca7-a20c-e5f9ac45dad8" name="ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest" skipped="0" tests="10" time="180.048" timestamp="2018-04-12T20:10:41">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="244.3" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="245.3" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
     <property name="timeout.short" value="1000000" />
@@ -29,7 +29,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.6 46178 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.8 47592 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -49,7 +49,7 @@
     <property name="return.code" value="0" />
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.6 46178 10.20.0.3 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.8 47592 10.20.2.69 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -66,12 +66,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5923894223304555156.properties propsfile=/home/travis/build/icyphy/ptII/junit4200280440013999108.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1178894947927187333.properties propsfile=/home/travis/build/icyphy/ptII/junit3583944712209934849.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="4faa934f0fc5...670565b83f49" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="670565b83f49...328c94926723" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -112,7 +112,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="244" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="245" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -127,12 +127,12 @@
     <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
-    <property name="env.TRAVIS_BUILD_ID" value="365749963" />
+    <property name="env.TRAVIS_BUILD_ID" value="365783767" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="670565b83f493831f596391cc9ae69ca4c5b009c" />
+    <property name="env.TRAVIS_COMMIT" value="328c94926723bc15e160bf06887a1e68271d92a9" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -164,7 +164,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Ignore libJNIFMU.*" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Merge branch &apos;master&apos; of https://github.com/icyphy/ptII" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test" />
@@ -201,7 +201,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="365749969" />
+    <property name="env.TRAVIS_JOB_ID" value="365783773" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools/bin" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -221,35 +221,35 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml (RunModel)" time="7.757" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.006" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml (RunModel)" time="33.052" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml (RunModel)" time="25.186" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml (RunModel)" time="25.186" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml (RunModel)" time="24.907" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml (RunModel)" time="24.383" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml (RunModel)" time="24.254" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml (RunModel)" time="24.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml (RunModel)" time="6.615" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.003" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml (RunModel)" time="29.487" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml (RunModel)" time="23.74" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml (RunModel)" time="24.406" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml (RunModel)" time="24.335" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml (RunModel)" time="24.171" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml (RunModel)" time="23.34" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml (RunModel)" time="23.595" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml
 JavaScript: Closing serial port. (Thread[SerialHelloWorld,1,main])
-2759 ms. Memory: 269312K Free: 177468K (66%)
+2210 ms. Memory: 235520K Free: 115100K (49%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu Apr 12 18:53:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- testing Thu Apr 12 20:10:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 SerialPort: Closing serial port. (Thread[SerialLoopbackIntToString,1,main])
-13209 ms. Memory: 665088K Free: 198699K (30%)
+11808 ms. Memory: 665600K Free: 146732K (22%)
 reloadAllAccessors: .SerialLoopbackIntToString
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-SerialPort: Serial port reader thread exiting. (Thread[Thread-10,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-11,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:53:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:11:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+SerialPort: Serial port reader thread exiting. (Thread[Thread-10,1,main])
 SerialPort: Closing serial port. (Thread[Thread-7,5,main])
-12186 ms. Memory: 738304K Free: 501372K (68%)
------------------ testing Thu Apr 12 18:53:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+11277 ms. Memory: 760832K Free: 456413K (60%)
+----------------- testing Thu Apr 12 20:11:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: Serial port writer thread exiting. (Thread[Thread-14,5,main])
 SerialPort: Serial port reader thread exiting. (Thread[Thread-13,5,main])
 SerialPort: SerialPort: invalid data: a, error: SyntaxError: Invalid JSON: <json>:1:0 Expected json literal but found a
@@ -265,10 +265,10 @@ SerialPort: SerialPort: invalid data: abbb, error: SyntaxError: Invalid JSON: <j
 abbb
 ^ (Thread[Thread-18,1,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackInvalid,1,main])
-10129 ms. Memory: 773120K Free: 373462K (48%)
+9645 ms. Memory: 792064K Free: 320863K (41%)
 reloadAllAccessors: .SerialLoopbackInvalid
 SerialPort: Serial port writer thread exiting. (Thread[Thread-19,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:53:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:11:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-18,1,main])
 SerialPort: SerialPort: invalid data: a, error: SyntaxError: Invalid JSON: <json>:1:0 Expected json literal but found a
 a
@@ -283,64 +283,64 @@ SerialPort: SerialPort: invalid data: abbb, error: SyntaxError: Invalid JSON: <j
 abbb
 ^ (Thread[Thread-21,5,main])
 SerialPort: Closing serial port. (Thread[Thread-15,5,main])
-9814 ms. Memory: 793088K Free: 618724K (78%)
------------------ testing Thu Apr 12 18:54:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+9619 ms. Memory: 819712K Free: 619910K (76%)
+----------------- testing Thu Apr 12 20:11:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Serial port writer thread exiting. (Thread[Thread-22,5,main])
 SerialPort: Serial port reader thread exiting. (Thread[Thread-21,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackJSON,1,main])
 JavaScriptJSON: JavaScriptTrueToken.wrapup() (Thread[SerialLoopbackJSON,1,main])
-10844 ms. Memory: 808448K Free: 509456K (63%)
+10509 ms. Memory: 820736K Free: 311770K (38%)
 reloadAllAccessors: .SerialLoopbackJSON
 SerialPort: Serial port writer thread exiting. (Thread[Thread-27,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:54:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:11:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-26,1,main])
 SerialPort: Closing serial port. (Thread[Thread-23,5,main])
 JavaScriptJSON: JavaScriptTrueToken.wrapup() (Thread[Thread-23,5,main])
-10224 ms. Memory: 809984K Free: 229034K (28%)
------------------ testing Thu Apr 12 18:54:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
-SerialPort: Serial port writer thread exiting. (Thread[Thread-30,5,main])
+9718 ms. Memory: 843264K Free: 230274K (27%)
+----------------- testing Thu Apr 12 20:12:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-29,5,main])
+SerialPort: Serial port writer thread exiting. (Thread[Thread-30,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackNumber,1,main])
-10278 ms. Memory: 840704K Free: 636329K (76%)
+SerialPort: Serial port reader thread exiting. (Thread[Thread-34,1,main])
+10125 ms. Memory: 850432K Free: 662769K (78%)
 reloadAllAccessors: .SerialLoopbackNumber
 SerialPort: Serial port writer thread exiting. (Thread[Thread-35,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:54:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
-SerialPort: Serial port reader thread exiting. (Thread[Thread-34,1,main])
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:12:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
 SerialPort: Closing serial port. (Thread[Thread-31,5,main])
-10244 ms. Memory: 845824K Free: 467427K (55%)
------------------ testing Thu Apr 12 18:54:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
-SerialPort: Serial port writer thread exiting. (Thread[Thread-38,5,main])
 SerialPort: Serial port reader thread exiting. (Thread[Thread-37,5,main])
+10129 ms. Memory: 852480K Free: 306128K (36%)
+----------------- testing Thu Apr 12 20:12:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+SerialPort: Serial port writer thread exiting. (Thread[Thread-38,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackShort,1,main])
-9977 ms. Memory: 851456K Free: 411602K (48%)
+9685 ms. Memory: 863744K Free: 281189K (33%)
 reloadAllAccessors: .SerialLoopbackShort
 SerialPort: Serial port reader thread exiting. (Thread[Thread-42,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-43,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:55:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:12:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
 SerialPort: Closing serial port. (Thread[Thread-39,5,main])
-10178 ms. Memory: 851456K Free: 564708K (66%)
------------------ testing Thu Apr 12 18:55:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+10213 ms. Memory: 877056K Free: 684171K (78%)
+----------------- testing Thu Apr 12 20:12:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
 SerialPort: Serial port writer thread exiting. (Thread[Thread-46,5,main])
 SerialPort: Serial port reader thread exiting. (Thread[Thread-45,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackString,1,main])
-9897 ms. Memory: 882688K Free: 567859K (64%)
+9741 ms. Memory: 877568K Free: 446379K (51%)
 reloadAllAccessors: .SerialLoopbackString
 SerialPort: Serial port reader thread exiting. (Thread[Thread-50,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-51,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:55:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:13:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
 SerialPort: Closing serial port. (Thread[Thread-47,5,main])
-10394 ms. Memory: 866816K Free: 482851K (56%)
------------------ testing Thu Apr 12 18:55:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
-SerialPort: Serial port writer thread exiting. (Thread[Thread-54,5,main])
+9757 ms. Memory: 886272K Free: 363208K (41%)
+----------------- testing Thu Apr 12 20:13:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-53,5,main])
+SerialPort: Serial port writer thread exiting. (Thread[Thread-54,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackUnsignedByte,1,main])
-10066 ms. Memory: 867840K Free: 251694K (29%)
+9931 ms. Memory: 885760K Free: 129977K (15%)
 reloadAllAccessors: .SerialLoopbackUnsignedByte
 SerialPort: Serial port writer thread exiting. (Thread[Thread-59,1,main])
------------------ Reloaded Accessors and testing again Thu Apr 12 18:55:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 20:13:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-58,1,main])
 SerialPort: Closing serial port. (Thread[Thread-55,5,main])
-10002 ms. Memory: 880640K Free: 679193K (77%)
+9976 ms. Memory: 905728K Free: 597722K (66%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
