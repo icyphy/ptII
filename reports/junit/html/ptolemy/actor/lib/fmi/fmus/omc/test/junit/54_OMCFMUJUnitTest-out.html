@@ -4,7 +4,15 @@
 <title>Standard Output from OMCFMUJUnitTest</title>
 </head>
 <body>
-<pre>To update /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Linsys2.csv, run:
+<pre>To update /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Influenza.csv, run:
+java -classpath "/home/travis/build/icyphy/ptII/lib/jna.jar:/home/travis/build/icyphy/ptII" org.ptolemy.fmi.driver.FMUModelExchange /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/auto/Influenza.fmu 1.0 0.001 false c /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Influenza.csv
+Simulation from 0.0 to 1.0 was successful
+  steps: 1000
+  step size: 0.001
+  stateEvents: 0
+  stepEvents: 0
+  timeEvents: 0
+To update /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Linsys2.csv, run:
 java -classpath "/home/travis/build/icyphy/ptII/lib/jna.jar:/home/travis/build/icyphy/ptII" org.ptolemy.fmi.driver.FMUModelExchange /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/auto/Linsys2.fmu 1.0 0.001 false c /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Linsys2.csv
 Simulation from 0.0 to 1.0 was successful
   steps: 1000
@@ -31,14 +39,6 @@ Simulation from 0.0 to 1.0 was successful
   stepEvents: 0
   timeEvents: 0
 Test1: x1 maximum error: 1.8401640047843726E-4 (Optional: Compare this against running the tests in sparse_fmi/test)
-To update /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Influenza.csv, run:
-java -classpath "/home/travis/build/icyphy/ptII/lib/jna.jar:/home/travis/build/icyphy/ptII" org.ptolemy.fmi.driver.FMUModelExchange /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/auto/Influenza.fmu 1.0 0.001 false c /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/fmus/omc/test/junit/Influenza.csv
-Simulation from 0.0 to 1.0 was successful
-  steps: 1000
-  step size: 0.001
-  stateEvents: 0
-  stepEvents: 0
-  timeEvents: 0
 </pre>
 </body>
 </html>
