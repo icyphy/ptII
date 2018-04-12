@@ -81,6 +81,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -185,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 59832 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.39 49936 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 59832 10.20.0.128 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.39 49936 10.20.1.69 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365382620';
+        cur['env.TRAVIS_BUILD_ID'] = '365388524';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '236';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '238';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '705d14593cf6739b588fd3a74d940b11c13fbe68';
+        cur['env.TRAVIS_COMMIT'] = '73ef5f8fd6a9012b4ddb4c8b98fa8d2ac909db23';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Send WebSocket errors to stdout';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Use # for comment, not //.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'ae0af8d1af33...705d14593cf6';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'e2f39738f03d...73ef5f8fd6a9';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365382625';
+        cur['env.TRAVIS_JOB_ID'] = '365388532';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '236.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '238.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -407,7 +408,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3139405677985571250.properties propsfile=/home/travis/build/icyphy/ptII/junit8157599126597470309.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.hlacerti.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.hlacerti.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5700408754887721369.properties propsfile=/home/travis/build/icyphy/ptII/junit9009670847956877257.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -490,7 +491,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">7</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">4</a></td><td>0</td><td>0</td><td>2.284</td><td>2018-04-12T00:36:30</td><td>travis-job-e2a84722-16db-4839-a9f3-5f39f52460e0</td>
+<td><a title="Display all tests" href="26_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="26_JUnitTclTest.html">7</a></td><td><a title="Display only errors" href="26_JUnitTclTest-errors.html">4</a></td><td>0</td><td>0</td><td>2.425</td><td>2018-04-12T01:04:27</td><td>travis-job-fe9d1cd7-01bc-416a-b9cd-d561bbfd506b</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -503,28 +504,28 @@
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .1Value2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
 <br>  in .1Value2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .1Value2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .1Value2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
-</code></td><td>0.760</td>
+</code></td><td>0.825</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[1] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
 <br>  in .2Classes2Values2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Classes2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
-</code></td><td>0.340</td>
+</code></td><td>0.435</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[2] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
 <br>  in .2Values1Instance.Director<br>Because:<br>Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values1Instance.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
-</code></td><td>0.319</td>
+</code></td><td>0.290</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[3] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>
 <br>  in .2Values2Instances.Director<br>Because:<br>Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Background run threw an exception<br>  in .2Values2Instances.DistributedReceiver1<br>Because:<br>CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at ptolemy.actor.lib.hoc.ModelReference.wrapup(ModelReference.java:769)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: ptolemy.kernel.util.IllegalActionException: CertiRtig: initialize(): No CERTI_HOME variable set<br>  in .DistributedReceiver1.HlaManager<br>	at org.hlacerti.lib.CertiRtig.initialize(CertiRtig.java:170)<br>	at org.hlacerti.lib.HlaManager.preinitialize(HlaManager.java:743)<br>	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1769)<br>	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)<br>	at ptolemy.actor.Manager.initialize(Manager.java:710)<br>	at ptolemy.actor.Manager.execute(Manager.java:356)<br>	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)<br>
-</code></td><td>0.331</td>
+</code></td><td>0.318</td>
 </tr>
 </table>
 <div class="Properties">
