@@ -5,7 +5,7 @@
 </head>
 <body>
 <pre>ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.
-  in .DistributedSender1.HlaManager
+  in .DistributedReceiver1.HlaManager
 Because:
 RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)
@@ -27,14 +27,14 @@ Caused by: hla.rti.RTIinternalError: RTI Ambassador executable not found. Cannot
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.
-  in .DistributedSender1.HlaManager
+  in .DistributedReceiver1.HlaManager
 Because:
 RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
 	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
 	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
 Caused by: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.
-  in .DistributedSender1.HlaManager
+  in .DistributedReceiver1.HlaManager
 Because:
 RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)
@@ -48,7 +48,7 @@ Caused by: hla.rti.RTIinternalError: RTI Ambassador executable not found. Cannot
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:649)
 	... 4 more
 ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.
-  in .DistributedReceiver1.HlaManager
+  in .DistributedSender1.HlaManager
 Because:
 RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)
@@ -70,14 +70,14 @@ Caused by: hla.rti.RTIinternalError: RTI Ambassador executable not found. Cannot
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.
-  in .DistributedReceiver1.HlaManager
+  in .DistributedSender1.HlaManager
 Because:
 RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
 	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
 	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
 Caused by: ptolemy.kernel.util.IllegalActionException: RTIinternalError. If the error is "Connection to RTIA failed", then the problem is likely that the rtig binary could not be started by CertiRtig. One way to debug this is to set the various environment variables by sourcing certi/share/scripts/myCERTI_env.sh, then invoking rtig on the .fed file then (re)running the model.
-  in .DistributedReceiver1.HlaManager
+  in .DistributedSender1.HlaManager
 Because:
 RTI Ambassador executable not found. Cannot run program "rtia": error=2, No such file or directory
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:651)
