@@ -18,9 +18,9 @@ env:
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
-    # CERTI_HOME is also set by org/hlacerti/build-certi.sh below.
-    - CERTI_HOME=${PTII}/vendors/certi/bin
-    - PATH=${PTII}/bin:${CERTI_HOME}/bin${PATH}
+    # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
+    - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools/bin
+    - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
     - TRAVIS_TAG=nightly
 
 language: node_js
@@ -72,9 +72,9 @@ install:
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
-  # If $PTII/vendors/certi/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
+  # If ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
   - sudo -E org/hlacerti/build-certi.sh || true
-  - source $PTII/vendors/certi/share/scripts/myCERTI_env.sh || true
+  - source ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh || true
   # - echo "CERTI_HOME: $CERTI_HOME" || true
 
   # List the contents of vendors and cached directories
@@ -87,6 +87,7 @@ install:
   - ls -l $PTII/vendors/misc/sphinx4 || true
   - ls -l $PTII/vendors/opencv || true
   - ls -l $PTII/vendors/opencv/share/OpenCV/java || true
+  - ls -l $CERTI_HOME_TRAVIS || true
 
   # Display environment variables
   - env | sort
@@ -110,7 +111,7 @@ script:
 cache:
   directories:
     - $PTII/vendors/adm/gen-11.0/node
-    - $PTII/vendors/certi
+    - $CERTI_HOME_TRAVIS
     - $PTII/vendors/installer
     - $PTII/vendors/jai-1_1_2_01
     - $PTII/vendors/JMF-2.1.1e
