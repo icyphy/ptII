@@ -13,18 +13,6 @@ if [ ! -d $SRC ]; then
     mkdir -p $SRC
 fi    
 
-CERTI_SRC=$SRC/certi-4.0.0
-if [ ! -f $CERTI_SRC ]; then
-    git clone -b br_jbch_4.0.0 https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
-
-    # CERTI_TAR=/tmp/certi.tar.gz
-    # if [ ! -f $CERTI_TAR ]; then
-    #     wget -O $CERTI_TAR http://download.savannah.gnu.org/releases/certi/CERTI-3.5.1-Source.tar.gz
-    # fi
-    # echo "$0: untaring $CERTI_TAR in $SRC"
-    # (cd $SRC; tar -zxf $CERTI_TAR);
-fi
-
 # CERTI_SRC=$SRC/CERTI-3.5.1-Source
 # if [ ! -f $CERTI_SRC ]; then
 #     CERTI_TAR=/tmp/certi.tar.gz
@@ -35,6 +23,10 @@ fi
 #     (cd $SRC; tar -zxf $CERTI_TAR);
 # fi
     
+CERTI_SRC=$SRC/certi-4.0.0
+if [ ! -f $CERTI_SRC ]; then
+    git clone -b br_jbch_4.0.0 https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
+fi
 
 OS=`uname -s`
 case $OS in
@@ -79,14 +71,28 @@ make install
 case $OS in
     Darwin)
         echo "$0: Darwin: Create links for shared libraries in /usr/local/lib"
-        echo "If there are shared libraries in /usr/local/lib from another installation, then remove them with:"
-        echo "  sudo -i"
-        echo "  cd /usr/local/lib"
-        echo "  rm `(cd $PTII/vendors/certi/lib; ls -1 lib*)`"
-        sudo sh -c "cd /usr/local/lib; ln -s $PTII/vendors/certi/lib/* ."
+        files=`(cd $PTII/vendors/certi/lib; ls -1 lib*)`
+        for file in $files
+        do                    
+            if [ -f /usr/local/lib/$file ]; then
+                echo " "
+                echo "There are shared libraries in /usr/local/lib from another CERTI installation, consider removing them with:"
+                echo " "
+                echo "  sudo sh -c \"cd /usr/local/lib; rm `(cd $PTII/vendors/certi/lib; ls -1 lib* | awk '{printf("%s ", $1)} END{printf("\n")}')` \" "
+                echo " "
+                break;
+            fi
+        done
+        echo "Recent macOS releases have a hard time with shared libraries, so create links in /usr/local/lib by running:"
+        echo " "
+        echo "  sudo sh -c \"cd /usr/local/lib; ln -s $PTII/vendors/certi/lib/* .\""
     ;;
 esac
 
+echo " "
+echo "To set the CERTI environment variables under bash, do:"
+echo " "
+echo "   source $PTII/vendors/certi/share/scripts/myCERTI_env"
 
 # No need to build and install jcerti, we have $PTII/lib/jcerti.jar
 # JCERTI_SRC=$SRC/jcerti
