@@ -61,13 +61,7 @@
     
         cur['env.CASHER_DIR'] = '/home/travis/.casher';
     
-        cur['env.CERTI_FOM_PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/share/federations';
-    
-        cur['env.CERTI_HOME'] = '/home/travis/build/icyphy/ptII/vendors/certi';
-    
-        cur['env.CERTI_HOST'] = 'localhost';
-    
-        cur['env.CERTI_VERSION'] = '4.0.0';
+        cur['env.CERTI_HOME_TRAVIS'] = '/home/travis/pthla/certi-tools/bin';
     
         cur['env.CI'] = 'true';
     
@@ -79,8 +73,6 @@
     
         cur['env.DISPLAY'] = ':99.0';
     
-        cur['env.DYLD_LIBRARY_PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/lib:';
-    
         cur['env.ELIXIR_VERSION'] = '1.4.5';
     
         cur['env.GEM_HOME'] = '/home/travis/.rvm/gems/ruby-2.4.1';
@@ -88,6 +80,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -119,7 +112,7 @@
     
         cur['env.LC_CTYPE'] = 'en_US.UTF-8';
     
-        cur['env.LD_LIBRARY_PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:';
+        cur['env.LD_LIBRARY_PATH'] = '/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:';
     
         cur['env.LOGNAME'] = 'travis';
     
@@ -145,7 +138,7 @@
     
         cur['env.PAGER'] = 'cat';
     
-        cur['env.PATH'] = '/home/travis/build/icyphy/ptII/vendors/certi/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/build/icyphy/ptII/vendors/certi/bin/bin/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin';
+        cur['env.PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin';
     
         cur['env.PERLBREW_BASHRC_VERSION'] = '0.80';
     
@@ -193,9 +186,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.30 35042 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.6 46178 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.30 35042 10.20.0.46 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.6 46178 10.20.0.3 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -209,25 +202,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365729988';
+        cur['env.TRAVIS_BUILD_ID'] = '365749963';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '243';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '244';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4faa934f0fc5f7c7cda8cab634db1d8bc783e959';
+        cur['env.TRAVIS_COMMIT'] = '670565b83f493831f596391cc9ae69ca4c5b009c';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Display better messages for Darwin.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Ignore libJNIFMU.*';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'da58c4629fe2...4faa934f0fc5';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '4faa934f0fc5...670565b83f49';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365729991';
+        cur['env.TRAVIS_JOB_ID'] = '365749969';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '243.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '244.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -303,7 +296,7 @@
     
         cur['java.io.tmpdir'] = '/tmp';
     
-        cur['java.library.path'] = '/home/travis/build/icyphy/ptII/vendors/certi/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+        cur['java.library.path'] = '/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
     
         cur['java.maxmemory'] = '1400m';
     
@@ -413,7 +406,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1767964796794324905.properties propsfile=/home/travis/build/icyphy/ptII/junit8564432498949725359.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5416637981675285182.properties propsfile=/home/travis/build/icyphy/ptII/junit5419132128970097555.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -496,7 +489,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="69_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="69_JUnitTclTest.html">5</a></td><td>0</td><td>0</td><td>0</td><td>52.001</td><td>2018-04-12T18:03:04</td><td>travis-job-cb6e8603-7058-491c-98a3-b3fa4bd1146d</td>
+<td><a title="Display all tests" href="69_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="69_JUnitTclTest.html">5</a></td><td>0</td><td>0</td><td>0</td><td>50.961</td><td>2018-04-12T18:51:14</td><td>travis-job-9c37507c-1bf2-458b-b436-0e84f747e98a</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -505,7 +498,7 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
@@ -514,10 +507,10 @@
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)</td><td>Success</td><td></td><td>8.788</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)</td><td>Success</td><td></td><td>8.280</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)</td><td>Success</td><td></td><td>42.751</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)</td><td>Success</td><td></td><td>42.225</td>
 </tr>
 </table>
 <div class="Properties">
