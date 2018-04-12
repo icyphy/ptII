@@ -73,7 +73,7 @@ install:
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # If $PTII/vendors/certi/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
-  - org/hlacerti/build-certi.sh || true
+  - sudo -E org/hlacerti/build-certi.sh || true
   - source $PTII/vendors/certi/share/scripts/myCERTI_env.sh || true
   # - echo "CERTI_HOME: $CERTI_HOME" || true
 
