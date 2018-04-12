@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.20 49446 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.8 57630 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.20 49446 10.20.1.186 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.8 57630 10.20.0.245 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365828169';
+        cur['env.TRAVIS_BUILD_ID'] = '365852334';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '248';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '249';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'bbe189f061d9cfb39045d1601f297cb5d7010fbb';
+        cur['env.TRAVIS_COMMIT'] = '93f5a6e97d2700802ba60092565db31fdb4b02e0';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added ifconfig -a to CapeCode tests.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Try searching for just .xml files.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '8c0df86deae7...bbe189f061d9';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'bbe189f061d9...93f5a6e97d27';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365828172';
+        cur['env.TRAVIS_JOB_ID'] = '365852337';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '248.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '249.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -310,6 +311,8 @@
         cur['java.maxmemory'] = '1400m';
     
         cur['java.maxmemory.large'] = '8000m';
+    
+        cur['java.net.preferIPv4Stack'] = 'true';
     
         cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
     
@@ -415,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.eventbus.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.eventbus.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher385943160951973383.properties propsfile=/home/travis/build/icyphy/ptII/junit8362807141247018977.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.eventbus.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.eventbus.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8904942343965939157.properties propsfile=/home/travis/build/icyphy/ptII/junit4497994651496802829.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -498,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="65_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="65_JUnitTclTest.html">8</a></td><td>0</td><td>0</td><td>0</td><td>72.405</td><td>2018-04-12T21:46:55</td><td>travis-job-48a6a2ce-0354-404e-9c13-efc1e82a7313</td>
+<td><a title="Display all tests" href="65_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="65_JUnitTclTest.html">8</a></td><td>0</td><td>0</td><td>0</td><td>75.941</td><td>2018-04-12T22:47:26</td><td>travis-job-7541e4da-ad92-4682-82bd-8c97b982d3c4</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -510,25 +513,25 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.007</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml (RunModel)</td><td>Success</td><td></td><td>5.514</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml (RunModel)</td><td>Success</td><td></td><td>6.117</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml (RunModel)</td><td>Success</td><td></td><td>18.014</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml (RunModel)</td><td>Success</td><td></td><td>18.802</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml (RunModel)</td><td>Success</td><td></td><td>16.981</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml (RunModel)</td><td>Success</td><td></td><td>17.791</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml (RunModel)</td><td>Success</td><td></td><td>16.162</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml (RunModel)</td><td>Success</td><td></td><td>16.311</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml (RunModel)</td><td>Success</td><td></td><td>15.355</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml (RunModel)</td><td>Success</td><td></td><td>16.349</td>
 </tr>
 </table>
 <div class="Properties">
