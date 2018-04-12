@@ -94,6 +94,15 @@ updateGhPages () {
         fi
     fi        
 
+    days=2
+    files=`find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +3 -print`
+    if [ ! -z "$files" ]; then
+        echo "Removing any .htm and .xml files in reports/junit that are older than $days days."
+        ls -l $files
+        git rm -f $files
+        git commit -m "Removed any .htm and .xml files in reports/junit that are older than $days days." $files
+    fi
+
     cp -Rf $sources $destination
 
     if [ $1 = "-junitreport" ]; then
