@@ -54,7 +54,7 @@ test SimpleSample-2.1 {A simple sample model} {
     # Uses nativeLibraryName from 1.1 above.
     java::call org.ptolemy.opencv.OpenCVLoader loadOpenCV $nativeLibraryName
     set scalar [java::new {org.opencv.core.Scalar double} 0]
-    // OpenCV 3.4.1 requires the cast of the Mat constructor.
+    # OpenCV 3.4.1 requires the cast of the Mat constructor.
     set m [java::new {org.opencv.core.Mat int int int org.opencv.core.Scalar} 4 10 [java::field org.opencv.core.CvType CV_8UC1] $scalar]
     set mr1 [$m row 1]
     $mr1 setTo [java::new {org.opencv.core.Scalar double} 1]
