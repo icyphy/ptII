@@ -61,7 +61,15 @@
     
         cur['env.CASHER_DIR'] = '/home/travis/.casher';
     
-        cur['env.CERTI_HOME_TRAVIS'] = '/home/travis/pthla/certi-tools/bin';
+        cur['env.CERTI_FOM_PATH'] = '/home/travis/pthla/certi-tools/share/federations';
+    
+        cur['env.CERTI_HOME'] = '/home/travis/pthla/certi-tools';
+    
+        cur['env.CERTI_HOME_TRAVIS'] = '/home/travis/pthla/certi-tools';
+    
+        cur['env.CERTI_HOST'] = 'localhost';
+    
+        cur['env.CERTI_VERSION'] = '4.0.0';
     
         cur['env.CI'] = 'true';
     
@@ -73,6 +81,8 @@
     
         cur['env.DISPLAY'] = ':99.0';
     
+        cur['env.DYLD_LIBRARY_PATH'] = '/home/travis/pthla/certi-tools/lib:';
+    
         cur['env.ELIXIR_VERSION'] = '1.4.5';
     
         cur['env.GEM_HOME'] = '/home/travis/.rvm/gems/ruby-2.4.1';
@@ -80,6 +90,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -111,7 +122,7 @@
     
         cur['env.LC_CTYPE'] = 'en_US.UTF-8';
     
-        cur['env.LD_LIBRARY_PATH'] = '/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:';
+        cur['env.LD_LIBRARY_PATH'] = '/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:';
     
         cur['env.LOGNAME'] = 'travis';
     
@@ -137,7 +148,7 @@
     
         cur['env.PAGER'] = 'cat';
     
-        cur['env.PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin';
+        cur['env.PATH'] = '/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin';
     
         cur['env.PERLBREW_BASHRC_VERSION'] = '0.80';
     
@@ -185,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.8 47592 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.32 34338 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.8 47592 10.20.2.69 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.32 34338 10.20.1.27 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -201,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365783767';
+        cur['env.TRAVIS_BUILD_ID'] = '365808240';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '245';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '247';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '328c94926723bc15e160bf06887a1e68271d92a9';
+        cur['env.TRAVIS_COMMIT'] = '8c0df86deae7866c7a70f5550cb6963a2679469e';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Merge branch \'master\' of https://github.com/icyphy/ptII';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Remove .htm and .xml files from reports/junit/ that are more than one day old.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '670565b83f49...328c94926723';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'e294c91c2ac7...8c0df86deae7';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365783773';
+        cur['env.TRAVIS_JOB_ID'] = '365808245';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '245.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '247.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -295,7 +306,7 @@
     
         cur['java.io.tmpdir'] = '/tmp';
     
-        cur['java.library.path'] = '/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+        cur['java.library.path'] = '/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
     
         cur['java.maxmemory'] = '1400m';
     
@@ -405,7 +416,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5281391254235323694.properties propsfile=/home/travis/build/icyphy/ptII/junit8364166819081092602.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6752404562714078510.properties propsfile=/home/travis/build/icyphy/ptII/junit5095771294979665372.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -488,7 +499,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="80_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="80_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="80_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>201.099</td><td>2018-04-12T20:19:23</td><td>travis-job-4bc49781-95cf-4ca7-a20c-e5f9ac45dad8</td>
+<td><a title="Display all tests" href="80_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="80_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="80_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>659.890</td><td>2018-04-12T21:22:24</td><td>travis-job-131a92fe-9c61-4c50-b79d-9f5289e705a2</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -497,38 +508,42 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml (RunModel)</td><td>Success</td><td></td><td>30.322</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml (RunModel)</td><td>Success</td><td></td><td>36.127</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml (RunModel)</td><td>Success</td><td></td><td>19.432</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml (RunModel)</td><td>Success</td><td></td><td>40.930</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml (RunModel)</td><td>Success</td><td></td><td>10.582</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml (RunModel)</td><td>Success</td><td></td><td>51.602</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml (RunModel)</td><td>Success</td><td></td><td>34.222</td>
 </tr>
 <tr valign="top" class="Error">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: The test produced only 1 tokens, yet the correctValues parameter was expecting 9 tokens.<br>  in .WebSocketsServerClient.Test<br>
-<br>  in .WebSocketsServerClient.DE Director<br>Because:<br>The test produced only 1 tokens, yet the correctValues parameter was expecting 9 tokens.<br>  in .WebSocketsServerClient.Test<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 1 tokens, yet the correctValues parameter was expecting 9 tokens.<br>  in .WebSocketsServerClient.Test<br>	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:409)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>
-</code></td><td>11.786</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .FullDuplex2.Test<br>ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .FullDuplex2.Test2<br>
+<br>  in .FullDuplex2.DE Director<br>Because:<br>The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .FullDuplex2.Test<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.<br>  in .FullDuplex2.Test<br>	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>
+</code></td><td>499.952</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml (RunModel)</td><td>Success</td><td></td><td>22.045</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebSocketClient3JS.TrainableTest<br>Because:<br>Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>
+<br>  in .WebSocketClient3JS.DE Director<br>Because:<br>Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebSocketClient3JS.TrainableTest<br>Because:<br>Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebSocketClient3JS.TrainableTest<br>Because:<br>Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)<br>	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)<br>Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.<br>	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)<br>	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$6223$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$6221$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)<br>
+</code></td><td>22.754</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml (RunModel)</td><td>Success</td><td></td><td>12.872</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml (RunModel)</td><td>Success</td><td></td><td>54.446</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml (RunModel)</td><td>Success</td><td></td><td>13.076</td>
 </tr>
 </table>
 <div class="Properties">
