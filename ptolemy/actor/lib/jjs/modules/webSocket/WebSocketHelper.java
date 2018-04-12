@@ -101,7 +101,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 synchronized (WebSocketHelper.this) {
                     if (_webSocket != null) {
                         if (_wsIsOpen) {
-                            _webSocket.close();
+                            _webSocket.close((short)0, "client is ending");
                             _wsIsOpen = false;
                         }
                         _webSocket = null;
@@ -706,6 +706,16 @@ public class WebSocketHelper extends VertxHelperBase {
     private class DataHandler implements Handler<WebSocketFrame> {
         @Override
         public void handle(WebSocketFrame frame) {
+            if (frame.isClose()) {
+                // Frame is a close frame.
+                String reason = frame.closeReason();
+                if (_DEBUG) {
+                    _actor.log("### Web socket connection closed: " + reason);
+                }
+                // Here we assume the closeHandler will also be invoked, so
+                // no notification is necessary here.
+                return;
+            }
             if (_receivedBuffer == null) {
                 _receivedBuffer = frame.binaryData();
             } else {

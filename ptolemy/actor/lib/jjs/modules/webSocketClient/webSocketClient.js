@@ -212,6 +212,7 @@ exports.Client.prototype.close = function () {
 exports.Client.prototype._notifyIncoming = function (message) {
     if (this.receiveType == 'application/json') {
         try {
+            // console.log("******* webSocketClient: attempting to parse: " + message);
             message = JSON.parse(message);
         } catch (error) {
             this.emit('error', error);
