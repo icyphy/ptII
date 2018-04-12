@@ -221,7 +221,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     }
                     _currentObj.callMember("post", path, json);
                 });
-
+                request.exceptionHandler(throwable -> {
+                    // What to do here?
+                    _actor.log("*** Error handling post request to: " + request.absoluteURI());
+                    _actor.log("*** Error is: " + throwable);
+                });
             });
 
             // Handle dynamic content (requests to / ).
@@ -229,7 +233,18 @@ public class WebSocketServerHelper extends VertxHelperBase {
                 // Make the request in the verticle.
                 submit(() -> {
                     HttpServerResponse response = routingContext.response();
+                    if (response.closed()) {
+                        // Response has been closed for some reason. Issue a warning.
+                        _actor.log("*** Warning: Response has been closed.");
+                        return;
+                    }
                     HttpServerRequest request = routingContext.request();
+                    request.exceptionHandler(throwable -> {
+                        // What to do here?
+                        _actor.log("*** Error handling get request to: " + request.absoluteURI());
+                        _actor.log("*** Error is: " + throwable);
+                    });
+
                     String path = request.path();
                     Buffer buffer = _resourceData.get(path);
                     if (buffer != null) {
@@ -247,6 +262,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
                         response.end();
                     }
                 });
+            });
+            
+            router.exceptionHandler(throwable -> {
+                // What to do here?
+                _actor.log("*** Router error in WebSocket server: " + throwable);
             });
 
             _server.requestHandler(router::accept);
