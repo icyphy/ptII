@@ -520,6 +520,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 210.0]">
         </property>
     </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={578, 653, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 250.0]">
+        </property>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -552,9 +560,12 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ClipPlayer.trigger" relation="relation11"/>
     <link port="ClipPlayer.fileOrURL" relation="relation11"/>
     <link port="ClipPlayer.output" relation="relation2"/>
+    <link port="WebSocketServer.error" relation="relation4"/>
     <link port="WebSocketServer.toSend" relation="relation9"/>
     <link port="WebSocketServer.received" relation="relation8"/>
     <link port="SingleEvent.output" relation="relation3"/>
@@ -574,4 +585,5 @@
     <link port="ChooseSound.received" relation="relation8"/>
     <link port="ChooseSound.sound" relation="relation11"/>
     <link port="Display.input" relation="relation11"/>
+    <link port="Display2.input" relation="relation4"/>
 </entity>
