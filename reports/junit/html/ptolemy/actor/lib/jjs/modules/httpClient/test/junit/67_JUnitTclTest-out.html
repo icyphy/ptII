@@ -9,79 +9,82 @@ No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/a
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu Apr 12 00:28:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+----------------- testing Thu Apr 12 00:56:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-JavaScript.java: Creating /home/travis/.ptKeystore
 GeoCoder: GeoCoder.js: Could not get $KEYSTORE/geoCoderKey:  ptolemy.kernel.util.IllegalActionException: Failed to read URI: /home/travis/.ptKeystore/geoCoderKey
   in .GeoCoderWeather.GeoCoder
 Because:
 Cannot read file '/home/travis/.ptKeystore/geoCoderKey' or '/home/travis/.ptKeystore/geoCoderKey'
 The key is not public, so this accessor is only useful If you have the key.  See https://www.icyphy.org/accessors/library/index.html?accessor=services.GeoCoder (Thread[GeoCoderWeather,1,main])
 GeoCoder: Making an HTTP request. (Thread[GeoCoderWeather,1,main])
-10660 ms. Memory: 537600K Free: 464817K (86%)
------------------ testing Thu Apr 12 00:28:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+10615 ms. Memory: 653824K Free: 573252K (88%)
+----------------- testing Thu Apr 12 00:56:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
 JavaScript: Making an HTTP request. (Thread[RESTComposite,1,main])
-14444 ms. Memory: 781312K Free: 598698K (77%)
+14208 ms. Memory: 771584K Free: 346571K (45%)
 reloadAllAccessors: .RESTComposite
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
------------------ Reloaded Accessors and testing again Thu Apr 12 00:29:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 00:56:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
 JavaScript: Making an HTTP request. (Thread[Thread-10,5,main])
-13600 ms. Memory: 774656K Free: 565768K (73%)
------------------ testing Thu Apr 12 00:29:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml
+14400 ms. Memory: 753152K Free: 285000K (38%)
+----------------- testing Thu Apr 12 00:56:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml
 REST: Making an HTTP request. (Thread[RESTGet,1,main])
 REST2: Making an HTTP request. (Thread[RESTGet,1,main])
 REST3: Making an HTTP request. (Thread[RESTGet,1,main])
-19585 ms. Memory: 818688K Free: 108834K (13%)
------------------ testing Thu Apr 12 00:29:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+20346 ms. Memory: 836096K Free: 467626K (56%)
+----------------- testing Thu Apr 12 00:57:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
 REST: Making an HTTP request. (Thread[RESTGetCompleteResponseOnly,1,main])
 REST2: Making an HTTP request. (Thread[RESTGetCompleteResponseOnly,1,main])
-20945 ms. Memory: 895488K Free: 402262K (45%)
------------------ testing Thu Apr 12 00:30:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
+21619 ms. Memory: 901120K Free: 725004K (80%)
+reloadAllAccessors: .RESTGetCompleteResponseOnly
+----------------- Reloaded Accessors and testing again Thu Apr 12 00:57:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+REST: Making an HTTP request. (Thread[Thread-17,5,main])
+REST2: Making an HTTP request. (Thread[Thread-17,5,main])
+21772 ms. Memory: 901120K Free: 234866K (26%)
+----------------- testing Thu Apr 12 00:58:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
 REST: Making an HTTP request. (Thread[RESTPost,1,main])
 REST2: Making an HTTP request. (Thread[RESTPost,1,main])
-18725 ms. Memory: 948736K Free: 255063K (27%)
------------------ testing Thu Apr 12 00:30:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml
+18822 ms. Memory: 965120K Free: 123251K (13%)
+reloadAllAccessors: .RESTPost
+----------------- Reloaded Accessors and testing again Thu Apr 12 00:58:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
+REST: Making an HTTP request. (Thread[Thread-21,5,main])
+REST2: Making an HTTP request. (Thread[Thread-21,5,main])
+19769 ms. Memory: 996864K Free: 265504K (27%)
+----------------- testing Thu Apr 12 00:58:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml
 WebServer: WebServer: Creating new server. (Thread[RESTPostDataTypes,1,main])
-WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
-Manager.initialize() finished: 13733 ms. Memory: 1051648K Free: 239387K (23%)
+Manager.initialize() finished: 14363 ms. Memory: 1093120K Free: 366470K (34%)
 REST: Making an HTTP request. (Thread[RESTPostDataTypes,1,main])
-WebServer: Server received request. (Thread[RESTPostDataTypes,1,main])
-REST2: Making an HTTP request. (Thread[RESTPostDataTypes,1,main])
 WebServer: WebServer: Stopping the server. (Thread[RESTPostDataTypes,1,main])
-33899 ms. Memory: 1051648K Free: 638621K (61%)
------------------ testing Thu Apr 12 00:31:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+19530 ms. Memory: 1093120K Free: 323750K (30%)
+----------------- testing Thu Apr 12 00:59:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
 REST: Making an HTTP request. (Thread[RESTPut,1,main])
 REST2: Making an HTTP request. (Thread[RESTPut,1,main])
-18096 ms. Memory: 1106432K Free: 661720K (60%)
-reloadAllAccessors: .RESTPut
------------------ Reloaded Accessors and testing again Thu Apr 12 00:31:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
-REST: Making an HTTP request. (Thread[Thread-26,5,main])
-REST2: Making an HTTP request. (Thread[Thread-26,5,main])
-19231 ms. Memory: 1137664K Free: 390964K (34%)
------------------ testing Thu Apr 12 00:31:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
+19847 ms. Memory: 1144320K Free: 381201K (33%)
+----------------- testing Thu Apr 12 00:59:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
 REST2: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
 REST3: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
 REST: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
-16625 ms. Memory: 1137152K Free: 96878K (9%)
------------------ testing Thu Apr 12 00:32:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml
+17399 ms. Memory: 1196544K Free: 379499K (32%)
+----------------- testing Thu Apr 12 01:00:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml
 WebServer: WebServer: Creating new server. (Thread[RESTSendImage,1,main])
-Manager.initialize() finished: 11763 ms. Memory: 1268224K Free: 584499K (46%)
+WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
+Manager.initialize() finished: 12626 ms. Memory: 1270272K Free: 505873K (40%)
+REST: Making an HTTP request. (Thread[RESTSendImage,1,main])
 WebServer: WebServer: Stopping the server. (Thread[RESTSendImage,1,main])
-26838 ms. Memory: 1268224K Free: 564016K (44%)
------------------ testing Thu Apr 12 00:32:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
+27733 ms. Memory: 1270272K Free: 457435K (36%)
+----------------- testing Thu Apr 12 01:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
 REST: Making an HTTP request. (Thread[RESTStringURL,1,main])
-13980 ms. Memory: 1268736K Free: 533135K (42%)
+14517 ms. Memory: 1270784K Free: 431053K (34%)
 reloadAllAccessors: .RESTStringURL
------------------ Reloaded Accessors and testing again Thu Apr 12 00:33:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
-REST: Making an HTTP request. (Thread[Thread-37,5,main])
-14203 ms. Memory: 1268736K Free: 641724K (51%)
------------------ testing Thu Apr 12 00:33:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:01:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
+REST: Making an HTTP request. (Thread[Thread-38,5,main])
+14630 ms. Memory: 1271296K Free: 537924K (42%)
+----------------- testing Thu Apr 12 01:01:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
 REST: Making an HTTP request. (Thread[RESTWithTimeout,1,main])
-699 ms. Memory: 1268736K Free: 263710K (21%)
+886 ms. Memory: 1271296K Free: 159894K (13%)
 reloadAllAccessors: .RESTWithTimeout
------------------ Reloaded Accessors and testing again Thu Apr 12 00:33:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
-REST: Making an HTTP request. (Thread[Thread-41,5,main])
-831 ms. Memory: 1268736K Free: 442429K (35%)
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:01:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+REST: Making an HTTP request. (Thread[Thread-42,5,main])
+912 ms. Memory: 1271808K Free: 337680K (27%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 </pre>
