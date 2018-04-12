@@ -94,13 +94,13 @@ updateGhPages () {
         fi
     fi        
 
-    days=2
-    files=`find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +3 -print`
+    days=1
+    files=`find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +$days -print`
     if [ ! -z "$files" ]; then
-        echo "Removing any .htm and .xml files in reports/junit that are older than $days days."
+        echo "Removing any .htm and .xml files in reports/junit that are older than $days day(s)."
         ls -l $files
         git rm -f $files
-        git commit -m "Removed any .htm and .xml files in reports/junit that are older than $days days." $files
+        git commit -m "Removed any .htm and .xml files in reports/junit that are older than $days day(s)." $files
     fi
 
     cp -Rf $sources $destination
