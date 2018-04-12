@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 3.94 seconds.
+     [exec] Finished running in 5.41 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -304,7 +304,6 @@ build-bin:
      [exec] ./makebat -q "`basename soot.bat .bat`"
      [exec] rm -f "tinicomm.bat"
      [exec] ./makebat -q "`basename tinicomm.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "tinic.bat"
      [exec] ./makebat -q "`basename tinic.bat .bat`"
      [exec] rm -f "tiniconverter.bat"
@@ -317,13 +316,14 @@ build-bin:
      [exec] ln -s ptinvoke makeapp
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 12 20:52:35 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 12 21:42:29 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 12 20:52:38 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 12 21:42:32 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -547,7 +547,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 3.96 seconds.
+     [exec] Finished running in 4.97 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -599,7 +599,7 @@ test.report.short:
     [junit] javachdir: directory = diva/util/java2d/test
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/diva/util/java2d/test
     [junit] Running diva.util.java2d.test.junit.Polygon2DJUnitTest
-    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.113 sec
+    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.123 sec
     [junit] javachdir: directory = doc/books/embedded/concurrent/test
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test
     [junit] Running doc.books.embedded.concurrent.test.junit.JUnitTclTest
@@ -608,20 +608,20 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:52:51 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test/auto/TrafficLight.xml
-    [junit] 48 ms. Memory: 146944K Free: 134813K (92%)
+    [junit] ----------------- testing Thu Apr 12 21:42:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test/auto/TrafficLight.xml
+    [junit] 54 ms. Memory: 146944K Free: 135420K (92%)
     [junit] reloadAllAccessors: .TrafficLight
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.944 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.083 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:52:51 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test/auto/TrafficLight.xml
-    [junit] 48 ms. Memory: 146944K Free: 134813K (92%)
+    [junit] ----------------- testing Thu Apr 12 21:42:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/embedded/concurrent/test/auto/TrafficLight.xml
+    [junit] 54 ms. Memory: 146944K Free: 135420K (92%)
     [junit] reloadAllAccessors: .TrafficLight
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -634,20 +634,20 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:52:52 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml
-    [junit] 28 ms. Memory: 116224K Free: 91230K (78%)
+    [junit] ----------------- testing Thu Apr 12 21:42:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml
+    [junit] 25 ms. Memory: 116224K Free: 91185K (78%)
     [junit] reloadAllAccessors: .Count
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.72 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.821 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:52:52 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml
-    [junit] 28 ms. Memory: 116224K Free: 91230K (78%)
+    [junit] ----------------- testing Thu Apr 12 21:42:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml
+    [junit] 25 ms. Memory: 116224K Free: 91185K (78%)
     [junit] reloadAllAccessors: .Count
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -660,92 +660,92 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:52:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml
-    [junit] 2144 ms. Memory: 331776K Free: 272924K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:42:50 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml
+    [junit] 2463 ms. Memory: 208896K Free: 91298K (44%)
     [junit] reloadAllAccessors: .BouncingBall
-    [junit] ----------------- testing Thu Apr 12 20:52:56 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml
-    [junit] 130 ms. Memory: 331776K Free: 252651K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:42:53 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml
+    [junit] 88 ms. Memory: 331776K Free: 319359K (96%)
     [junit] reloadAllAccessors: .ContinuousInsideDE
-    [junit] ----------------- testing Thu Apr 12 20:52:56 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml
-    [junit] 241 ms. Memory: 331776K Free: 218196K (66%)
+    [junit] ----------------- testing Thu Apr 12 21:42:53 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml
+    [junit] 292 ms. Memory: 331776K Free: 280158K (84%)
     [junit] reloadAllAccessors: .ContinuousTransferFunction
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml
-    [junit] 144 ms. Memory: 331776K Free: 196061K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml
+    [junit] 149 ms. Memory: 331776K Free: 258070K (78%)
     [junit] reloadAllAccessors: .ContinuousTransferFunctionEquiv
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml
-    [junit] 120 ms. Memory: 331776K Free: 173926K (52%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml
+    [junit] 122 ms. Memory: 331776K Free: 235981K (71%)
     [junit] reloadAllAccessors: .FixedPointNoLimitation
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml
-    [junit] 76 ms. Memory: 331776K Free: 161621K (49%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml
+    [junit] 77 ms. Memory: 331776K Free: 223702K (67%)
     [junit] reloadAllAccessors: .ImpulseResponse
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml
-    [junit] 10 ms. Memory: 331776K Free: 154241K (46%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml
+    [junit] 9 ms. Memory: 331776K Free: 216329K (65%)
     [junit] reloadAllAccessors: .IntegratorInitialState
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml
-    [junit] 14 ms. Memory: 331776K Free: 146852K (44%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml
+    [junit] 14 ms. Memory: 331776K Free: 208963K (63%)
     [junit] reloadAllAccessors: .LevelCrossingDetectorFeedback
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml
-    [junit] 5711 ms. Memory: 579072K Free: 187660K (32%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml
+    [junit] 5178 ms. Memory: 479744K Free: 220959K (46%)
     [junit] reloadAllAccessors: .Lorenz
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml
-    [junit] 17 ms. Memory: 579072K Free: 169679K (29%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml
+    [junit] 35 ms. Memory: 479744K Free: 208182K (43%)
     [junit] reloadAllAccessors: .NotPiecewiseContinuous
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml
-    [junit] 10 ms. Memory: 579072K Free: 159848K (28%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml
+    [junit] 17 ms. Memory: 479744K Free: 200338K (42%)
     [junit] reloadAllAccessors: .PeriodicSamplerIntegrator
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml
-    [junit] 26 ms. Memory: 579072K Free: 140171K (24%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml
+    [junit] 24 ms. Memory: 479744K Free: 184634K (38%)
     [junit] reloadAllAccessors: .PiecewiseContinuous
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml
-    [junit] 11 ms. Memory: 579072K Free: 130341K (23%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml
+    [junit] 19 ms. Memory: 479744K Free: 172868K (36%)
     [junit] reloadAllAccessors: .TestTrigger
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.329 sec
+    [junit] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.281 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:52:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml
-    [junit] 2144 ms. Memory: 331776K Free: 272924K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:42:50 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/BouncingBall.xml
+    [junit] 2463 ms. Memory: 208896K Free: 91298K (44%)
     [junit] reloadAllAccessors: .BouncingBall
-    [junit] ----------------- testing Thu Apr 12 20:52:56 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml
-    [junit] 130 ms. Memory: 331776K Free: 252651K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:42:53 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousInsideDE.xml
+    [junit] 88 ms. Memory: 331776K Free: 319359K (96%)
     [junit] reloadAllAccessors: .ContinuousInsideDE
-    [junit] ----------------- testing Thu Apr 12 20:52:56 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml
-    [junit] 241 ms. Memory: 331776K Free: 218196K (66%)
+    [junit] ----------------- testing Thu Apr 12 21:42:53 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunction.xml
+    [junit] 292 ms. Memory: 331776K Free: 280158K (84%)
     [junit] reloadAllAccessors: .ContinuousTransferFunction
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml
-    [junit] 144 ms. Memory: 331776K Free: 196061K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ContinuousTransferFunctionEquiv.xml
+    [junit] 149 ms. Memory: 331776K Free: 258070K (78%)
     [junit] reloadAllAccessors: .ContinuousTransferFunctionEquiv
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml
-    [junit] 120 ms. Memory: 331776K Free: 173926K (52%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/FixedPointNoLimitation.xml
+    [junit] 122 ms. Memory: 331776K Free: 235981K (71%)
     [junit] reloadAllAccessors: .FixedPointNoLimitation
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml
-    [junit] 76 ms. Memory: 331776K Free: 161621K (49%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/ImpulseResponse.xml
+    [junit] 77 ms. Memory: 331776K Free: 223702K (67%)
     [junit] reloadAllAccessors: .ImpulseResponse
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml
-    [junit] 10 ms. Memory: 331776K Free: 154241K (46%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/IntegratorInitialState.xml
+    [junit] 9 ms. Memory: 331776K Free: 216329K (65%)
     [junit] reloadAllAccessors: .IntegratorInitialState
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml
-    [junit] 14 ms. Memory: 331776K Free: 146852K (44%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/LevelCrossingDetectorFeedback.xml
+    [junit] 14 ms. Memory: 331776K Free: 208963K (63%)
     [junit] reloadAllAccessors: .LevelCrossingDetectorFeedback
-    [junit] ----------------- testing Thu Apr 12 20:52:57 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml
-    [junit] 5711 ms. Memory: 579072K Free: 187660K (32%)
+    [junit] ----------------- testing Thu Apr 12 21:42:54 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/Lorenz.xml
+    [junit] 5178 ms. Memory: 479744K Free: 220959K (46%)
     [junit] reloadAllAccessors: .Lorenz
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml
-    [junit] 17 ms. Memory: 579072K Free: 169679K (29%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/NotPiecewiseContinuous.xml
+    [junit] 35 ms. Memory: 479744K Free: 208182K (43%)
     [junit] reloadAllAccessors: .NotPiecewiseContinuous
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml
-    [junit] 10 ms. Memory: 579072K Free: 159848K (28%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PeriodicSamplerIntegrator.xml
+    [junit] 17 ms. Memory: 479744K Free: 200338K (42%)
     [junit] reloadAllAccessors: .PeriodicSamplerIntegrator
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml
-    [junit] 26 ms. Memory: 579072K Free: 140171K (24%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/PiecewiseContinuous.xml
+    [junit] 24 ms. Memory: 479744K Free: 184634K (38%)
     [junit] reloadAllAccessors: .PiecewiseContinuous
-    [junit] ----------------- testing Thu Apr 12 20:53:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml
-    [junit] 11 ms. Memory: 579072K Free: 130341K (23%)
+    [junit] ----------------- testing Thu Apr 12 21:43:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/continuous/test/auto/TestTrigger.xml
+    [junit] 19 ms. Memory: 479744K Free: 172868K (36%)
     [junit] reloadAllAccessors: .TestTrigger
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -758,20 +758,20 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test/auto/BetterFibonacci.xml
-    [junit] 1141 ms. Memory: 208384K Free: 180859K (87%)
+    [junit] ----------------- testing Thu Apr 12 21:43:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test/auto/BetterFibonacci.xml
+    [junit] 1229 ms. Memory: 208896K Free: 114835K (55%)
     [junit] reloadAllAccessors: .BetterFibonacci
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.877 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.081 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test/auto/BetterFibonacci.xml
-    [junit] 1141 ms. Memory: 208384K Free: 180859K (87%)
+    [junit] ----------------- testing Thu Apr 12 21:43:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/dataflow/test/auto/BetterFibonacci.xml
+    [junit] 1229 ms. Memory: 208896K Free: 114835K (55%)
     [junit] reloadAllAccessors: .BetterFibonacci
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -784,104 +784,104 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml
-    [junit] 65 ms. Memory: 146944K Free: 140270K (95%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml
+    [junit] 99 ms. Memory: 146944K Free: 139539K (95%)
     [junit] reloadAllAccessors: .DEExample
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml
-    [junit] 16 ms. Memory: 146944K Free: 130784K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml
+    [junit] 42 ms. Memory: 146944K Free: 130060K (89%)
     [junit] reloadAllAccessors: .FSMSource
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml
-    [junit] 19 ms. Memory: 146944K Free: 124383K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml
+    [junit] 12 ms. Memory: 146944K Free: 123651K (84%)
     [junit] reloadAllAccessors: .FSMSource2
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml
-    [junit] 13 ms. Memory: 146944K Free: 118873K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml
+    [junit] 11 ms. Memory: 146944K Free: 118141K (80%)
     [junit] reloadAllAccessors: .Feedback
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml
-    [junit] 328 ms. Memory: 146944K Free: 110198K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml
+    [junit] 203 ms. Memory: 146944K Free: 109868K (75%)
     [junit] reloadAllAccessors: .InterarrivalTimes
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml
-    [junit] 36 ms. Memory: 146944K Free: 103433K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml
+    [junit] 60 ms. Memory: 146944K Free: 103087K (70%)
     [junit] reloadAllAccessors: .InterarrivalTimes2
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml
-    [junit] 57 ms. Memory: 146944K Free: 94798K (65%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml
+    [junit] 104 ms. Memory: 146944K Free: 93956K (64%)
     [junit] reloadAllAccessors: .InterarrivalTimes3
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml
-    [junit] 10 ms. Memory: 146944K Free: 87209K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml
+    [junit] 22 ms. Memory: 146944K Free: 86712K (59%)
     [junit] reloadAllAccessors: .Iteration
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml
-    [junit] 15 ms. Memory: 146944K Free: 81370K (55%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml
+    [junit] 44 ms. Memory: 146944K Free: 143211K (97%)
     [junit] reloadAllAccessors: .MM1Queue
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml
-    [junit] 2 ms. Memory: 146944K Free: 139040K (95%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml
+    [junit] 2 ms. Memory: 146944K Free: 138536K (94%)
     [junit] reloadAllAccessors: .ModelTimeVsRealTime
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml
-    [junit] 2680 ms. Memory: 332288K Free: 275595K (83%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml
+    [junit] 2916 ms. Memory: 332288K Free: 288026K (87%)
     [junit] reloadAllAccessors: .OpenQueueingNetwork
-    [junit] ----------------- testing Thu Apr 12 20:53:11 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml
-    [junit] 15 ms. Memory: 332288K Free: 264254K (80%)
+    [junit] ----------------- testing Thu Apr 12 21:43:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml
+    [junit] 12 ms. Memory: 332288K Free: 276472K (83%)
     [junit] reloadAllAccessors: .Priorities
-    [junit] ----------------- testing Thu Apr 12 20:53:11 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml
-    [junit] 35 ms. Memory: 332288K Free: 256442K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:43:09 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml
+    [junit] 34 ms. Memory: 332288K Free: 269099K (81%)
     [junit] reloadAllAccessors: .SDFWithinDE
-    [junit] ----------------- testing Thu Apr 12 20:53:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml
-    [junit] 22 ms. Memory: 332288K Free: 246611K (74%)
+    [junit] ----------------- testing Thu Apr 12 21:43:09 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml
+    [junit] 16 ms. Memory: 332288K Free: 259268K (78%)
     [junit] reloadAllAccessors: .Wireless
-    [junit] ----------------- testing Thu Apr 12 20:53:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml
-    [junit] 478 ms. Memory: 332288K Free: 195001K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:43:09 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml
+    [junit] 480 ms. Memory: 332288K Free: 207658K (62%)
     [junit] reloadAllAccessors: .Zeno
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.101 sec
+    [junit] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.501 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml
-    [junit] 65 ms. Memory: 146944K Free: 140270K (95%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/DEExample.xml
+    [junit] 99 ms. Memory: 146944K Free: 139539K (95%)
     [junit] reloadAllAccessors: .DEExample
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml
-    [junit] 16 ms. Memory: 146944K Free: 130784K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource.xml
+    [junit] 42 ms. Memory: 146944K Free: 130060K (89%)
     [junit] reloadAllAccessors: .FSMSource
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml
-    [junit] 19 ms. Memory: 146944K Free: 124383K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/FSMSource2.xml
+    [junit] 12 ms. Memory: 146944K Free: 123651K (84%)
     [junit] reloadAllAccessors: .FSMSource2
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml
-    [junit] 13 ms. Memory: 146944K Free: 118873K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Feedback.xml
+    [junit] 11 ms. Memory: 146944K Free: 118141K (80%)
     [junit] reloadAllAccessors: .Feedback
-    [junit] ----------------- testing Thu Apr 12 20:53:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml
-    [junit] 328 ms. Memory: 146944K Free: 110198K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes.xml
+    [junit] 203 ms. Memory: 146944K Free: 109868K (75%)
     [junit] reloadAllAccessors: .InterarrivalTimes
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml
-    [junit] 36 ms. Memory: 146944K Free: 103433K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes2.xml
+    [junit] 60 ms. Memory: 146944K Free: 103087K (70%)
     [junit] reloadAllAccessors: .InterarrivalTimes2
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml
-    [junit] 57 ms. Memory: 146944K Free: 94798K (65%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/InterarrivalTimes3.xml
+    [junit] 104 ms. Memory: 146944K Free: 93956K (64%)
     [junit] reloadAllAccessors: .InterarrivalTimes3
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml
-    [junit] 10 ms. Memory: 146944K Free: 87209K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Iteration.xml
+    [junit] 22 ms. Memory: 146944K Free: 86712K (59%)
     [junit] reloadAllAccessors: .Iteration
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml
-    [junit] 15 ms. Memory: 146944K Free: 81370K (55%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/MM1Queue.xml
+    [junit] 44 ms. Memory: 146944K Free: 143211K (97%)
     [junit] reloadAllAccessors: .MM1Queue
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml
-    [junit] 2 ms. Memory: 146944K Free: 139040K (95%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/ModelTimeVsRealTime.xml
+    [junit] 2 ms. Memory: 146944K Free: 138536K (94%)
     [junit] reloadAllAccessors: .ModelTimeVsRealTime
-    [junit] ----------------- testing Thu Apr 12 20:53:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml
-    [junit] 2680 ms. Memory: 332288K Free: 275595K (83%)
+    [junit] ----------------- testing Thu Apr 12 21:43:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/OpenQueueingNetwork.xml
+    [junit] 2916 ms. Memory: 332288K Free: 288026K (87%)
     [junit] reloadAllAccessors: .OpenQueueingNetwork
-    [junit] ----------------- testing Thu Apr 12 20:53:11 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml
-    [junit] 15 ms. Memory: 332288K Free: 264254K (80%)
+    [junit] ----------------- testing Thu Apr 12 21:43:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Priorities.xml
+    [junit] 12 ms. Memory: 332288K Free: 276472K (83%)
     [junit] reloadAllAccessors: .Priorities
-    [junit] ----------------- testing Thu Apr 12 20:53:11 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml
-    [junit] 35 ms. Memory: 332288K Free: 256442K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:43:09 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/SDFWithinDE.xml
+    [junit] 34 ms. Memory: 332288K Free: 269099K (81%)
     [junit] reloadAllAccessors: .SDFWithinDE
-    [junit] ----------------- testing Thu Apr 12 20:53:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml
-    [junit] 22 ms. Memory: 332288K Free: 246611K (74%)
+    [junit] ----------------- testing Thu Apr 12 21:43:09 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Wireless.xml
+    [junit] 16 ms. Memory: 332288K Free: 259268K (78%)
     [junit] reloadAllAccessors: .Wireless
-    [junit] ----------------- testing Thu Apr 12 20:53:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml
-    [junit] 478 ms. Memory: 332288K Free: 195001K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:43:09 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/discreteevents/test/auto/Zeno.xml
+    [junit] 480 ms. Memory: 332288K Free: 207658K (62%)
     [junit] reloadAllAccessors: .Zeno
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -897,7 +897,7 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/export/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.459 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.527 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/export/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/export/test
@@ -916,32 +916,32 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/FunctionComplex.xml
-    [junit] 36 ms. Memory: 116224K Free: 88386K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/FunctionComplex.xml
+    [junit] 27 ms. Memory: 116224K Free: 88373K (76%)
     [junit] reloadAllAccessors: .FunctionComplex
-    [junit] ----------------- testing Thu Apr 12 20:53:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/NilTypes.xml
-    [junit] 5 ms. Memory: 116224K Free: 84882K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/NilTypes.xml
+    [junit] 4 ms. Memory: 116224K Free: 84818K (73%)
     [junit] reloadAllAccessors: .NilTypes
-    [junit] ----------------- testing Thu Apr 12 20:53:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/UnionTypes.xml
-    [junit] 18 ms. Memory: 146944K Free: 138753K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:43:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/UnionTypes.xml
+    [junit] 21 ms. Memory: 146944K Free: 138302K (94%)
     [junit] reloadAllAccessors: .UnionTypes
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.904 sec
+    [junit] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.978 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/FunctionComplex.xml
-    [junit] 36 ms. Memory: 116224K Free: 88386K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/FunctionComplex.xml
+    [junit] 27 ms. Memory: 116224K Free: 88373K (76%)
     [junit] reloadAllAccessors: .FunctionComplex
-    [junit] ----------------- testing Thu Apr 12 20:53:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/NilTypes.xml
-    [junit] 5 ms. Memory: 116224K Free: 84882K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/NilTypes.xml
+    [junit] 4 ms. Memory: 116224K Free: 84818K (73%)
     [junit] reloadAllAccessors: .NilTypes
-    [junit] ----------------- testing Thu Apr 12 20:53:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/UnionTypes.xml
-    [junit] 18 ms. Memory: 146944K Free: 138753K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:43:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/expressions/test/auto/UnionTypes.xml
+    [junit] 21 ms. Memory: 146944K Free: 138302K (94%)
     [junit] reloadAllAccessors: .UnionTypes
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -954,122 +954,122 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml
-    [junit] 68 ms. Memory: 146944K Free: 123233K (84%)
+    [junit] ----------------- testing Thu Apr 12 21:43:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml
+    [junit] 82 ms. Memory: 146944K Free: 122547K (83%)
     [junit] reloadAllAccessors: .ABCROFlat_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml
-    [junit] 37 ms. Memory: 146944K Free: 92992K (63%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml
+    [junit] 35 ms. Memory: 146944K Free: 92327K (63%)
     [junit] reloadAllAccessors: .ABCROHierarchicalTermination
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml
-    [junit] 101 ms. Memory: 146944K Free: 119056K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml
+    [junit] 106 ms. Memory: 146944K Free: 118508K (81%)
     [junit] reloadAllAccessors: .ABCROHierarchical_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml
-    [junit] 20 ms. Memory: 146944K Free: 103256K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml
+    [junit] 15 ms. Memory: 146944K Free: 102588K (70%)
     [junit] reloadAllAccessors: .ABROFlat_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml
-    [junit] 15 ms. Memory: 146944K Free: 87385K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml
+    [junit] 22 ms. Memory: 146944K Free: 86637K (59%)
     [junit] reloadAllAccessors: .ABROFlat_SA_BruteForce
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml
-    [junit] 26 ms. Memory: 208384K Free: 188173K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml
+    [junit] 19 ms. Memory: 208384K Free: 187553K (90%)
     [junit] reloadAllAccessors: .ABROHierarchicalTermination
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml
-    [junit] 45 ms. Memory: 208384K Free: 161178K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml
+    [junit] 40 ms. Memory: 208384K Free: 160499K (77%)
     [junit] reloadAllAccessors: .ABROHierarchical_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
-    [junit] 153 ms. Memory: 208384K Free: 118717K (57%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
+    [junit] 119 ms. Memory: 208384K Free: 120905K (58%)
     [junit] reloadAllAccessors: .CapriciousThermostat
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
-    [junit] 20 ms. Memory: 208384K Free: 109601K (53%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
+    [junit] 17 ms. Memory: 208384K Free: 111797K (54%)
     [junit] reloadAllAccessors: .ExtendedFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml
-    [junit] 10 ms. Memory: 208384K Free: 100462K (48%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml
+    [junit] 7 ms. Memory: 208384K Free: 102618K (49%)
     [junit] reloadAllAccessors: .FinalStates
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml
-    [junit] 11 ms. Memory: 208384K Free: 90511K (43%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml
+    [junit] 9 ms. Memory: 208384K Free: 92683K (44%)
     [junit] reloadAllAccessors: .FinalStatesImmediate
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml
-    [junit] 35 ms. Memory: 208384K Free: 203880K (98%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml
+    [junit] 15 ms. Memory: 208384K Free: 82644K (40%)
     [junit] reloadAllAccessors: .FinalStatesReset
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml
-    [junit] 7 ms. Memory: 208384K Free: 193880K (93%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml
+    [junit] 6 ms. Memory: 208384K Free: 195396K (94%)
     [junit] reloadAllAccessors: .FinalStatesResetDefault
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml
-    [junit] 18 ms. Memory: 208384K Free: 178901K (86%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml
+    [junit] 18 ms. Memory: 208384K Free: 179147K (86%)
     [junit] reloadAllAccessors: .FixedPointFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
-    [junit] 151 ms. Memory: 208384K Free: 131787K (63%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
+    [junit] 169 ms. Memory: 208384K Free: 131786K (63%)
     [junit] reloadAllAccessors: .HierarchicalFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
-    [junit] 95 ms. Memory: 208384K Free: 87735K (42%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
+    [junit] 127 ms. Memory: 208384K Free: 88538K (42%)
     [junit] reloadAllAccessors: .HierarchicalFSM_Flattened
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml
-    [junit] 37 ms. Memory: 331776K Free: 298731K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:43:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml
+    [junit] 60 ms. Memory: 331776K Free: 298920K (90%)
     [junit] reloadAllAccessors: .Hysteresis
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml
-    [junit] 28 ms. Memory: 331776K Free: 271759K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:43:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml
+    [junit] 35 ms. Memory: 331776K Free: 271951K (82%)
     [junit] reloadAllAccessors: .HysteresisWithDefault
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.139 sec
+    [junit] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.357 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml
-    [junit] 68 ms. Memory: 146944K Free: 123233K (84%)
+    [junit] ----------------- testing Thu Apr 12 21:43:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROFlat_SA.xml
+    [junit] 82 ms. Memory: 146944K Free: 122547K (83%)
     [junit] reloadAllAccessors: .ABCROFlat_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml
-    [junit] 37 ms. Memory: 146944K Free: 92992K (63%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchicalTermination.xml
+    [junit] 35 ms. Memory: 146944K Free: 92327K (63%)
     [junit] reloadAllAccessors: .ABCROHierarchicalTermination
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml
-    [junit] 101 ms. Memory: 146944K Free: 119056K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABCROHierarchical_SA.xml
+    [junit] 106 ms. Memory: 146944K Free: 118508K (81%)
     [junit] reloadAllAccessors: .ABCROHierarchical_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml
-    [junit] 20 ms. Memory: 146944K Free: 103256K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA.xml
+    [junit] 15 ms. Memory: 146944K Free: 102588K (70%)
     [junit] reloadAllAccessors: .ABROFlat_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml
-    [junit] 15 ms. Memory: 146944K Free: 87385K (59%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROFlat_SA_BruteForce.xml
+    [junit] 22 ms. Memory: 146944K Free: 86637K (59%)
     [junit] reloadAllAccessors: .ABROFlat_SA_BruteForce
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml
-    [junit] 26 ms. Memory: 208384K Free: 188173K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:43:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchicalTermination.xml
+    [junit] 19 ms. Memory: 208384K Free: 187553K (90%)
     [junit] reloadAllAccessors: .ABROHierarchicalTermination
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml
-    [junit] 45 ms. Memory: 208384K Free: 161178K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ABROHierarchical_SA.xml
+    [junit] 40 ms. Memory: 208384K Free: 160499K (77%)
     [junit] reloadAllAccessors: .ABROHierarchical_SA
-    [junit] ----------------- testing Thu Apr 12 20:53:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
-    [junit] 153 ms. Memory: 208384K Free: 118717K (57%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/CapriciousThermostat.xml
+    [junit] 119 ms. Memory: 208384K Free: 120905K (58%)
     [junit] reloadAllAccessors: .CapriciousThermostat
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
-    [junit] 20 ms. Memory: 208384K Free: 109601K (53%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/ExtendedFSM.xml
+    [junit] 17 ms. Memory: 208384K Free: 111797K (54%)
     [junit] reloadAllAccessors: .ExtendedFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml
-    [junit] 10 ms. Memory: 208384K Free: 100462K (48%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStates.xml
+    [junit] 7 ms. Memory: 208384K Free: 102618K (49%)
     [junit] reloadAllAccessors: .FinalStates
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml
-    [junit] 11 ms. Memory: 208384K Free: 90511K (43%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesImmediate.xml
+    [junit] 9 ms. Memory: 208384K Free: 92683K (44%)
     [junit] reloadAllAccessors: .FinalStatesImmediate
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml
-    [junit] 35 ms. Memory: 208384K Free: 203880K (98%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesReset.xml
+    [junit] 15 ms. Memory: 208384K Free: 82644K (40%)
     [junit] reloadAllAccessors: .FinalStatesReset
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml
-    [junit] 7 ms. Memory: 208384K Free: 193880K (93%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FinalStatesResetDefault.xml
+    [junit] 6 ms. Memory: 208384K Free: 195396K (94%)
     [junit] reloadAllAccessors: .FinalStatesResetDefault
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml
-    [junit] 18 ms. Memory: 208384K Free: 178901K (86%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/FixedPointFSM.xml
+    [junit] 18 ms. Memory: 208384K Free: 179147K (86%)
     [junit] reloadAllAccessors: .FixedPointFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
-    [junit] 151 ms. Memory: 208384K Free: 131787K (63%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
+    [junit] 169 ms. Memory: 208384K Free: 131786K (63%)
     [junit] reloadAllAccessors: .HierarchicalFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
-    [junit] 95 ms. Memory: 208384K Free: 87735K (42%)
+    [junit] ----------------- testing Thu Apr 12 21:43:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
+    [junit] 127 ms. Memory: 208384K Free: 88538K (42%)
     [junit] reloadAllAccessors: .HierarchicalFSM_Flattened
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml
-    [junit] 37 ms. Memory: 331776K Free: 298731K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:43:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/Hysteresis.xml
+    [junit] 60 ms. Memory: 331776K Free: 298920K (90%)
     [junit] reloadAllAccessors: .Hysteresis
-    [junit] ----------------- testing Thu Apr 12 20:53:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml
-    [junit] 28 ms. Memory: 331776K Free: 271759K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:43:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/fsm/test/auto/HysteresisWithDefault.xml
+    [junit] 35 ms. Memory: 331776K Free: 271951K (82%)
     [junit] reloadAllAccessors: .HysteresisWithDefault
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1082,20 +1082,20 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/intro/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/intro/test/auto/GeneratorRegulatorProtector.xml
-    [junit] 688 ms. Memory: 146944K Free: 89652K (61%)
+    [junit] ----------------- testing Thu Apr 12 21:43:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/intro/test/auto/GeneratorRegulatorProtector.xml
+    [junit] 803 ms. Memory: 146944K Free: 89500K (61%)
     [junit] reloadAllAccessors: .GeneratorRegulatorProtector
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.786 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.075 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/intro/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/intro/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/intro/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/intro/test/auto/GeneratorRegulatorProtector.xml
-    [junit] 688 ms. Memory: 146944K Free: 89652K (61%)
+    [junit] ----------------- testing Thu Apr 12 21:43:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/intro/test/auto/GeneratorRegulatorProtector.xml
+    [junit] 803 ms. Memory: 146944K Free: 89500K (61%)
     [junit] reloadAllAccessors: .GeneratorRegulatorProtector
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1108,98 +1108,98 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml
-    [junit] 492 ms. Memory: 146944K Free: 87703K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:43:20 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml
+    [junit] 501 ms. Memory: 146944K Free: 87723K (60%)
     [junit] reloadAllAccessors: .FSK
-    [junit] ----------------- testing Thu Apr 12 20:53:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml
-    [junit] 254 ms. Memory: 146944K Free: 125364K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:20 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml
+    [junit] 267 ms. Memory: 146944K Free: 125692K (86%)
     [junit] reloadAllAccessors: .Fibonacci
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml
-    [junit] 27 ms. Memory: 146944K Free: 111888K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml
+    [junit] 19 ms. Memory: 146944K Free: 112128K (76%)
     [junit] reloadAllAccessors: .History
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml
-    [junit] 73 ms. Memory: 146944K Free: 84574K (58%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml
+    [junit] 34 ms. Memory: 146944K Free: 84870K (58%)
     [junit] reloadAllAccessors: .Merge
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml
-    [junit] 36 ms. Memory: 208384K Free: 185551K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml
+    [junit] 30 ms. Memory: 208384K Free: 185831K (89%)
     [junit] reloadAllAccessors: .ModalClocks
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml
-    [junit] 18 ms. Memory: 208384K Free: 170830K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml
+    [junit] 17 ms. Memory: 208384K Free: 171061K (82%)
     [junit] reloadAllAccessors: .ModalDelay
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml
-    [junit] 144 ms. Memory: 208384K Free: 106787K (51%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml
+    [junit] 276 ms. Memory: 208384K Free: 106729K (51%)
     [junit] reloadAllAccessors: .ModalModelExample
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml
-    [junit] 84 ms. Memory: 208384K Free: 203371K (98%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml
+    [junit] 80 ms. Memory: 208384K Free: 202194K (97%)
     [junit] reloadAllAccessors: .ModalSDF
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml
-    [junit] 11 ms. Memory: 208384K Free: 186516K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml
+    [junit] 15 ms. Memory: 208384K Free: 186188K (89%)
     [junit] reloadAllAccessors: .Preemptive
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml
-    [junit] 16 ms. Memory: 208384K Free: 172557K (83%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml
+    [junit] 21 ms. Memory: 208384K Free: 172229K (83%)
     [junit] reloadAllAccessors: .PreemptiveFixed
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml
-    [junit] 17 ms. Memory: 208384K Free: 158494K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml
+    [junit] 15 ms. Memory: 208384K Free: 158134K (76%)
     [junit] reloadAllAccessors: .Reset
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml
-    [junit] 9 ms. Memory: 208384K Free: 148495K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml
+    [junit] 13 ms. Memory: 208384K Free: 148200K (71%)
     [junit] reloadAllAccessors: .ResettableTimer
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml
-    [junit] 11 ms. Memory: 208384K Free: 135999K (65%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml
+    [junit] 11 ms. Memory: 208384K Free: 135783K (65%)
     [junit] reloadAllAccessors: .SpontaneousFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml
-    [junit] 5 ms. Memory: 208384K Free: 129735K (62%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml
+    [junit] 5 ms. Memory: 208384K Free: 129503K (62%)
     [junit] reloadAllAccessors: .Timeout
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.984 sec
+    [junit] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.236 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modal/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml
-    [junit] 492 ms. Memory: 146944K Free: 87703K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:43:20 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/FSK.xml
+    [junit] 501 ms. Memory: 146944K Free: 87723K (60%)
     [junit] reloadAllAccessors: .FSK
-    [junit] ----------------- testing Thu Apr 12 20:53:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml
-    [junit] 254 ms. Memory: 146944K Free: 125364K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:20 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Fibonacci.xml
+    [junit] 267 ms. Memory: 146944K Free: 125692K (86%)
     [junit] reloadAllAccessors: .Fibonacci
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml
-    [junit] 27 ms. Memory: 146944K Free: 111888K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/History.xml
+    [junit] 19 ms. Memory: 146944K Free: 112128K (76%)
     [junit] reloadAllAccessors: .History
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml
-    [junit] 73 ms. Memory: 146944K Free: 84574K (58%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Merge.xml
+    [junit] 34 ms. Memory: 146944K Free: 84870K (58%)
     [junit] reloadAllAccessors: .Merge
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml
-    [junit] 36 ms. Memory: 208384K Free: 185551K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalClocks.xml
+    [junit] 30 ms. Memory: 208384K Free: 185831K (89%)
     [junit] reloadAllAccessors: .ModalClocks
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml
-    [junit] 18 ms. Memory: 208384K Free: 170830K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalDelay.xml
+    [junit] 17 ms. Memory: 208384K Free: 171061K (82%)
     [junit] reloadAllAccessors: .ModalDelay
-    [junit] ----------------- testing Thu Apr 12 20:53:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml
-    [junit] 144 ms. Memory: 208384K Free: 106787K (51%)
+    [junit] ----------------- testing Thu Apr 12 21:43:21 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalModelExample.xml
+    [junit] 276 ms. Memory: 208384K Free: 106729K (51%)
     [junit] reloadAllAccessors: .ModalModelExample
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml
-    [junit] 84 ms. Memory: 208384K Free: 203371K (98%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ModalSDF.xml
+    [junit] 80 ms. Memory: 208384K Free: 202194K (97%)
     [junit] reloadAllAccessors: .ModalSDF
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml
-    [junit] 11 ms. Memory: 208384K Free: 186516K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Preemptive.xml
+    [junit] 15 ms. Memory: 208384K Free: 186188K (89%)
     [junit] reloadAllAccessors: .Preemptive
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml
-    [junit] 16 ms. Memory: 208384K Free: 172557K (83%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/PreemptiveFixed.xml
+    [junit] 21 ms. Memory: 208384K Free: 172229K (83%)
     [junit] reloadAllAccessors: .PreemptiveFixed
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml
-    [junit] 17 ms. Memory: 208384K Free: 158494K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Reset.xml
+    [junit] 15 ms. Memory: 208384K Free: 158134K (76%)
     [junit] reloadAllAccessors: .Reset
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml
-    [junit] 9 ms. Memory: 208384K Free: 148495K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/ResettableTimer.xml
+    [junit] 13 ms. Memory: 208384K Free: 148200K (71%)
     [junit] reloadAllAccessors: .ResettableTimer
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml
-    [junit] 11 ms. Memory: 208384K Free: 135999K (65%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/SpontaneousFSM.xml
+    [junit] 11 ms. Memory: 208384K Free: 135783K (65%)
     [junit] reloadAllAccessors: .SpontaneousFSM
-    [junit] ----------------- testing Thu Apr 12 20:53:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml
-    [junit] 5 ms. Memory: 208384K Free: 129735K (62%)
+    [junit] ----------------- testing Thu Apr 12 21:43:22 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modal/test/auto/Timeout.xml
+    [junit] 5 ms. Memory: 208384K Free: 129503K (62%)
     [junit] reloadAllAccessors: .Timeout
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1212,144 +1212,144 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
-    [junit] 519 ms. Memory: 146944K Free: 110541K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
+    [junit] 652 ms. Memory: 146944K Free: 110608K (75%)
     [junit] reloadAllAccessors: .CommunicationDelay1
-    [junit] ----------------- testing Thu Apr 12 20:53:26 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
-    [junit] 363 ms. Memory: 146944K Free: 125368K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
+    [junit] 447 ms. Memory: 146944K Free: 124525K (85%)
     [junit] reloadAllAccessors: .CommunicationDelayActors
-    [junit] ----------------- testing Thu Apr 12 20:53:26 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
-    [junit] 121 ms. Memory: 146944K Free: 95738K (65%)
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
+    [junit] 116 ms. Memory: 146944K Free: 94805K (65%)
     [junit] reloadAllAccessors: .CommunicationDelayQM
-    [junit] ----------------- testing Thu Apr 12 20:53:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
-    [junit] 6 ms. Memory: 146944K Free: 84382K (57%)
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
+    [junit] 12 ms. Memory: 146944K Free: 83456K (57%)
     [junit] reloadAllAccessors: .DEModelOfPtidesSimple
-    [junit] ----------------- testing Thu Apr 12 20:53:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
-    [junit] 42 ms. Memory: 208384K Free: 196094K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
+    [junit] 36 ms. Memory: 208384K Free: 195319K (94%)
     [junit] reloadAllAccessors: .ExecutionTime
-    [junit] ----------------- testing Thu Apr 12 20:53:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
     [junit] WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
     [junit] execution, potentially changing the behavior. There is no guarantee that actors fire at the 
     [junit] time they request to be fired. 
     [junit] Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
     [junit] 
-    [junit] 698 ms. Memory: 208384K Free: 185099K (89%)
+    [junit] 719 ms. Memory: 208384K Free: 182154K (87%)
     [junit] reloadAllAccessors: .GeneratorExecutionAspect
-    [junit] ----------------- testing Thu Apr 12 20:53:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
-    [junit] 74 ms. Memory: 208384K Free: 145672K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
+    [junit] 71 ms. Memory: 208384K Free: 145258K (70%)
     [junit] reloadAllAccessors: .HeartBeatDetector
-    [junit] ----------------- testing Thu Apr 12 20:53:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
-    [junit] 133 ms. Memory: 208384K Free: 112019K (54%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
+    [junit] 114 ms. Memory: 208384K Free: 111950K (54%)
     [junit] reloadAllAccessors: .LineFaultModel
-    [junit] ----------------- testing Thu Apr 12 20:53:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
-    [junit] 130 ms. Memory: 331776K Free: 305458K (92%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
+    [junit] 130 ms. Memory: 331264K Free: 305044K (92%)
     [junit] reloadAllAccessors: .LineFaultModelWithBetterCompositeCommunicationAspect
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
-    [junit] 127 ms. Memory: 331776K Free: 252895K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
+    [junit] 116 ms. Memory: 331264K Free: 253987K (77%)
     [junit] reloadAllAccessors: .LineFaultModelWithCompositeCommunicationAspect
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
-    [junit] 83 ms. Memory: 331776K Free: 213556K (64%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
+    [junit] 88 ms. Memory: 331264K Free: 215829K (65%)
     [junit] reloadAllAccessors: .LineFaultModelWithDelays
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
-    [junit] 76 ms. Memory: 331776K Free: 165598K (50%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
+    [junit] 106 ms. Memory: 331264K Free: 167888K (51%)
     [junit] reloadAllAccessors: .LineFaultModelWithQM
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
-    [junit] 101 ms. Memory: 331776K Free: 109071K (33%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
+    [junit] 85 ms. Memory: 331264K Free: 111314K (34%)
     [junit] reloadAllAccessors: .LineFaultModelWithTwoQMs
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
-    [junit] 402 ms. Memory: 331776K Free: 237111K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
+    [junit] 454 ms. Memory: 331776K Free: 240019K (72%)
     [junit] reloadAllAccessors: .LineFaultModel_noClockSync
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
-    [junit] 13 ms. Memory: 331776K Free: 226818K (68%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
+    [junit] 14 ms. Memory: 331776K Free: 229758K (69%)
     [junit] reloadAllAccessors: .LocalSource
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
-    [junit] 27 ms. Memory: 331776K Free: 200603K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
+    [junit] 33 ms. Memory: 331776K Free: 203952K (61%)
     [junit] reloadAllAccessors: .PtidesSchema
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
-    [junit] 28 ms. Memory: 331776K Free: 172312K (52%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
+    [junit] 23 ms. Memory: 331776K Free: 176416K (53%)
     [junit] reloadAllAccessors: .PtidesSchema_Exception
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
-    [junit] 19 ms. Memory: 331776K Free: 144458K (44%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
+    [junit] 17 ms. Memory: 331776K Free: 150611K (45%)
     [junit] reloadAllAccessors: .ResourceScheduler
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
-    [junit] 13 ms. Memory: 331776K Free: 126435K (38%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
+    [junit] 11 ms. Memory: 331776K Free: 133359K (40%)
     [junit] reloadAllAccessors: .SimplePtides
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
-    [junit] 74 ms. Memory: 331776K Free: 91598K (28%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
+    [junit] 89 ms. Memory: 331776K Free: 103437K (31%)
     [junit] reloadAllAccessors: .TimePlot
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.106 sec
+    [junit] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.761 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
-    [junit] 519 ms. Memory: 146944K Free: 110541K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:23 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
+    [junit] 652 ms. Memory: 146944K Free: 110608K (75%)
     [junit] reloadAllAccessors: .CommunicationDelay1
-    [junit] ----------------- testing Thu Apr 12 20:53:26 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
-    [junit] 363 ms. Memory: 146944K Free: 125368K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
+    [junit] 447 ms. Memory: 146944K Free: 124525K (85%)
     [junit] reloadAllAccessors: .CommunicationDelayActors
-    [junit] ----------------- testing Thu Apr 12 20:53:26 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
-    [junit] 121 ms. Memory: 146944K Free: 95738K (65%)
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
+    [junit] 116 ms. Memory: 146944K Free: 94805K (65%)
     [junit] reloadAllAccessors: .CommunicationDelayQM
-    [junit] ----------------- testing Thu Apr 12 20:53:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
-    [junit] 6 ms. Memory: 146944K Free: 84382K (57%)
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
+    [junit] 12 ms. Memory: 146944K Free: 83456K (57%)
     [junit] reloadAllAccessors: .DEModelOfPtidesSimple
-    [junit] ----------------- testing Thu Apr 12 20:53:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
-    [junit] 42 ms. Memory: 208384K Free: 196094K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
+    [junit] 36 ms. Memory: 208384K Free: 195319K (94%)
     [junit] reloadAllAccessors: .ExecutionTime
-    [junit] ----------------- testing Thu Apr 12 20:53:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
+    [junit] ----------------- testing Thu Apr 12 21:43:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
     [junit] WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
     [junit] execution, potentially changing the behavior. There is no guarantee that actors fire at the 
     [junit] time they request to be fired. 
     [junit] Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
     [junit] 
-    [junit] 698 ms. Memory: 208384K Free: 185099K (89%)
+    [junit] 719 ms. Memory: 208384K Free: 182154K (87%)
     [junit] reloadAllAccessors: .GeneratorExecutionAspect
-    [junit] ----------------- testing Thu Apr 12 20:53:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
-    [junit] 74 ms. Memory: 208384K Free: 145672K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
+    [junit] 71 ms. Memory: 208384K Free: 145258K (70%)
     [junit] reloadAllAccessors: .HeartBeatDetector
-    [junit] ----------------- testing Thu Apr 12 20:53:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
-    [junit] 133 ms. Memory: 208384K Free: 112019K (54%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
+    [junit] 114 ms. Memory: 208384K Free: 111950K (54%)
     [junit] reloadAllAccessors: .LineFaultModel
-    [junit] ----------------- testing Thu Apr 12 20:53:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
-    [junit] 130 ms. Memory: 331776K Free: 305458K (92%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
+    [junit] 130 ms. Memory: 331264K Free: 305044K (92%)
     [junit] reloadAllAccessors: .LineFaultModelWithBetterCompositeCommunicationAspect
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
-    [junit] 127 ms. Memory: 331776K Free: 252895K (76%)
+    [junit] ----------------- testing Thu Apr 12 21:43:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
+    [junit] 116 ms. Memory: 331264K Free: 253987K (77%)
     [junit] reloadAllAccessors: .LineFaultModelWithCompositeCommunicationAspect
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
-    [junit] 83 ms. Memory: 331776K Free: 213556K (64%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
+    [junit] 88 ms. Memory: 331264K Free: 215829K (65%)
     [junit] reloadAllAccessors: .LineFaultModelWithDelays
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
-    [junit] 76 ms. Memory: 331776K Free: 165598K (50%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
+    [junit] 106 ms. Memory: 331264K Free: 167888K (51%)
     [junit] reloadAllAccessors: .LineFaultModelWithQM
-    [junit] ----------------- testing Thu Apr 12 20:53:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
-    [junit] 101 ms. Memory: 331776K Free: 109071K (33%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
+    [junit] 85 ms. Memory: 331264K Free: 111314K (34%)
     [junit] reloadAllAccessors: .LineFaultModelWithTwoQMs
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
-    [junit] 402 ms. Memory: 331776K Free: 237111K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:43:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
+    [junit] 454 ms. Memory: 331776K Free: 240019K (72%)
     [junit] reloadAllAccessors: .LineFaultModel_noClockSync
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
-    [junit] 13 ms. Memory: 331776K Free: 226818K (68%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
+    [junit] 14 ms. Memory: 331776K Free: 229758K (69%)
     [junit] reloadAllAccessors: .LocalSource
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
-    [junit] 27 ms. Memory: 331776K Free: 200603K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
+    [junit] 33 ms. Memory: 331776K Free: 203952K (61%)
     [junit] reloadAllAccessors: .PtidesSchema
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
-    [junit] 28 ms. Memory: 331776K Free: 172312K (52%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
+    [junit] 23 ms. Memory: 331776K Free: 176416K (53%)
     [junit] reloadAllAccessors: .PtidesSchema_Exception
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
-    [junit] 19 ms. Memory: 331776K Free: 144458K (44%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
+    [junit] 17 ms. Memory: 331776K Free: 150611K (45%)
     [junit] reloadAllAccessors: .ResourceScheduler
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
-    [junit] 13 ms. Memory: 331776K Free: 126435K (38%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
+    [junit] 11 ms. Memory: 331776K Free: 133359K (40%)
     [junit] reloadAllAccessors: .SimplePtides
-    [junit] ----------------- testing Thu Apr 12 20:53:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
-    [junit] 74 ms. Memory: 331776K Free: 91598K (28%)
+    [junit] ----------------- testing Thu Apr 12 21:43:29 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
+    [junit] 89 ms. Memory: 331776K Free: 103437K (31%)
     [junit] reloadAllAccessors: .TimePlot
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1365,7 +1365,7 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/ontologies/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.431 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.491 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/ontologies/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/ontologies/test
@@ -1384,20 +1384,20 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test/auto/SpectrumOfNoisySinusoids.xml
-    [junit] 100 ms. Memory: 146944K Free: 129151K (88%)
+    [junit] ----------------- testing Thu Apr 12 21:43:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test/auto/SpectrumOfNoisySinusoids.xml
+    [junit] 103 ms. Memory: 146944K Free: 129081K (88%)
     [junit] reloadAllAccessors: .spectrumOfNoisySinusoid
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.995 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.104 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test/auto/SpectrumOfNoisySinusoids.xml
-    [junit] 100 ms. Memory: 146944K Free: 129151K (88%)
+    [junit] ----------------- testing Thu Apr 12 21:43:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/plotter/test/auto/SpectrumOfNoisySinusoids.xml
+    [junit] 103 ms. Memory: 146944K Free: 129081K (88%)
     [junit] reloadAllAccessors: .spectrumOfNoisySinusoid
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1410,57 +1410,57 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/pn/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:34 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml
-    [junit] 10302 ms. Memory: 116224K Free: 84511K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml
+    [junit] 5501 ms. Memory: 116224K Free: 83596K (72%)
     [junit] reloadAllAccessors: .Barrier
-    [junit] ----------------- testing Thu Apr 12 20:53:45 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml
-    [junit] 2244 ms. Memory: 116224K Free: 107971K (93%)
+    [junit] ----------------- testing Thu Apr 12 21:43:39 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml
+    [junit] 2371 ms. Memory: 116224K Free: 106056K (91%)
     [junit] reloadAllAccessors: .HammingNumbers
-    [junit] ----------------- testing Thu Apr 12 20:53:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml
-    [junit] 37 ms. Memory: 116224K Free: 103603K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml
+    [junit] 24 ms. Memory: 116224K Free: 101658K (87%)
     [junit] reloadAllAccessors: .RendezvousMerge
-    [junit] ----------------- testing Thu Apr 12 20:53:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml
-    [junit] 52 ms. Memory: 116224K Free: 99132K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml
+    [junit] 42 ms. Memory: 116224K Free: 97155K (84%)
     [junit] reloadAllAccessors: .RendezvousOrderedMerge
-    [junit] ----------------- testing Thu Apr 12 20:53:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml
-    [junit] 3254 ms. Memory: 116224K Free: 93545K (80%)
-    [junit] reloadAllAccessors: .ResourcePool
-    [junit] ----------------- testing Thu Apr 12 20:53:51 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml
+    [junit] ----------------- testing Thu Apr 12 21:43:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml
     [junit] Warning: '.ResourcePool.Test2' The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
-    [junit] 1936 ms. Memory: 116224K Free: 85315K (73%)
+    [junit] 3339 ms. Memory: 116224K Free: 91446K (79%)
+    [junit] reloadAllAccessors: .ResourcePool
+    [junit] ----------------- testing Thu Apr 12 21:43:45 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml
+    [junit] 1942 ms. Memory: 116224K Free: 83314K (72%)
     [junit] reloadAllAccessors: .SensorModel
-    [junit] ----------------- testing Thu Apr 12 20:53:53 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml
-    [junit] 5749 ms. Memory: 116224K Free: 81010K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml
+    [junit] 8888 ms. Memory: 115712K Free: 108676K (94%)
     [junit] reloadAllAccessors: .WriteRegulator
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.774 sec
+    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.642 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/pn/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/pn/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/pn/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:53:34 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml
-    [junit] 10302 ms. Memory: 116224K Free: 84511K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml
+    [junit] 5501 ms. Memory: 116224K Free: 83596K (72%)
     [junit] reloadAllAccessors: .Barrier
-    [junit] ----------------- testing Thu Apr 12 20:53:45 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml
-    [junit] 2244 ms. Memory: 116224K Free: 107971K (93%)
+    [junit] ----------------- testing Thu Apr 12 21:43:39 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml
+    [junit] 2371 ms. Memory: 116224K Free: 106056K (91%)
     [junit] reloadAllAccessors: .HammingNumbers
-    [junit] ----------------- testing Thu Apr 12 20:53:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml
-    [junit] 37 ms. Memory: 116224K Free: 103603K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml
+    [junit] 24 ms. Memory: 116224K Free: 101658K (87%)
     [junit] reloadAllAccessors: .RendezvousMerge
-    [junit] ----------------- testing Thu Apr 12 20:53:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml
-    [junit] 52 ms. Memory: 116224K Free: 99132K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml
+    [junit] 42 ms. Memory: 116224K Free: 97155K (84%)
     [junit] reloadAllAccessors: .RendezvousOrderedMerge
-    [junit] ----------------- testing Thu Apr 12 20:53:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml
-    [junit] 3254 ms. Memory: 116224K Free: 93545K (80%)
+    [junit] ----------------- testing Thu Apr 12 21:43:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml
+    [junit] 3339 ms. Memory: 116224K Free: 91446K (79%)
     [junit] reloadAllAccessors: .ResourcePool
-    [junit] ----------------- testing Thu Apr 12 20:53:51 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml
-    [junit] 1936 ms. Memory: 116224K Free: 85315K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:45 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml
+    [junit] 1942 ms. Memory: 116224K Free: 83314K (72%)
     [junit] reloadAllAccessors: .SensorModel
-    [junit] ----------------- testing Thu Apr 12 20:53:53 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml
-    [junit] 5749 ms. Memory: 116224K Free: 81010K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml
+    [junit] 8888 ms. Memory: 115712K Free: 108676K (94%)
     [junit] reloadAllAccessors: .WriteRegulator
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1479,7 +1479,7 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/ptera/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.464 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.438 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/ptera/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/ptera/test
@@ -1498,86 +1498,86 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/Counter.xml
-    [junit] 46 ms. Memory: 116224K Free: 87265K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/Counter.xml
+    [junit] 32 ms. Memory: 116224K Free: 87673K (75%)
     [junit] reloadAllAccessors: .Counter
-    [junit] ----------------- testing Thu Apr 12 20:54:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/CounterWithPre.xml
-    [junit] 4 ms. Memory: 116224K Free: 81320K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/CounterWithPre.xml
+    [junit] 4 ms. Memory: 116224K Free: 82329K (71%)
     [junit] reloadAllAccessors: .CounterWithPre
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/GuardedCount.xml
-    [junit] 18 ms. Memory: 146944K Free: 131287K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/GuardedCount.xml
+    [junit] 14 ms. Memory: 146944K Free: 132346K (90%)
     [junit] reloadAllAccessors: .GuardedCount
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/IfThenElseSR.xml
-    [junit] 12 ms. Memory: 146944K Free: 124195K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/IfThenElseSR.xml
+    [junit] 10 ms. Memory: 146944K Free: 125238K (85%)
     [junit] reloadAllAccessors: .IfThenElseSR
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikAcyclic.xml
-    [junit] 5 ms. Memory: 146944K Free: 119240K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikAcyclic.xml
+    [junit] 4 ms. Memory: 146944K Free: 120863K (82%)
     [junit] reloadAllAccessors: .MalikAcyclic
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikCyclic.xml
-    [junit] 5 ms. Memory: 146944K Free: 114274K (78%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikCyclic.xml
+    [junit] 5 ms. Memory: 146944K Free: 115884K (79%)
     [junit] reloadAllAccessors: .MalikCyclic
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonConstructive.xml
-    [junit] 3 ms. Memory: 146944K Free: 109949K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonConstructive.xml
+    [junit] 3 ms. Memory: 146944K Free: 110928K (75%)
     [junit] reloadAllAccessors: .NonConstructive
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonStrictAndInLoop.xml
-    [junit] 3 ms. Memory: 146944K Free: 106837K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonStrictAndInLoop.xml
+    [junit] 2 ms. Memory: 146944K Free: 107832K (73%)
     [junit] reloadAllAccessors: .NonStrictAndInLoop
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NotInLoop.xml
-    [junit] 1 ms. Memory: 146944K Free: 104371K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:43:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NotInLoop.xml
+    [junit] 2 ms. Memory: 146944K Free: 105358K (72%)
     [junit] reloadAllAccessors: .NotInLoop
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PeriodicController.xml
-    [junit] 595 ms. Memory: 146944K Free: 113496K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:43:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PeriodicController.xml
+    [junit] 594 ms. Memory: 146944K Free: 114770K (78%)
     [junit] reloadAllAccessors: .PeriodicController
-    [junit] ----------------- testing Thu Apr 12 20:54:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PlaceHolderBecauseSynchronousHasNoTestsYet.xml
-    [junit] 1110 ms. Memory: 332800K Free: 289794K (87%)
+    [junit] ----------------- testing Thu Apr 12 21:43:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PlaceHolderBecauseSynchronousHasNoTestsYet.xml
+    [junit] 1192 ms. Memory: 332800K Free: 296281K (89%)
     [junit] reloadAllAccessors: .BetterFibonacci
-    [junit] ----------------- testing Thu Apr 12 20:54:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/ScaleInLoop.xml
-    [junit] 2 ms. Memory: 332800K Free: 281997K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:44:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/ScaleInLoop.xml
+    [junit] 2 ms. Memory: 332800K Free: 288487K (87%)
     [junit] reloadAllAccessors: .ScaleInLoop
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.279 sec
+    [junit] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.194 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/Counter.xml
-    [junit] 46 ms. Memory: 116224K Free: 87265K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/Counter.xml
+    [junit] 32 ms. Memory: 116224K Free: 87673K (75%)
     [junit] reloadAllAccessors: .Counter
-    [junit] ----------------- testing Thu Apr 12 20:54:00 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/CounterWithPre.xml
-    [junit] 4 ms. Memory: 116224K Free: 81320K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/CounterWithPre.xml
+    [junit] 4 ms. Memory: 116224K Free: 82329K (71%)
     [junit] reloadAllAccessors: .CounterWithPre
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/GuardedCount.xml
-    [junit] 18 ms. Memory: 146944K Free: 131287K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/GuardedCount.xml
+    [junit] 14 ms. Memory: 146944K Free: 132346K (90%)
     [junit] reloadAllAccessors: .GuardedCount
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/IfThenElseSR.xml
-    [junit] 12 ms. Memory: 146944K Free: 124195K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/IfThenElseSR.xml
+    [junit] 10 ms. Memory: 146944K Free: 125238K (85%)
     [junit] reloadAllAccessors: .IfThenElseSR
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikAcyclic.xml
-    [junit] 5 ms. Memory: 146944K Free: 119240K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikAcyclic.xml
+    [junit] 4 ms. Memory: 146944K Free: 120863K (82%)
     [junit] reloadAllAccessors: .MalikAcyclic
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikCyclic.xml
-    [junit] 5 ms. Memory: 146944K Free: 114274K (78%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/MalikCyclic.xml
+    [junit] 5 ms. Memory: 146944K Free: 115884K (79%)
     [junit] reloadAllAccessors: .MalikCyclic
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonConstructive.xml
-    [junit] 3 ms. Memory: 146944K Free: 109949K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonConstructive.xml
+    [junit] 3 ms. Memory: 146944K Free: 110928K (75%)
     [junit] reloadAllAccessors: .NonConstructive
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonStrictAndInLoop.xml
-    [junit] 3 ms. Memory: 146944K Free: 106837K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:43:58 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NonStrictAndInLoop.xml
+    [junit] 2 ms. Memory: 146944K Free: 107832K (73%)
     [junit] reloadAllAccessors: .NonStrictAndInLoop
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NotInLoop.xml
-    [junit] 1 ms. Memory: 146944K Free: 104371K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:43:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/NotInLoop.xml
+    [junit] 2 ms. Memory: 146944K Free: 105358K (72%)
     [junit] reloadAllAccessors: .NotInLoop
-    [junit] ----------------- testing Thu Apr 12 20:54:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PeriodicController.xml
-    [junit] 595 ms. Memory: 146944K Free: 113496K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:43:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PeriodicController.xml
+    [junit] 594 ms. Memory: 146944K Free: 114770K (78%)
     [junit] reloadAllAccessors: .PeriodicController
-    [junit] ----------------- testing Thu Apr 12 20:54:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PlaceHolderBecauseSynchronousHasNoTestsYet.xml
-    [junit] 1110 ms. Memory: 332800K Free: 289794K (87%)
+    [junit] ----------------- testing Thu Apr 12 21:43:59 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/PlaceHolderBecauseSynchronousHasNoTestsYet.xml
+    [junit] 1192 ms. Memory: 332800K Free: 296281K (89%)
     [junit] reloadAllAccessors: .BetterFibonacci
-    [junit] ----------------- testing Thu Apr 12 20:54:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/ScaleInLoop.xml
-    [junit] 2 ms. Memory: 332800K Free: 281997K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:44:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/synchronous/test/auto/ScaleInLoop.xml
+    [junit] 2 ms. Memory: 332800K Free: 288487K (87%)
     [junit] reloadAllAccessors: .ScaleInLoop
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1590,44 +1590,44 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/types/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectType.xml
-    [junit] 20 ms. Memory: 116224K Free: 89148K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectType.xml
+    [junit] 33 ms. Memory: 116224K Free: 89128K (77%)
     [junit] reloadAllAccessors: .ObjectType
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced.xml
-    [junit] 7 ms. Memory: 116224K Free: 85639K (74%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced.xml
+    [junit] 5 ms. Memory: 116224K Free: 85920K (74%)
     [junit] reloadAllAccessors: .ObjectTypeCoerced
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced2.xml
-    [junit] 5 ms. Memory: 116224K Free: 81838K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced2.xml
+    [junit] 5 ms. Memory: 116224K Free: 82679K (71%)
     [junit] reloadAllAccessors: .ObjectTypeCoerced2
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeMethodInvocation.xml
-    [junit] 12 ms. Memory: 146944K Free: 138305K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeMethodInvocation.xml
+    [junit] 4 ms. Memory: 146944K Free: 138375K (94%)
     [junit] reloadAllAccessors: .ObjectTypeMethodInvocation
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/TypeConversion.xml
-    [junit] 5 ms. Memory: 146944K Free: 133080K (91%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/TypeConversion.xml
+    [junit] 6 ms. Memory: 146944K Free: 133118K (91%)
     [junit] reloadAllAccessors: .TypeConversion
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.862 sec
+    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.982 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/types/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/types/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/types/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectType.xml
-    [junit] 20 ms. Memory: 116224K Free: 89148K (77%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectType.xml
+    [junit] 33 ms. Memory: 116224K Free: 89128K (77%)
     [junit] reloadAllAccessors: .ObjectType
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced.xml
-    [junit] 7 ms. Memory: 116224K Free: 85639K (74%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced.xml
+    [junit] 5 ms. Memory: 116224K Free: 85920K (74%)
     [junit] reloadAllAccessors: .ObjectTypeCoerced
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced2.xml
-    [junit] 5 ms. Memory: 116224K Free: 81838K (70%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeCoerced2.xml
+    [junit] 5 ms. Memory: 116224K Free: 82679K (71%)
     [junit] reloadAllAccessors: .ObjectTypeCoerced2
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeMethodInvocation.xml
-    [junit] 12 ms. Memory: 146944K Free: 138305K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/ObjectTypeMethodInvocation.xml
+    [junit] 4 ms. Memory: 146944K Free: 138375K (94%)
     [junit] reloadAllAccessors: .ObjectTypeMethodInvocation
-    [junit] ----------------- testing Thu Apr 12 20:54:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/TypeConversion.xml
-    [junit] 5 ms. Memory: 146944K Free: 133080K (91%)
+    [junit] ----------------- testing Thu Apr 12 21:44:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/types/test/auto/TypeConversion.xml
+    [junit] 6 ms. Memory: 146944K Free: 133118K (91%)
     [junit] reloadAllAccessors: .TypeConversion
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1640,122 +1640,122 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
-    [junit] 31 ms. Memory: 116224K Free: 87209K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:44:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
+    [junit] 35 ms. Memory: 116224K Free: 87582K (75%)
     [junit] reloadAllAccessors: .AddingStrings
-    [junit] ----------------- testing Thu Apr 12 20:54:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
-    [junit] 5 ms. Memory: 116224K Free: 82643K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:44:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
+    [junit] 5 ms. Memory: 116224K Free: 82984K (71%)
     [junit] reloadAllAccessors: .AddingStringsException
-    [junit] ----------------- testing Thu Apr 12 20:54:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
-    [junit] 28 ms. Memory: 146944K Free: 135117K (92%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
+    [junit] 25 ms. Memory: 146944K Free: 135414K (92%)
     [junit] reloadAllAccessors: .ApplyFunction
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
-    [junit] 55 ms. Memory: 146944K Free: 108656K (74%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
+    [junit] 66 ms. Memory: 146944K Free: 108962K (74%)
     [junit] reloadAllAccessors: .ChannelBadDesign
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
-    [junit] 99 ms. Memory: 146944K Free: 88514K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
+    [junit] 64 ms. Memory: 146944K Free: 88308K (60%)
     [junit] reloadAllAccessors: .ChannelGoodDesign
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
-    [junit] 43 ms. Memory: 146944K Free: 140713K (96%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
+    [junit] 58 ms. Memory: 146944K Free: 139831K (95%)
     [junit] reloadAllAccessors: .ChannelSingle
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
-    [junit] 42 ms. Memory: 146944K Free: 120011K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
+    [junit] 41 ms. Memory: 146944K Free: 118525K (81%)
     [junit] reloadAllAccessors: .ChannelWithIcon
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
-    [junit] 117 ms. Memory: 146944K Free: 101024K (69%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
+    [junit] 149 ms. Memory: 146944K Free: 99490K (68%)
     [junit] reloadAllAccessors: .ChannelWithIterate
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
-    [junit] 108 ms. Memory: 208384K Free: 195999K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
+    [junit] 106 ms. Memory: 208384K Free: 195231K (94%)
     [junit] reloadAllAccessors: .ChannelWithMultiInstance
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
-    [junit] 42 ms. Memory: 208384K Free: 174878K (84%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
+    [junit] 24 ms. Memory: 208384K Free: 173296K (83%)
     [junit] reloadAllAccessors: .ChannelWithOverrides
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
-    [junit] 22 ms. Memory: 208384K Free: 153149K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
+    [junit] 41 ms. Memory: 208384K Free: 150262K (72%)
     [junit] reloadAllAccessors: .ChannelWithSubclass
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
-    [junit] 41 ms. Memory: 208384K Free: 119643K (57%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
+    [junit] 71 ms. Memory: 208384K Free: 116626K (56%)
     [junit] reloadAllAccessors: .ChannelWithSubclassWithOverrides
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
-    [junit] 12 ms. Memory: 208384K Free: 109732K (53%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
+    [junit] 16 ms. Memory: 208384K Free: 106764K (51%)
     [junit] reloadAllAccessors: .CustomIcon
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
-    [junit] 2 ms. Memory: 208384K Free: 106660K (51%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
+    [junit] 8 ms. Memory: 208384K Free: 103487K (50%)
     [junit] reloadAllAccessors: .HelloWorld
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
-    [junit] 50 ms. Memory: 208384K Free: 82505K (40%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
+    [junit] 80 ms. Memory: 208384K Free: 201795K (97%)
     [junit] reloadAllAccessors: .Spectrum
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
-    [junit] 22 ms. Memory: 208384K Free: 187141K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:44:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
+    [junit] 37 ms. Memory: 208384K Free: 187617K (90%)
     [junit] reloadAllAccessors: .SpectrumOfNoisySinusoid
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
-    [junit] 3 ms. Memory: 208384K Free: 182322K (87%)
+    [junit] ----------------- testing Thu Apr 12 21:44:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
+    [junit] 2 ms. Memory: 208384K Free: 182701K (88%)
     [junit] reloadAllAccessors: .TypeModel
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
-    [junit] 4 ms. Memory: 208384K Free: 177390K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:44:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
+    [junit] 5 ms. Memory: 208384K Free: 177139K (85%)
     [junit] reloadAllAccessors: .WidthInference
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.814 sec
+    [junit] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.1 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
-    [junit] 31 ms. Memory: 116224K Free: 87209K (75%)
+    [junit] ----------------- testing Thu Apr 12 21:44:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
+    [junit] 35 ms. Memory: 116224K Free: 87582K (75%)
     [junit] reloadAllAccessors: .AddingStrings
-    [junit] ----------------- testing Thu Apr 12 20:54:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
-    [junit] 5 ms. Memory: 116224K Free: 82643K (71%)
+    [junit] ----------------- testing Thu Apr 12 21:44:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
+    [junit] 5 ms. Memory: 116224K Free: 82984K (71%)
     [junit] reloadAllAccessors: .AddingStringsException
-    [junit] ----------------- testing Thu Apr 12 20:54:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
-    [junit] 28 ms. Memory: 146944K Free: 135117K (92%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
+    [junit] 25 ms. Memory: 146944K Free: 135414K (92%)
     [junit] reloadAllAccessors: .ApplyFunction
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
-    [junit] 55 ms. Memory: 146944K Free: 108656K (74%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
+    [junit] 66 ms. Memory: 146944K Free: 108962K (74%)
     [junit] reloadAllAccessors: .ChannelBadDesign
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
-    [junit] 99 ms. Memory: 146944K Free: 88514K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
+    [junit] 64 ms. Memory: 146944K Free: 88308K (60%)
     [junit] reloadAllAccessors: .ChannelGoodDesign
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
-    [junit] 43 ms. Memory: 146944K Free: 140713K (96%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
+    [junit] 58 ms. Memory: 146944K Free: 139831K (95%)
     [junit] reloadAllAccessors: .ChannelSingle
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
-    [junit] 42 ms. Memory: 146944K Free: 120011K (82%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
+    [junit] 41 ms. Memory: 146944K Free: 118525K (81%)
     [junit] reloadAllAccessors: .ChannelWithIcon
-    [junit] ----------------- testing Thu Apr 12 20:54:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
-    [junit] 117 ms. Memory: 146944K Free: 101024K (69%)
+    [junit] ----------------- testing Thu Apr 12 21:44:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
+    [junit] 149 ms. Memory: 146944K Free: 99490K (68%)
     [junit] reloadAllAccessors: .ChannelWithIterate
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
-    [junit] 108 ms. Memory: 208384K Free: 195999K (94%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
+    [junit] 106 ms. Memory: 208384K Free: 195231K (94%)
     [junit] reloadAllAccessors: .ChannelWithMultiInstance
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
-    [junit] 42 ms. Memory: 208384K Free: 174878K (84%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
+    [junit] 24 ms. Memory: 208384K Free: 173296K (83%)
     [junit] reloadAllAccessors: .ChannelWithOverrides
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
-    [junit] 22 ms. Memory: 208384K Free: 153149K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
+    [junit] 41 ms. Memory: 208384K Free: 150262K (72%)
     [junit] reloadAllAccessors: .ChannelWithSubclass
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
-    [junit] 41 ms. Memory: 208384K Free: 119643K (57%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
+    [junit] 71 ms. Memory: 208384K Free: 116626K (56%)
     [junit] reloadAllAccessors: .ChannelWithSubclassWithOverrides
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
-    [junit] 12 ms. Memory: 208384K Free: 109732K (53%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
+    [junit] 16 ms. Memory: 208384K Free: 106764K (51%)
     [junit] reloadAllAccessors: .CustomIcon
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
-    [junit] 2 ms. Memory: 208384K Free: 106660K (51%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
+    [junit] 8 ms. Memory: 208384K Free: 103487K (50%)
     [junit] reloadAllAccessors: .HelloWorld
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
-    [junit] 50 ms. Memory: 208384K Free: 82505K (40%)
+    [junit] ----------------- testing Thu Apr 12 21:44:05 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
+    [junit] 80 ms. Memory: 208384K Free: 201795K (97%)
     [junit] reloadAllAccessors: .Spectrum
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
-    [junit] 22 ms. Memory: 208384K Free: 187141K (90%)
+    [junit] ----------------- testing Thu Apr 12 21:44:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
+    [junit] 37 ms. Memory: 208384K Free: 187617K (90%)
     [junit] reloadAllAccessors: .SpectrumOfNoisySinusoid
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
-    [junit] 3 ms. Memory: 208384K Free: 182322K (87%)
+    [junit] ----------------- testing Thu Apr 12 21:44:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
+    [junit] 2 ms. Memory: 208384K Free: 182701K (88%)
     [junit] reloadAllAccessors: .TypeModel
-    [junit] ----------------- testing Thu Apr 12 20:54:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
-    [junit] 4 ms. Memory: 208384K Free: 177390K (85%)
+    [junit] ----------------- testing Thu Apr 12 21:44:06 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
+    [junit] 5 ms. Memory: 208384K Free: 177139K (85%)
     [junit] reloadAllAccessors: .WidthInference
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1768,50 +1768,50 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/CTLorenz.xml
-    [junit] 4441 ms. Memory: 333824K Free: 151858K (45%)
+    [junit] ----------------- testing Thu Apr 12 21:44:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/CTLorenz.xml
+    [junit] 4975 ms. Memory: 333824K Free: 142886K (43%)
     [junit] reloadAllAccessors: .CTLorenz
-    [junit] ----------------- testing Thu Apr 12 20:54:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DECTController.xml
-    [junit] 129 ms. Memory: 333824K Free: 125845K (38%)
+    [junit] ----------------- testing Thu Apr 12 21:44:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DECTController.xml
+    [junit] 123 ms. Memory: 333824K Free: 121777K (36%)
     [junit] reloadAllAccessors: .DECTController
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DEWithAdd.xml
-    [junit] 9 ms. Memory: 333824K Free: 118465K (35%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DEWithAdd.xml
+    [junit] 9 ms. Memory: 333824K Free: 114404K (34%)
     [junit] reloadAllAccessors: .DEWithAdd
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/FSMInFeedback.xml
-    [junit] 28 ms. Memory: 333824K Free: 108634K (33%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/FSMInFeedback.xml
+    [junit] 28 ms. Memory: 333824K Free: 104557K (31%)
     [junit] reloadAllAccessors: .FSMInFeedback
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/PNRampAdd.xml
-    [junit] 40 ms. Memory: 333824K Free: 91431K (27%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/PNRampAdd.xml
+    [junit] 45 ms. Memory: 333824K Free: 89812K (27%)
     [junit] reloadAllAccessors: .PNRampAdd
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/SRConstructiveFeedback.xml
-    [junit] 4 ms. Memory: 333824K Free: 86516K (26%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/SRConstructiveFeedback.xml
+    [junit] 4 ms. Memory: 333824K Free: 84896K (25%)
     [junit] reloadAllAccessors: .SRConstructiveFeedback
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.015 sec
+    [junit] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.842 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:08 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/CTLorenz.xml
-    [junit] 4441 ms. Memory: 333824K Free: 151858K (45%)
+    [junit] ----------------- testing Thu Apr 12 21:44:07 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/CTLorenz.xml
+    [junit] 4975 ms. Memory: 333824K Free: 142886K (43%)
     [junit] reloadAllAccessors: .CTLorenz
-    [junit] ----------------- testing Thu Apr 12 20:54:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DECTController.xml
-    [junit] 129 ms. Memory: 333824K Free: 125845K (38%)
+    [junit] ----------------- testing Thu Apr 12 21:44:12 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DECTController.xml
+    [junit] 123 ms. Memory: 333824K Free: 121777K (36%)
     [junit] reloadAllAccessors: .DECTController
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DEWithAdd.xml
-    [junit] 9 ms. Memory: 333824K Free: 118465K (35%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/DEWithAdd.xml
+    [junit] 9 ms. Memory: 333824K Free: 114404K (34%)
     [junit] reloadAllAccessors: .DEWithAdd
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/FSMInFeedback.xml
-    [junit] 28 ms. Memory: 333824K Free: 108634K (33%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/FSMInFeedback.xml
+    [junit] 28 ms. Memory: 333824K Free: 104557K (31%)
     [junit] reloadAllAccessors: .FSMInFeedback
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/PNRampAdd.xml
-    [junit] 40 ms. Memory: 333824K Free: 91431K (27%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/PNRampAdd.xml
+    [junit] 45 ms. Memory: 333824K Free: 89812K (27%)
     [junit] reloadAllAccessors: .PNRampAdd
-    [junit] ----------------- testing Thu Apr 12 20:54:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/SRConstructiveFeedback.xml
-    [junit] 4 ms. Memory: 333824K Free: 86516K (26%)
+    [junit] ----------------- testing Thu Apr 12 21:44:13 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y11/modularSemantics/test/auto/SRConstructiveFeedback.xml
+    [junit] 4 ms. Memory: 333824K Free: 84896K (25%)
     [junit] reloadAllAccessors: .SRConstructiveFeedback
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1824,26 +1824,26 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTol.xml
-    [junit] 266 ms. Memory: 146944K Free: 126929K (86%)
+    [junit] ----------------- testing Thu Apr 12 21:44:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTol.xml
+    [junit] 211 ms. Memory: 146944K Free: 126913K (86%)
     [junit] reloadAllAccessors: .DCMotorTol
-    [junit] ----------------- testing Thu Apr 12 20:54:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTolWithDelayCompensation.xml
-    [junit] 85 ms. Memory: 146944K Free: 98722K (67%)
+    [junit] ----------------- testing Thu Apr 12 21:44:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTolWithDelayCompensation.xml
+    [junit] 159 ms. Memory: 146944K Free: 99239K (68%)
     [junit] reloadAllAccessors: .DCMotorTolWithDelayCompensation
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.514 sec
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.534 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTol.xml
-    [junit] 266 ms. Memory: 146944K Free: 126929K (86%)
+    [junit] ----------------- testing Thu Apr 12 21:44:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTol.xml
+    [junit] 211 ms. Memory: 146944K Free: 126913K (86%)
     [junit] reloadAllAccessors: .DCMotorTol
-    [junit] ----------------- testing Thu Apr 12 20:54:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTolWithDelayCompensation.xml
-    [junit] 85 ms. Memory: 146944K Free: 98722K (67%)
+    [junit] ----------------- testing Thu Apr 12 21:44:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y12/designContracts/test/auto/DCMotorTolWithDelayCompensation.xml
+    [junit] 159 ms. Memory: 146944K Free: 99239K (68%)
     [junit] reloadAllAccessors: .DCMotorTolWithDelayCompensation
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1856,116 +1856,116 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml
-    [junit] 1372 ms. Memory: 208384K Free: 125967K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:44:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml
+    [junit] 1532 ms. Memory: 208384K Free: 122282K (59%)
     [junit] reloadAllAccessors: .BilliardsOneDimensional
-    [junit] ----------------- testing Thu Apr 12 20:54:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml
-    [junit] 5449 ms. Memory: 578048K Free: 457753K (79%)
+    [junit] ----------------- testing Thu Apr 12 21:44:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml
+    [junit] 6662 ms. Memory: 577024K Free: 442688K (77%)
     [junit] reloadAllAccessors: .BouncingBall
-    [junit] ----------------- testing Thu Apr 12 20:54:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml
-    [junit] 12011 ms. Memory: 578048K Free: 524599K (91%)
+    [junit] ----------------- testing Thu Apr 12 21:44:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml
+    [junit] 9749 ms. Memory: 579072K Free: 563628K (97%)
     [junit] reloadAllAccessors: .BouncingBallModal2
-    [junit] ----------------- testing Thu Apr 12 20:54:37 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml
-    [junit] 137 ms. Memory: 578048K Free: 469606K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:44:35 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml
+    [junit] 168 ms. Memory: 579072K Free: 508528K (88%)
     [junit] reloadAllAccessors: .Collision
-    [junit] ----------------- testing Thu Apr 12 20:54:37 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml
-    [junit] 231 ms. Memory: 578048K Free: 401008K (69%)
+    [junit] ----------------- testing Thu Apr 12 21:44:36 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml
+    [junit] 229 ms. Memory: 579072K Free: 439755K (76%)
     [junit] reloadAllAccessors: .Collision3
-    [junit] ----------------- testing Thu Apr 12 20:54:37 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml
-    [junit] 228 ms. Memory: 578048K Free: 322562K (56%)
+    [junit] ----------------- testing Thu Apr 12 21:44:36 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml
+    [junit] 313 ms. Memory: 579072K Free: 351309K (61%)
     [junit] reloadAllAccessors: .Collision4
-    [junit] ----------------- testing Thu Apr 12 20:54:38 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml
-    [junit] 3085 ms. Memory: 550400K Free: 403806K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:44:36 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml
+    [junit] 3431 ms. Memory: 551424K Free: 426406K (77%)
     [junit] reloadAllAccessors: .Collision5
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml
-    [junit] 205 ms. Memory: 550400K Free: 321975K (58%)
+    [junit] ----------------- testing Thu Apr 12 21:44:40 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml
+    [junit] 228 ms. Memory: 551424K Free: 344356K (62%)
     [junit] reloadAllAccessors: .Collision6Modal
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml
-    [junit] 211 ms. Memory: 550400K Free: 247176K (45%)
+    [junit] ----------------- testing Thu Apr 12 21:44:40 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml
+    [junit] 308 ms. Memory: 551424K Free: 269400K (49%)
     [junit] reloadAllAccessors: .CollisionSimultaneous
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml
-    [junit] 64 ms. Memory: 550400K Free: 191077K (35%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml
+    [junit] 88 ms. Memory: 551424K Free: 213195K (39%)
     [junit] reloadAllAccessors: .CollisionSimultaneousDifferentMasses
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml
-    [junit] 68 ms. Memory: 550400K Free: 134970K (25%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml
+    [junit] 91 ms. Memory: 551424K Free: 156967K (28%)
     [junit] reloadAllAccessors: .CollisionSimultaneousDifferentMasses2
-    [junit] ----------------- testing Thu Apr 12 20:54:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml
-    [junit] 54 ms. Memory: 550400K Free: 88155K (16%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml
+    [junit] 79 ms. Memory: 551424K Free: 105433K (19%)
     [junit] reloadAllAccessors: .CollisionSimultaneousLoss
-    [junit] ----------------- testing Thu Apr 12 20:54:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml
-    [junit] 144 ms. Memory: 527360K Free: 468604K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml
+    [junit] 159 ms. Memory: 528384K Free: 487797K (92%)
     [junit] reloadAllAccessors: .DiodeInductorModel
-    [junit] ----------------- testing Thu Apr 12 20:54:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml
-    [junit] 979 ms. Memory: 527360K Free: 154981K (29%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml
+    [junit] 1363 ms. Memory: 528384K Free: 182784K (35%)
     [junit] reloadAllAccessors: .Friction
-    [junit] ----------------- testing Thu Apr 12 20:54:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml
-    [junit] 12 ms. Memory: 527360K Free: 146072K (28%)
+    [junit] ----------------- testing Thu Apr 12 21:44:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml
+    [junit] 12 ms. Memory: 528384K Free: 176831K (33%)
     [junit] reloadAllAccessors: .IntegratorLoopPlot
-    [junit] ----------------- testing Thu Apr 12 20:54:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml
-    [junit] 40 ms. Memory: 527360K Free: 114843K (22%)
+    [junit] ----------------- testing Thu Apr 12 21:44:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml
+    [junit] 61 ms. Memory: 528384K Free: 149987K (28%)
     [junit] reloadAllAccessors: .LCDModal
-    [junit] ----------------- testing Thu Apr 12 20:54:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml
-    [junit] 5 ms. Memory: 527360K Free: 96977K (18%)
+    [junit] ----------------- testing Thu Apr 12 21:44:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml
+    [junit] 9 ms. Memory: 528384K Free: 135081K (26%)
     [junit] reloadAllAccessors: .TwoCapacitorsModelWithDelays
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.049 sec
+    [junit] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.424 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:54:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml
-    [junit] 1372 ms. Memory: 208384K Free: 125967K (60%)
+    [junit] ----------------- testing Thu Apr 12 21:44:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BilliardsOneDimensional.xml
+    [junit] 1532 ms. Memory: 208384K Free: 122282K (59%)
     [junit] reloadAllAccessors: .BilliardsOneDimensional
-    [junit] ----------------- testing Thu Apr 12 20:54:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml
-    [junit] 5449 ms. Memory: 578048K Free: 457753K (79%)
+    [junit] ----------------- testing Thu Apr 12 21:44:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBall.xml
+    [junit] 6662 ms. Memory: 577024K Free: 442688K (77%)
     [junit] reloadAllAccessors: .BouncingBall
-    [junit] ----------------- testing Thu Apr 12 20:54:24 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml
-    [junit] 12011 ms. Memory: 578048K Free: 524599K (91%)
+    [junit] ----------------- testing Thu Apr 12 21:44:25 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/BouncingBallModal2.xml
+    [junit] 9749 ms. Memory: 579072K Free: 563628K (97%)
     [junit] reloadAllAccessors: .BouncingBallModal2
-    [junit] ----------------- testing Thu Apr 12 20:54:37 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml
-    [junit] 137 ms. Memory: 578048K Free: 469606K (81%)
+    [junit] ----------------- testing Thu Apr 12 21:44:35 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision.xml
+    [junit] 168 ms. Memory: 579072K Free: 508528K (88%)
     [junit] reloadAllAccessors: .Collision
-    [junit] ----------------- testing Thu Apr 12 20:54:37 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml
-    [junit] 231 ms. Memory: 578048K Free: 401008K (69%)
+    [junit] ----------------- testing Thu Apr 12 21:44:36 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision3.xml
+    [junit] 229 ms. Memory: 579072K Free: 439755K (76%)
     [junit] reloadAllAccessors: .Collision3
-    [junit] ----------------- testing Thu Apr 12 20:54:37 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml
-    [junit] 228 ms. Memory: 578048K Free: 322562K (56%)
+    [junit] ----------------- testing Thu Apr 12 21:44:36 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision4.xml
+    [junit] 313 ms. Memory: 579072K Free: 351309K (61%)
     [junit] reloadAllAccessors: .Collision4
-    [junit] ----------------- testing Thu Apr 12 20:54:38 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml
-    [junit] 3085 ms. Memory: 550400K Free: 403806K (73%)
+    [junit] ----------------- testing Thu Apr 12 21:44:36 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision5.xml
+    [junit] 3431 ms. Memory: 551424K Free: 426406K (77%)
     [junit] reloadAllAccessors: .Collision5
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml
-    [junit] 205 ms. Memory: 550400K Free: 321975K (58%)
+    [junit] ----------------- testing Thu Apr 12 21:44:40 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Collision6Modal.xml
+    [junit] 228 ms. Memory: 551424K Free: 344356K (62%)
     [junit] reloadAllAccessors: .Collision6Modal
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml
-    [junit] 211 ms. Memory: 550400K Free: 247176K (45%)
+    [junit] ----------------- testing Thu Apr 12 21:44:40 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneous.xml
+    [junit] 308 ms. Memory: 551424K Free: 269400K (49%)
     [junit] reloadAllAccessors: .CollisionSimultaneous
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml
-    [junit] 64 ms. Memory: 550400K Free: 191077K (35%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses.xml
+    [junit] 88 ms. Memory: 551424K Free: 213195K (39%)
     [junit] reloadAllAccessors: .CollisionSimultaneousDifferentMasses
-    [junit] ----------------- testing Thu Apr 12 20:54:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml
-    [junit] 68 ms. Memory: 550400K Free: 134970K (25%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousDifferentMasses2.xml
+    [junit] 91 ms. Memory: 551424K Free: 156967K (28%)
     [junit] reloadAllAccessors: .CollisionSimultaneousDifferentMasses2
-    [junit] ----------------- testing Thu Apr 12 20:54:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml
-    [junit] 54 ms. Memory: 550400K Free: 88155K (16%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/CollisionSimultaneousLoss.xml
+    [junit] 79 ms. Memory: 551424K Free: 105433K (19%)
     [junit] reloadAllAccessors: .CollisionSimultaneousLoss
-    [junit] ----------------- testing Thu Apr 12 20:54:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml
-    [junit] 144 ms. Memory: 527360K Free: 468604K (89%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/DiodeInductorModel.xml
+    [junit] 159 ms. Memory: 528384K Free: 487797K (92%)
     [junit] reloadAllAccessors: .DiodeInductorModel
-    [junit] ----------------- testing Thu Apr 12 20:54:42 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml
-    [junit] 979 ms. Memory: 527360K Free: 154981K (29%)
+    [junit] ----------------- testing Thu Apr 12 21:44:41 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/Friction.xml
+    [junit] 1363 ms. Memory: 528384K Free: 182784K (35%)
     [junit] reloadAllAccessors: .Friction
-    [junit] ----------------- testing Thu Apr 12 20:54:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml
-    [junit] 12 ms. Memory: 527360K Free: 146072K (28%)
+    [junit] ----------------- testing Thu Apr 12 21:44:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/IntegratorLoopPlot.xml
+    [junit] 12 ms. Memory: 528384K Free: 176831K (33%)
     [junit] reloadAllAccessors: .IntegratorLoopPlot
-    [junit] ----------------- testing Thu Apr 12 20:54:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml
-    [junit] 40 ms. Memory: 527360K Free: 114843K (22%)
+    [junit] ----------------- testing Thu Apr 12 21:44:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/LCDModal.xml
+    [junit] 61 ms. Memory: 528384K Free: 149987K (28%)
     [junit] reloadAllAccessors: .LCDModal
-    [junit] ----------------- testing Thu Apr 12 20:54:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml
-    [junit] 5 ms. Memory: 527360K Free: 96977K (18%)
+    [junit] ----------------- testing Thu Apr 12 21:44:43 UTC 2018 /home/travis/build/icyphy/ptII/doc/papers/y14/constructive/models/test/auto/TwoCapacitorsModelWithDelays.xml
+    [junit] 9 ms. Memory: 528384K Free: 135081K (26%)
     [junit] reloadAllAccessors: .TwoCapacitorsModelWithDelays
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1974,7 +1974,7 @@ test.report.short:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/doc/test
     [junit] Running doc.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/doc/test/docManager.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 12 20:54:44 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 12 21:44:44 UTC 2018
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2082,7 +2082,7 @@ test.report.short:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 04/12/18 08:55:47
+    [junit] 04/12/18 09:45:50
     [junit] Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/doc/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
@@ -2091,10 +2091,10 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 63.553 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.579 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/doc/test/docManager.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 12 20:54:44 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 12 21:44:44 UTC 2018
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2202,7 +2202,7 @@ test.report.short:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 04/12/18 08:55:47
+    [junit] 04/12/18 09:45:50
     [junit] Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/doc/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/test
@@ -2215,7 +2215,7 @@ test.report.short:
     [junit] javachdir: directory = doc/tutorial/graph
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/doc/tutorial/graph
     [junit] Running doc.tutorial.graph.junit.ShortestPathFinderTest
-    [junit] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.143 sec
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.158 sec
     [junit] javachdir: directory = org/hlacerti/test
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/org/hlacerti/test
     [junit] Running org.hlacerti.test.junit.JUnitTclTest
@@ -2224,154 +2224,154 @@ test.report.short:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:55:49 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml
+    [junit] ----------------- testing Thu Apr 12 21:45:52 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml
     [junit] CertiRtig: the os.name property is: Linux
     [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
     [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
-    [junit] 137 ms. Memory: 146944K Free: 117617K (80%)
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] 136 ms. Memory: 146944K Free: 116202K (79%)
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
     [junit] reloadAllAccessors: .1Value2Instances
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
-    [junit] ----------------- testing Thu Apr 12 20:55:50 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml
+    [junit] ----------------- testing Thu Apr 12 21:45:52 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml
     [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
-    [junit] 161 ms. Memory: 146944K Free: 102073K (69%)
-    [junit] 297 ms. Memory: 146944K Free: 98969K (67%)
+    [junit] 208 ms. Memory: 146944K Free: 100458K (68%)
+    [junit] 355 ms. Memory: 146944K Free: 95438K (65%)
     [junit] CertiRtig: the os.name property is: Linux
     [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
     [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances
-    [junit] 118 ms. Memory: 146944K Free: 136269K (93%)
-    [junit] reloadAllAccessors: .2Classes2Values2Instances
+    [junit] 144 ms. Memory: 146944K Free: 136640K (93%)
     [junit] CertiRtig: the os.name property is: Linux
+    [junit] reloadAllAccessors: .2Classes2Values2Instances
     [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
     [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances
-    [junit] ----------------- testing Thu Apr 12 20:55:50 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml
+    [junit] ----------------- testing Thu Apr 12 21:45:53 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml
     [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
-    [junit] 89 ms. Memory: 146944K Free: 116903K (80%)
-    [junit] 212 ms. Memory: 146944K Free: 110213K (75%)
+    [junit] 121 ms. Memory: 146944K Free: 122360K (83%)
+    [junit] 231 ms. Memory: 146944K Free: 121746K (83%)
     [junit] CertiRtig: the os.name property is: Linux
     [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
     [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance
-    [junit] 117 ms. Memory: 146944K Free: 102562K (70%)
+    [junit] 117 ms. Memory: 146944K Free: 102799K (70%)
     [junit] reloadAllAccessors: .2Values1Instance
     [junit] CertiRtig: the os.name property is: Linux
     [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
     [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance
-    [junit] ----------------- testing Thu Apr 12 20:55:50 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml
+    [junit] ----------------- testing Thu Apr 12 21:45:53 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml
     [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
-    [junit] 93 ms. Memory: 146944K Free: 93882K (64%)
-    [junit] 205 ms. Memory: 146944K Free: 93882K (64%)
+    [junit] 87 ms. Memory: 146944K Free: 94315K (64%)
+    [junit] 199 ms. Memory: 146944K Free: 94315K (64%)
     [junit] CertiRtig: the os.name property is: Linux
     [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
     [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances
-    [junit] 123 ms. Memory: 208384K Free: 190515K (91%)
-    [junit] reloadAllAccessors: .2Values2Instances
-    [junit] AutoTests.java: About to close Vertx.
-    [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.98 sec
-    [junit] Output:
-    [junit] No tcl tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
-    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
-    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
-    [junit] AutoTests.java: About to close Vertx.
-    [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 12 20:55:49 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
-    [junit] 137 ms. Memory: 146944K Free: 117617K (80%)
-    [junit] reloadAllAccessors: .1Value2Instances
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
-    [junit] ----------------- testing Thu Apr 12 20:55:50 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
-    [junit] 161 ms. Memory: 146944K Free: 102073K (69%)
-    [junit] 297 ms. Memory: 146944K Free: 98969K (67%)
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances
-    [junit] 118 ms. Memory: 146944K Free: 136269K (93%)
-    [junit] reloadAllAccessors: .2Classes2Values2Instances
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances
-    [junit] ----------------- testing Thu Apr 12 20:55:50 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
-    [junit] 89 ms. Memory: 146944K Free: 116903K (80%)
-    [junit] 212 ms. Memory: 146944K Free: 110213K (75%)
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance
-    [junit] 117 ms. Memory: 146944K Free: 102562K (70%)
-    [junit] reloadAllAccessors: .2Values1Instance
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance
-    [junit] ----------------- testing Thu Apr 12 20:55:50 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
-    [junit] 93 ms. Memory: 146944K Free: 93882K (64%)
-    [junit] 205 ms. Memory: 146944K Free: 93882K (64%)
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances
-    [junit] 123 ms. Memory: 208384K Free: 190515K (91%)
-    [junit] reloadAllAccessors: .2Values2Instances
-    [junit] AutoTests.java: About to close Vertx.
-    [junit] AutoTests.java: Vertx closed.
-    [junit] 
-    [junit] CertiRtig: the os.name property is: Linux
-    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
-    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
-    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
-    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances
-    [junit] # Manager._registerShutdownHook(): State is The model is initializing, which is not IDLE.  Waiting for model to stop.
-    [junit] # Manager._registerShutdownHook(): State is The model is initializing, which is not IDLE.  Waiting for model to stop.
-    [junit] 34 ms. Memory: 208384K Free: 182467K (88%)
+    [junit] 128 ms. Memory: 208384K Free: 190532K (91%)
     [junit] java.lang.IllegalStateException: Shutdown in progress
+    [junit] reloadAllAccessors: .2Values2Instances
+    [junit] AutoTests.java: About to close Vertx.
     [junit] 	at java.lang.ApplicationShutdownHooks.remove(ApplicationShutdownHooks.java:82)
+    [junit] AutoTests.java: Vertx closed.
     [junit] 	at java.lang.Runtime.removeShutdownHook(Runtime.java:239)
+    [junit] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.176 sec
     [junit] 	at ptolemy.actor.Manager._disposeOfThreads(Manager.java:1708)
+    [junit] Output:
     [junit] 	at ptolemy.actor.Manager.execute(Manager.java:454)
+    [junit] No tcl tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
     [junit] 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
     [junit] java.lang.RuntimeException: java.lang.IllegalStateException: Shutdown in progress
+    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/hlacerti/test
     [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+    [junit] AutoTests.java: About to close Vertx.
     [junit] 	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
+    [junit] AutoTests.java: Vertx closed.
     [junit] 	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
+    [junit] ----------------- testing Thu Apr 12 21:45:52 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/1Value2Instances.xml
     [junit] Caused by: java.lang.IllegalStateException: Shutdown in progress
+    [junit] CertiRtig: the os.name property is: Linux
     [junit] 	at java.lang.ApplicationShutdownHooks.remove(ApplicationShutdownHooks.java:82)
+    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
     [junit] 	at java.lang.Runtime.removeShutdownHook(Runtime.java:239)
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
     [junit] 	at ptolemy.actor.Manager._disposeOfThreads(Manager.java:1708)
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
     [junit] 	at ptolemy.actor.Manager.execute(Manager.java:454)
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
     [junit] 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+    [junit] CertiRtig: the os.name property is: Linux
     [junit] 
+    [junit] 136 ms. Memory: 146944K Free: 116202K (79%)
     [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Error reporting thread"
-/home/travis/build/icyphy/ptII/bin/ptIITravisBuild.sh: line 149: 19502 Alarm clock             perl -e 'alarm shift; exec @ARGV' "$@"
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances
+    [junit] reloadAllAccessors: .1Value2Instances
+    [junit] ----------------- testing Thu Apr 12 21:45:52 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Classes2Values2Instances.xml
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
+    [junit] 208 ms. Memory: 146944K Free: 100458K (68%)
+    [junit] 355 ms. Memory: 146944K Free: 95438K (65%)
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances
+    [junit] 144 ms. Memory: 146944K Free: 136640K (93%)
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] reloadAllAccessors: .2Classes2Values2Instances
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances
+    [junit] ----------------- testing Thu Apr 12 21:45:53 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values1Instance.xml
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
+    [junit] 121 ms. Memory: 146944K Free: 122360K (83%)
+    [junit] 231 ms. Memory: 146944K Free: 121746K (83%)
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance
+    [junit] 117 ms. Memory: 146944K Free: 102799K (70%)
+    [junit] reloadAllAccessors: .2Values1Instance
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance
+    [junit] ----------------- testing Thu Apr 12 21:45:53 UTC 2018 /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/2Values2Instances.xml
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to terminate rtig.
+    [junit] 87 ms. Memory: 146944K Free: 94315K (64%)
+    [junit] 199 ms. Memory: 146944K Free: 94315K (64%)
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .DistributedReceiver1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances
+    [junit] 128 ms. Memory: 208384K Free: 190532K (91%)
+    [junit] reloadAllAccessors: .2Values2Instances
+    [junit] AutoTests.java: About to close Vertx.
+    [junit] AutoTests.java: Vertx closed.
+    [junit] 
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .DistributedSender1.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, StaticMultiInstance.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances
+    [junit] # Manager._registerShutdownHook(): State is The model is initializing, which is not IDLE.  Waiting for model to stop.
+    [junit] # Manager._registerShutdownHook(): State is The model is initializing, which is not IDLE.  Waiting for model to stop.
+    [junit] 49 ms. Memory: 208384K Free: 184686K (89%)
+/home/travis/build/icyphy/ptII/bin/ptIITravisBuild.sh: line 152: 17346 Alarm clock             perl -e 'alarm shift; exec @ARGV' "$@"
