@@ -12,13 +12,15 @@ env:
     - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
+    - PTII=${TRAVIS_BUILD_DIR}
 
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
-    - PATH=${PTII}/bin:${PATH}
-    - PTII=${TRAVIS_BUILD_DIR}
+    # CERTI_HOME is also set by org/hlacerti/build-certi.sh below.
+    - CERTI_HOME=${PTII}/vendors/certi/bin
+    - PATH=${PTII}/bin:${CERTI_HOME}/bin${PATH}
     - TRAVIS_TAG=nightly
 
 language: node_js
