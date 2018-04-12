@@ -79,6 +79,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -183,9 +184,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.32 33882 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.23 54934 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.32 33882 10.20.0.56 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.23 54934 10.20.0.92 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -199,25 +200,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '365382620';
+        cur['env.TRAVIS_BUILD_ID'] = '365394834';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '236';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '239';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '705d14593cf6739b588fd3a74d940b11c13fbe68';
+        cur['env.TRAVIS_COMMIT'] = 'b74f49f7beaf920a9c04e87272e323e865dc05b4';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Send WebSocket errors to stdout';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Remove .htm* and .xml files that are older than 4 days from reports/junit.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'ae0af8d1af33...705d14593cf6';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '73ef5f8fd6a9...b74f49f7beaf';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '365382623';
+        cur['env.TRAVIS_JOB_ID'] = '365394837';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '236.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '239.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -403,7 +404,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2876626358610350002.properties propsfile=/home/travis/build/icyphy/ptII/junit4368436794814883719.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1082921304926495166.properties propsfile=/home/travis/build/icyphy/ptII/junit5494149643702410725.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -486,7 +487,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="82_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="82_JUnitTclTest.html">94</a></td><td><a title="Display only errors" href="82_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>149.634</td><td>2018-04-12T00:50:10</td><td>travis-job-1016d79a-5383-4615-a3c6-dc171067fa72</td>
+<td><a title="Display all tests" href="82_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="82_JUnitTclTest.html">94</a></td><td><a title="Display only errors" href="82_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>143.370</td><td>2018-04-12T01:46:45</td><td>travis-job-82034d2f-4fc3-423d-aafd-461464729e24</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -498,7 +499,7 @@
 <td><a name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml (RunModel)"></a>[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: date("Tue Jan 01 00:00:00.000000000 +0000 1957"). Should have been: date("Tue Jan 01 00:00:00.000000000 -0800 1957")<br>  in .JavaScriptReceiveDate.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)<br>	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)<br>	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.289</td>
+</code></td><td>1.260</td>
 </tr>
 </table>
 <div class="Properties">

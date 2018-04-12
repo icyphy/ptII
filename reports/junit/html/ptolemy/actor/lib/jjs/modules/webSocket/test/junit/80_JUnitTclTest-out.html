@@ -9,7 +9,7 @@ No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/a
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu Apr 12 00:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
+----------------- testing Thu Apr 12 01:43:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 WebSocketClient3: WebSocketClient3: WebSocketClient.js: connect(): portValue: -1, which is less than 0. This could be a signal to close a previously open socket.  Returning. (Thread[FullDuplex,1,main])
 WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[FullDuplex,1,main])
@@ -113,10 +113,10 @@ WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[
 WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[FullDuplex,1,main])
 WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[FullDuplex,1,main])
 WebSocketClient3: Connection closed because model is no longer running. (Thread[FullDuplex,1,main])
-14069 ms. Memory: 330752K Free: 219779K (66%)
+14011 ms. Memory: 306688K Free: 198553K (65%)
 reloadAllAccessors: .FullDuplex
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
------------------ Reloaded Accessors and testing again Thu Apr 12 00:47:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:43:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
 WebSocketClient3: WebSocketClient3: WebSocketClient.js: connect(): portValue: -1, which is less than 0. This could be a signal to close a previously open socket.  Returning. (Thread[Thread-5,5,main])
 WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[Thread-5,5,main])
 WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[Thread-5,5,main])
@@ -219,9 +219,10 @@ WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[
 WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[Thread-5,5,main])
 WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[Thread-5,5,main])
 WebSocketClient3: Connection closed because model is no longer running. (Thread[Thread-5,5,main])
-12848 ms. Memory: 401408K Free: 263726K (66%)
------------------ testing Thu Apr 12 00:47:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
-WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+12712 ms. Memory: 362496K Free: 141843K (39%)
+----------------- testing Thu Apr 12 01:44:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
+WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[FullDuplex2,1,main])
 WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[FullDuplex2,1,main])
 WebSocketServer: WebSocketServer message(): -2, typeof message: number (Thread[FullDuplex2,1,main])
@@ -323,10 +324,10 @@ WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[
 WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[FullDuplex2,1,main])
 WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[FullDuplex2,1,main])
 WebSocketClient3: Connection closed because model is no longer running. (Thread[FullDuplex2,1,main])
-17504 ms. Memory: 545280K Free: 338864K (62%)
+17678 ms. Memory: 540672K Free: 336633K (62%)
 reloadAllAccessors: .FullDuplex2
------------------ Reloaded Accessors and testing again Thu Apr 12 00:47:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
-WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:44:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml
+WebSocketClient3: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8060/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[Thread-11,5,main])
 WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[Thread-11,5,main])
 WebSocketServer: WebSocketServer message(): -2, typeof message: number (Thread[Thread-11,5,main])
@@ -428,52 +429,42 @@ WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[
 WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[Thread-11,5,main])
 WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[Thread-11,5,main])
 WebSocketClient3: Connection closed because model is no longer running. (Thread[Thread-11,5,main])
-16537 ms. Memory: 680960K Free: 164341K (24%)
------------------ testing Thu Apr 12 00:48:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+17214 ms. Memory: 608768K Free: 198466K (33%)
+----------------- testing Thu Apr 12 01:44:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
-9055 ms. Memory: 775680K Free: 464673K (60%)
+9177 ms. Memory: 738304K Free: 207811K (28%)
 reloadAllAccessors: .WebSocketClient2JS
------------------ Reloaded Accessors and testing again Thu Apr 12 00:48:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
-WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-3,1,main])
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:44:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-15,5,main])
-8333 ms. Memory: 761344K Free: 316064K (42%)
------------------ testing Thu Apr 12 00:48:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml
+8741 ms. Memory: 794624K Free: 225197K (28%)
+----------------- testing Thu Apr 12 01:45:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient3JS,1,main])
-19693 ms. Memory: 821248K Free: 592019K (72%)
------------------ testing Thu Apr 12 00:48:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+19761 ms. Memory: 839680K Free: 491244K (59%)
+----------------- testing Thu Apr 12 01:45:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
-4109 ms. Memory: 861184K Free: 518816K (60%)
+4141 ms. Memory: 841216K Free: 248289K (30%)
 reloadAllAccessors: .WebSocketClientJS
------------------ Reloaded Accessors and testing again Thu Apr 12 00:48:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
-WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:45:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-22,5,main])
-3485 ms. Memory: 861696K Free: 571787K (66%)
------------------ testing Thu Apr 12 00:49:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
+4063 ms. Memory: 892928K Free: 515388K (58%)
+----------------- testing Thu Apr 12 01:45:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketSendReceive,1,main])
 JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[WebSocketSendReceive,1,main])
 JavaScriptTrueToken: JavaScriptTrueToken.wrapup() (Thread[WebSocketSendReceive,1,main])
-23472 ms. Memory: 925184K Free: 172416K (19%)
+23891 ms. Memory: 950784K Free: 645930K (68%)
 reloadAllAccessors: .WebSocketSendReceive
------------------ Reloaded Accessors and testing again Thu Apr 12 00:49:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
+----------------- Reloaded Accessors and testing again Thu Apr 12 01:46:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketSendReceive.xml
 WebSocketClient: Connection closed because model is no longer running. (Thread[Thread-26,5,main])
 JavaScriptDelay: JavaScriptDelay.wrapup() (Thread[Thread-26,5,main])
 JavaScriptTrueToken: JavaScriptTrueToken.wrapup() (Thread[Thread-26,5,main])
-23963 ms. Memory: 965120K Free: 733977K (76%)
------------------ testing Thu Apr 12 00:49:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml
+22786 ms. Memory: 976384K Free: 574047K (59%)
+----------------- testing Thu Apr 12 01:46:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml
+WSClient: Connection to socket is open. (Thread[vert.x-eventloop-thread-3,1,main])
 WSClient: Connection closed because model is no longer running. (Thread[WebSocketsServerClient,1,main])
-11587 ms. Memory: 966144K Free: 575960K (60%)
+11167 ms. Memory: 975872K Free: 411283K (42%)
+reloadAllAccessors: .WebSocketsServerClient
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 </pre>
