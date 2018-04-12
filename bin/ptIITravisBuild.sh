@@ -96,8 +96,9 @@ updateGhPages () {
 
     days=1
     pwd
-    find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime -$days -print | head
-    find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +$days -print
+    ls -l reports/junit/TEST-lbnl.test.junit.JUnitTclTest.xml
+    find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime -$days -ls | grep lbnl
+    find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +$days -ls
     files=`find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +$days -print`
     if [ ! -z "$files" ]; then
         echo "Removing any .htm and .xml files in reports/junit that are older than $days day(s)."
