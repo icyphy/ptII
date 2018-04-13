@@ -58,7 +58,7 @@ updateGhPages () {
         destination=${@: -1}
     fi
 
-    echo "length: $length, sources: $sources, destination: $destination";
+    echo "updateGhPages() start: length: $length, sources: $sources, destination: $destination `date`";
 
     if [ -z "$GITHUB_TOKEN" ]; then
         echo "$0: GITHUB_TOKEN was not set, so $sources will not be copied to $destination in the gh-pages repo."
@@ -100,6 +100,7 @@ updateGhPages () {
     # Using find on the file mod time does not work here.  It could be
     # Git not preserving the mod time, or it could be us removing the
     # GITHUB_TOKEN.  So, we look for the timestamp field.
+    set -x
     filesToBeDeleted=""
     files=`find reports/junit -name "*.xml"`
     for file in $files
@@ -133,6 +134,8 @@ updateGhPages () {
              fi
         fi
     done
+    set +x
+
     if [ ! -z "$filesToBeDeleted" ]; then
         git rm -f $filesToBeDeleted
         git commit -m "Removed any .xml files in reports/junit that have a timestamp older than one day." $filesToBeDeleted
