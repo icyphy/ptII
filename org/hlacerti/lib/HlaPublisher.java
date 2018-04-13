@@ -89,7 +89,7 @@ public class HlaPublisher extends TypedAtomicActor {
 
         // HLA attribute name.
         attributeName = new Parameter(this, "attributeName");
-        attributeName.setDisplayName("Name of the attribute to receive");
+        attributeName.setDisplayName("Name of the attribute to publish");
         attributeName.setTypeEquals(BaseType.STRING);
         attributeName.setExpression("\"HLAattributName\"");
         attributeChanged(attributeName);
