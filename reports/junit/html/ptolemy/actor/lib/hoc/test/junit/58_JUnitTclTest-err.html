@@ -57,13 +57,9 @@ Caused by: ptolemy.kernel.util.IllegalActionException: initialize() was called a
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Error in inside thread of actor.
-  in .MulticoreExecution.ThreadedComposite2
-Because:
-Test fails in iteration 0.
-Value was: 1003L. Should have been: 1000L
-  in .MulticoreExecution.ThreadedComposite2.ThreadedCompositeInside.Test
-	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:586)
+Caused by: ptolemy.kernel.util.IllegalActionException: Inside thread was interrupted.
+  in .MulticoreExecution.ThreadedComposite.ThreadedDirector
+	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:646)
 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
 	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)
 	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)
@@ -72,17 +68,6 @@ Value was: 1003L. Should have been: 1000L
 	at ptolemy.actor.Manager.execute(Manager.java:369)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
-Value was: 1003L. Should have been: 1000L
-  in .MulticoreExecution.ThreadedComposite2.ThreadedCompositeInside.Test
-	at ptolemy.actor.lib.Test.fire(Test.java:268)
-	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)
-	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
-	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.CompositeActor.iterate(CompositeActor.java:1146)
-	at ptolemy.actor.lib.hoc.ThreadedComposite.iterateContainedActors(ThreadedComposite.java:396)
-	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector$CompositeThread.run(ThreadedComposite.java:1127)
 </pre>
 </body>
 </html>
