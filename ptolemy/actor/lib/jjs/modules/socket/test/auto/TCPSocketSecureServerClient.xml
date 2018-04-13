@@ -4,22 +4,22 @@
 <entity name="TCPSocketSecureServerClient" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={369, 166, 844, 730}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 54, 1021, 730}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 620]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 620]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0118347604376237">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{305.0, 310.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{389.63956679047135, 308.6142578125}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 35.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -29,13 +29,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstrate the secure servers and clients over SSL/TLS.&#10;SSL/TLS is enabled for both the servers and clients.&#10;Required files are stored in&#10;ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/CACert.pem&#10;&#10;See certs/README for generation of required files.&#10;&#10;ServerA does not require a certificate for the client in this demo.&#10;&#10;ServerB requires a certificate for the client.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 55.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41018">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[70.0, 75.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[40.0, 40.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ClientA">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -67,6 +67,18 @@
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[95.0, 64.99999999999994]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ClientB">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-30.0, -105.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScriptBarrier">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
@@ -163,7 +175,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.00000000000006, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 285.0]">
         </property>
         <property name="sslTls" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -657,7 +669,7 @@
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -699,9 +711,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 340.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This string message&quot;, &quot;is&quot;, &quot;received by ServerA&quot;, &quot;over SSL/TLS(Secure Socket Layer/Transport Layer Security)&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This string message&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -745,7 +757,7 @@
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -787,15 +799,87 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 540.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This server (Server B on port 41019)&quot;, &quot;requires&quot;, &quot;a client certificate&quot;, &quot;when it builds a SSL/TLS connection with a client.&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This server (Server B on port 41019)&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptBarrier" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;var sawInput3 = false;&#10;var sawInput4 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2');&#10;    this.input('input3'); &#10;    this.input('input4');  &#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = true;&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 === true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;		self.sawInput2 = true;&#10; 		if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 === true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input3', function() {&#10;    	self.sawInput3 = true;&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 === true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input4', function() {&#10;    	self.sawInput4 = true;&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 === true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	setTimeout(function () {&#10;		console.log('JavaScriptBarrier: sending true after timeout.');&#10;		self.send('output', true);&#10;	}, this.getParameter('timeout'));&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 350.0]">
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="50000">
+        </property>
+        <port name="input1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="input2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="input4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Stop" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that stops execution of the enclosing swarmlet.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor that stops execution of the enclosing swarmlet when it&#10; *  receives an input with value true. It does this by identifying&#10; *  the top-level enclosing composite accessor and invoking wrapup&#10; *  on it.&#10; *&#10; *  @accessor utilities/Stop&#10; *  @input {boolean} stop A signal with value true to stop the swarmlet.&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global  exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('stop', {&#10;        'type': 'boolean'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('stop', function () {&#10;        var stop = this.get('stop');&#10;        if (stop) {&#10;            this.stop();&#10;        }&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Stop.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that stops execution of the enclosing swarmlet when it&#10; receives an input with value true. It does this by identifying&#10; the top-level enclosing composite accessor and invoking wrapup&#10; on it.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="stop (port)" class="ptolemy.kernel.util.StringAttribute" value="A signal with value true to stop the swarmlet.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 500.0]">
+        </property>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -814,6 +898,16 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ClientA.toSend" relation="relation4"/>
     <link port="ClientA.connected" relation="relation9"/>
     <link port="ServerA.received" relation="relation2"/>
@@ -827,7 +921,17 @@
     <link port="Sequence2.output" relation="relation7"/>
     <link port="DiscreteClock2.output" relation="relation8"/>
     <link port="TrainableTest.input" relation="relation9"/>
+    <link port="TrainableTest.output" relation="relation13"/>
     <link port="TrainableTest2.input" relation="relation2"/>
+    <link port="TrainableTest2.output" relation="relation12"/>
     <link port="TrainableTest3.input" relation="relation"/>
+    <link port="TrainableTest3.output" relation="relation10"/>
     <link port="TrainableTest4.input" relation="relation5"/>
+    <link port="TrainableTest4.output" relation="relation11"/>
+    <link port="JavaScriptBarrier.input1" relation="relation13"/>
+    <link port="JavaScriptBarrier.input2" relation="relation12"/>
+    <link port="JavaScriptBarrier.output" relation="relation6"/>
+    <link port="JavaScriptBarrier.input3" relation="relation10"/>
+    <link port="JavaScriptBarrier.input4" relation="relation11"/>
+    <link port="Stop.stop" relation="relation6"/>
 </entity>

@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{68.0, 32.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 27, 1416, 873}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1424, 873}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1182, 763]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1190, 763]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0073604916400807">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{596.7182675547808, 377.93066406249994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{600.689040712151, 377.93066406250006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test POSTing images.  GIF, JPG, and PNG.&#10;">
@@ -29,6 +29,18 @@
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-175.0, -110.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScriptBarrier">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
     </property>
     <entity name="Request" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -838,9 +850,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1110.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1105.0, 265.0}">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="18000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="150000">
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -856,8 +868,6 @@
         </port>
         <port name="input4" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Stop" class="org.terraswarm.accessor.JSAccessor">

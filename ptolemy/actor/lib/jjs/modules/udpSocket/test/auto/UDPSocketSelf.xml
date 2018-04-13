@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -158,9 +158,9 @@
         </port>
     </entity>
     <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -318,26 +318,42 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="JavaScriptStop" class="ptolemy.actor.lib.jjs.JavaScript">
+    <entity name="Stop" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        this.stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that stops execution of the enclosing swarmlet.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor that stops execution of the enclosing swarmlet when it&#10; *  receives an input with value true. It does this by identifying&#10; *  the top-level enclosing composite accessor and invoking wrapup&#10; *  on it.&#10; *&#10; *  @accessor utilities/Stop&#10; *  @input {boolean} stop A signal with value true to stop the swarmlet.&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global  exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('stop', {&#10;        'type': 'boolean'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('stop', function () {&#10;        var stop = this.get('stop');&#10;        if (stop) {&#10;            this.stop();&#10;        }&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[543.9765169945038, 232.00905238495972]">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Stop.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that stops execution of the enclosing swarmlet when it&#10; receives an input with value true. It does this by identifying&#10; the top-level enclosing composite accessor and invoking wrapup&#10; on it.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="stop (port)" class="ptolemy.kernel.util.StringAttribute" value="A signal with value true to stop the swarmlet.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[526.7576241921411, 234.86347839575498]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
@@ -356,5 +372,5 @@
     <link port="UDPSocketSender.toSend" relation="relation2"/>
     <link port="TrainableTest.input" relation="relation4"/>
     <link port="TrainableTest.output" relation="relation3"/>
-    <link port="JavaScriptStop.input" relation="relation3"/>
+    <link port="Stop.stop" relation="relation3"/>
 </entity>

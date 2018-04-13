@@ -49,7 +49,19 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Form data: Both as body and as part of URL.&#10;Content-Type: application/x-www-form-urlencoded">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[780.0, 455.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[710.0, 505.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[15.0, 50.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScriptBarrier">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <entity name="REST" class="org.terraswarm.accessor.JSAccessor">
@@ -1042,7 +1054,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{875.0, 405.0}">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="18000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="200000">
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1061,8 +1073,6 @@
         </port>
         <port name="input5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Stop" class="org.terraswarm.accessor.JSAccessor">
