@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0672037275667556">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.73828125, 197.99789094485672}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.73828124999994, 197.99789094485672}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40">
@@ -196,7 +196,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 290.0]">
         </property>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -288,7 +288,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[744.5625, 293.515625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 290.0]">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{type=\&quot;class ptolemy.data.AWTImageToken\&quot;, width=\&quot;176\&quot;, height=\&quot;144\&quot;}&quot;}">
         </property>
