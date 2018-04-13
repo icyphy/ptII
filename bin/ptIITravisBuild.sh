@@ -94,19 +94,50 @@ updateGhPages () {
         fi
     fi        
 
-    days=1
-    pwd
-    ls -l reports/junit/TEST-lbnl.test.junit.JUnitTclTest.xml
-    find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime -$days -ls | grep lbnl
-    find reports/junit \( -name "*.htm*" -o -name "*.xml" \) -mtime +$days -ls
-    find reports/junit -name "*.xml" -mtime +$days -ls
-    files=`find reports/junit -name "*.xml" -mtime +$days -print`
-    if [ ! -z "$files" ]; then
-        echo "Removing any .htm and .xml files in reports/junit that are older than $days day(s)."
-        ls -l $files
-        git rm -f $files
-        git commit -m "Removed any .htm and .xml files in reports/junit that are older than $days day(s)." $files
+
+    # Delete report/junit/**/*.xml files that have a timestamp field older than one day.
+    #
+    # Using find on the file mod time does not work here.  It could be
+    # Git not preserving the mod time, or it could be us removing the
+    # GITHUB_TOKEN.  So, we look for the timestamp field.
+    filesToBeDeleted=""
+    files=`find reports/junit -name "*.xml"`
+    for file in $files
+    do
+        grep timestamp $file >& /dev/null
+        status=$?
+        today=`date "+%Y-%m-%d"`
+        if [ $status -eq 0 ]; then
+            # echo $file
+            # Get the timestamp, convert it roughly to a day number, compare against today's day number
+            # and return 1 if the timestamp is more than one day old.  Leap years are ignored.
+            timestamp=`head -2 $file | grep timestamp | awk -F \" '{print $(NF-1)}' | awk -F T '{print $1}'`
+            older=`echo $timestamp |
+                        awk -v today=$today ' 
+                        BEGIN {
+                            mo["01"]=0; mo["02"]=31; mo["03"]=59; mo["04"]=90 
+                            mo["05"]=120; mo["06"]=151; mo["07"]=181; mo["08"]=212
+                            mo["Sep"]=243; mo["Oct"]=273; mo["Nov"]=304; mo["Dec"]=334
+                        } 
+                        {  
+                            split(today, todayYMD, "-")
+                            todayDoy = todayYMD[1] * 365 + mo[todayYMD[2]] + todayYMD[3]
+                            split($1, doyYMD, "-") 
+                            doy = doyYMD[1] *365 + mo[doyYMD[2]] + doyYMD[3]
+                            olderThanOneDay = (todayDoy - doy) > 1
+                            print olderThanOneDay
+                        }' -`
+             if [ $older -eq 1 ]; then
+                 echo "$file: $timestamp is older than one day"
+                 filesToBeDeleted="$filesToBeDeleted $file"
+             fi
+        fi
+    done
+    if [ ! -z "$filesToBeDeleted" ]; then
+        git rm -f $filesToBeDeleted
+        git commit -m "Removed any .xml files in reports/junit that have a timestamp older than one day." $filesToBeDeleted
     fi
+
 
     cp -Rf $sources $destination
 
