@@ -151,8 +151,10 @@ public class AutoTests extends ModelTests {
                         .getMethod("toplevel", new Class[] {});
             }
 
-            // If a model is in org/terraswarm/accessors/test, the delay before reloading.
-            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
+            // If a model is in various directories, including
+            // org/terraswarm/accessors/test, the delay before
+            // reloading.  See
+            // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
             _delay(fullPath);
 
             Object instance = _applicationConstructor.newInstance(fullPath);
@@ -183,6 +185,9 @@ public class AutoTests extends ModelTests {
                 // Reload all the accessors and invoke rerun.
                 if (((Boolean) _jsAccessorReloadAllAccessorsMethod.invoke(null,
                         new Object[] { toplevel })).booleanValue()) {
+
+                    _delay(fullPath);
+
                     System.out.println(
                             "----------------- Reloaded Accessors and testing again " + (new java.util.Date()) + " "
                                     + fullPath);
@@ -248,17 +253,19 @@ public class AutoTests extends ModelTests {
 
     private static void _delay(String fullPath) {
         String accessorTests = "org/terraswarm/accessor";
-        int delay = 2500;
-        if (fullPath.indexOf(accessorTests) != -1) {
+        int delay = 5000;
+        boolean match = fullPath.matches(".*(org/hlacerti|org/terraswarm/accessors|ptolemy/actor/lib/jjs/modules/httpClient).*");
+        // System.out.println("AutoTests.java: fullPath: " + fullPath
+        //                   + " match: " + match);
+        if (match) {
             System.out.println("----------------- " + (new java.util.Date())
-                    + " About to sleep for " + delay / 1000
-                    + " seconds before rerunning in " + accessorTests
-                    + ".  Test is: " + fullPath);
+                    + " About to sleep for " + delay / 1000.0
+                    + " seconds before rerunning.  Test is: " + fullPath);
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException ex) {
                 System.err.println(
-                        "Sleep before reloading of accessors was interrupted: "
+                        "Sleep before rerunning was interrupted: "
                                 + ex);
             }
         }
