@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1060461854430697">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.8880887681158, 254.5408344655797}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.88808876811567, 254.5408344655797}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -75,18 +75,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 135.0]">
-        </property>
-    </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-60.0, 80.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScriptBarrier">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
-            </property>
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -352,37 +340,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 315.0]">
         </property>
     </entity>
-    <entity name="JavaScriptBarrier" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2'); &#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = true;&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;		self.sawInput2 = true;&#10; 		if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	setTimeout(function () {&#10;		console.log('JavaScriptBarrier: sending true after timeout.');&#10;		self.send('output', true);&#10;	}, this.getParameter('timeout'));&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 245.0]">
-        </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="150000">
-        </property>
-        <port name="input1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="input2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="Stop" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
@@ -449,7 +406,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 235.0]">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{message = 0, socketID = 0}, {message = -1, socketID = 0}, {message = -2, socketID = 0}, {message = -3, socketID = 0}, {message = -4, socketID = 0}, {message = -5, socketID = 0}, {message = -6, socketID = 0}, {message = -7, socketID = 0}, {message = -8, socketID = 0}, {message = -9, socketID = 0}, {message = -10, socketID = 0}, {message = -11, socketID = 0}, {message = -12, socketID = 0}, {message = -13, socketID = 0}, {message = -14, socketID = 0}, {message = -15, socketID = 0}, {message = -16, socketID = 0}, {message = -17, socketID = 0}, {message = -18, socketID = 0}, {message = -19, socketID = 0}, {message = -20, socketID = 0}, {message = -21, socketID = 0}, {message = -22, socketID = 0}, {message = -23, socketID = 0}, {message = -24, socketID = 0}, {message = -25, socketID = 0}, {message = -26, socketID = 0}, {message = -27, socketID = 0}, {message = -28, socketID = 0}, {message = -29, socketID = 0}, {message = -30, socketID = 0}, {message = -31, socketID = 0}, {message = -32, socketID = 0}, {message = -33, socketID = 0}, {message = -34, socketID = 0}, {message = -35, socketID = 0}, {message = -36, socketID = 0}, {message = -37, socketID = 0}, {message = -38, socketID = 0}, {message = -39, socketID = 0}, {message = -40, socketID = 0}, {message = -41, socketID = 0}, {message = -42, socketID = 0}, {message = -43, socketID = 0}, {message = -44, socketID = 0}, {message = -45, socketID = 0}, {message = -46, socketID = 0}, {message = -47, socketID = 0}, {message = -48, socketID = 0}, {message = -49, socketID = 0}, {message = -50, socketID = 0}, {message = -51, socketID = 0}, {message = -52, socketID = 0}, {message = -53, socketID = 0}, {message = -54, socketID = 0}, {message = -55, socketID = 0}, {message = -56, socketID = 0}, {message = -57, socketID = 0}, {message = -58, socketID = 0}, {message = -59, socketID = 0}, {message = -60, socketID = 0}, {message = -61, socketID = 0}, {message = -62, socketID = 0}, {message = -63, socketID = 0}, {message = -64, socketID = 0}, {message = -65, socketID = 0}, {message = -66, socketID = 0}, {message = -67, socketID = 0}, {message = -68, socketID = 0}, {message = -69, socketID = 0}, {message = -70, socketID = 0}, {message = -71, socketID = 0}, {message = -72, socketID = 0}, {message = -73, socketID = 0}, {message = -74, socketID = 0}, {message = -75, socketID = 0}, {message = -76, socketID = 0}, {message = -77, socketID = 0}, {message = -78, socketID = 0}, {message = -79, socketID = 0}, {message = -80, socketID = 0}, {message = -81, socketID = 0}, {message = -82, socketID = 0}, {message = -83, socketID = 0}, {message = -84, socketID = 0}, {message = -85, socketID = 0}, {message = -86, socketID = 0}, {message = -87, socketID = 0}, {message = -88, socketID = 0}, {message = -89, socketID = 0}, {message = -90, socketID = 0}, {message = -91, socketID = 0}, {message = -92, socketID = 0}, {message = -93, socketID = 0}, {message = -94, socketID = 0}, {message = -95, socketID = 0}, {message = -96, socketID = 0}, {message = -97, socketID = 0}, {message = -98, socketID = 0}, {message = -99, socketID = 0}}">
         </property>
@@ -506,6 +463,43 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="And" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Emit a true if all of the inputs have received a true.&#10; *  If the timeout is non-zero, then emit a true after the timeout.&#10; *&#10; *  This accessor is typically used to stop a model after all&#10; *  of the TrainableTest accessors have emitted a true.&#10; *&#10; *  @input input1 The first input&#10; *  @input input2 the second input&#10; *  @output output True if the inputs have seen true or if the&#10; *  timeout has occurred&#10; *  @param timeout If non-zero, the timeout in milliseconds.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2'); &#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = this.get('input1');&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;	self.sawInput2 = this.get('input2');&#10; 	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;&#10;    if (this.getParameter('timeout') &gt; 0) {&#10;        setTimeout(function () {&#10;	    console.log('JavaScriptBarrier: sending true after timeout.');&#10;	    self.send('output', true);&#10;        }, this.getParameter('timeout'));&#10;    }&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 245.0]">
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="input2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -532,11 +526,11 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation5"/>
     <link port="Ramp.trigger" relation="relation"/>
@@ -557,12 +551,12 @@
     <link port="SingleEvent.output" relation="relation4"/>
     <link port="Repeat.input" relation="relation4"/>
     <link port="Repeat.output" relation="relation6"/>
-    <link port="JavaScriptBarrier.input1" relation="relation13"/>
-    <link port="JavaScriptBarrier.input2" relation="relation11"/>
-    <link port="JavaScriptBarrier.output" relation="relation9"/>
-    <link port="Stop.stop" relation="relation9"/>
+    <link port="Stop.stop" relation="relation13"/>
     <link port="TrainableTest.input" relation="relation10"/>
-    <link port="TrainableTest.output" relation="relation13"/>
+    <link port="TrainableTest.output" relation="relation11"/>
     <link port="TrainableTest2.input" relation="relation3"/>
-    <link port="TrainableTest2.output" relation="relation11"/>
+    <link port="TrainableTest2.output" relation="relation12"/>
+    <link port="And.input1" relation="relation11"/>
+    <link port="And.input2" relation="relation12"/>
+    <link port="And.output" relation="relation13"/>
 </entity>
