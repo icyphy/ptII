@@ -4,13 +4,13 @@
 <entity name="RESTGet" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 23, 1046, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.00000000000006, 261.99999999999983}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.99999999999994, 261.99999999999983}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120">
@@ -54,6 +54,18 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test ability to receive JSON">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[229.55078125, 375.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-30.0, 70.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScriptBarrier">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
@@ -684,7 +696,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 295.0]">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="18000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="120000">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
