@@ -1,0 +1,14 @@
+;;FOM with 1 object class and 1 attribute.
+(Fed
+ (Federation TestTimeAdvance2)
+ (FedVersion v1.3)
+ (Spaces)
+ (Objects
+  (Class ObjectRoot
+   (Attribute privilegeToDelete reliable timestamp)
+   (Class RTIprivate)
+     (Class Signal
+       (Attribute speed reliable timestamp))))
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE))))

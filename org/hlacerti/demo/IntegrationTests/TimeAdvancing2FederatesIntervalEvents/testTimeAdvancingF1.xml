@@ -16,7 +16,10 @@
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;f1&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TestTimeAdvance&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="testTimeAdvanceEvent.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
@@ -31,7 +34,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1089, 524, 684, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 401, 684, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 522]">
     </property>
@@ -69,7 +72,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Cl&#233;ment Michel">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clément Michel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 335.0]">
         </property>

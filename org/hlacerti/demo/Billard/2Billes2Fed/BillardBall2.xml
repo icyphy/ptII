@@ -4,22 +4,21 @@
 <entity name="BillardBall2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 53, 939, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 22, 957, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.685160137923597">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="3.0995458027390557">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{131.242075920105, 258.8806083968111}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{157.0168517222628, 214.24509000778198}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 160.0]">
         </property>
     </property>
-    <property name="billiard" class="org.hlacerti.lib.HlaManager">
-        <display name="ball2"/>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;ball2&quot;">
             <display name="Federate's name"/>
         </property>
@@ -35,7 +34,7 @@
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 165.0]">
         </property>
     </property>
     <property name="EndSimu" class="ptolemy.data.expr.Parameter" value="1600.0">
@@ -54,21 +53,21 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 185.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron&#10;Update: CIELE Ingénierie - http://www.ciele.fr">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
         </property>
     </property>
     <entity name="Ball" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 245.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
@@ -250,13 +249,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 10.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 291, 1201, 634}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 22, 1238, 419}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[967, 524]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 309]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0545953880392065">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.884765625, 230.87699802442526}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{502.427038433908, 128.94216954022986}">
         </property>
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
