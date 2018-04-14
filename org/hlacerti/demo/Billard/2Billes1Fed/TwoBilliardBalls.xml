@@ -4,18 +4,18 @@
 <entity name="TwoBilliardBalls" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 22, 856, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 22, 813, 699}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[579, 589]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.036374384849783">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9615949604965393">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.04766469606218, 234.85849788826957}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{107.03503818544908, 129.76562500000003}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 10.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -40,7 +40,7 @@
         <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="1">
             <display name="HLA time unit"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 20.0]">
         </property>
     </property>
     <property name="EndSimu" class="ptolemy.data.expr.Parameter" value="1600.0">
@@ -59,17 +59,17 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 35.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron&#10;Update: CIELE Ingénierie - http://www.ciele.fr">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 265.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -79,21 +79,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate simulates 2 instances of class&#10;&quot;Bille&quot; (see Test.fed file) and can interoperate&#10;with C++ federates of CERTI demo &quot;Billard&quot;.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 60.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If there are problems, &#10;right click on &#10;the HlaManager icon&#10;and select&#10;Listen to Attribute,&#10;then rerun the model.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 225.0]">
         </property>
     </property>
     <entity name="Bille1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 100.0]">
         </property>
         <property name="delta" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -114,7 +104,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 0.0]">
             </property>
         </property>
-        <property name="Vx" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="Vx" class="ptolemy.data.expr.Parameter" value="-1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -579,7 +569,7 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 75.0]">
         </property>
     </entity>
     <entity name="PositionY" class="org.hlacerti.lib.HlaPublisher">
@@ -595,11 +585,11 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 120.0]">
         </property>
     </entity>
     <entity name="Bille2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 330.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 185.0]">
         </property>
         <property name="delta" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -620,7 +610,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 0.0]">
             </property>
         </property>
-        <property name="Vx" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="Vx" class="ptolemy.data.expr.Parameter" value="1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1085,7 +1075,7 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 165.0]">
         </property>
     </entity>
     <entity name="PositionY2" class="org.hlacerti.lib.HlaPublisher">
@@ -1101,7 +1091,7 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 205.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

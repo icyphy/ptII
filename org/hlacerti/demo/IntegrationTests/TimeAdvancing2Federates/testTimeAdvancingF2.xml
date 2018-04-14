@@ -16,7 +16,10 @@
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;f2&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TestTimeAdvance2&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="testTimeAdvance2.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
@@ -31,13 +34,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={291, 239, 592, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={674, 47, 592, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0933189337784104">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{111.1484375, 291.33106591235634}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{111.14843750000003, 291.3310659123564}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate f2 participating to HlaFederation;&#10;it must be the first one to be launched.&#10;&#10;For observing how the time advances,&#10;do a right-click on HlaManager icone and&#10;choose Listen To Attribute.&#10;&#10;Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.&#10;Parameter hlaTimeStep is only used with TAR.">
@@ -69,7 +72,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Cl&#233;ment Michel">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clément Michel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 390.0]">
         </property>

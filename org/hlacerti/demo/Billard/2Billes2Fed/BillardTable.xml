@@ -4,18 +4,17 @@
 <entity name="BillardTable" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 1922, 1081}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 22, 937, 674}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1706, 963]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[703, 564]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.2994834393633843">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7989960959286113">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1454.221523284912, -2498.7795469873354}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1630.3925781250002, -2461.017413816755}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <property name="display" class="org.hlacerti.lib.HlaManager">
-        <display name="displayActor"/>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;displayActor&quot;">
             <display name="Federate's name"/>
         </property>
@@ -31,7 +30,7 @@
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1655.0, -2575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1655.0, -2575.0}">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -69,30 +68,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1645.0, -2385.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo can be executed from CIELE r111.&#10;Problems in the previous CIELE model :&#10;- HlaSubscriber in BillardTable was not CertiBuffer, the 2 others were&#10;- the old model was designed for discovering 2 instances, this is not more &#10;possible in this version, so we need to add 2 HlaSubs. &#10;- I also just changer the parameter Vy in ball1 for better observing the output in&#10;a TimePlotter (also added) (Janette)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1825.0, -2710.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron&#10;Update: CIELE Ingénierie - http://www.ciele.fr">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1570.0, -2605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1655.0, -2355.0]">
         </property>
     </property>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1364, 736, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={940, 556, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -166,7 +155,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="xBall1,  yBall1, xBall2, yBall2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1225, 512, 649, 399}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 501, 649, 399}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 355]">
         </property>
