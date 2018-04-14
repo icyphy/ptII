@@ -93,6 +93,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -197,9 +198,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 45502 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.8 37196 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 45502 10.20.0.96 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.8 37196 10.20.0.89 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '366321084';
+        cur['env.TRAVIS_BUILD_ID'] = '366353663';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '257';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '258';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'bd5fcc227058983fa17096e3ce25918ace706dce';
+        cur['env.TRAVIS_COMMIT'] = '7fb9c8d31cdc5012f729e547310abfd18a3c3f8e';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added Stop actors and increased stopTime.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Partial revert of 07519f0f1f.  If PT_NO_NET is set, then still parse the accessors library.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '94b28b1b5e28...bd5fcc227058';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'bd5fcc227058...7fb9c8d31cdc';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '366321091';
+        cur['env.TRAVIS_JOB_ID'] = '366353671';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '257.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '258.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.architecture.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.architecture.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2354140258444068939.properties propsfile=/home/travis/build/icyphy/ptII/junit7361493669280317909.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.architecture.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.architecture.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5407951617374356447.properties propsfile=/home/travis/build/icyphy/ptII/junit3519575794937137312.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +505,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="3_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="3_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>0.727</td><td>2018-04-13T22:06:20</td><td>travis-job-b5b52520-1dfb-4e02-bb57-1407a3f4d923</td>
+<td><a title="Display all tests" href="3_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="3_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>0.768</td><td>2018-04-14T00:07:04</td><td>travis-job-d68d1416-a494-47d8-92eb-9a4f2b85a90c</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -516,13 +517,13 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml (RunModel)</td><td>Success</td><td></td><td>0.241</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/architecture/test/auto/Count.xml (RunModel)</td><td>Success</td><td></td><td>0.286</td>
 </tr>
 </table>
 <div class="Properties">

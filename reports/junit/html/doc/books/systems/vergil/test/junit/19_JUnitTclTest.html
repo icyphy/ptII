@@ -93,6 +93,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -197,9 +198,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 45502 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.8 37196 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 45502 10.20.0.96 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.8 37196 10.20.0.89 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '366321084';
+        cur['env.TRAVIS_BUILD_ID'] = '366353663';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '257';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '258';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'bd5fcc227058983fa17096e3ce25918ace706dce';
+        cur['env.TRAVIS_COMMIT'] = '7fb9c8d31cdc5012f729e547310abfd18a3c3f8e';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added Stop actors and increased stopTime.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Partial revert of 07519f0f1f.  If PT_NO_NET is set, then still parse the accessors library.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '94b28b1b5e28...bd5fcc227058';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'bd5fcc227058...7fb9c8d31cdc';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '366321091';
+        cur['env.TRAVIS_JOB_ID'] = '366353671';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '257.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '258.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6357671428581068552.properties propsfile=/home/travis/build/icyphy/ptII/junit6769102137536562462.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3363588406819490956.properties propsfile=/home/travis/build/icyphy/ptII/junit5859201147680974673.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +505,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="19_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="19_JUnitTclTest.html">21</a></td><td>0</td><td>0</td><td>0</td><td>2.821</td><td>2018-04-13T22:07:34</td><td>travis-job-b5b52520-1dfb-4e02-bb57-1407a3f4d923</td>
+<td><a title="Display all tests" href="19_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="19_JUnitTclTest.html">21</a></td><td>0</td><td>0</td><td>0</td><td>3.073</td><td>2018-04-14T00:08:17</td><td>travis-job-d68d1416-a494-47d8-92eb-9a4f2b85a90c</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -519,61 +520,61 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml (RunModel)</td><td>Success</td><td></td><td>0.318</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml (RunModel)</td><td>Success</td><td></td><td>0.341</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml (RunModel)</td><td>Success</td><td></td><td>0.070</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml (RunModel)</td><td>Success</td><td></td><td>0.035</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.148</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.145</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml (RunModel)</td><td>Success</td><td></td><td>0.288</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml (RunModel)</td><td>Success</td><td></td><td>0.296</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml (RunModel)</td><td>Success</td><td></td><td>0.226</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml (RunModel)</td><td>Success</td><td></td><td>0.168</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml (RunModel)</td><td>Success</td><td></td><td>0.068</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml (RunModel)</td><td>Success</td><td></td><td>0.110</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml (RunModel)</td><td>Success</td><td></td><td>0.114</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml (RunModel)</td><td>Success</td><td></td><td>0.153</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml (RunModel)</td><td>Success</td><td></td><td>0.183</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml (RunModel)</td><td>Success</td><td></td><td>0.194</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml (RunModel)</td><td>Success</td><td></td><td>0.223</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml (RunModel)</td><td>Success</td><td></td><td>0.225</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml (RunModel)</td><td>Success</td><td></td><td>0.142</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml (RunModel)</td><td>Success</td><td></td><td>0.169</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml (RunModel)</td><td>Success</td><td></td><td>0.066</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml (RunModel)</td><td>Success</td><td></td><td>0.167</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml (RunModel)</td><td>Success</td><td></td><td>0.154</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml (RunModel)</td><td>Success</td><td></td><td>0.219</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml (RunModel)</td><td>Success</td><td></td><td>0.062</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml (RunModel)</td><td>Success</td><td></td><td>0.014</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml (RunModel)</td><td>Success</td><td></td><td>0.017</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml (RunModel)</td><td>Success</td><td></td><td>0.127</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml (RunModel)</td><td>Success</td><td></td><td>0.163</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml (RunModel)</td><td>Success</td><td></td><td>0.056</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml (RunModel)</td><td>Success</td><td></td><td>0.013</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml (RunModel)</td><td>Success</td><td></td><td>0.014</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml (RunModel)</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 </table>
 <div class="Properties">
