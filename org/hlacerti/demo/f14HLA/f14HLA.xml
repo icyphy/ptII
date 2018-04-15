@@ -4,20 +4,20 @@
 <entity name="f14HLA" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={861, 31, 764, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={658, 31, 782, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[548, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[548, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9289601887125329">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.40625, 335.2710437561943}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.40625000000006, 339.5769333396259}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on the links below for two F14 demos:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on the links below for two F14 aircraft demos:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
         </property>
@@ -86,6 +86,43 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can choose a different time management for each&#10;federate in the HlaManager interface (NER or TAR). When&#10;using TAR, you need to set a value for parameter TARtimeStep.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 170.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="New: This federation simulates two F14 aircrafts together and&#10;shows the abililty to handle with multiple instances:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 255.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two aircrafts flying together: TwoF14AircraftsNER.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 315.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TwoF14AircraftsNER/TwoF14AircraftsNER.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 145}">
+            </property>
         </property>
     </property>
 </entity>

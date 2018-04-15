@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
+<entity name="f14AutoPilot2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={542, 268, 898, 632}, maximized=false}">
@@ -63,7 +63,7 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;AutoPilot&quot;">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;AutoPilot2&quot;">
             <display name="Federate's name"/>
         </property>
         <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;PRISE_V2&quot;">
@@ -696,7 +696,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ACTUATOR&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;autop&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;autop2&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 75.0}">
@@ -714,7 +714,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;AIRCRAFT&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ac1&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ac2&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
@@ -730,7 +730,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;AIRCRAFT&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ac1&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ac2&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
@@ -746,7 +746,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;JOYSTICK&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;elev&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;elev2&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">

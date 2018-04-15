@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="f14PilotStick" class="ptolemy.actor.TypedCompositeActor">
+<entity name="f14PilotStick2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={493, 268, 638, 632}, maximized=false}">
@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1720213929379335">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{95.08566907313487, 129.97292212041881}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{95.08566907313488, 129.97292212041881}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -120,7 +120,7 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;PilotStick&quot;">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;PilotStick2&quot;">
             <display name="Federate's name"/>
         </property>
         <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;PRISE_V2&quot;">
@@ -132,22 +132,41 @@
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
             <display name="lookahead (s)"/>
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point register ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, -60.0]">
         </property>
     </property>
+    <property name="ref" class="ptolemy.data.expr.Parameter" value="1.2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 20.0]">
+        </property>
+    </property>
     <entity name="PilotStick" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 20.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={377, 162, 894, 621}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 38, 903, 632}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[669, 350]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[669, 522]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4236593887597">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-90.0336914062499, -134.7673401882474}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-90.03369140624989, -74.35963264316976}">
         </property>
         <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="25">
@@ -179,7 +198,7 @@
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, T/2}">
             </property>
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{-1, 1}">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{-ref, ref}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -140.0]">
             </property>
@@ -206,10 +225,10 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;JOYSTICK&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;elev&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;elev2&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 20.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
