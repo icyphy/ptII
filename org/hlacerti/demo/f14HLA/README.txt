@@ -9,16 +9,15 @@ README of the F14 HLA PRISE demo
 
 DOCUMENTATION:
  
- - This folder contains two F14 HLA PRISE demos: 
+ - This folder contains 3 F14 HLA PRISE demos: 
    -- AllFederatesNER: all federates use NER as HLA time management.
    -- AllFederatesTAR: all federates use TAR as HLA time management.
+   -- TwoF14AircraftsNER: 2 aircrafts flies in the same aerial space.
    Open f14HLA.xml in this folder or the f14HlaNER.xml/f14HlaTAR.xml in the above folders.
 	
    You can change the HLA time management in each federate separately. When using
    TAR, if the lookahead is bigger than the sampling time of periodicSamplers (federate
    Aircraft) the results are too different from the centralized model and can be unstable.
-
-These demos work from revision 74766 to the current revision 76434 on July, 25, 2017.
 
  - The F14 HLA PRISE demo is based on the centralized PtolemyII simulation 
    (see ./initial-centralized-f14/f14_initial.xml based on a MATLAB demo f14).

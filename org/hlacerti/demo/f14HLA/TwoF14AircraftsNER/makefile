@@ -1,10 +1,10 @@
 # Makefile for Ptolemy II - HLA/CERTI demos
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
 #
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id: makefile 181 2018-03-28 09:46:50Z gl.lasnier $
 #
-# @Copyright (c) 2016-2017 The Regents of the University of California.
+# @Copyright (c) 2013-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,74 +26,64 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/f14HLA
-
-DIRS = 	AllFederatesNER AllFederatesTAR initialCentralizedF14
+ME =        org/hlacerti/demo/f14HLA/AllFederatesNER
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =      ../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	f14HLA
-#PTCLASSJAR = 	$(PTPACKAGE).jar
-PTCLASSALLJAR= $(PTPACKAGE).jar
+PTPACKAGE =     TwoF14AircraftsNER
+PTCLASSJAR =    $(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	AllFederatesNER/AllFederatesNER.jar \
-	AllFederatesTAR/AllFederatesTAR.jar \
-	initialCentralizedF14/initialCentralizedF14.jar \
-        TwoF14AircraftsNER/TwoF14AircraftsNER.jar \        
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	README.txt \
-	f14HLA.xml
+	f14HlaNER.xml \
+	priseV2.fed \
+	f14Aircraft2.xml \
+	f14AutoPilot2.xml \
+	f14PilotStick2.xml \
+	f14Aircraft.xml \
+	f14AutoPilot.xml \
+	f14PilotStick.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = RTIG.log
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass $(PTCLASSJAR)n
 	@echo "To run all the demos, run 'make demo'"
 
-install: all $(PTCLASSJAR)
+install: all jars
 
 demo: demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer f14HLA.htm
-
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
-
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" f14HLA.xml
+	"$(PTII)/bin/ptolemy" TwoF14AircraftsNER.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" f14HLA.xml
+	"$(PTII)/bin/vergil" TwoF14AircraftsNER.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
