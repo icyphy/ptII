@@ -93,6 +93,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -197,9 +198,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.8 50084 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.9 44794 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.8 50084 10.20.1.14 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.9 44794 10.20.0.46 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '366245286';
+        cur['env.TRAVIS_BUILD_ID'] = '367163689';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '255';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '264';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'bc251adaf81ce78db31dfcf426cd98ec6280782d';
+        cur['env.TRAVIS_COMMIT'] = '162284abdf6686c376c35a518df143577e950a74';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Adding a first draft of a Ptolemy-HLA manual.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Upgrading quadrotors models made by Sebastien Jaillant (hlacerti/models).';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '49f19ce9b32c...bc251adaf81c';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '3fc37ba9dd49...162284abdf66';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '366245291';
+        cur['env.TRAVIS_JOB_ID'] = '367163699';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '255.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '264.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.fmi.driver.test.junit.FMUJUnitTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.fmi.driver.test.junit.FMUJUnitTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2853891833243618850.properties propsfile=/home/travis/build/icyphy/ptII/junit3671811819575597904.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.fmi.driver.test.junit.FMUJUnitTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.fmi.driver.test.junit.FMUJUnitTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5293779306623040858.properties propsfile=/home/travis/build/icyphy/ptII/junit4571004230407410939.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +505,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="26_FMUJUnitTest.html">FMUJUnitTest</a></td><td><a title="Display all tests" href="26_FMUJUnitTest.html">20</a></td><td>0</td><td>0</td><td>0</td><td>1.000</td><td>2018-04-13T18:47:35</td><td>travis-job-e3641658-0b04-498e-8acb-4ad5b84270bc</td>
+<td><a title="Display all tests" href="26_FMUJUnitTest.html">FMUJUnitTest</a></td><td><a title="Display all tests" href="26_FMUJUnitTest.html">20</a></td><td>0</td><td>0</td><td>0</td><td>1.307</td><td>2018-04-16T13:56:10</td><td>travis-job-49271d17-3059-4ac1-8b90-e0917a8ad7a3</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -513,64 +514,64 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateBouncingBall"></a>cosimulateBouncingBall</td><td>Success</td><td></td><td>0.377</td>
+<td><a name="cosimulateBouncingBall"></a>cosimulateBouncingBall</td><td>Success</td><td></td><td>0.485</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeValues20"></a>modelExchangeValues20</td><td>Success</td><td></td><td>0.055</td>
+<td><a name="modelExchangeValues20"></a>modelExchangeValues20</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeVanDerPol"></a>modelExchangeVanDerPol</td><td>Success</td><td></td><td>0.034</td>
+<td><a name="modelExchangeVanDerPol"></a>modelExchangeVanDerPol</td><td>Success</td><td></td><td>0.023</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeVanDerPol20"></a>modelExchangeVanDerPol20</td><td>Success</td><td></td><td>0.029</td>
+<td><a name="modelExchangeVanDerPol20"></a>modelExchangeVanDerPol20</td><td>Success</td><td></td><td>0.022</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateDq20"></a>cosimulateDq20</td><td>Success</td><td></td><td>0.014</td>
+<td><a name="cosimulateDq20"></a>cosimulateDq20</td><td>Success</td><td></td><td>0.039</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateInc"></a>cosimulateInc</td><td>Success</td><td></td><td>0.009</td>
+<td><a name="cosimulateInc"></a>cosimulateInc</td><td>Success</td><td></td><td>0.024</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateInc20"></a>cosimulateInc20</td><td>Success</td><td></td><td>0.025</td>
+<td><a name="cosimulateInc20"></a>cosimulateInc20</td><td>Success</td><td></td><td>0.027</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateValues"></a>cosimulateValues</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="cosimulateValues"></a>cosimulateValues</td><td>Success</td><td></td><td>0.035</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateValues20"></a>cosimulateValues20</td><td>Success</td><td></td><td>0.047</td>
+<td><a name="cosimulateValues20"></a>cosimulateValues20</td><td>Success</td><td></td><td>0.062</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateVanDerPol"></a>cosimulateVanDerPol</td><td>Success</td><td></td><td>0.044</td>
+<td><a name="cosimulateVanDerPol"></a>cosimulateVanDerPol</td><td>Success</td><td></td><td>0.063</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateVanDerPol20"></a>cosimulateVanDerPol20</td><td>Success</td><td></td><td>0.031</td>
+<td><a name="cosimulateVanDerPol20"></a>cosimulateVanDerPol20</td><td>Success</td><td></td><td>0.036</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeBouncingBall"></a>modelExchangeBouncingBall</td><td>Success</td><td></td><td>0.013</td>
+<td><a name="modelExchangeBouncingBall"></a>modelExchangeBouncingBall</td><td>Success</td><td></td><td>0.038</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeBouncingBall20"></a>modelExchangeBouncingBall20</td><td>Success</td><td></td><td>0.015</td>
+<td><a name="modelExchangeBouncingBall20"></a>modelExchangeBouncingBall20</td><td>Success</td><td></td><td>0.034</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeDq"></a>modelExchangeDq</td><td>Success</td><td></td><td>0.011</td>
+<td><a name="modelExchangeDq"></a>modelExchangeDq</td><td>Success</td><td></td><td>0.032</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeDq20"></a>modelExchangeDq20</td><td>Success</td><td></td><td>0.011</td>
+<td><a name="modelExchangeDq20"></a>modelExchangeDq20</td><td>Success</td><td></td><td>0.018</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeInc"></a>modelExchangeInc</td><td>Success</td><td></td><td>0.020</td>
+<td><a name="modelExchangeInc"></a>modelExchangeInc</td><td>Success</td><td></td><td>0.014</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeInc20"></a>modelExchangeInc20</td><td>Success</td><td></td><td>0.031</td>
+<td><a name="modelExchangeInc20"></a>modelExchangeInc20</td><td>Success</td><td></td><td>0.022</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="modelExchangeValues"></a>modelExchangeValues</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="modelExchangeValues"></a>modelExchangeValues</td><td>Success</td><td></td><td>0.034</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateBouncingBall20"></a>cosimulateBouncingBall20</td><td>Success</td><td></td><td>0.084</td>
+<td><a name="cosimulateBouncingBall20"></a>cosimulateBouncingBall20</td><td>Success</td><td></td><td>0.132</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="cosimulateDq"></a>cosimulateDq</td><td>Success</td><td></td><td>0.009</td>
+<td><a name="cosimulateDq"></a>cosimulateDq</td><td>Success</td><td></td><td>0.025</td>
 </tr>
 </table>
 <div class="Properties">
