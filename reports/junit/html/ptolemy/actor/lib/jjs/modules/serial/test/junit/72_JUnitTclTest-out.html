@@ -7,26 +7,26 @@
 <pre>No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml
 JavaScript: Closing serial port. (Thread[SerialHelloWorld,1,main])
-2844 ms. Memory: 267776K Free: 176011K (66%)
+2305 ms. Memory: 268288K Free: 172860K (64%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Wed Apr 18 22:39:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
------------------ Wed Apr 18 22:39:36 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- testing Wed Apr 18 23:39:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Wed Apr 18 23:39:06 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 SerialPort: Closing serial port. (Thread[SerialLoopbackIntToString,1,main])
-13097 ms. Memory: 648704K Free: 106350K (16%)
+SerialPort: Serial port reader thread exiting. (Thread[Thread-10,1,main])
+13227 ms. Memory: 714752K Free: 392352K (55%)
 reloadAllAccessors: .SerialLoopbackIntToString
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-SerialPort: Serial port reader thread exiting. (Thread[Thread-10,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-11,1,main])
------------------ Wed Apr 18 22:40:02 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
------------------ Reloaded Accessors and testing again Wed Apr 18 22:40:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Wed Apr 18 23:39:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:39:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
 SerialPort: Closing serial port. (Thread[Thread-7,5,main])
-12272 ms. Memory: 743936K Free: 426196K (57%)
------------------ testing Wed Apr 18 22:40:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
------------------ Wed Apr 18 22:40:19 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+12134 ms. Memory: 768512K Free: 603644K (79%)
+----------------- testing Wed Apr 18 23:39:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+----------------- Wed Apr 18 23:39:48 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-13,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-14,5,main])
 SerialPort: SerialPort: invalid data: a, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
@@ -41,13 +41,121 @@ abb
 SerialPort: SerialPort: invalid data: abbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
 abbb
 ^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackInvalid,1,main])
-10054 ms. Memory: 757248K Free: 288342K (38%)
+10516 ms. Memory: 790016K Free: 577771K (73%)
 reloadAllAccessors: .SerialLoopbackInvalid
-SerialPort: Serial port writer thread exiting. (Thread[Thread-19,1,main])
------------------ Wed Apr 18 22:40:39 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-18,1,main])
------------------ Reloaded Accessors and testing again Wed Apr 18 22:40:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+SerialPort: Serial port writer thread exiting. (Thread[Thread-19,1,main])
+----------------- Wed Apr 18 23:40:09 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:40:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: SerialPort: invalid data: a, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
 a
 ^ (Thread[Thread-21,5,main])
@@ -60,75 +168,180 @@ abb
 SerialPort: SerialPort: invalid data: abbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
 abbb
 ^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-21,5,main])
 SerialPort: Closing serial port. (Thread[Thread-15,5,main])
-10336 ms. Memory: 804864K Free: 562386K (70%)
------------------ testing Wed Apr 18 22:40:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
------------------ Wed Apr 18 22:40:54 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
-SerialPort: Serial port writer thread exiting. (Thread[Thread-22,5,main])
+10244 ms. Memory: 809472K Free: 645530K (80%)
+----------------- testing Wed Apr 18 23:40:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+----------------- Wed Apr 18 23:40:24 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-21,5,main])
+SerialPort: Serial port writer thread exiting. (Thread[Thread-22,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackJSON,1,main])
 JavaScriptJSON: JavaScriptTrueToken.wrapup() (Thread[SerialLoopbackJSON,1,main])
-10761 ms. Memory: 816640K Free: 461937K (57%)
+11223 ms. Memory: 821760K Free: 707206K (86%)
 reloadAllAccessors: .SerialLoopbackJSON
-SerialPort: Serial port writer thread exiting. (Thread[Thread-27,1,main])
------------------ Wed Apr 18 22:41:14 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-26,1,main])
------------------ Reloaded Accessors and testing again Wed Apr 18 22:41:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+SerialPort: Serial port writer thread exiting. (Thread[Thread-27,1,main])
+----------------- Wed Apr 18 23:40:44 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:40:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Closing serial port. (Thread[Thread-23,5,main])
 JavaScriptJSON: JavaScriptTrueToken.wrapup() (Thread[Thread-23,5,main])
-11244 ms. Memory: 818176K Free: 190141K (23%)
------------------ testing Wed Apr 18 22:41:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
------------------ Wed Apr 18 22:41:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
-SerialPort: Serial port writer thread exiting. (Thread[Thread-30,5,main])
+10406 ms. Memory: 822784K Free: 222452K (27%)
+----------------- testing Wed Apr 18 23:40:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+----------------- Wed Apr 18 23:40:59 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-29,5,main])
+SerialPort: Serial port writer thread exiting. (Thread[Thread-30,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackNumber,1,main])
-10341 ms. Memory: 820224K Free: 603581K (74%)
+10313 ms. Memory: 834048K Free: 301198K (36%)
 reloadAllAccessors: .SerialLoopbackNumber
-SerialPort: Serial port writer thread exiting. (Thread[Thread-35,1,main])
------------------ Wed Apr 18 22:41:51 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-34,1,main])
------------------ Reloaded Accessors and testing again Wed Apr 18 22:41:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+SerialPort: Serial port writer thread exiting. (Thread[Thread-35,1,main])
+----------------- Wed Apr 18 23:41:19 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:41:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
 SerialPort: Closing serial port. (Thread[Thread-31,5,main])
-10310 ms. Memory: 844800K Free: 495572K (59%)
------------------ testing Wed Apr 18 22:42:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
------------------ Wed Apr 18 22:42:06 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+10568 ms. Memory: 846848K Free: 438369K (52%)
+----------------- testing Wed Apr 18 23:41:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Wed Apr 18 23:41:34 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-37,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-38,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackShort,1,main])
-9688 ms. Memory: 846848K Free: 239326K (28%)
+10601 ms. Memory: 847872K Free: 597114K (70%)
 reloadAllAccessors: .SerialLoopbackShort
 SerialPort: Serial port reader thread exiting. (Thread[Thread-42,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-43,1,main])
------------------ Wed Apr 18 22:42:25 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
------------------ Reloaded Accessors and testing again Wed Apr 18 22:42:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Wed Apr 18 23:41:54 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:41:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
 SerialPort: Closing serial port. (Thread[Thread-39,5,main])
-9679 ms. Memory: 858112K Free: 634235K (74%)
------------------ testing Wed Apr 18 22:42:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
------------------ Wed Apr 18 22:42:39 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
-SerialPort: Serial port writer thread exiting. (Thread[Thread-46,5,main])
+10354 ms. Memory: 849408K Free: 550660K (65%)
+----------------- testing Wed Apr 18 23:42:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+----------------- Wed Apr 18 23:42:10 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-45,5,main])
+SerialPort: Serial port writer thread exiting. (Thread[Thread-46,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackString,1,main])
-9724 ms. Memory: 859136K Free: 645944K (75%)
+10246 ms. Memory: 854528K Free: 226371K (26%)
 reloadAllAccessors: .SerialLoopbackString
 SerialPort: Serial port reader thread exiting. (Thread[Thread-50,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-51,1,main])
------------------ Wed Apr 18 22:42:57 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
------------------ Reloaded Accessors and testing again Wed Apr 18 22:43:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+----------------- Wed Apr 18 23:42:29 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:42:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
 SerialPort: Closing serial port. (Thread[Thread-47,5,main])
-9626 ms. Memory: 858624K Free: 328958K (38%)
------------------ testing Wed Apr 18 22:43:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
------------------ Wed Apr 18 22:43:12 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+10353 ms. Memory: 865792K Free: 434021K (50%)
+----------------- testing Wed Apr 18 23:42:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+----------------- Wed Apr 18 23:42:44 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-53,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-54,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackUnsignedByte,1,main])
-9798 ms. Memory: 869376K Free: 354738K (41%)
+10691 ms. Memory: 871424K Free: 623228K (72%)
 reloadAllAccessors: .SerialLoopbackUnsignedByte
-SerialPort: Serial port writer thread exiting. (Thread[Thread-59,1,main])
------------------ Wed Apr 18 22:43:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-58,1,main])
------------------ Reloaded Accessors and testing again Wed Apr 18 22:43:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+SerialPort: Serial port writer thread exiting. (Thread[Thread-59,1,main])
+----------------- Wed Apr 18 23:43:04 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+----------------- Reloaded Accessors and testing again Wed Apr 18 23:43:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Closing serial port. (Thread[Thread-55,5,main])
-9945 ms. Memory: 875520K Free: 798200K (91%)
+10162 ms. Memory: 872960K Free: 607566K (70%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 </pre>
