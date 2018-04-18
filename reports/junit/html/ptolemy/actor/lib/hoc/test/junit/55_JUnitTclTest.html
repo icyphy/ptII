@@ -93,6 +93,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -197,9 +198,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.8 52868 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.25 47344 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.8 52868 10.20.0.40 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.25 47344 10.20.1.55 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368375683';
+        cur['env.TRAVIS_BUILD_ID'] = '368395887';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '266';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '267';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'e3c29c173945edbc426d8531264a20dad67e555e';
+        cur['env.TRAVIS_COMMIT'] = '4d0b9dfb3ade973675dee63f5f6e2dc748ae3a27';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Increased stopTime so that maybe these models pass under Travis-ci.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added Stop actors and changed the rates of Clocks and Spontaneous accessors so as to decrease run time.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '162284abdf66...e3c29c173945';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'e3c29c173945...4d0b9dfb3ade';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368375688';
+        cur['env.TRAVIS_JOB_ID'] = '368395892';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '266.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '267.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4488418061896121369.properties propsfile=/home/travis/build/icyphy/ptII/junit8708684109327875293.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2777003417669429504.properties propsfile=/home/travis/build/icyphy/ptII/junit3376078080344289305.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -503,8 +504,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Pass">
-<td><a title="Display all tests" href="55_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="55_JUnitTclTest.html">58</a></td><td>0</td><td>0</td><td>0</td><td>32.501</td><td>2018-04-18T22:32:44</td><td>travis-job-ad2b0f85-bfe0-4d22-949d-bb2ca24026a7</td>
+<tr valign="top" class="Error">
+<td><a title="Display all tests" href="55_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="55_JUnitTclTest.html">58</a></td><td><a title="Display only errors" href="55_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>23.261</td><td>2018-04-18T23:33:49</td><td>travis-job-73dd2e0a-8def-4da5-92ae-0ce02b282567</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -513,178 +514,181 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.304</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/IterateOverArray.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.262</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.271</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.239</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.273</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/AllToAllMultiInstanceComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.276</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml (RunModel)</td><td>Success</td><td></td><td>0.352</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFFTTest.xml (RunModel)</td><td>Success</td><td></td><td>0.336</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml (RunModel)</td><td>Success</td><td></td><td>0.745</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml (RunModel)</td><td>Success</td><td></td><td>0.709</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case.xml (RunModel)</td><td>Success</td><td></td><td>0.062</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml (RunModel)</td><td>Success</td><td></td><td>0.064</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml (RunModel)</td><td>Success</td><td></td><td>0.065</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml (RunModel)</td><td>Success</td><td></td><td>0.125</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case2.xml (RunModel)</td><td>Success</td><td></td><td>0.080</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml (RunModel)</td><td>Success</td><td></td><td>0.051</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case3.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml (RunModel)</td><td>Success</td><td></td><td>0.061</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case4.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml (RunModel)</td><td>Success</td><td></td><td>0.088</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case5.xml (RunModel)</td><td>Success</td><td></td><td>0.092</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml (RunModel)</td><td>Success</td><td></td><td>0.134</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/Case6.xml (RunModel)</td><td>Success</td><td></td><td>0.098</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml (RunModel)</td><td>Success</td><td></td><td>0.074</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CaseString2.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml (RunModel)</td><td>Success</td><td></td><td>0.072</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite1.xml (RunModel)</td><td>Success</td><td></td><td>0.078</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml (RunModel)</td><td>Success</td><td></td><td>0.072</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite2.xml (RunModel)</td><td>Success</td><td></td><td>0.078</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml (RunModel)</td><td>Success</td><td></td><td>0.058</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite3.xml (RunModel)</td><td>Success</td><td></td><td>0.056</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml (RunModel)</td><td>Success</td><td></td><td>0.054</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite4.xml (RunModel)</td><td>Success</td><td></td><td>0.061</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite5.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite5.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml (RunModel)</td><td>Success</td><td></td><td>0.147</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite6.xml (RunModel)</td><td>Success</td><td></td><td>0.168</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml (RunModel)</td><td>Success</td><td></td><td>0.114</td>
+<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/CatchUpComposite7.xml (RunModel)</td><td>Success</td><td></td><td>0.107</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml (RunModel)</td><td>Success</td><td></td><td>0.061</td>
+<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentExecutionTimeSDF.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml (RunModel)</td><td>Success</td><td></td><td>0.768</td>
+<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ConcurrentSleep.xml (RunModel)</td><td>Success</td><td></td><td>0.760</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml (RunModel)</td><td>Success</td><td></td><td>0.058</td>
+<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DEInPNInRunCompositeActor.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DFTSubSetTest.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/DFTSubSetTest.xml (RunModel)</td><td>Success</td><td></td><td>0.284</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml (RunModel)</td><td>Success</td><td></td><td>0.189</td>
+<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/HocDE.xml (RunModel)</td><td>Success</td><td></td><td>0.229</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml (RunModel)</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray10.xml (RunModel)</td><td>Success</td><td></td><td>0.020</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray11.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml (RunModel)"></a>[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml (RunModel)"></a>[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray12.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml (RunModel)"></a>[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml (RunModel)</td><td>Success</td><td></td><td>0.177</td>
+<td><a name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml (RunModel)"></a>[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray13.xml (RunModel)</td><td>Success</td><td></td><td>0.190</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml (RunModel)"></a>[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml (RunModel)</td><td>Success</td><td></td><td>0.150</td>
+<td><a name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml (RunModel)"></a>[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray14.xml (RunModel)</td><td>Success</td><td></td><td>0.157</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml (RunModel)"></a>[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml (RunModel)"></a>[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray2.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml (RunModel)"></a>[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml (RunModel)"></a>[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray3.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml (RunModel)"></a>[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml (RunModel)</td><td>Success</td><td></td><td>0.022</td>
+<td><a name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml (RunModel)"></a>[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray4.xml (RunModel)</td><td>Success</td><td></td><td>0.023</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml (RunModel)"></a>[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml (RunModel)</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml (RunModel)"></a>[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray5.xml (RunModel)</td><td>Success</td><td></td><td>0.021</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml (RunModel)"></a>[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml (RunModel)</td><td>Success</td><td></td><td>0.022</td>
+<td><a name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml (RunModel)"></a>[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray6.xml (RunModel)</td><td>Success</td><td></td><td>0.027</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml (RunModel)"></a>[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml (RunModel)</td><td>Success</td><td></td><td>0.023</td>
+<td><a name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml (RunModel)"></a>[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray7.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml (RunModel)"></a>[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
+<td><a name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml (RunModel)"></a>[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray8.xml (RunModel)</td><td>Success</td><td></td><td>0.029</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml (RunModel)"></a>[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml (RunModel)</td><td>Success</td><td></td><td>0.021</td>
+<td><a name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml (RunModel)"></a>[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArray9.xml (RunModel)</td><td>Success</td><td></td><td>0.023</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml (RunModel)"></a>[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml (RunModel)</td><td>Success</td><td></td><td>0.038</td>
+<td><a name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml (RunModel)"></a>[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayCoercedOutputType.xml (RunModel)</td><td>Success</td><td></td><td>0.034</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml (RunModel)"></a>[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml (RunModel)"></a>[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/IterateOverArrayInferredOutputType.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml (RunModel)"></a>[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml (RunModel)</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml (RunModel)"></a>[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileFunctionTest.xml (RunModel)</td><td>Success</td><td></td><td>0.026</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml (RunModel)"></a>[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml (RunModel)</td><td>Success</td><td></td><td>0.142</td>
+<td><a name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml (RunModel)"></a>[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MobileModelTest.xml (RunModel)</td><td>Success</td><td></td><td>0.111</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml (RunModel)"></a>[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml (RunModel)</td><td>Success</td><td></td><td>0.079</td>
+<td><a name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml (RunModel)"></a>[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference.xml (RunModel)</td><td>Success</td><td></td><td>0.086</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml (RunModel)"></a>[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
+<td><a name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml (RunModel)"></a>[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference3.xml (RunModel)</td><td>Success</td><td></td><td>0.051</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml (RunModel)"></a>[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml (RunModel)</td><td>Success</td><td></td><td>10.054</td>
+<td><a name="[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml (RunModel)"></a>[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ModelReference4.xml (RunModel)</td><td>Success</td><td></td><td>10.034</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml (RunModel)"></a>[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.060</td>
+<td><a name="[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml (RunModel)"></a>[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml (RunModel)"></a>[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml (RunModel)"></a>[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite2.xml (RunModel)</td><td>Success</td><td></td><td>0.046</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)"></a>[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Inside thread was interrupted.<br>  in .MulticoreExecution.ThreadedComposite.ThreadedDirector<br>	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:646)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)<br>	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
+</code></td><td>1.060</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)"></a>[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)</td><td>Success</td><td></td><td>10.075</td>
+<td><a name="[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml (RunModel)"></a>[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml (RunModel)</td><td>Success</td><td></td><td>0.941</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml (RunModel)"></a>[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ParallelExecution.xml (RunModel)</td><td>Success</td><td></td><td>0.944</td>
+<td><a name="[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml (RunModel)"></a>[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml (RunModel)</td><td>Success</td><td></td><td>0.031</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml (RunModel)"></a>[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
+<td><a name="[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml (RunModel)"></a>[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml (RunModel)</td><td>Success</td><td></td><td>0.029</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml (RunModel)"></a>[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor2.xml (RunModel)</td><td>Success</td><td></td><td>0.053</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml (RunModel)"></a>[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml (RunModel)</td><td>Success</td><td></td><td>0.024</td>
+<td><a name="[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml (RunModel)"></a>[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor3.xml (RunModel)</td><td>Success</td><td></td><td>0.021</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[52] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor4.xml (RunModel)"></a>[52] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeActor4.xml (RunModel)</td><td>Success</td><td></td><td>0.031</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml (RunModel)"></a>[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml (RunModel)</td><td>Success</td><td></td><td>0.029</td>
+<td><a name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml (RunModel)"></a>[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/RunCompositeIterateOverArray.xml (RunModel)</td><td>Success</td><td></td><td>0.024</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml (RunModel)"></a>[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml (RunModel)</td><td>Success</td><td></td><td>4.969</td>
+<td><a name="[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml (RunModel)"></a>[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/ThreadedJS.xml (RunModel)</td><td>Success</td><td></td><td>5.117</td>
 </tr>
 </table>
 <div class="Properties">

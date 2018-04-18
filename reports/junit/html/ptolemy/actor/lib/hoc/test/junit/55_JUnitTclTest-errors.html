@@ -93,6 +93,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -197,9 +198,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.2 55806 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.25 47344 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.2 55806 10.20.0.30 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.25 47344 10.20.1.55 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '366004502';
+        cur['env.TRAVIS_BUILD_ID'] = '368395887';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '252';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '267';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '2fe80d997ca60e83216698e34f48f303d76d6989';
+        cur['env.TRAVIS_COMMIT'] = '4d0b9dfb3ade973675dee63f5f6e2dc748ae3a27';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Fixed HlaPublisher\'s config display';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added Stop actors and changed the rates of Clocks and Spontaneous accessors so as to decrease run time.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'ef45da76b8f9...2fe80d997ca6';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'e3c29c173945...4d0b9dfb3ade';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '366004507';
+        cur['env.TRAVIS_JOB_ID'] = '368395892';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '252.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '267.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7668783519468054192.properties propsfile=/home/travis/build/icyphy/ptII/junit6167299514177156365.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.hoc.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.hoc.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2777003417669429504.properties propsfile=/home/travis/build/icyphy/ptII/junit3376078080344289305.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +505,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="55_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="55_JUnitTclTest.html">58</a></td><td><a title="Display only errors" href="55_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>27.195</td><td>2018-04-13T09:11:03</td><td>travis-job-ccf47666-c690-4b6a-b6bd-c5cf2c2ef7e7</td>
+<td><a title="Display all tests" href="55_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="55_JUnitTclTest.html">58</a></td><td><a title="Display only errors" href="55_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>23.261</td><td>2018-04-18T23:33:49</td><td>travis-job-73dd2e0a-8def-4da5-92ae-0ce02b282567</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -515,8 +516,8 @@
 <tr valign="top" class="Error">
 <td><a name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)"></a>[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/hoc/test/auto/MulticoreExecution.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:158)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Inside thread was interrupted.<br>  in .MulticoreExecution.ThreadedComposite.ThreadedDirector<br>	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:646)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)<br>	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.078</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Inside thread was interrupted.<br>  in .MulticoreExecution.ThreadedComposite.ThreadedDirector<br>	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:646)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)<br>	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
+</code></td><td>1.060</td>
 </tr>
 </table>
 <div class="Properties">
