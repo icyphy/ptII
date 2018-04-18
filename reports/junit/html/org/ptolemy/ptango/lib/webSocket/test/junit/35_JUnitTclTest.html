@@ -93,6 +93,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -197,9 +198,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 44794 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.8 52868 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 44794 10.20.0.46 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.8 52868 10.20.0.40 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '367163689';
+        cur['env.TRAVIS_BUILD_ID'] = '368375683';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '264';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '266';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '162284abdf6686c376c35a518df143577e950a74';
+        cur['env.TRAVIS_COMMIT'] = 'e3c29c173945edbc426d8531264a20dad67e555e';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Upgrading quadrotors models made by Sebastien Jaillant (hlacerti/models).';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Increased stopTime so that maybe these models pass under Travis-ci.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '3fc37ba9dd49...162284abdf66';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '162284abdf66...e3c29c173945';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '367163699';
+        cur['env.TRAVIS_JOB_ID'] = '368375688';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '264.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '266.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3878562895245185267.properties propsfile=/home/travis/build/icyphy/ptII/junit3939815014809521826.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2600835918129980298.properties propsfile=/home/travis/build/icyphy/ptII/junit6199681655466422105.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +505,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">9</a></td><td>0</td><td>0</td><td>0</td><td>172.138</td><td>2018-04-16T13:57:37</td><td>travis-job-49271d17-3059-4ac1-8b90-e0917a8ad7a3</td>
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">9</a></td><td>0</td><td>0</td><td>0</td><td>172.223</td><td>2018-04-18T22:18:56</td><td>travis-job-ad2b0f85-bfe0-4d22-949d-bb2ca24026a7</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -516,28 +517,28 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.864</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderSingleWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.893</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>20.159</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/MultiReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>20.175</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.093</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RemoteSocketSingleReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.105</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.190</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/RoundtripReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.187</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.131</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderMultiWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.109</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.220</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/lib/webSocket/test/auto/SingleReaderWriter.xml (RunModel)</td><td>Success</td><td></td><td>30.223</td>
 </tr>
 </table>
 <div class="Properties">
