@@ -13,7 +13,8 @@
 #   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
@@ -244,20 +245,34 @@ if [ ! -z "$PT_TRAVIS_PRIME_INSTALLER" ]; then
     ls $PTII/vendors/installer
 fi
 
-# Run the CapeCode tests.
-if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
+# Run the first batch of CapeCode tests.
+if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.capecode.xml.txt
+    LOG=$PTII/reports/junit/test.capecode1.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2580 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 2300 ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    updateGhPages -junitreport $PTII/reports/junit reports/
+fi
+
+# Run the second batch of CapeCode tests.
+if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.capecode2.xml.txt
+    echo "$0: Output will appear in $LOG"
+    
+    timeout 2580 ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
     updateGhPages -junitreport $PTII/reports/junit reports/
 
-    # test.capecode.xml runs the longest, so at the end, update the issue with the results.
+    # test.capecode2.xml runs the longest, so at the end, update the issue with the results.
     mkdir node_modules
     npm install @icyphy/github-issue-junit
     export JUNIT_LABEL=junit-results

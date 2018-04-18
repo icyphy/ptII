@@ -153,14 +153,22 @@
     <exclude name="**/junit/JUnitAuto32Test.*" />
   </patternset>
 
-  <!-- Tests for Cape Code. See
+  <!-- First batch of tests for Cape Code.  The CapeCode tests are
+       split in to two batches so that Travis can build them without
+       timing out.  See
        $PTII/org/terraswarm/accessor/accessors/web/build.xml for
        non-CapeCode tests.-->
-  <patternset id="test.capecode.includes">
+  <patternset id="test.capecode1.includes">
     <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.java" />
-    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
   </patternset>
   
+  <!-- Second batch of tests for Cape Code. See
+       $PTII/org/terraswarm/accessor/accessors/web/build.xml for
+       non-CapeCode tests.-->
+  <patternset id="test.capecode2.includes">
+    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
+  </patternset>
+
   <!-- Exclude Cape Code tests from short, long and longest. -->
   <patternset id="test.capecode.excludes">
     <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
@@ -1028,13 +1036,38 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capecode" depends="initReports"
-	  description="Run the Cape Code tests.">
-    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
-    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+  <target name="test.capecode"
+          depends="test.capecode1, test.capecode2"
+          description="Run the CapeCode tests">
     <echo>
       ==test.capecode ==
       This target runs the Cape Code accessors tests
+      timeout = ${timeout.long} milliseconds
+    </echo>
+  </target>
+
+  <target name="test.capecode.echo"
+          description="Echo the directories run by test.capecode and test.capecode.xml" >
+    <pathconvert pathsep="${line.separator}|   |-- "
+                 property="test.capecode.echo.compile">
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
+	<patternset refid="test.capecode1.includes" />
+	<patternset refid="test.capecode2.includes" />
+	<exclude name="adm/**" />
+      </fileset>
+    </pathconvert>
+    <echo>${test.capecode.echo.compile}</echo>
+  </target>
+
+
+  <target name="test.capecode1" depends="initReports"
+	  description="Run the first batch of Cape Code tests.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.capecode1 ==
+      This target runs the first batch of Cape Code accessors tests
       timeout = ${timeout.long} milliseconds
     </echo>
     <junit fork="yes" 
@@ -1050,7 +1083,7 @@ For example:
       <batchtest filtertrace="off">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capecode.includes" />
+	  <patternset refid="test.capecode1.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1060,13 +1093,51 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capecode.xml" depends="initReports"
-	  description="Run the Cape Code tests with xml output.">
+  <target name="test.capecode2" depends="initReports"
+	  description="Run the second batch of Cape Code tests.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capecode.xml ==
-      This target runs the Cape Code accessors tests and generates JUnit xml output.
+      ==test.capecode1 ==
+      This target runs the second batch of Cape Code accessors tests
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <!-- Set filtertrace to off so that we see the junit stackframes -->
+      <batchtest filtertrace="off">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.capecode2.includes" />
+	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.capecode.xml"
+          depends="test.capecode1.xml, test.capecode2.xml"
+	  description="Run the Cape Code tests with xml output.">
+  </target>
+
+  <target name="test.capecode1.xml" depends="initReports"
+	  description="Run the first batch of Cape Code tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.capecode1.xml ==
+      This target runs the first batch Cape Code accessors tests and
+      generates JUnit xml output.
       timeout = ${timeout.long} milliseconds
     </echo>
     <junit fork="yes" 
@@ -1081,7 +1152,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capecode.includes" />
+	  <patternset refid="test.capecode1.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1090,6 +1161,39 @@ For example:
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
+
+  <target name="test.capecode2.xml" depends="initReports"
+	  description="Run the second batch of Cape Code tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.capecode2.xml ==
+      This target runs the second batch of Cape Code accessors tests
+      and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.capecode2.includes" />
+	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
 
   <!-- Cobertura: code coverage tool -->
   <target name="test.cobertura"
@@ -1799,6 +1903,26 @@ For example:
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
+  </target>
+
+  <target name="test.short.echo"
+          description="Echo the directories run by test.short and test.report.short" >
+    <pathconvert pathsep="${line.separator}|   |-- "
+                 property="test.short.echo.compile">
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
+	  <!-- Run all the tests in test.batch -->
+	  <include name="${test.batch}" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
+	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
+	</fileset>
+    </pathconvert>
+    <echo>${test.short.echo.compile}</echo>
   </target>
 
   <target name="test.single" depends="initReports"
