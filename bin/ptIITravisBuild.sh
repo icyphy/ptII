@@ -100,7 +100,7 @@ updateGhPages () {
     # Using find on the file mod time does not work here.  It could be
     # Git not preserving the mod time, or it could be us removing the
     # GITHUB_TOKEN.  So, we look for the timestamp field.
-    set -x
+    set +x
     filesToBeDeleted=""
     files=`find reports/junit -name "*.xml"`
     for file in $files
@@ -134,7 +134,7 @@ updateGhPages () {
              fi
         fi
     done
-    set +x
+    set -x
 
     if [ ! -z "$filesToBeDeleted" ]; then
         git rm -f $filesToBeDeleted
@@ -250,8 +250,6 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
-    
-    ifconfig -a
     
     timeout 2400 ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
