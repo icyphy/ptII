@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.8 35932 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.29 34502 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.8 35932 10.20.0.208 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.29 34502 10.20.1.59 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368681223';
+        cur['env.TRAVIS_BUILD_ID'] = '368691899';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '273';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '274';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '709c03f925e13fcfd9e24bdea34df5e22adb62f6';
+        cur['env.TRAVIS_COMMIT'] = '76cfeab57c968d49b1c8019c8d826431c181709a';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added capecode3 and core4 in hopes of splitting tests in to small enough pieces so that they will complete in under 40 seconds.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Don\'t use accent e in names, use &eacute; instead.  The reason is that accent e causes problems with the xml parser.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '3c8c214f4c61...709c03f925e1';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '709c03f925e1...76cfeab57c96';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368681229';
+        cur['env.TRAVIS_JOB_ID'] = '368691905';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '273.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '274.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6466792092858991398.properties propsfile=/home/travis/build/icyphy/ptII/junit5104417458225176908.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2145364124301489615.properties propsfile=/home/travis/build/icyphy/ptII/junit1204978379741273803.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="139_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="139_JUnitTclTest.html">26</a></td><td>0</td><td>0</td><td>0</td><td>3.230</td><td>2018-04-19T14:59:57</td><td>travis-job-a9d0641d-5675-42f3-ac71-dfce49f7ff45</td>
+<td><a title="Display all tests" href="139_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="139_JUnitTclTest.html">26</a></td><td>0</td><td>0</td><td>0</td><td>3.400</td><td>2018-04-19T15:45:58</td><td>travis-job-fac90aec-8d17-409c-bbec-4d06c2778f3d</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -509,64 +510,64 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.509</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.552</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.052</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.068</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.064</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml (RunModel)</td><td>Success</td><td></td><td>0.023</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml (RunModel)</td><td>Success</td><td></td><td>0.032</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.073</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.062</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.075</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.076</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.096</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.039</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.152</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml (RunModel)</td><td>Success</td><td></td><td>0.073</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml (RunModel)</td><td>Success</td><td></td><td>0.068</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml (RunModel)</td><td>Success</td><td></td><td>0.059</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml (RunModel)</td><td>Success</td><td></td><td>0.066</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml (RunModel)</td><td>Success</td><td></td><td>0.123</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml (RunModel)</td><td>Success</td><td></td><td>0.114</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml (RunModel)</td><td>Success</td><td></td><td>0.072</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml (RunModel)</td><td>Success</td><td></td><td>0.104</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml (RunModel)</td><td>Success</td><td></td><td>0.021</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml (RunModel)</td><td>Success</td><td></td><td>0.020</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml (RunModel)</td><td>Success</td><td></td><td>0.015</td>
@@ -575,16 +576,16 @@
 <td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml (RunModel)</td><td>Success</td><td></td><td>0.015</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml (RunModel)</td><td>Success</td><td></td><td>0.026</td>
+<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml (RunModel)</td><td>Success</td><td></td><td>0.029</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml (RunModel)</td><td>Success</td><td></td><td>0.222</td>
+<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml (RunModel)</td><td>Success</td><td></td><td>0.226</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml (RunModel)</td><td>Success</td><td></td><td>0.370</td>
+<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml (RunModel)</td><td>Success</td><td></td><td>0.393</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml (RunModel)</td><td>Success</td><td></td><td>0.567</td>
+<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml (RunModel)</td><td>Success</td><td></td><td>0.723</td>
 </tr>
 </table>
 <div class="Properties">
