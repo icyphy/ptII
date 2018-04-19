@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.3 47504 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.22 57550 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.3 47504 10.20.0.81 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.22 57550 10.20.0.203 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368453190';
+        cur['env.TRAVIS_BUILD_ID'] = '368464862';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '270';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '271';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '32d59bbacfa84219be80788cc221143a56b570af';
+        cur['env.TRAVIS_COMMIT'] = '74dbabc53265b41c584b98cbb99f038a941b3494';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'After Test completes, invoke Stop.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core1.xml and test.core2.xml.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '1147a6b8c9bd...32d59bbacfa8';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '32d59bbacfa8...74dbabc53265';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368453194';
+        cur['env.TRAVIS_JOB_ID'] = '368464866';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '270.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '271.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher198198224740611055.properties propsfile=/home/travis/build/icyphy/ptII/junit7987661988509493785.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1373363952291536997.properties propsfile=/home/travis/build/icyphy/ptII/junit3847080307534599069.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="41_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="41_JUnitTclTest.html">29</a></td><td>0</td><td><a title="Display only failures" href="41_JUnitTclTest-fails.html">1</a></td><td>0</td><td>270.266</td><td>2018-04-19T03:15:15</td><td>travis-job-4c66c310-9d63-4fe8-8eae-aab96a51a754</td>
+<td><a title="Display all tests" href="41_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="41_JUnitTclTest.html">29</a></td><td>0</td><td><a title="Display only failures" href="41_JUnitTclTest-fails.html">1</a></td><td>0</td><td>310.059</td><td>2018-04-19T04:09:56</td><td>travis-job-f1599488-8bf0-425a-aa6f-b09c6dd505c3</td>
 </tr>
 </table>
 <h2>Failures</h2>
@@ -512,7 +513,7 @@
 <td><a name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>
 <br>
 <code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>50.394</td>
+</code></td><td>57.738</td>
 </tr>
 </table>
 <div class="Properties">
