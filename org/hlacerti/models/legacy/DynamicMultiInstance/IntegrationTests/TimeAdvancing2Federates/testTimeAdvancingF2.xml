@@ -69,7 +69,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Cl&#233;ment Michel">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Cl&eacute;ment Michel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 390.0]">
         </property>

@@ -80,7 +80,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie - http://www.ciele.fr">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ing&eacute;nierie - http://www.ciele.fr">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 1055.0]">
         </property>
