@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="travis-job-19728a33-7aca-4e5e-bdd6-891169f1a6a4" name="ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.test.junit.JUnitCGCNoInlineTest" skipped="0" tests="19" time="34.287" timestamp="2018-04-19T03:38:51">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="270.6" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.9 49804 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="build-all,test.report.short" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.9 49804 10.20.0.18 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.test.junit.JUnitCGCNoInlineTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.test.junit.JUnitCGCNoInlineTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher565056263607522868.properties propsfile=/home/travis/build/icyphy/ptII/junit801799615299405208.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="1147a6b8c9bd...32d59bbacfa8" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/perl" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx1024m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="jsdoc.command.exists" value="true" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="env.PT_TRAVIS_TEST_REPORT_SHORT" value="true" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="270" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="368453190" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="32d59bbacfa84219be80788cc221143a56b570af" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="bin.vergil.exists" value="true" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="After Test completes, invoke Stop." />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.class.path" value="/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="env.TRAVIS_JOB_ID" value="368453196" />
+    <property name="user.country" value="US" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="model" value="" />
+    <property name="java.maxmemory.large" value="8000m" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.util.test.junit.AutoCGCKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (runModelInline)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (runModelNoInline)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGClockRamp.xml (runModelNoInline)" time="2.422" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGDelay.xml (runModelNoInline)" time="1.906" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGHelloWorld.xml (runModelNoInline)" time="1.642" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGHeterogeneous.xml (runModelNoInline)" time="2.422" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGHeterogeneousMk2.xml (runModelNoInline)" time="2.556" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGMath.xml (runModelNoInline)" time="2.12" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGPi.xml (runModelNoInline)" time="2.858" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGPiSquare.xml (runModelNoInline)" time="2.201" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGPoisson.xml (runModelNoInline)" time="1.621" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Merge.xml (runModelNoInline)" time="1.856" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/MostRecent.xml (runModelNoInline)" time="1.892" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/PID.xml (runModelNoInline)" time="1.777" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Previous.xml (runModelNoInline)" time="1.623" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Previous2.xml (runModelNoInline)" time="2.074" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Register.xml (runModelNoInline)" time="1.697" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/TimeCompare.xml (runModelNoInline)" time="1.807" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/TimeGap.xml (runModelNoInline)" time="1.66" />
+  <system-out><![CDATA[No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGClockRamp.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGClockRamp.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGClockRamp.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGClockRamp DECGClockRamp_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _DECGClockRamp/DECGClockRamp_Test.c _DECGClockRamp/DECGClockRamp_Ramp.c _DECGClockRamp/DECGClockRamp.c _DECGClockRamp/DECGClockRamp_DiscreteClock.c -o DECGClockRamp -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGClockRamp.mk run
+./DECGClockRamp
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGDelay.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Warning -- missing function defintion: Scalar_delete()
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGDelay.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGDelay.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGDelay DECGDelay_Main.c _DECGDelay/DECGDelay_SingleEvent.c _DECGDelay/DECGDelay_TrueGate.c _DECGDelay/DECGDelay.c _DECGDelay/DECGDelay_Const.c _DECGDelay/DECGDelay_Comparator.c _DECGDelay/DECGDelay_Test.c _DECGDelay/DECGDelay_TimeDelay.c _DECGDelay/DECGDelay_CurrentMicrostep.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o DECGDelay -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGDelay.mk run
+./DECGDelay
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGHelloWorld.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGHelloWorld.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGHelloWorld.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGHelloWorld DECGHelloWorld_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _DECGHelloWorld/DECGHelloWorld_Test.c _DECGHelloWorld/DECGHelloWorld.c _DECGHelloWorld/DECGHelloWorld_SingleEvent.c _DECGHelloWorld/DECGHelloWorld_Const.c -o DECGHelloWorld -lm 
+commons/_ptTypes.c: In function ‘String_new’:
+commons/_ptTypes.c:137:9: warning: implicit declaration of function ‘strdup’ [-Wimplicit-function-declaration]
+         result->payload.String = strdup(s);
+         ^
+commons/_ptTypes.c:137:32: warning: assignment makes pointer from integer without a cast [enabled by default]
+         result->payload.String = strdup(s);
+                                ^
+In "/home/travis/cg", about to execute:
+    make -f DECGHelloWorld.mk run
+./DECGHelloWorld
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGHeterogeneous.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.DECGHeterogeneous} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.DECGHeterogeneous} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGHeterogeneous.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGHeterogeneous.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGHeterogeneous/_TriggeredSinewave -I /home/travis/cg//_DECGHeterogeneous DECGHeterogeneous_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _DECGHeterogeneous/DECGHeterogeneous_Test.c _DECGHeterogeneous/DECGHeterogeneous.c _DECGHeterogeneous/DECGHeterogeneous_DiscreteClock.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_Add.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_SDFSchedule.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_Phase.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_Frequency.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_CurrentTime.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_Magnitude.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave_Sin.c _DECGHeterogeneous/_TriggeredSinewave/DECGHeterogeneous_TriggeredSinewave.c -o DECGHeterogeneous -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGHeterogeneous.mk run
+./DECGHeterogeneous
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGHeterogeneousMk2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.DECGHeterogeneousMk2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.DECGHeterogeneousMk2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DECGHeterogeneousMk2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DECGHeterogeneousMk2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DECGHeterogeneousMk2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DECGHeterogeneousMk2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGHeterogeneousMk2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGHeterogeneousMk2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_DECGHeterogeneousMk2/_ModalModel/_state -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGHeterogeneousMk2/_ModalModel -I /home/travis/cg//_DECGHeterogeneousMk2 -I /home/travis/cg//_DECGHeterogeneousMk2/_ModalModel/_state2 DECGHeterogeneousMk2_Main.c _DECGHeterogeneousMk2/DECGHeterogeneousMk2.c _DECGHeterogeneousMk2/DECGHeterogeneousMk2_Test.c _DECGHeterogeneousMk2/_ModalModel/DECGHeterogeneousMk2_ModalModel.c _DECGHeterogeneousMk2/_ModalModel/DECGHeterogeneousMk2_ModalModel_FSMTransitionCode.c _DECGHeterogeneousMk2/_ModalModel/_state2/DECGHeterogeneousMk2_ModalModel_state2_Scale.c _DECGHeterogeneousMk2/_ModalModel/_state2/DECGHeterogeneousMk2_ModalModel_state2.c _DECGHeterogeneousMk2/_ModalModel/_state2/DECGHeterogeneousMk2_ModalModel_state2_SDFSchedule.c _DECGHeterogeneousMk2/_ModalModel/_state/DECGHeterogeneousMk2_ModalModel_state_SDFSchedule.c _DECGHeterogeneousMk2/_ModalModel/_state/DECGHeterogeneousMk2_ModalModel_state.c _DECGHeterogeneousMk2/_ModalModel/_state/DECGHeterogeneousMk2_ModalModel_state_Scale.c _DECGHeterogeneousMk2/DECGHeterogeneousMk2_Ramp.c _DECGHeterogeneousMk2/DECGHeterogeneousMk2_DiscreteClock.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o DECGHeterogeneousMk2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGHeterogeneousMk2.mk run
+./DECGHeterogeneousMk2
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGMath.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGMath.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGMath.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGMath DECGMath_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _DECGMath/DECGMath.c _DECGMath/DECGMath_Const2.c _DECGMath/DECGMath_Ramp.c _DECGMath/DECGMath_MultiplyDivide2.c _DECGMath/DECGMath_DiscreteClock.c _DECGMath/DECGMath_AddSubtract.c _DECGMath/DECGMath_MultiplyDivide.c _DECGMath/DECGMath_Test.c _DECGMath/DECGMath_Const.c -o DECGMath -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGMath.mk run
+./DECGMath
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGPi.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGPi.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGPi.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGPi DECGPi_Main.c _DECGPi/DECGPi_Merge.c _DECGPi/DECGPi_Const2.c _DECGPi/DECGPi.c _DECGPi/DECGPi_Accumulator.c _DECGPi/DECGPi_Const.c _DECGPi/DECGPi_MultiplyDivide.c _DECGPi/DECGPi_MultiplyDivide2.c _DECGPi/DECGPi_Merge2.c _DECGPi/DECGPi_Const3.c _DECGPi/DECGPi_AddSubtract3.c _DECGPi/DECGPi_Register.c _DECGPi/DECGPi_TimeDelay2.c _DECGPi/DECGPi_Test.c _DECGPi/DECGPi_TimeDelay3.c _DECGPi/DECGPi_SingleEvent.c _DECGPi/DECGPi_Scale.c _DECGPi/DECGPi_AddSubtract2.c _DECGPi/DECGPi_AddSubtract.c _DECGPi/DECGPi_MultiplyDivide3.c _DECGPi/DECGPi_Register2.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o DECGPi -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGPi.mk run
+./DECGPi
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGPiSquare.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGPiSquare.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGPiSquare.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGPiSquare DECGPiSquare_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _DECGPiSquare/DECGPiSquare_Const.c _DECGPiSquare/DECGPiSquare_MultiplyDivide.c _DECGPiSquare/DECGPiSquare_Test.c _DECGPiSquare/DECGPiSquare.c _DECGPiSquare/DECGPiSquare_Accumulator.c _DECGPiSquare/DECGPiSquare_DiscreteClock.c _DECGPiSquare/DECGPiSquare_Ramp.c -o DECGPiSquare -lm 
+In "/home/travis/cg", about to execute:
+    make -f DECGPiSquare.mk run
+./DECGPiSquare
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/DECGPoisson.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DECGPoisson.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DECGPoisson.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_DECGPoisson DECGPoisson_Main.c _DECGPoisson/DECGPoisson_Test.c _DECGPoisson/DECGPoisson.c _DECGPoisson/DECGPoisson_PoissonClock.c _DECGPoisson/DECGPoisson_CurrentTime.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o DECGPoisson -lm 
+_DECGPoisson/DECGPoisson_PoissonClock.c: In function ‘DECGPoisson_PoissonClock_initialize’:
+_DECGPoisson/DECGPoisson_PoissonClock.c:46:79: warning: operation on ‘DECGPoisson_PoissonClock__seed’ may be undefined [-Wsequence-point]
+ #define nextRandom(i) ((int) ((unsigned int) ((DECGPoisson_PoissonClock__seed = ((DECGPoisson_PoissonClock__seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1))) >> (48 - (i)))))
+                                                                               ^
+_DECGPoisson/DECGPoisson_PoissonClock.c:47:32: note: in expansion of macro ‘nextRandom’
+ #define nextDouble() ((((long) nextRandom(26) << 27) + nextRandom(27)) / (double) (1L << 53))
+                                ^
+_DECGPoisson/DECGPoisson_PoissonClock.c:123:69: note: in expansion of macro ‘nextDouble’
+                 DECGPoisson_PoissonClock__randomNumber = -log(1.0 - nextDouble()) * DECGPoisson_PoissonClock__meanTime;
+                                                                     ^
+_DECGPoisson/DECGPoisson_PoissonClock.c: In function ‘DECGPoisson_PoissonClock_fire’:
+_DECGPoisson/DECGPoisson_PoissonClock.c:46:79: warning: operation on ‘DECGPoisson_PoissonClock__seed’ may be undefined [-Wsequence-point]
+ #define nextRandom(i) ((int) ((unsigned int) ((DECGPoisson_PoissonClock__seed = ((DECGPoisson_PoissonClock__seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1))) >> (48 - (i)))))
+                                                                               ^
+_DECGPoisson/DECGPoisson_PoissonClock.c:47:32: note: in expansion of macro ‘nextRandom’
+ #define nextDouble() ((((long) nextRandom(26) << 27) + nextRandom(27)) / (double) (1L << 53))
+                                ^
+_DECGPoisson/DECGPoisson_PoissonClock.c:155:61: note: in expansion of macro ‘nextDouble’
+         DECGPoisson_PoissonClock__randomNumber = -log(1.0 - nextDouble()) * DECGPoisson_PoissonClock__meanTime;
+                                                             ^
+In "/home/travis/cg", about to execute:
+    make -f DECGPoisson.mk run
+./DECGPoisson
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Merge.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Merge.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Merge.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Merge -I /home/travis/cg/commons/ Merge_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Merge/Merge_DiscreteClock2.c _Merge/Merge_DiscreteClock.c _Merge/Merge.c _Merge/Merge_Test.c _Merge/Merge_CurrentTime.c _Merge/Merge_Merge.c -o Merge -lm 
+In "/home/travis/cg", about to execute:
+    make -f Merge.mk run
+./Merge
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/MostRecent.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/MostRecent.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f MostRecent.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_MostRecent -I /home/travis/cg/commons/ MostRecent_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _MostRecent/MostRecent_MostRecent.c _MostRecent/MostRecent_DiscreteClock.c _MostRecent/MostRecent_Test.c _MostRecent/MostRecent_Ramp.c _MostRecent/MostRecent_SingleEvent.c _MostRecent/MostRecent.c -o MostRecent -lm 
+In "/home/travis/cg", about to execute:
+    make -f MostRecent.mk run
+./MostRecent
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/PID.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/PID.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f PID.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_PID PID_Main.c _PID/PID.c _PID/PID_DiscreteClock.c _PID/PID_TrigFunction.c _PID/PID_Ramp.c _PID/PID_Test.c _PID/PID_PID.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o PID -lm 
+In "/home/travis/cg", about to execute:
+    make -f PID.mk run
+./PID
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Previous.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Previous.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Previous.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Previous -I /home/travis/cg/commons/ Previous_Main.c _Previous/Previous_Test.c _Previous/Previous_Ramp.c _Previous/Previous_Previous.c _Previous/Previous_DiscreteClock.c _Previous/Previous.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o Previous -lm 
+In "/home/travis/cg", about to execute:
+    make -f Previous.mk run
+./Previous
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Previous2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Previous2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Previous2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Previous2 -I /home/travis/cg/commons/ Previous2_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Previous2/Previous2_Test3.c _Previous2/Previous2_Test2.c _Previous2/Previous2_Test.c _Previous2/Previous2.c _Previous2/Previous2_CurrentTime.c _Previous2/Previous2_Previous2.c _Previous2/Previous2_Test4.c _Previous2/Previous2_Previous.c _Previous2/Previous2_Ramp.c _Previous2/Previous2_DiscreteClock.c _Previous2/Previous2_CurrentTime2.c -o Previous2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Previous2.mk run
+./Previous2
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/Register.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Register.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Register.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_Register Register_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Register/Register_DiscreteClock.c _Register/Register_Test.c _Register/Register.c _Register/Register_Ramp.c _Register/Register_Register.c _Register/Register_SingleEvent.c -o Register -lm 
+In "/home/travis/cg", about to execute:
+    make -f Register.mk run
+./Register
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/TimeCompare.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/TimeCompare.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f TimeCompare.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_TimeCompare TimeCompare_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _TimeCompare/TimeCompare_DiscreteClock.c _TimeCompare/TimeCompare_DiscreteClock2.c _TimeCompare/TimeCompare_Test.c _TimeCompare/TimeCompare.c _TimeCompare/TimeCompare_TimeCompare.c -o TimeCompare -lm 
+_TimeCompare/TimeCompare_TimeCompare.c: In function ‘TimeCompare_TimeCompare_fire’:
+_TimeCompare/TimeCompare_TimeCompare.c:151:62: warning: value computed is not used [-Wunused-value]
+         (*(input1->get))((struct IOPort*) input1, 0)->payload.Int;
+                                                              ^
+_TimeCompare/TimeCompare_TimeCompare.c:161:62: warning: value computed is not used [-Wunused-value]
+         (*(input2->get))((struct IOPort*) input2, 0)->payload.Int;
+                                                              ^
+In "/home/travis/cg", about to execute:
+    make -f TimeCompare.mk run
+./TimeCompare
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/test/auto/TimeGap.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/TimeGap.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f TimeGap.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_TimeGap TimeGap_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _TimeGap/TimeGap_PoissonClock.c _TimeGap/TimeGap.c _TimeGap/TimeGap_Test.c _TimeGap/TimeGap_TimeGap.c -o TimeGap -lm 
+_TimeGap/TimeGap_PoissonClock.c: In function ‘TimeGap_PoissonClock_initialize’:
+_TimeGap/TimeGap_PoissonClock.c:43:75: warning: operation on ‘TimeGap_PoissonClock__seed’ may be undefined [-Wsequence-point]
+ #define nextRandom(i) ((int) ((unsigned int) ((TimeGap_PoissonClock__seed = ((TimeGap_PoissonClock__seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1))) >> (48 - (i)))))
+                                                                           ^
+_TimeGap/TimeGap_PoissonClock.c:44:32: note: in expansion of macro ‘nextRandom’
+ #define nextDouble() ((((long) nextRandom(26) << 27) + nextRandom(27)) / (double) (1L << 53))
+                                ^
+_TimeGap/TimeGap_PoissonClock.c:116:65: note: in expansion of macro ‘nextDouble’
+                 TimeGap_PoissonClock__randomNumber = -log(1.0 - nextDouble()) * TimeGap_PoissonClock__meanTime;
+                                                                 ^
+_TimeGap/TimeGap_PoissonClock.c: In function ‘TimeGap_PoissonClock_fire’:
+_TimeGap/TimeGap_PoissonClock.c:43:75: warning: operation on ‘TimeGap_PoissonClock__seed’ may be undefined [-Wsequence-point]
+ #define nextRandom(i) ((int) ((unsigned int) ((TimeGap_PoissonClock__seed = ((TimeGap_PoissonClock__seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1))) >> (48 - (i)))))
+                                                                           ^
+_TimeGap/TimeGap_PoissonClock.c:44:32: note: in expansion of macro ‘nextRandom’
+ #define nextDouble() ((((long) nextRandom(26) << 27) + nextRandom(27)) / (double) (1L << 53))
+                                ^
+_TimeGap/TimeGap_PoissonClock.c:145:57: note: in expansion of macro ‘nextDouble’
+         TimeGap_PoissonClock__randomNumber = -log(1.0 - nextDouble()) * TimeGap_PoissonClock__meanTime;
+                                                         ^
+_TimeGap/TimeGap_TimeGap.c: In function ‘TimeGap_TimeGap_fire’:
+_TimeGap/TimeGap_TimeGap.c:121:60: warning: value computed is not used [-Wunused-value]
+         (*(input->get))((struct IOPort*) input, 0)->payload.Int;
+                                                            ^
+In "/home/travis/cg", about to execute:
+    make -f TimeGap.mk run
+./TimeGap
+All Done
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

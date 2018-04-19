@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="travis-job-19728a33-7aca-4e5e-bdd6-891169f1a6a4" name="ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.test.junit.JUnitCGCTest" skipped="0" tests="21" time="39.927" timestamp="2018-04-19T03:39:28">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="270.6" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.9 49804 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="build-all,test.report.short" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.9 49804 10.20.0.18 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.test.junit.JUnitCGCTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.test.junit.JUnitCGCTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8347011262181460225.properties propsfile=/home/travis/build/icyphy/ptII/junit6157568463310472574.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="1147a6b8c9bd...32d59bbacfa8" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/perl" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx1024m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="jsdoc.command.exists" value="true" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="env.PT_TRAVIS_TEST_REPORT_SHORT" value="true" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="270" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="368453190" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="32d59bbacfa84219be80788cc221143a56b570af" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="bin.vergil.exists" value="true" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="After Test completes, invoke Stop." />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.class.path" value="/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="env.TRAVIS_JOB_ID" value="368453196" />
+    <property name="user.country" value="US" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="model" value="" />
+    <property name="java.maxmemory.large" value="8000m" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.util.test.junit.AutoCGCKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/knownFailedTests/FSMReceiver.xml (runModelInline)" time="3.066" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/knownFailedTests/FSMReceiver.xml (runModelNoInline)" time="2.344" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/AMICoderExample.xml (runModelNoInline)" time="1.906" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/BareModal.xml (runModelNoInline)" time="1.679" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/CapriciousThermostat.xml (runModelNoInline)" time="2.126" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/CommitActionsAttribute.xml (runModelNoInline)" time="1.514" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/DeepModal1.xml (runModelNoInline)" time="2.23" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/DeepModal2.xml (runModelNoInline)" time="2.371" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/ExtendedFSM.xml (runModelNoInline)" time="1.693" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/ExtendedFSMBook.xml (runModelNoInline)" time="1.631" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml (runModelNoInline)" time="1.831" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FinalStates.xml (runModelNoInline)" time="1.688" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FinalStatesBook.xml (runModelNoInline)" time="1.721" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Hysteresis.xml (runModelNoInline)" time="1.872" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xml (runModelNoInline)" time="2.184" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple02NoInputsGuard.xml (runModelNoInline)" time="1.648" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple02NoInputsGuardRefined.xml (runModelNoInline)" time="1.857" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Thermostat_NoHysteresis.xml (runModelNoInline)" time="1.905" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/changingParams.xml (runModelNoInline)" time="1.453" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/verySimple.xml (runModelNoInline)" time="1.516" />
+  <testcase classname="ptolemy.util.test.junit.AutoCGCNoInlineTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/verySimple2.xml (runModelNoInline)" time="1.583" />
+  <system-out><![CDATA[----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline true -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/knownFailedTests/FSMReceiver.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.FSMReceiver} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.FSMReceiver} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.Refinement {.FSMReceiver.AIMCoder.r1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.Refinement {.FSMReceiver.AIMCoder.r1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder.r1.M2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder.r1.M2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/FSMReceiver.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f FSMReceiver.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_FSMReceiver -I /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/_r2 -I /home/travis/cg/commons/ -I /home/travis/cg//_FSMReceiver/_AIMCoder -I /home/travis/cg//_FSMReceiver/_AIMCoder/_r1 -I /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2 FSMReceiver_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_SDFSchedule.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.c _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2_FSMTransitionCode.c _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_SDFSchedule.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.c _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder_FSMTransitionCode.c _FSMReceiver/FSMReceiver_SDFSchedule.c _FSMReceiver/FSMReceiver.c _FSMReceiver/FSMReceiver_Pulse.c _FSMReceiver/FSMReceiver_Test.c -o FSMReceiver -lm 
+In file included from FSMReceiver_Main.h:23:0,
+                 from FSMReceiver_Main.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from /home/travis/cg//_FSMReceiver/FSMReceiver.h:26,
+                 from FSMReceiver_Main.h:23,
+                 from FSMReceiver_Main.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c: In function ‘FSMReceiver_AIMCoder_New’:
+_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c:84:35: warning: initialization from incompatible pointer type [enabled by default]
+     struct FSMReceiver* out_0_0 = FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_SDFSchedule.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_SDFSchedule.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2_FSMTransitionCode.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:25,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2_FSMTransitionCode.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:25,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c: In function ‘FSMReceiver_AIMCoder_r1_M2_New’:
+_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c:109:35: warning: initialization from incompatible pointer type [enabled by default]
+     struct FSMReceiver* out_0_0 = FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_SDFSchedule.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_SDFSchedule.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder_FSMTransitionCode.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder_FSMTransitionCode.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver_SDFSchedule.c:1:0:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver_SDFSchedule.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver.c:21:0:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+_FSMReceiver/FSMReceiver.c:25:24: error: conflicting types for ‘FSMReceiver_New’
+ struct CompositeActor* FSMReceiver_New() {
+                        ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver_Pulse.h:27:0,
+                 from _FSMReceiver/FSMReceiver_Pulse.c:24:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver_Pulse.h:27,
+                 from _FSMReceiver/FSMReceiver_Pulse.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver_Test.h:27:0,
+                 from _FSMReceiver/FSMReceiver_Test.c:24:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver_Test.h:27,
+                 from _FSMReceiver/FSMReceiver_Test.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+make: *** [FSMReceiver] Error 1
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/knownFailedTests/FSMReceiver.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.FSMReceiver} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.FSMReceiver} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.Refinement {.FSMReceiver.AIMCoder.r1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.Refinement {.FSMReceiver.AIMCoder.r1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder.r1.M2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.FSMReceiver.AIMCoder.r1.M2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/FSMReceiver.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f FSMReceiver.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_FSMReceiver -I /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/_r2 -I /home/travis/cg/commons/ -I /home/travis/cg//_FSMReceiver/_AIMCoder -I /home/travis/cg//_FSMReceiver/_AIMCoder/_r1 -I /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2 FSMReceiver_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_SDFSchedule.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.c _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.c _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2_FSMTransitionCode.c _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_SDFSchedule.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.c _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.c _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder_FSMTransitionCode.c _FSMReceiver/FSMReceiver_SDFSchedule.c _FSMReceiver/FSMReceiver.c _FSMReceiver/FSMReceiver_Pulse.c _FSMReceiver/FSMReceiver_Test.c -o FSMReceiver -lm 
+In file included from FSMReceiver_Main.h:23:0,
+                 from FSMReceiver_Main.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from /home/travis/cg//_FSMReceiver/FSMReceiver.h:26,
+                 from FSMReceiver_Main.h:23,
+                 from FSMReceiver_Main.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c: In function ‘FSMReceiver_AIMCoder_New’:
+_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.c:84:35: warning: initialization from incompatible pointer type [enabled by default]
+     struct FSMReceiver* out_0_0 = FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const2.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Display.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_SDFSchedule.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_SDFSchedule.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_AddSubtract.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1_Const3.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2_FSMTransitionCode.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:25,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2_FSMTransitionCode.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:25,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c: In function ‘FSMReceiver_AIMCoder_r1_M2_New’:
+_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.c:109:35: warning: initialization from incompatible pointer type [enabled by default]
+     struct FSMReceiver* out_0_0 = FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_SDFSchedule.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_SDFSchedule.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const9.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Test.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_AddSubtract2.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.c:21:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/FSMReceiver_AIMCoder_r1.h:27,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/_r1/_M2/FSMReceiver_AIMCoder_r1_M2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.c:24:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2.h:26,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.h:27,
+                 from _FSMReceiver/_AIMCoder/_r1/_M2/_r2/FSMReceiver_AIMCoder_r1_M2_r2_Const8.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:27:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder_FSMTransitionCode.c:1:
+/home/travis/cg//_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder_FSMTransitionCode.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver_SDFSchedule.c:1:0:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver_SDFSchedule.c:1:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver.c:21:0:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+_FSMReceiver/FSMReceiver.c:25:24: error: conflicting types for ‘FSMReceiver_New’
+ struct CompositeActor* FSMReceiver_New() {
+                        ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver.c:21:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver_Pulse.h:27:0,
+                 from _FSMReceiver/FSMReceiver_Pulse.c:24:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver_Pulse.h:27,
+                 from _FSMReceiver/FSMReceiver_Pulse.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+In file included from _FSMReceiver/FSMReceiver_Test.h:27:0,
+                 from _FSMReceiver/FSMReceiver_Test.c:24:
+_FSMReceiver/FSMReceiver.h:33:35: error: conflicting types for ‘FSMReceiver_New’
+     extern struct CompositeActor* FSMReceiver_New();
+                                   ^
+In file included from /home/travis/cg/commons/_FSMDirector.h:13:0,
+                 from /home/travis/cg//_FSMReceiver/_AIMCoder/FSMReceiver_AIMCoder.h:25,
+                 from _FSMReceiver/FSMReceiver.h:26,
+                 from _FSMReceiver/FSMReceiver_Test.h:27,
+                 from _FSMReceiver/FSMReceiver_Test.c:24:
+/home/travis/cg/commons/_FSMReceiver.h:47:21: note: previous declaration of ‘FSMReceiver_New’ was here
+ struct FSMReceiver* FSMReceiver_New();
+                     ^
+make: *** [FSMReceiver] Error 1
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/AMICoderExample.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/AMICoderExample.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f AMICoderExample.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_AMICoderExample AMICoderExample_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _AMICoderExample/AMICoderExample.c _AMICoderExample/AMICoderExample_SDFSchedule.c _AMICoderExample/AMICoderExample_Pulse.c _AMICoderExample/AMICoderExample_Test.c _AMICoderExample/AMICoderExample_AMICoder.c -o AMICoderExample -lm 
+In "/home/travis/cg", about to execute:
+    make -f AMICoderExample.mk run
+./AMICoderExample
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/BareModal.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg_Test5/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.BareModal} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.BareModal} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg_Test5/BareModal.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg_Test5", about to execute:
+    make -f BareModal.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg_Test5/commons/ -I /home/travis/cg_Test5/_BareModal/_ModalModel -I /home/travis/cg_Test5/_BareModal BareModal_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _BareModal/_ModalModel/BareModal_ModalModel.c _BareModal/_ModalModel/BareModal_ModalModel_FSMTransitionCode.c _BareModal/BareModal.c _BareModal/BareModal_8_Test.c _BareModal/BareModal_SDFSchedule.c -o BareModal -lm 
+In "/home/travis/cg_Test5", about to execute:
+    make -f BareModal.mk run
+./BareModal
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/CapriciousThermostat.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/CapriciousThermostat.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f CapriciousThermostat.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_CapriciousThermostat -I /home/travis/cg/commons/ CapriciousThermostat_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _CapriciousThermostat/CapriciousThermostat_Test.c _CapriciousThermostat/CapriciousThermostat_Temperature_Model_SampleDelay.c _CapriciousThermostat/CapriciousThermostat_Temperature_Model_Accumulator.c _CapriciousThermostat/CapriciousThermostat_Temperature_Model_Gaussian.c _CapriciousThermostat/CapriciousThermostat_Test2.c _CapriciousThermostat/CapriciousThermostat_FSMActor.c _CapriciousThermostat/CapriciousThermostat_SDFSchedule.c _CapriciousThermostat/CapriciousThermostat.c -o CapriciousThermostat -lm 
+In "/home/travis/cg", about to execute:
+    make -f CapriciousThermostat.mk run
+./CapriciousThermostat
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/CommitActionsAttribute.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/CommitActionsAttribute.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f CommitActionsAttribute.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_CommitActionsAttribute CommitActionsAttribute_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _CommitActionsAttribute/CommitActionsAttribute_SDFSchedule.c _CommitActionsAttribute/CommitActionsAttribute.c _CommitActionsAttribute/CommitActionsAttribute_Test2.c _CommitActionsAttribute/CommitActionsAttribute_fsm_actor0.c _CommitActionsAttribute/CommitActionsAttribute_8_Test2.c -o CommitActionsAttribute -lm 
+In "/home/travis/cg", about to execute:
+    make -f CommitActionsAttribute.mk run
+./CommitActionsAttribute
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/DeepModal1.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.DeepModal1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.DeepModal1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal1.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal1.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal1.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal1.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal1.ModalModel.state2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal1.ModalModel.state2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DeepModal1.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DeepModal1.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_DeepModal1/_ModalModel/_state -I /home/travis/cg//_DeepModal1/_ModalModel/_state2/_state -I /home/travis/cg//_DeepModal1/_ModalModel -I /home/travis/cg//_DeepModal1 -I /home/travis/cg/commons/ -I /home/travis/cg//_DeepModal1/_ModalModel/_state2 DeepModal1_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _DeepModal1/DeepModal1_Test.c _DeepModal1/DeepModal1_SDFSchedule.c _DeepModal1/_ModalModel/_state2/DeepModal1_ModalModel_state2_FSMTransitionCode.c _DeepModal1/_ModalModel/_state2/_state/DeepModal1_ModalModel_state2_state_SDFSchedule.c _DeepModal1/_ModalModel/_state2/_state/DeepModal1_ModalModel_state2_state.c _DeepModal1/_ModalModel/_state2/_state/DeepModal1_ModalModel_state2_state_Scale.c _DeepModal1/_ModalModel/_state2/DeepModal1_ModalModel_state2.c _DeepModal1/_ModalModel/DeepModal1_ModalModel.c _DeepModal1/_ModalModel/_state/DeepModal1_ModalModel_state.c _DeepModal1/_ModalModel/_state/DeepModal1_ModalModel_state_Scale.c _DeepModal1/_ModalModel/_state/DeepModal1_ModalModel_state_SDFSchedule.c _DeepModal1/_ModalModel/DeepModal1_ModalModel_FSMTransitionCode.c _DeepModal1/DeepModal1_Ramp.c _DeepModal1/DeepModal1.c -o DeepModal1 -lm 
+In "/home/travis/cg", about to execute:
+    make -f DeepModal1.mk run
+./DeepModal1
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/DeepModal2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.DeepModal2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.DeepModal2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.DeepModal2.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal2.ModalModel.state2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal2.ModalModel.state2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal2.ModalModel.state2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal2.ModalModel.state2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal2.ModalModel.state2.state2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalRefinement {.DeepModal2.ModalModel.state2.state2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/DeepModal2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f DeepModal2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_DeepModal2/_ModalModel/_state -I /home/travis/cg//_DeepModal2/_ModalModel/_state2 -I /home/travis/cg//_DeepModal2/_ModalModel/_state2/_state -I /home/travis/cg/commons/ -I /home/travis/cg//_DeepModal2 -I /home/travis/cg//_DeepModal2/_ModalModel/_state2/_state2/_state -I /home/travis/cg//_DeepModal2/_ModalModel -I /home/travis/cg//_DeepModal2/_ModalModel/_state2/_state2 DeepModal2_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _DeepModal2/DeepModal2_SDFSchedule.c _DeepModal2/_ModalModel/_state2/_state2/DeepModal2_ModalModel_state2_state2_FSMTransitionCode.c _DeepModal2/_ModalModel/_state2/_state2/_state/DeepModal2_ModalModel_state2_state2_state_SDFSchedule.c _DeepModal2/_ModalModel/_state2/_state2/_state/DeepModal2_ModalModel_state2_state2_state.c _DeepModal2/_ModalModel/_state2/_state2/_state/DeepModal2_ModalModel_state2_state2_state_Scale.c _DeepModal2/_ModalModel/_state2/_state2/DeepModal2_ModalModel_state2_state2.c _DeepModal2/_ModalModel/_state2/DeepModal2_ModalModel_state2.c _DeepModal2/_ModalModel/_state2/DeepModal2_ModalModel_state2_FSMTransitionCode.c _DeepModal2/_ModalModel/_state2/_state/DeepModal2_ModalModel_state2_state_SDFSchedule.c _DeepModal2/_ModalModel/_state2/_state/DeepModal2_ModalModel_state2_state.c _DeepModal2/_ModalModel/_state2/_state/DeepModal2_ModalModel_state2_state_Scale.c _DeepModal2/_ModalModel/DeepModal2_ModalModel_FSMTransitionCode.c _DeepModal2/_ModalModel/_state/DeepModal2_ModalModel_state_SDFSchedule.c _DeepModal2/_ModalModel/_state/DeepModal2_ModalModel_state.c _DeepModal2/_ModalModel/_state/DeepModal2_ModalModel_state_Scale.c _DeepModal2/_ModalModel/DeepModal2_ModalModel.c _DeepModal2/DeepModal2_Test.c _DeepModal2/DeepModal2.c _DeepModal2/DeepModal2_Ramp.c -o DeepModal2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f DeepModal2.mk run
+./DeepModal2
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/ExtendedFSM.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/ExtendedFSM.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f ExtendedFSM.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_ExtendedFSM -I /home/travis/cg/commons/ ExtendedFSM_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _ExtendedFSM/ExtendedFSM_SDFSchedule.c _ExtendedFSM/ExtendedFSM.c _ExtendedFSM/ExtendedFSM_Test.c _ExtendedFSM/ExtendedFSM_FSMActor.c _ExtendedFSM/ExtendedFSM_Ramp.c -o ExtendedFSM -lm 
+In "/home/travis/cg", about to execute:
+    make -f ExtendedFSM.mk run
+./ExtendedFSM
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/ExtendedFSMBook.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/ExtendedFSM.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f ExtendedFSM.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_ExtendedFSM -I /home/travis/cg/commons/ ExtendedFSM_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _ExtendedFSM/ExtendedFSM_SDFSchedule.c _ExtendedFSM/ExtendedFSM.c _ExtendedFSM/ExtendedFSM_Test.c _ExtendedFSM/ExtendedFSM_FSMActor.c _ExtendedFSM/ExtendedFSM_Ramp.c -o ExtendedFSM -lm 
+In "/home/travis/cg", about to execute:
+    make -f ExtendedFSM.mk run
+./ExtendedFSM
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FSMActor.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/FSMActor.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f FSMActor.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_FSMActor -I /home/travis/cg/commons/ FSMActor_Main.c _FSMActor/FSMActor_SDFSchedule.c _FSMActor/FSMActor_Test.c _FSMActor/FSMActor_FSMActor.c _FSMActor/FSMActor_Ramp.c _FSMActor/FSMActor.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o FSMActor -lm 
+In "/home/travis/cg", about to execute:
+    make -f FSMActor.mk run
+./FSMActor
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FinalStates.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/FinalStates.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f FinalStates.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_FinalStates FinalStates_Main.c _FinalStates/FinalStates.c _FinalStates/FinalStates_Ramp.c _FinalStates/FinalStates_SDFSchedule.c _FinalStates/FinalStates_FSMActor.c _FinalStates/FinalStates_Test.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o FinalStates -lm 
+In "/home/travis/cg", about to execute:
+    make -f FinalStates.mk run
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/FinalStatesBook.xml./FinalStates
+CCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/FinalStates.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f FinalStates.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_FinalStates FinalStates_Main.c _FinalStates/FinalStates.c _FinalStates/FinalStates_Ramp.c _FinalStates/FinalStates_SDFSchedule.c _FinalStates/FinalStates_FSMActor.c _FinalStates/FinalStates_Test.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o FinalStates -lm 
+In "/home/travis/cg", about to execute:
+    make -f FinalStates.mk run
+./FinalStates
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Hysteresis.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Hysteresis.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Hysteresis.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_Hysteresis Hysteresis_Main.c _Hysteresis/Hysteresis.c _Hysteresis/Hysteresis_FSMActor.c _Hysteresis/Hysteresis_Temperature_Model_Gaussian.c _Hysteresis/Hysteresis_Temperature_Model_SampleDelay.c _Hysteresis/Hysteresis_Test.c _Hysteresis/Hysteresis_SDFSchedule.c _Hysteresis/Hysteresis_Temperature_Model_Accumulator.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o Hysteresis -lm 
+In "/home/travis/cg", about to execute:
+    make -f Hysteresis.mk run
+./Hysteresis
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple01.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Simple01} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Simple01} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.Simple01.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.Simple01.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.Simple01.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.Simple01.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Simple01.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Simple01.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Simple01/_ModalModel/_state -I /home/travis/cg//_Simple01 -I /home/travis/cg/commons/ -I /home/travis/cg//_Simple01/_ModalModel/_state2 -I /home/travis/cg//_Simple01/_ModalModel Simple01_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _Simple01/Simple01_Test.c _Simple01/Simple01_SDFSchedule.c _Simple01/_ModalModel/_state2/Simple01_ModalModel_state2_SDFSchedule.c _Simple01/_ModalModel/_state2/Simple01_ModalModel_state2_Scale.c _Simple01/_ModalModel/_state2/Simple01_ModalModel_state2.c _Simple01/_ModalModel/_state/Simple01_ModalModel_state_SDFSchedule.c _Simple01/_ModalModel/_state/Simple01_ModalModel_state_Scale.c _Simple01/_ModalModel/_state/Simple01_ModalModel_state.c _Simple01/_ModalModel/Simple01_ModalModel.c _Simple01/_ModalModel/Simple01_ModalModel_FSMTransitionCode.c _Simple01/Simple01_Ramp.c _Simple01/Simple01.c -o Simple01 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Simple01.mk run
+All Done
+./Simple01
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple02NoInputsGuard.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg_Test10/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Simple02NoInputsGuard} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Simple02NoInputsGuard} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg_Test10/Simple02NoInputsGuard.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg_Test10", about to execute:
+    make -f Simple02NoInputsGuard.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg_Test10/_Simple02NoInputsGuard/_ModalModel -I /home/travis/cg_Test10/commons/ -I /home/travis/cg_Test10/_Simple02NoInputsGuard Simple02NoInputsGuard_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _Simple02NoInputsGuard/Simple02NoInputsGuard.c _Simple02NoInputsGuard/Simple02NoInputsGuard_SDFSchedule.c _Simple02NoInputsGuard/_ModalModel/Simple02NoInputsGuard_ModalModel.c _Simple02NoInputsGuard/_ModalModel/Simple02NoInputsGuard_ModalModel_FSMTransitionCode.c _Simple02NoInputsGuard/Simple02NoInputsGuard_Test.c -o Simple02NoInputsGuard -lm 
+In "/home/travis/cg_Test10", about to execute:
+    make -f Simple02NoInputsGuard.mk run
+./Simple02NoInputsGuard
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Simple02NoInputsGuardRefined.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg_Test10/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Simple02NoInputsGuardRefined} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Simple02NoInputsGuardRefined} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.Simple02NoInputsGuardRefined.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.Simple02NoInputsGuardRefined.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg_Test10/Simple02NoInputsGuardRefined.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg_Test10", about to execute:
+    make -f Simple02NoInputsGuardRefined.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg_Test10/_Simple02NoInputsGuardRefined/_ModalModel -I /home/travis/cg_Test10/_Simple02NoInputsGuardRefined -I /home/travis/cg_Test10/commons/ -I /home/travis/cg_Test10/_Simple02NoInputsGuardRefined/_ModalModel/_simpleRefine Simple02NoInputsGuardRefined_Main.c commons/_FSMDirector.c commons/_SDFReceiver.c commons/_FSMActor.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_FSMReceiver.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _Simple02NoInputsGuardRefined/Simple02NoInputsGuardRefined_Test.c _Simple02NoInputsGuardRefined/_ModalModel/_simpleRefine/Simple02NoInputsGuardRefined_ModalModel_simpleRefine_SDFSchedule.c _Simple02NoInputsGuardRefined/_ModalModel/_simpleRefine/Simple02NoInputsGuardRefined_ModalModel_simpleRefine.c _Simple02NoInputsGuardRefined/_ModalModel/_simpleRefine/Simple02NoInputsGuardRefined_ModalModel_simpleRefine_Const.c _Simple02NoInputsGuardRefined/_ModalModel/Simple02NoInputsGuardRefined_ModalModel_FSMTransitionCode.c _Simple02NoInputsGuardRefined/_ModalModel/Simple02NoInputsGuardRefined_ModalModel.c _Simple02NoInputsGuardRefined/Simple02NoInputsGuardRefined.c _Simple02NoInputsGuardRefined/Simple02NoInputsGuardRefined_SDFSchedule.c -o Simple02NoInputsGuardRefined -lm 
+In "/home/travis/cg_Test10", about to execute:
+    make -f Simple02NoInputsGuardRefined.mk run
+./Simple02NoInputsGuardRefined
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/Thermostat_NoHysteresis.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Thermostat_NoHysteresis.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Thermostat_NoHysteresis.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Thermostat_NoHysteresis -I /home/travis/cg/commons/ Thermostat_NoHysteresis_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis_Temperature_Model_Gaussian.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis_Temperature_Model_Accumulator.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis_Temperature_Model_SampleDelay.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis_Test.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis_SDFSchedule.c _Thermostat_NoHysteresis/Thermostat_NoHysteresis_FSMActor.c -o Thermostat_NoHysteresis -lm 
+In "/home/travis/cg", about to execute:
+    make -f Thermostat_NoHysteresis.mk run
+./Thermostat_NoHysteresis
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/changingParams.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/changingParams.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f changingParams.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_changingParams changingParams_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _changingParams/changingParams_Ramp.c _changingParams/changingParams.c _changingParams/changingParams_SDFSchedule.c _changingParams/changingParams_fsm_actor0.c _changingParams/changingParams_8_Test2.c -o changingParams -lm 
+In "/home/travis/cg", about to execute:
+    make -f changingParams.mk run
+./changingParams
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/verySimple.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/verySimple.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f verySimple.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_verySimple -I /home/travis/cg/commons/ verySimple_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _verySimple/verySimple_8_Test2.c _verySimple/verySimple.c _verySimple/verySimple_SDFSchedule.c _verySimple/verySimple_fsm_actor0.c -o verySimple -lm 
+In "/home/travis/cg", about to execute:
+    make -f verySimple.mk run
+./verySimple
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/test/auto/verySimple2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+FSMActor()._generateFireCode(): about to get inputs
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/verySimple2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f verySimple2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_verySimple2 verySimple2_Main.c _verySimple2/verySimple2_SDFSchedule.c _verySimple2/verySimple2.c _verySimple2/verySimple2_fsm_actor0.c _verySimple2/verySimple2_8_Test2.c _verySimple2/verySimple2_Ramp.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o verySimple2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f verySimple2.mk run
+./verySimple2
+All Done
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
