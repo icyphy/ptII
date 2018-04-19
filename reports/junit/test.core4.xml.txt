@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 4.18 seconds.
+     [exec] Finished running in 3.92 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -304,6 +304,7 @@ build-bin:
      [exec] ./makebat -q "`basename soot.bat .bat`"
      [exec] rm -f "tinicomm.bat"
      [exec] ./makebat -q "`basename tinicomm.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "tinic.bat"
      [exec] ./makebat -q "`basename tinic.bat .bat`"
      [exec] rm -f "tiniconverter.bat"
@@ -316,177 +317,13 @@ build-bin:
      [exec] ln -s ptinvoke makeapp
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Error: This Java instance does not support a 32-bit JVM.
-     [exec] Please install the desired version.
-     [exec] configure: WARNING: Running java -d32 -version failed,
-     [exec]     and ./bin/java does not exist.
-     [exec]     Perhaps you need to install a separate 32-bit JVM
-     [exec]     or rerun configure with --with-java32?
-     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
-     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
-     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
-     [exec]     the same as '/usr/bin/java'.
-     [exec]     Perhaps '/usr/bin/java' is in your path before
-     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
-     [exec]     If you have problems later, be sure that you don't have a mismatch
-     [exec]     in JDK versions.
-     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
-     [exec] 	 the same as '/usr/bin/javac'.
-     [exec] 	 Perhaps '/usr/bin/javac' is in your path
-     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
-     [exec] 	 If you have problems later, be sure that you don't have a mismatch
-     [exec] 	 in JDK versions.
-     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
-     [exec]     This is only a problem if you want to rebuild the Functional
-     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
-     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
-     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
-     [exec]     Checkstyle is only necessary for code cleaning.
-     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
-     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
-     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
-     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
-     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
-     [exec]     Cobertura is only necessary to for code coverage.
-     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
-     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
-     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
-     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
-     [exec]     CUnit is only necessary to test the C templates of the code generation facility
-     [exec] ls: cannot access /Applications/[Ee]clipse*: No such file or directory
-     [exec] configure: WARNING: Failed to find Eclipse in /usr/lib/eclipse
-     [exec] configure: WARNING: Failed to find Eclipse in /home/travis/build/icyphy/ptII/vendors/eclipse
-     [exec] configure: WARNING: Failed to find Eclipse
-     [exec]     perhaps Eclipse is not installed?
-     [exec]     The backtracking facility requires Eclipse 3.2 or greater.
-     [exec]     You need not download Eclipse unless you plan on using the backtracking
-     [exec]     facility in ptolemy.backtrack.
-     [exec]     Eclipse may be downloaded from http://www.eclipse.org/
-     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
-     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
-     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
-     [exec]     so the Mbed CG facility will not be run.
-     [exec] JAITest.java:28: error: package javax.media.jai does not exist
-     [exec] import javax.media.jai.*;
-     [exec] ^
-     [exec] 1 error
-     [exec] configure: WARNING: JAI not found in the default classpath
-     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
-     [exec]     which is part of JModelica.
-     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
-     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
-     [exec] JMFTest.java:28: error: package javax.media does not exist
-     [exec] import javax.media.CaptureDeviceInfo;
-     [exec]                   ^
-     [exec] 1 error
-     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
-     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
-     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
-     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
-     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
-     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
-     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
-     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
-     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
-     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
-     [exec]     so we will try other jars.
-     [exec] libdc1394 error: Failed to initialize libdc1394
-     [exec] configure: WARNING: Could not find directory
-     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
-     [exec]     so we search for the jjtree command.
-     [exec] configure: WARNING: Failed to find jjtree
-     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
-     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
-     [exec]     in ptolemy/data/expr.
-     [exec]     JavaCC is available from
-     [exec]     http://javacc.dev.java.net/
-     [exec] 
-     [exec]     Note that the zip file that gets downloaded is actually an installer
-     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
-     [exec] 
-     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
-     [exec]     ReInit() being static or not static.
-     [exec] 
-     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
-     [exec]     we recommend JavaCC-5.0.
-     [exec] 
-     [exec]     Try:
-     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
-     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
-     [exec]     tar -zxf javacc-5.0.tar.gz
-     [exec]     cd /home/travis/build/icyphy/ptII
-     [exec]     ./configure
-     [exec] 
-     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
-     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
-     [exec]     and then rerun configure.'
-     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
-     [exec] java3dTest.java:28: error: package javax.media.j3d does not exist
-     [exec] import javax.media.j3d.*;
-     [exec] ^
-     [exec] 1 error
-     [exec] configure: WARNING: '"/usr/lib/jvm/java-8-oracle/bin/javac" -classpath "." java3dTest.java' failed.
-     [exec]     Java 3D may be found at https://java3d.java.net/
-     [exec]     Java 3D is only needed if you want to build in
-     [exec]     /home/travis/build/icyphy/ptII/ptolemy/domains/gr,
-     [exec]     otherwise the build will proceed fine without Java 3D.
-     [exec]     Configure looks for jar files in /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext/.
-     [exec]     If your Java 3D installation is in a non-standard place, use  --with-java3d=DIR
-     [exec]     where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
-     [exec]     ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext
-     [exec]     Under Mac OS X
-     [exec] configure: WARNING: Failed to find matlab executable in the path.
-     [exec]     Perhaps Matlab is not installed?
-     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
-     [exec]     $PTII/ptolemy/matlab will not be usable.
-     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
-     [exec]     Rebuilding the OpenModelica fmus will not be possible.
-     [exec]     Running the OpenModelica models will not be possible.
-     [exec]     This is only a concern if you are interested in OpenModelica
-     [exec] configure: WARNING: Failed to find PowerMock.
-     [exec]     Perhaps PowerMock was not installed?
-     [exec]     You need not download these packages if you would like
-     [exec]     to run the tests.  To install PowerMock, go to
-     [exec]     http://code.google.com/p/powermock/ and download
-     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
-     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
-     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
-     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
-     [exec]     then rerun configure.
-     [exec]     Other versions of PowerMock _may_ work, but are untested.
-     [exec] configure: WARNING: Failed to find the scalac binary,
-     [exec]     so org/ptolemy/scala will be excluded
-     [exec] configure: WARNING: ojdbc5.jar not found,
-     [exec]     but only necessary to use database actors with Oracle.
-     [exec] configure: WARNING: Failed to find Batik Jar file
-     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
-     [exec]     for use with Kepler.
-     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/
-     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
-     [exec] configure: WARNING: $TOSROOT is set to '',
-     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
-     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
-     [exec] configure: WARNING: Failed to find giotto/gdk.jar
-     [exec]     perhaps Giotto is not installed?
-     [exec]     You need not download Giotto unless you plan on generating code for
-     [exec]     Giotto models.
-     [exec]     The Giotto SDK can be
-     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
-     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
-     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
-     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
-     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
-     [exec]     will not be compiled. FMI++ is an extension of the
-     [exec]     Functional Mockup Interface, see
-     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 19 21:06:26 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 19 22:53:59 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 19 21:06:29 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 19 22:54:02 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -507,8 +344,8 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/caltrop/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.caltrop.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/DDF.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:33 UTC 2018
-    [junit] 13 ms. Memory: 146944K Free: 135096K (92%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:06 UTC 2018
+    [junit] 10 ms. Memory: 146944K Free: 135062K (92%)
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
     [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Actor is not a valid DDF actor.
@@ -535,11 +372,7 @@ test.core4.xml:
     [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-3"
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/PtolemyPlatform.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/SDF.tcl
-    [junit] 4 ms. Memory: 146944K Free: 120630K (82%)
-    [junit] 1 ms. Memory: 146944K Free: 109840K (75%)
-    [junit] 04/19/18 09:06:35
-    [junit] Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
-    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
+    [junit] 4 ms. Memory: 146944K Free: 121703K (83%)
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
     [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Actor is not a valid SDF actor.
@@ -565,6 +398,11 @@ test.core4.xml:
     [junit] 	... 10 more
     [junit] 
     [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-5"
+    [junit] 2 ms. Memory: 146944K Free: 110262K (75%)
+    [junit] 04/19/18 10:54:08
+    [junit] Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
+    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
+    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
     [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Actor is not a valid SDF actor.
@@ -593,55 +431,54 @@ test.core4.xml:
     [junit] 	... 10 more
     [junit] 
     [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-7"
-    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/DDFDDI.xml
-    [junit] 112 ms. Memory: 184832K Free: 123316K (67%)
+    [junit] ----------------- testing Thu Apr 19 22:54:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/DDFDDI.xml
+    [junit] 147 ms. Memory: 184832K Free: 123513K (67%)
     [junit] reloadAllAccessors: .DDFDDI
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionClosures.xml
-    [junit] 31 ms. Memory: 184832K Free: 96250K (52%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionClosures.xml
+    [junit] 26 ms. Memory: 184832K Free: 94005K (51%)
     [junit] reloadAllAccessors: .FunctionClosures
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionDefinition.xml
-    [junit] 7 ms. Memory: 184832K Free: 55666K (30%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionDefinition.xml
+    [junit] 7 ms. Memory: 184832K Free: 53517K (29%)
     [junit] reloadAllAccessors: .FunctionDefinition
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/Primes.xml
-    [junit] 5 ms. Memory: 184832K Free: 147984K (80%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/Primes.xml
+    [junit] 6 ms. Memory: 184832K Free: 145127K (79%)
     [junit] reloadAllAccessors: .Primes
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/SDFDDI.xml
-    [junit] 39 ms. Memory: 184832K Free: 106863K (58%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/SDFDDI.xml
+    [junit] 27 ms. Memory: 184832K Free: 104190K (56%)
     [junit] reloadAllAccessors: .SDFDDI
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.67 sec
+    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.429 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/DDF.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:33 UTC 2018
-    [junit] 13 ms. Memory: 146944K Free: 135096K (92%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:06 UTC 2018
+    [junit] 10 ms. Memory: 146944K Free: 135062K (92%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/PtolemyPlatform.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/SDF.tcl
-    [junit] 4 ms. Memory: 146944K Free: 120630K (82%)
-    [junit] 1 ms. Memory: 146944K Free: 109840K (75%)
-    [junit] 04/19/18 09:06:35
+    [junit] 4 ms. Memory: 146944K Free: 121703K (83%)
+    [junit] 2 ms. Memory: 146944K Free: 110262K (75%)
+    [junit] 04/19/18 10:54:08
     [junit] Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/DDFDDI.xml
-    [junit] 112 ms. Memory: 184832K Free: 123316K (67%)
+    [junit] ----------------- testing Thu Apr 19 22:54:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/DDFDDI.xml
+    [junit] 147 ms. Memory: 184832K Free: 123513K (67%)
     [junit] reloadAllAccessors: .DDFDDI
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionClosures.xml
-    [junit] 31 ms. Memory: 184832K Free: 96250K (52%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionClosures.xml
+    [junit] 26 ms. Memory: 184832K Free: 94005K (51%)
     [junit] reloadAllAccessors: .FunctionClosures
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionDefinition.xml
-    [junit] 7 ms. Memory: 184832K Free: 55666K (30%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/FunctionDefinition.xml
+    [junit] 7 ms. Memory: 184832K Free: 53517K (29%)
     [junit] reloadAllAccessors: .FunctionDefinition
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/Primes.xml
-    [junit] 5 ms. Memory: 184832K Free: 147984K (80%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/Primes.xml
+    [junit] 6 ms. Memory: 184832K Free: 145127K (79%)
     [junit] reloadAllAccessors: .Primes
-    [junit] ----------------- testing Thu Apr 19 21:06:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/SDFDDI.xml
-    [junit] 39 ms. Memory: 184832K Free: 106863K (58%)
+    [junit] ----------------- testing Thu Apr 19 22:54:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/caltrop/test/auto/SDFDDI.xml
+    [junit] 27 ms. Memory: 184832K Free: 104190K (56%)
     [junit] reloadAllAccessors: .SDFDDI
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -723,9 +560,9 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.caltrop.util.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test/IntegerList.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:37 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:10 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test/PtArrayList.tcl
-    [junit] 04/19/18 09:06:37
+    [junit] 04/19/18 10:54:11
     [junit] Failed: 0  Total Tests: 9  ((Passed: 9, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
@@ -734,12 +571,12 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.609 sec
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.668 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test/IntegerList.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:37 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:10 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test/PtArrayList.tcl
-    [junit] 04/19/18 09:06:37
+    [junit] 04/19/18 10:54:11
     [junit] Failed: 0  Total Tests: 9  ((Passed: 9, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/caltrop/util/test
@@ -753,8 +590,8 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.distributed.domains.sdf.kernel.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test/DistributedSDFDirector.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:38 UTC 2018
-    [junit] 04/19/18 09:06:39
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:11 UTC 2018
+    [junit] 04/19/18 10:54:12
     [junit] Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
@@ -763,11 +600,11 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.621 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.652 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test/DistributedSDFDirector.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:38 UTC 2018
-    [junit] 04/19/18 09:06:39
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:11 UTC 2018
+    [junit] 04/19/18 10:54:12
     [junit] Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/distributed/domains/sdf/kernel/test
@@ -781,12 +618,13 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.moml.filter.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/ActorIndex.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:39 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:13 UTC 2018
     [junit] Failed to process ptolemy.actor.lib.Sinewave
     [junit] java.lang.ClassNotFoundException: ptolemy.actor.lib.Sinewave
-    [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddEditorFactory.tcl
     [junit] Warning, failed to parse $CLASSPATH/NotAModel.xml
     [junit] java.io.IOException: Cannot find file 'NotAModel.xml' in classpath
+    [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddEditorFactory.tcl
+    [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddIcon.tcl
     [junit] 	at ptolemy.util.FileUtilities.nameToURL(FileUtilities.java:638)
     [junit] 	at ptolemy.moml.filter.ActorIndex.generateActorIndex(ActorIndex.java:140)
     [junit] 	at ptolemy.moml.filter.ActorIndex.main(ActorIndex.java:290)
@@ -855,7 +693,6 @@ test.core4.xml:
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-    [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddIcon.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddMissingParameter.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/BackwardCompatibility.tcl
     [junit] 
@@ -906,13 +743,13 @@ test.core4.xml:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 27 ms. Memory: 116224K Free: 109571K (94%)
+    [junit] 14 ms. Memory: 116224K Free: 109585K (94%)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
     [junit]     see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 51 ms. Memory: 116224K Free: 102255K (88%)
+    [junit] 41 ms. Memory: 116224K Free: 102955K (89%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveGraphicalClasses.tcl
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
     [junit]     see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
@@ -929,38 +766,38 @@ test.core4.xml:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 3 ms. Memory: 116224K Free: 95081K (82%)
+    [junit] 8 ms. Memory: 116224K Free: 95129K (82%)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
     [junit]     see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 30 ms. Memory: 116224K Free: 88471K (76%)
+    [junit] 60 ms. Memory: 116224K Free: 88374K (76%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveGraphicalClassesApplication.tcl
-    [junit] 04/19/18 09:06:42
+    [junit] 04/19/18 10:54:15
     [junit] Failed: 0  Total Tests: 55  ((Passed: 54, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/TimeGap.xml
-    [junit] 37 ms. Memory: 146944K Free: 116730K (79%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/TimeGap.xml
+    [junit] 34 ms. Memory: 146944K Free: 114970K (78%)
     [junit] reloadAllAccessors: .TimeGap
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/VariableDelay.xml
-    [junit] 5 ms. Memory: 146944K Free: 114887K (78%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/VariableDelay.xml
+    [junit] 11 ms. Memory: 146944K Free: 113127K (77%)
     [junit] reloadAllAccessors: .
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/expression.xml
-    [junit] 10 ms. Memory: 146944K Free: 113028K (77%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/expression.xml
+    [junit] 9 ms. Memory: 146944K Free: 111252K (76%)
     [junit] reloadAllAccessors: .model
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/modulation2.xml
-    [junit] 57 ms. Memory: 146944K Free: 98081K (67%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/modulation2.xml
+    [junit] 69 ms. Memory: 146944K Free: 96417K (66%)
     [junit] reloadAllAccessors: .modulation2
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.371 sec
+    [junit] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.135 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/ActorIndex.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:39 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:13 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddEditorFactory.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddIcon.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddMissingParameter.tcl
@@ -1013,13 +850,13 @@ test.core4.xml:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 27 ms. Memory: 116224K Free: 109571K (94%)
+    [junit] 14 ms. Memory: 116224K Free: 109585K (94%)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
     [junit]     see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 51 ms. Memory: 116224K Free: 102255K (88%)
+    [junit] 41 ms. Memory: 116224K Free: 102955K (89%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveGraphicalClasses.tcl
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
     [junit]     see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
@@ -1036,31 +873,31 @@ test.core4.xml:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 3 ms. Memory: 116224K Free: 95081K (82%)
+    [junit] 8 ms. Memory: 116224K Free: 95129K (82%)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
     [junit]     see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 30 ms. Memory: 116224K Free: 88471K (76%)
+    [junit] 60 ms. Memory: 116224K Free: 88374K (76%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveGraphicalClassesApplication.tcl
-    [junit] 04/19/18 09:06:42
+    [junit] 04/19/18 10:54:15
     [junit] Failed: 0  Total Tests: 55  ((Passed: 54, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/TimeGap.xml
-    [junit] 37 ms. Memory: 146944K Free: 116730K (79%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/TimeGap.xml
+    [junit] 34 ms. Memory: 146944K Free: 114970K (78%)
     [junit] reloadAllAccessors: .TimeGap
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/VariableDelay.xml
-    [junit] 5 ms. Memory: 146944K Free: 114887K (78%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/VariableDelay.xml
+    [junit] 11 ms. Memory: 146944K Free: 113127K (77%)
     [junit] reloadAllAccessors: .
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/expression.xml
-    [junit] 10 ms. Memory: 146944K Free: 113028K (77%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/expression.xml
+    [junit] 9 ms. Memory: 146944K Free: 111252K (76%)
     [junit] reloadAllAccessors: .model
-    [junit] ----------------- testing Thu Apr 19 21:06:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/modulation2.xml
-    [junit] 57 ms. Memory: 146944K Free: 98081K (67%)
+    [junit] ----------------- testing Thu Apr 19 22:54:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/modulation2.xml
+    [junit] 69 ms. Memory: 146944K Free: 96417K (66%)
     [junit] reloadAllAccessors: .modulation2
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1143,12 +980,11 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/moml/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.moml.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ConvertToLazy.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:43 UTC 2018
-    [junit] 346 ms. Memory: 208384K Free: 134861K (65%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:16 UTC 2018
+    [junit] 382 ms. Memory: 208384K Free: 135314K (65%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/Documentation.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/EntityLibrary.tcl
     [junit] This test will print an error message to stderr which can be ignored
-    [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ImportAttribute.tcl
     [junit] Failed to populate library.
     [junit] java.io.FileNotFoundException: ./EntityLibary.tcl (No such file or directory)
     [junit] 	at java.io.FileInputStream.open0(Native Method)
@@ -1232,17 +1068,18 @@ test.core4.xml:
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+    [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ImportAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/LevelCrossingLinkTest.tcl
-    [junit] 5 ms. Memory: 208384K Free: 116746K (56%)
-    [junit] 4 ms. Memory: 208384K Free: 111893K (54%)
-    [junit] 2 ms. Memory: 208384K Free: 111893K (54%)
-    [junit] 10 ms. Memory: 208384K Free: 109467K (53%)
+    [junit] 11 ms. Memory: 208384K Free: 117247K (56%)
+    [junit] 4 ms. Memory: 208384K Free: 114815K (55%)
+    [junit] 3 ms. Memory: 208384K Free: 112382K (54%)
+    [junit] 5 ms. Memory: 208384K Free: 109950K (53%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/LibraryAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/LibraryBuilder.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/Location.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLChangeRequest.tcl
-    [junit] 2 ms. Memory: 208384K Free: 99645K (48%)
+    [junit] 2 ms. Memory: 208384K Free: 102086K (49%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/moml/test/MoMLChangeRequest.tcl: MoMLChangeRequest-4.1 Call two arg constructor (Originator, request)
@@ -1306,23 +1143,23 @@ test.core4.xml:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 3 ms. Memory: 333312K Free: 223439K (67%)
-    [junit] 2 ms. Memory: 333312K Free: 223439K (67%)
-    [junit] 3 ms. Memory: 333312K Free: 223439K (67%)
-    [junit] 2 ms. Memory: 333312K Free: 218577K (66%)
-    [junit] 3 ms. Memory: 333312K Free: 218577K (66%)
-    [junit] 2 ms. Memory: 333312K Free: 218577K (66%)
-    [junit] 3 ms. Memory: 333312K Free: 218577K (66%)
+    [junit] 3 ms. Memory: 333824K Free: 225691K (68%)
+    [junit] 3 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 2 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 2 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 2 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 3 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 3 ms. Memory: 333824K Free: 215959K (65%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLParserNoPackage.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLUndoChangeRequest.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLUndoEntry.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLVariableChecker.tcl
-    [junit] 19 ms. Memory: 333312K Free: 82047K (25%)
+    [junit] 10 ms. Memory: 333824K Free: 84141K (25%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ParserAttribute.tcl
-    [junit] Warning: Missing Classes: ptolemy.moml.test.notAClass
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/StreamErrorHandler.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoContext.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeleteEntity.tcl
+    [junit] Warning: Missing Classes: ptolemy.moml.test.notAClass
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeletePort.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeleteProperty.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeleteRelation.tcl
@@ -1338,7 +1175,7 @@ test.core4.xml:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/Vertex.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/_aJVMBug.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/parseMoML.tcl
-    [junit] 04/19/18 09:06:51
+    [junit] 04/19/18 10:54:23
     [junit] Failed: 0  Total Tests: 440  ((Passed: 439, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/moml/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
@@ -1347,26 +1184,26 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 38, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.9 sec
+    [junit] Tests run: 38, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.193 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ConvertToLazy.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:43 UTC 2018
-    [junit] 346 ms. Memory: 208384K Free: 134861K (65%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:16 UTC 2018
+    [junit] 382 ms. Memory: 208384K Free: 135314K (65%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/Documentation.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/EntityLibrary.tcl
     [junit] This test will print an error message to stderr which can be ignored
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ImportAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/LevelCrossingLinkTest.tcl
-    [junit] 5 ms. Memory: 208384K Free: 116746K (56%)
-    [junit] 4 ms. Memory: 208384K Free: 111893K (54%)
-    [junit] 2 ms. Memory: 208384K Free: 111893K (54%)
-    [junit] 10 ms. Memory: 208384K Free: 109467K (53%)
+    [junit] 11 ms. Memory: 208384K Free: 117247K (56%)
+    [junit] 4 ms. Memory: 208384K Free: 114815K (55%)
+    [junit] 3 ms. Memory: 208384K Free: 112382K (54%)
+    [junit] 5 ms. Memory: 208384K Free: 109950K (53%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/LibraryAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/LibraryBuilder.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/Location.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLChangeRequest.tcl
-    [junit] 2 ms. Memory: 208384K Free: 99645K (48%)
+    [junit] 2 ms. Memory: 208384K Free: 102086K (49%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/moml/test/MoMLChangeRequest.tcl: MoMLChangeRequest-4.1 Call two arg constructor (Originator, request)
@@ -1429,18 +1266,18 @@ test.core4.xml:
     [junit]     Or, under Solaris, run java -verbose -classpath 
     [junit]            ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
     [junit]            tcl.lang.Shell xxx.tcl
-    [junit] 3 ms. Memory: 333312K Free: 223439K (67%)
-    [junit] 2 ms. Memory: 333312K Free: 223439K (67%)
-    [junit] 3 ms. Memory: 333312K Free: 223439K (67%)
-    [junit] 2 ms. Memory: 333312K Free: 218577K (66%)
-    [junit] 3 ms. Memory: 333312K Free: 218577K (66%)
-    [junit] 2 ms. Memory: 333312K Free: 218577K (66%)
-    [junit] 3 ms. Memory: 333312K Free: 218577K (66%)
+    [junit] 3 ms. Memory: 333824K Free: 225691K (68%)
+    [junit] 3 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 2 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 2 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 2 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 3 ms. Memory: 333824K Free: 220825K (66%)
+    [junit] 3 ms. Memory: 333824K Free: 215959K (65%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLParserNoPackage.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLUndoChangeRequest.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLUndoEntry.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLVariableChecker.tcl
-    [junit] 19 ms. Memory: 333312K Free: 82047K (25%)
+    [junit] 10 ms. Memory: 333824K Free: 84141K (25%)
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/ParserAttribute.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/StreamErrorHandler.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoContext.tcl
@@ -1460,7 +1297,7 @@ test.core4.xml:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/Vertex.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/_aJVMBug.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/test/parseMoML.tcl
-    [junit] 04/19/18 09:06:51
+    [junit] 04/19/18 10:54:23
     [junit] Failed: 0  Total Tests: 440  ((Passed: 439, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/moml/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
@@ -1561,9 +1398,9 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.moml.unit.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test/UParser.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:52 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:24 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test/Unit.tcl
-    [junit] 04/19/18 09:06:52
+    [junit] 04/19/18 10:54:25
     [junit] Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
@@ -1572,12 +1409,12 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.917 sec
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.858 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test/UParser.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:52 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:24 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test/Unit.tcl
-    [junit] 04/19/18 09:06:52
+    [junit] 04/19/18 10:54:25
     [junit] Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/unit/test
@@ -1591,13 +1428,15 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/util/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.util.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/CancelException.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:54 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:26 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/ClassUtilities.tcl
     [junit] ClassUtilities-3.1: file:/home/travis/build/icyphy/ptII/ file:/home/travis/build/icyphy/ptII/
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/FileUtilities.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/MessageHandler.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/StreamExec.tcl
     [junit] sleeping 2 seconds: About to execute:
+    [junit]     echo AtTop
+    [junit] About to execute:
     [junit]     sleep 10
     [junit] AtTop
     [junit] All Done
@@ -1626,7 +1465,7 @@ test.core4.xml:
     [junit] ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}
     [junit] ---- StringUtilities-3.8.3 Failed, but this is a KNOWN failure
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/XSLTUtilities.tcl
-    [junit] 04/19/18 09:07:05
+    [junit] 04/19/18 10:54:35
     [junit] Failed: 0  Total Tests: 98  ((Passed: 97, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/util/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
@@ -1635,16 +1474,18 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.377 sec
+    [junit] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.163 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/CancelException.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:06:54 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:26 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/ClassUtilities.tcl
     [junit] ClassUtilities-3.1: file:/home/travis/build/icyphy/ptII/ file:/home/travis/build/icyphy/ptII/
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/FileUtilities.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/MessageHandler.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/StreamExec.tcl
     [junit] sleeping 2 seconds: About to execute:
+    [junit]     echo AtTop
+    [junit] About to execute:
     [junit]     sleep 10
     [junit] AtTop
     [junit] All Done
@@ -1673,7 +1514,7 @@ test.core4.xml:
     [junit] ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}
     [junit] ---- StringUtilities-3.8.3 Failed, but this is a KNOWN failure
     [junit] /home/travis/build/icyphy/ptII/ptolemy/util/test/XSLTUtilities.tcl
-    [junit] 04/19/18 09:07:05
+    [junit] 04/19/18 10:54:35
     [junit] Failed: 0  Total Tests: 98  ((Passed: 97, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/util/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
@@ -1691,28 +1532,28 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:07:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test/auto/ModelReference.xml
-    [junit] 5 ms. Memory: 116224K Free: 87282K (75%)
-    [junit] 5 ms. Memory: 116224K Free: 86604K (75%)
-    [junit] 10 ms. Memory: 116224K Free: 85626K (74%)
-    [junit] 3 ms. Memory: 116224K Free: 84947K (73%)
-    [junit] 12063 ms. Memory: 116224K Free: 84947K (73%)
+    [junit] ----------------- testing Thu Apr 19 22:54:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test/auto/ModelReference.xml
+    [junit] 6 ms. Memory: 116224K Free: 87178K (75%)
+    [junit] 4 ms. Memory: 116224K Free: 86500K (74%)
+    [junit] 4 ms. Memory: 116224K Free: 85522K (74%)
+    [junit] 6 ms. Memory: 116224K Free: 84844K (73%)
+    [junit] 12062 ms. Memory: 116224K Free: 84844K (73%)
     [junit] reloadAllAccessors: .ModelReference
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.791 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.772 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:07:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test/auto/ModelReference.xml
-    [junit] 5 ms. Memory: 116224K Free: 87282K (75%)
-    [junit] 5 ms. Memory: 116224K Free: 86604K (75%)
-    [junit] 10 ms. Memory: 116224K Free: 85626K (74%)
-    [junit] 3 ms. Memory: 116224K Free: 84947K (73%)
-    [junit] 12063 ms. Memory: 116224K Free: 84947K (73%)
+    [junit] ----------------- testing Thu Apr 19 22:54:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/actor/lib/test/auto/ModelReference.xml
+    [junit] 6 ms. Memory: 116224K Free: 87178K (75%)
+    [junit] 4 ms. Memory: 116224K Free: 86500K (74%)
+    [junit] 4 ms. Memory: 116224K Free: 85522K (74%)
+    [junit] 6 ms. Memory: 116224K Free: 84844K (73%)
+    [junit] 12062 ms. Memory: 116224K Free: 84844K (73%)
     [junit] reloadAllAccessors: .ModelReference
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1725,44 +1566,44 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssembler.xml
-    [junit] 120 ms. Memory: 116224K Free: 84353K (73%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssembler.xml
+    [junit] 103 ms. Memory: 116224K Free: 84624K (73%)
     [junit] reloadAllAccessors: .HTMLPageAssembler
-    [junit] ----------------- testing Thu Apr 19 21:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDivNotFound.xml
-    [junit] 5 ms. Memory: 116224K Free: 80918K (70%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDivNotFound.xml
+    [junit] 4 ms. Memory: 116224K Free: 81123K (70%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerDivNotFound
-    [junit] ----------------- testing Thu Apr 19 21:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDuplicateID.xml
-    [junit] 5 ms. Memory: 146944K Free: 136508K (93%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDuplicateID.xml
+    [junit] 3 ms. Memory: 146944K Free: 136797K (93%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerDuplicateID
-    [junit] ----------------- testing Thu Apr 19 21:07:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerInputError.xml
-    [junit] 5 ms. Memory: 146944K Free: 131964K (90%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerInputError.xml
+    [junit] 3 ms. Memory: 146944K Free: 132253K (90%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerInputError
-    [junit] ----------------- testing Thu Apr 19 21:07:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerTemplateErrors.xml
-    [junit] 4 ms. Memory: 146944K Free: 128246K (87%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerTemplateErrors.xml
+    [junit] 4 ms. Memory: 146944K Free: 128534K (87%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerTemplateErrors
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.853 sec
+    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.696 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssembler.xml
-    [junit] 120 ms. Memory: 116224K Free: 84353K (73%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssembler.xml
+    [junit] 103 ms. Memory: 116224K Free: 84624K (73%)
     [junit] reloadAllAccessors: .HTMLPageAssembler
-    [junit] ----------------- testing Thu Apr 19 21:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDivNotFound.xml
-    [junit] 5 ms. Memory: 116224K Free: 80918K (70%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDivNotFound.xml
+    [junit] 4 ms. Memory: 116224K Free: 81123K (70%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerDivNotFound
-    [junit] ----------------- testing Thu Apr 19 21:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDuplicateID.xml
-    [junit] 5 ms. Memory: 146944K Free: 136508K (93%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerDuplicateID.xml
+    [junit] 3 ms. Memory: 146944K Free: 136797K (93%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerDuplicateID
-    [junit] ----------------- testing Thu Apr 19 21:07:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerInputError.xml
-    [junit] 5 ms. Memory: 146944K Free: 131964K (90%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerInputError.xml
+    [junit] 3 ms. Memory: 146944K Free: 132253K (90%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerInputError
-    [junit] ----------------- testing Thu Apr 19 21:07:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerTemplateErrors.xml
-    [junit] 4 ms. Memory: 146944K Free: 128246K (87%)
+    [junit] ----------------- testing Thu Apr 19 22:54:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/jsoup/test/auto/HTMLPageAssemblerTemplateErrors.xml
+    [junit] 4 ms. Memory: 146944K Free: 128534K (87%)
     [junit] reloadAllAccessors: .HTMLPageAssemblerTemplateErrors
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1778,7 +1619,7 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.38 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.359 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/test
@@ -1793,14 +1634,14 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.vergil.basic.export.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test/ExportModel.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:07:21 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:52 UTC 2018
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test/modulation.gif
-    [junit] /tmp/ExportModel7873918742713412795.png
-    [junit] Exported /tmp/ExportModel7873918742713412795.png
+    [junit] /tmp/ExportModel6069637165605885543.png
+    [junit] Exported /tmp/ExportModel6069637165605885543.png
     [junit] Exported modulation/index.html
     [junit] BrowserLauncher: UnsupportedOperation: file:/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test/modulation/index.html: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
     [junit] Xlib:  extension "RANDR" missing on display ":99.0".
-    [junit] 04/19/18 09:08:36
+    [junit] 04/19/18 10:56:06
     [junit] Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
@@ -1809,16 +1650,16 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 75.858 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 75.336 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test/ExportModel.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:07:21 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:54:52 UTC 2018
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test/modulation.gif
-    [junit] /tmp/ExportModel7873918742713412795.png
-    [junit] Exported /tmp/ExportModel7873918742713412795.png
+    [junit] /tmp/ExportModel6069637165605885543.png
+    [junit] Exported /tmp/ExportModel6069637165605885543.png
     [junit] Exported modulation/index.html
     [junit] BrowserLauncher: UnsupportedOperation: file:/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test/modulation/index.html: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
-    [junit] 04/19/18 09:08:36
+    [junit] 04/19/18 10:56:06
     [junit] Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test
@@ -1832,17 +1673,17 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.vergil.basic.imprt.g4ltl.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:38 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:08 UTC 2018
     [junit] Rewritten as       : ( ( true ) U ( ( ( "req1" ) /\ ( ( false ) V ( ! ( "grant1" ) ) ) ) \/ ( ( ( "grant1" ) /\ ( "grant2" ) ) \/ ( ( "req2" ) /\ ( ( false ) V ( ! ( "grant2" ) ) ) ) ) ) )
     [junit] 
     [junit] ***********************
     [junit] 
     [junit] 
-    [junit] Total elapsed time in execution of method formulaToBA() is : 39
+    [junit] Total elapsed time in execution of method formulaToBA() is : 20
     [junit] Total elapsed time in execution of method createGameArena() is : 0
     [junit] Total elapsed time in execution of method createReductionGraph() is: 2
-    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 83
-    [junit] 103 ms. Memory: 247296K Free: 220547K (89%)
+    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 58
+    [junit] 54 ms. Memory: 253952K Free: 227290K (90%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.1 Synthesize from ArbitorLTL.txt using CoBuechi and unrollSteps 1 and merge it into the ArbitorTest.xml
@@ -1977,11 +1818,11 @@ test.core4.xml:
     [junit] ***********************
     [junit] 
     [junit] 
-    [junit] Total elapsed time in execution of method formulaToBA() is : 33
+    [junit] Total elapsed time in execution of method formulaToBA() is : 21
     [junit] Total elapsed time in execution of method createGameArena() is : 1
-    [junit] Total elapsed time in execution of method createReductionGraph() is: 400
-    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 132
-    [junit] 23 ms. Memory: 448512K Free: 275499K (61%)
+    [junit] Total elapsed time in execution of method createReductionGraph() is: 395
+    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 137
+    [junit] 30 ms. Memory: 455680K Free: 283389K (62%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.2 Synthesize from PriorityArbitorLTL.txt using CoBuechi and unrollSteps 3 and merge it into the PriorityArbitorTest.xml
@@ -2118,11 +1959,11 @@ test.core4.xml:
     [junit] ***********************
     [junit] 
     [junit] 
-    [junit] Total elapsed time in execution of method formulaToBA() is : 20
+    [junit] Total elapsed time in execution of method formulaToBA() is : 22
     [junit] Total elapsed time in execution of method createGameArena() is : 3
-    [junit] Total elapsed time in execution of method createReductionGraph() is: 890
-    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 566
-    [junit] 114 ms. Memory: 594944K Free: 273731K (46%)
+    [junit] Total elapsed time in execution of method createReductionGraph() is: 886
+    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 450
+    [junit] 119 ms. Memory: 580096K Free: 294047K (51%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.3 Synthesize from ErrorHandlingLTL.txt using CoBuechi and unrollSteps 3 and merge it into the ErrorHandlingTest.xml
@@ -2261,7 +2102,7 @@ test.core4.xml:
     [junit]     ("uplevel" body line 41)
     [junit]     invoked from within
     [junit] "uplevel $contents_of_test"
-    [junit] 04/19/18 09:08:46
+    [junit] 04/19/18 10:56:15
     [junit] Failed: 0  Total Tests: 4  ((Passed: 1, Newly Passed: 0)  Known Failed: 3) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
@@ -2270,20 +2111,20 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.852 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.096 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:38 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:08 UTC 2018
     [junit] Rewritten as       : ( ( true ) U ( ( ( "req1" ) /\ ( ( false ) V ( ! ( "grant1" ) ) ) ) \/ ( ( ( "grant1" ) /\ ( "grant2" ) ) \/ ( ( "req2" ) /\ ( ( false ) V ( ! ( "grant2" ) ) ) ) ) ) )
     [junit] 
     [junit] ***********************
     [junit] 
     [junit] 
-    [junit] Total elapsed time in execution of method formulaToBA() is : 39
+    [junit] Total elapsed time in execution of method formulaToBA() is : 20
     [junit] Total elapsed time in execution of method createGameArena() is : 0
     [junit] Total elapsed time in execution of method createReductionGraph() is: 2
-    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 83
-    [junit] 103 ms. Memory: 247296K Free: 220547K (89%)
+    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 58
+    [junit] 54 ms. Memory: 253952K Free: 227290K (90%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.1 Synthesize from ArbitorLTL.txt using CoBuechi and unrollSteps 1 and merge it into the ArbitorTest.xml
@@ -2418,11 +2259,11 @@ test.core4.xml:
     [junit] ***********************
     [junit] 
     [junit] 
-    [junit] Total elapsed time in execution of method formulaToBA() is : 33
+    [junit] Total elapsed time in execution of method formulaToBA() is : 21
     [junit] Total elapsed time in execution of method createGameArena() is : 1
-    [junit] Total elapsed time in execution of method createReductionGraph() is: 400
-    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 132
-    [junit] 23 ms. Memory: 448512K Free: 275499K (61%)
+    [junit] Total elapsed time in execution of method createReductionGraph() is: 395
+    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 137
+    [junit] 30 ms. Memory: 455680K Free: 283389K (62%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.2 Synthesize from PriorityArbitorLTL.txt using CoBuechi and unrollSteps 3 and merge it into the PriorityArbitorTest.xml
@@ -2559,11 +2400,11 @@ test.core4.xml:
     [junit] ***********************
     [junit] 
     [junit] 
-    [junit] Total elapsed time in execution of method formulaToBA() is : 20
+    [junit] Total elapsed time in execution of method formulaToBA() is : 22
     [junit] Total elapsed time in execution of method createGameArena() is : 3
-    [junit] Total elapsed time in execution of method createReductionGraph() is: 890
-    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 566
-    [junit] 114 ms. Memory: 594944K Free: 273731K (46%)
+    [junit] Total elapsed time in execution of method createReductionGraph() is: 886
+    [junit] Total elapsed time in execution of method analyzeSafetyGame() is: 450
+    [junit] 119 ms. Memory: 580096K Free: 294047K (51%)
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.3 Synthesize from ErrorHandlingLTL.txt using CoBuechi and unrollSteps 3 and merge it into the ErrorHandlingTest.xml
@@ -2702,7 +2543,7 @@ test.core4.xml:
     [junit]     ("uplevel" body line 41)
     [junit]     invoked from within
     [junit] "uplevel $contents_of_test"
-    [junit] 04/19/18 09:08:46
+    [junit] 04/19/18 10:56:15
     [junit] Failed: 0  Total Tests: 4  ((Passed: 1, Newly Passed: 0)  Known Failed: 3) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
@@ -2723,7 +2564,7 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/layout/kieler/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.472 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.432 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/layout/kieler/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/layout/kieler/test
@@ -2738,9 +2579,9 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.vergil.basic.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test/DocAttribute.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:48 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:17 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test/KeplerDocumentationAttribute.tcl
-    [junit] 04/19/18 09:08:48
+    [junit] 04/19/18 10:56:17
     [junit] Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
@@ -2749,12 +2590,12 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.861 sec
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.751 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test/DocAttribute.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:48 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:17 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test/KeplerDocumentationAttribute.tcl
-    [junit] 04/19/18 09:08:48
+    [junit] 04/19/18 10:56:17
     [junit] Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/test
@@ -2768,9 +2609,9 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.vergil.icon.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test/EditorIcon.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:49 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:18 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test/XMLIcon.tcl
-    [junit] 04/19/18 09:08:50
+    [junit] 04/19/18 10:56:19
     [junit] Failed: 0  Total Tests: 7  ((Passed: 7, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
@@ -2779,12 +2620,12 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.805 sec
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.907 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test/EditorIcon.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:49 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:18 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test/XMLIcon.tcl
-    [junit] 04/19/18 09:08:50
+    [junit] 04/19/18 10:56:19
     [junit] Failed: 0  Total Tests: 7  ((Passed: 7, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/icon/test
@@ -2798,9 +2639,9 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.vergil.kernel.attributes.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test/AttributeValueAttribute.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:51 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:20 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test/UpdateAnnotations.tcl
-    [junit] 04/19/18 09:08:52
+    [junit] 04/19/18 10:56:20
     [junit] Failed: 0  Total Tests: 25  ((Passed: 25, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
@@ -2809,12 +2650,12 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.063 sec
+    [junit] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.939 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test/AttributeValueAttribute.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:51 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:20 UTC 2018
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test/UpdateAnnotations.tcl
-    [junit] 04/19/18 09:08:52
+    [junit] 04/19/18 10:56:20
     [junit] Failed: 0  Total Tests: 25  ((Passed: 25, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/test
@@ -2835,7 +2676,7 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/modal/modal/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.427 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.422 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/modal/modal/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/modal/modal/test
@@ -2850,7 +2691,7 @@ test.core4.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.vergil.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:54 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:23 UTC 2018
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2860,8 +2701,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/bcvtb/configuration.xml
-    [junit] Before gc: Memory: 324608K Free: 155302K 48%
-    [junit] After gc: Memory: 344064K Free: 304398K 88%
+    [junit] Before gc: Memory: 326144K Free: 162295K 50%
+    [junit] After gc: Memory: 348160K Free: 308370K 89%
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2871,8 +2712,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptiny/configuration.xml
-    [junit] Before gc: Memory: 385536K Free: 276394K 72%
-    [junit] After gc: Memory: 447488K Free: 395952K 88%
+    [junit] Before gc: Memory: 391168K Free: 303039K 77%
+    [junit] After gc: Memory: 457728K Free: 405943K 89%
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2882,8 +2723,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/space/configuration.xml
-    [junit] Before gc: Memory: 447488K Free: 239035K 53%
-    [junit] After gc: Memory: 429056K Free: 376912K 88%
+    [junit] Before gc: Memory: 457728K Free: 249408K 54%
+    [junit] After gc: Memory: 439808K Free: 387486K 88%
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2893,8 +2734,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/dsp/configuration.xml
-    [junit] Before gc: Memory: 448512K Free: 371735K 83%
-    [junit] After gc: Memory: 447488K Free: 388999K 87%
+    [junit] Before gc: Memory: 458752K Free: 392764K 86%
+    [junit] After gc: Memory: 457728K Free: 399002K 87%
     [junit] Skipping viptos because TOSROOT is not set in the environment, so we are assuming that TinyOS is not installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages)
@@ -2905,8 +2746,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/pn/configuration.xml
-    [junit] Before gc: Memory: 508416K Free: 328724K 65%
-    [junit] After gc: Memory: 503296K Free: 437001K 87%
+    [junit] Before gc: Memory: 535552K Free: 365547K 68%
+    [junit] After gc: Memory: 526336K Free: 459478K 87%
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -2917,6 +2758,7 @@ test.core4.xml:
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptdb/configuration.xml
     [junit] Failed to populate library.
+    [junit] Before gc: Memory: 536576K Free: 246776K 46%
     [junit] com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
     [junit] Caused by:
     [junit]  ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
@@ -3176,7 +3018,6 @@ test.core4.xml:
     [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
     [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
     [junit] 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-    [junit] Before gc: Memory: 514048K Free: 201308K 39%
     [junit] 	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
     [junit] 	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
     [junit] 	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
@@ -3343,7 +3184,7 @@ test.core4.xml:
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-    [junit] After gc: Memory: 513536K Free: 440661K 86%
+    [junit] After gc: Memory: 536064K Free: 462717K 86%
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-ptdb/configuration.xml-1.1 Expand the ptdb/configuration.xml configuration
@@ -3376,8 +3217,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/cyphysim/configuration.xml
-    [junit] Before gc: Memory: 583680K Free: 158211K 27%
-    [junit] After gc: Memory: 587264K Free: 498753K 85%
+    [junit] Before gc: Memory: 617984K Free: 213494K 35%
+    [junit] After gc: Memory: 623616K Free: 534391K 86%
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -3418,8 +3259,8 @@ test.core4.xml:
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-    [junit] Before gc: Memory: 1083904K Free: 292066K 27%
-    [junit] After gc: Memory: 1084928K Free: 693674K 64%
+    [junit] Before gc: Memory: 1088512K Free: 272968K 25%
+    [junit] After gc: Memory: 1088000K Free: 697301K 64%
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -3454,6 +3295,7 @@ test.core4.xml:
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
+    [junit] Before gc: Memory: 1486336K Free: 458150K 31%
     [junit] Failed to populate library.
     [junit] com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
     [junit] Caused by:
@@ -3880,8 +3722,7 @@ test.core4.xml:
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-    [junit] Before gc: Memory: 1487872K Free: 477738K 32%
-    [junit] After gc: Memory: 1494528K Free: 818341K 55%
+    [junit] After gc: Memory: 1469440K Free: 793548K 54%
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-full/configuration.xml-1.1 Expand the full/configuration.xml configuration
@@ -3914,8 +3755,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyViewer/configuration.xml
-    [junit] Before gc: Memory: 1494528K Free: 818341K 55%
-    [junit] After gc: Memory: 1495040K Free: 818975K 55%
+    [junit] Before gc: Memory: 1469440K Free: 793546K 54%
+    [junit] After gc: Memory: 1482240K Free: 806761K 54%
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -3925,8 +3766,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptserver/configuration.xml
-    [junit] Before gc: Memory: 1385472K Free: 477995K 35%
-    [junit] After gc: Memory: 1489920K Free: 803232K 54%
+    [junit] Before gc: Memory: 1484288K Free: 546199K 37%
+    [junit] After gc: Memory: 1478656K Free: 792632K 54%
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -3936,8 +3777,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/visualsense/configuration.xml
-    [junit] Before gc: Memory: 1492992K Free: 543929K 36%
-    [junit] After gc: Memory: 1493504K Free: 797940K 53%
+    [junit] Before gc: Memory: 1481728K Free: 501357K 34%
+    [junit] After gc: Memory: 1479680K Free: 784806K 53%
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages)
@@ -3948,8 +3789,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/fullViewer/configuration.xml
-    [junit] Before gc: Memory: 1493504K Free: 790012K 53%
-    [junit] After gc: Memory: 1386496K Free: 693950K 50%
+    [junit] Before gc: Memory: 1479680K Free: 777580K 53%
+    [junit] After gc: Memory: 1355264K Free: 663408K 49%
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -3959,7 +3800,7 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml
-    [junit] Before gc: Memory: 1386496K Free: 551143K 40%
+    [junit] Before gc: Memory: 1355264K Free: 518885K 38%
     [junit] Failed to populate library.
     [junit] com.microstar.xml.XmlException: Failed to find class 'ptolemy.domains.gr.kernel.GRDirector' in file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml at line 9 and column 58
     [junit] Caused by:
@@ -4174,7 +4015,7 @@ test.core4.xml:
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-    [junit] After gc: Memory: 1488896K Free: 792910K 53%
+    [junit] After gc: Memory: 1473536K Free: 778240K 53%
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-hyvisual/configuration.xml-1.1 Expand the hyvisual/configuration.xml configuration
@@ -4201,9 +4042,9 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyKepler/configuration.xml
-    [junit] Before gc: Memory: 1492480K Free: 584348K 39%
-    [junit] After gc: Memory: 1500160K Free: 792701K 53%
-    [junit] 04/19/18 09:11:21
+    [junit] Before gc: Memory: 1477632K Free: 532199K 36%
+    [junit] After gc: Memory: 1483776K Free: 776983K 52%
+    [junit] 04/19/18 10:58:43
     [junit] Failed: 3  Total Tests: 15  ((Passed: 12, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
@@ -4212,10 +4053,10 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 147.397 sec
+    [junit] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 140.705 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:54 UTC 2018
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:23 UTC 2018
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4225,8 +4066,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/bcvtb/configuration.xml
-    [junit] Before gc: Memory: 324608K Free: 155302K 48%
-    [junit] After gc: Memory: 344064K Free: 304398K 88%
+    [junit] Before gc: Memory: 326144K Free: 162295K 50%
+    [junit] After gc: Memory: 348160K Free: 308370K 89%
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4236,8 +4077,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptiny/configuration.xml
-    [junit] Before gc: Memory: 385536K Free: 276394K 72%
-    [junit] After gc: Memory: 447488K Free: 395952K 88%
+    [junit] Before gc: Memory: 391168K Free: 303039K 77%
+    [junit] After gc: Memory: 457728K Free: 405943K 89%
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4247,8 +4088,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/space/configuration.xml
-    [junit] Before gc: Memory: 447488K Free: 239035K 53%
-    [junit] After gc: Memory: 429056K Free: 376912K 88%
+    [junit] Before gc: Memory: 457728K Free: 249408K 54%
+    [junit] After gc: Memory: 439808K Free: 387486K 88%
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4258,8 +4099,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/dsp/configuration.xml
-    [junit] Before gc: Memory: 448512K Free: 371735K 83%
-    [junit] After gc: Memory: 447488K Free: 388999K 87%
+    [junit] Before gc: Memory: 458752K Free: 392764K 86%
+    [junit] After gc: Memory: 457728K Free: 399002K 87%
     [junit] Skipping viptos because TOSROOT is not set in the environment, so we are assuming that TinyOS is not installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages)
@@ -4270,8 +4111,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/pn/configuration.xml
-    [junit] Before gc: Memory: 508416K Free: 328724K 65%
-    [junit] After gc: Memory: 503296K Free: 437001K 87%
+    [junit] Before gc: Memory: 535552K Free: 365547K 68%
+    [junit] After gc: Memory: 526336K Free: 459478K 87%
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4281,8 +4122,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptdb/configuration.xml
-    [junit] Before gc: Memory: 514048K Free: 201308K 39%
-    [junit] After gc: Memory: 513536K Free: 440661K 86%
+    [junit] Before gc: Memory: 536576K Free: 246776K 46%
+    [junit] After gc: Memory: 536064K Free: 462717K 86%
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-ptdb/configuration.xml-1.1 Expand the ptdb/configuration.xml configuration
@@ -4315,8 +4156,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/cyphysim/configuration.xml
-    [junit] Before gc: Memory: 583680K Free: 158211K 27%
-    [junit] After gc: Memory: 587264K Free: 498753K 85%
+    [junit] Before gc: Memory: 617984K Free: 213494K 35%
+    [junit] After gc: Memory: 623616K Free: 534391K 86%
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4354,8 +4195,8 @@ test.core4.xml:
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-    [junit] Before gc: Memory: 1083904K Free: 292066K 27%
-    [junit] After gc: Memory: 1084928K Free: 693674K 64%
+    [junit] Before gc: Memory: 1088512K Free: 272968K 25%
+    [junit] After gc: Memory: 1088000K Free: 697301K 64%
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4390,8 +4231,8 @@ test.core4.xml:
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-    [junit] Before gc: Memory: 1487872K Free: 477738K 32%
-    [junit] After gc: Memory: 1494528K Free: 818341K 55%
+    [junit] Before gc: Memory: 1486336K Free: 458150K 31%
+    [junit] After gc: Memory: 1469440K Free: 793548K 54%
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-full/configuration.xml-1.1 Expand the full/configuration.xml configuration
@@ -4424,8 +4265,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyViewer/configuration.xml
-    [junit] Before gc: Memory: 1494528K Free: 818341K 55%
-    [junit] After gc: Memory: 1495040K Free: 818975K 55%
+    [junit] Before gc: Memory: 1469440K Free: 793546K 54%
+    [junit] After gc: Memory: 1482240K Free: 806761K 54%
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4435,8 +4276,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptserver/configuration.xml
-    [junit] Before gc: Memory: 1385472K Free: 477995K 35%
-    [junit] After gc: Memory: 1489920K Free: 803232K 54%
+    [junit] Before gc: Memory: 1484288K Free: 546199K 37%
+    [junit] After gc: Memory: 1478656K Free: 792632K 54%
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4446,8 +4287,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/visualsense/configuration.xml
-    [junit] Before gc: Memory: 1492992K Free: 543929K 36%
-    [junit] After gc: Memory: 1493504K Free: 797940K 53%
+    [junit] Before gc: Memory: 1481728K Free: 501357K 34%
+    [junit] After gc: Memory: 1479680K Free: 784806K 53%
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages)
@@ -4458,8 +4299,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/fullViewer/configuration.xml
-    [junit] Before gc: Memory: 1493504K Free: 790012K 53%
-    [junit] After gc: Memory: 1386496K Free: 693950K 50%
+    [junit] Before gc: Memory: 1479680K Free: 777580K 53%
+    [junit] After gc: Memory: 1355264K Free: 663408K 49%
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages)
     [junit]     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -4469,8 +4310,8 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml
-    [junit] Before gc: Memory: 1386496K Free: 551143K 40%
-    [junit] After gc: Memory: 1488896K Free: 792910K 53%
+    [junit] Before gc: Memory: 1355264K Free: 518885K 38%
+    [junit] After gc: Memory: 1473536K Free: 778240K 53%
     [junit] 
     [junit] 
     [junit] ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-hyvisual/configuration.xml-1.1 Expand the hyvisual/configuration.xml configuration
@@ -4497,9 +4338,9 @@ test.core4.xml:
     [junit]            tcl.lang.Shell xxx.tcl
     [junit] URL of configuration being expanded is
     [junit]  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyKepler/configuration.xml
-    [junit] Before gc: Memory: 1492480K Free: 584348K 39%
-    [junit] After gc: Memory: 1500160K Free: 792701K 53%
-    [junit] 04/19/18 09:11:21
+    [junit] Before gc: Memory: 1477632K Free: 532199K 36%
+    [junit] After gc: Memory: 1483776K Free: 776983K 52%
+    [junit] 04/19/18 10:58:43
     [junit] Failed: 3  Total Tests: 15  ((Passed: 12, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
@@ -5587,24 +5428,24 @@ test.core4.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:11:23 UTC 2018 /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test/auto/RESTGetHandlerTest.xml
-    [junit] 53 ms. Memory: 116224K Free: 83677K (72%)
+    [junit] ----------------- testing Thu Apr 19 22:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test/auto/RESTGetHandlerTest.xml
+    [junit] 46 ms. Memory: 116224K Free: 83702K (72%)
     [junit] reloadAllAccessors: .RESTGetHandlerTest
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.846 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.834 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] ----------------- testing Thu Apr 19 21:11:23 UTC 2018 /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test/auto/RESTGetHandlerTest.xml
-    [junit] 53 ms. Memory: 116224K Free: 83677K (72%)
+    [junit] ----------------- testing Thu Apr 19 22:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptserver/actor/lib/io/test/auto/RESTGetHandlerTest.xml
+    [junit] 46 ms. Memory: 116224K Free: 83702K (72%)
     [junit] reloadAllAccessors: .RESTGetHandlerTest
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
 
 BUILD SUCCESSFUL
-Total time: 6 minutes 20 seconds
+Total time: 5 minutes 50 seconds
