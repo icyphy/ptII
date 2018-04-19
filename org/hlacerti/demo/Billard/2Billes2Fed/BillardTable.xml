@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[703, 564]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7989960959286113">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.8649423210599416">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1630.3925781250002, -2461.017413816755}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1637.203369140625, -2464.288296610074}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -30,7 +30,7 @@
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1655.0, -2575.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1670.0, -2575.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -55,7 +55,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1810.0, -2555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1815.0, -2555.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,6 +76,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1655.0, -2355.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using with a C++ billiard&#10;ball, unset &quot;Synchronization &#10;Point Register&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1630.0, -2610.0]">
         </property>
     </property>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
