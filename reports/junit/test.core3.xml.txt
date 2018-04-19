@@ -1,0 +1,166 @@
+/home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant build test.core3.xml
+Buildfile: /home/travis/build/icyphy/ptII/build.xml
+
+build-message:
+     [echo] Use ant -p to see other targets. JAVA_HOME=/usr/lib/jvm/java-8-oracle
+     [echo] tools.jar is necessary for compilation of doc/doclets/.
+     [echo] If compilation fails, try setting JAVA_HOME to the location of the JDK.
+     [echo] For example:
+     [echo]   [bldmastr@sisyphus ptII]$ which java
+     [echo]   /usr/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+     [echo]     
+
+-build-subprojects-empty:
+
+-check-maven-ant-task:
+
+build-websensor:
+
+build-subprojects:
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+
+-check-jsdoc:
+
+jsdoc-install:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/node_modules
+     [exec] /home/travis/build/icyphy/ptII
+     [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
+     [exec]   ├── bluebird@3.4.7 
+     [exec]   ├─┬ catharsis@0.8.9 
+     [exec]   │ └─┬ underscore-contrib@0.3.0 
+     [exec]   │   └── underscore@1.6.0 
+     [exec]   ├── escape-string-regexp@1.0.5 
+     [exec]   ├─┬ espree@3.1.7 
+     [exec]   │ ├── acorn@3.3.0 
+     [exec]   │ └── acorn-jsx@3.0.1 
+     [exec]   ├── js2xmlparser@1.0.0 
+     [exec]   ├─┬ klaw@1.3.1 
+     [exec]   │ └── graceful-fs@4.1.11 
+     [exec]   ├── marked@0.3.19 
+     [exec]   ├─┬ mkdirp@0.5.1 
+     [exec]   │ └── minimist@0.0.8 
+     [exec]   ├─┬ requizzle@0.2.1 
+     [exec]   │ └── underscore@1.6.0 
+     [exec]   ├── strip-json-comments@2.0.1 
+     [exec]   ├── taffydb@2.6.2 
+     [exec]   └── underscore@1.8.3 
+     [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/package.json'
+     [exec] npm WARN ptII No description
+     [exec] npm WARN ptII No repository field.
+     [exec] npm WARN ptII No README data
+     [exec] npm WARN ptII No license field.
+
+jsdoc-update:
+
+-ptdoc-no-node:
+
+-ptdoc-no-npm:
+
+ptdoc:
+     [echo] 
+     [echo]       If the ptdoc target fails, then try running:
+     [echo]           ant build-project build-bin
+     [echo]     
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+
+-check-jsdoc:
+     [echo] To stop CapeCode from invoking jsdoc and svn, set the PT_NO_NET environment variable.  
+     [echo]     Under BASH:
+     [echo]         export PT_NO_NET=true
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]     
+
+jsdoc-install:
+     [echo] npm.executable: npm
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/node_modules
+     [exec] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors
+     [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
+     [exec]   ├── bluebird@3.4.7 
+     [exec]   ├─┬ catharsis@0.8.9 
+     [exec]   │ └─┬ underscore-contrib@0.3.0 
+     [exec]   │   └── underscore@1.6.0 
+     [exec]   ├── escape-string-regexp@1.0.5 
+     [exec]   ├─┬ espree@3.1.7 
+     [exec]   │ ├── acorn@3.3.0 
+     [exec]   │ └── acorn-jsx@3.0.1 
+     [exec]   ├── js2xmlparser@1.0.0 
+     [exec]   ├─┬ klaw@1.3.1 
+     [exec]   │ └── graceful-fs@4.1.11 
+     [exec]   ├── marked@0.3.19 
+     [exec]   ├─┬ mkdirp@0.5.1 
+     [exec]   │ └── minimist@0.0.8 
+     [exec]   ├─┬ requizzle@0.2.1 
+     [exec]   │ └── underscore@1.6.0 
+     [exec]   ├── strip-json-comments@2.0.1 
+     [exec]   ├── taffydb@2.6.2 
+     [exec]   └── underscore@1.8.3 
+     [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/package.json'
+     [exec] npm WARN accessors No description
+     [exec] npm WARN accessors No repository field.
+     [exec] npm WARN accessors No README data
+     [exec] npm WARN accessors No license field.
+
+jsdoc-update:
+
+-ptdoc-no-node-message:
+
+-ptdoc-no-npm-message:
+
+-check-jsdoc-again:
+
+-jsdoc-command-message:
+
+ptdoc:
+     [echo] Invoke /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/../node_modules/@terraswarm/jsdoc/jsdoc.js to read *.js files and generate *PtDoc.xml files suitable for Ptolemy.
+     [echo]     See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems
+     [echo]     See jsdoc/jsdoc.json
+     [echo]     See jsdoc/plugins/accessorJSDocTags.js
+     [echo]     See jsdoc/templates/ptdoc/publish.js
+     [echo] 
+     [echo]     If the ptdoc target fails, the there is likely a problem with node or npm.  It is possible
+     [echo]     to use CapeCode even if the ptdoc target fails.
+     [echo]     
+     [echo]     If you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo] 
+     [echo]     
+     [exec] Generating output files...
+     [exec] Finished running in 6.77 seconds.
+
+build-project:
+     [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
+    [javac] Compiling 4541 source files to /home/travis/build/icyphy/ptII
