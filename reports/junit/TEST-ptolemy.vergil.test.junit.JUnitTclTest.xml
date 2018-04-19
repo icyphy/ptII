@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="1" hostname="travis-job-70443fce-5b4b-4ab1-955a-6d686f54e74c" name="ptolemy.vergil.test.junit.JUnitTclTest" skipped="0" tests="4" time="146.633" timestamp="2018-04-19T19:55:06">
+<testsuite errors="0" failures="1" hostname="travis-job-ee1be059-ee62-4033-ba44-13c97a86b658" name="ptolemy.vergil.test.junit.JUnitTclTest" skipped="0" tests="4" time="147.397" timestamp="2018-04-19T21:08:54">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="278.9" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="279.9" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -30,7 +30,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.10 50488 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.33 41684 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -51,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.10 50488 10.20.0.185 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.33 41684 10.20.0.120 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6972256224458231955.properties propsfile=/home/travis/build/icyphy/ptII/junit8640923272419469436.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8869483774971809165.properties propsfile=/home/travis/build/icyphy/ptII/junit8844840937669988252.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="3ea9b89cc5be...a5ccd440bf76" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="a5ccd440bf76...a93bee5f95d0" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="278" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="279" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +131,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="368800485" />
+    <property name="env.TRAVIS_BUILD_ID" value="368835048" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="a5ccd440bf764ea6390553d05174e4eae87b03e1" />
+    <property name="env.TRAVIS_COMMIT" value="a93bee5f95d0effb72eeb14557050ab356cd844f" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -168,7 +168,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.domains.gr.*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Pass the value of SECONDS as an argument to ptIITravisBuild.sh" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Updating 2Billes2Fed.xml and BillardTable.xml (in demo/2Billes2Fed)&#xa;with instructions for launching the federation with a C++ federate." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="368800494" />
+    <property name="env.TRAVIS_JOB_ID" value="368835059" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -226,7 +226,7 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl (RunTclFile)" time="146.518">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl (RunTclFile)" time="147.298">
     <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;3&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;3&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -237,11 +237,11 @@
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.005" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.01" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 19:55:06 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 21:08:54 UTC 2018
  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -251,8 +251,8 @@ testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 19:55:06 UTC 2018
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/bcvtb/configuration.xml
-Before gc: Memory: 325120K Free: 161524K 50%
-After gc: Memory: 348672K Free: 308933K 89%
+Before gc: Memory: 324608K Free: 155302K 48%
+After gc: Memory: 344064K Free: 304398K 88%
  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -262,8 +262,8 @@ After gc: Memory: 348672K Free: 308933K 89%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptiny/configuration.xml
-Before gc: Memory: 388096K Free: 294141K 76%
-After gc: Memory: 451072K Free: 399490K 89%
+Before gc: Memory: 385536K Free: 276394K 72%
+After gc: Memory: 447488K Free: 395952K 88%
  Force everything to get expanded ptolemy/configs/space/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -273,8 +273,8 @@ After gc: Memory: 451072K Free: 399490K 89%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/space/configuration.xml
-Before gc: Memory: 451072K Free: 241368K 54%
-After gc: Memory: 433152K Free: 381026K 88%
+Before gc: Memory: 447488K Free: 239035K 53%
+After gc: Memory: 429056K Free: 376912K 88%
  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -284,8 +284,8 @@ After gc: Memory: 433152K Free: 381026K 88%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/dsp/configuration.xml
-Before gc: Memory: 451584K Free: 378780K 84%
-After gc: Memory: 450560K Free: 392028K 87%
+Before gc: Memory: 448512K Free: 371735K 83%
+After gc: Memory: 447488K Free: 388999K 87%
 Skipping viptos because TOSROOT is not set in the environment, so we are assuming that TinyOS is not installed.
  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     (Skipping certain optional packages)
@@ -296,8 +296,8 @@ Skipping viptos because TOSROOT is not set in the environment, so we are assumin
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/pn/configuration.xml
-Before gc: Memory: 508416K Free: 330443K 65%
-After gc: Memory: 504832K Free: 438532K 87%
+Before gc: Memory: 508416K Free: 328724K 65%
+After gc: Memory: 503296K Free: 437001K 87%
  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -307,8 +307,8 @@ After gc: Memory: 504832K Free: 438532K 87%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptdb/configuration.xml
-Before gc: Memory: 514048K Free: 201603K 39%
-After gc: Memory: 514048K Free: 441174K 86%
+Before gc: Memory: 514048K Free: 201308K 39%
+After gc: Memory: 513536K Free: 440661K 86%
 
 
 ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-ptdb/configuration.xml-1.1 Expand the ptdb/configuration.xml configuration
@@ -341,8 +341,8 @@ Because:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/cyphysim/configuration.xml
-Before gc: Memory: 590336K Free: 163860K 28%
-After gc: Memory: 589824K Free: 501269K 85%
+Before gc: Memory: 583680K Free: 158211K 27%
+After gc: Memory: 587264K Free: 498753K 85%
  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -380,8 +380,8 @@ Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/acces
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
 The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-Before gc: Memory: 1084928K Free: 283176K 26%
-After gc: Memory: 1099264K Free: 708174K 64%
+Before gc: Memory: 1083904K Free: 292066K 27%
+After gc: Memory: 1084928K Free: 693674K 64%
  Force everything to get expanded ptolemy/configs/full/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -416,8 +416,8 @@ Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/acces
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
 The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-Before gc: Memory: 1527808K Free: 502864K 33%
-After gc: Memory: 1530880K Free: 854043K 56%
+Before gc: Memory: 1487872K Free: 477738K 32%
+After gc: Memory: 1494528K Free: 818341K 55%
 
 
 ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-full/configuration.xml-1.1 Expand the full/configuration.xml configuration
@@ -450,8 +450,8 @@ Because:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyViewer/configuration.xml
-Before gc: Memory: 1530880K Free: 854041K 56%
-After gc: Memory: 1431552K Free: 754700K 53%
+Before gc: Memory: 1494528K Free: 818341K 55%
+After gc: Memory: 1495040K Free: 818975K 55%
  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -461,8 +461,8 @@ After gc: Memory: 1431552K Free: 754700K 53%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptserver/configuration.xml
-Before gc: Memory: 1529856K Free: 672726K 44%
-After gc: Memory: 1529344K Free: 841815K 55%
+Before gc: Memory: 1385472K Free: 477995K 35%
+After gc: Memory: 1489920K Free: 803232K 54%
  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -472,8 +472,8 @@ After gc: Memory: 1529344K Free: 841815K 55%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/visualsense/configuration.xml
-Before gc: Memory: 1525760K Free: 620079K 41%
-After gc: Memory: 1442304K Free: 746047K 52%
+Before gc: Memory: 1492992K Free: 543929K 36%
+After gc: Memory: 1493504K Free: 797940K 53%
 Skipping jxta/configuration.xml, running vergil -jxta brings up a window
  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     (Skipping certain optional packages)
@@ -484,8 +484,8 @@ Skipping jxta/configuration.xml, running vergil -jxta brings up a window
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/fullViewer/configuration.xml
-Before gc: Memory: 1442304K Free: 737442K 51%
-After gc: Memory: 1524736K Free: 831512K 55%
+Before gc: Memory: 1493504K Free: 790012K 53%
+After gc: Memory: 1386496K Free: 693950K 50%
  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -495,8 +495,8 @@ After gc: Memory: 1524736K Free: 831512K 55%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml
-Before gc: Memory: 1524736K Free: 685149K 45%
-After gc: Memory: 1434112K Free: 737448K 51%
+Before gc: Memory: 1386496K Free: 551143K 40%
+After gc: Memory: 1488896K Free: 792910K 53%
 
 
 ==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-hyvisual/configuration.xml-1.1 Expand the hyvisual/configuration.xml configuration
@@ -523,9 +523,9 @@ Caused by:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyKepler/configuration.xml
-Before gc: Memory: 1526784K Free: 646298K 42%
-After gc: Memory: 1522688K Free: 814895K 54%
-04/19/18 07:57:33
+Before gc: Memory: 1492480K Free: 584348K 39%
+After gc: Memory: 1500160K Free: 792701K 53%
+04/19/18 09:11:21
 Failed: 3  Total Tests: 15  ((Passed: 12, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
