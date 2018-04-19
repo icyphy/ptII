@@ -27,7 +27,7 @@
     
         cur['ant.project.default-target'] = 'build';
     
-        cur['ant.project.invoked-targets'] = 'build-all,test.report.short';
+        cur['ant.project.invoked-targets'] = 'build,test.core2.xml';
     
         cur['ant.project.name'] = 'ptII';
     
@@ -36,8 +36,6 @@
         cur['awt.toolkit'] = 'sun.awt.X11.XToolkit';
     
         cur['basedir'] = '/home/travis/build/icyphy/ptII';
-    
-        cur['bin.vergil.exists'] = 'true';
     
         cur['bin.vergil.makeable'] = 'true';
     
@@ -92,6 +90,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -161,7 +160,7 @@
     
         cur['env.PT_NO_NET'] = 'true';
     
-        cur['env.PT_TRAVIS_TEST_REPORT_SHORT'] = 'true';
+        cur['env.PT_TRAVIS_TEST_CORE2_XML'] = 'true';
     
         cur['env.PTII'] = '/home/travis/build/icyphy/ptII';
     
@@ -197,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.25 47344 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.21 44018 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.25 47344 10.20.1.55 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.21 44018 10.20.0.124 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368395887';
+        cur['env.TRAVIS_BUILD_ID'] = '368681223';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '267';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '273';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '4d0b9dfb3ade973675dee63f5f6e2dc748ae3a27';
+        cur['env.TRAVIS_COMMIT'] = '709c03f925e13fcfd9e24bdea34df5e22adb62f6';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added Stop actors and changed the rates of Clocks and Spontaneous accessors so as to decrease run time.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added capecode3 and core4 in hopes of splitting tests in to small enough pieces so that they will complete in under 40 seconds.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'e3c29c173945...4d0b9dfb3ade';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '3c8c214f4c61...709c03f925e1';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368395892';
+        cur['env.TRAVIS_JOB_ID'] = '368681230';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '267.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '273.7';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -353,8 +352,6 @@
     
         cur['jsdoc.command'] = 'node_modules/@terraswarm/jsdoc/jsdoc.js';
     
-        cur['jsdoc.command.exists'] = 'true';
-    
         cur['jsdoc.home'] = 'node_modules/@terraswarm/jsdoc';
     
         cur['jshint.executable'] = '/home/travis/node_modules/jshint/bin/jshint';
@@ -421,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.pn.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.pn.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7567579992316451635.properties propsfile=/home/travis/build/icyphy/ptII/junit8491647907803770018.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.pn.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.pn.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1765775628967419171.properties propsfile=/home/travis/build/icyphy/ptII/junit3985238127745537515.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="15_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="15_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="15_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>18.237</td><td>2018-04-18T23:14:07</td><td>travis-job-73dd2e0a-8def-4da5-92ae-0ce02b282567</td>
+<td><a title="Display all tests" href="15_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="15_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="15_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>22.343</td><td>2018-04-19T15:17:52</td><td>travis-job-6f549787-f86b-48fb-9347-ab7ed3b3778e</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -515,8 +512,8 @@
 <tr valign="top" class="Error">
 <td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 14. Should have been: 1<br>  in .ResourcePool.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.actor.process.ProcessThread._iterateActor(ProcessThread.java:339)<br>	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)<br>
-</code></td><td>1.571</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 11. Should have been: 1<br>  in .ResourcePool.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.actor.process.ProcessThread._iterateActor(ProcessThread.java:339)<br>	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)<br>
+</code></td><td>1.316</td>
 </tr>
 </table>
 <div class="Properties">
