@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.31 57744 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 48082 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.31 57744 10.20.1.133 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 48082 10.20.0.114 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368835048';
+        cur['env.TRAVIS_BUILD_ID'] = '368860642';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '279';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '281';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = 'a93bee5f95d0effb72eeb14557050ab356cd844f';
+        cur['env.TRAVIS_COMMIT'] = 'db8f11229ab2c706a9e2ca67c5ef6eb5a2b07952';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Updating 2Billes2Fed.xml and BillardTable.xml (in demo/2Billes2Fed)\nwith instructions for launching the federation with a C++ federate.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = '&eacute; does not work.  validDemos.tcl fails with \'The entity "eacute" was referenced, but not declared\'.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'a5ccd440bf76...a93bee5f95d0';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'f407f8917684...db8f11229ab2';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368835051';
+        cur['env.TRAVIS_JOB_ID'] = '368860645';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '279.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '281.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3882579466841581655.properties propsfile=/home/travis/build/icyphy/ptII/junit7697521700025763497.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.faceDetector.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher285861792991624177.properties propsfile=/home/travis/build/icyphy/ptII/junit6857338907951713299.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="64_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="64_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>33.340</td><td>2018-04-19T20:38:22</td><td>travis-job-0982731a-8c40-41ab-b00f-b44fe2d3d514</td>
+<td><a title="Display all tests" href="64_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="64_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>29.841</td><td>2018-04-19T22:18:53</td><td>travis-job-95105818-f7b6-4e90-bff5-650d6a6b4d67</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -512,13 +513,13 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.004</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)</td><td>Success</td><td></td><td>32.870</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml (RunModel)</td><td>Success</td><td></td><td>29.395</td>
 </tr>
 </table>
 <div class="Properties">
