@@ -1,0 +1,145 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/RateErrorChecking.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 15:04:25 UTC 2018
+
+
+==== $PTII/ptolemy/domains/hdf/kernel/test/RateErrorChecking.tcl: RateErrorChecking-1.0 
+==== Contents of test case:
+
+    catch {createAndExecute "badFSMRateChanges.xml"} foo
+    list $foo
+
+==== Result was:
+{java.io.FileNotFoundException: /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/badFSMRateChanges.xml (No such file or directory)}
+---- KNOWN Failure, Result should have been:
+{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .badFSMRateChanges.SDF Director
+Because:
+The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+    in .badFSMRateChanges.typed composite actor.output.tokenProductionRate}
+---- RateErrorChecking-1.0 Failed, but this is a KNOWN failure
+04/19/18 03:04:25
+Failed: 0  Total Tests: 1  ((Passed: 0, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/knownFailedTests/badFSMRateChanges.xml
+76 ms. Memory: 116224K Free: 93333K (80%)
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu Apr 19 15:04:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/ConstVariableRateTest.xml
+31 ms. Memory: 146944K Free: 110524K (75%)
+reloadAllAccessors: .ConstVariableRateTest
+----------------- testing Thu Apr 19 15:04:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates.xml
+33 ms. Memory: 146944K Free: 94455K (64%)
+reloadAllAccessors: .DifferentRefinedRates
+----------------- testing Thu Apr 19 15:04:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates2.xml
+51 ms. Memory: 146944K Free: 138482K (94%)
+reloadAllAccessors: .DifferentRefinedRates2
+----------------- testing Thu Apr 19 15:04:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates3.xml
+26 ms. Memory: 146944K Free: 124848K (85%)
+reloadAllAccessors: .DifferentRefinedRates3
+----------------- testing Thu Apr 19 15:04:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates4.xml
+64 ms. Memory: 146944K Free: 107076K (73%)
+reloadAllAccessors: .NewHDFtest1
+----------------- testing Thu Apr 19 15:04:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates5.xml
+52 ms. Memory: 146944K Free: 89646K (61%)
+reloadAllAccessors: .NewHDFtest2
+----------------- testing Thu Apr 19 15:04:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates6.xml
+37 ms. Memory: 208384K Free: 196752K (94%)
+reloadAllAccessors: .DifferentRefinedRates6
+----------------- testing Thu Apr 19 15:04:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DownSample_PowerOfTwo.xml
+211 ms. Memory: 208384K Free: 168159K (81%)
+reloadAllAccessors: .SDFDownSample
+----------------- testing Thu Apr 19 15:04:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithNullInitial.xml
+156 ms. Memory: 208384K Free: 142257K (68%)
+reloadAllAccessors: .FibonacciWithNullInitial
+----------------- testing Thu Apr 19 15:04:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithNullInitial1.xml
+151 ms. Memory: 208384K Free: 116370K (56%)
+reloadAllAccessors: .FibonacciWithNullInitial1
+----------------- testing Thu Apr 19 15:04:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithTransientStates.xml
+141 ms. Memory: 208384K Free: 85228K (41%)
+reloadAllAccessors: .FibonacciWithTransientStates
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithTransientStates2.xml
+49 ms. Memory: 208384K Free: 184036K (88%)
+reloadAllAccessors: .FibonacciWithTransientStates2
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithoutHistoryInitial.xml
+103 ms. Memory: 208384K Free: 159397K (76%)
+reloadAllAccessors: .FibonacciWithoutHistoryInitial
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/GuardUsingPastTokens.xml
+27 ms. Memory: 208384K Free: 142706K (68%)
+reloadAllAccessors: .GuardUsingPastTokens
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/GuardWithResets.xml
+35 ms. Memory: 208384K Free: 122256K (59%)
+reloadAllAccessors: .GuardWithResets
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hierarchy_2Level_Test1.xml
+22 ms. Memory: 208384K Free: 102450K (49%)
+reloadAllAccessors: .Hierarchy_2Level_Test1
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hierarchy_2Level_Test2.xml
+24 ms. Memory: 208384K Free: 82531K (40%)
+reloadAllAccessors: .Hierarchy_4Level_Test2
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hysteresis.xml
+17 ms. Memory: 331776K Free: 314852K (95%)
+reloadAllAccessors: .Hysteresis
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/InitTransient.xml
+21 ms. Memory: 331776K Free: 291147K (88%)
+reloadAllAccessors: .InitTransient
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Merge.xml
+32 ms. Memory: 331776K Free: 269839K (81%)
+reloadAllAccessors: .Merge
+----------------- testing Thu Apr 19 15:04:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/ModalModelBooleanSwitch.xml
+34 ms. Memory: 331776K Free: 246837K (74%)
+reloadAllAccessors: .BooleanSwitchWithModel
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRates.xml
+23 ms. Memory: 331776K Free: 231360K (70%)
+reloadAllAccessors: .SameRates
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRefinedRates.xml
+17 ms. Memory: 331776K Free: 214944K (65%)
+reloadAllAccessors: .SameRefinedRates
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRefinedRates2.xml
+19 ms. Memory: 331776K Free: 198527K (60%)
+reloadAllAccessors: .SameRefinedRates2
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TransientStates.xml
+28 ms. Memory: 331776K Free: 174826K (53%)
+reloadAllAccessors: .TransientStates
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoHammingCodec.xml
+43 ms. Memory: 331776K Free: 151872K (46%)
+reloadAllAccessors: .TwoHammingCodec
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoHammingCodec1.xml
+57 ms. Memory: 331776K Free: 124011K (37%)
+reloadAllAccessors: .twoHammingCodec1
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy.xml
+61 ms. Memory: 331776K Free: 318959K (96%)
+reloadAllAccessors: .TwoLevelHierarchy
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy1.xml
+50 ms. Memory: 331776K Free: 267933K (81%)
+reloadAllAccessors: .TwoLevelHierarchy1
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy2.xml
+50 ms. Memory: 331776K Free: 228611K (69%)
+reloadAllAccessors: .TwoLevelHierarchy2
+----------------- testing Thu Apr 19 15:04:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
+61 ms. Memory: 331776K Free: 171559K (52%)
+reloadAllAccessors: .TwoLevelHierarchyNullStates
+----------------- testing Thu Apr 19 15:04:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResets.xml
+65 ms. Memory: 331776K Free: 119948K (36%)
+reloadAllAccessors: .TwoLevelHierarchy1
+----------------- testing Thu Apr 19 15:04:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
+67 ms. Memory: 578048K Free: 543955K (94%)
+reloadAllAccessors: .TwoLevelHierarchyWithResetsNullStates
+----------------- testing Thu Apr 19 15:04:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/WaterTank_HDF.xml
+57 ms. Memory: 578048K Free: 503978K (87%)
+reloadAllAccessors: .WaterTank_HDF
+----------------- testing Thu Apr 19 15:04:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/WaterTank_HDF2.xml
+59 ms. Memory: 578048K Free: 464656K (80%)
+reloadAllAccessors: .WaterTank_HDF2
+----------------- testing Thu Apr 19 15:04:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/badFSMRateChanges.xml
+12 ms. Memory: 578048K Free: 444341K (77%)
+reloadAllAccessors: .badFSMRateChanges
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to read /home/travis/.spacecadet
+  in .DOPCSV.DatabaseManager
+Because:
+Cannot open file or URL
+  in .DOPCSV.DatabaseManager.passwordFile
+Because:
+Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.actor.lib.database.DatabaseManager.getConnection(DatabaseManager.java:494)
+	at ptolemy.actor.lib.database.DatabaseManager.preinitialize(DatabaseManager.java:604)
+	at ptolemy.actor.Director.preinitialize(Director.java:1302)
+	at ptolemy.actor.Director.preinitialize(Director.java:1257)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:763)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Cannot open file or URL
+  in .DOPCSV.DatabaseManager.passwordFile
+Because:
+Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.data.expr.FileParameter.openForReading(FileParameter.java:356)
+	at ptolemy.actor.lib.database.DatabaseManager.getConnection(DatabaseManager.java:482)
+	... 10 more
+Caused by: java.io.IOException: Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.util.FileUtilities.nameToURL(FileUtilities.java:692)
+	at ptolemy.util.FileUtilities.openForReading(FileUtilities.java:853)
+	at ptolemy.data.expr.FileParameter.openForReading(FileParameter.java:352)
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to read /home/travis/.spacecadet
+  in .DOPCenter.DatabaseManager
+Because:
+Cannot open file or URL
+  in .DOPCenter.DatabaseManager.passwordFile
+Because:
+Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.actor.lib.database.DatabaseManager.getConnection(DatabaseManager.java:494)
+	at ptolemy.actor.lib.database.DatabaseManager.preinitialize(DatabaseManager.java:604)
+	at ptolemy.actor.Director.preinitialize(Director.java:1302)
+	at ptolemy.actor.Director.preinitialize(Director.java:1257)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:763)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Cannot open file or URL
+  in .DOPCenter.DatabaseManager.passwordFile
+Because:
+Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.data.expr.FileParameter.openForReading(FileParameter.java:356)
+	at ptolemy.actor.lib.database.DatabaseManager.getConnection(DatabaseManager.java:482)
+	... 10 more
+Caused by: java.io.IOException: Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.util.FileUtilities.nameToURL(FileUtilities.java:692)
+	at ptolemy.util.FileUtilities.openForReading(FileUtilities.java:853)
+	at ptolemy.data.expr.FileParameter.openForReading(FileParameter.java:352)
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to read /home/travis/.spacecadet
+  in .Placard.DatabaseManager
+Because:
+Cannot open file or URL
+  in .Placard.DatabaseManager.passwordFile
+Because:
+Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.actor.lib.database.DatabaseManager.getConnection(DatabaseManager.java:494)
+	at ptolemy.actor.lib.database.DatabaseManager.preinitialize(DatabaseManager.java:604)
+	at ptolemy.actor.Director.preinitialize(Director.java:1302)
+	at ptolemy.actor.Director.preinitialize(Director.java:1257)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:763)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Cannot open file or URL
+  in .Placard.DatabaseManager.passwordFile
+Because:
+Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.data.expr.FileParameter.openForReading(FileParameter.java:356)
+	at ptolemy.actor.lib.database.DatabaseManager.getConnection(DatabaseManager.java:482)
+	... 10 more
+Caused by: java.io.IOException: Cannot read file '/home/travis/.spacecadet' or '/home/travis/.spacecadet'
+	at ptolemy.util.FileUtilities.nameToURL(FileUtilities.java:692)
+	at ptolemy.util.FileUtilities.openForReading(FileUtilities.java:853)
+	at ptolemy.data.expr.FileParameter.openForReading(FileParameter.java:352)
+	... 11 more
+</pre>
+</body>
+</html>
