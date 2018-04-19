@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Usage ptIITravisBuild.sh CurrentNumberOfTravisSeconds
+#
+# CurrentNumberOfTravisSeconds is $SECONDS in .travis.yml and
+# represents the number of seconds that the job has been running.
+
 # This script is called by $PTII/.travis.yml as part of the Travis-ci
 # build at https://travis-ci.org/icyphy/ptII/
 
@@ -35,6 +40,26 @@ fi
 if [ ! -d $PTII/reports/junit ]; then
     mkdir -p $PTII/reports/junit
 fi    
+
+# If openCV is not in the cache, then there is not as much time to
+# run our tests, so we adjust accordingly
+
+# The timeout Can't be more than 50 minutes or 3000 seconds.  45
+# minutes is cutting it a bit close, so we go with a maximum of 35
+# minutes or 2100 seconds.  We can't use Travis' timeout feature
+# because we want to copy the output to gh-pages. The timeouts should
+# vary so as to avoid git conflicts.
+
+if [ ! -z "$SECONDS" ]; then
+    maxTimeout=`expr 50 \* 60 - $SECONDS - 300`
+else
+    if [ $# -eq 1 ]; then
+        echo "$0: Using $1 as current seconds since the start of the job."
+        maxTimeout=`expr 50 \* 60 - $1 - 300`
+    else
+        maxTimeout=2500
+    fi
+fi
 
 # If the output is more than 10k lines, then Travis fails, so we
 # redirect voluminuous output into a log file.
@@ -198,10 +223,10 @@ updateGhPages () {
 case `uname -s` in
     Darwin)
         echo "If necessary, install timeout with 'sudo port timeout'"
-        TIMEOUT='timeout -9'
+        TIMEOUTCOMMAND='timeout -9'
         ;;
     *)
-        TIMEOUT='timeout -s 9'
+        TIMEOUTCOMMAND='timeout -s 9'
         ;;
 esac     
 
@@ -270,9 +295,10 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode1.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 300`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 2200 ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -284,21 +310,14 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode2.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 100`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 2400 ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
     updateGhPages -junitreport $PTII/reports/junit reports/
-
-    # test.capecode2.xml runs the longest, so at the end, update the issue with the results.
-    mkdir node_modules
-    npm install @icyphy/github-issue-junit
-    export JUNIT_LABEL=junit-results
-    export JUNIT_RESULTS_NOT_DRY_RUN=false
-    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
-    (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 fi
 
 # Run the third batch of CapeCode tests.
@@ -306,9 +325,10 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE3_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode3.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 800`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 1700 ant build test.capecode3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -320,9 +340,10 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core1.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 700`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 1800 ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -334,9 +355,10 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core2.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 300`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 2300 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -348,23 +370,33 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core3.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 600`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 1900 ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
     updateGhPages -junitreport $PTII/reports/junit reports/
+
+    # This target runs the longest, so at the end, update the issue with the results.
+    mkdir node_modules
+    npm install @icyphy/github-issue-junit
+    export JUNIT_LABEL=junit-results
+    export JUNIT_RESULTS_NOT_DRY_RUN=false
+    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
+    (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 fi
 
-# Run the third batch of core tests.
+# Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core4.xml.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 500`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUT 2000 ant build test.core4.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core4.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -374,7 +406,8 @@ fi
 # Build the installers.
 if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 400`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
     # Copy any jar files that may have previously been created so that
     # the build is faster.
@@ -387,17 +420,10 @@ if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
         (cd $PTII; jar -xf $PTII/doc/$jar)
     done
 
-    # Number of seconds to run the subprocess.  Can't be more than 50
-    # minutes or 3000 seconds.  45 minutes is cutting it a bit close,
-    # so we go with a maximum of 35 minutes or 2100 seconds.  We can't
-    # use Travis' timeout feature because we want to copy the output
-    # to gh-pages. The timeouts should vary so as to avoid git
-    # conflicts.
-
     # If the cache of OpenCV is failing to load, then comment out the
     # build here and the deploy section in .travis.yml so that this
     # target can run to completion.
-    $TIMEOUT 2100 ant test.installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    $TIMEOUTCOMMAND $TIMEOUT ant test.installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
  
     # Free up space for clone of gh-pages
     df -k .
@@ -421,7 +447,8 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.report.short.txt
-    echo "$0: Output will appear in $LOG"
+    TIMEOUT=`expr $maxTimeout - 800`
+    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
 
     # Copy just codeDoc.jar from the release.
     # doc/test/docManager.tcl needs this.
@@ -437,7 +464,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     echo "Invoking ant: `date`"
     # The timeouts should vary so as to avoid git conflicts.
     # Use build-all so that we build in lbnl.
-    $TIMEOUT 1700 ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
