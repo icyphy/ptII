@@ -252,7 +252,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
     LOG=$PTII/reports/junit/test.capecode1.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2300 ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 2400 ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG

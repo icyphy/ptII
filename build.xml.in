@@ -159,20 +159,24 @@
        $PTII/org/terraswarm/accessor/accessors/web/build.xml for
        non-CapeCode tests.-->
   <patternset id="test.capecode1.includes">
-    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/actor/lib/jjs/modules/**/junit/JUnitTclTest.java" />
   </patternset>
   
   <!-- Second batch of tests for Cape Code. See
        $PTII/org/terraswarm/accessor/accessors/web/build.xml for
        non-CapeCode tests.-->
   <patternset id="test.capecode2.includes">
+    <exclude name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.*" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
+    <include name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.java" />
   </patternset>
 
   <!-- Exclude Cape Code tests from short, long and longest. -->
   <patternset id="test.capecode.excludes">
-    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
-    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/actor/lib/jjs/modules/**/junit/JUnitTclTest.java" />
+    <exclude name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
+    <exclude name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.java" />
   </patternset>
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
@@ -1022,8 +1026,8 @@ For example:
 	  <!-- Run all the tests in test.batch -->
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
+          <patternset refid="test.capecode.excludes" />
 	  <patternset refid="test.excludes" />
-	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1272,8 +1276,8 @@ For example:
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
-	  <patternset refid="test.excludes" />
 	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1306,8 +1310,8 @@ For example:
 	  <!-- Run the 32-bit tests-->
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
-	  <patternset refid="test.excludes" />
 	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1374,8 +1378,8 @@ For example:
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
-	  <patternset refid="test.excludes" />
 	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1465,8 +1469,8 @@ For example:
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
-	  <patternset refid="test.excludes" />
 	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1631,8 +1635,8 @@ For example:
 	  <patternset refid="test.long.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
-	  <patternset refid="test.excludes" />
 	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.excludes" />
 	  <!-- Exclude the longest running tests -->
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
@@ -1683,8 +1687,8 @@ For example:
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
+          <patternset refid="test.capecode.excludes" />
 	  <patternset refid="test.excludes" />
-	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1783,6 +1787,7 @@ For example:
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
+          <patternset refid="test.capecode.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
@@ -1833,6 +1838,7 @@ For example:
          <include name="${test.batch}" />
          <patternset refid="ptII.excludes" />
          <patternset refid="test.32bit.excludes" />
+         <patternset refid="test.capecode.excludes" />
          <patternset refid="test.excludes" />
          <!-- Exclude the long running tests -->
          <patternset refid="test.long.excludes" />
@@ -1892,6 +1898,7 @@ For example:
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
@@ -1915,6 +1922,7 @@ For example:
 	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
