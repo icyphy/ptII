@@ -15,9 +15,11 @@
 #   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CAPECODE3_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
@@ -190,8 +192,21 @@ updateGhPages () {
     echo "updateGhPages(): End: `date`"
 }
 
+# We use the timeout utility so that we can use kill -9
+# Mac: sudo port timeout
+
+case `uname -s` in
+    Darwin)
+        echo "If necessary, install timeout with 'sudo port timeout'"
+        TIMEOUT='timeout -9'
+        ;;
+    *)
+        TIMEOUT='timeout -s 9'
+        ;;
+esac     
+
 # Timeout a process.
-function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+# function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 
 # Below here, the if statements should be in alphabetical order
 # according to variable name.
@@ -257,7 +272,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
     LOG=$PTII/reports/junit/test.capecode1.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2200 ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 2200 ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -271,7 +286,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
     LOG=$PTII/reports/junit/test.capecode2.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2400 ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 2400 ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -293,7 +308,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE3_XML" ]; then
     LOG=$PTII/reports/junit/test.capecode3.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 1700 ant build test.capecode3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 1700 ant build test.capecode3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -307,7 +322,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
     LOG=$PTII/reports/junit/test.core1.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 1800 ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 1800 ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -321,7 +336,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     LOG=$PTII/reports/junit/test.core2.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2300 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 2300 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -335,7 +350,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     LOG=$PTII/reports/junit/test.core3.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 1900 ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 1900 ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -349,7 +364,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     LOG=$PTII/reports/junit/test.core4.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2000 ant build test.core4.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 2000 ant build test.core4.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -382,7 +397,7 @@ if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
     # If the cache of OpenCV is failing to load, then comment out the
     # build here and the deploy section in .travis.yml so that this
     # target can run to completion.
-    timeout 2100 ant test.installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    $TIMEOUT 2100 ant test.installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
  
     # Free up space for clone of gh-pages
     df -k .
@@ -422,7 +437,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     echo "Invoking ant: `date`"
     # The timeouts should vary so as to avoid git conflicts.
     # Use build-all so that we build in lbnl.
-    timeout 1700 ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUT 1700 ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
