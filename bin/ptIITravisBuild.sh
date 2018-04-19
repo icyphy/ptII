@@ -16,6 +16,8 @@
 #   PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
@@ -304,6 +306,20 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     echo "$0: Output will appear in $LOG"
     
     timeout 2380 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    updateGhPages -junitreport $PTII/reports/junit reports/
+fi
+
+# Run the second batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.core3.xml.txt
+    echo "$0: Output will appear in $LOG"
+    
+    timeout 2380 ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
