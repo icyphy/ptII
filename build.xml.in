@@ -169,7 +169,6 @@
   <patternset id="test.capecode2.includes">
     <include name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
-
   </patternset>
 
   <!-- Exclude Cape Code tests from short, long and longest. -->
@@ -178,6 +177,53 @@
     <exclude name="**/ptolemy/actor/lib/jjs/modules/**/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.*" />
+  </patternset>
+
+  <!-- Tests of the core, first batch. -->
+  <patternset id="test.core1.includes">
+    <include name="**/ptolemy/actor/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/data/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/domains/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.java" />
+  </patternset>
+
+  <patternset id="test.core1.excludes">
+    <exclude name="**/ptolemy/actor/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/data/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/domains/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.*" />
+  </patternset>
+
+  <!-- Tests of the core, first batch. -->
+  <patternset id="test.core2.includes">
+    <include name="**/doc/books/**/test/junit/JUnitTclTest.java" />
+    <include name="**/doc/test/junit/JUnitTclTest.java" />
+    <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/cg/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/demo/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/graph/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/moml/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/vergil/**/test/junit/JUnitTclTest.java" />
+  </patternset>
+
+  <patternset id="test.core2.excludes">
+    <exclude name="**/doc/books/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/doc/test/junit/JUnitTclTest.*" />
+    <exclude name="**/org/ptolemy/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/cg/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/demo/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/distributed/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/graph/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/math/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/media/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/moml/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/utill/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/vergil/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptserver/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
@@ -197,10 +243,18 @@
     <exclude name="**/ptolemy/actor/lib/fmi/fmus/omc/test/junit/JUnitTclTest.*" />
     <!-- FIXME: EightFourInFourOutsJNI fails under Travis-ci because lib/libJNIFMU is not found. -->
     <exclude name="**/ptolemy/actor/lib/fmi/jni/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
-    <exclude name="**/ptolemy/util/test/junit/AutoCGKnownFailedTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/Auto32Tests.*" />
+    <exclude name="**/ptolemy/util/test/junit/AutoTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/AutoCG*" />
+    <exclude name="**/ptolemy/util/test/junit/AutoKnownFailedTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/AutoNameArchTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/JUnitAuto32Base.*" />
+    <exclude name="**/ptolemy/util/test/junit/JUnitCG*" />
+    <exclude name="**/ptolemy/util/test/junit/JUnitTclTestBase.*" />
+    <exclude name="**/ptolemy/util/test/junit/JUnitTclTestRun.*" />
     <exclude name="**/ptolemy/util/test/junit/ModelKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/ModelTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/TclTests.*" />
     <exclude name="**/lbnl/actor/lib/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptserver/test/junit/FileDownloadTest.*" />
     <exclude name="**/ptserver/test/junit/JUnitTclTest.*" />
@@ -1202,6 +1256,76 @@ For example:
   </target>
 
 
+  <target name="test.core1.xml" depends="initReports"
+	  description="Run the first batch of core tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.core1.xml ==
+      This target runs the first batch of core tests
+      and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.core1.includes" />
+	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.core2.excludes" />
+	  <patternset refid="test.excludes" />
+	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.core2.xml" depends="initReports"
+	  description="Run the second batch of core tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.core2.xml ==
+      This target runs the second batch of core tests
+      and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.core2.includes" />
+	  <patternset refid="test.capecode.excludes" />
+	  <patternset refid="test.core1.excludes" />
+	  <patternset refid="test.excludes" />
+	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+  
   <!-- Cobertura: code coverage tool -->
   <target name="test.cobertura"
 	  depends="build, initReports"
