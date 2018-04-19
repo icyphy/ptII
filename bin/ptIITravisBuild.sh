@@ -359,7 +359,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core1.xml.txt
-    TIMEOUT=`expr $maxTimeout - 700`
+    TIMEOUT=`expr $maxTimeout - 300`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
     $TIMEOUTCOMMAND $TIMEOUT ant build test.core1.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
@@ -374,7 +374,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core2.xml.txt
-    TIMEOUT=`expr $maxTimeout - 300`
+    TIMEOUT=`expr $maxTimeout - 700`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
     $TIMEOUTCOMMAND $TIMEOUT ant build test.core2.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
@@ -389,7 +389,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core3.xml.txt
-    TIMEOUT=`expr $maxTimeout - 600`
+    TIMEOUT=`expr $maxTimeout - 250`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
     $TIMEOUTCOMMAND $TIMEOUT ant build test.core3.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
@@ -412,7 +412,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core4.xml.txt
-    TIMEOUT=`expr $maxTimeout - 500`
+    TIMEOUT=`expr $maxTimeout - 600`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
     $TIMEOUTCOMMAND $TIMEOUT ant build test.core4.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
