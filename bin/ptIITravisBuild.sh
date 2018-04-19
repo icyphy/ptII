@@ -65,6 +65,21 @@ else
 fi
 echo "$0: maxTimeout: $maxTimeout"
 
+
+set +x
+if [ ! -z "$SPACECADET_TOKEN" -a ! -f ~/.spacecadet ]; then
+    echo "$SPACECADET_TOKEN" > ~/.spacecadet
+    ls -l ~/.spacecadet
+    export SPACECADET_TOKEN=resetByPtIITravisBuild.sh
+fi
+
+set +x
+if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
+    echo "$GEOCODING_TOKEN" > ~/.ptKeystore/geoCodingKey
+    ls -l ~/.ptKeystore/geoCodingKey
+    export GEOCODING_TOKEN=resetByPtIITravisBuild.sh
+fi
+
 # If the output is more than 10k lines, then Travis fails, so we
 # redirect voluminuous output into a log file.
 
@@ -188,18 +203,18 @@ updateGhPages () {
     # which can include GITHUB_TOKEN, which is supposed to be secret.
     # So, we remove any lines checked in to gh-pages that mentions
     # GITHUB_TOKEN.
-    echo "Remove any instances of GITHUB_TOKEN: "
+    echo "Remove any instances of GITHUB_TOKEN and other vars: "
     date
     # Don't echo GITHUB_TOKEN
     set +x
     files=`find . -type f`
     for file in $files
     do
-        egrep -e  "GITHUB_TOKEN" $file > /dev/null
+        egrep -e  "(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)" $file > /dev/null
 	retval=$?
 	if [ $retval != 1 ]; then
             echo -n "$file "
-            egrep -v "GITHUB_TOKEN" $file > $file.tmp
+            egrep -v "(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)" $file > $file.tmp
             mv $file.tmp $file
         fi
     done        
@@ -246,7 +261,7 @@ if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     ant build-all;
 fi
 
-if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
+if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     LOG=$PTII/logs/docs.txt
     # Create the Javadoc jar files for use by the installer and deploy
     # them to Github pages.
@@ -254,8 +269,8 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
     # Note that there is a chance that the installer will use javadoc
     # jar files that are slightly out of date.
 
-    ant javadoc jsdoc 2>&1 | grep -v GITHUB_TOKEN > $LOG 
-    (cd doc; make install) 2>&1 | grep -v GITHUB_TOKEN >> $LOG 
+    ant javadoc jsdoc 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
+    (cd doc; make install) 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' >> $LOG 
 
     # No need to check in the log each time because this target is
     # easy to re-run.
@@ -277,7 +292,7 @@ fi
 if [ ! -z "$PT_TRAVIS_P" ]; then
     LOG=$PTII/logs/ant_p.txt
     echo "$0: Output will appear in $LOG"
-    ant -p 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    ant -p 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -302,7 +317,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 300`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode1.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -317,7 +332,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 100`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode2.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -332,7 +347,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE3_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 800`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode3.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -347,7 +362,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 700`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core1.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -362,7 +377,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 300`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core2.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -377,7 +392,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 600`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core3.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -400,7 +415,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     TIMEOUT=`expr $maxTimeout - 500`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
     
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core4.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build test.core4.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -427,7 +442,7 @@ if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
     # If the cache of OpenCV is failing to load, then comment out the
     # build here and the deploy section in .travis.yml so that this
     # target can run to completion.
-    $TIMEOUTCOMMAND $TIMEOUT ant test.installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    $TIMEOUTCOMMAND $TIMEOUT ant test.installers 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG
  
     # Free up space for clone of gh-pages
     df -k .
@@ -468,7 +483,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     echo "Invoking ant: `date`"
     # The timeouts should vary so as to avoid git conflicts.
     # Use build-all so that we build in lbnl.
-    $TIMEOUTCOMMAND $TIMEOUT ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    $TIMEOUTCOMMAND $TIMEOUT ant build-all test.report.short 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG

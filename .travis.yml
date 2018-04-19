@@ -22,11 +22,19 @@ env:
 
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+
+    # GeoCoding
+    -  secure: "kw7ZvdNDOSg6i4+b0oaSwuZbmuQKli87FjpS5UfOL3LdhjLaJlhft8aDc2ZLuiDxtCmB3X45Y+2M+ncqlRZULj0nRxz9OnVD6nQdgM2FPKBBmgZ2Z9/e/4MwD/3GcpnNs9rmW+3DXDMbMSc7nqYgYDKwws9x7KvF3hzrs0jj1ZvxUV/F1O9jCyyKzPJgaW46mQ9VrZi0xgl9Qn+8hccx8Z9G8XL/A3M/dCwaKUbaGk56+63GLNX62T20LQOQCJVgSztVkV/GLgmAnekwPBWuQ9UvaaQAiJFRbWpWz7qzgz5qL94zhHeew79iv+0jPgyjgTQSc0Sv2BNuTfY0GZbr5yvHFgxPNcvtCBwHmqQLB5r6VT0kuYaXXIMNs2yvU0DQvgnIVen9PFR9Euui3/qKY5/cHyYbI8n+2xtZHnideR3C9lbWSOih4H58f0W3Gf9jgPeCGI1jRuuR+fSUxD2pkHMDskBvEodlrKc+g0mSdybIuPGF0l8qMPyIuRMbuMgHaJA4zYBmKSUrL7w599SuteKKbZXcLXL8YkEjE8old+q2Ajdu9UA5NRFEmqs/YtqaJEBZnMh3IFCsXDXlfQQWFLuC9L1ShBC2tJYei8N7aEuuPECBelPjKr3F+QRpAjpRrCvU9bxwWsfJqBARQc2Ktsxg1RHzxGERpBSWfvT9YlA="
+
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
     - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools
     - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
+
+    # SpaceCadet
+    - secure: "rF8A4+P8J7oQe7VUOxD1Ei70U04kZu5RBHI9I2PICQwBM5op8Jl+sG/me83FH1txDEv2q3dov8BjbFotZGRQ//wHntmkvzGomxUkjiMGtg42KxC0uV1lo7kSWsjD4Fap4SivDiT9+1BQpd/2eLtwhvQETeM4QZE/t7ix5BKqelkiu3pfCqQXvUK30/+C0R4IjXsrNQXRjueb5a2Aor2RoO9NGrLpANAIp1479j6oa/qwQXCLfhg58JkR8qSxSxiLGHrdZHyIOOthTtHNu9BRqpYgGeA12I4YktilZJt0Dr2Tw4WHgxXX6LqYcvb531PpeKbfjCvkhzIgYG/bB7OmcuZ2kLCH91ubyNuq8AI1JFg6892zsYUeP24xT/F0twJ/xrZCSmMMQ6pXtzPRns/bKcpzmmgRUguFWdbKVOggj9Z7HRG/TxZnUmUdrR98DkOoOdC/lYwYP7LhOiciGHUdFSu0T1ep1EcQGCYHz2z9bUY/9OQqXtohfG4FI/yyFEJ6EEnObPKSypcf7RweR132RLTQmJDu+akD8bwDgas2Rr2YDMFK0oypejU2HawXcdEHUhHwZWBNzhF2nOoMTyi0PvLivuXqlzgxrEc42vru6dx5xIJI/lVvDHvtAyMDj36EAQTlRquOBDD0o+jgXIM3dZJD160Xs676gD6B7s7bzOU="
+
     - TRAVIS_TAG=nightly
 
 language: node_js
