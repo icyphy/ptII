@@ -15,6 +15,7 @@
 #   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 
@@ -279,6 +280,34 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
     export JUNIT_RESULTS_NOT_DRY_RUN=false
     export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
+fi
+
+# Run the first batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.core1.xml.txt
+    echo "$0: Output will appear in $LOG"
+    
+    timeout 2480 ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    updateGhPages -junitreport $PTII/reports/junit reports/
+fi
+
+# Run the second batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.core2.xml.txt
+    echo "$0: Output will appear in $LOG"
+    
+    timeout 2380 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
 # Build the installers.
