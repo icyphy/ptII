@@ -4,13 +4,13 @@
 <entity name="RoundtripReaderWriter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 69, 1119, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 69, 1190, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[891, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{435.49999999999983, 240.00000000000009}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{467.99999999999983, 251.00000000000003}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -110,7 +110,7 @@
     <entity name="WebSocketClientReader" class="org.ptolemy.ptango.lib.webSocket.WebSocketReader">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 440.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -118,7 +118,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 440.0]">
         </property>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
@@ -128,6 +128,45 @@
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
+        </port>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[887.2890625, 430.0]">
+        </property>
+    </entity>
+    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 330}">
+        </property>
+    </entity>
+    <entity name="And" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Emit a true if all of the inputs have received a true.&#10; *  If the timeout is non-zero, then emit a true after the timeout.&#10; *&#10; *  This accessor is typically used to stop a model after all&#10; *  of the TrainableTest accessors have emitted a true.&#10; *&#10; *  @input input1 The first input&#10; *  @input input2 the second input&#10; *  @output output True if the inputs have seen true or if the&#10; *  timeout has occurred&#10; *  @param timeout If non-zero, the timeout in milliseconds.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2'); &#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = this.get('input1');&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;	self.sawInput2 = this.get('input2');&#10; 	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;&#10;    if (this.getParameter('timeout') &gt; 0) {&#10;        setTimeout(function () {&#10;	    console.log('JavaScriptBarrier: sending true after timeout.');&#10;	    self.send('output', true);&#10;        }, this.getParameter('timeout'));&#10;    }&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 430.0]">
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="input2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -144,10 +183,17 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation"/>
     <link port="Test.input" relation="relation4"/>
+    <link port="Test.output" relation="relation8"/>
     <link port="WebSocketClientWriter.input" relation="relation2"/>
     <link port="WebSocketServerReader.output" relation="relation5"/>
     <link port="WebSocketServerWriter.input" relation="relation3"/>
@@ -155,6 +201,11 @@
     <link port="Expression.x" relation="relation4"/>
     <link port="WebSocketClientReader.output" relation="relation6"/>
     <link port="Test2.input" relation="relation6"/>
+    <link port="Test2.output" relation="relation9"/>
     <link port="ExpressionToToken.input" relation="relation5"/>
     <link port="ExpressionToToken.output" relation="relation4"/>
+    <link port="Stop.input" relation="relation7"/>
+    <link port="And.input1" relation="relation8"/>
+    <link port="And.input2" relation="relation9"/>
+    <link port="And.output" relation="relation7"/>
 </entity>
