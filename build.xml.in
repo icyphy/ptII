@@ -315,15 +315,27 @@
     <exclude name="**/adm/test/junit/*"/>
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
+
     <!-- FIXME: lbnl/test/junit fails under Travis-ci, but we can't easily log in to run the croom command. -->
     <exclude name="**/lbnl/test/junit/JUnitTclTest.*"/>
     <exclude name="**/KielerJUnitTest.*" />
+
     <!-- FIXME: org/hlacerti/test/auto/2Values1Instance.xml hangs while exiting. -->
     <exclude name="**/org/hlacerti/test/junit/JUnitTclTest.*" />
+
     <!-- FIXME: HeatConductor fails to load under Travis-ci, but we can't easily log in to run the croom command. -->
     <exclude name="**/ptolemy/actor/lib/fmi/fmus/omc/test/junit/JUnitTclTest.*" />
+
     <!-- FIXME: EightFourInFourOutsJNI fails under Travis-ci because lib/libJNIFMU is not found. -->
     <exclude name="**/ptolemy/actor/lib/fmi/jni/test/junit/JUnitTclTest.*" />
+
+    <!-- The R language is not typically installed. -->
+    <exclude name="**/ptolemy/actor/lib/r/test/junit/JUnitTclTest.*" />
+
+    <!-- OpenModelica is not typically installed. -->
+    <exclude name="**/ptolemy/domains/openmodelica/lib/test/junit/JUNitTclTest.*" />
+
+    <!-- Don't try to execute these utility classes. -->
     <exclude name="**/ptolemy/util/test/junit/Auto32Tests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoTests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCG*" />
@@ -336,7 +348,9 @@
     <exclude name="**/ptolemy/util/test/junit/ModelKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/ModelTests.*" />
     <exclude name="**/ptolemy/util/test/junit/TclTests.*" />
+
     <exclude name="**/lbnl/actor/lib/test/junit/JUnitTclTest.*" />
+
     <exclude name="**/ptserver/test/junit/FileDownloadTest.*" />
     <exclude name="**/ptserver/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptserver/test/junit/RESTGetHandlerTest.*" />
