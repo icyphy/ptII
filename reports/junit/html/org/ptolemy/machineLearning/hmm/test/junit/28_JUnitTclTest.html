@@ -27,7 +27,7 @@
     
         cur['ant.project.default-target'] = 'build';
     
-        cur['ant.project.invoked-targets'] = 'build-all,test.report.short';
+        cur['ant.project.invoked-targets'] = 'build,test.core2.xml';
     
         cur['ant.project.name'] = 'ptII';
     
@@ -36,8 +36,6 @@
         cur['awt.toolkit'] = 'sun.awt.X11.XToolkit';
     
         cur['basedir'] = '/home/travis/build/icyphy/ptII';
-    
-        cur['bin.vergil.exists'] = 'true';
     
         cur['bin.vergil.makeable'] = 'true';
     
@@ -92,6 +90,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -161,7 +160,7 @@
     
         cur['env.PT_NO_NET'] = 'true';
     
-        cur['env.PT_TRAVIS_TEST_REPORT_SHORT'] = 'true';
+        cur['env.PT_TRAVIS_TEST_CORE2_XML'] = 'true';
     
         cur['env.PTII'] = '/home/travis/build/icyphy/ptII';
     
@@ -197,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 49804 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 53448 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 49804 10.20.0.18 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 53448 10.20.0.34 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368453190';
+        cur['env.TRAVIS_BUILD_ID'] = '368486984';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '270';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '272';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '32d59bbacfa84219be80788cc221143a56b570af';
+        cur['env.TRAVIS_COMMIT'] = '3c8c214f4c615de4c4f30b5e5da698c8a223a516';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'After Test completes, invoke Stop.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core3.xml.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '1147a6b8c9bd...32d59bbacfa8';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '74dbabc53265...3c8c214f4c61';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368453196';
+        cur['env.TRAVIS_JOB_ID'] = '368486990';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '270.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '272.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -353,8 +352,6 @@
     
         cur['jsdoc.command'] = 'node_modules/@terraswarm/jsdoc/jsdoc.js';
     
-        cur['jsdoc.command.exists'] = 'true';
-    
         cur['jsdoc.home'] = 'node_modules/@terraswarm/jsdoc';
     
         cur['jshint.executable'] = '/home/travis/node_modules/jshint/bin/jshint';
@@ -421,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6550800347820952370.properties propsfile=/home/travis/build/icyphy/ptII/junit40037245884092837.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.machineLearning.hmm.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6082036198069787721.properties propsfile=/home/travis/build/icyphy/ptII/junit6217914976562969800.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="28_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="28_JUnitTclTest.html">5</a></td><td>0</td><td>0</td><td>0</td><td>2.710</td><td>2018-04-19T03:25:31</td><td>travis-job-19728a33-7aca-4e5e-bdd6-891169f1a6a4</td>
+<td><a title="Display all tests" href="28_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="28_JUnitTclTest.html">5</a></td><td>0</td><td>0</td><td>0</td><td>2.770</td><td>2018-04-19T06:35:42</td><td>travis-job-3f5c60fc-3e96-4b38-916d-6db967c482ae</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -516,16 +513,16 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.004</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml (RunModel)</td><td>Success</td><td></td><td>1.478</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/CommunicationAnomalyDetectionAOMTest.xml (RunModel)</td><td>Success</td><td></td><td>1.502</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml (RunModel)</td><td>Success</td><td></td><td>0.704</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/ptolemy/machineLearning/hmm/test/auto/HMMTest.xml (RunModel)</td><td>Success</td><td></td><td>0.829</td>
 </tr>
 </table>
 <div class="Properties">
