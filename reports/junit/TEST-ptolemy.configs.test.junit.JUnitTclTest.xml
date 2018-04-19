@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="2" hostname="travis-job-76d1a65b-85f6-4c88-bbcf-fe69e66ed77a" name="ptolemy.configs.test.junit.JUnitTclTest" skipped="0" tests="9" time="258.098" timestamp="2018-04-19T06:08:08">
+<testsuite errors="1" failures="2" hostname="travis-job-a9d0641d-5675-42f3-ac71-dfce49f7ff45" name="ptolemy.configs.test.junit.JUnitTclTest" skipped="0" tests="9" time="238.132" timestamp="2018-04-19T14:55:46">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="272.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="273.6" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.2 36252 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.8 35932 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.2 36252 10.20.0.10 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.8 35932 10.20.0.208 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.configs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.configs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1550101268736098315.properties propsfile=/home/travis/build/icyphy/ptII/junit4657205701447322189.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.configs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.configs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2373654937597180067.properties propsfile=/home/travis/build/icyphy/ptII/junit3212626905282976083.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="74dbabc53265...3c8c214f4c61" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="3c8c214f4c61...709c03f925e1" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="272" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="273" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +131,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="368486984" />
+    <property name="env.TRAVIS_BUILD_ID" value="368681223" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="3c8c214f4c615de4c4f30b5e5da698c8a223a516" />
+    <property name="env.TRAVIS_COMMIT" value="709c03f925e13fcfd9e24bdea34df5e22adb62f6" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -168,7 +168,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Added test.core3.xml." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Added capecode3 and core4 in hopes of splitting tests in to small enough pieces so that they will complete in under 40 seconds." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="368486989" />
+    <property name="env.TRAVIS_JOB_ID" value="368681229" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -226,7 +226,7 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl (RunTclFile)" time="45.992">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl (RunTclFile)" time="41.006">
     <error message="Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.&#xa;The Tcl errorInfo variable could not be obtained.&#xa;java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.&#xa;The Tcl errorInfo global variable has the value:&#xa;com.microstar.xml.XmlException: XML element &quot;entity&quot; triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/configs/viptos/configuration.xml at line 62 and column 73&#xa;Caused by:&#xa; ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptinyos.kernel.NCCompositeActor. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.&#xa;Because:&#xa;-- /home/travis/build/icyphy/ptII/ptolemy/configs/viptos/ptolemy/domains/ptinyos/kernel/NCCompositeActor.xml (No such file or directory)&#xa;-- XML file not found relative to classpath.&#xa;-- /home/travis/build/icyphy/ptII/ptolemy/configs/test/ptolemy/domains/ptinyos/kernel/NCCompositeActor.xml&#xa;/home/travis/build/icyphy/ptII/ptolemy/configs/test/ptolemy/domains/ptinyos/kernel/NCCompositeActor.xml (No such file or directory)&#xa; in file:/home/travis/build/icyphy/ptII/ptolemy/configs/viptos/configuration.xml at line 62 and column 73&#xa;    while executing&#xa;&quot;$parser {parse java.net.URL java.net.URL} $URL $URL&quot;&#xa;    invoked from within&#xa;&quot;set object [$parser {parse java.net.URL java.net.URL} $URL $URL]&quot;&#xa;    (&quot;foreach&quot; body line 68)&#xa;    invoked from within&#xa;&quot;foreach i $configs {&#xa;&#xa;    &#xa;    if {[regexp &quot;jxta/&quot; $i] == 1} {&#xa;&#x9;puts &quot;Skipping $i, running vergil -jxta brings up a window&quot;&#xa;&#x9;continue&#xa;    }&#xa;&#xa;    puts ...&quot;&#xa;    (file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot; line 157)" type="java.lang.Exception">java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.
 The Tcl errorInfo variable could not be obtained.
 java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.
@@ -283,10 +283,10 @@ Caused by: tcl.lang.ReflectException
 	at tcl.lang.Interp.evalFile(Interp.java:1880)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl (RunTclFile)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl (RunTclFile)" time="14.483" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)" time="170.82">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl (RunTclFile)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl (RunTclFile)" time="0.015" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl (RunTclFile)" time="11.584" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)" time="156.057">
     <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -297,7 +297,7 @@ Caused by: tcl.lang.ReflectException
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl (RunTclFile)" time="26.444">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl (RunTclFile)" time="29.186">
     <failure message="Number of failed tests is has increased. expected:&lt;2&gt; but was:&lt;39&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;2&gt; but was:&lt;39&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -308,11 +308,11 @@ Caused by: tcl.lang.ReflectException
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.003" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.006" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.015" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.007" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 06:08:08 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 14:55:46 UTC 2018
  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     (Skipping certain optional packages)
 -------> Before clone
@@ -659,9 +659,9 @@ Then delete this annotation.</text>
                             <group>
                                 <doc>Decortative attributes</doc>
                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-                                    <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Apr 19, 2018 6:08:54 AM">
+                                    <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Apr 19, 2018 2:56:27 PM">
                                     </property>
-                                    <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 19, 2018 6:08:54 AM">
+                                    <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 19, 2018 2:56:27 PM">
                                     </property>
                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
                                     </property>
@@ -3230,11 +3230,6 @@ Then delete this annotation.</text>
                                     <configure>
                                         <group>
                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-                                                <port name="input" class="ptolemy.actor.TypedIOPort">
-                                                    <property name="input"/>
-                                                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                                                    </property>
-                                                </port>
                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
                                                     <property name="output"/>
                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -3293,6 +3288,11 @@ Then delete this annotation.</text>
                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
                                                     <property name="input"/>
                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                                                    </property>
+                                                </port>
+                                                <port name="output" class="ptolemy.actor.TypedIOPort">
+                                                    <property name="output"/>
+                                                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                                                     </property>
                                                 </port>
                                             </entity>
@@ -7238,7 +7238,7 @@ No physical cameras found, using WebcamDummyDriver.
 mv capecodeModels.txt.sorted capecodeModels.txt
 make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
 #
-# Starting to build models.txt: Thu Apr 19 06:10:02 UTC 2018
+# Starting to build models.txt: Thu Apr 19 14:57:28 UTC 2018
 #
 # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY
 DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java"  -Xmx1500m "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
@@ -7253,10 +7253,10 @@ ls -1 /home/travis/build/icyphy/ptII/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s
 LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
 mv /tmp/models.txt models.txt
 #
-# Done building models.txt: Thu Apr 19 06:11:45 UTC 2018
+# Done building models.txt: Thu Apr 19 14:59:02 UTC 2018
 #
 git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-[detached HEAD 209f8046] Master files changed
+[detached HEAD b4377b8d] Master files changed
  1 file changed, 2 insertions(+)
 rm -f doc.jar
 make doc.jar
@@ -7318,10 +7318,10 @@ if [ -d /home/travis/build/icyphy/ptII/.git ]; then \
 		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
         fi
 Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-HEAD detached from 3c8c214f
+HEAD detached from 709c03f9
 Untracked files:
-	../../../junit4657205701447322189.properties
-	../../../junitvmwatcher1550101268736098315.properties
+	../../../junit3212626905282976083.properties
+	../../../junitvmwatcher2373654937597180067.properties
 	../../actor/lib/jai/test/auto/PtolemyII.bmp
 	../../actor/lib/jai/test/auto/PtolemyII.jpg
 	../../actor/lib/jai/test/auto/PtolemyII.pgm
@@ -7377,7 +7377,7 @@ Stderr for '/home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy
 ---- missingDemos-2.0 FAILED
 /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl
 Validating the xml in /auto/ xml files after removing the configure blocks
-...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/1Value2Instances.xml, file /tmp/validDemos3326167223441030440.xml was
+...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/1Value2Instances.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -7554,7 +7554,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2827 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/MultiDataTypes/MultiDataTypesProducer.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -7928,7 +7928,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2828 FAILED
-..Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/MultiDataTypes/MultiDataTypes.xml, file /tmp/validDemos3326167223441030440.xml was
+..Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/MultiDataTypes/MultiDataTypes.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -8019,7 +8019,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2830 FAILED
-..........Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/2Values2Instances.xml, file /tmp/validDemos3326167223441030440.xml was
+..........Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/2Values2Instances.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -8196,7 +8196,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2840 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/1Value2Instances2Jokers/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/1Value2Instances2Jokers/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -8536,7 +8536,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2841 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/1Value2Instances2Jokers/StaticMultiInstanceJoker.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/1Value2Instances2Jokers/StaticMultiInstanceJoker.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -8713,7 +8713,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2842 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/1Value2Instances2Jokers/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/1Value2Instances2Jokers/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -8987,7 +8987,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2843 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/StaticMultiInstanceJoker.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/StaticMultiInstanceJoker.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -9125,7 +9125,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2844 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -9494,7 +9494,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2845 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/StaticMultiInstanceJoker.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/StaticMultiInstanceJoker.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -9671,7 +9671,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2846 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -9928,7 +9928,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2847 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -10315,7 +10315,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2848 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/StaticMultiInstanceJoker.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/StaticMultiInstanceJoker.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -10492,7 +10492,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2849 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -10763,7 +10763,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2850 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -11103,7 +11103,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2851 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/StaticMultiInstance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/StaticMultiInstance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -11280,7 +11280,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2852 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -11554,7 +11554,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2853 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -11892,7 +11892,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2854 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance/StaticMultiInstance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance/StaticMultiInstance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -12069,7 +12069,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2855 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values1Instance/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -12329,7 +12329,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2856 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/StaticMultiInstance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/StaticMultiInstance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -12559,7 +12559,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2857 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -12896,7 +12896,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2858 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/StaticMultiInstance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/StaticMultiInstance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -13073,7 +13073,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2859 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -13347,7 +13347,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2860 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -13577,7 +13577,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2861 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/StaticMultiInstance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/StaticMultiInstance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -13754,7 +13754,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2862 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -14020,7 +14020,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2863 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances/DistributedReceiver1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances/DistributedReceiver1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -14360,7 +14360,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2864 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances/StaticMultiInstance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances/StaticMultiInstance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -14537,7 +14537,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2865 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances/DistributedSender1.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/StaticMultiInstance/2Values2Instances/DistributedSender1.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -14809,7 +14809,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2866 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/2Values1Instance.xml, file /tmp/validDemos3326167223441030440.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/2Values1Instance.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -14986,7 +14986,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-2867 FAILED
-.........Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/2Classes2Values2Instances.xml, file /tmp/validDemos3326167223441030440.xml was
+.........Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/2Classes2Values2Instances.xml, file /tmp/validDemos6057256944213505972.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -15165,7 +15165,7 @@ Validating the xml in /auto/ xml files after removing the configure blocks
 ---- validDemos-2876 FAILED
 ..............................................................................Checked 2954 demos from configs/doc/models.txt
 Validating the xml in demo xml files after removing the configure blocks
-....Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml, file /tmp/validDemos2429646683278440638.xml was
+....Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml, file /tmp/validDemos6865069520770444697.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -15273,7 +15273,7 @@ Validating the xml in demo xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-4 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/Billard/2Billes1Fed/PoolTable2.xml, file /tmp/validDemos2429646683278440638.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/Billard/2Billes1Fed/PoolTable2.xml, file /tmp/validDemos6865069520770444697.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -15522,7 +15522,7 @@ Validating the xml in demo xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-5 FAILED
-..........Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/testTimeAdvancingF1.xml, file /tmp/validDemos2429646683278440638.xml was
+..........Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/testTimeAdvancingF1.xml, file /tmp/validDemos6865069520770444697.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -15636,7 +15636,7 @@ Validating the xml in demo xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-15 FAILED
-.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/testTimeAdvancingF2.xml, file /tmp/validDemos2429646683278440638.xml was
+.Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/testTimeAdvancingF2.xml, file /tmp/validDemos6865069520770444697.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -15762,7 +15762,7 @@ Validating the xml in demo xml files after removing the configure blocks
 ---- Result should have been:
 {}
 ---- validDemos-16 FAILED
-..Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF1.xml, file /tmp/validDemos2429646683278440638.xml was
+..Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF1.xml, file /tmp/validDemos6865069520770444697.xml was
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -15877,7 +15877,7 @@ Validating the xml in demo xml files after removing the configure blocks
 {}
 ---- validDemos-18 FAILED
 ...............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 753 demos from configs/doc/models.txt
-04/19/18 06:12:26
+04/19/18 02:59:44
 Failed: 39  Total Tests: 3739  ((Passed: 3700, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test

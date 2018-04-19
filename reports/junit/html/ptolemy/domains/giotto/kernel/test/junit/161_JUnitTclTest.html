@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.2 36252 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.8 35932 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.2 36252 10.20.0.10 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.8 35932 10.20.0.208 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368486984';
+        cur['env.TRAVIS_BUILD_ID'] = '368681223';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '272';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '273';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '3c8c214f4c615de4c4f30b5e5da698c8a223a516';
+        cur['env.TRAVIS_COMMIT'] = '709c03f925e13fcfd9e24bdea34df5e22adb62f6';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core3.xml.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added capecode3 and core4 in hopes of splitting tests in to small enough pieces so that they will complete in under 40 seconds.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '74dbabc53265...3c8c214f4c61';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '3c8c214f4c61...709c03f925e1';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368486989';
+        cur['env.TRAVIS_JOB_ID'] = '368681229';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '272.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '273.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.giotto.kernel.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.giotto.kernel.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7746894176132027559.properties propsfile=/home/travis/build/icyphy/ptII/junit7034886890664280678.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.giotto.kernel.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.giotto.kernel.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8147346649663727922.properties propsfile=/home/travis/build/icyphy/ptII/junit245132545763366484.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="161_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="161_JUnitTclTest.html">12</a></td><td>0</td><td>0</td><td>0</td><td>1.483</td><td>2018-04-19T06:17:27</td><td>travis-job-76d1a65b-85f6-4c88-bbcf-fe69e66ed77a</td>
+<td><a title="Display all tests" href="161_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="161_JUnitTclTest.html">12</a></td><td>0</td><td>0</td><td>0</td><td>1.460</td><td>2018-04-19T15:04:21</td><td>travis-job-a9d0641d-5675-42f3-ac71-dfce49f7ff45</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -509,40 +510,40 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/GiottoReceiver.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/GiottoReceiver.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.240</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/GiottoReceiver.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/GiottoReceiver.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.229</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT.xml (RunModel)</td><td>Success</td><td></td><td>0.309</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT.xml (RunModel)</td><td>Success</td><td></td><td>0.297</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT2.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT2.xml (RunModel)</td><td>Success</td><td></td><td>0.084</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT2.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/knownFailedTests/FireAtCT2.xml (RunModel)</td><td>Success</td><td></td><td>0.096</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/Cascade.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/Cascade.xml (RunModel)</td><td>Success</td><td></td><td>0.066</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/Cascade.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/Cascade.xml (RunModel)</td><td>Success</td><td></td><td>0.078</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/CascadeWithInitialTokens.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/CascadeWithInitialTokens.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/CascadeWithInitialTokens.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/CascadeWithInitialTokens.xml (RunModel)</td><td>Success</td><td></td><td>0.058</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequency.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequency.xml (RunModel)</td><td>Success</td><td></td><td>0.029</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequency.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequency.xml (RunModel)</td><td>Success</td><td></td><td>0.051</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequencyWithInitialTokens.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequencyWithInitialTokens.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequencyWithInitialTokens.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/DifferentFrequencyWithInitialTokens.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/FireAtDE.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/FireAtDE.xml (RunModel)</td><td>Success</td><td></td><td>0.095</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/FireAtDE.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/FireAtDE.xml (RunModel)</td><td>Success</td><td></td><td>0.076</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/HierarchyTest.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/HierarchyTest.xml (RunModel)</td><td>Success</td><td></td><td>0.082</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/HierarchyTest.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/HierarchyTest.xml (RunModel)</td><td>Success</td><td></td><td>0.052</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SampleDelay.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SampleDelay.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SampleDelay.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SampleDelay.xml (RunModel)</td><td>Success</td><td></td><td>0.020</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SimpleTest.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SimpleTest.xml (RunModel)</td><td>Success</td><td></td><td>0.059</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SimpleTest.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/domains/giotto/kernel/test/auto/SimpleTest.xml (RunModel)</td><td>Success</td><td></td><td>0.026</td>
 </tr>
 </table>
 <div class="Properties">
