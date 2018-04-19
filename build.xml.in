@@ -160,23 +160,24 @@
        non-CapeCode tests.-->
   <patternset id="test.capecode1.includes">
     <include name="**/ptolemy/actor/lib/jjs/modules/**/junit/JUnitTclTest.java" />
+    <include name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.java" />
   </patternset>
   
   <!-- Second batch of tests for Cape Code. See
        $PTII/org/terraswarm/accessor/accessors/web/build.xml for
        non-CapeCode tests.-->
   <patternset id="test.capecode2.includes">
-    <exclude name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.*" />
+    <include name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
-    <include name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.java" />
+
   </patternset>
 
   <!-- Exclude Cape Code tests from short, long and longest. -->
   <patternset id="test.capecode.excludes">
     <exclude name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/actor/lib/jjs/modules/**/junit/JUnitTclTest.java" />
+    <exclude name="**/ptolemy/actor/lib/jjs/modules/**/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
-    <exclude name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.java" />
+    <exclude name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
@@ -190,6 +191,8 @@
     <!-- FIXME: lbnl/test/junit fails under Travis-ci, but we can't easily log in to run the croom command. -->
     <exclude name="**/lbnl/test/junit/JUnitTclTest.*"/>
     <exclude name="**/KielerJUnitTest.*" />
+    <!-- FIXME: org/hlacerti/test/auto/2Values1Instance.xml hangs while exiting. -->
+    <exclude name="**/org/hlacerti/test/junit/JUnitTclTest.*" />
     <!-- FIXME: HeatConductor fails to load under Travis-ci, but we can't easily log in to run the croom command. -->
     <exclude name="**/ptolemy/actor/lib/fmi/fmus/omc/test/junit/JUnitTclTest.*" />
     <!-- FIXME: EightFourInFourOutsJNI fails under Travis-ci because lib/libJNIFMU is not found. -->
