@@ -162,8 +162,13 @@ foreach i $configs {
 	continue
     }
 
+    if {[regexp "viptos/" $i] == 1} {
+	puts "Skipping $i, PtinyOS is not typically installed."
+	continue
+    }
+
     puts " Force everything to get expanded ptolemy/configs/$i"
-    puts "    (Skipping certain optional packages)"
+    puts "    (Skipping certain optional packages, jxta and viptos)"
 
     set parser [java::new ptolemy.moml.MoMLParser]
 
