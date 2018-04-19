@@ -115,6 +115,14 @@ Caused by: gnu.io.NoSuchPortException
 	... 19 more
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" to the output invalid. Token is discarded.
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [4.6000000000000005]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [4.6000000000000005]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
@@ -125,55 +133,8 @@ WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
-WARNING: SerialPort: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.724, 0.723]
-WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.8]
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the react function: Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254" Stacktrace was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254"
-	at &lt;anonymous&gt; (&lt;function&gt;:267)
-	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)
-	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728) in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt; at line number 1695 at column number 24
-  in .SerialLoopbackUnsignedByte.TrainableTest
-Because:
-Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254" Stacktrace was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254"
-	at &lt;anonymous&gt; (&lt;function&gt;:267)
-	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)
-	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728) in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt; at line number 1695 at column number 24
-	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1102)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: javax.script.ScriptException: Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254" Stacktrace was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254"
-	at &lt;anonymous&gt; (&lt;function&gt;:267)
-	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)
-	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728) in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt; at line number 1695 at column number 24
-	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
-	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
-	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
-	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
-	... 8 more
-Caused by: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1695:24 Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254" Stacktrace was: Error: TrainableTest: After seeing 0 tokens, the input "255" is not within "1e-9" of the expected value "254"
-	at &lt;anonymous&gt; (&lt;function&gt;:267)
-	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)
-	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728)
-	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
-	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
-	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
-	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
-	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$32411$74558A$require.L:1#react#invokeSpecificHandler(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1695)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$32410$73967A$require.L:1#react(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
-	... 10 more
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
 </pre>
 </body>
 </html>
