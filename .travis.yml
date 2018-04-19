@@ -105,10 +105,14 @@ script:
  
   # travis_wait does not help here because we want to redirect the output of cmake.
   # See https://github.com/travis-ci/travis-ci/issues/4190
-  - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
+  # Echo status messages so that Travis knows we are alive
+  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
   - $PTII/bin/ptIITravisBuild.sh
+
+  - echo "Done with ptIITravisBuild.sh at $SECONDS seconds."
 
   # Killing background sleep loop.
   - kill %1
