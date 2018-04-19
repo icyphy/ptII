@@ -27,7 +27,7 @@
     
         cur['ant.project.default-target'] = 'build';
     
-        cur['ant.project.invoked-targets'] = 'build-all,test.report.short';
+        cur['ant.project.invoked-targets'] = 'build,test.core1.xml';
     
         cur['ant.project.name'] = 'ptII';
     
@@ -36,8 +36,6 @@
         cur['awt.toolkit'] = 'sun.awt.X11.XToolkit';
     
         cur['basedir'] = '/home/travis/build/icyphy/ptII';
-    
-        cur['bin.vergil.exists'] = 'true';
     
         cur['bin.vergil.makeable'] = 'true';
     
@@ -92,6 +90,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -161,7 +160,7 @@
     
         cur['env.PT_NO_NET'] = 'true';
     
-        cur['env.PT_TRAVIS_TEST_REPORT_SHORT'] = 'true';
+        cur['env.PT_TRAVIS_TEST_CORE1_XML'] = 'true';
     
         cur['env.PTII'] = '/home/travis/build/icyphy/ptII';
     
@@ -197,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 49804 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 48466 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 49804 10.20.0.18 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 48466 10.20.0.52 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368453190';
+        cur['env.TRAVIS_BUILD_ID'] = '368464862';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '270';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '271';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '32d59bbacfa84219be80788cc221143a56b570af';
+        cur['env.TRAVIS_COMMIT'] = '74dbabc53265b41c584b98cbb99f038a941b3494';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'After Test completes, invoke Stop.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core1.xml and test.core2.xml.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '1147a6b8c9bd...32d59bbacfa8';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '32d59bbacfa8...74dbabc53265';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368453196';
+        cur['env.TRAVIS_JOB_ID'] = '368464867';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '270.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '271.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -353,8 +352,6 @@
     
         cur['jsdoc.command'] = 'node_modules/@terraswarm/jsdoc/jsdoc.js';
     
-        cur['jsdoc.command.exists'] = 'true';
-    
         cur['jsdoc.home'] = 'node_modules/@terraswarm/jsdoc';
     
         cur['jshint.executable'] = '/home/travis/node_modules/jshint/bin/jshint';
@@ -421,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.conversions.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.conversions.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4879680386979648685.properties propsfile=/home/travis/build/icyphy/ptII/junit8510118526587317651.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.conversions.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.conversions.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8989923874951554820.properties propsfile=/home/travis/build/icyphy/ptII/junit9116521584800575352.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="50_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="50_JUnitTclTest.html">27</a></td><td>0</td><td>0</td><td>0</td><td>2.010</td><td>2018-04-19T03:33:42</td><td>travis-job-19728a33-7aca-4e5e-bdd6-891169f1a6a4</td>
+<td><a title="Display all tests" href="50_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="50_JUnitTclTest.html">27</a></td><td>0</td><td>0</td><td>0</td><td>1.901</td><td>2018-04-19T04:35:39</td><td>travis-job-70593bc5-eec4-4fba-9671-ad84c7a208e8</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -513,52 +510,52 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.431</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToComplex.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.399</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.046</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/CartesianToPolar.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.039</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.030</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/ComplexToCartesian.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.050</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.082</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/DoubleToFix.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.084</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.122</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/FixToDouble.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.117</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.025</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/PolarToCartesian.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.013</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/Round.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.080</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml (RunModel)</td><td>Success</td><td></td><td>0.120</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/AnythingToDouble.xml (RunModel)</td><td>Success</td><td></td><td>0.111</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml (RunModel)</td><td>Success</td><td></td><td>0.059</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ArrayOfStringsToArrayOfDoubles.xml (RunModel)</td><td>Success</td><td></td><td>0.064</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.017</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ComplexToCartesianAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.038</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml (RunModel)</td><td>Success</td><td></td><td>0.020</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken.xml (RunModel)</td><td>Success</td><td></td><td>0.024</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/ExpressionToToken2.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.031</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml (RunModel)</td><td>Success</td><td></td><td>0.151</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/InUnitsOf.xml (RunModel)</td><td>Success</td><td></td><td>0.100</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/IntArrayToString.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/IntArrayToString.xml (RunModel)</td><td>Success</td><td></td><td>0.013</td>
@@ -567,31 +564,31 @@
 <td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToCartesianAndBack.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToCartesianAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/PolarToComplexAndBack.xml (RunModel)</td><td>Success</td><td></td><td>0.022</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/Round.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/RoundFire.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml (RunModel)</td><td>Success</td><td></td><td>0.025</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToBoolean.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml (RunModel)</td><td>Success</td><td></td><td>0.038</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToDouble.xml (RunModel)</td><td>Success</td><td></td><td>0.016</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToInt.xml (RunModel)</td><td>Success</td><td></td><td>0.014</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml (RunModel)</td><td>Success</td><td></td><td>0.016</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/StringToUnsignedByteArray.xml (RunModel)</td><td>Success</td><td></td><td>0.021</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/conversions/test/auto/TokenToExpression.xml (RunModel)</td><td>Success</td><td></td><td>0.015</td>
 </tr>
 </table>
 <div class="Properties">

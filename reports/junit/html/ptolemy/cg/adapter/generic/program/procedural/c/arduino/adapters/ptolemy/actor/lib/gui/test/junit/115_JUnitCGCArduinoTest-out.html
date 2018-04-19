@@ -1,0 +1,22 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitCGCArduinoTest</title>
+</head>
+<body>
+<pre>----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false -generatorPackageList generic.program.procedural.c.arduino /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/test/auto/Display.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in",
+    writing "/home/travis/cg/Display.mk"
+Using ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Display.mk
+cp Display_Main.c Display.cpp
+/usr/local/arduino/hardware/tools/avr/bin/avr-g++ -c -D__AVR__ -D__AVR_ATmega32U4__ -DPT_DOES_NOT_HAVE_MALLOC_H -DPT_DOES_NOT_HAVE_MEMORY_H -DPT_DOES_NOT_HAVE_TIME_H -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_YUN -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8041 -DUSB_MANUFACTURER= -DUSB_PRODUCT="\"Arduino Yun\"" -I/usr/local/arduino/hardware/arduino/avr/cores/arduino -I/usr/local/arduino/hardware/arduino/avr/variants/yun -D__int64="long long" -Wall  -std=c99 -ggdb -I /home/travis/cg/commons/ -I /home/travis/cg//_Display Display.cpp -o Display.o -lm 
+/bin/sh: 1: /usr/local/arduino/hardware/tools/avr/bin/avr-g++: not found
+All Done
+AutoCGTests: /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml: Return value of the last command executed was not zero, it was: 2, marking this as a test failure.
+</pre>
+</body>
+</html>

@@ -27,7 +27,7 @@
     
         cur['ant.project.default-target'] = 'build';
     
-        cur['ant.project.invoked-targets'] = 'build-all,test.report.short';
+        cur['ant.project.invoked-targets'] = 'build,test.core1.xml';
     
         cur['ant.project.name'] = 'ptII';
     
@@ -36,8 +36,6 @@
         cur['awt.toolkit'] = 'sun.awt.X11.XToolkit';
     
         cur['basedir'] = '/home/travis/build/icyphy/ptII';
-    
-        cur['bin.vergil.exists'] = 'true';
     
         cur['bin.vergil.makeable'] = 'true';
     
@@ -92,6 +90,7 @@
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -161,7 +160,7 @@
     
         cur['env.PT_NO_NET'] = 'true';
     
-        cur['env.PT_TRAVIS_TEST_REPORT_SHORT'] = 'true';
+        cur['env.PT_TRAVIS_TEST_CORE1_XML'] = 'true';
     
         cur['env.PTII'] = '/home/travis/build/icyphy/ptII';
     
@@ -197,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 49804 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 48466 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 49804 10.20.0.18 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 48466 10.20.0.52 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368453190';
+        cur['env.TRAVIS_BUILD_ID'] = '368464862';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '270';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '271';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '32d59bbacfa84219be80788cc221143a56b570af';
+        cur['env.TRAVIS_COMMIT'] = '74dbabc53265b41c584b98cbb99f038a941b3494';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'After Test completes, invoke Stop.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core1.xml and test.core2.xml.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '1147a6b8c9bd...32d59bbacfa8';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '32d59bbacfa8...74dbabc53265';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368453196';
+        cur['env.TRAVIS_JOB_ID'] = '368464867';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '270.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '271.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -295,7 +294,7 @@
     
         cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
     
-        cur['java.class.path'] = '/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar';
+        cur['java.class.path'] = '/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar';
     
         cur['java.class.version'] = '52.0';
     
@@ -352,8 +351,6 @@
         cur['javadoc.packagenames'] = 'com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*';
     
         cur['jsdoc.command'] = 'node_modules/@terraswarm/jsdoc/jsdoc.js';
-    
-        cur['jsdoc.command.exists'] = 'true';
     
         cur['jsdoc.home'] = 'node_modules/@terraswarm/jsdoc';
     
@@ -421,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4420327293629654996.properties propsfile=/home/travis/build/icyphy/ptII/junit7466477379641337771.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1921614290032778345.properties propsfile=/home/travis/build/icyphy/ptII/junit6253759140762780175.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="45_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="45_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>21.765</td><td>2018-04-19T03:32:47</td><td>travis-job-19728a33-7aca-4e5e-bdd6-891169f1a6a4</td>
+<td><a title="Display all tests" href="45_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="45_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>20.841</td><td>2018-04-19T04:34:46</td><td>travis-job-70593bc5-eec4-4fba-9671-ad84c7a208e8</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -513,52 +510,52 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.561</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.545</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.139</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.117</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.978</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.134</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>2.012</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>2.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.006</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.004</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.517</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)</td><td>Success</td><td></td><td>4.755</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)</td><td>Success</td><td></td><td>2.414</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)</td><td>Success</td><td></td><td>3.195</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.025</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.019</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>3.997</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>3.999</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.310</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.290</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.435</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.426</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.007</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.008</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.007</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.005</td>
 </tr>
 </table>
 <div class="Properties">
