@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.2 45438 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.40 36244 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.2 45438 10.20.0.47 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.40 36244 10.20.1.171 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368741222';
+        cur['env.TRAVIS_BUILD_ID'] = '368800485';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '276';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '278';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '3a8df342c6781478abfc33f1a8dfc5eb0e4e58f5';
+        cur['env.TRAVIS_COMMIT'] = 'a5ccd440bf764ea6390553d05174e4eae87b03e1';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Create /usr/lib/jni';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Pass the value of SECONDS as an argument to ptIITravisBuild.sh';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '6fcd319cffbf...3a8df342c678';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '3ea9b89cc5be...a5ccd440bf76';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368741229';
+        cur['env.TRAVIS_JOB_ID'] = '368800492';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '276.7';
+        cur['env.TRAVIS_JOB_NUMBER'] = '278.7';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.pn.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.pn.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7297413461953783487.properties propsfile=/home/travis/build/icyphy/ptII/junit9100014777335453412.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.pn.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.pn.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3153724184115774624.properties propsfile=/home/travis/build/icyphy/ptII/junit7986699906725537422.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -499,8 +500,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Error">
-<td><a title="Display all tests" href="15_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="15_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="15_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>24.192</td><td>2018-04-19T17:32:45</td><td>travis-job-a19ccf8d-d29e-4874-a7df-ff54647706e4</td>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="15_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="15_JUnitTclTest.html">10</a></td><td>0</td><td>0</td><td>0</td><td>22.223</td><td>2018-04-19T19:49:10</td><td>travis-job-eb318d61-886d-4835-9ea9-4d2985e9222d</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -517,32 +518,26 @@
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
-<tr valign="top" class="Error">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml (RunModel)</td><td>Error</td><td>N/A<br>
-<br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 6 tokens, yet the correctValues parameter was expecting 7 tokens.<br>  in .Barrier.Test2<br>	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:409)<br>	at ptolemy.actor.process.ProcessThread.wrapup(ProcessThread.java:304)<br>	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:231)<br>
-</code></td><td>6.922</td>
+<tr valign="top" class="TableRowColor">
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/Barrier.xml (RunModel)</td><td>Success</td><td></td><td>8.928</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml (RunModel)</td><td>Success</td><td></td><td>3.248</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/HammingNumbers.xml (RunModel)</td><td>Success</td><td></td><td>3.065</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml (RunModel)</td><td>Success</td><td></td><td>0.098</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousMerge.xml (RunModel)</td><td>Success</td><td></td><td>0.067</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml (RunModel)</td><td>Success</td><td></td><td>0.134</td>
-</tr>
-<tr valign="top" class="Error">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)</td><td>Error</td><td>N/A<br>
-<br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 17. Should have been: 1<br>  in .ResourcePool.Test2<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.actor.process.ProcessThread._iterateActor(ProcessThread.java:339)<br>	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)<br>
-</code></td><td>1.817</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/RendezvousOrderedMerge.xml (RunModel)</td><td>Success</td><td></td><td>0.092</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml (RunModel)</td><td>Success</td><td></td><td>1.993</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/ResourcePool.xml (RunModel)</td><td>Success</td><td></td><td>3.283</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml (RunModel)</td><td>Success</td><td></td><td>9.497</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/SensorModel.xml (RunModel)</td><td>Success</td><td></td><td>1.998</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/pn/test/auto/WriteRegulator.xml (RunModel)</td><td>Success</td><td></td><td>4.315</td>
 </tr>
 </table>
 <div class="Properties">
