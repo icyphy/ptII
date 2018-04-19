@@ -335,6 +335,9 @@
     <!-- OpenModelica is not typically installed. -->
     <exclude name="**/ptolemy/domains/openmodelica/lib/test/junit/JUNitTclTest.*" />
 
+    <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/arduino/**"/>
+    <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/mbed/**" />
+
     <!-- Don't try to execute these utility classes. -->
     <exclude name="**/ptolemy/util/test/junit/Auto32Tests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoTests.*" />
