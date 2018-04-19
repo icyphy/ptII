@@ -11,8 +11,9 @@ env:
     - PT_TRAVIS_TEST_CAPECODE2_XML=true
     - PT_TRAVIS_TEST_CORE1_XML=true
     - PT_TRAVIS_TEST_CORE2_XML=true
+    - PT_TRAVIS_TEST_CORE3_XML=true
     - PT_TRAVIS_TEST_INSTALLERS=true
-    - # PT_TRAVIS_TEST_REPORT_SHORT=true
+    #   - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
     - PTII=${TRAVIS_BUILD_DIR}
