@@ -15,7 +15,7 @@
     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author:  Cl&eacute;ment Michel and Janette Cardoso.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author:  Clement Michel and Janette Cardoso.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
         </property>
