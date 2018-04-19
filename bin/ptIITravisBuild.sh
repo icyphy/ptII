@@ -52,6 +52,7 @@ lastLines=50
 #   -junitreport is optional, and if present, then "ant junitreport" is run.
 #
 updateGhPages () {
+    echo "updateGhPages(): Start: `date`"
     if [ $1 = "-junitreport" ]; then
         length=$(($#-2))
         sources=${@:2:$length}
@@ -186,6 +187,7 @@ updateGhPages () {
 
     cd $lastwd
     rm -rf $TMP
+    echo "updateGhPages(): End: `date`"
 }
 
 # Timeout a process.
@@ -269,7 +271,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
     LOG=$PTII/reports/junit/test.capecode2.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2580 ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 2400 ant build test.capecode2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -284,6 +286,20 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 fi
 
+# Run the third batch of CapeCode tests.
+if [ ! -z "$PT_TRAVIS_TEST_CAPECODE3_XML" ]; then
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.capecode3.xml.txt
+    echo "$0: Output will appear in $LOG"
+    
+    timeout 1700 ant build test.capecode3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    updateGhPages -junitreport $PTII/reports/junit reports/
+fi
+
 # Run the first batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
@@ -291,7 +307,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
     LOG=$PTII/reports/junit/test.core1.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2480 ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 1800 ant build test.core1.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -305,21 +321,35 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     LOG=$PTII/reports/junit/test.core2.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2380 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 2300 ant build test.core2.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
     updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
-# Run the second batch of core tests.
+# Run the third batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core3.xml.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2380 ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 1900 ant build test.core3.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+
+    echo "$0: Start of last $lastLines lines of $LOG"
+    tail -$lastLines $LOG
+    updateGhPages -junitreport $PTII/reports/junit reports/
+fi
+
+# Run the third batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    LOG=$PTII/reports/junit/test.core4.xml.txt
+    echo "$0: Output will appear in $LOG"
+    
+    timeout 2000 ant build test.core4.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
@@ -392,7 +422,7 @@ if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     echo "Invoking ant: `date`"
     # The timeouts should vary so as to avoid git conflicts.
     # Use build-all so that we build in lbnl.
-    timeout 1800 ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 1700 ant build-all test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
