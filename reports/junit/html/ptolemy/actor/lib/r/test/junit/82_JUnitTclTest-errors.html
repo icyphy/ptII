@@ -91,6 +91,7 @@
     
         cur['env.GIT_ASKPASS'] = 'echo';
     
+    
         cur['env.GOPATH'] = '/home/travis/gopath';
     
         cur['env.GOROOT'] = '/home/travis/.gimme/versions/go1.7.4.linux.amd64';
@@ -195,9 +196,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.5 48466 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.2 36252 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.5 48466 10.20.0.52 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.2 36252 10.20.0.10 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +212,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368464862';
+        cur['env.TRAVIS_BUILD_ID'] = '368486984';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '271';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '272';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '74dbabc53265b41c584b98cbb99f038a941b3494';
+        cur['env.TRAVIS_COMMIT'] = '3c8c214f4c615de4c4f30b5e5da698c8a223a516';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core1.xml and test.core2.xml.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added test.core3.xml.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '32d59bbacfa8...74dbabc53265';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '74dbabc53265...3c8c214f4c61';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368464867';
+        cur['env.TRAVIS_JOB_ID'] = '368486989';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '271.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '272.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +418,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.r.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.r.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3253056708236066180.properties propsfile=/home/travis/build/icyphy/ptII/junit5216327169708746317.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.r.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.r.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8593389113746056340.properties propsfile=/home/travis/build/icyphy/ptII/junit4759095079902942694.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +501,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="82_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="82_JUnitTclTest.html">5</a></td><td><a title="Display only errors" href="82_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>0.880</td><td>2018-04-19T04:37:07</td><td>travis-job-70593bc5-eec4-4fba-9671-ad84c7a208e8</td>
+<td><a title="Display all tests" href="82_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="82_JUnitTclTest.html">5</a></td><td><a title="Display only errors" href="82_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>0.913</td><td>2018-04-19T06:06:31</td><td>travis-job-76d1a65b-85f6-4c88-bbcf-fe69e66ed77a</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -512,13 +513,13 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/r/test/auto/RExpression_Dataframe_Test.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/r/test/auto/RExpression_Dataframe_Test.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: There has been a problem running the R script!<br>It may be due to an error in your script, it may be that R is not<br>installed on your system, or it may not be on your path and cannot<br>be located by Kepler.  Please make sure R is installed and the<br> section 8.2.2 of the Kepler User Manual.<br>  in .RExpression_Dataframe_Test.RExpression<br>Because:<br>java.lang.NullPointerException<br>	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:860)<br>	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)<br>	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)<br>	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: java.lang.NullPointerException<br>	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:843)<br>
-</code></td><td>0.380</td>
+</code></td><td>0.393</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/r/test/auto/RExpression_Matrix_IO_Test.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/r/test/auto/RExpression_Matrix_IO_Test.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: There has been a problem running the R script!<br>It may be due to an error in your script, it may be that R is not<br>installed on your system, or it may not be on your path and cannot<br>be located by Kepler.  Please make sure R is installed and the<br> section 8.2.2 of the Kepler User Manual.<br>  in .RExpression_Matrix_IO_Test.RExpression<br>Because:<br>java.lang.NullPointerException<br>	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:860)<br>	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)<br>	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)<br>	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: java.lang.NullPointerException<br>	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:843)<br>
-</code></td><td>0.059</td>
+</code></td><td>0.076</td>
 </tr>
 </table>
 <div class="Properties">
