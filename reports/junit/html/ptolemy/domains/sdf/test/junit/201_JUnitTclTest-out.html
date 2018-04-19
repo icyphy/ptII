@@ -1,0 +1,297 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/SDFSchedulerErrors.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 15:07:02 UTC 2018
+15 ms. Memory: 116224K Free: 105159K (90%)
+4 ms. Memory: 116224K Free: 98118K (84%)
+4 ms. Memory: 116224K Free: 91046K (78%)
+4 ms. Memory: 116224K Free: 87929K (76%)
+/home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/composition.tcl
+49 ms. Memory: 116224K Free: 83722K (72%)
+8 ms. Memory: 116224K Free: 81926K (70%)
+/home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/cycle.tcl
+.Toplevel.Director Preinitializing ...
+Invoking preinitialize():  .Toplevel.Actor1
+Invoking preinitialize():  .Toplevel.Actor2
+Invoking preinitialize():  .Toplevel.Delay
+.Toplevel.Director Finished preinitialize().
+### Schedule:
+Execute Schedule{
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestDelay {.Toplevel.Actor1}
+Fire Actor ptolemy.domains.sdf.kernel.test.SDFTestDelay {.Toplevel.Actor2}
+Fire Actor ptolemy.domains.sdf.lib.SampleDelay {.Toplevel.Delay}
+}
+### End schedule
+Called initialize().
+Invoking initialize():  .Toplevel.Actor1
+Initializing actor: .Toplevel.Actor1.
+Invoking initialize():  .Toplevel.Actor2
+Initializing actor: .Toplevel.Actor2.
+Invoking initialize():  .Toplevel.Delay
+Initializing actor: .Toplevel.Delay.
+Director: Called prefire().
+-- Setting current time to 0.0
+Director prefire returns true.
+The actor .Toplevel.Actor1 will be iterated.
+The actor .Toplevel.Actor1 was iterated.
+The actor .Toplevel.Actor2 will be iterated.
+The actor .Toplevel.Actor2 was iterated.
+The actor .Toplevel.Delay will be iterated.
+The actor .Toplevel.Delay was iterated.
+Director: Called postfire().
+Postfire returns: true
+Director: Called prefire().
+-- Setting current time to 0.0
+Director prefire returns true.
+The actor .Toplevel.Actor1 will be iterated.
+The actor .Toplevel.Actor1 was iterated.
+The actor .Toplevel.Actor2 will be iterated.
+The actor .Toplevel.Actor2 was iterated.
+The actor .Toplevel.Delay will be iterated.
+The actor .Toplevel.Delay was iterated.
+Director: Called postfire().
+Postfire returns: true
+Director: Called prefire().
+-- Setting current time to 0.0
+Director prefire returns true.
+The actor .Toplevel.Actor1 will be iterated.
+The actor .Toplevel.Actor1 was iterated.
+The actor .Toplevel.Actor2 will be iterated.
+The actor .Toplevel.Actor2 was iterated.
+The actor .Toplevel.Delay will be iterated.
+The actor .Toplevel.Delay was iterated.
+Director: Called postfire().
+Postfire returns: true
+Director: Called prefire().
+-- Setting current time to 0.0
+Director prefire returns true.
+The actor .Toplevel.Actor1 will be iterated.
+The actor .Toplevel.Actor1 was iterated.
+The actor .Toplevel.Actor2 will be iterated.
+The actor .Toplevel.Actor2 was iterated.
+The actor .Toplevel.Delay will be iterated.
+The actor .Toplevel.Delay was iterated.
+Director: Called postfire().
+Postfire returns: true
+Director: Called prefire().
+-- Setting current time to 0.0
+Director prefire returns true.
+The actor .Toplevel.Actor1 will be iterated.
+The actor .Toplevel.Actor1 was iterated.
+The actor .Toplevel.Actor2 will be iterated.
+The actor .Toplevel.Actor2 was iterated.
+The actor .Toplevel.Delay will be iterated.
+The actor .Toplevel.Delay was iterated.
+Director: Called postfire().
+Postfire returns: true
+Director: Called prefire().
+-- Setting current time to 0.0
+Director prefire returns true.
+The actor .Toplevel.Actor1 will be iterated.
+The actor .Toplevel.Actor1 was iterated.
+The actor .Toplevel.Actor2 will be iterated.
+The actor .Toplevel.Actor2 was iterated.
+The actor .Toplevel.Delay will be iterated.
+The actor .Toplevel.Delay was iterated.
+Reached specified number of iterations: 6
+Director: Called wrapup().
+6 ms. Memory: 146944K Free: 140018K (95%)
+04/19/18 03:07:03
+Failed: 0  Total Tests: 8  ((Passed: 8, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu Apr 19 15:07:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Array.xml
+28 ms. Memory: 146944K Free: 99034K (67%)
+reloadAllAccessors: .Array
+----------------- testing Thu Apr 19 15:07:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Butterfly.xml
+74 ms. Memory: 146944K Free: 92825K (63%)
+reloadAllAccessors: .Butterfly
+----------------- testing Thu Apr 19 15:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Expression.xml
+47 ms. Memory: 146944K Free: 87271K (59%)
+reloadAllAccessors: .Expression
+----------------- testing Thu Apr 19 15:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Eye.xml
+136 ms. Memory: 146944K Free: 117744K (80%)
+reloadAllAccessors: .Eye
+----------------- testing Thu Apr 19 15:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixFIR.xml
+145 ms. Memory: 146944K Free: 80842K (55%)
+reloadAllAccessors: .FixFIR
+----------------- testing Thu Apr 19 15:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixPoint.xml
+7 ms. Memory: 208384K Free: 198369K (95%)
+reloadAllAccessors: .FixPoint
+----------------- testing Thu Apr 19 15:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Gravitation.xml
+3194 ms. Memory: 208384K Free: 101774K (49%)
+reloadAllAccessors: .Gravitation
+----------------- testing Thu Apr 19 15:07:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/GravitationWithCollisionDetection.xml
+5455 ms. Memory: 710656K Free: 183174K (26%)
+reloadAllAccessors: .GravitationWithCollisionDetection
+----------------- testing Thu Apr 19 15:07:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDF.xml
+43 ms. Memory: 710656K Free: 159850K (22%)
+reloadAllAccessors: .HDF
+----------------- testing Thu Apr 19 15:07:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDFwithTransientStates.xml
+36 ms. Memory: 710656K Free: 134914K (19%)
+reloadAllAccessors: .HDFwithTransientStates
+----------------- testing Thu Apr 19 15:07:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HTVQ.xml
+785 ms. Memory: 711168K Free: 585022K (82%)
+reloadAllAccessors: .HTVQ
+----------------- testing Thu Apr 19 15:07:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProduction.xml
+5 ms. Memory: 711168K Free: 571908K (80%)
+reloadAllAccessors: .InferInitProduction
+----------------- testing Thu Apr 19 15:07:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProductionDeeper.xml
+8 ms. Memory: 711168K Free: 559440K (79%)
+reloadAllAccessors: .InferInitProductionDeeper
+----------------- testing Thu Apr 19 15:07:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LMSAdaptive.xml
+13 ms. Memory: 711168K Free: 542623K (76%)
+reloadAllAccessors: .LMSAdaptive
+----------------- testing Thu Apr 19 15:07:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LogisticMap.xml
+428 ms. Memory: 711168K Free: 530155K (75%)
+reloadAllAccessors: .LogisticMap
+----------------- testing Thu Apr 19 15:07:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MaximumEntropySpectrum.xml
+76 ms. Memory: 711168K Free: 459514K (65%)
+reloadAllAccessors: .MaximumEntropySpectrum
+----------------- testing Thu Apr 19 15:07:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDF.xml
+22 ms. Memory: 711168K Free: 437107K (61%)
+reloadAllAccessors: .MultirateSDF
+----------------- testing Thu Apr 19 15:07:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDFwithTransientStates.xml
+19 ms. Memory: 711168K Free: 412155K (58%)
+reloadAllAccessors: .MultirateSDFwithTransientStates
+----------------- testing Thu Apr 19 15:07:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/NoisySinewave.xml
+11 ms. Memory: 711168K Free: 391401K (55%)
+reloadAllAccessors: .NoisySinewave
+----------------- testing Thu Apr 19 15:07:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Objects.xml
+1 ms. Memory: 711168K Free: 374775K (53%)
+reloadAllAccessors: .Objects
+----------------- testing Thu Apr 19 15:07:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/OrthogonalCom.xml
+6 ms. Memory: 711168K Free: 362315K (51%)
+reloadAllAccessors: .OrthogonalCom
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/RijndaelEncryption.xml
+294 ms. Memory: 711168K Free: 198474K (28%)
+reloadAllAccessors: .RijndaelEncryption
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/SDFEmptyIterations.xml
+6 ms. Memory: 711168K Free: 190172K (27%)
+reloadAllAccessors: .SDFEmptyIterations
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Spectrum.xml
+30 ms. Memory: 711168K Free: 165250K (23%)
+reloadAllAccessors: .Spectrum
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/de_inside_sdf.xml
+7 ms. Memory: 711168K Free: 156949K (22%)
+reloadAllAccessors: .de_inside_sdf
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedHierarchicalSDF.xml
+6 ms. Memory: 711168K Free: 144481K (20%)
+reloadAllAccessors: .disconnectedHierarchicalSDF
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedSDF.xml
+3 ms. Memory: 711168K Free: 134542K (19%)
+reloadAllAccessors: .disconnectedSDF
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/emptyRefinement.xml
+3 ms. Memory: 711168K Free: 126241K (18%)
+reloadAllAccessors: .emptyRefinement
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/filePortParameter.xml
+15 ms. Memory: 711168K Free: 113789K (16%)
+reloadAllAccessors: .filePortParameter
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/inferRelationWidth1.xml
+4 ms. Memory: 711168K Free: 105488K (15%)
+reloadAllAccessors: .inferRelationWidth1
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/initProductionInference.xml
+3 ms. Memory: 711168K Free: 97187K (14%)
+reloadAllAccessors: .initProductionInference
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup.xml
+2 ms. Memory: 711168K Free: 87248K (12%)
+reloadAllAccessors: .relationGroup
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup10.xml
+2 ms. Memory: 711168K Free: 78946K (11%)
+reloadAllAccessors: .relationGroup10
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup11.xml
+2 ms. Memory: 711168K Free: 71766K (10%)
+reloadAllAccessors: .relationGroup11
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup12.xml
+2 ms. Memory: 710144K Free: 684517K (96%)
+reloadAllAccessors: .relationGroup12
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup13.xml
+9 ms. Memory: 710144K Free: 674986K (95%)
+reloadAllAccessors: .relationGroup13
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup14.xml
+3 ms. Memory: 710144K Free: 666698K (94%)
+reloadAllAccessors: .relationGroup14
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup15.xml
+1 ms. Memory: 710144K Free: 658410K (93%)
+reloadAllAccessors: .relationGroup15
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup2.xml
+2 ms. Memory: 710144K Free: 649008K (91%)
+reloadAllAccessors: .relationGroup2
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup3.xml
+2 ms. Memory: 710144K Free: 640720K (90%)
+reloadAllAccessors: .relationGroup3
+----------------- testing Thu Apr 19 15:07:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup4.xml
+5 ms. Memory: 710144K Free: 632432K (89%)
+reloadAllAccessors: .relationGroup4
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup5.xml
+6 ms. Memory: 710144K Free: 623030K (88%)
+reloadAllAccessors: .relationGroup5
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup6.xml
+4 ms. Memory: 710144K Free: 614742K (87%)
+reloadAllAccessors: .relationGroup6
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup7.xml
+2 ms. Memory: 710144K Free: 606454K (85%)
+reloadAllAccessors: .relationGroup7
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup8.xml
+2 ms. Memory: 710144K Free: 597052K (84%)
+reloadAllAccessors: .relationGroup8
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup9.xml
+10 ms. Memory: 710144K Free: 588764K (83%)
+reloadAllAccessors: .relationGroup9
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_de.xml
+18 ms. Memory: 710144K Free: 576325K (81%)
+reloadAllAccessors: .sdf_inside_de
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml
+38 ms. Memory: 710144K Free: 542043K (76%)
+reloadAllAccessors: .sdf_inside_pn
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_sdf1.xml
+3 ms. Memory: 710144K Free: 529596K (75%)
+reloadAllAccessors: .sdf_sdf1
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/test1.xml
+7 ms. Memory: 710144K Free: 521308K (73%)
+reloadAllAccessors: .test1
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time1.xml
+1 ms. Memory: 710144K Free: 511905K (72%)
+reloadAllAccessors: .time1
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time2.xml
+2 ms. Memory: 710144K Free: 503618K (71%)
+reloadAllAccessors: .time2
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time3.xml
+7 ms. Memory: 710144K Free: 495330K (70%)
+reloadAllAccessors: .time3
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time4.xml
+4 ms. Memory: 710144K Free: 481767K (68%)
+reloadAllAccessors: .time4
+----------------- testing Thu Apr 19 15:07:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time5.xml
+4003 ms. Memory: 710144K Free: 473480K (67%)
+reloadAllAccessors: .time5
+----------------- testing Thu Apr 19 15:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_Const_Integer_smallest_Type.xml
+2 ms. Memory: 710144K Free: 465192K (66%)
+reloadAllAccessors: .typeSystem_Const_Integer_smallest_Type
+----------------- testing Thu Apr 19 15:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_declared_Inports_OutportTypeException.xml
+.typeSystem_declared_Inports_OutportTypeException.TestExceptionAttribute: initialize() was not invoked, but wrapup() was.  This is unusual, but not always a problem.  For example, exporting JNLP will do this.
+2 ms. Memory: 710144K Free: 455789K (64%)
+reloadAllAccessors: .typeSystem_declared_Inports_OutportTypeException
+----------------- testing Thu Apr 19 15:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_oneDeclaredInportType_wrongTypeOutport.xml
+2 ms. Memory: 710144K Free: 447502K (63%)
+reloadAllAccessors: .typeSystem_oneDeclaredInportType_wrongTypeOutport
+----------------- testing Thu Apr 19 15:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width.xml
+2 ms. Memory: 710144K Free: 439214K (62%)
+reloadAllAccessors: .width
+----------------- testing Thu Apr 19 15:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width2.xml
+27 ms. Memory: 710144K Free: 429812K (61%)
+reloadAllAccessors: .width2
+----------------- testing Thu Apr 19 15:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width3.xml
+26 ms. Memory: 710144K Free: 421524K (59%)
+reloadAllAccessors: .width3
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
