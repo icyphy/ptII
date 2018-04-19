@@ -133,6 +133,7 @@ fi
 
 sudo cp -r $INSTALL_PREFIX/include/* /usr/local/include/
 sudo cp -r $INSTALL_PREFIX/lib/* /usr/local/lib/
+sudo mkdir /usr/lib/jni
 sudo cp $INSTALL_PREFIX/share/OpenCV/java/*so /usr/lib/jni/
 sudo mkdir -p /usr/share/OpenCV/java/
 sudo cp $INSTALL_PREFIX/share/OpenCV/java/*  /usr/share/OpenCV/java/
