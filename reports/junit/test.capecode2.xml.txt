@@ -1,0 +1,1151 @@
+/home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant build test.capecode2.xml
+Buildfile: /home/travis/build/icyphy/ptII/build.xml
+
+build-message:
+     [echo] Use ant -p to see other targets. JAVA_HOME=/usr/lib/jvm/java-8-oracle
+     [echo] tools.jar is necessary for compilation of doc/doclets/.
+     [echo] If compilation fails, try setting JAVA_HOME to the location of the JDK.
+     [echo] For example:
+     [echo]   [bldmastr@sisyphus ptII]$ which java
+     [echo]   /usr/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+     [echo]     
+
+-build-subprojects-empty:
+
+-check-maven-ant-task:
+
+build-websensor:
+
+build-subprojects:
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+
+-check-jsdoc:
+
+jsdoc-install:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/node_modules
+     [exec] /home/travis/build/icyphy/ptII
+     [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
+     [exec]   ├── bluebird@3.4.7 
+     [exec]   ├─┬ catharsis@0.8.9 
+     [exec]   │ └─┬ underscore-contrib@0.3.0 
+     [exec]   │   └── underscore@1.6.0 
+     [exec]   ├── escape-string-regexp@1.0.5 
+     [exec]   ├─┬ espree@3.1.7 
+     [exec]   │ ├── acorn@3.3.0 
+     [exec]   │ └── acorn-jsx@3.0.1 
+     [exec]   ├── js2xmlparser@1.0.0 
+     [exec]   ├─┬ klaw@1.3.1 
+     [exec]   │ └── graceful-fs@4.1.11 
+     [exec]   ├── marked@0.3.19 
+     [exec]   ├─┬ mkdirp@0.5.1 
+     [exec]   │ └── minimist@0.0.8 
+     [exec]   ├─┬ requizzle@0.2.1 
+     [exec]   │ └── underscore@1.6.0 
+     [exec]   ├── strip-json-comments@2.0.1 
+     [exec]   ├── taffydb@2.6.2 
+     [exec]   └── underscore@1.8.3 
+     [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/package.json'
+     [exec] npm WARN ptII No description
+     [exec] npm WARN ptII No repository field.
+     [exec] npm WARN ptII No README data
+     [exec] npm WARN ptII No license field.
+
+jsdoc-update:
+
+-ptdoc-no-node:
+
+-ptdoc-no-npm:
+
+ptdoc:
+     [echo] 
+     [echo]       If the ptdoc target fails, then try running:
+     [echo]           ant build-project build-bin
+     [echo]     
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+
+-check-jsdoc:
+     [echo] To stop CapeCode from invoking jsdoc and svn, set the PT_NO_NET environment variable.  
+     [echo]     Under BASH:
+     [echo]         export PT_NO_NET=true
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]     
+
+jsdoc-install:
+     [echo] npm.executable: npm
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/node_modules
+     [exec] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors
+     [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
+     [exec]   ├── bluebird@3.4.7 
+     [exec]   ├─┬ catharsis@0.8.9 
+     [exec]   │ └─┬ underscore-contrib@0.3.0 
+     [exec]   │   └── underscore@1.6.0 
+     [exec]   ├── escape-string-regexp@1.0.5 
+     [exec]   ├─┬ espree@3.1.7 
+     [exec]   │ ├── acorn@3.3.0 
+     [exec]   │ └── acorn-jsx@3.0.1 
+     [exec]   ├── js2xmlparser@1.0.0 
+     [exec]   ├─┬ klaw@1.3.1 
+     [exec]   │ └── graceful-fs@4.1.11 
+     [exec]   ├── marked@0.3.19 
+     [exec]   ├─┬ mkdirp@0.5.1 
+     [exec]   │ └── minimist@0.0.8 
+     [exec]   ├─┬ requizzle@0.2.1 
+     [exec]   │ └── underscore@1.6.0 
+     [exec]   ├── strip-json-comments@2.0.1 
+     [exec]   ├── taffydb@2.6.2 
+     [exec]   └── underscore@1.8.3 
+     [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/package.json'
+     [exec] npm WARN accessors No description
+     [exec] npm WARN accessors No repository field.
+     [exec] npm WARN accessors No README data
+     [exec] npm WARN accessors No license field.
+
+jsdoc-update:
+
+-ptdoc-no-node-message:
+
+-ptdoc-no-npm-message:
+
+-check-jsdoc-again:
+
+-jsdoc-command-message:
+
+ptdoc:
+     [echo] Invoke /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/../node_modules/@terraswarm/jsdoc/jsdoc.js to read *.js files and generate *PtDoc.xml files suitable for Ptolemy.
+     [echo]     See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems
+     [echo]     See jsdoc/jsdoc.json
+     [echo]     See jsdoc/plugins/accessorJSDocTags.js
+     [echo]     See jsdoc/templates/ptdoc/publish.js
+     [echo] 
+     [echo]     If the ptdoc target fails, the there is likely a problem with node or npm.  It is possible
+     [echo]     to use CapeCode even if the ptdoc target fails.
+     [echo]     
+     [echo]     If you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo] 
+     [echo]     
+     [exec] Generating output files...
+     [exec] Finished running in 4.33 seconds.
+
+build-project:
+     [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
+    [javac] Compiling 4705 source files to /home/travis/build/icyphy/ptII
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.NbBundleProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.URLStreamHandlerRegistrationProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.ServiceProviderProcessor' less than -source '1.8'
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:118: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+    [javac]                               ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]             ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]                              ^
+    [javac] Note: Some input files use or override a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 9 warnings
+
+-check-ptII-mk-file:
+
+-check-bin-vergil:
+
+-check-make-bin-vergil:
+
+build-bin-not:
+
+build-not-bin-vergil:
+     [echo] 
+     [echo] 	$PTII/bin/vergil does not exist, perhaps (cd $PTII/bin; make) has not been run?
+     [echo] 	This can happen if the make binary cannot be found in the path or if $PTII/mk/ptII.mk
+     [echo] 	is not present.
+     [echo] 	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
+     [echo] 	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
+     [echo] 	However, $PTII/bin does include other scripts that may be of use.
+     [echo]       
+
+build-bin:
+     [exec] for file in .momllib-util .nc2moml-util .ncapp2moml-util capecode convertToLazy copernicus decompile emachine giottoc histogram homer jode mescal moml obfuscate ptcg ptcodegen ptexecute ptjacl ptjaclapp ptplot ptstartjini ptolemy ptweb pxgraph soot tinicomm tinic tiniconverter startjini.gui vergil; do \
+     [exec] 		echo "$file"; \
+     [exec] 		rm -f "$file"; \
+     [exec] 		ln -s ptinvoke "$file"; \
+     [exec] 		chmod a+x "$file"; \
+     [exec] 	done
+     [exec] .momllib-util
+     [exec] .nc2moml-util
+     [exec] .ncapp2moml-util
+     [exec] capecode
+     [exec] convertToLazy
+     [exec] copernicus
+     [exec] decompile
+     [exec] emachine
+     [exec] giottoc
+     [exec] histogram
+     [exec] homer
+     [exec] jode
+     [exec] mescal
+     [exec] moml
+     [exec] obfuscate
+     [exec] ptcg
+     [exec] ptcodegen
+     [exec] ptexecute
+     [exec] ptjacl
+     [exec] ptjaclapp
+     [exec] ptplot
+     [exec] ptstartjini
+     [exec] ptolemy
+     [exec] ptweb
+     [exec] pxgraph
+     [exec] soot
+     [exec] tinicomm
+     [exec] tinic
+     [exec] tiniconverter
+     [exec] startjini.gui
+     [exec] vergil
+     [exec] rm -f makebat
+     [exec] ln -s ptinvoke makebat
+     [exec] rm -f ".momllib-util.bat"
+     [exec] ./makebat -q "`basename .momllib-util.bat .bat`"
+     [exec] rm -f ".nc2moml-util.bat"
+     [exec] ./makebat -q "`basename .nc2moml-util.bat .bat`"
+     [exec] rm -f ".ncapp2moml-util.bat"
+     [exec] ./makebat -q "`basename .ncapp2moml-util.bat .bat`"
+     [exec] rm -f "capecode.bat"
+     [exec] ./makebat -q "`basename capecode.bat .bat`"
+     [exec] rm -f "convertToLazy.bat"
+     [exec] ./makebat -q "`basename convertToLazy.bat .bat`"
+     [exec] rm -f "copernicus.bat"
+     [exec] ./makebat -q "`basename copernicus.bat .bat`"
+     [exec] rm -f "decompile.bat"
+     [exec] ./makebat -q "`basename decompile.bat .bat`"
+     [exec] rm -f "emachine.bat"
+     [exec] ./makebat -q "`basename emachine.bat .bat`"
+     [exec] rm -f "giottoc.bat"
+     [exec] ./makebat -q "`basename giottoc.bat .bat`"
+     [exec] rm -f "histogram.bat"
+     [exec] ./makebat -q "`basename histogram.bat .bat`"
+     [exec] rm -f "homer.bat"
+     [exec] ./makebat -q "`basename homer.bat .bat`"
+     [exec] rm -f "jode.bat"
+     [exec] ./makebat -q "`basename jode.bat .bat`"
+     [exec] rm -f "mescal.bat"
+     [exec] ./makebat -q "`basename mescal.bat .bat`"
+     [exec] LD_LIBRARY_PATH = /home/travis/build/icyphy/ptII/mescal/lib:/home/travis/build/icyphy/ptII/mescal/bin:/usr/local/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:
+     [exec] rm -f "moml.bat"
+     [exec] ./makebat -q "`basename moml.bat .bat`"
+     [exec] rm -f "obfuscate.bat"
+     [exec] ./makebat -q "`basename obfuscate.bat .bat`"
+     [exec] rm -f "ptcg.bat"
+     [exec] ./makebat -q "`basename ptcg.bat .bat`"
+     [exec] rm -f "ptcodegen.bat"
+     [exec] ./makebat -q "`basename ptcodegen.bat .bat`"
+     [exec] rm -f "ptexecute.bat"
+     [exec] ./makebat -q "`basename ptexecute.bat .bat`"
+     [exec] rm -f "ptjacl.bat"
+     [exec] ./makebat -q "`basename ptjacl.bat .bat`"
+     [exec] rm -f "ptjaclapp.bat"
+     [exec] ./makebat -q "`basename ptjaclapp.bat .bat`"
+     [exec] rm -f "ptplot.bat"
+     [exec] ./makebat -q "`basename ptplot.bat .bat`"
+     [exec] rm -f "ptstartjini.bat"
+     [exec] ./makebat -q "`basename ptstartjini.bat .bat`"
+     [exec] rm -f "ptolemy.bat"
+     [exec] ./makebat -q "`basename ptolemy.bat .bat`"
+     [exec] rm -f "ptweb.bat"
+     [exec] ./makebat -q "`basename ptweb.bat .bat`"
+     [exec] rm -f "pxgraph.bat"
+     [exec] ./makebat -q "`basename pxgraph.bat .bat`"
+     [exec] rm -f "soot.bat"
+     [exec] ./makebat -q "`basename soot.bat .bat`"
+     [exec] rm -f "tinicomm.bat"
+     [exec] ./makebat -q "`basename tinicomm.bat .bat`"
+     [exec] rm -f "tinic.bat"
+     [exec] ./makebat -q "`basename tinic.bat .bat`"
+     [exec] rm -f "tiniconverter.bat"
+     [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
+     [exec] rm -f "startjini.gui.bat"
+     [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
+     [exec] rm -f "vergil.bat"
+     [exec] ./makebat -q "`basename vergil.bat .bat`"
+     [exec] rm -f makeapp
+     [exec] ln -s ptinvoke makeapp
+     [exec] chmod a+x ptinvoke makeapp
+     [exec] ./makeapp CapeCode.app CAPECODE -capecode
+     [exec] Cloning into 'universalJavaApplicationStub'...
+     [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] Error: This Java instance does not support a 32-bit JVM.
+     [exec] Please install the desired version.
+     [exec] configure: WARNING: Running java -d32 -version failed,
+     [exec]     and ./bin/java does not exist.
+     [exec]     Perhaps you need to install a separate 32-bit JVM
+     [exec]     or rerun configure with --with-java32?
+     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
+     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
+     [exec]     the same as '/usr/bin/java'.
+     [exec]     Perhaps '/usr/bin/java' is in your path before
+     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
+     [exec]     If you have problems later, be sure that you don't have a mismatch
+     [exec]     in JDK versions.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
+     [exec] 	 the same as '/usr/bin/javac'.
+     [exec] 	 Perhaps '/usr/bin/javac' is in your path
+     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
+     [exec] 	 If you have problems later, be sure that you don't have a mismatch
+     [exec] 	 in JDK versions.
+     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
+     [exec]     This is only a problem if you want to rebuild the Functional
+     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
+     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
+     [exec]     Checkstyle is only necessary for code cleaning.
+     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
+     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
+     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
+     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
+     [exec]     Cobertura is only necessary to for code coverage.
+     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
+     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
+     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
+     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
+     [exec]     CUnit is only necessary to test the C templates of the code generation facility
+     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
+     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
+     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+     [exec]     so the Mbed CG facility will not be run.
+     [exec] JAITest.java:28: error: package javax.media.jai does not exist
+     [exec] import javax.media.jai.*;
+     [exec] ^
+     [exec] 1 error
+     [exec] configure: WARNING: JAI not found in the default classpath
+     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+     [exec]     which is part of JModelica.
+     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
+     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
+     [exec] JMFTest.java:28: error: package javax.media does not exist
+     [exec] import javax.media.CaptureDeviceInfo;
+     [exec]                   ^
+     [exec] 1 error
+     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
+     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
+     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
+     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
+     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
+     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
+     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
+     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
+     [exec]     so we will try other jars.
+     [exec] libdc1394 error: Failed to initialize libdc1394
+     [exec] configure: WARNING: Could not find directory
+     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
+     [exec]     so we search for the jjtree command.
+     [exec] configure: WARNING: Failed to find jjtree
+     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
+     [exec]     in ptolemy/data/expr.
+     [exec]     JavaCC is available from
+     [exec]     http://javacc.dev.java.net/
+     [exec] 
+     [exec]     Note that the zip file that gets downloaded is actually an installer
+     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
+     [exec] 
+     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+     [exec]     ReInit() being static or not static.
+     [exec] 
+     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+     [exec]     we recommend JavaCC-5.0.
+     [exec] 
+     [exec]     Try:
+     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
+     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+     [exec]     tar -zxf javacc-5.0.tar.gz
+     [exec]     cd /home/travis/build/icyphy/ptII
+     [exec]     ./configure
+     [exec] 
+     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
+     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
+     [exec]     and then rerun configure.'
+     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
+     [exec] configure: WARNING: Failed to find matlab executable in the path.
+     [exec]     Perhaps Matlab is not installed?
+     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
+     [exec]     $PTII/ptolemy/matlab will not be usable.
+     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
+     [exec]     Rebuilding the OpenModelica fmus will not be possible.
+     [exec]     Running the OpenModelica models will not be possible.
+     [exec]     This is only a concern if you are interested in OpenModelica
+     [exec] configure: WARNING: Failed to find PowerMock.
+     [exec]     Perhaps PowerMock was not installed?
+     [exec]     You need not download these packages if you would like
+     [exec]     to run the tests.  To install PowerMock, go to
+     [exec]     http://code.google.com/p/powermock/ and download
+     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+     [exec]     then rerun configure.
+     [exec]     Other versions of PowerMock _may_ work, but are untested.
+     [exec] configure: WARNING: Failed to find the scalac binary,
+     [exec]     so org/ptolemy/scala will be excluded
+     [exec] configure: WARNING: ojdbc5.jar not found,
+     [exec]     but only necessary to use database actors with Oracle.
+     [exec] configure: WARNING: Failed to find Batik Jar file
+     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
+     [exec]     for use with Kepler.
+     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/
+     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
+     [exec] configure: WARNING: $TOSROOT is set to '',
+     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
+     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
+     [exec] configure: WARNING: Failed to find giotto/gdk.jar
+     [exec]     perhaps Giotto is not installed?
+     [exec]     You need not download Giotto unless you plan on generating code for
+     [exec]     Giotto models.
+     [exec]     The Giotto SDK can be
+     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
+     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
+     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
+     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
+     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
+     [exec]     will not be compiled. FMI++ is an extension of the
+     [exec]     Functional Mockup Interface, see
+     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
+     [exec] ./makeapp: Could not find MacJVMTar in /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz, downloading it now: Thu Apr 19 00:26:47 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 19 00:33:09 UTC 2018
+     [exec] touch CapeCode.app
+     [exec] ./makeapp Vergil.app FULL -full
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu Apr 19 00:33:12 UTC 2018
+     [exec] touch Vergil.app
+     [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
+
+build:
+
+initReports:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/doccheck
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/ojdcheck
+
+test.capecode2.xml:
+     [echo] 
+     [echo]       ==test.capecode2.xml ==
+     [echo]       This target runs the second batch of Cape Code accessors tests
+     [echo]       and generates JUnit xml output.
+     [echo]       timeout = 4000000 milliseconds
+     [echo]     
+    [junit] javachdir: directory = org/terraswarm/accessor/test
+    [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test  Invoking with -Djava.net.preferIPv4Stack=true
+    [junit] Running org.terraswarm.accessor.test.junit.JUnitTclTest
+    [junit] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 00:33:16 UTC 2018
+    [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+    [junit] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+    [junit] WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+    [junit] WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
+    [junit] 6250 ms. Memory: 771072K Free: 628423K (81%)
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+    [junit] WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.133, 0.132]
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 4965 ms. Memory: 762368K Free: 556908K (73%)
+    [junit] reloadAllAccessors: .WebSocketClientJS
+    [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.123, 0.12200000000000001]
+    [junit] 4858 ms. Memory: 795648K Free: 282681K (36%)
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
+    [junit] 8165 ms. Memory: 779776K Free: 346939K (44%)
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 8363 ms. Memory: 847872K Free: 666408K (79%)
+    [junit] reloadAllAccessors: .WebSocketClient2JS
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 7919 ms. Memory: 847872K Free: 522758K (62%)
+    [junit] 04/19/18 12:34:21
+    [junit] Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+    [junit] AutoTests.java: About to close Vertx.
+    [junit] AutoTests.java: Vertx closed.
+    [junit] ----------------- testing Thu Apr 19 00:34:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+    [junit] 760 ms. Memory: 845824K Free: 421757K (50%)
+    [junit] reloadAllAccessors: .AccessViolation
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:22 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+    [junit] 698 ms. Memory: 846848K Free: 627273K (74%)
+    [junit] ----------------- testing Thu Apr 19 00:34:23 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+    [junit] 641 ms. Memory: 846848K Free: 303207K (36%)
+    [junit] reloadAllAccessors: .AccessViolation2
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:24 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+    [junit] 712 ms. Memory: 846848K Free: 508479K (60%)
+    [junit] ----------------- testing Thu Apr 19 00:34:25 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+    [junit] 1551 ms. Memory: 846848K Free: 343955K (41%)
+    [junit] reloadAllAccessors: .Accessor1
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:28 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+    [junit] 1779 ms. Memory: 845824K Free: 262399K (31%)
+    [junit] ----------------- testing Thu Apr 19 00:34:30 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+    [junit] 1140 ms. Memory: 865792K Free: 621102K (72%)
+    [junit] reloadAllAccessors: .Accessor2
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:32 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+    [junit] 823 ms. Memory: 865792K Free: 342453K (40%)
+    [junit] ----------------- testing Thu Apr 19 00:34:33 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+    [junit] WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] 20794 ms. Memory: 866304K Free: 502922K (58%)
+    [junit] reloadAllAccessors: .CallbackWithSuppress
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+    [junit] WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] 20519 ms. Memory: 866304K Free: 223001K (26%)
+    [junit] ----------------- testing Thu Apr 19 00:35:15 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base init (Thread[Derived,1,main])
+    [junit] DerivedA: derived init (Thread[Derived,1,main])
+    [junit] DerivedA: derived wrapped up (Thread[Derived,1,main])
+    [junit] 601 ms. Memory: 867328K Free: 379071K (44%)
+    [junit] reloadAllAccessors: .Derived
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedA.js
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:16 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base init (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived init (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived wrapped up (Thread[Thread-36,5,main])
+    [junit] 625 ms. Memory: 867328K Free: 573738K (66%)
+    [junit] ----------------- testing Thu Apr 19 00:35:17 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+    [junit] DerivedB2: printing non-prototype properties (Thread[Derived2,1,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Derived2,1,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: printing protoytpe (Thread[Derived2,1,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Derived2,1,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: sending false (Thread[Derived2,1,main])
+    [junit] 756 ms. Memory: 867328K Free: 246739K (28%)
+    [junit] reloadAllAccessors: .Derived2
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedB.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:18 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+    [junit] DerivedB2: printing non-prototype properties (Thread[Thread-40,5,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Thread-40,5,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: printing protoytpe (Thread[Thread-40,5,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Thread-40,5,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: sending false (Thread[Thread-40,5,main])
+    [junit] 702 ms. Memory: 868352K Free: 451940K (52%)
+    [junit] ----------------- testing Thu Apr 19 00:35:19 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+    [junit] 683 ms. Memory: 868352K Free: 127677K (15%)
+    [junit] reloadAllAccessors: .Derived3
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedC.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:20 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+    [junit] 672 ms. Memory: 884224K Free: 535352K (61%)
+    [junit] ----------------- testing Thu Apr 19 00:35:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+    [junit] 709 ms. Memory: 884736K Free: 694072K (78%)
+    [junit] reloadAllAccessors: .Derived4
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedD.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:22 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+    [junit] 597 ms. Memory: 884736K Free: 403719K (46%)
+    [junit] ----------------- testing Thu Apr 19 00:35:23 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+    [junit] 670 ms. Memory: 886784K Free: 572771K (65%)
+    [junit] reloadAllAccessors: .Derived5
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedE.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:24 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+    [junit] 580 ms. Memory: 886784K Free: 289731K (33%)
+    [junit] ----------------- testing Thu Apr 19 00:35:25 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+    [junit] 640 ms. Memory: 872448K Free: 444040K (51%)
+    [junit] reloadAllAccessors: .Derived6
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedF.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:26 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+    [junit] 630 ms. Memory: 872448K Free: 158566K (18%)
+    [junit] ----------------- testing Thu Apr 19 00:35:27 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+    [junit] 715 ms. Memory: 886272K Free: 331765K (37%)
+    [junit] reloadAllAccessors: .Derived8
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedH.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:28 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+    [junit] 1021 ms. Memory: 896512K Free: 737579K (82%)
+    [junit] ----------------- testing Thu Apr 19 00:35:29 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+    [junit] 691 ms. Memory: 896512K Free: 399585K (45%)
+    [junit] reloadAllAccessors: .Derived9
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedI.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:31 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+    [junit] 705 ms. Memory: 898048K Free: 596493K (66%)
+    [junit] ----------------- testing Thu Apr 19 00:35:31 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+    [junit] 1617 ms. Memory: 898048K Free: 264116K (29%)
+    [junit] reloadAllAccessors: .DerivedAgain
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainA.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:34 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+    [junit] 1592 ms. Memory: 898048K Free: 472372K (53%)
+    [junit] ----------------- testing Thu Apr 19 00:35:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+    [junit] 1784 ms. Memory: 898560K Free: 636004K (71%)
+    [junit] reloadAllAccessors: .DerivedAgain2
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainB.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:38 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+    [junit] 1556 ms. Memory: 898560K Free: 346917K (39%)
+    [junit] ----------------- testing Thu Apr 19 00:35:39 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+    [junit] 695 ms. Memory: 898560K Free: 510121K (57%)
+    [junit] reloadAllAccessors: .DerivedAgain4
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainD.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:41 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+    [junit] 646 ms. Memory: 898560K Free: 217673K (24%)
+    [junit] ----------------- testing Thu Apr 19 00:35:41 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+    [junit] 715 ms. Memory: 901120K Free: 370971K (41%)
+    [junit] reloadAllAccessors: .DerivedAgain5
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainE.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+    [junit] 1047 ms. Memory: 908800K Free: 808886K (89%)
+    [junit] ----------------- testing Thu Apr 19 00:35:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+    [junit] REST: Making an HTTP request. (Thread[GetDate,1,main])
+    [junit] 5097 ms. Memory: 910848K Free: 374381K (41%)
+    [junit] reloadAllAccessors: .GetDate
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+    [junit] REST: Making an HTTP request. (Thread[Thread-84,5,main])
+    [junit] 5695 ms. Memory: 938496K Free: 567141K (60%)
+    [junit] ----------------- testing Thu Apr 19 00:35:58 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+    [junit] WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] 20699 ms. Memory: 939008K Free: 745155K (79%)
+    [junit] reloadAllAccessors: .HandlerWithSuppress
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:36:20 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+    [junit] WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] 20493 ms. Memory: 939008K Free: 462431K (49%)
+    [junit] ----------------- testing Thu Apr 19 00:36:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+    [junit] 1157 ms. Memory: 939008K Free: 644983K (69%)
+    [junit] reloadAllAccessors: .HttpRequest
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:36:42 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+    [junit] 914 ms. Memory: 939008K Free: 364178K (39%)
+    [junit] ----------------- testing Thu Apr 19 00:36:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
+    [junit] JavaScript: { data: 1 } (Thread[JSON,1,main])
+    [junit] JavaScript3: 1 (Thread[JSON,1,main])
+    [junit] 2068 ms. Memory: 939520K Free: 247962K (26%)
+    [junit] reloadAllAccessors: .JSON
+    [junit] ----------------- testing Thu Apr 19 00:36:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+    [junit] java.lang.RuntimeException: Execution failed
+    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the react function: Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval> at line number 1695 at column number 24
+    [junit]   in .ReadURL.JavaScript
+    [junit] Because:
+    [junit] Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval> at line number 1695 at column number 24
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1102)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
+    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
+    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+    [junit] Caused by: javax.script.ScriptException: Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval> at line number 1695 at column number 24
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+    [junit] 	... 8 more
+    [junit] Caused by: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:1695:24 Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$28055$74558A$require.L:1#react#invokeSpecificHandler(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:1695)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$28054$73967A$require.L:1#react(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:1728)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 10 more
+    [junit] 
+    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-102"
+    [junit] 6232 ms. Memory: 940032K Free: 318093K (34%)
+    [junit] ----------------- testing Thu Apr 19 00:36:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+    [junit] 21281 ms. Memory: 968192K Free: 743921K (77%)
+    [junit] reloadAllAccessors: .SendNullToOwnInput
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:37:15 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+    [junit] 20503 ms. Memory: 968192K Free: 463720K (48%)
+    [junit] ----------------- testing Thu Apr 19 00:37:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+    [junit] TextDisplayHelper: 0
+    [junit] TextDisplayHelper: 1
+    [junit] TextDisplayHelper: 2
+    [junit] TextDisplayHelper: 3
+    [junit] WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+    [junit] 6184 ms. Memory: 968192K Free: 217744K (22%)
+    [junit] reloadAllAccessors: .Stop
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:37:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+    [junit] TextDisplayHelper: 0
+    [junit] TextDisplayHelper: 1
+    [junit] TextDisplayHelper: 2
+    [junit] TextDisplayHelper: 3
+    [junit] 6235 ms. Memory: 967680K Free: 172654K (18%)
+    [junit] ----------------- testing Thu Apr 19 00:37:50 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+    [junit] WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+    [junit] 2730 ms. Memory: 968704K Free: 366789K (38%)
+    [junit] reloadAllAccessors: .Stop2
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:37:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+    [junit] 2560 ms. Memory: 968704K Free: 102407K (11%)
+    [junit] AutoTests.java: About to close Vertx.
+    [junit] AutoTests.java: Vertx closed.
+    [junit] Tests run: 29, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 279.921 sec
+    [junit] Output:
+    [junit] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 00:33:16 UTC 2018
+    [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+    [junit] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
+    [junit] 6250 ms. Memory: 771072K Free: 628423K (81%)
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 4965 ms. Memory: 762368K Free: 556908K (73%)
+    [junit] reloadAllAccessors: .WebSocketClientJS
+    [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8181/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 4858 ms. Memory: 795648K Free: 282681K (36%)
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
+    [junit] 8165 ms. Memory: 779776K Free: 346939K (44%)
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 8363 ms. Memory: 847872K Free: 666408K (79%)
+    [junit] reloadAllAccessors: .WebSocketClient2JS
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8182/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+    [junit] WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+    [junit] 7919 ms. Memory: 847872K Free: 522758K (62%)
+    [junit] 04/19/18 12:34:21
+    [junit] Failed: 0  Total Tests: 14  ((Passed: 14, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+    [junit] AutoTests.java: About to close Vertx.
+    [junit] AutoTests.java: Vertx closed.
+    [junit] ----------------- testing Thu Apr 19 00:34:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+    [junit] 760 ms. Memory: 845824K Free: 421757K (50%)
+    [junit] reloadAllAccessors: .AccessViolation
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:22 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+    [junit] 698 ms. Memory: 846848K Free: 627273K (74%)
+    [junit] ----------------- testing Thu Apr 19 00:34:23 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+    [junit] 641 ms. Memory: 846848K Free: 303207K (36%)
+    [junit] reloadAllAccessors: .AccessViolation2
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:24 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+    [junit] 712 ms. Memory: 846848K Free: 508479K (60%)
+    [junit] ----------------- testing Thu Apr 19 00:34:25 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+    [junit] 1551 ms. Memory: 846848K Free: 343955K (41%)
+    [junit] reloadAllAccessors: .Accessor1
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:28 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+    [junit] 1779 ms. Memory: 845824K Free: 262399K (31%)
+    [junit] ----------------- testing Thu Apr 19 00:34:30 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+    [junit] 1140 ms. Memory: 865792K Free: 621102K (72%)
+    [junit] reloadAllAccessors: .Accessor2
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:32 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+    [junit] 823 ms. Memory: 865792K Free: 342453K (40%)
+    [junit] ----------------- testing Thu Apr 19 00:34:33 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+    [junit] 20794 ms. Memory: 866304K Free: 502922K (58%)
+    [junit] reloadAllAccessors: .CallbackWithSuppress
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:34:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+    [junit] 20519 ms. Memory: 866304K Free: 223001K (26%)
+    [junit] ----------------- testing Thu Apr 19 00:35:15 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base set up (Thread[Derived,1,main])
+    [junit] DerivedA: derived set up (Thread[Derived,1,main])
+    [junit] DerivedA: base init (Thread[Derived,1,main])
+    [junit] DerivedA: derived init (Thread[Derived,1,main])
+    [junit] DerivedA: derived wrapped up (Thread[Derived,1,main])
+    [junit] 601 ms. Memory: 867328K Free: 379071K (44%)
+    [junit] reloadAllAccessors: .Derived
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedA.js
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:16 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived set up (Thread[Thread-36,5,main])
+    [junit] DerivedA: base init (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived init (Thread[Thread-36,5,main])
+    [junit] DerivedA: derived wrapped up (Thread[Thread-36,5,main])
+    [junit] 625 ms. Memory: 867328K Free: 573738K (66%)
+    [junit] ----------------- testing Thu Apr 19 00:35:17 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+    [junit] DerivedB2: printing non-prototype properties (Thread[Derived2,1,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Derived2,1,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: printing protoytpe (Thread[Derived2,1,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Derived2,1,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Derived2,1,main])
+    [junit] DerivedB2: sending false (Thread[Derived2,1,main])
+    [junit] 756 ms. Memory: 867328K Free: 246739K (28%)
+    [junit] reloadAllAccessors: .Derived2
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedB.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:18 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+    [junit] DerivedB2: printing non-prototype properties (Thread[Thread-40,5,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Thread-40,5,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: printing protoytpe (Thread[Thread-40,5,main])
+    [junit] DerivedB2: ssuper: [object Object] (Thread[Thread-40,5,main])
+    [junit] DerivedB2: setup: function () {
+    [junit]         this.extend('BaseB');
+    [junit]     } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: initialize: function () {
+    [junit]     exports.ssuper.initialize.call(this);
+    [junit]     printProperties(exports);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: inputHandler: function () {
+    [junit]     console.log('sending false');
+    [junit]     this.send('output', false);
+    [junit] } (Thread[Thread-40,5,main])
+    [junit] DerivedB2: sending false (Thread[Thread-40,5,main])
+    [junit] 702 ms. Memory: 868352K Free: 451940K (52%)
+    [junit] ----------------- testing Thu Apr 19 00:35:19 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+    [junit] 683 ms. Memory: 868352K Free: 127677K (15%)
+    [junit] reloadAllAccessors: .Derived3
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedC.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:20 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+    [junit] 672 ms. Memory: 884224K Free: 535352K (61%)
+    [junit] ----------------- testing Thu Apr 19 00:35:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+    [junit] 709 ms. Memory: 884736K Free: 694072K (78%)
+    [junit] reloadAllAccessors: .Derived4
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedD.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:22 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+    [junit] 597 ms. Memory: 884736K Free: 403719K (46%)
+    [junit] ----------------- testing Thu Apr 19 00:35:23 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+    [junit] 670 ms. Memory: 886784K Free: 572771K (65%)
+    [junit] reloadAllAccessors: .Derived5
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedE.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:24 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+    [junit] 580 ms. Memory: 886784K Free: 289731K (33%)
+    [junit] ----------------- testing Thu Apr 19 00:35:25 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+    [junit] 640 ms. Memory: 872448K Free: 444040K (51%)
+    [junit] reloadAllAccessors: .Derived6
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedF.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:26 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+    [junit] 630 ms. Memory: 872448K Free: 158566K (18%)
+    [junit] ----------------- testing Thu Apr 19 00:35:27 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+    [junit] 715 ms. Memory: 886272K Free: 331765K (37%)
+    [junit] reloadAllAccessors: .Derived8
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedH.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:28 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+    [junit] 1021 ms. Memory: 896512K Free: 737579K (82%)
+    [junit] ----------------- testing Thu Apr 19 00:35:29 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+    [junit] 691 ms. Memory: 896512K Free: 399585K (45%)
+    [junit] reloadAllAccessors: .Derived9
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedI.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:31 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+    [junit] 705 ms. Memory: 898048K Free: 596493K (66%)
+    [junit] ----------------- testing Thu Apr 19 00:35:31 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+    [junit] 1617 ms. Memory: 898048K Free: 264116K (29%)
+    [junit] reloadAllAccessors: .DerivedAgain
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainA.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:34 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+    [junit] 1592 ms. Memory: 898048K Free: 472372K (53%)
+    [junit] ----------------- testing Thu Apr 19 00:35:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+    [junit] 1784 ms. Memory: 898560K Free: 636004K (71%)
+    [junit] reloadAllAccessors: .DerivedAgain2
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainB.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:38 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+    [junit] 1556 ms. Memory: 898560K Free: 346917K (39%)
+    [junit] ----------------- testing Thu Apr 19 00:35:39 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+    [junit] 695 ms. Memory: 898560K Free: 510121K (57%)
+    [junit] reloadAllAccessors: .DerivedAgain4
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainD.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:41 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+    [junit] 646 ms. Memory: 898560K Free: 217673K (24%)
+    [junit] ----------------- testing Thu Apr 19 00:35:41 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+    [junit] 715 ms. Memory: 901120K Free: 370971K (41%)
+    [junit] reloadAllAccessors: .DerivedAgain5
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainE.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+    [junit] 1047 ms. Memory: 908800K Free: 808886K (89%)
+    [junit] ----------------- testing Thu Apr 19 00:35:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+    [junit] REST: Making an HTTP request. (Thread[GetDate,1,main])
+    [junit] 5097 ms. Memory: 910848K Free: 374381K (41%)
+    [junit] reloadAllAccessors: .GetDate
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:35:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+    [junit] REST: Making an HTTP request. (Thread[Thread-84,5,main])
+    [junit] 5695 ms. Memory: 938496K Free: 567141K (60%)
+    [junit] ----------------- testing Thu Apr 19 00:35:58 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+    [junit] 20699 ms. Memory: 939008K Free: 745155K (79%)
+    [junit] reloadAllAccessors: .HandlerWithSuppress
+    [junit] Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.js
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:36:20 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+    [junit] 20493 ms. Memory: 939008K Free: 462431K (49%)
+    [junit] ----------------- testing Thu Apr 19 00:36:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+    [junit] 1157 ms. Memory: 939008K Free: 644983K (69%)
+    [junit] reloadAllAccessors: .HttpRequest
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:36:42 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+    [junit] 914 ms. Memory: 939008K Free: 364178K (39%)
+    [junit] ----------------- testing Thu Apr 19 00:36:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
+    [junit] JavaScript: { data: 1 } (Thread[JSON,1,main])
+    [junit] JavaScript3: 1 (Thread[JSON,1,main])
+    [junit] 2068 ms. Memory: 939520K Free: 247962K (26%)
+    [junit] reloadAllAccessors: .JSON
+    [junit] ----------------- testing Thu Apr 19 00:36:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+    [junit] 6232 ms. Memory: 940032K Free: 318093K (34%)
+    [junit] ----------------- testing Thu Apr 19 00:36:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+    [junit] 21281 ms. Memory: 968192K Free: 743921K (77%)
+    [junit] reloadAllAccessors: .SendNullToOwnInput
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:37:15 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+    [junit] 20503 ms. Memory: 968192K Free: 463720K (48%)
+    [junit] ----------------- testing Thu Apr 19 00:37:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+    [junit] TextDisplayHelper: 0
+    [junit] TextDisplayHelper: 1
+    [junit] TextDisplayHelper: 2
+    [junit] TextDisplayHelper: 3
+    [junit] 6184 ms. Memory: 968192K Free: 217744K (22%)
+    [junit] reloadAllAccessors: .Stop
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:37:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+    [junit] TextDisplayHelper: 0
+    [junit] TextDisplayHelper: 1
+    [junit] TextDisplayHelper: 2
+    [junit] TextDisplayHelper: 3
+    [junit] 6235 ms. Memory: 967680K Free: 172654K (18%)
+    [junit] ----------------- testing Thu Apr 19 00:37:50 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+    [junit] 2730 ms. Memory: 968704K Free: 366789K (38%)
+    [junit] reloadAllAccessors: .Stop2
+    [junit] ----------------- Reloaded Accessors and testing again Thu Apr 19 00:37:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+    [junit] 2560 ms. Memory: 968704K Free: 102407K (11%)
+    [junit] AutoTests.java: About to close Vertx.
+    [junit] AutoTests.java: Vertx closed.
+    [junit] 
+    [junit] Error: 
+    [junit] WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+    [junit] WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+    [junit] WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.133, 0.132]
+    [junit] WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.123, 0.12200000000000001]
+    [junit] WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] java.lang.RuntimeException: Execution failed
+    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the react function: Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval> at line number 1695 at column number 24
+    [junit]   in .ReadURL.JavaScript
+    [junit] Because:
+    [junit] Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval> at line number 1695 at column number 24
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1102)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
+    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
+    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+    [junit] Caused by: javax.script.ScriptException: Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval> at line number 1695 at column number 24
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+    [junit] 	... 8 more
+    [junit] Caused by: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:1695:24 Error: commonHost.js, react(), invoking a specific handler for "trigger": Exception occurred in input handler for accessor JavaScript, which has now has been removed.  Exception was: java.net.SocketTimeoutException: connect timed out Stacktrace was: undefined
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$28055$74558A$require.L:1#react#invokeSpecificHandler(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:1695)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$28054$73967A$require.L:1#react(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:1728)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 10 more
+    [junit] WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+    [junit] WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+    [junit] 
+    [junit] Test org.terraswarm.accessor.test.junit.JUnitTclTest FAILED
+
+BUILD SUCCESSFUL
+Total time: 12 minutes 38 seconds
