@@ -2,8 +2,6 @@ $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml
-$CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/PoolTable2.xml
-$CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/TwoBilliardBalls.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/BillardBall1.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/BillardBall2.xml
@@ -12,11 +10,7 @@ $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
 $CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml
-$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/testTimeAdvancingF1.xml
-$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/testTimeAdvancingF2.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
-$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF1.xml
-$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF2InternalEvent.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml
 $CLASSPATH/org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml
 $CLASSPATH/org/ptolemy/machineImprovisation/demo/JazzImprovisation/JazzImprovisation.xml
@@ -106,6 +100,8 @@ $CLASSPATH/ptolemy/actor/lib/aspect/demo/CanBus/CanBus.xml
 $CLASSPATH/ptolemy/actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml
 $CLASSPATH/ptolemy/actor/lib/aspect/demo/CompositeQM/CompositeQM.xml
 $CLASSPATH/ptolemy/actor/lib/aspect/demo/DE/DE.xml
+$CLASSPATH/ptolemy/actor/lib/aspect/demo/DE/DE2.xml
+$CLASSPATH/ptolemy/actor/lib/aspect/demo/MonitorExecutionTimes/MonitorExecutionTimes.xml
 $CLASSPATH/ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/HuffmanDecoder/HuffmanDecoder.xml

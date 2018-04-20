@@ -119,7 +119,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Cl&#233;ment Michel - Janette Cardoso, ISAE-SUPAERO, France.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Clement Michel - Janette Cardoso, ISAE-SUPAERO, France.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 435.0]">
         </property>

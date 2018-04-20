@@ -7,20 +7,34 @@ env:
     - PT_TRAVIS_BUILD_ALL=true
     - PT_TRAVIS_DOCS=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
-    - PT_TRAVIS_TEST_CAPECODE_XML=true
+    - PT_TRAVIS_TEST_CAPECODE1_XML=true
+    - PT_TRAVIS_TEST_CAPECODE2_XML=true
+    - PT_TRAVIS_TEST_CAPECODE3_XML=true
+    - PT_TRAVIS_TEST_CORE1_XML=true
+    - PT_TRAVIS_TEST_CORE2_XML=true
+    - PT_TRAVIS_TEST_CORE3_XML=true
+    - PT_TRAVIS_TEST_CORE4_XML=true
     - PT_TRAVIS_TEST_INSTALLERS=true
-    - PT_TRAVIS_TEST_REPORT_SHORT=true
+    #   - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
     - PTII=${TRAVIS_BUILD_DIR}
 
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+
+    # GeoCoding
+    -  secure: "kw7ZvdNDOSg6i4+b0oaSwuZbmuQKli87FjpS5UfOL3LdhjLaJlhft8aDc2ZLuiDxtCmB3X45Y+2M+ncqlRZULj0nRxz9OnVD6nQdgM2FPKBBmgZ2Z9/e/4MwD/3GcpnNs9rmW+3DXDMbMSc7nqYgYDKwws9x7KvF3hzrs0jj1ZvxUV/F1O9jCyyKzPJgaW46mQ9VrZi0xgl9Qn+8hccx8Z9G8XL/A3M/dCwaKUbaGk56+63GLNX62T20LQOQCJVgSztVkV/GLgmAnekwPBWuQ9UvaaQAiJFRbWpWz7qzgz5qL94zhHeew79iv+0jPgyjgTQSc0Sv2BNuTfY0GZbr5yvHFgxPNcvtCBwHmqQLB5r6VT0kuYaXXIMNs2yvU0DQvgnIVen9PFR9Euui3/qKY5/cHyYbI8n+2xtZHnideR3C9lbWSOih4H58f0W3Gf9jgPeCGI1jRuuR+fSUxD2pkHMDskBvEodlrKc+g0mSdybIuPGF0l8qMPyIuRMbuMgHaJA4zYBmKSUrL7w599SuteKKbZXcLXL8YkEjE8old+q2Ajdu9UA5NRFEmqs/YtqaJEBZnMh3IFCsXDXlfQQWFLuC9L1ShBC2tJYei8N7aEuuPECBelPjKr3F+QRpAjpRrCvU9bxwWsfJqBARQc2Ktsxg1RHzxGERpBSWfvT9YlA="
+
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
     - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools
     - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
+
+    # SpaceCadet
+    - secure: "rF8A4+P8J7oQe7VUOxD1Ei70U04kZu5RBHI9I2PICQwBM5op8Jl+sG/me83FH1txDEv2q3dov8BjbFotZGRQ//wHntmkvzGomxUkjiMGtg42KxC0uV1lo7kSWsjD4Fap4SivDiT9+1BQpd/2eLtwhvQETeM4QZE/t7ix5BKqelkiu3pfCqQXvUK30/+C0R4IjXsrNQXRjueb5a2Aor2RoO9NGrLpANAIp1479j6oa/qwQXCLfhg58JkR8qSxSxiLGHrdZHyIOOthTtHNu9BRqpYgGeA12I4YktilZJt0Dr2Tw4WHgxXX6LqYcvb531PpeKbfjCvkhzIgYG/bB7OmcuZ2kLCH91ubyNuq8AI1JFg6892zsYUeP24xT/F0twJ/xrZCSmMMQ6pXtzPRns/bKcpzmmgRUguFWdbKVOggj9Z7HRG/TxZnUmUdrR98DkOoOdC/lYwYP7LhOiciGHUdFSu0T1ep1EcQGCYHz2z9bUY/9OQqXtohfG4FI/yyFEJ6EEnObPKSypcf7RweR132RLTQmJDu+akD8bwDgas2Rr2YDMFK0oypejU2HawXcdEHUhHwZWBNzhF2nOoMTyi0PvLivuXqlzgxrEc42vru6dx5xIJI/lVvDHvtAyMDj36EAQTlRquOBDD0o+jgXIM3dZJD160Xs676gD6B7s7bzOU="
+
     - TRAVIS_TAG=nightly
 
 language: node_js
@@ -44,13 +58,14 @@ install:
   # Shorter running installations first.
 
   # Below are the packages that are needed, in alphabetical order:
+  #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
   #   eclipse and eclipse-rcp for backtracking.
   #   Java3D
   #   libv4l for  Bridj for the camera.
   #   p7zip-full for installing jogl as part of the installers.
   #   pdflatex for the DOP Center image.
-  - sudo apt-get install -y genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
+  - sudo apt-get install -y coreutils genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
 
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
@@ -98,10 +113,15 @@ script:
  
   # travis_wait does not help here because we want to redirect the output of cmake.
   # See https://github.com/travis-ci/travis-ci/issues/4190
-  - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
+  # Echo status messages so that Travis knows we are alive
+  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
-  - $PTII/bin/ptIITravisBuild.sh
+
+  - $PTII/bin/ptIITravisBuild.sh $SECONDS
+
+  - echo "Done with ptIITravisBuild.sh at $SECONDS seconds."
 
   # Killing background sleep loop.
   - kill %1
