@@ -75,6 +75,9 @@ fi
 
 set +x
 if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
+    if [ ! -d ~/.ptKeystore ]; then
+        mkdir ~/.ptKeystore
+    fi
     echo "$GEOCODING_TOKEN" > ~/.ptKeystore/geoCodingKey
     ls -l ~/.ptKeystore/geoCodingKey
     export GEOCODING_TOKEN=resetByPtIITravisBuild.sh
@@ -85,6 +88,16 @@ fi
 
 # Number of lines to show from the log file.
 lastLines=50
+
+# If Travis is running outside of a cronjob, then exit
+# See https://docs.travis-ci.com/user/cron-jobs/#Detecting-Builds-Triggered-by-Cron
+exitIfNotCron () {
+    if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+        echo "$0: TRAVIS_EVENT_TYPE is $TRAVIS_EVENT_TYPE, so this target is *not* being run."
+        echo "$0: Exiting"
+        exit 0
+    fi        
+}
 
 # Copy the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
@@ -262,6 +275,8 @@ if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
 fi
 
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then
+    exitIfNotCron
+
     LOG=$PTII/logs/docs.txt
     # Create the Javadoc jar files for use by the installer and deploy
     # them to Github pages.
@@ -280,6 +295,8 @@ fi
 # This build produces less than 10K lines, so we don't save the
 # output to a log file.
 if [ ! -z "$PT_TRAVIS_GITHUB_ISSUE_JUNIT" ]; then
+    exitIfNotCron
+
     mkdir node_modules
     npm install @icyphy/github-issue-junit
     export JUNIT_LABEL=junit-results
@@ -290,6 +307,8 @@ fi
 
 # Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
 if [ ! -z "$PT_TRAVIS_P" ]; then
+    exitIfNotCron
+
     LOG=$PTII/logs/ant_p.txt
     echo "$0: Output will appear in $LOG"
     ant -p 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN)' > $LOG 
@@ -305,12 +324,16 @@ fi
 # This target is not regularly run, but remains if we have issues
 # getting the build working with an empty cache
 if [ ! -z "$PT_TRAVIS_PRIME_INSTALLER" ]; then
+    exitIfNotCron
+
     make -C $PTII/adm/gen-11.0 USER=travis PTIIHOME=$PTII COMPRESS=gzip prime_installer
     ls $PTII/vendors/installer
 fi
 
 # Run the first batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode1.xml.txt
@@ -326,6 +349,8 @@ fi
 
 # Run the second batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode2.xml.txt
@@ -341,6 +366,8 @@ fi
 
 # Run the third batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE3_XML" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.capecode3.xml.txt
@@ -356,6 +383,8 @@ fi
 
 # Run the first batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
+    exitIfNotCron
+    
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core1.xml.txt
@@ -371,6 +400,8 @@ fi
 
 # Run the second batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core2.xml.txt
@@ -386,6 +417,8 @@ fi
 
 # Run the third batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core3.xml.txt
@@ -409,6 +442,8 @@ fi
 
 # Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core4.xml.txt
@@ -424,6 +459,8 @@ fi
 
 # Build the installers.
 if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
+    exitIfNotCron
+
     LOG=$PTII/logs/installers.txt
     TIMEOUT=`expr $maxTimeout - 400`
     echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
@@ -463,6 +500,8 @@ fi
 
 # Run the short tests.
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
+    exitIfNotCron
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.report.short.txt
