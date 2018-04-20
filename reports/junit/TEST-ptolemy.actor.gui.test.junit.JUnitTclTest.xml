@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-c1f60508-7021-4bec-8562-639962fdc2c1" name="ptolemy.actor.gui.test.junit.JUnitTclTest" skipped="0" tests="16" time="21.508" timestamp="2018-04-19T23:34:40">
+<testsuite errors="0" failures="1" hostname="travis-job-40c23d53-00b4-428f-9477-e2834cd9b22e" name="ptolemy.actor.gui.test.junit.JUnitTclTest" skipped="0" tests="16" time="21.361" timestamp="2018-04-20T00:50:23">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="283.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="285.6" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.8 36170 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.39 41502 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.8 36170 10.20.1.79 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.39 41502 10.20.0.12 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5685644046499446453.properties propsfile=/home/travis/build/icyphy/ptII/junit5097076543549149727.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3408063158495620593.properties propsfile=/home/travis/build/icyphy/ptII/junit1912226947157805239.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="b984ccd78a79...cd6938bf4119" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="cd6938bf4119...64994954ddf7" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="283" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="285" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +131,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="368898725" />
+    <property name="env.TRAVIS_BUILD_ID" value="368918122" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="cd6938bf411945fa6fe5af6274574133888b721e" />
+    <property name="env.TRAVIS_COMMIT" value="64994954ddf78148c5820cd82a03c6d8773e9aab" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -168,7 +168,7 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Only create /usr/lib/jni if it does not exist." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Attempting to split up the jobs." />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="keystore" value="ptKeystore" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -207,7 +207,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="368898731" />
+    <property name="env.TRAVIS_JOB_ID" value="368918129" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -226,36 +226,503 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)" time="0.576" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)" time="0.127" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)" time="5.594" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)" time="2.015" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)" time="0.005" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)" time="5.224" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)" time="2.692" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)" time="0.044" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)" time="3.692" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)" time="0.368" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)" time="0.468" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)" time="0.003" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.004" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)" time="0.602" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)" time="0.145" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)" time="5.649" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)" time="2.013" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)" time="0.004" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)" time="5.153">
+    <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+</failure>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)" time="2.78" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)" time="0.008" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)" time="3.646" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)" time="0.257" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)" time="0.414" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)" time="0.006" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 23:34:40 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Fri Apr 20 00:50:23 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl
-21 ms. Memory: 116224K Free: 96123K (83%)
-12 ms. Memory: 116224K Free: 93932K (81%)
-sleeping 2 seconds: 17 ms. Memory: 116224K Free: 88644K (76%)
-21 ms. Memory: 116224K Free: 88644K (76%)
+21 ms. Memory: 116224K Free: 96071K (83%)
+8 ms. Memory: 116224K Free: 94187K (81%)
+4 ms. Memory: 116224K Free: 93492K (80%)
+sleeping 2 seconds: 7 ms. Memory: 116224K Free: 88179K (76%)
+19 ms. Memory: 116224K Free: 87791K (76%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl
-11 ms. Memory: 331264K Free: 256267K (77%)
+6 ms. Memory: 331776K Free: 279448K (84%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl
 test 1.0: filterSize: 13, newFilterSize: 15
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl
+
+
+==== $PTII/ptolemy/actor/gui/test/HTMLAbout.tcl: HTMLAbout-2.0 about
+==== Contents of test case:
+
+    set about [java::call ptolemy.actor.gui.HTMLAbout about $configuration ]
+    list $about
+
+==== Result was:
+{<html><head><title>About Ptolemy II</title></head><body><h1>About Ptolemy II</h1>
+The HTML Viewer in Ptolemy II handles the <code>about:</code>
+tag specially.
+<br>The following urls are handled:
+<ul>
+<li><a href="about:configuration"><code>about:configuration</code></a> Expand the configuration (good way to test for missing classes).
+<li><a href="about:expandLibrary"><code>about:expandLibrary</code></a> Open a model and expand library tree (good way to test for missing classes, check standard out).
+<li><a href="about:copyright"><code>about:copyright</code></a>  Display information about the copyrights.
+<li><a href="about:checkCompleteDemos"><code>about:checkCompleteDemos</code></a> Check that each of the demos listed in the individual files is present in <code>ptolemy/configs/doc/completeDemos.htm</code>.
+</ul>
+<table>
+<tr rowspan=4><center><b>Full</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemos.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demos.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demos.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demos.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew11.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew10.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew8.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew7.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew6.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew5.1.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew5.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew4.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>BCVTB</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/bcvtb/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/bcvtb/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docsBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>CapeCode</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/capecode/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/demonstrations.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/tour.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/tour.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/tour.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/tour.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>CyPhySim</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/demonstrations.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>HyVisual</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/hyvisual/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/hyvisual/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>Ptiny</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosPtiny.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>doc/mainVergilPtiny.htm</code>
+    <td><a href="about:demos#doc/mainVergilPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#doc/mainVergilPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/kepler/doc-index.htm</code>
+    <td><a href="about:demos#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/kepler/doc-index.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>doc/mainVergilPtinyKepler.htm</code>
+    <td><a href="about:demos#doc/mainVergilPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#doc/mainVergilPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docsPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>VisualSense</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/visualsense/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/visualsense/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+</table>
+</body>
+</html>
+}
+---- Result should have been:
+{<html><head><title>About Ptolemy II</title></head><body><h1>About Ptolemy II</h1>
+The HTML Viewer in Ptolemy II handles the <code>about:</code>
+tag specially.
+<br>The following urls are handled:
+<ul>
+<li><a href="about:configuration"><code>about:configuration</code></a> Expand the configuration (good way to test for missing classes).
+<li><a href="about:expandLibrary"><code>about:expandLibrary</code></a> Open a model and expand library tree (good way to test for missing classes, check standard out).
+<li><a href="about:copyright"><code>about:copyright</code></a>  Display information about the copyrights.
+<li><a href="about:checkCompleteDemos"><code>about:checkCompleteDemos</code></a> Check that each of the demos listed in the individual files is present in <code>ptolemy/configs/doc/completeDemos.htm</code>.
+</ul>
+<table>
+<tr rowspan=4><center><b>Full</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemos.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demos.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demos.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demos.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew11.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew10.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew8.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew7.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew6.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew5.1.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew5.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew4.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>BCVTB</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/bcvtb/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/bcvtb/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docsBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>CapeCode</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/capecode/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/demonstrations.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>CyPhySim</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/demonstrations.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>HyVisual</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/hyvisual/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/hyvisual/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>Ptiny</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosPtiny.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>doc/mainVergilPtiny.htm</code>
+    <td><a href="about:demos#doc/mainVergilPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#doc/mainVergilPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/kepler/doc-index.htm</code>
+    <td><a href="about:demos#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/kepler/doc-index.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>doc/mainVergilPtinyKepler.htm</code>
+    <td><a href="about:demos#doc/mainVergilPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#doc/mainVergilPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docsPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+<tr rowspan=4><center><b>VisualSense</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/visualsense/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/visualsense/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+</table>
+</body>
+</html>
+}
+@@@@@ known results is more than 7 lines long, so we run diff
+122a123,128
+>   <tr>
+>     <code>ptolemy/configs/capecode/tour.htm</code>
+>     <td><a href="about:demos#ptolemy/configs/capecode/tour.htm">&nbsp;Open the .xml&nbsp;</a></td>
+>     <td><a href="about:links#ptolemy/configs/capecode/tour.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+>     <td><a href="about:checkModelSizes#ptolemy/configs/capecode/tour.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+>   </tr>
+@@@@@ Done running diffText
+---- HTMLAbout-2.0 FAILED
 Could not find body or head in file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/accessors-license.htm <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- $Id$ -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang
@@ -268,13 +735,284 @@ java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.ht
 java.io.IOException: File '/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ptolemy/configs/kepler/doc-index.htm' does not exist.
  AND:
 java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.htm
+
+
+==== $PTII/ptolemy/actor/gui/test/HTMLAbout.tcl: HTMLAbout-4.0 checkCompleteDemos
+==== Contents of test case:
+ 
+    set configurationDirectory [java::call ptolemy.actor.gui.ConfigurationApplication  configurationDirectoryFullOrFirst]
+    set configurationFile [java::new java.io.File $configurationDirectory "configuration.xml"]
+    puts "Reading [$configurationFile toString]"
+    set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration  [$configurationFile toURL]]
+
+    set about [java::call ptolemy.actor.gui.HTMLAbout about $configuration]
+
+    # If the full configuration is present, then use completeDemos.htm
+    # Otherwise search for the configuration-specific demo file.
+    set configurationName [$configurationDirectory toString]
+    if {[regexp {full$} $configurationName]} {
+	set completeDemos "ptolemy/configs/doc/completeDemos.htm"
+    } else {
+	set completeDemosFile [java::new java.io.File $configurationDirectory "demonstrations.htm"]
+	if {[$completeDemosFile exists]} {
+	    set completeDemos [$completeDemosFile getCanonicalPath]
+	} else {
+	    puts "configurationName: $configurationName"
+	    set shortConfiguration [string range $configurationName [expr {[string last / $configurationName] + 1}] [string length $configurationName]]
+	    puts "shortConfiguration: $shortConfiguration"
+	    set shortUpcaseConfiguration "[string toupper [string range $shortConfiguration 0 0]][string range $shortConfiguration 1 [string length $shortConfiguration]]"
+	    set completeDemosFile [java::new java.io.File [$configurationDirectory getParentFile] "doc/demos${shortUpcaseConfiguration}.htm"]
+	    if {[$completeDemosFile exists]} {
+		set completeDemos [$completeDemosFile getCanonicalPath]
+	    } else {
+		error "[$completeDemosFile toString] does not exist"
+	    }
+	}
+    }
+
+    puts "Checking complete demos of $completeDemos"
+    set checkCompleteDemosReport [java::call ptolemy.actor.gui.HTMLAbout checkCompleteDemos $completeDemos]
+    
+    # Substitute $PTII
+    set ptolemyPtIIDir [java::call System getProperty {ptolemy.ptII.dir}]
+    regsub -all $ptolemyPtIIDir $checkCompleteDemosReport {XXXPTIIXXX} results
+    list $results
+
+==== Result was:
+{<h1>Results of checking for demos not listed in full demos</h1>
+For each of the files below, we list demos that are not included in <a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm</code></a>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew11.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew11.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>
+<ul>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml</a></li>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew7.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew7.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew6.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew6.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.1.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.1.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew4.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew4.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew3.0.2.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew3.0.2.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/bcvtb/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/bcvtb/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/tour.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/tour.htm</code></a></h2>
+<ul>
+ <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml</a></li>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/demonstrations.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtiny.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosPtiny.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/doc/mainVergilPtiny.htm"><code>file:XXXPTIIXXX/doc/mainVergilPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/doc/mainVergilPtinyKepler.htm"><code>file:XXXPTIIXXX/doc/mainVergilPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/visualsense/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/visualsense/intro.htm</code></a></h2>
+<ul>
+</ul>
+}
+---- Result should have been:
+{<h1>Results of checking for demos not listed in full demos</h1>
+For each of the files below, we list demos that are not included in <a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm</code></a>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew11.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew11.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>
+<ul>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml</a></li>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew7.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew7.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew6.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew6.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.1.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.1.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew4.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew4.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew3.0.2.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew3.0.2.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/bcvtb/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/bcvtb/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/demonstrations.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtiny.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosPtiny.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/doc/mainVergilPtiny.htm"><code>file:XXXPTIIXXX/doc/mainVergilPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/doc/mainVergilPtinyKepler.htm"><code>file:XXXPTIIXXX/doc/mainVergilPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/visualsense/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/visualsense/intro.htm</code></a></h2>
+<ul>
+</ul>
+}
+@@@@@ known results is more than 7 lines long, so we run diff
+64a65,71
+> <h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/tour.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/tour.htm</code></a></h2>
+> <ul>
+>  <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml</a></li>
+>  <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml</a></li>
+>  <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml</a></li>
+>  <li><a href="file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml">file:XXXPTIIXXX/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml</a></li>
+> </ul>
+@@@@@ Done running diffText
+---- HTMLAbout-4.0 FAILED
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl
 sleeping 3 seconds: /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl
-14 ms. Memory: 663040K Free: 190629K (29%)
-sleeping 2 seconds: 8 ms. Memory: 727040K Free: 657513K (90%)
+12 ms. Memory: 696320K Free: 169953K (24%)
+sleeping 2 seconds: 7 ms. Memory: 731136K Free: 505467K (69%)
 .test
-sleeping 2 seconds: 14 ms. Memory: 729088K Free: 641006K (88%)
+sleeping 2 seconds: 5 ms. Memory: 731648K Free: 429776K (59%)
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -313,8 +1051,8 @@ sleeping 2 seconds: 14 ms. Memory: 729088K Free: 641006K (88%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl
-04/19/18 11:35:01
-Failed: 0  Total Tests: 55  ((Passed: 55, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+04/20/18 12:50:44
+Failed: 2  Total Tests: 55  ((Passed: 53, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 AutoTests.java: About to close Vertx.
@@ -323,12 +1061,5 @@ No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
-  <system-err><![CDATA[No executionListeners? Error message was: Exception occurred: class ptolemy.kernel.util.IllegalActionException(Model is already running.
-  in .toplevel.manager)
-ptolemy.kernel.util.IllegalActionException: Model is already running.
-  in .toplevel.manager
-	at ptolemy.actor.Manager.execute(Manager.java:330)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-]]></system-err>
+  <system-err><![CDATA[]]></system-err>
 </testsuite>
