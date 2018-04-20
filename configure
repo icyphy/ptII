@@ -4705,7 +4705,7 @@ PTVIEWER_PACKAGES=ptolemy.media.viewer
 # Handle Java 9 fails.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking Java 9 and later" >&5
 $as_echo_n "checking Java 9 and later... " >&6; }
-echo "$JVERSION" | egrep '9*|1-90-9*' > /dev/null
+echo "$JVERSION" | egrep '^9|^1-90-9' > /dev/null
 status=$?
 if test $status -eq 1 ; then
     if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
