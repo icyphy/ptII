@@ -304,6 +304,14 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # No need to check in the log each time because this target is
     # easy to re-run.
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
+
+    # Check to see that the doclets were compiled.
+    echo "$PTII/doc/doclets:"
+    ls $PTII/doc/doclets/
+
+    # Check to see that a PtDoc file was created.
+    echo "$PTII/doc/JavaScript.xml"
+    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
 fi
 
 # This build produces less than 10K lines, so we don't save the
