@@ -1,0 +1,121 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.  Perhaps actor.prefire() returned false? Try debugging the actor by selecting "Listen to Actor".  Also, for SDF check moml for tokenConsumptionRate on input.
+  in .SDFDirector4.PSDFDirector and .SDFDirector4.actor
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:227)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .badRateChanges.SDF Director
+Because:
+The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+  in .badRateChanges.typed composite actor.port._tokenConsumptionRate
+	at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:418)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:764)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+  in .badRateChanges.typed composite actor.port._tokenConsumptionRate
+	at ptolemy.domains.sdf.kernel.SDFScheduler._assertDynamicRateVariable(SDFScheduler.java:931)
+	at ptolemy.domains.sdf.kernel.SDFScheduler._checkDynamicRateVariables(SDFScheduler.java:329)
+	at ptolemy.domains.sdf.kernel.SDFScheduler._getSchedule(SDFScheduler.java:527)
+	at ptolemy.actor.sched.Scheduler.getSchedule(Scheduler.java:189)
+	at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:408)
+	... 7 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.actor.NoRoomException: Queue is at capacity of 2. Cannot put a token.
+  in .badRateChanges2.NonStrictTest.input
+	at ptolemy.domains.sdf.kernel.SDFReceiver.put(SDFReceiver.java:318)
+	at ptolemy.actor.AbstractReceiver.putToAll(AbstractReceiver.java:413)
+	at ptolemy.actor.IOPort.send(IOPort.java:3064)
+	at ptolemy.actor.TypedIOPort.send(TypedIOPort.java:513)
+	at ptolemy.domains.sdf.kernel.SDFDirector.transferOutputs(SDFDirector.java:946)
+	at ptolemy.actor.Director.transferOutputs(Director.java:1654)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:462)
+	at ptolemy.actor.CompositeActor.iterate(CompositeActor.java:1146)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .SDFDirector2.SDF Director
+Because:
+The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+  in .SDFDirector2.typed composite actor.port._tokenConsumptionRate
+	at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:418)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:764)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+  in .SDFDirector2.typed composite actor.port._tokenConsumptionRate
+	at ptolemy.domains.sdf.kernel.SDFScheduler._assertDynamicRateVariable(SDFScheduler.java:931)
+	at ptolemy.domains.sdf.kernel.SDFScheduler._checkDynamicRateVariables(SDFScheduler.java:329)
+	at ptolemy.domains.sdf.kernel.SDFScheduler._getSchedule(SDFScheduler.java:527)
+	at ptolemy.actor.sched.Scheduler.getSchedule(Scheduler.java:189)
+	at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:408)
+	... 7 more
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoKnownFailedTests.RunModel(AutoKnownFailedTests.java:107)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .SDFDirector2.SDF Director
+Because:
+The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+  in .SDFDirector2.typed composite actor.port._tokenConsumptionRate
+	at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:418)
+	at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:764)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+  in .SDFDirector2.typed composite actor.port._tokenConsumptionRate
+	at ptolemy.domains.sdf.kernel.SDFScheduler._assertDynamicRateVariable(SDFScheduler.java:931)
+	at ptolemy.domains.sdf.kernel.SDFScheduler._checkDynamicRateVariables(SDFScheduler.java:329)
+	at ptolemy.domains.sdf.kernel.SDFScheduler._getSchedule(SDFScheduler.java:527)
+	at ptolemy.actor.sched.Scheduler.getSchedule(Scheduler.java:189)
+	at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:408)
+	... 7 more
+</pre>
+</body>
+</html>
