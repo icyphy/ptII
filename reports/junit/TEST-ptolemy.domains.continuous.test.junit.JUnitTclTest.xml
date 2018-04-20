@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-fac90aec-8d17-409c-bbec-4d06c2778f3d" name="ptolemy.domains.continuous.test.junit.JUnitTclTest" skipped="0" tests="155" time="77.25" timestamp="2018-04-19T15:46:45">
+<testsuite errors="0" failures="0" hostname="travis-job-11ea3344-c567-413e-967a-85af085059fe" name="ptolemy.domains.continuous.test.junit.JUnitTclTest" skipped="0" tests="155" time="79.333" timestamp="2018-04-20T01:23:06">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="274.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="285.7" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -16,7 +16,6 @@
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
     <property name="env.TRAVIS_SUDO" value="true" />
     <property name="env.LOGNAME" value="travis" />
-    <property name="env.PT_TRAVIS_TEST_CORE1_XML" value="true" />
     <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
     <property name="debuglevel" value="source,lines,vars" />
     <property name="checkstyle.formatter" value="xml" />
@@ -31,12 +30,12 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.29 34502 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.36 53726 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
-    <property name="ant.project.invoked-targets" value="build,test.core1.xml" />
+    <property name="ant.project.invoked-targets" value="build,test.core2.xml" />
     <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
     <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
     <property name="node.in.path" value="true" />
@@ -52,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.29 34502 10.20.1.59 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.36 53726 10.20.1.114 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,17 +69,17 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6057733666146525883.properties propsfile=/home/travis/build/icyphy/ptII/junit4582043589412984161.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1441283800842835772.properties propsfile=/home/travis/build/icyphy/ptII/junit62609349493631067.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="709c03f925e1...76cfeab57c96" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="cd6938bf4119...64994954ddf7" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
     <property name="test.batch" value="**/junit/*.java" />
-    <property name="env._" value="/usr/bin/perl" />
+    <property name="env._" value="/usr/bin/timeout" />
     <property name="java.io.tmpdir" value="/tmp" />
     <property name="user.language" value="en" />
     <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
@@ -115,7 +114,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="274" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="285" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +130,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="368691899" />
+    <property name="env.TRAVIS_BUILD_ID" value="368918122" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="76cfeab57c968d49b1c8019c8d826431c181709a" />
+    <property name="env.TRAVIS_COMMIT" value="64994954ddf78148c5820cd82a03c6d8773e9aab" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -168,9 +167,9 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Don&apos;t use accent e in names, use &amp;eacute; instead.  The reason is that accent e causes problems with the xml parser." />
-    <property name="keystore" value="ptKeystore" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Attempting to split up the jobs." />
     <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test" />
@@ -181,8 +180,9 @@
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
     <property name="timeout.npm" value="45000" />
-    <property name="sun.cpu.endian" value="little" />
+    <property name="env.PT_TRAVIS_TEST_CORE2_XML" value="true" />
     <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
     <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
     <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
     <property name="java.vm.version" value="25.151-b12" />
@@ -204,15 +204,15 @@
     <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
     <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
-    <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="368691905" />
+    <property name="env.TRAVIS_JOB_ID" value="368918130" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
-    <property name="java.maxmemory.large" value="8000m" />
     <property name="model" value="" />
+    <property name="java.maxmemory.large" value="8000m" />
     <property name="env.CASHER_DIR" value="/home/travis/.casher" />
     <property name="env.NVM_CD_FLAGS" value="" />
     <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
@@ -226,626 +226,626 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
   <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml (RunModel)" time="3.15" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml (RunModel)" time="0.959" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml (RunModel)" time="0.107" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml (RunModel)" time="3.851" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml (RunModel)" time="0.493" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml (RunModel)" time="0.047" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml (RunModel)" time="0.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml (RunModel)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml (RunModel)" time="0.046" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml (RunModel)" time="0.049" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml (RunModel)" time="0.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml (RunModel)" time="0.057" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml (RunModel)" time="2.598" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml (RunModel)" time="0.093" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml (RunModel)" time="0.095" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml (RunModel)" time="0.148" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml (RunModel)" time="0.051" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml (RunModel)" time="0.067" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml (RunModel)" time="0.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml (RunModel)" time="0.098" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml (RunModel)" time="0.087" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml (RunModel)" time="0.061" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml (RunModel)" time="0.07" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml (RunModel)" time="0.042" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml (RunModel)" time="0.041" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml (RunModel)" time="0.196" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml (RunModel)" time="0.02" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml (RunModel)" time="0.092" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml (RunModel)" time="2.948" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml (RunModel)" time="0.878" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml (RunModel)" time="0.12" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml (RunModel)" time="3.802" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml (RunModel)" time="0.547" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml (RunModel)" time="0.05" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml (RunModel)" time="0.037" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml (RunModel)" time="0.053" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml (RunModel)" time="0.057" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml (RunModel)" time="0.046" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml (RunModel)" time="0.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml (RunModel)" time="0.089" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml (RunModel)" time="2.894" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml (RunModel)" time="0.117" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml (RunModel)" time="0.09" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml (RunModel)" time="0.103" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml (RunModel)" time="0.075" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml (RunModel)" time="0.108" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml (RunModel)" time="0.105" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml (RunModel)" time="0.069" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml (RunModel)" time="0.076" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml (RunModel)" time="0.207" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml (RunModel)" time="0.021" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml (RunModel)" time="0.097" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge1.xml (RunModel)" time="0.018" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml (RunModel)" time="0.076" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml (RunModel)" time="0.057" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml (RunModel)" time="0.085" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml (RunModel)" time="0.103" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml (RunModel)" time="0.089" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml (RunModel)" time="16.586" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml (RunModel)" time="0.02" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml (RunModel)" time="0.218" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml (RunModel)" time="0.055" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml (RunModel)" time="0.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml (RunModel)" time="0.121" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[55] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml (RunModel)" time="0.141" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[56] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[57] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml (RunModel)" time="1.569" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[58] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml (RunModel)" time="3.254" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[59] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml (RunModel)" time="2.19" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml (RunModel)" time="0.065" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml (RunModel)" time="0.067" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml (RunModel)" time="0.104" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml (RunModel)" time="0.102" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml (RunModel)" time="0.037" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml (RunModel)" time="0.08" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml (RunModel)" time="15.976" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml (RunModel)" time="0.208" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml (RunModel)" time="0.067" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml (RunModel)" time="0.141" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[55] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml (RunModel)" time="0.137" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[56] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[57] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml (RunModel)" time="1.671" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[58] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml (RunModel)" time="3.218" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[59] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml (RunModel)" time="2.199" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[60] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HybridPlant.xml (RunModel)" time="0.656" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[61] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml (RunModel)" time="0.208" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[62] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml (RunModel)" time="0.258" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[63] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml (RunModel)" time="2.658" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[64] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[65] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[66] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml (RunModel)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[67] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml (RunModel)" time="0.761" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[68] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[69] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml (RunModel)" time="0.009" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[70] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml (RunModel)" time="0.091" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[71] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml (RunModel)" time="0.025" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[72] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml (RunModel)" time="0.009" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[73] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml (RunModel)" time="0.008" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[74] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml (RunModel)" time="0.011" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[75] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml (RunModel)" time="0.011" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[76] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml (RunModel)" time="0.015" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[77] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml (RunModel)" time="0.011" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[78] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml (RunModel)" time="0.012" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[79] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml (RunModel)" time="0.012" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[80] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml (RunModel)" time="0.012" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[81] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml (RunModel)" time="0.038" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[82] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)" time="0.081" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[83] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml (RunModel)" time="0.064" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[84] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml (RunModel)" time="0.01" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[85] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[86] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml (RunModel)" time="3.846" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[87] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml (RunModel)" time="0.928" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[88] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml (RunModel)" time="1.713" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[89] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml (RunModel)" time="0.864" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[90] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[91] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml (RunModel)" time="0.037" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[92] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[93] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[94] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[95] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[96] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[97] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml (RunModel)" time="0.828" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[98] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml (RunModel)" time="1.343" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[99] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml (RunModel)" time="0.906" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[100] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml (RunModel)" time="0.684" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[101] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml (RunModel)" time="1.208" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[102] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml (RunModel)" time="0.191" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[103] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml (RunModel)" time="0.896" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[104] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml (RunModel)" time="0.367" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[105] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml (RunModel)" time="1.087" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[106] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml (RunModel)" time="0.164" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[107] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml (RunModel)" time="0.009" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[108] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml (RunModel)" time="0.049" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[109] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml (RunModel)" time="0.079" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[110] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml (RunModel)" time="0.52" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[111] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml (RunModel)" time="0.01" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[112] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml (RunModel)" time="0.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[113] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml (RunModel)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[114] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml (RunModel)" time="0.58" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[115] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[116] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml (RunModel)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[117] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[118] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[119] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[120] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[121] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[122] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[123] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml (RunModel)" time="0.836" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[124] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml (RunModel)" time="2.494" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[125] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml (RunModel)" time="0.821" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[126] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml (RunModel)" time="0.013" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[127] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml (RunModel)" time="0.847" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[128] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml (RunModel)" time="0.009" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[61] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml (RunModel)" time="0.201" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[62] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml (RunModel)" time="0.27" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[63] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml (RunModel)" time="2.768" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[64] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[65] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[66] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[67] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml (RunModel)" time="0.887" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[68] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[69] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml (RunModel)" time="0.019" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[70] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml (RunModel)" time="0.094" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[71] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml (RunModel)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[72] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml (RunModel)" time="0.015" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[73] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[74] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[75] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[76] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml (RunModel)" time="0.012" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[77] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml (RunModel)" time="0.012" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[78] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml (RunModel)" time="0.019" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[79] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[80] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[81] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[82] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)" time="0.092" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[83] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml (RunModel)" time="0.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[84] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[85] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[86] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml (RunModel)" time="4.411" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[87] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml (RunModel)" time="0.988" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[88] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml (RunModel)" time="1.345" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[89] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml (RunModel)" time="0.657" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[90] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml (RunModel)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[91] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml (RunModel)" time="0.074" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[92] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml (RunModel)" time="0.102" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[93] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[94] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[95] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml (RunModel)" time="0.048" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[96] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[97] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml (RunModel)" time="0.889" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[98] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml (RunModel)" time="1.393" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[99] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml (RunModel)" time="0.953" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[100] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml (RunModel)" time="0.69" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[101] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml (RunModel)" time="1.241" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[102] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml (RunModel)" time="0.19" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[103] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml (RunModel)" time="0.762" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[104] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml (RunModel)" time="0.371" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[105] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml (RunModel)" time="1.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[106] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml (RunModel)" time="0.185" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[107] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml (RunModel)" time="0.011" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[108] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml (RunModel)" time="0.047" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[109] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml (RunModel)" time="0.077" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[110] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml (RunModel)" time="0.541" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[111] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[112] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[113] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[114] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml (RunModel)" time="0.596" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[115] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[116] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[117] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[118] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[119] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[120] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[121] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[122] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[123] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml (RunModel)" time="0.953" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[124] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml (RunModel)" time="3.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[125] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml (RunModel)" time="0.88" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[126] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml (RunModel)" time="0.01" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[127] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml (RunModel)" time="0.914" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[128] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml (RunModel)" time="0.01" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[129] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidWithMultipleImpulses.xml (RunModel)" time="0.01" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[130] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml (RunModel)" time="0.2" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[131] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml (RunModel)" time="3.459" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[132] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml (RunModel)" time="2.283" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[133] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml (RunModel)" time="0.213" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[134] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml (RunModel)" time="0.089" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[135] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml (RunModel)" time="0.068" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[136] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml (RunModel)" time="0.066" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[137] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml (RunModel)" time="0.237" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[138] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml (RunModel)" time="0.014" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[139] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml (RunModel)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[140] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml (RunModel)" time="0.014" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[141] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml (RunModel)" time="0.127" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[142] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml (RunModel)" time="0.854" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[143] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml (RunModel)" time="0.078" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[144] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml (RunModel)" time="2.829" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[145] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml (RunModel)" time="0.831" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[146] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml (RunModel)" time="0.051" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[147] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[148] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[149] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[130] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml (RunModel)" time="0.205" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[131] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml (RunModel)" time="3.582" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[132] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml (RunModel)" time="2.763" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[133] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml (RunModel)" time="0.195" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[134] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml (RunModel)" time="0.068" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[135] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml (RunModel)" time="0.059" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[136] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml (RunModel)" time="0.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[137] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml (RunModel)" time="0.253" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[138] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[139] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml (RunModel)" time="0.022" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[140] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[141] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml (RunModel)" time="0.14" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[142] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml (RunModel)" time="0.954" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[143] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[144] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml (RunModel)" time="2.865" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[145] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml (RunModel)" time="0.879" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[146] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml (RunModel)" time="0.077" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[147] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[148] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[149] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml (RunModel)" time="0.03" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[150] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel4.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[151] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml (RunModel)" time="0.157" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[151] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml (RunModel)" time="0.141" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu Apr 19 15:46:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml
-2619 ms. Memory: 331776K Free: 322612K (97%)
+----------------- testing Fri Apr 20 01:23:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml
+2435 ms. Memory: 331776K Free: 318034K (96%)
 reloadAllAccessors: .BouncingBall
------------------ testing Thu Apr 19 15:46:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml
-805 ms. Memory: 331776K Free: 137039K (41%)
+----------------- testing Fri Apr 20 01:23:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml
+736 ms. Memory: 331776K Free: 130026K (39%)
 reloadAllAccessors: .BouncingBallWithoutGR
------------------ testing Thu Apr 19 15:46:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml
-42 ms. Memory: 331776K Free: 124761K (38%)
+----------------- testing Fri Apr 20 01:23:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml
+46 ms. Memory: 331776K Free: 117732K (35%)
 reloadAllAccessors: .Brownian
------------------ testing Thu Apr 19 15:46:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml
-3364 ms. Memory: 456192K Free: 310111K (68%)
+----------------- testing Fri Apr 20 01:23:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml
+3373 ms. Memory: 456192K Free: 297731K (65%)
 reloadAllAccessors: .CarTracking
------------------ testing Thu Apr 19 15:46:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml
-362 ms. Memory: 456192K Free: 200629K (44%)
+----------------- testing Fri Apr 20 01:23:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml
+387 ms. Memory: 456192K Free: 184686K (40%)
 reloadAllAccessors: .CartPendulum
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml
-8 ms. Memory: 456192K Free: 188112K (41%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml
+13 ms. Memory: 456192K Free: 169628K (37%)
 reloadAllAccessors: .CausalityInterface10
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml
-4 ms. Memory: 456192K Free: 178086K (39%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml
+10 ms. Memory: 456192K Free: 158368K (35%)
 reloadAllAccessors: .CausalityInterface11
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml
-4 ms. Memory: 456192K Free: 168091K (37%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml
+11 ms. Memory: 456192K Free: 147117K (32%)
 reloadAllAccessors: .CausalityInterface12
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml
-3 ms. Memory: 456192K Free: 154348K (34%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml
+8 ms. Memory: 456192K Free: 132125K (29%)
 reloadAllAccessors: .CausalityInterface13
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml
-6 ms. Memory: 456192K Free: 146845K (32%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml
+9 ms. Memory: 456192K Free: 120873K (26%)
 reloadAllAccessors: .CausalityInterface14
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml
-5 ms. Memory: 456192K Free: 136834K (30%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml
+6 ms. Memory: 456192K Free: 109614K (24%)
 reloadAllAccessors: .CausalityInterface4
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml
-6 ms. Memory: 456192K Free: 126824K (28%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml
+7 ms. Memory: 456192K Free: 98354K (22%)
 reloadAllAccessors: .CausalityInterface5
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml
-4 ms. Memory: 456192K Free: 119312K (26%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml
+5 ms. Memory: 456192K Free: 87094K (19%)
 reloadAllAccessors: .CausalityInterface6
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml
-11 ms. Memory: 456192K Free: 103072K (23%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml
+20 ms. Memory: 439296K Free: 430306K (98%)
 reloadAllAccessors: .CausalityInterface7
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml
-4 ms. Memory: 456192K Free: 90547K (20%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml
+8 ms. Memory: 439296K Free: 414117K (94%)
 reloadAllAccessors: .CausalityInterface8
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml
-10 ms. Memory: 456192K Free: 75523K (17%)
+----------------- testing Fri Apr 20 01:23:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml
+6 ms. Memory: 439296K Free: 399769K (91%)
 reloadAllAccessors: .CausalityInterface9
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml
-3 ms. Memory: 439296K Free: 424811K (97%)
+----------------- testing Fri Apr 20 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml
+5 ms. Memory: 439296K Free: 390209K (89%)
 reloadAllAccessors: .CausalityInterfaceFeedback1
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml
-3 ms. Memory: 439296K Free: 412837K (94%)
+----------------- testing Fri Apr 20 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml
+5 ms. Memory: 439296K Free: 378283K (86%)
 reloadAllAccessors: .CausalityInterfaceFeedback2
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml
-3 ms. Memory: 439296K Free: 405663K (92%)
+----------------- testing Fri Apr 20 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml
+4 ms. Memory: 439296K Free: 371125K (84%)
 reloadAllAccessors: .CompareWithCurrentTime
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml
-6 ms. Memory: 439296K Free: 386511K (88%)
+----------------- testing Fri Apr 20 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml
+11 ms. Memory: 439296K Free: 351989K (80%)
 reloadAllAccessors: .ComparedClocks
------------------ testing Thu Apr 19 15:46:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml
-2408 ms. Memory: 428032K Free: 191521K (45%)
+----------------- testing Fri Apr 20 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml
+2683 ms. Memory: 428032K Free: 133290K (31%)
 reloadAllAccessors: .ContinuousAOCClone
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml
-35 ms. Memory: 428032K Free: 163193K (38%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml
+35 ms. Memory: 428032K Free: 104324K (24%)
 reloadAllAccessors: .ContinuousClock
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml
-50 ms. Memory: 428032K Free: 134332K (31%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml
+49 ms. Memory: 428032K Free: 75334K (18%)
 reloadAllAccessors: .ContinuousInContinuous
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml
-8 ms. Memory: 428032K Free: 125209K (29%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml
+6 ms. Memory: 407552K Free: 386734K (95%)
 reloadAllAccessors: .ContinuousInContinuousInContinuous
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml
-123 ms. Memory: 428032K Free: 110032K (26%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml
+83 ms. Memory: 407552K Free: 372713K (91%)
 reloadAllAccessors: .ContinuousInDE
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml
-39 ms. Memory: 428032K Free: 98632K (23%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml
+66 ms. Memory: 407552K Free: 360895K (89%)
 reloadAllAccessors: .ContinuousInDE2
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml
-47 ms. Memory: 428032K Free: 85748K (20%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml
+48 ms. Memory: 407552K Free: 349061K (86%)
 reloadAllAccessors: .ContinuousInDE3
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml
-14 ms. Memory: 428032K Free: 78902K (18%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml
+13 ms. Memory: 407552K Free: 341575K (84%)
 reloadAllAccessors: .ContinuousInDE4
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml
-45 ms. Memory: 408064K Free: 362811K (89%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml
+55 ms. Memory: 407552K Free: 303505K (74%)
 reloadAllAccessors: .ContinuousInDEDifferentRefinements
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml
-44 ms. Memory: 408064K Free: 324735K (80%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml
+54 ms. Memory: 407552K Free: 265475K (65%)
 reloadAllAccessors: .ContinuousInDEDifferentRefinementsPreemptive
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml
-37 ms. Memory: 408064K Free: 308506K (76%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml
+41 ms. Memory: 407552K Free: 250223K (61%)
 reloadAllAccessors: .ContinuousInDEInContinuous2
------------------ testing Thu Apr 19 15:46:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml
-41 ms. Memory: 408064K Free: 292277K (72%)
+----------------- testing Fri Apr 20 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml
+49 ms. Memory: 407552K Free: 234032K (57%)
 reloadAllAccessors: .ContinuousInDEInContinuous3
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml
-21 ms. Memory: 408064K Free: 280413K (69%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml
+23 ms. Memory: 407552K Free: 222195K (55%)
 reloadAllAccessors: .ContinuousInDEInput
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml
-19 ms. Memory: 408064K Free: 270739K (66%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml
+19 ms. Memory: 407552K Free: 212550K (52%)
 reloadAllAccessors: .ContinuousInDEInput2
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml
-13 ms. Memory: 408064K Free: 262026K (64%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml
+18 ms. Memory: 407552K Free: 202890K (50%)
 reloadAllAccessors: .ContinuousInDEInput3
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml
-160 ms. Memory: 408064K Free: 162789K (40%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml
+177 ms. Memory: 407552K Free: 103492K (25%)
 reloadAllAccessors: .ContinuousInDESharingRefinement
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml
-5 ms. Memory: 408064K Free: 155273K (38%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml
+5 ms. Memory: 407552K Free: 96961K (24%)
 reloadAllAccessors: .ContinuousInDEwithNoPorts
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml
-53 ms. Memory: 408064K Free: 139052K (34%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml
+53 ms. Memory: 407552K Free: 80786K (20%)
 reloadAllAccessors: .ContinuousInsideDE
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge1.xml
-3 ms. Memory: 408064K Free: 131536K (32%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge1.xml
+3 ms. Memory: 407552K Free: 73301K (18%)
 reloadAllAccessors: .ContinuousMerge1
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml
-13 ms. Memory: 408064K Free: 117497K (29%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml
+18 ms. Memory: 399360K Free: 377544K (95%)
 reloadAllAccessors: .ContinuousMerge2
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml
-55 ms. Memory: 408064K Free: 104451K (26%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml
+50 ms. Memory: 399360K Free: 363742K (91%)
 reloadAllAccessors: .ContinuousMerge3
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml
-43 ms. Memory: 408064K Free: 90389K (22%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml
+42 ms. Memory: 399360K Free: 350590K (88%)
 reloadAllAccessors: .ContinuousWithinContinuous
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml
-75 ms. Memory: 408064K Free: 76350K (19%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml
+75 ms. Memory: 399360K Free: 337447K (84%)
 reloadAllAccessors: .ContinuousWithinContinuous2
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml
-25 ms. Memory: 392704K Free: 377473K (96%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml
+15 ms. Memory: 399360K Free: 328455K (82%)
 reloadAllAccessors: .ContinuousWithinContinuous3
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml
-85 ms. Memory: 392704K Free: 358406K (91%)
+----------------- testing Fri Apr 20 01:23:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml
+81 ms. Memory: 399360K Free: 310502K (78%)
 reloadAllAccessors: .ContinuousWithinContinuous4
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml
-15 ms. Memory: 392704K Free: 347335K (88%)
+----------------- testing Fri Apr 20 01:23:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml
+21 ms. Memory: 399360K Free: 299441K (75%)
 reloadAllAccessors: .ContinuousWithinContinuous5
------------------ testing Thu Apr 19 15:46:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml
-13 ms. Memory: 392704K Free: 338330K (86%)
+----------------- testing Fri Apr 20 01:23:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml
+14 ms. Memory: 399360K Free: 290441K (73%)
 reloadAllAccessors: .ContinuousWithinContinuous6
------------------ testing Thu Apr 19 15:47:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml
-77 ms. Memory: 392704K Free: 325176K (83%)
+----------------- testing Fri Apr 20 01:23:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml
+65 ms. Memory: 399360K Free: 277297K (69%)
 reloadAllAccessors: .ContinuousWithinContinuous7
------------------ testing Thu Apr 19 15:47:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml
-16507 ms. Memory: 253952K Free: 142494K (56%)
+----------------- testing Fri Apr 20 01:23:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml
+15875 ms. Memory: 253952K Free: 98754K (39%)
 reloadAllAccessors: .DCMotor
------------------ testing Thu Apr 19 15:47:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml
-8 ms. Memory: 253952K Free: 130625K (51%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml
+16 ms. Memory: 253952K Free: 86842K (34%)
 reloadAllAccessors: .DEInContinuous
------------------ testing Thu Apr 19 15:47:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml
-7 ms. Memory: 253952K Free: 119735K (47%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml
+8 ms. Memory: 253952K Free: 75940K (30%)
 reloadAllAccessors: .DEinContinuous2
------------------ testing Thu Apr 19 15:47:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml
-166 ms. Memory: 253952K Free: 81874K (32%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml
+165 ms. Memory: 243200K Free: 201131K (83%)
 reloadAllAccessors: .Derivative2
------------------ testing Thu Apr 19 15:47:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml
-23 ms. Memory: 243200K Free: 222264K (91%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml
+29 ms. Memory: 243200K Free: 180761K (74%)
 reloadAllAccessors: .Derivative1
------------------ testing Thu Apr 19 15:47:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml
-4 ms. Memory: 243200K Free: 214866K (88%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml
+5 ms. Memory: 243200K Free: 170129K (70%)
 reloadAllAccessors: .DiscreteClock
------------------ testing Thu Apr 19 15:47:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml
-91 ms. Memory: 243200K Free: 204255K (84%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml
+83 ms. Memory: 243200K Free: 156442K (64%)
 reloadAllAccessors: .EfficiencyCurve
------------------ testing Thu Apr 19 15:47:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml
-116 ms. Memory: 243200K Free: 187338K (77%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml
+128 ms. Memory: 243200K Free: 139355K (57%)
 reloadAllAccessors: .ExponentialResponse
------------------ testing Thu Apr 19 15:47:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml
-26 ms. Memory: 243200K Free: 178330K (73%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml
+31 ms. Memory: 243200K Free: 132156K (54%)
 reloadAllAccessors: .ExponentialResponseRK45
------------------ testing Thu Apr 19 15:47:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml
-1442 ms. Memory: 227328K Free: 176444K (78%)
+----------------- testing Fri Apr 20 01:23:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml
+1553 ms. Memory: 227328K Free: 133591K (59%)
 reloadAllAccessors: .Friction
------------------ testing Thu Apr 19 15:47:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml
-3080 ms. Memory: 208384K Free: 66767K (32%)
+----------------- testing Fri Apr 20 01:23:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml
+3040 ms. Memory: 206848K Free: 144247K (70%)
 reloadAllAccessors: .FurutaPendulum
------------------ testing Thu Apr 19 15:47:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml
-1822 ms. Memory: 194560K Free: 117814K (61%)
+----------------- testing Fri Apr 20 01:23:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml
+1834 ms. Memory: 274944K Free: 178478K (65%)
 reloadAllAccessors: .HierarchicalExecution
------------------ testing Thu Apr 19 15:47:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HybridPlant.xml
-591 ms. Memory: 182784K Free: 154053K (84%)
+----------------- testing Fri Apr 20 01:23:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HybridPlant.xml
+572 ms. Memory: 321536K Free: 137575K (43%)
 reloadAllAccessors: .HybridPlant
------------------ testing Thu Apr 19 15:47:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml
-156 ms. Memory: 182784K Free: 89004K (49%)
+----------------- testing Fri Apr 20 01:23:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml
+163 ms. Memory: 321536K Free: 70233K (22%)
 reloadAllAccessors: .Hysteresis
------------------ testing Thu Apr 19 15:47:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml
-192 ms. Memory: 183808K Free: 112107K (61%)
+----------------- testing Fri Apr 20 01:23:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml
+205 ms. Memory: 374272K Free: 283713K (76%)
 reloadAllAccessors: .HysteresisWithRandomDelay
------------------ testing Thu Apr 19 15:47:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml
-2567 ms. Memory: 209920K Free: 137719K (66%)
+----------------- testing Fri Apr 20 01:23:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml
+2689 ms. Memory: 400896K Free: 146138K (36%)
 reloadAllAccessors: .HysteresisWithRandomLosses
------------------ testing Thu Apr 19 15:47:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml
-9 ms. Memory: 209920K Free: 123409K (59%)
+----------------- testing Fri Apr 20 01:23:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml
+12 ms. Memory: 400896K Free: 128250K (32%)
 reloadAllAccessors: .ImmediateTransitions
------------------ testing Thu Apr 19 15:47:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml
-11 ms. Memory: 209920K Free: 115043K (55%)
+----------------- testing Fri Apr 20 01:23:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml
+8 ms. Memory: 400896K Free: 117982K (29%)
 reloadAllAccessors: .ImpulseFeedback
------------------ testing Thu Apr 19 15:47:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml
-5 ms. Memory: 209920K Free: 106681K (51%)
+----------------- testing Fri Apr 20 01:23:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml
+5 ms. Memory: 400896K Free: 107700K (27%)
 reloadAllAccessors: .ImpulseFeedback2
------------------ testing Thu Apr 19 15:47:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml
-737 ms. Memory: 193024K Free: 125798K (65%)
+----------------- testing Fri Apr 20 01:23:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml
+865 ms. Memory: 381440K Free: 59756K (16%)
 reloadAllAccessors: .IncreasingRatePoisson
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml
-8 ms. Memory: 193024K Free: 117025K (61%)
+----------------- testing Fri Apr 20 01:23:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml
+5 ms. Memory: 381440K Free: 51316K (13%)
 reloadAllAccessors: .InitialStateFeedback
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml
-2 ms. Memory: 193024K Free: 109478K (57%)
+----------------- testing Fri Apr 20 01:23:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml
+11 ms. Memory: 373248K Free: 337177K (90%)
 reloadAllAccessors: .Integration
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml
-80 ms. Memory: 193024K Free: 92977K (48%)
+----------------- testing Fri Apr 20 01:23:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml
+84 ms. Memory: 373248K Free: 320012K (86%)
 reloadAllAccessors: .Integration2
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml
-2 ms. Memory: 193024K Free: 85448K (44%)
+----------------- testing Fri Apr 20 01:23:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml
+2 ms. Memory: 373248K Free: 313425K (84%)
 reloadAllAccessors: .Integration3
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml
-2 ms. Memory: 193024K Free: 77860K (40%)
+----------------- testing Fri Apr 20 01:23:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml
+2 ms. Memory: 373248K Free: 306801K (82%)
 reloadAllAccessors: .Integration5
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml
-2 ms. Memory: 193024K Free: 70315K (36%)
+----------------- testing Fri Apr 20 01:23:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml
+2 ms. Memory: 373248K Free: 300217K (80%)
 reloadAllAccessors: .IntegratorImpulse
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml
-4 ms. Memory: 193024K Free: 62726K (32%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml
+3 ms. Memory: 373248K Free: 293642K (79%)
 reloadAllAccessors: .IntegratorImpulse2
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml
-2 ms. Memory: 193024K Free: 55138K (29%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml
+2 ms. Memory: 373248K Free: 287017K (77%)
 reloadAllAccessors: .LevelCrossing1
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml
-2 ms. Memory: 192000K Free: 158790K (83%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml
+3 ms. Memory: 373248K Free: 280449K (75%)
 reloadAllAccessors: .LevelCrossing2
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml
-2 ms. Memory: 192000K Free: 152536K (79%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml
+2 ms. Memory: 373248K Free: 273824K (73%)
 reloadAllAccessors: .LevelCrossing3
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml
-2 ms. Memory: 192000K Free: 146265K (76%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml
+3 ms. Memory: 373248K Free: 267200K (72%)
 reloadAllAccessors: .LevelCrossing4
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml
-3 ms. Memory: 192000K Free: 140018K (73%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml
+3 ms. Memory: 373248K Free: 260624K (70%)
 reloadAllAccessors: .LevelCrossing5
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml
-2 ms. Memory: 192000K Free: 133777K (70%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml
+3 ms. Memory: 373248K Free: 254006K (68%)
 reloadAllAccessors: .LevelCrossing6
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml
-12 ms. Memory: 192000K Free: 119878K (62%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml
+17 ms. Memory: 373248K Free: 239768K (64%)
 reloadAllAccessors: .LevelCrossingDetector
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml
-52 ms. Memory: 192000K Free: 98505K (51%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml
+55 ms. Memory: 373248K Free: 217844K (58%)
 reloadAllAccessors: .LevelCrossingDetectorDetectingDirections
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml
-23 ms. Memory: 192000K Free: 70650K (37%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml
+24 ms. Memory: 373248K Free: 190122K (51%)
 reloadAllAccessors: .LevelCrossingDetectorDetectsGlitches
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml
-2 ms. Memory: 192000K Free: 65494K (34%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml
+4 ms. Memory: 373248K Free: 183497K (49%)
 reloadAllAccessors: .LevelCrossingNoInitialOuput
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml
-15 ms. Memory: 192000K Free: 55990K (29%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml
+22 ms. Memory: 373248K Free: 173041K (46%)
 reloadAllAccessors: .LinearStateSpace_Example
------------------ testing Thu Apr 19 15:47:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml
-3766 ms. Memory: 171520K Free: 51238K (30%)
+----------------- testing Fri Apr 20 01:23:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml
+4343 ms. Memory: 343040K Free: 106169K (31%)
 reloadAllAccessors: .Lorenz
------------------ testing Thu Apr 19 15:47:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml
-827 ms. Memory: 184832K Free: 74519K (40%)
+----------------- testing Fri Apr 20 01:23:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml
+893 ms. Memory: 337408K Free: 194783K (58%)
 reloadAllAccessors: .LorenzDifferentialSystem
------------------ testing Thu Apr 19 15:47:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml
-1550 ms. Memory: 226816K Free: 137625K (61%)
+----------------- testing Fri Apr 20 01:23:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml
+1264 ms. Memory: 326656K Free: 225104K (69%)
 reloadAllAccessors: .LorenzDifferentialSystemWithInput
------------------ testing Thu Apr 19 15:47:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml
-845 ms. Memory: 256000K Free: 195931K (77%)
+----------------- testing Fri Apr 20 01:23:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml
+641 ms. Memory: 326656K Free: 103272K (32%)
 reloadAllAccessors: .LorenzDifferentialSystemWithTime
------------------ testing Thu Apr 19 15:47:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml
-6 ms. Memory: 256000K Free: 187119K (73%)
+----------------- testing Fri Apr 20 01:23:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml
+6 ms. Memory: 326656K Free: 94411K (29%)
 reloadAllAccessors: .Microsteps
------------------ testing Thu Apr 19 15:47:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml
-11 ms. Memory: 256000K Free: 168684K (66%)
+----------------- testing Fri Apr 20 01:23:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml
+23 ms. Memory: 326656K Free: 77450K (24%)
 reloadAllAccessors: .Modal1
------------------ testing Thu Apr 19 15:47:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml
-16 ms. Memory: 256000K Free: 150259K (59%)
+----------------- testing Fri Apr 20 01:23:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml
+33 ms. Memory: 326656K Free: 58949K (18%)
 reloadAllAccessors: .Modal2
------------------ testing Thu Apr 19 15:47:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml
-10 ms. Memory: 256000K Free: 137126K (54%)
+----------------- testing Fri Apr 20 01:23:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml
+17 ms. Memory: 326656K Free: 46795K (14%)
 reloadAllAccessors: .ModalTransitionGuardWithReset
------------------ testing Thu Apr 19 15:47:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml
-9 ms. Memory: 256000K Free: 123985K (48%)
+----------------- testing Fri Apr 20 01:23:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml
+18 ms. Memory: 326656K Free: 34715K (11%)
 reloadAllAccessors: .ModalTransitionGuardWithResetUsingPreemptiveTransition
------------------ testing Thu Apr 19 15:47:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml
-15 ms. Memory: 256000K Free: 110860K (43%)
+----------------- testing Fri Apr 20 01:23:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml
+11 ms. Memory: 310784K Free: 245900K (79%)
 reloadAllAccessors: .ModalTransitionGuardWithResetUsingPreemptiveTransition2
------------------ testing Thu Apr 19 15:47:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml
-12 ms. Memory: 256000K Free: 97720K (38%)
+----------------- testing Fri Apr 20 01:23:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml
+17 ms. Memory: 310784K Free: 232684K (75%)
 reloadAllAccessors: .ModalTransitionGuardWithResetUsingPreemptiveTransition3
------------------ testing Thu Apr 19 15:47:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml
-664 ms. Memory: 333312K Free: 279426K (84%)
+----------------- testing Fri Apr 20 01:23:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml
+727 ms. Memory: 309248K Free: 178649K (58%)
 reloadAllAccessors: .NewtonsCradle
------------------ testing Thu Apr 19 15:47:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml
-1192 ms. Memory: 329216K Free: 116693K (35%)
+----------------- testing Fri Apr 20 01:23:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml
+1247 ms. Memory: 283136K Free: 173123K (61%)
 reloadAllAccessors: .NewtonsCradleAnimated
------------------ testing Thu Apr 19 15:47:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml
-781 ms. Memory: 349696K Free: 124119K (35%)
+----------------- testing Fri Apr 20 01:24:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml
+830 ms. Memory: 276480K Free: 111110K (40%)
 reloadAllAccessors: .NewtonsCradleComplicated
------------------ testing Thu Apr 19 15:47:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml
-576 ms. Memory: 349184K Free: 174513K (50%)
+----------------- testing Fri Apr 20 01:24:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml
+573 ms. Memory: 267776K Free: 83798K (31%)
 reloadAllAccessors: .NewtonsCradleNondeterministic
------------------ testing Thu Apr 19 15:47:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml
-1100 ms. Memory: 400896K Free: 179715K (45%)
+----------------- testing Fri Apr 20 01:24:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml
+1109 ms. Memory: 350208K Free: 262607K (75%)
 reloadAllAccessors: .NewtonsCradlePerfectlyInelastic1
------------------ testing Thu Apr 19 15:47:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml
-154 ms. Memory: 400896K Free: 110937K (28%)
+----------------- testing Fri Apr 20 01:24:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml
+156 ms. Memory: 350208K Free: 195238K (56%)
 reloadAllAccessors: .Noise
------------------ testing Thu Apr 19 15:47:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml
-790 ms. Memory: 401408K Free: 278035K (69%)
+----------------- testing Fri Apr 20 01:24:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml
+672 ms. Memory: 350208K Free: 49112K (14%)
 reloadAllAccessors: .NoiseSpectrum
------------------ testing Thu Apr 19 15:47:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml
-263 ms. Memory: 401408K Free: 162388K (40%)
+----------------- testing Fri Apr 20 01:24:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml
+259 ms. Memory: 339456K Free: 189503K (56%)
 reloadAllAccessors: .ParameterizedNewtonsCradleAnimated
------------------ testing Thu Apr 19 15:47:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml
-978 ms. Memory: 466432K Free: 208433K (45%)
+----------------- testing Fri Apr 20 01:24:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml
+947 ms. Memory: 329728K Free: 102528K (31%)
 reloadAllAccessors: .ParameterizedNewtonsCradleAnimatedNondeterministic
------------------ testing Thu Apr 19 15:47:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml
-107 ms. Memory: 466432K Free: 148745K (32%)
+----------------- testing Fri Apr 20 01:24:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml
+116 ms. Memory: 329728K Free: 44429K (13%)
 reloadAllAccessors: .Pendulum3D
------------------ testing Thu Apr 19 15:47:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml
-2 ms. Memory: 466432K Free: 142178K (30%)
+----------------- testing Fri Apr 20 01:24:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml
+3 ms. Memory: 329728K Free: 38608K (12%)
 reloadAllAccessors: .PeriodicSampler
------------------ testing Thu Apr 19 15:47:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml
-20 ms. Memory: 466432K Free: 120413K (26%)
+----------------- testing Fri Apr 20 01:24:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml
+19 ms. Memory: 329728K Free: 17976K (5%)
 reloadAllAccessors: .PeriodicSampler1
------------------ testing Thu Apr 19 15:47:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml
-52 ms. Memory: 466432K Free: 89164K (19%)
+----------------- testing Fri Apr 20 01:24:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml
+49 ms. Memory: 316416K Free: 217852K (69%)
 reloadAllAccessors: .PeriodicSampler2
------------------ testing Thu Apr 19 15:47:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml
-498 ms. Memory: 466432K Free: 234610K (50%)
+----------------- testing Fri Apr 20 01:24:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml
+515 ms. Memory: 311296K Free: 221307K (71%)
 reloadAllAccessors: .Poisson
------------------ testing Thu Apr 19 15:47:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml
-2 ms. Memory: 466432K Free: 226953K (49%)
+----------------- testing Fri Apr 20 01:24:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml
+2 ms. Memory: 311296K Free: 213540K (69%)
 reloadAllAccessors: .PoissonClock
------------------ testing Thu Apr 19 15:47:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml
-4 ms. Memory: 466432K Free: 220386K (47%)
+----------------- testing Fri Apr 20 01:24:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml
+4 ms. Memory: 311296K Free: 206658K (66%)
 reloadAllAccessors: .PoissonClock2
------------------ testing Thu Apr 19 15:47:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml
-4 ms. Memory: 466432K Free: 211908K (45%)
+----------------- testing Fri Apr 20 01:24:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml
+6 ms. Memory: 311296K Free: 198216K (64%)
 reloadAllAccessors: .PortParameterHierarchy
------------------ testing Thu Apr 19 15:47:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml
-527 ms. Memory: 541696K Free: 370934K (68%)
+----------------- testing Fri Apr 20 01:24:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml
+546 ms. Memory: 296960K Free: 115999K (39%)
 reloadAllAccessors: .RandomHybridPlant
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml
-17 ms. Memory: 541696K Free: 352664K (65%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml
+12 ms. Memory: 296960K Free: 99757K (34%)
 reloadAllAccessors: .ResetTransitionWithStartTime1
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml
-21 ms. Memory: 541696K Free: 335896K (62%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml
+21 ms. Memory: 296960K Free: 83007K (28%)
 reloadAllAccessors: .ResetTransitionWithStartTime2
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml
-21 ms. Memory: 541696K Free: 319015K (59%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml
+23 ms. Memory: 296960K Free: 66248K (22%)
 reloadAllAccessors: .ResetTransitionWithStartTime3
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml
-7 ms. Memory: 541696K Free: 306767K (57%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml
+14 ms. Memory: 296960K Free: 55273K (19%)
 reloadAllAccessors: .ResetTransitionWithStartTime4
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml
-21 ms. Memory: 541696K Free: 289967K (54%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml
+25 ms. Memory: 296960K Free: 38429K (13%)
 reloadAllAccessors: .ResetTransitionWithStartTime5
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml
-12 ms. Memory: 541696K Free: 277647K (51%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml
+15 ms. Memory: 296960K Free: 24589K (8%)
 reloadAllAccessors: .ResetTransitionWithStartTime6
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml
-8 ms. Memory: 541696K Free: 267684K (49%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml
+9 ms. Memory: 296960K Free: 15001K (5%)
 reloadAllAccessors: .SRinContinuous
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml
-4 ms. Memory: 541696K Free: 250836K (46%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml
+9 ms. Memory: 292352K Free: 214895K (74%)
 reloadAllAccessors: .SampledClocks
------------------ testing Thu Apr 19 15:47:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml
-811 ms. Memory: 541696K Free: 73032K (13%)
+----------------- testing Fri Apr 20 01:24:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml
+930 ms. Memory: 292352K Free: 35608K (12%)
 reloadAllAccessors: .Satellite
------------------ testing Thu Apr 19 15:47:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml
-2367 ms. Memory: 541696K Free: 147948K (27%)
+----------------- testing Fri Apr 20 01:24:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml
+2907 ms. Memory: 274944K Free: 37435K (14%)
 reloadAllAccessors: .SigmaDelta
------------------ testing Thu Apr 19 15:47:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml
-677 ms. Memory: 479744K Free: 385244K (80%)
+----------------- testing Fri Apr 20 01:24:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml
+746 ms. Memory: 218112K Free: 195408K (90%)
 reloadAllAccessors: .SinuBouncingBall
------------------ testing Thu Apr 19 15:47:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml
-5 ms. Memory: 479744K Free: 376384K (78%)
+----------------- testing Fri Apr 20 01:24:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml
+4 ms. Memory: 218112K Free: 188455K (86%)
 reloadAllAccessors: .Sinusoid
------------------ testing Thu Apr 19 15:47:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml
-800 ms. Memory: 479744K Free: 172092K (36%)
+----------------- testing Fri Apr 20 01:24:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml
+874 ms. Memory: 211968K Free: 146356K (69%)
 reloadAllAccessors: .SinusoidInNoise
------------------ testing Thu Apr 19 15:47:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml
-1 ms. Memory: 479744K Free: 164658K (34%)
+----------------- testing Fri Apr 20 01:24:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml
+2 ms. Memory: 211968K Free: 139961K (66%)
 reloadAllAccessors: .SinusoidRK45
------------------ testing Thu Apr 19 15:47:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidWithMultipleImpulses.xml
-2 ms. Memory: 479744K Free: 157225K (33%)
+----------------- testing Fri Apr 20 01:24:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidWithMultipleImpulses.xml
+3 ms. Memory: 211968K Free: 134580K (63%)
 reloadAllAccessors: .SinusoidWithMultipleImpulses
------------------ testing Thu Apr 19 15:47:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml
-168 ms. Memory: 479744K Free: 123801K (26%)
+----------------- testing Fri Apr 20 01:24:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml
+165 ms. Memory: 211968K Free: 101404K (48%)
 reloadAllAccessors: .SquareWave
------------------ testing Thu Apr 19 15:47:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml
-3085 ms. Memory: 460800K Free: 171718K (37%)
+----------------- testing Fri Apr 20 01:24:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml
+3045 ms. Memory: 199168K Free: 47947K (24%)
 reloadAllAccessors: .Starmac
------------------ testing Thu Apr 19 15:47:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml
-1915 ms. Memory: 445952K Free: 114795K (26%)
+----------------- testing Fri Apr 20 01:24:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml
+2366 ms. Memory: 174592K Free: 140115K (80%)
 reloadAllAccessors: .StaticUnits
------------------ testing Thu Apr 19 15:47:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml
-154 ms. Memory: 445952K Free: 56544K (13%)
+----------------- testing Fri Apr 20 01:24:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml
+140 ms. Memory: 174592K Free: 84623K (48%)
 reloadAllAccessors: .StickyMasses
------------------ testing Thu Apr 19 15:47:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml
-58 ms. Memory: 421376K Free: 397079K (94%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml
+44 ms. Memory: 174592K Free: 57427K (33%)
 reloadAllAccessors: .StopTime
------------------ testing Thu Apr 19 15:47:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml
-43 ms. Memory: 421376K Free: 369971K (88%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml
+35 ms. Memory: 174592K Free: 32905K (19%)
 reloadAllAccessors: .StopTime2
------------------ testing Thu Apr 19 15:47:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml
-42 ms. Memory: 421376K Free: 338927K (80%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml
+49 ms. Memory: 175104K Free: 135406K (77%)
 reloadAllAccessors: .Switch
------------------ testing Thu Apr 19 15:47:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml
-209 ms. Memory: 421376K Free: 262458K (62%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml
+225 ms. Memory: 175104K Free: 58642K (33%)
 reloadAllAccessors: .Thermostat
------------------ testing Thu Apr 19 15:47:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml
-5 ms. Memory: 421376K Free: 254035K (60%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml
+8 ms. Memory: 175104K Free: 52612K (30%)
 reloadAllAccessors: .TimeDelay
------------------ testing Thu Apr 19 15:47:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml
-8 ms. Memory: 421376K Free: 240546K (57%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml
+8 ms. Memory: 175104K Free: 44172K (25%)
 reloadAllAccessors: .TimeDelay2
------------------ testing Thu Apr 19 15:47:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml
-6 ms. Memory: 421376K Free: 232082K (55%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml
+7 ms. Memory: 175104K Free: 38141K (22%)
 reloadAllAccessors: .TimeDelay3
------------------ testing Thu Apr 19 15:47:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml
-39 ms. Memory: 421376K Free: 170756K (41%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml
+32 ms. Memory: 165376K Free: 95404K (58%)
 reloadAllAccessors: .TransferAbsentToInside
------------------ testing Thu Apr 19 15:47:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml
-819 ms. Memory: 404992K Free: 291101K (72%)
+----------------- testing Fri Apr 20 01:24:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml
+908 ms. Memory: 216576K Free: 171304K (79%)
 reloadAllAccessors: .Transmission
------------------ testing Thu Apr 19 15:47:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml
-42 ms. Memory: 404992K Free: 254647K (63%)
+----------------- testing Fri Apr 20 01:24:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml
+45 ms. Memory: 216576K Free: 136399K (63%)
 reloadAllAccessors: .TriggeredContinuousClock
------------------ testing Thu Apr 19 15:47:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml
-2670 ms. Memory: 396288K Free: 44369K (11%)
+----------------- testing Fri Apr 20 01:24:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml
+2697 ms. Memory: 237056K Free: 165108K (70%)
 reloadAllAccessors: .TwoMachineInfiniteBusControl
------------------ testing Thu Apr 19 15:48:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml
-737 ms. Memory: 373248K Free: 161048K (43%)
+----------------- testing Fri Apr 20 01:24:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml
+793 ms. Memory: 225792K Free: 144579K (64%)
 reloadAllAccessors: .V2V
------------------ testing Thu Apr 19 15:48:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml
-8 ms. Memory: 373248K Free: 143636K (38%)
+----------------- testing Fri Apr 20 01:24:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml
+12 ms. Memory: 225792K Free: 126936K (56%)
 reloadAllAccessors: .hierarchicalModalModel
------------------ testing Thu Apr 19 15:48:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml
-9 ms. Memory: 373248K Free: 126296K (34%)
+----------------- testing Fri Apr 20 01:24:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml
+15 ms. Memory: 225792K Free: 110197K (49%)
 reloadAllAccessors: .hierarchicalModalModel1
------------------ testing Thu Apr 19 15:48:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml
-7 ms. Memory: 373248K Free: 110558K (30%)
+----------------- testing Fri Apr 20 01:24:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml
+7 ms. Memory: 225792K Free: 94673K (42%)
 reloadAllAccessors: .hierarchicalModalModel2
------------------ testing Thu Apr 19 15:48:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml
-5 ms. Memory: 373248K Free: 96462K (26%)
+----------------- testing Fri Apr 20 01:24:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml
+8 ms. Memory: 225792K Free: 81552K (36%)
 reloadAllAccessors: .hierarchicalModalModel3
------------------ testing Thu Apr 19 15:48:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel4.xml
-5 ms. Memory: 373248K Free: 80747K (22%)
+----------------- testing Fri Apr 20 01:24:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel4.xml
+7 ms. Memory: 225792K Free: 67273K (30%)
 reloadAllAccessors: .hierarchicalModalModel4
------------------ testing Thu Apr 19 15:48:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml
-139 ms. Memory: 373248K Free: 48681K (13%)
+----------------- testing Fri Apr 20 01:24:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml
+124 ms. Memory: 225792K Free: 35958K (16%)
 reloadAllAccessors: .junk
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
-  <system-err><![CDATA[Warning: '.HysteresisWithRandomDelay.NonStrictTest3' The test produced only 26 tokens, yet the correctValues parameter was expecting 30 tokens.
-Warning: '.Poisson.NonStrictTest' The test produced only 419 tokens, yet the correctValues parameter was expecting 430 tokens.
+  <system-err><![CDATA[Warning: '.HysteresisWithRandomDelay.NonStrictTest3' The test produced only 29 tokens, yet the correctValues parameter was expecting 30 tokens.
+Warning: '.Poisson.NonStrictTest' The test produced only 398 tokens, yet the correctValues parameter was expecting 430 tokens.
 ]]></system-err>
 </testsuite>

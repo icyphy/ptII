@@ -27,7 +27,7 @@
     
         cur['ant.project.default-target'] = 'build';
     
-        cur['ant.project.invoked-targets'] = 'build,test.core1.xml';
+        cur['ant.project.invoked-targets'] = 'build,test.core2.xml';
     
         cur['ant.project.name'] = 'ptII';
     
@@ -45,7 +45,7 @@
     
         cur['debuglevel'] = 'source,lines,vars';
     
-        cur['env._'] = '/usr/bin/perl';
+        cur['env._'] = '/usr/bin/timeout';
     
         cur['env._system_arch'] = 'x86_64';
     
@@ -89,7 +89,9 @@
     
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
+    
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -159,7 +161,7 @@
     
         cur['env.PT_NO_NET'] = 'true';
     
-        cur['env.PT_TRAVIS_TEST_CORE1_XML'] = 'true';
+        cur['env.PT_TRAVIS_TEST_CORE2_XML'] = 'true';
     
         cur['env.PTII'] = '/home/travis/build/icyphy/ptII';
     
@@ -195,9 +197,10 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.29 34502 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.29 34502 10.20.1.59 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.36 53726 22';
+    
+        cur['env.SSH_CONNECTION'] = '10.10.4.36 53726 10.20.1.114 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368691899';
+        cur['env.TRAVIS_BUILD_ID'] = '368918122';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '274';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '285';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '76cfeab57c968d49b1c8019c8d826431c181709a';
+        cur['env.TRAVIS_COMMIT'] = '64994954ddf78148c5820cd82a03c6d8773e9aab';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Don\'t use accent e in names, use &eacute; instead.  The reason is that accent e causes problems with the xml parser.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Attempting to split up the jobs.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '709c03f925e1...76cfeab57c96';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'cd6938bf4119...64994954ddf7';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368691905';
+        cur['env.TRAVIS_JOB_ID'] = '368918130';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '274.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '285.7';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +420,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.ptera.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.ptera.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3895668338678127106.properties propsfile=/home/travis/build/icyphy/ptII/junit2717474244624512644.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.ptera.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.ptera.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8713639354194743133.properties propsfile=/home/travis/build/icyphy/ptII/junit8622079812036655857.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +503,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="182_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="182_JUnitTclTest.html">36</a></td><td>0</td><td>0</td><td>0</td><td>3.674</td><td>2018-04-19T15:51:47</td><td>travis-job-fac90aec-8d17-409c-bbec-4d06c2778f3d</td>
+<td><a title="Display all tests" href="182_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="182_JUnitTclTest.html">36</a></td><td>0</td><td>0</td><td>0</td><td>3.694</td><td>2018-04-20T01:28:05</td><td>travis-job-11ea3344-c567-413e-967a-85af085059fe</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -509,112 +512,112 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWash.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWash.xml (RunModel)</td><td>Success</td><td></td><td>0.482</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWash.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWash.xml (RunModel)</td><td>Success</td><td></td><td>0.395</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWashHierarchical.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWashHierarchical.xml (RunModel)</td><td>Success</td><td></td><td>0.624</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWashHierarchical.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/CarWashHierarchical.xml (RunModel)</td><td>Success</td><td></td><td>0.636</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Composition1.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Composition1.xml (RunModel)</td><td>Success</td><td></td><td>0.175</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Composition1.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Composition1.xml (RunModel)</td><td>Success</td><td></td><td>0.157</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest1.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest1.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest2.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest2.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest3.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest3.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest3.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest3.xml (RunModel)</td><td>Success</td><td></td><td>0.038</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest4.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest4.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest4.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest4.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest5.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest5.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest5.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest5.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest6.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest6.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest6.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/EventNameTest6.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy1.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy1.xml (RunModel)</td><td>Success</td><td></td><td>0.168</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy1.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy1.xml (RunModel)</td><td>Success</td><td></td><td>0.152</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy2.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy2.xml (RunModel)</td><td>Success</td><td></td><td>0.086</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy2.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy2.xml (RunModel)</td><td>Success</td><td></td><td>0.150</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy3.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy3.xml (RunModel)</td><td>Success</td><td></td><td>0.074</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy3.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy3.xml (RunModel)</td><td>Success</td><td></td><td>0.068</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy4.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy4.xml (RunModel)</td><td>Success</td><td></td><td>0.070</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy4.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy4.xml (RunModel)</td><td>Success</td><td></td><td>0.135</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy5.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy5.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy5.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy5.xml (RunModel)</td><td>Success</td><td></td><td>0.105</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy6.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy6.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy6.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy6.xml (RunModel)</td><td>Success</td><td></td><td>0.077</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy7.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy7.xml (RunModel)</td><td>Success</td><td></td><td>0.204</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy7.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy7.xml (RunModel)</td><td>Success</td><td></td><td>0.203</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy8.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy8.xml (RunModel)</td><td>Success</td><td></td><td>0.185</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy8.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/Hierarchy8.xml (RunModel)</td><td>Success</td><td></td><td>0.180</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest1.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.035</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest1.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.038</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest10.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest10.xml (RunModel)</td><td>Success</td><td></td><td>0.053</td>
+<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest10.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest10.xml (RunModel)</td><td>Success</td><td></td><td>0.042</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest2.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest3.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest3.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
+<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest3.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest3.xml (RunModel)</td><td>Success</td><td></td><td>0.032</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest4.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest4.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
+<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest4.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest4.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest5.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest5.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest5.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest5.xml (RunModel)</td><td>Success</td><td></td><td>0.046</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest6.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest6.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
+<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest6.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest6.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest7.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest7.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
+<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest7.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest7.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest8.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest8.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
+<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest8.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest8.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest9.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest9.xml (RunModel)</td><td>Success</td><td></td><td>0.035</td>
+<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest9.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/ParameterTest9.xml (RunModel)</td><td>Success</td><td></td><td>0.039</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest1.xml (RunModel)"></a>[27] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.033</td>
+<td><a name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest1.xml (RunModel)"></a>[27] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest2.xml (RunModel)"></a>[28] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.039</td>
+<td><a name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest2.xml (RunModel)"></a>[28] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.031</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest3.xml (RunModel)"></a>[29] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest3.xml (RunModel)</td><td>Success</td><td></td><td>0.029</td>
+<td><a name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest3.xml (RunModel)"></a>[29] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest3.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest4.xml (RunModel)"></a>[30] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest4.xml (RunModel)</td><td>Success</td><td></td><td>0.035</td>
+<td><a name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest4.xml (RunModel)"></a>[30] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/PriorityTest4.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest1.xml (RunModel)"></a>[31] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
+<td><a name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest1.xml (RunModel)"></a>[31] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest1.xml (RunModel)</td><td>Success</td><td></td><td>0.025</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest2.xml (RunModel)"></a>[32] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
+<td><a name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest2.xml (RunModel)"></a>[32] /home/travis/build/icyphy/ptII/ptolemy/domains/ptera/test/auto/RelationNameTest2.xml (RunModel)</td><td>Success</td><td></td><td>0.032</td>
 </tr>
 </table>
 <div class="Properties">

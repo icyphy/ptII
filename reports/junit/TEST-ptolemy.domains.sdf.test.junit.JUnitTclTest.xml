@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-fac90aec-8d17-409c-bbec-4d06c2778f3d" name="ptolemy.domains.sdf.test.junit.JUnitTclTest" skipped="0" tests="66" time="19.832" timestamp="2018-04-19T15:53:46">
+<testsuite errors="0" failures="0" hostname="travis-job-11ea3344-c567-413e-967a-85af085059fe" name="ptolemy.domains.sdf.test.junit.JUnitTclTest" skipped="0" tests="66" time="20.456" timestamp="2018-04-20T01:30:04">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="274.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="285.7" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -16,7 +16,6 @@
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
     <property name="env.TRAVIS_SUDO" value="true" />
     <property name="env.LOGNAME" value="travis" />
-    <property name="env.PT_TRAVIS_TEST_CORE1_XML" value="true" />
     <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
     <property name="debuglevel" value="source,lines,vars" />
     <property name="checkstyle.formatter" value="xml" />
@@ -31,12 +30,12 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.29 34502 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.36 53726 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
-    <property name="ant.project.invoked-targets" value="build,test.core1.xml" />
+    <property name="ant.project.invoked-targets" value="build,test.core2.xml" />
     <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
     <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
     <property name="node.in.path" value="true" />
@@ -52,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.29 34502 10.20.1.59 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.36 53726 10.20.1.114 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,17 +69,17 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.sdf.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.sdf.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher311731252993056201.properties propsfile=/home/travis/build/icyphy/ptII/junit8340825146556245200.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.sdf.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.sdf.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7860356876956737140.properties propsfile=/home/travis/build/icyphy/ptII/junit5510772049178048192.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="709c03f925e1...76cfeab57c96" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="cd6938bf4119...64994954ddf7" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
     <property name="test.batch" value="**/junit/*.java" />
-    <property name="env._" value="/usr/bin/perl" />
+    <property name="env._" value="/usr/bin/timeout" />
     <property name="java.io.tmpdir" value="/tmp" />
     <property name="user.language" value="en" />
     <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
@@ -115,7 +114,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="274" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="285" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +130,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="368691899" />
+    <property name="env.TRAVIS_BUILD_ID" value="368918122" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="76cfeab57c968d49b1c8019c8d826431c181709a" />
+    <property name="env.TRAVIS_COMMIT" value="64994954ddf78148c5820cd82a03c6d8773e9aab" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -168,9 +167,9 @@
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Don&apos;t use accent e in names, use &amp;eacute; instead.  The reason is that accent e causes problems with the xml parser." />
-    <property name="keystore" value="ptKeystore" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Attempting to split up the jobs." />
     <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test" />
@@ -181,8 +180,9 @@
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
     <property name="timeout.npm" value="45000" />
-    <property name="sun.cpu.endian" value="little" />
+    <property name="env.PT_TRAVIS_TEST_CORE2_XML" value="true" />
     <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
     <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
     <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
     <property name="java.vm.version" value="25.151-b12" />
@@ -204,15 +204,15 @@
     <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
     <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
-    <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="368691905" />
+    <property name="env.TRAVIS_JOB_ID" value="368918130" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
-    <property name="java.maxmemory.large" value="8000m" />
     <property name="model" value="" />
+    <property name="java.maxmemory.large" value="8000m" />
     <property name="env.CASHER_DIR" value="/home/travis/.casher" />
     <property name="env.NVM_CD_FLAGS" value="" />
     <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
@@ -226,81 +226,81 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/SDFSchedulerErrors.tcl (RunTclFile)" time="0.678" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/composition.tcl (RunTclFile)" time="0.136" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/cycle.tcl (RunTclFile)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/SDFSchedulerErrors.tcl (RunTclFile)" time="0.761" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/composition.tcl (RunTclFile)" time="0.188" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/cycle.tcl (RunTclFile)" time="0.064" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.006" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Array.xml (RunModel)" time="0.145" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Butterfly.xml (RunModel)" time="0.144" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Expression.xml (RunModel)" time="0.115" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Eye.xml (RunModel)" time="0.374" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixFIR.xml (RunModel)" time="0.319" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Array.xml (RunModel)" time="0.153" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Butterfly.xml (RunModel)" time="0.19" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Expression.xml (RunModel)" time="0.103" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Eye.xml (RunModel)" time="0.325" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixFIR.xml (RunModel)" time="0.36" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixPoint.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Gravitation.xml (RunModel)" time="3.308" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/GravitationWithCollisionDetection.xml (RunModel)" time="6.23" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDF.xml (RunModel)" time="0.076" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDFwithTransientStates.xml (RunModel)" time="0.086" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HTVQ.xml (RunModel)" time="0.871" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProduction.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProductionDeeper.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LMSAdaptive.xml (RunModel)" time="0.068" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LogisticMap.xml (RunModel)" time="0.472" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MaximumEntropySpectrum.xml (RunModel)" time="0.264" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDF.xml (RunModel)" time="0.061" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDFwithTransientStates.xml (RunModel)" time="0.091" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/NoisySinewave.xml (RunModel)" time="0.082" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Objects.xml (RunModel)" time="0.069" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/OrthogonalCom.xml (RunModel)" time="0.041" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/RijndaelEncryption.xml (RunModel)" time="0.495" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/SDFEmptyIterations.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Spectrum.xml (RunModel)" time="0.085" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/de_inside_sdf.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedHierarchicalSDF.xml (RunModel)" time="0.03" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedSDF.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/emptyRefinement.xml (RunModel)" time="0.018" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/filePortParameter.xml (RunModel)" time="0.043" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/inferRelationWidth1.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/initProductionInference.xml (RunModel)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup.xml (RunModel)" time="0.015" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup10.xml (RunModel)" time="0.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup11.xml (RunModel)" time="0.018" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup12.xml (RunModel)" time="0.02" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup13.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup14.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup15.xml (RunModel)" time="0.018" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup2.xml (RunModel)" time="0.009" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup3.xml (RunModel)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup4.xml (RunModel)" time="0.019" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup5.xml (RunModel)" time="0.016" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup6.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup7.xml (RunModel)" time="0.012" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup8.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Gravitation.xml (RunModel)" time="3.255" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/GravitationWithCollisionDetection.xml (RunModel)" time="6.546" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDF.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDFwithTransientStates.xml (RunModel)" time="0.071" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HTVQ.xml (RunModel)" time="0.944" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProduction.xml (RunModel)" time="0.03" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProductionDeeper.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LMSAdaptive.xml (RunModel)" time="0.077" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LogisticMap.xml (RunModel)" time="0.48" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MaximumEntropySpectrum.xml (RunModel)" time="0.267" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDF.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDFwithTransientStates.xml (RunModel)" time="0.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/NoisySinewave.xml (RunModel)" time="0.068" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Objects.xml (RunModel)" time="0.062" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/OrthogonalCom.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/RijndaelEncryption.xml (RunModel)" time="0.571" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/SDFEmptyIterations.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Spectrum.xml (RunModel)" time="0.099" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/de_inside_sdf.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedHierarchicalSDF.xml (RunModel)" time="0.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedSDF.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/emptyRefinement.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/filePortParameter.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/inferRelationWidth1.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/initProductionInference.xml (RunModel)" time="0.019" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup.xml (RunModel)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup10.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup11.xml (RunModel)" time="0.015" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup12.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup13.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup14.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup15.xml (RunModel)" time="0.015" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup2.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup3.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup4.xml (RunModel)" time="0.022" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup5.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup6.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup7.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup8.xml (RunModel)" time="0.012" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup9.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_de.xml (RunModel)" time="0.052" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml (RunModel)" time="0.07" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_sdf1.xml (RunModel)" time="0.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/test1.xml (RunModel)" time="0.014" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time1.xml (RunModel)" time="0.009" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time2.xml (RunModel)" time="0.008" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time3.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time4.xml (RunModel)" time="0.019" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time5.xml (RunModel)" time="4.014" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[55] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_Const_Integer_smallest_Type.xml (RunModel)" time="0.045" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[56] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_declared_Inports_OutportTypeException.xml (RunModel)" time="0.015" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[57] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_oneDeclaredInportType_wrongTypeOutport.xml (RunModel)" time="0.012" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_de.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_sdf1.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/test1.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time1.xml (RunModel)" time="0.01" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time2.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time3.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time4.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time5.xml (RunModel)" time="4.01" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[55] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_Const_Integer_smallest_Type.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[56] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_declared_Inports_OutportTypeException.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[57] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_oneDeclaredInportType_wrongTypeOutport.xml (RunModel)" time="0.017" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[58] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width.xml (RunModel)" time="0.01" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[59] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width2.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[60] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width3.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[59] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width2.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[60] /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width3.xml (RunModel)" time="0.036" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/SDFSchedulerErrors.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 15:53:46 UTC 2018
-22 ms. Memory: 116224K Free: 105155K (90%)
-5 ms. Memory: 116224K Free: 98127K (84%)
-4 ms. Memory: 116224K Free: 91066K (78%)
-3 ms. Memory: 116224K Free: 87942K (76%)
+testDefs.tcl: setting time out to 9000 seconds at Fri Apr 20 01:30:04 UTC 2018
+23 ms. Memory: 116224K Free: 105134K (90%)
+9 ms. Memory: 116224K Free: 98100K (84%)
+5 ms. Memory: 116224K Free: 90994K (78%)
+4 ms. Memory: 116224K Free: 87900K (76%)
 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/composition.tcl
-27 ms. Memory: 116224K Free: 83752K (72%)
-7 ms. Memory: 116224K Free: 81928K (70%)
+29 ms. Memory: 116224K Free: 83700K (72%)
+8 ms. Memory: 116224K Free: 81875K (70%)
 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/cycle.tcl
 .Toplevel.Director Preinitializing ...
 Invoking preinitialize():  .Toplevel.Actor1
@@ -387,196 +387,196 @@ The actor .Toplevel.Delay will be iterated.
 The actor .Toplevel.Delay was iterated.
 Reached specified number of iterations: 6
 Director: Called wrapup().
-8 ms. Memory: 146944K Free: 140055K (95%)
-04/19/18 03:53:47
+10 ms. Memory: 146944K Free: 140037K (95%)
+04/20/18 01:30:05
 Failed: 0  Total Tests: 8  ((Passed: 8, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu Apr 19 15:53:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Array.xml
-30 ms. Memory: 146944K Free: 99107K (67%)
+----------------- testing Fri Apr 20 01:30:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Array.xml
+47 ms. Memory: 146944K Free: 99034K (67%)
 reloadAllAccessors: .Array
------------------ testing Thu Apr 19 15:53:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Butterfly.xml
-102 ms. Memory: 146944K Free: 92899K (63%)
+----------------- testing Fri Apr 20 01:30:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Butterfly.xml
+123 ms. Memory: 146944K Free: 92841K (63%)
 reloadAllAccessors: .Butterfly
------------------ testing Thu Apr 19 15:53:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Expression.xml
-65 ms. Memory: 146944K Free: 87313K (59%)
+----------------- testing Fri Apr 20 01:30:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Expression.xml
+75 ms. Memory: 146944K Free: 87287K (59%)
 reloadAllAccessors: .Expression
------------------ testing Thu Apr 19 15:53:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Eye.xml
-179 ms. Memory: 146944K Free: 117491K (80%)
+----------------- testing Fri Apr 20 01:30:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Eye.xml
+169 ms. Memory: 146944K Free: 117476K (80%)
 reloadAllAccessors: .Eye
------------------ testing Thu Apr 19 15:53:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixFIR.xml
-159 ms. Memory: 146944K Free: 81033K (55%)
+----------------- testing Fri Apr 20 01:30:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixFIR.xml
+156 ms. Memory: 146944K Free: 81017K (55%)
 reloadAllAccessors: .FixFIR
------------------ testing Thu Apr 19 15:53:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixPoint.xml
-10 ms. Memory: 208384K Free: 198815K (95%)
+----------------- testing Fri Apr 20 01:30:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/FixPoint.xml
+16 ms. Memory: 208384K Free: 198891K (95%)
 reloadAllAccessors: .FixPoint
------------------ testing Thu Apr 19 15:53:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Gravitation.xml
-3178 ms. Memory: 208384K Free: 105114K (50%)
+----------------- testing Fri Apr 20 01:30:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Gravitation.xml
+3180 ms. Memory: 208384K Free: 109389K (52%)
 reloadAllAccessors: .Gravitation
------------------ testing Thu Apr 19 15:53:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/GravitationWithCollisionDetection.xml
-5969 ms. Memory: 710656K Free: 204068K (29%)
+----------------- testing Fri Apr 20 01:30:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/GravitationWithCollisionDetection.xml
+6326 ms. Memory: 710656K Free: 179189K (25%)
 reloadAllAccessors: .GravitationWithCollisionDetection
------------------ testing Thu Apr 19 15:53:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDF.xml
-28 ms. Memory: 710656K Free: 178896K (25%)
+----------------- testing Fri Apr 20 01:30:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDF.xml
+31 ms. Memory: 710656K Free: 154828K (22%)
 reloadAllAccessors: .HDF
------------------ testing Thu Apr 19 15:53:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDFwithTransientStates.xml
-32 ms. Memory: 710656K Free: 153490K (22%)
+----------------- testing Fri Apr 20 01:30:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HDFwithTransientStates.xml
+21 ms. Memory: 710656K Free: 129908K (18%)
 reloadAllAccessors: .HDFwithTransientStates
------------------ testing Thu Apr 19 15:53:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HTVQ.xml
-828 ms. Memory: 680448K Free: 574229K (84%)
+----------------- testing Fri Apr 20 01:30:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/HTVQ.xml
+909 ms. Memory: 709632K Free: 578245K (81%)
 reloadAllAccessors: .HTVQ
------------------ testing Thu Apr 19 15:53:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProduction.xml
-6 ms. Memory: 680448K Free: 562409K (83%)
+----------------- testing Fri Apr 20 01:30:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProduction.xml
+4 ms. Memory: 709632K Free: 565132K (80%)
 reloadAllAccessors: .InferInitProduction
------------------ testing Thu Apr 19 15:53:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProductionDeeper.xml
-4 ms. Memory: 680448K Free: 550541K (81%)
+----------------- testing Fri Apr 20 01:30:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/InferInitProductionDeeper.xml
+4 ms. Memory: 709632K Free: 552664K (78%)
 reloadAllAccessors: .InferInitProductionDeeper
------------------ testing Thu Apr 19 15:53:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LMSAdaptive.xml
-16 ms. Memory: 680448K Free: 534700K (79%)
+----------------- testing Fri Apr 20 01:30:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LMSAdaptive.xml
+13 ms. Memory: 709632K Free: 540005K (76%)
 reloadAllAccessors: .LMSAdaptive
------------------ testing Thu Apr 19 15:53:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LogisticMap.xml
-435 ms. Memory: 680448K Free: 522832K (77%)
+----------------- testing Fri Apr 20 01:30:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/LogisticMap.xml
+439 ms. Memory: 709632K Free: 527537K (74%)
 reloadAllAccessors: .LogisticMap
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MaximumEntropySpectrum.xml
-83 ms. Memory: 680448K Free: 449935K (66%)
+----------------- testing Fri Apr 20 01:30:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MaximumEntropySpectrum.xml
+76 ms. Memory: 709632K Free: 456863K (64%)
 reloadAllAccessors: .MaximumEntropySpectrum
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDF.xml
-19 ms. Memory: 680448K Free: 430130K (63%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDF.xml
+23 ms. Memory: 709632K Free: 434456K (61%)
 reloadAllAccessors: .MultirateSDF
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDFwithTransientStates.xml
-19 ms. Memory: 680448K Free: 406354K (60%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/MultirateSDFwithTransientStates.xml
+20 ms. Memory: 709632K Free: 409504K (58%)
 reloadAllAccessors: .MultirateSDFwithTransientStates
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/NoisySinewave.xml
-16 ms. Memory: 680448K Free: 386542K (57%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/NoisySinewave.xml
+11 ms. Memory: 709632K Free: 388735K (55%)
 reloadAllAccessors: .NoisySinewave
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Objects.xml
-8 ms. Memory: 680448K Free: 370701K (54%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Objects.xml
+2 ms. Memory: 709632K Free: 376267K (53%)
 reloadAllAccessors: .Objects
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/OrthogonalCom.xml
-7 ms. Memory: 680448K Free: 357257K (53%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/OrthogonalCom.xml
+6 ms. Memory: 709632K Free: 363799K (51%)
 reloadAllAccessors: .OrthogonalCom
------------------ testing Thu Apr 19 15:54:00 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/RijndaelEncryption.xml
-202 ms. Memory: 680448K Free: 194737K (29%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/RijndaelEncryption.xml
+270 ms. Memory: 709632K Free: 204061K (29%)
 reloadAllAccessors: .RijndaelEncryption
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/SDFEmptyIterations.xml
-5 ms. Memory: 680448K Free: 186825K (27%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/SDFEmptyIterations.xml
+8 ms. Memory: 709632K Free: 195760K (28%)
 reloadAllAccessors: .SDFEmptyIterations
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Spectrum.xml
-38 ms. Memory: 680448K Free: 163056K (24%)
+----------------- testing Fri Apr 20 01:30:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/Spectrum.xml
+32 ms. Memory: 709632K Free: 170824K (24%)
 reloadAllAccessors: .Spectrum
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/de_inside_sdf.xml
-8 ms. Memory: 680448K Free: 155144K (23%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/de_inside_sdf.xml
+8 ms. Memory: 709632K Free: 162523K (23%)
 reloadAllAccessors: .de_inside_sdf
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedHierarchicalSDF.xml
-6 ms. Memory: 680448K Free: 141700K (21%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedHierarchicalSDF.xml
+7 ms. Memory: 709632K Free: 150055K (21%)
 reloadAllAccessors: .disconnectedHierarchicalSDF
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedSDF.xml
-2 ms. Memory: 680448K Free: 133788K (20%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/disconnectedSDF.xml
+2 ms. Memory: 709632K Free: 140116K (20%)
 reloadAllAccessors: .disconnectedSDF
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/emptyRefinement.xml
-3 ms. Memory: 680448K Free: 125876K (18%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/emptyRefinement.xml
+5 ms. Memory: 709632K Free: 131815K (19%)
 reloadAllAccessors: .emptyRefinement
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/filePortParameter.xml
-12 ms. Memory: 680448K Free: 113999K (17%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/filePortParameter.xml
+7 ms. Memory: 709632K Free: 119363K (17%)
 reloadAllAccessors: .filePortParameter
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/inferRelationWidth1.xml
-2 ms. Memory: 680448K Free: 106087K (16%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/inferRelationWidth1.xml
+1 ms. Memory: 709632K Free: 111062K (16%)
 reloadAllAccessors: .inferRelationWidth1
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/initProductionInference.xml
-9 ms. Memory: 680448K Free: 96615K (14%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/initProductionInference.xml
+3 ms. Memory: 709632K Free: 102760K (14%)
 reloadAllAccessors: .initProductionInference
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup.xml
-2 ms. Memory: 680448K Free: 88703K (13%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup.xml
+2 ms. Memory: 709632K Free: 92822K (13%)
 reloadAllAccessors: .relationGroup
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup10.xml
-2 ms. Memory: 680448K Free: 80791K (12%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup10.xml
+2 ms. Memory: 709632K Free: 84520K (12%)
 reloadAllAccessors: .relationGroup10
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup11.xml
-6 ms. Memory: 680448K Free: 72879K (11%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup11.xml
+3 ms. Memory: 709632K Free: 76219K (11%)
 reloadAllAccessors: .relationGroup11
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup12.xml
-4 ms. Memory: 647680K Free: 624621K (96%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup12.xml
+2 ms. Memory: 709632K Free: 70223K (10%)
 reloadAllAccessors: .relationGroup12
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup13.xml
-6 ms. Memory: 647680K Free: 616060K (95%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup13.xml
+12 ms. Memory: 675840K Free: 649441K (96%)
 reloadAllAccessors: .relationGroup13
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup14.xml
-7 ms. Memory: 647680K Free: 608343K (94%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup14.xml
+4 ms. Memory: 675840K Free: 641529K (95%)
 reloadAllAccessors: .relationGroup14
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup15.xml
-2 ms. Memory: 647680K Free: 599783K (93%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup15.xml
+2 ms. Memory: 675840K Free: 633617K (94%)
 reloadAllAccessors: .relationGroup15
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup2.xml
-1 ms. Memory: 647680K Free: 592246K (91%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup2.xml
+2 ms. Memory: 675840K Free: 624630K (92%)
 reloadAllAccessors: .relationGroup2
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup3.xml
-4 ms. Memory: 647680K Free: 584709K (90%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup3.xml
+5 ms. Memory: 675840K Free: 616718K (91%)
 reloadAllAccessors: .relationGroup3
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup4.xml
-6 ms. Memory: 647680K Free: 576149K (89%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup4.xml
+5 ms. Memory: 675840K Free: 608682K (90%)
 reloadAllAccessors: .relationGroup4
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup5.xml
-3 ms. Memory: 647680K Free: 568612K (88%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup5.xml
+3 ms. Memory: 675840K Free: 599695K (89%)
 reloadAllAccessors: .relationGroup5
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup6.xml
-5 ms. Memory: 647680K Free: 561075K (87%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup6.xml
+5 ms. Memory: 675840K Free: 591783K (88%)
 reloadAllAccessors: .relationGroup6
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup7.xml
-2 ms. Memory: 647680K Free: 552514K (85%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup7.xml
+1 ms. Memory: 675840K Free: 583871K (86%)
 reloadAllAccessors: .relationGroup7
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup8.xml
-2 ms. Memory: 647680K Free: 544978K (84%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup8.xml
+2 ms. Memory: 675840K Free: 574883K (85%)
 reloadAllAccessors: .relationGroup8
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup9.xml
-6 ms. Memory: 647680K Free: 537441K (83%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/relationGroup9.xml
+6 ms. Memory: 675840K Free: 566971K (84%)
 reloadAllAccessors: .relationGroup9
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_de.xml
-12 ms. Memory: 647680K Free: 521312K (80%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_de.xml
+18 ms. Memory: 675840K Free: 555095K (82%)
 reloadAllAccessors: .sdf_inside_de
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml
-46 ms. Memory: 647680K Free: 491165K (76%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml
+31 ms. Memory: 675840K Free: 522355K (77%)
 reloadAllAccessors: .sdf_inside_pn
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_sdf1.xml
-4 ms. Memory: 647680K Free: 479852K (74%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/sdf_sdf1.xml
+4 ms. Memory: 675840K Free: 510471K (76%)
 reloadAllAccessors: .sdf_sdf1
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/test1.xml
-2 ms. Memory: 647680K Free: 467507K (72%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/test1.xml
+3 ms. Memory: 675840K Free: 498587K (74%)
 reloadAllAccessors: .test1
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time1.xml
-2 ms. Memory: 647680K Free: 459970K (71%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time1.xml
+1 ms. Memory: 675840K Free: 489599K (72%)
 reloadAllAccessors: .time1
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time2.xml
-2 ms. Memory: 647680K Free: 452433K (70%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time2.xml
+6 ms. Memory: 675840K Free: 481687K (71%)
 reloadAllAccessors: .time2
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time3.xml
-4 ms. Memory: 647680K Free: 440088K (68%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time3.xml
+4 ms. Memory: 675840K Free: 473775K (70%)
 reloadAllAccessors: .time3
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time4.xml
-5 ms. Memory: 647680K Free: 428767K (66%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time4.xml
+7 ms. Memory: 675840K Free: 460832K (68%)
 reloadAllAccessors: .time4
------------------ testing Thu Apr 19 15:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time5.xml
-4002 ms. Memory: 647680K Free: 421230K (65%)
+----------------- testing Fri Apr 20 01:30:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/time5.xml
+4002 ms. Memory: 675840K Free: 452919K (67%)
 reloadAllAccessors: .time5
------------------ testing Thu Apr 19 15:54:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_Const_Integer_smallest_Type.xml
-6 ms. Memory: 647680K Free: 408886K (63%)
+----------------- testing Fri Apr 20 01:30:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_Const_Integer_smallest_Type.xml
+9 ms. Memory: 675840K Free: 441035K (65%)
 reloadAllAccessors: .typeSystem_Const_Integer_smallest_Type
------------------ testing Thu Apr 19 15:54:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_declared_Inports_OutportTypeException.xml
+----------------- testing Fri Apr 20 01:30:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_declared_Inports_OutportTypeException.xml
 .typeSystem_declared_Inports_OutportTypeException.TestExceptionAttribute: initialize() was not invoked, but wrapup() was.  This is unusual, but not always a problem.  For example, exporting JNLP will do this.
-2 ms. Memory: 647680K Free: 397565K (61%)
+2 ms. Memory: 675840K Free: 432047K (64%)
 reloadAllAccessors: .typeSystem_declared_Inports_OutportTypeException
------------------ testing Thu Apr 19 15:54:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_oneDeclaredInportType_wrongTypeOutport.xml
-2 ms. Memory: 647680K Free: 389004K (60%)
+----------------- testing Fri Apr 20 01:30:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/typeSystem_oneDeclaredInportType_wrongTypeOutport.xml
+3 ms. Memory: 675840K Free: 424135K (63%)
 reloadAllAccessors: .typeSystem_oneDeclaredInportType_wrongTypeOutport
------------------ testing Thu Apr 19 15:54:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width.xml
-2 ms. Memory: 647680K Free: 381467K (59%)
+----------------- testing Fri Apr 20 01:30:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width.xml
+2 ms. Memory: 675840K Free: 416223K (62%)
 reloadAllAccessors: .width
------------------ testing Thu Apr 19 15:54:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width2.xml
-25 ms. Memory: 647680K Free: 373930K (58%)
+----------------- testing Fri Apr 20 01:30:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width2.xml
+29 ms. Memory: 675840K Free: 407236K (60%)
 reloadAllAccessors: .width2
------------------ testing Thu Apr 19 15:54:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width3.xml
-24 ms. Memory: 647680K Free: 365370K (56%)
+----------------- testing Fri Apr 20 01:30:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sdf/test/auto/width3.xml
+25 ms. Memory: 675840K Free: 399324K (59%)
 reloadAllAccessors: .width3
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

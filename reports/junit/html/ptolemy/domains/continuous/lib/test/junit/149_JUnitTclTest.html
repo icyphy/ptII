@@ -27,7 +27,7 @@
     
         cur['ant.project.default-target'] = 'build';
     
-        cur['ant.project.invoked-targets'] = 'build,test.core1.xml';
+        cur['ant.project.invoked-targets'] = 'build,test.core2.xml';
     
         cur['ant.project.name'] = 'ptII';
     
@@ -45,7 +45,7 @@
     
         cur['debuglevel'] = 'source,lines,vars';
     
-        cur['env._'] = '/usr/bin/perl';
+        cur['env._'] = '/usr/bin/timeout';
     
         cur['env._system_arch'] = 'x86_64';
     
@@ -89,7 +89,9 @@
     
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
+    
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -159,7 +161,7 @@
     
         cur['env.PT_NO_NET'] = 'true';
     
-        cur['env.PT_TRAVIS_TEST_CORE1_XML'] = 'true';
+        cur['env.PT_TRAVIS_TEST_CORE2_XML'] = 'true';
     
         cur['env.PTII'] = '/home/travis/build/icyphy/ptII';
     
@@ -195,9 +197,10 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.29 34502 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.29 34502 10.20.1.59 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.36 53726 22';
+    
+        cur['env.SSH_CONNECTION'] = '10.10.4.36 53726 10.20.1.114 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '368691899';
+        cur['env.TRAVIS_BUILD_ID'] = '368918122';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '274';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '285';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '76cfeab57c968d49b1c8019c8d826431c181709a';
+        cur['env.TRAVIS_COMMIT'] = '64994954ddf78148c5820cd82a03c6d8773e9aab';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Don\'t use accent e in names, use &eacute; instead.  The reason is that accent e causes problems with the xml parser.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Attempting to split up the jobs.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '709c03f925e1...76cfeab57c96';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'cd6938bf4119...64994954ddf7';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '368691905';
+        cur['env.TRAVIS_JOB_ID'] = '368918130';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '274.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '285.7';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +420,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.continuous.lib.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.continuous.lib.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5716680938725976288.properties propsfile=/home/travis/build/icyphy/ptII/junit262912046783857665.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.continuous.lib.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.continuous.lib.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1917603976860374030.properties propsfile=/home/travis/build/icyphy/ptII/junit5600664977197474237.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +503,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="149_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="149_JUnitTclTest.html">30</a></td><td>0</td><td>0</td><td>0</td><td>5.048</td><td>2018-04-19T15:46:40</td><td>travis-job-fac90aec-8d17-409c-bbec-4d06c2778f3d</td>
+<td><a title="Display all tests" href="149_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="149_JUnitTclTest.html">30</a></td><td>0</td><td>0</td><td>0</td><td>4.531</td><td>2018-04-20T01:23:01</td><td>travis-job-11ea3344-c567-413e-967a-85af085059fe</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -515,88 +518,88 @@
 <td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/DifferentialSystem.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/DifferentialSystem.xml (RunModel)</td><td>Success</td><td></td><td>0.517</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/DifferentialSystem.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/DifferentialSystem.xml (RunModel)</td><td>Success</td><td></td><td>0.524</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector.xml (RunModel)</td><td>Success</td><td></td><td>0.154</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector.xml (RunModel)</td><td>Success</td><td></td><td>0.201</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector2.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector2.xml (RunModel)</td><td>Success</td><td></td><td>0.059</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector2.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetector2.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)</td><td>Success</td><td></td><td>0.457</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)</td><td>Success</td><td></td><td>0.443</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator.xml (RunModel)</td><td>Success</td><td></td><td>0.090</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator.xml (RunModel)</td><td>Success</td><td></td><td>0.085</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator2.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator2.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator2.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/PeriodicSamplerIntegrator2.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/TransferFunction.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/TransferFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.113</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/TransferFunction.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/TransferFunction.xml (RunModel)</td><td>Success</td><td></td><td>0.166</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform1.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform1.xml (RunModel)</td><td>Success</td><td></td><td>0.043</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform1.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform1.xml (RunModel)</td><td>Success</td><td></td><td>0.039</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform2.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform2.xml (RunModel)</td><td>Success</td><td></td><td>0.069</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform2.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform2.xml (RunModel)</td><td>Success</td><td></td><td>0.055</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform3.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform3.xml (RunModel)</td><td>Success</td><td></td><td>0.048</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform3.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform3.xml (RunModel)</td><td>Success</td><td></td><td>0.060</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform4.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform4.xml (RunModel)</td><td>Success</td><td></td><td>0.054</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform4.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform4.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform5.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform5.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform5.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform5.xml (RunModel)</td><td>Success</td><td></td><td>0.047</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform6.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform6.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform6.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform6.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform7.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform7.xml (RunModel)</td><td>Success</td><td></td><td>0.054</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform7.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform7.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform8.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform8.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform8.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform8.xml (RunModel)</td><td>Success</td><td></td><td>0.036</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform9.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform9.xml (RunModel)</td><td>Success</td><td></td><td>0.023</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform9.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/Waveform9.xml (RunModel)</td><td>Success</td><td></td><td>0.030</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold.xml (RunModel)</td><td>Success</td><td></td><td>0.016</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold.xml (RunModel)</td><td>Success</td><td></td><td>0.040</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold2.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold2.xml (RunModel)</td><td>Success</td><td></td><td>0.045</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold2.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold2.xml (RunModel)</td><td>Success</td><td></td><td>0.039</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold3.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold3.xml (RunModel)</td><td>Success</td><td></td><td>0.018</td>
+<td><a name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold3.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/ZeroOrderHold3.xml (RunModel)</td><td>Success</td><td></td><td>0.024</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test1.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test1.xml (RunModel)</td><td>Success</td><td></td><td>1.982</td>
+<td><a name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test1.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test1.xml (RunModel)</td><td>Success</td><td></td><td>1.516</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test2.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test2.xml (RunModel)</td><td>Success</td><td></td><td>0.325</td>
+<td><a name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test2.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test2.xml (RunModel)</td><td>Success</td><td></td><td>0.231</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test3.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test3.xml (RunModel)</td><td>Success</td><td></td><td>0.035</td>
+<td><a name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test3.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test3.xml (RunModel)</td><td>Success</td><td></td><td>0.051</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test4.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test4.xml (RunModel)</td><td>Success</td><td></td><td>0.041</td>
+<td><a name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test4.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test4.xml (RunModel)</td><td>Success</td><td></td><td>0.027</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test5.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test5.xml (RunModel)</td><td>Success</td><td></td><td>0.035</td>
+<td><a name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test5.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test5.xml (RunModel)</td><td>Success</td><td></td><td>0.028</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test6.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test6.xml (RunModel)</td><td>Success</td><td></td><td>0.051</td>
+<td><a name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test6.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test6.xml (RunModel)</td><td>Success</td><td></td><td>0.057</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test7.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test7.xml (RunModel)</td><td>Success</td><td></td><td>0.052</td>
+<td><a name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test7.xml (RunModel)"></a>[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test7.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test8.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test8.xml (RunModel)</td><td>Success</td><td></td><td>0.059</td>
+<td><a name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test8.xml (RunModel)"></a>[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/lib/test/auto/test8.xml (RunModel)</td><td>Success</td><td></td><td>0.044</td>
 </tr>
 </table>
 <div class="Properties">
