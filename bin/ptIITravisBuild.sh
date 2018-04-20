@@ -108,7 +108,7 @@ exitIfNotCron () {
 # The reason we need this is because the Travis deploy to gh-pages seems
 # to overwrite everything in the repo.
 #
-# The -clean option removes the .xml files and the html/ directory in reports/junit.
+# The -clean option removes the .xml files reports/junit.
 #
 # -clean should be run early in the build.
 #
@@ -200,8 +200,9 @@ updateGhPages () {
     # set -x
 
     if [ "$1" = "-clean" ]; then
-        git rm -rf reports/junit/*.xml reports/junit/html
-        git commit -m "Removed any .xml files in reports/junit that have a timestamp older than one day." -a
+        # Don't remote the html files, we want to be able to browse them while the tests are being generated.
+        git rm -rf reports/junit/*.xml
+        git commit -m "Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
         git pull
         git push origin gh-pages
         git push -f origin gh-pages
