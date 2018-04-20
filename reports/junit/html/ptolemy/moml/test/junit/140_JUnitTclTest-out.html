@@ -1,0 +1,129 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/moml/test/ConvertToLazy.tcl
+testDefs.tcl: setting time out to 9000 seconds at Fri Apr 20 17:48:40 UTC 2018
+482 ms. Memory: 210432K Free: 188245K (89%)
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/Documentation.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/EntityLibrary.tcl
+This test will print an error message to stderr which can be ignored
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/ImportAttribute.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/LevelCrossingLinkTest.tcl
+7 ms. Memory: 210432K Free: 162085K (77%)
+3 ms. Memory: 210432K Free: 159643K (76%)
+4 ms. Memory: 210432K Free: 159643K (76%)
+5 ms. Memory: 210432K Free: 157201K (75%)
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/LibraryAttribute.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/LibraryBuilder.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/Location.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLAttribute.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLChangeRequest.tcl
+3 ms. Memory: 210432K Free: 147431K (70%)
+
+
+==== $PTII/ptolemy/moml/test/MoMLChangeRequest.tcl: MoMLChangeRequest-4.1 Call two arg constructor (Originator, request)
+==== Contents of test case:
+
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set toplevel4 [java::cast ptolemy.actor.CompositeActor  [$parser parse $baseModel4]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel4 workspace] "w"]
+    $toplevel4 setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest  $toplevel4 $baseModel5]
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    # Note that this call also ends up calling MoMLParser.getToplevel()
+    $manager requestChange $change
+
+    $toplevel4 exportMoML
+
+==== Result was:
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="top4" class="ptolemy.actor.TypedCompositeActor"&gt;
+    &lt;property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel"&gt;
+    &lt;/property&gt;
+    &lt;property name="dir4" class="ptolemy.domains.sdf.kernel.SDFDirector"&gt;
+        &lt;property name="iterations" class="ptolemy.data.expr.Parameter" value="4"&gt;
+        &lt;/property&gt;
+    &lt;/property&gt;
+&lt;/entity&gt;
+
+---- KNOWN Failure, Result should have been:
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="top5" class="ptolemy.actor.TypedCompositeActor"&gt;
+    &lt;property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2"&gt;
+    &lt;/property&gt;
+    &lt;property name="dir5" class="ptolemy.domains.sdf.kernel.SDFDirector"&gt;
+        &lt;property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler"&gt;
+        &lt;/property&gt;
+        &lt;property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false"&gt;
+        &lt;/property&gt;
+        &lt;property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false"&gt;
+        &lt;/property&gt;
+        &lt;property name="iterations" class="ptolemy.data.expr.Parameter" value="5"&gt;
+        &lt;/property&gt;
+        &lt;property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1"&gt;
+        &lt;/property&gt;
+    &lt;/property&gt;
+&lt;/entity&gt;
+
+---- MoMLChangeRequest-4.1 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLCommandLineApplication.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLParser.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+4 ms. Memory: 332800K Free: 285998K (86%)
+3 ms. Memory: 332800K Free: 285998K (86%)
+8 ms. Memory: 332800K Free: 285998K (86%)
+3 ms. Memory: 332800K Free: 281291K (85%)
+10 ms. Memory: 332800K Free: 281291K (85%)
+3 ms. Memory: 332800K Free: 281291K (85%)
+7 ms. Memory: 332800K Free: 281291K (85%)
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLParserNoPackage.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLUndoChangeRequest.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLUndoEntry.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/MoMLVariableChecker.tcl
+26 ms. Memory: 332800K Free: 151933K (46%)
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/ParserAttribute.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/StreamErrorHandler.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoContext.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeleteEntity.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeletePort.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeleteProperty.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDeleteRelation.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoDoc.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoEntity.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoLink.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoPort.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoProperty.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoRelation.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoRename.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoUnlink.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/UndoVertex.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/Vertex.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/_aJVMBug.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/test/parseMoML.tcl
+04/20/18 05:48:48
+Failed: 0  Total Tests: 440  ((Passed: 439, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/moml/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
