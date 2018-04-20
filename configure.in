@@ -1245,7 +1245,7 @@ PTVIEWER_PACKAGES=ptolemy.media.viewer
 
 # Handle Java 9 fails.
 AC_MSG_CHECKING(Java 9 and later)
-echo "$JVERSION" | egrep '9*|[1-9][0-9]*' > /dev/null
+echo "$JVERSION" | egrep '^9|^[1-9][0-9]' > /dev/null
 status=$?
 if test $status -eq 1 ; then
     PT_MSG_RESULT(Java 9 or later is not present)
