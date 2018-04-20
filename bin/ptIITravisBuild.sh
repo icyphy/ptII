@@ -78,8 +78,8 @@ if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
     if [ ! -d ~/.ptKeystore ]; then
         mkdir ~/.ptKeystore
     fi
-    echo "$GEOCODING_TOKEN" > ~/.ptKeystore/geoCodingKey
-    ls -l ~/.ptKeystore/geoCodingKey
+    echo "$GEOCODING_TOKEN" > ~/.ptKeystore/geoCoderKey
+    ls -l ~/.ptKeystore/geoCoderKey
     export GEOCODING_TOKEN=resetByPtIITravisBuild.sh
 fi
 
@@ -202,7 +202,7 @@ updateGhPages () {
     if [ "$1" = "-clean" ]; then
         # Don't remote the html files, we want to be able to browse them while the tests are being generated.
         git rm -rf reports/junit/*.xml
-        git commit -m "Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
+        git commit -m "Travis Build gh-branch: Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
         git pull
         git push origin gh-pages
         git push -f origin gh-pages
@@ -251,7 +251,7 @@ updateGhPages () {
     git status
 
     # Commit and Push the Changes
-    git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
+    git commit -m "Travis Build gh-branch: Latest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git pull
     git push origin gh-pages
     git push -f origin gh-pages
