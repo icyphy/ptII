@@ -94,9 +94,8 @@ lastLines=50
 exitIfNotCron () {
     if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
         echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", so this target is *not* being run."
-        # echo "$0: Exiting"
-        # echo "$0: Usually, we would exit here, but we are testing, so we keep running."
-        # exit 0
+        echo "$0: Exiting"
+        exit 0
     fi        
 }
 
