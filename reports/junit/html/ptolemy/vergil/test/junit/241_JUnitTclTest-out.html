@@ -5,7 +5,7 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:23 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Fri Apr 20 00:04:27 UTC 2018
  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -15,8 +15,8 @@ testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:23 UTC 2018
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/bcvtb/configuration.xml
-Before gc: Memory: 326144K Free: 162295K 50%
-After gc: Memory: 348160K Free: 308370K 89%
+Before gc: Memory: 331264K Free: 173987K 53%
+After gc: Memory: 361472K Free: 321267K 89%
  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -26,8 +26,8 @@ After gc: Memory: 348160K Free: 308370K 89%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptiny/configuration.xml
-Before gc: Memory: 391168K Free: 303039K 77%
-After gc: Memory: 457728K Free: 405943K 89%
+Before gc: Memory: 415744K Free: 115701K 28%
+After gc: Memory: 415232K Free: 364104K 88%
  Force everything to get expanded ptolemy/configs/space/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -37,8 +37,8 @@ After gc: Memory: 457728K Free: 405943K 89%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/space/configuration.xml
-Before gc: Memory: 457728K Free: 249408K 54%
-After gc: Memory: 439808K Free: 387486K 88%
+Before gc: Memory: 415232K Free: 201195K 48%
+After gc: Memory: 432128K Free: 380155K 88%
  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -48,8 +48,8 @@ After gc: Memory: 439808K Free: 387486K 88%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/dsp/configuration.xml
-Before gc: Memory: 458752K Free: 392764K 86%
-After gc: Memory: 457728K Free: 399002K 87%
+Before gc: Memory: 432640K Free: 342861K 79%
+After gc: Memory: 514560K Free: 454486K 88%
 Skipping viptos because TOSROOT is not set in the environment, so we are assuming that TinyOS is not installed.
  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     (Skipping certain optional packages)
@@ -60,8 +60,8 @@ Skipping viptos because TOSROOT is not set in the environment, so we are assumin
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/pn/configuration.xml
-Before gc: Memory: 535552K Free: 365547K 68%
-After gc: Memory: 526336K Free: 459478K 87%
+Before gc: Memory: 515584K Free: 397741K 77%
+After gc: Memory: 614400K Free: 545866K 89%
  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -71,31 +71,8 @@ After gc: Memory: 526336K Free: 459478K 87%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptdb/configuration.xml
-Before gc: Memory: 536576K Free: 246776K 46%
-After gc: Memory: 536064K Free: 462717K 86%
-
-
-==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-ptdb/configuration.xml-1.1 Expand the ptdb/configuration.xml configuration
-==== Contents of test case:
-
-	expandConfiguration ptolemy/configs/$i
-    
-==== Result was:
-{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
-  in .configuration.actor library.MoreLibraries.Backtracking
-Because:
-XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102}
----- Result should have been:
-0
----- VergilConfiguration-ptdb/configuration.xml-1.1 FAILED
+Before gc: Memory: 615424K Free: 92146K 15%
+After gc: Memory: 735232K Free: 646816K 88%
  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -105,8 +82,8 @@ Because:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/cyphysim/configuration.xml
-Before gc: Memory: 617984K Free: 213494K 35%
-After gc: Memory: 623616K Free: 534391K 86%
+Before gc: Memory: 738816K Free: 518136K 70%
+After gc: Memory: 738304K Free: 641378K 87%
  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -144,8 +121,8 @@ Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/acces
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
 The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-Before gc: Memory: 1088512K Free: 272968K 25%
-After gc: Memory: 1088000K Free: 697301K 64%
+Before gc: Memory: 1080320K Free: 524434K 49%
+After gc: Memory: 1090048K Free: 692567K 64%
  Force everything to get expanded ptolemy/configs/full/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -180,31 +157,8 @@ Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/acces
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
 The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-Before gc: Memory: 1486336K Free: 458150K 31%
-After gc: Memory: 1469440K Free: 793548K 54%
-
-
-==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-full/configuration.xml-1.1 Expand the full/configuration.xml configuration
-==== Contents of test case:
-
-	expandConfiguration ptolemy/configs/$i
-    
-==== Result was:
-{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
-  in .configuration.actor library.MoreLibraries.Backtracking
-Because:
-XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102}
----- Result should have been:
-0
----- VergilConfiguration-full/configuration.xml-1.1 FAILED
+Before gc: Memory: 1475584K Free: 557320K 38%
+After gc: Memory: 1470976K Free: 777048K 53%
  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -214,8 +168,8 @@ Because:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyViewer/configuration.xml
-Before gc: Memory: 1469440K Free: 793546K 54%
-After gc: Memory: 1482240K Free: 806761K 54%
+Before gc: Memory: 1470976K Free: 765804K 52%
+After gc: Memory: 1462784K Free: 776937K 53%
  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -225,8 +179,8 @@ After gc: Memory: 1482240K Free: 806761K 54%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptserver/configuration.xml
-Before gc: Memory: 1484288K Free: 546199K 37%
-After gc: Memory: 1478656K Free: 792632K 54%
+Before gc: Memory: 1466880K Free: 492077K 34%
+After gc: Memory: 1467904K Free: 771396K 53%
  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -236,8 +190,8 @@ After gc: Memory: 1478656K Free: 792632K 54%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/visualsense/configuration.xml
-Before gc: Memory: 1481728K Free: 501357K 34%
-After gc: Memory: 1479680K Free: 784806K 53%
+Before gc: Memory: 1330176K Free: 314194K 24%
+After gc: Memory: 1456128K Free: 750949K 52%
 Skipping jxta/configuration.xml, running vergil -jxta brings up a window
  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     (Skipping certain optional packages)
@@ -248,8 +202,8 @@ Skipping jxta/configuration.xml, running vergil -jxta brings up a window
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/fullViewer/configuration.xml
-Before gc: Memory: 1479680K Free: 777580K 53%
-After gc: Memory: 1355264K Free: 663408K 49%
+Before gc: Memory: 1456128K Free: 737481K 51%
+After gc: Memory: 1319936K Free: 617781K 47%
  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -259,25 +213,8 @@ After gc: Memory: 1355264K Free: 663408K 49%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml
-Before gc: Memory: 1355264K Free: 518885K 38%
-After gc: Memory: 1473536K Free: 778240K 53%
-
-
-==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-hyvisual/configuration.xml-1.1 Expand the hyvisual/configuration.xml configuration
-==== Contents of test case:
-
-	expandConfiguration ptolemy/configs/$i
-    
-==== Result was:
-{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
-  in .configuration.actor library.Directors
-Because:
-Failed to find class 'ptolemy.domains.gr.kernel.GRDirector' in file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml at line 9 and column 58
-Caused by:
- java.lang.ClassNotFoundException: ptolemy.domains.gr.kernel.GRDirector}
----- Result should have been:
-0
----- VergilConfiguration-hyvisual/configuration.xml-1.1 FAILED
+Before gc: Memory: 1462784K Free: 713272K 49%
+After gc: Memory: 1457664K Free: 748066K 51%
  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -287,10 +224,10 @@ Caused by:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyKepler/configuration.xml
-Before gc: Memory: 1477632K Free: 532199K 36%
-After gc: Memory: 1483776K Free: 776983K 52%
-04/19/18 10:58:43
-Failed: 3  Total Tests: 15  ((Passed: 12, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
+Before gc: Memory: 1465856K Free: 474462K 32%
+After gc: Memory: 1361408K Free: 641908K 47%
+04/20/18 12:06:58
+Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 AutoTests.java: About to close Vertx.

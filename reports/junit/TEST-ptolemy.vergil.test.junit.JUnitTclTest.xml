@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="1" hostname="travis-job-f418517f-94be-42d6-a4e5-239671bfa678" name="ptolemy.vergil.test.junit.JUnitTclTest" skipped="0" tests="4" time="140.705" timestamp="2018-04-19T22:56:23">
+<testsuite errors="0" failures="0" hostname="travis-job-d5e5cc2a-d550-4559-bd04-fbf8431903d8" name="ptolemy.vergil.test.junit.JUnitTclTest" skipped="0" tests="4" time="150.7" timestamp="2018-04-20T00:04:27">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="281.9" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="283.9" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -30,7 +30,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.5 41250 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.34 33844 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -51,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.5 41250 10.20.0.87 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.34 33844 10.20.0.177 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,15 +70,15 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2461737186491943062.properties propsfile=/home/travis/build/icyphy/ptII/junit2950647732029768809.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5739241118118014468.properties propsfile=/home/travis/build/icyphy/ptII/junit2061439945862592425.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="f407f8917684...db8f11229ab2" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="b984ccd78a79...cd6938bf4119" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
-    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
     <property name="test.batch" value="**/junit/*.java" />
     <property name="env._" value="/usr/bin/timeout" />
     <property name="java.io.tmpdir" value="/tmp" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="281" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="283" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +131,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="368860642" />
+    <property name="env.TRAVIS_BUILD_ID" value="368898725" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="db8f11229ab2c706a9e2ca67c5ef6eb5a2b07952" />
+    <property name="env.TRAVIS_COMMIT" value="cd6938bf411945fa6fe5af6274574133888b721e" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -166,11 +166,11 @@
     <property name="env.TRAVIS_TAG" value="nightly" />
     <property name="env.TRAVIS_FILTERED" value="redirect_io" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
-    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.apps.eclipse.awt.*,ptolemy.backtrack.*,ptolemy.backtrack.ast.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.domains.gr.*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="&amp;eacute; does not work.  validDemos.tcl fails with &apos;The entity &quot;eacute&quot; was referenced, but not declared&apos;." />
-    <property name="keystore" value="ptKeystore" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Only create /usr/lib/jni if it does not exist." />
     <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/vergil/test" />
@@ -181,13 +181,13 @@
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
     <property name="timeout.npm" value="45000" />
-    <property name="sun.cpu.endian" value="little" />
     <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
     <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
     <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
     <property name="java.vm.version" value="25.151-b12" />
     <property name="env.RAILS_ENV" value="test" />
-    <property name="java.class.path" value="/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="java.class.path" value="/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
     <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
     <property name="os.arch" value="amd64" />
     <property name="env.TRAVIS_LANGUAGE" value="node_js" />
@@ -204,15 +204,15 @@
     <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
     <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
-    <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="368860651" />
+    <property name="env.TRAVIS_JOB_ID" value="368898736" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
-    <property name="java.maxmemory.large" value="8000m" />
     <property name="model" value="" />
+    <property name="java.maxmemory.large" value="8000m" />
     <property name="env.CASHER_DIR" value="/home/travis/.casher" />
     <property name="env.NVM_CD_FLAGS" value="" />
     <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
@@ -226,22 +226,12 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl (RunTclFile)" time="140.618">
-    <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;3&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;3&gt;
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-</failure>
-  </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.006" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl (RunTclFile)" time="150.603" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.011" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/vergil/test/VergilConfiguration.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:23 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Fri Apr 20 00:04:27 UTC 2018
  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -251,8 +241,8 @@ testDefs.tcl: setting time out to 9000 seconds at Thu Apr 19 22:56:23 UTC 2018
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/bcvtb/configuration.xml
-Before gc: Memory: 326144K Free: 162295K 50%
-After gc: Memory: 348160K Free: 308370K 89%
+Before gc: Memory: 331264K Free: 173987K 53%
+After gc: Memory: 361472K Free: 321267K 89%
  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -262,8 +252,8 @@ After gc: Memory: 348160K Free: 308370K 89%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptiny/configuration.xml
-Before gc: Memory: 391168K Free: 303039K 77%
-After gc: Memory: 457728K Free: 405943K 89%
+Before gc: Memory: 415744K Free: 115701K 28%
+After gc: Memory: 415232K Free: 364104K 88%
  Force everything to get expanded ptolemy/configs/space/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -273,8 +263,8 @@ After gc: Memory: 457728K Free: 405943K 89%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/space/configuration.xml
-Before gc: Memory: 457728K Free: 249408K 54%
-After gc: Memory: 439808K Free: 387486K 88%
+Before gc: Memory: 415232K Free: 201195K 48%
+After gc: Memory: 432128K Free: 380155K 88%
  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -284,8 +274,8 @@ After gc: Memory: 439808K Free: 387486K 88%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/dsp/configuration.xml
-Before gc: Memory: 458752K Free: 392764K 86%
-After gc: Memory: 457728K Free: 399002K 87%
+Before gc: Memory: 432640K Free: 342861K 79%
+After gc: Memory: 514560K Free: 454486K 88%
 Skipping viptos because TOSROOT is not set in the environment, so we are assuming that TinyOS is not installed.
  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     (Skipping certain optional packages)
@@ -296,8 +286,8 @@ Skipping viptos because TOSROOT is not set in the environment, so we are assumin
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/pn/configuration.xml
-Before gc: Memory: 535552K Free: 365547K 68%
-After gc: Memory: 526336K Free: 459478K 87%
+Before gc: Memory: 515584K Free: 397741K 77%
+After gc: Memory: 614400K Free: 545866K 89%
  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -307,31 +297,8 @@ After gc: Memory: 526336K Free: 459478K 87%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptdb/configuration.xml
-Before gc: Memory: 536576K Free: 246776K 46%
-After gc: Memory: 536064K Free: 462717K 86%
-
-
-==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-ptdb/configuration.xml-1.1 Expand the ptdb/configuration.xml configuration
-==== Contents of test case:
-
-	expandConfiguration ptolemy/configs/$i
-    
-==== Result was:
-{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
-  in .configuration.actor library.MoreLibraries.Backtracking
-Because:
-XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102}
----- Result should have been:
-0
----- VergilConfiguration-ptdb/configuration.xml-1.1 FAILED
+Before gc: Memory: 615424K Free: 92146K 15%
+After gc: Memory: 735232K Free: 646816K 88%
  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -341,8 +308,8 @@ Because:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/cyphysim/configuration.xml
-Before gc: Memory: 617984K Free: 213494K 35%
-After gc: Memory: 623616K Free: 534391K 86%
+Before gc: Memory: 738816K Free: 518136K 70%
+After gc: Memory: 738304K Free: 641378K 87%
  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -380,8 +347,8 @@ Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/acces
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
 The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-Before gc: Memory: 1088512K Free: 272968K 25%
-After gc: Memory: 1088000K Free: 697301K 64%
+Before gc: Memory: 1080320K Free: 524434K 49%
+After gc: Memory: 1090048K Free: 692567K 64%
  Force everything to get expanded ptolemy/configs/full/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -416,31 +383,8 @@ Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/acces
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
 Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
 The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
-Before gc: Memory: 1486336K Free: 458150K 31%
-After gc: Memory: 1469440K Free: 793548K 54%
-
-
-==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-full/configuration.xml-1.1 Expand the full/configuration.xml configuration
-==== Contents of test case:
-
-	expandConfiguration ptolemy/configs/$i
-    
-==== Result was:
-{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
-  in .configuration.actor library.MoreLibraries.Backtracking
-Because:
-XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102}
----- Result should have been:
-0
----- VergilConfiguration-full/configuration.xml-1.1 FAILED
+Before gc: Memory: 1475584K Free: 557320K 38%
+After gc: Memory: 1470976K Free: 777048K 53%
  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -450,8 +394,8 @@ Because:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyViewer/configuration.xml
-Before gc: Memory: 1469440K Free: 793546K 54%
-After gc: Memory: 1482240K Free: 806761K 54%
+Before gc: Memory: 1470976K Free: 765804K 52%
+After gc: Memory: 1462784K Free: 776937K 53%
  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -461,8 +405,8 @@ After gc: Memory: 1482240K Free: 806761K 54%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptserver/configuration.xml
-Before gc: Memory: 1484288K Free: 546199K 37%
-After gc: Memory: 1478656K Free: 792632K 54%
+Before gc: Memory: 1466880K Free: 492077K 34%
+After gc: Memory: 1467904K Free: 771396K 53%
  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -472,8 +416,8 @@ After gc: Memory: 1478656K Free: 792632K 54%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/visualsense/configuration.xml
-Before gc: Memory: 1481728K Free: 501357K 34%
-After gc: Memory: 1479680K Free: 784806K 53%
+Before gc: Memory: 1330176K Free: 314194K 24%
+After gc: Memory: 1456128K Free: 750949K 52%
 Skipping jxta/configuration.xml, running vergil -jxta brings up a window
  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     (Skipping certain optional packages)
@@ -484,8 +428,8 @@ Skipping jxta/configuration.xml, running vergil -jxta brings up a window
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/fullViewer/configuration.xml
-Before gc: Memory: 1479680K Free: 777580K 53%
-After gc: Memory: 1355264K Free: 663408K 49%
+Before gc: Memory: 1456128K Free: 737481K 51%
+After gc: Memory: 1319936K Free: 617781K 47%
  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -495,25 +439,8 @@ After gc: Memory: 1355264K Free: 663408K 49%
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml
-Before gc: Memory: 1355264K Free: 518885K 38%
-After gc: Memory: 1473536K Free: 778240K 53%
-
-
-==== $PTII/ptolemy/vergil/test/VergilConfiguration.tcl: VergilConfiguration-hyvisual/configuration.xml-1.1 Expand the hyvisual/configuration.xml configuration
-==== Contents of test case:
-
-	expandConfiguration ptolemy/configs/$i
-    
-==== Result was:
-{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
-  in .configuration.actor library.Directors
-Because:
-Failed to find class 'ptolemy.domains.gr.kernel.GRDirector' in file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml at line 9 and column 58
-Caused by:
- java.lang.ClassNotFoundException: ptolemy.domains.gr.kernel.GRDirector}
----- Result should have been:
-0
----- VergilConfiguration-hyvisual/configuration.xml-1.1 FAILED
+Before gc: Memory: 1462784K Free: 713272K 49%
+After gc: Memory: 1457664K Free: 748066K 51%
  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     (Skipping certain optional packages)
     If you get a 'X connection to xxx:11.0 broken' message, then
@@ -523,10 +450,10 @@ Caused by:
            tcl.lang.Shell xxx.tcl
 URL of configuration being expanded is
  file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptinyKepler/configuration.xml
-Before gc: Memory: 1477632K Free: 532199K 36%
-After gc: Memory: 1483776K Free: 776983K 52%
-04/19/18 10:58:43
-Failed: 3  Total Tests: 15  ((Passed: 12, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
+Before gc: Memory: 1465856K Free: 474462K 32%
+After gc: Memory: 1361408K Free: 641908K 47%
+04/20/18 12:06:58
+Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 AutoTests.java: About to close Vertx.
@@ -535,1072 +462,6 @@ No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
-  <system-err><![CDATA[Failed to populate library.
-com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3854)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
-	at ptolemy.moml.MoMLParser._parse(MoMLParser.java:6580)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3093)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Caused by: ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4330)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
-	... 122 more
-Caused by: com.microstar.xml.XmlException: -- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.fileNameToURL(MoMLParser.java:1414)
-	at ptolemy.moml.MoMLParser._findOrParse(MoMLParser.java:5283)
-	at ptolemy.moml.MoMLParser._attemptToFindMoMLClass(MoMLParser.java:4075)
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4323)
-	... 123 more
-Caused by: ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4330)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
-	at ptolemy.moml.MoMLParser._parse(MoMLParser.java:6580)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3093)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Caused by: com.microstar.xml.XmlException: -- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.fileNameToURL(MoMLParser.java:1414)
-	at ptolemy.moml.MoMLParser._findOrParse(MoMLParser.java:5283)
-	at ptolemy.moml.MoMLParser._attemptToFindMoMLClass(MoMLParser.java:4075)
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4323)
-	... 123 more
-Caused by: com.microstar.xml.XmlException: -- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.fileNameToURL(MoMLParser.java:1414)
-	at ptolemy.moml.MoMLParser._findOrParse(MoMLParser.java:5283)
-	at ptolemy.moml.MoMLParser._attemptToFindMoMLClass(MoMLParser.java:4075)
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4323)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
-	at ptolemy.moml.MoMLParser._parse(MoMLParser.java:6580)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3093)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-[main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-Failed to populate library.
-com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3854)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
-	at ptolemy.moml.MoMLParser._parse(MoMLParser.java:6580)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3093)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Caused by: ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4330)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
-	... 122 more
-Caused by: com.microstar.xml.XmlException: -- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.fileNameToURL(MoMLParser.java:1414)
-	at ptolemy.moml.MoMLParser._findOrParse(MoMLParser.java:5283)
-	at ptolemy.moml.MoMLParser._attemptToFindMoMLClass(MoMLParser.java:4075)
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4323)
-	... 123 more
-Caused by: ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.backtrack.automatic.ptolemy.actor.lib.PoissonClock. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
-Because:
--- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4330)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
-	at ptolemy.moml.MoMLParser._parse(MoMLParser.java:6580)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3093)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Caused by: com.microstar.xml.XmlException: -- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.fileNameToURL(MoMLParser.java:1414)
-	at ptolemy.moml.MoMLParser._findOrParse(MoMLParser.java:5283)
-	at ptolemy.moml.MoMLParser._attemptToFindMoMLClass(MoMLParser.java:4075)
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4323)
-	... 123 more
-Caused by: com.microstar.xml.XmlException: -- /home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
--- XML file not found relative to classpath.
--- /home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml
-/home/travis/build/icyphy/ptII/ptolemy/vergil/test/ptolemy/backtrack/automatic/ptolemy/actor/lib/PoissonClock.xml (No such file or directory)
- in file:/home/travis/build/icyphy/ptII/ptolemy/backtrack/automatic/ptolemy/configs/output.xml at line 12 and column 102
-	at ptolemy.moml.MoMLParser.fileNameToURL(MoMLParser.java:1414)
-	at ptolemy.moml.MoMLParser._findOrParse(MoMLParser.java:5283)
-	at ptolemy.moml.MoMLParser._attemptToFindMoMLClass(MoMLParser.java:4075)
-	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4323)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
-	at ptolemy.moml.MoMLParser._parse(MoMLParser.java:6580)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3093)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Failed to populate library.
-com.microstar.xml.XmlException: Failed to find class 'ptolemy.domains.gr.kernel.GRDirector' in file:/home/travis/build/icyphy/ptII/ptolemy/configs/hyvisual/configuration.xml at line 9 and column 58
-Caused by:
- java.lang.ClassNotFoundException: ptolemy.domains.gr.kernel.GRDirector
-	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5911)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3309)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Caused by: java.lang.ClassNotFoundException: ptolemy.domains.gr.kernel.GRDirector
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	at ptolemy.moml.MoMLParser._loadClass(MoMLParser.java:6402)
-	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5906)
-	... 97 more
-Caused by: java.lang.ClassNotFoundException: ptolemy.domains.gr.kernel.GRDirector
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	at ptolemy.moml.MoMLParser._loadClass(MoMLParser.java:6402)
-	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5906)
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3309)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:931)
-	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
-	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
-	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
-	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
-	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1792)
-	at ptolemy.moml.EntityLibrary.populate(EntityLibrary.java:548)
-	at ptolemy.moml.EntityLibrary.classDefinitionList(EntityLibrary.java:307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2292)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.CompositeEntity._description(CompositeEntity.java:2307)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:731)
-	at ptolemy.kernel.util.NamedObj.description(NamedObj.java:715)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
-	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
-	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
-	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Parser.evalTokens(Parser.java:930)
-	at tcl.lang.Parser.eval2(Parser.java:1125)
-	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.eval(Interp.java:1841)
-	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
-	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
-	at tcl.lang.Parser.evalObjv(Parser.java:740)
-	at tcl.lang.Parser.eval2(Parser.java:1138)
-	at tcl.lang.Interp.eval(Interp.java:1782)
-	at tcl.lang.Interp.evalFile(Interp.java:1880)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at org.junit.runners.Suite.runChild(Suite.java:128)
-	at org.junit.runners.Suite.runChild(Suite.java:24)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+  <system-err><![CDATA[[main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
 ]]></system-err>
 </testsuite>
