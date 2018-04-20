@@ -1,0 +1,528 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitCGCNoInlineTest</title>
+</head>
+<body>
+<pre>----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline true -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/knownFailedTests/Network1.xmlWarning: '-inline true' is not relevant for a DE model, forcing the value to false.
+CCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+Warning -- missing function defintion: Record_delete()
+Warning -- missing function defintion: Record_isCloseTo()
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Network1.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Network1.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Network1/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_Network1/_PtidesPlatform2 -I /home/travis/cg//_Network1 -I /home/travis/cg//_Network1/_PtidesPlatform -I /home/travis/cg//_Network1/_PtidesPlatform/_PtidesPlatformContents Network1_Main.c _Network1/Network1_TimeDelay.c _Network1/Network1_Test.c _Network1/Network1_SingleEvent2.c _Network1/_PtidesPlatform/Network1_PtidesPlatform.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents_Test.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents_Test2.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Network1/Network1_CurrentTime.c _Network1/Network1.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test4.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test2.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_AddSubtract.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test3.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test.c _Network1/_PtidesPlatform2/Network1_PtidesPlatform2.c _Network1/Network1_Test2.c _Network1/Network1_SingleEvent.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o Network1 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Network1.mk run
+./Network1
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+
+Test Network1_PtidesPlatform2_PtidesPlatformContents_Test__0 fails in iteration 0.
+ Value was:         -5. Should have been between: -4.00000000100000008274037099909 and -3.99999999899999991725962900091
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+make: *** [run] Error 255
+----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline true -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/knownFailedTests/Network2.xmlWarning: '-inline true' is not relevant for a DE model, forcing the value to false.
+CCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Network2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Network2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_Network2/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg//_Network2/_PtidesPlatform2 -I /home/travis/cg//_Network2/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg//_Network2/_PtidesPlatform -I /home/travis/cg//_Network2 Network2_Main.c _Network2/Network2_SingleEvent2.c _Network2/Network2_Test.c _Network2/Network2_Test2.c _Network2/Network2_TimeDelay.c _Network2/_PtidesPlatform/_PtidesPlatformContents/Network2_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Network2/_PtidesPlatform/_PtidesPlatformContents/Network2_PtidesPlatform_PtidesPlatformContents.c _Network2/_PtidesPlatform/Network2_PtidesPlatform.c _Network2/Network2.c _Network2/Network2_CurrentTime.c _Network2/Network2_SingleEvent.c _Network2/_PtidesPlatform2/_PtidesPlatformContents/Network2_PtidesPlatform2_PtidesPlatformContents_AddSubtract.c _Network2/_PtidesPlatform2/_PtidesPlatformContents/Network2_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _Network2/_PtidesPlatform2/_PtidesPlatformContents/Network2_PtidesPlatform2_PtidesPlatformContents.c _Network2/_PtidesPlatform2/Network2_PtidesPlatform2.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o Network2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Network2.mk run
+./Network2
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+
+Test Network2_Test__0 fails in iteration 0.
+ Value was:         -5. Should have been between: -4.00000000100000008274037099909 and -3.99999999899999991725962900091
+make: *** [run] Error 255
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline true -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/knownFailedTests/TIIModalExample.xmlWarning: '-inline true' is not relevant for a DE model, forcing the value to false.
+CCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.TIIModalExample} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.TIIModalExample} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.TIIModalExample.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.TIIModalExample.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesPlatformContents {.TIIModalExample.PtidesPlatform.PtidesPlatformContents} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesPlatformContents {.TIIModalExample.PtidesPlatform.PtidesPlatformContents} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/TIIModalExample.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f TIIModalExample.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state2 -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3 -I /home/travis/cg//_TIIModalExample/_PtidesPlatform -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_TIIModalExample TIIModalExample_Main.c commons/_FSMDirector.c commons/_FSMActor.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/_FSMReceiver.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _TIIModalExample/TIIModalExample_Test6.c _TIIModalExample/TIIModalExample_Test2.c _TIIModalExample/TIIModalExample_Test4.c _TIIModalExample/TIIModalExample_Test.c _TIIModalExample/TIIModalExample_Test7.c _TIIModalExample/TIIModalExample_DiscreteClock.c _TIIModalExample/TIIModalExample_CurrentTime3.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state2/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state2_Scale.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state2/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state2.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_FSMTransitionCode.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3_Test2.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3_Test.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3_Scale.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_Test2.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_Scale.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_Test.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_TimeDelay.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/TIIModalExample_PtidesPlatform_PtidesPlatformContents_Test.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/TIIModalExample_PtidesPlatform_PtidesPlatformContents.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/TIIModalExample_PtidesPlatform_PtidesPlatformContents_Test2.c _TIIModalExample/_PtidesPlatform/TIIModalExample_PtidesPlatform.c _TIIModalExample/TIIModalExample_SingleEvent.c _TIIModalExample/TIIModalExample_Test3.c _TIIModalExample/TIIModalExample.c _TIIModalExample/TIIModalExample_CurrentTime2.c -o TIIModalExample -lm 
+In "/home/travis/cg", about to execute:
+    make -f TIIModalExample.mk run
+./TIIModalExample
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x14c69b0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x14cdb50: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdb50: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdb50: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x14c69b0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x14cdb50: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdb50: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdb50: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x14c69b0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14c69b0: token was null?
+Int_convert(): Conversion from an unsupported type. (0)
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+FSM_Receiver_HasToken: receiver 0x14cdff0: token was null?
+
+Test TIIModalExample_PtidesPlatform_PtidesPlatformContents_Test__0 fails in iteration 1.
+ Value was: 0. Should have been between: 3.99999999899999991725962900091 and 4.00000000100000008274037099909
+make: *** [run] Error 255
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/knownFailedTests/Network1.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network1} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network1.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Network1.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Network1.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Network1/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_Network1/_PtidesPlatform2 -I /home/travis/cg//_Network1 -I /home/travis/cg//_Network1/_PtidesPlatform -I /home/travis/cg//_Network1/_PtidesPlatform/_PtidesPlatformContents Network1_Main.c _Network1/Network1_TimeDelay.c _Network1/Network1_Test.c _Network1/Network1_SingleEvent2.c _Network1/_PtidesPlatform/Network1_PtidesPlatform.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents_Test.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents_Test2.c _Network1/_PtidesPlatform/_PtidesPlatformContents/Network1_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Network1/Network1_CurrentTime.c _Network1/Network1.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test4.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test2.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_AddSubtract.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test3.c _Network1/_PtidesPlatform2/_PtidesPlatformContents/Network1_PtidesPlatform2_PtidesPlatformContents_Test.c _Network1/_PtidesPlatform2/Network1_PtidesPlatform2.c _Network1/Network1_Test2.c _Network1/Network1_SingleEvent.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o Network1 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Network1.mk run
+./Network1
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+
+Test Network1_PtidesPlatform2_PtidesPlatformContents_Test__0 fails in iteration 0.
+ Value was:         -5. Should have been between: -4.00000000100000008274037099909 and -3.99999999899999991725962900091
+make: *** [run] Error 255
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/knownFailedTests/Network2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network2.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Network2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Network2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_Network2/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg//_Network2/_PtidesPlatform2 -I /home/travis/cg//_Network2/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg//_Network2/_PtidesPlatform -I /home/travis/cg//_Network2 Network2_Main.c _Network2/Network2_SingleEvent2.c _Network2/Network2_Test.c _Network2/Network2_Test2.c _Network2/Network2_TimeDelay.c _Network2/_PtidesPlatform/_PtidesPlatformContents/Network2_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Network2/_PtidesPlatform/_PtidesPlatformContents/Network2_PtidesPlatform_PtidesPlatformContents.c _Network2/_PtidesPlatform/Network2_PtidesPlatform.c _Network2/Network2.c _Network2/Network2_CurrentTime.c _Network2/Network2_SingleEvent.c _Network2/_PtidesPlatform2/_PtidesPlatformContents/Network2_PtidesPlatform2_PtidesPlatformContents_AddSubtract.c _Network2/_PtidesPlatform2/_PtidesPlatformContents/Network2_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _Network2/_PtidesPlatform2/_PtidesPlatformContents/Network2_PtidesPlatform2_PtidesPlatformContents.c _Network2/_PtidesPlatform2/Network2_PtidesPlatform2.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o Network2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Network2.mk run
+./Network2
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+
+Test Network2_Test__0 fails in iteration 0.
+ Value was:         -5. Should have been between: -4.00000000100000008274037099909 and -3.99999999899999991725962900091
+make: *** [run] Error 255
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- (Known Failure) AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/knownFailedTests/TIIModalExample.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.TIIModalExample} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.TIIModalExample} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.TIIModalExample.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.TIIModalExample.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesPlatformContents {.TIIModalExample.PtidesPlatform.PtidesPlatformContents} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform$PtidesPlatformContents {.TIIModalExample.PtidesPlatform.PtidesPlatformContents} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.modal.modal.ModalModel {.TIIModalExample.PtidesPlatform.PtidesPlatformContents.ModalModel} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/TIIModalExample.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f TIIModalExample.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state2 -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3 -I /home/travis/cg//_TIIModalExample/_PtidesPlatform -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state -I /home/travis/cg//_TIIModalExample/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_TIIModalExample TIIModalExample_Main.c commons/_FSMDirector.c commons/_FSMActor.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/_FSMReceiver.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _TIIModalExample/TIIModalExample_Test6.c _TIIModalExample/TIIModalExample_Test2.c _TIIModalExample/TIIModalExample_Test4.c _TIIModalExample/TIIModalExample_Test.c _TIIModalExample/TIIModalExample_Test7.c _TIIModalExample/TIIModalExample_DiscreteClock.c _TIIModalExample/TIIModalExample_CurrentTime3.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state2/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state2_Scale.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state2/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state2.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_FSMTransitionCode.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3_Test2.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3_Test.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state3/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state3_Scale.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_Test2.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_Scale.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_Test.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/_ModalModel/_state/TIIModalExample_PtidesPlatform_PtidesPlatformContents_ModalModel_state_TimeDelay.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/TIIModalExample_PtidesPlatform_PtidesPlatformContents_Test.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/TIIModalExample_PtidesPlatform_PtidesPlatformContents.c _TIIModalExample/_PtidesPlatform/_PtidesPlatformContents/TIIModalExample_PtidesPlatform_PtidesPlatformContents_Test2.c _TIIModalExample/_PtidesPlatform/TIIModalExample_PtidesPlatform.c _TIIModalExample/TIIModalExample_SingleEvent.c _TIIModalExample/TIIModalExample_Test3.c _TIIModalExample/TIIModalExample.c _TIIModalExample/TIIModalExample_CurrentTime2.c -o TIIModalExample -lm 
+In "/home/travis/cg", about to execute:
+    make -f TIIModalExample.mk run
+./TIIModalExample
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x173d9b0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x1744b50: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744b50: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744b50: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x173d9b0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x1744b50: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744b50: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744b50: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+FSM_Receiver_HasToken: receiver 0x173d9b0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x173d9b0: token was null?
+Int_convert(): Conversion from an unsupported type. (0)
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+FSM_Receiver_HasToken: receiver 0x1744ff0: token was null?
+
+Test TIIModalExample_PtidesPlatform_PtidesPlatformContents_Test__0 fails in iteration 1.
+ Value was: 0. Should have been between: 3.99999999899999991725962900091 and 4.00000000100000008274037099909
+make: *** [run] Error 255
+All Done
+Known Failure: Return value of the last command executed was not zero, it was: 2
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Feedback.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Feedback} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Feedback} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Feedback.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Feedback.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Feedback.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Feedback.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Feedback/_PtidesPlatform -I /home/travis/cg/commons/ -I /home/travis/cg//_Feedback -I /home/travis/cg//_Feedback/_PtidesPlatform/_PtidesPlatformContents Feedback_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Feedback/Feedback_CurrentTime.c _Feedback/Feedback_Test.c _Feedback/_PtidesPlatform/_PtidesPlatformContents/Feedback_PtidesPlatform_PtidesPlatformContents.c _Feedback/_PtidesPlatform/_PtidesPlatformContents/Feedback_PtidesPlatform_PtidesPlatformContents_AddSubtract.c _Feedback/_PtidesPlatform/_PtidesPlatformContents/Feedback_PtidesPlatform_PtidesPlatformContents_TimeDelay2.c _Feedback/_PtidesPlatform/_PtidesPlatformContents/Feedback_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Feedback/_PtidesPlatform/_PtidesPlatformContents/Feedback_PtidesPlatform_PtidesPlatformContents_Scale.c _Feedback/_PtidesPlatform/Feedback_PtidesPlatform.c _Feedback/Feedback.c _Feedback/Feedback_DiscreteClock.c _Feedback/Feedback_Test2.c -o Feedback -lm 
+In "/home/travis/cg", about to execute:
+    make -f Feedback.mk run
+./Feedback
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Feedback2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Feedback2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Feedback2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Feedback2.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Feedback2.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Feedback2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Feedback2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Feedback2/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_Feedback2/_PtidesPlatform -I /home/travis/cg//_Feedback2 Feedback2_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Feedback2/Feedback2_DiscreteClock.c _Feedback2/_PtidesPlatform/_PtidesPlatformContents/Feedback2_PtidesPlatform_PtidesPlatformContents_Scale.c _Feedback2/_PtidesPlatform/_PtidesPlatformContents/Feedback2_PtidesPlatform_PtidesPlatformContents.c _Feedback2/_PtidesPlatform/_PtidesPlatformContents/Feedback2_PtidesPlatform_PtidesPlatformContents_TimeDelay2.c _Feedback2/_PtidesPlatform/_PtidesPlatformContents/Feedback2_PtidesPlatform_PtidesPlatformContents_AddSubtract.c _Feedback2/_PtidesPlatform/_PtidesPlatformContents/Feedback2_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Feedback2/_PtidesPlatform/Feedback2_PtidesPlatform.c _Feedback2/Feedback2.c _Feedback2/Feedback2_Test.c _Feedback2/Feedback2_Test2.c _Feedback2/Feedback2_CurrentTime.c -o Feedback2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Feedback2.mk run
+./Feedback2
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Microstep.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Microstep} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Microstep} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Microstep.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Microstep.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Microstep.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Microstep.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Microstep/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_Microstep -I /home/travis/cg//_Microstep/_PtidesPlatform Microstep_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Microstep/Microstep_CurrentTime.c _Microstep/Microstep_Test.c _Microstep/Microstep_Const.c _Microstep/Microstep_Test2.c _Microstep/Microstep.c _Microstep/_PtidesPlatform/_PtidesPlatformContents/Microstep_PtidesPlatform_PtidesPlatformContents.c _Microstep/_PtidesPlatform/_PtidesPlatformContents/Microstep_PtidesPlatform_PtidesPlatformContents_Test2.c _Microstep/_PtidesPlatform/_PtidesPlatformContents/Microstep_PtidesPlatform_PtidesPlatformContents_CurrentTime.c _Microstep/_PtidesPlatform/_PtidesPlatformContents/Microstep_PtidesPlatform_PtidesPlatformContents_Test.c _Microstep/_PtidesPlatform/_PtidesPlatformContents/Microstep_PtidesPlatform_PtidesPlatformContents_Ramp.c _Microstep/_PtidesPlatform/Microstep_PtidesPlatform.c _Microstep/Microstep_Register.c _Microstep/Microstep_Merge.c _Microstep/Microstep_TimeDelay.c _Microstep/Microstep_TrueGate.c _Microstep/Microstep_Comparator.c _Microstep/Microstep_SingleEvent.c -o Microstep -lm 
+In "/home/travis/cg", about to execute:
+    make -f Microstep.mk run
+./Microstep
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/ModelDelay.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.ModelDelay} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.ModelDelay} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.ModelDelay.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.ModelDelay.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/ModelDelay.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f ModelDelay.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_ModelDelay -I /home/travis/cg//_ModelDelay/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_ModelDelay/_PtidesPlatform ModelDelay_Main.c _ModelDelay/ModelDelay_DiscreteClock.c _ModelDelay/ModelDelay_Test2.c _ModelDelay/ModelDelay.c _ModelDelay/_PtidesPlatform/_PtidesPlatformContents/ModelDelay_PtidesPlatform_PtidesPlatformContents.c _ModelDelay/_PtidesPlatform/_PtidesPlatformContents/ModelDelay_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _ModelDelay/_PtidesPlatform/ModelDelay_PtidesPlatform.c _ModelDelay/ModelDelay_CurrentTime.c _ModelDelay/ModelDelay_Test.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o ModelDelay -lm 
+In "/home/travis/cg", about to execute:
+    make -f ModelDelay.mk run
+./ModelDelay
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Network.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Network.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Network.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Network/_PtidesPlatform2 -I /home/travis/cg//_Network/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_Network -I /home/travis/cg//_Network/_PtidesPlatform -I /home/travis/cg//_Network/_PtidesPlatform/_PtidesPlatformContents Network_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Network/Network_Test2.c _Network/Network_SingleEvent2.c _Network/Network.c _Network/_PtidesPlatform/_PtidesPlatformContents/Network_PtidesPlatform_PtidesPlatformContents.c _Network/_PtidesPlatform/_PtidesPlatformContents/Network_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Network/_PtidesPlatform/Network_PtidesPlatform.c _Network/Network_CurrentTime.c _Network/_PtidesPlatform2/_PtidesPlatformContents/Network_PtidesPlatform2_PtidesPlatformContents.c _Network/_PtidesPlatform2/_PtidesPlatformContents/Network_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _Network/_PtidesPlatform2/_PtidesPlatformContents/Network_PtidesPlatform2_PtidesPlatformContents_AddSubtract.c _Network/_PtidesPlatform2/Network_PtidesPlatform2.c _Network/Network_Test.c _Network/Network_SingleEvent.c -o Network -lm 
+In "/home/travis/cg", about to execute:
+    make -f Network.mk run
+./Network
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Network3.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network3.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network3.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network3.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network3.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Network3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Network3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network3.PtidesPlatform3} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Network3.PtidesPlatform3} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Network3.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Network3.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_Network3/_PtidesPlatform -I /home/travis/cg//_Network3/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg//_Network3/_PtidesPlatform3/_PtidesPlatformContents -I /home/travis/cg//_Network3/_PtidesPlatform2 -I /home/travis/cg/commons/ -I /home/travis/cg//_Network3/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg//_Network3/_PtidesPlatform3 -I /home/travis/cg//_Network3 Network3_Main.c _Network3/Network3_CurrentTime3.c _Network3/Network3_Test5.c _Network3/Network3_Test6.c _Network3/Network3_Test2.c _Network3/Network3_SingleEvent.c _Network3/Network3_Test4.c _Network3/_PtidesPlatform/_PtidesPlatformContents/Network3_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _Network3/_PtidesPlatform/_PtidesPlatformContents/Network3_PtidesPlatform_PtidesPlatformContents_Scale2.c _Network3/_PtidesPlatform/_PtidesPlatformContents/Network3_PtidesPlatform_PtidesPlatformContents_Scale.c _Network3/_PtidesPlatform/_PtidesPlatformContents/Network3_PtidesPlatform_PtidesPlatformContents.c _Network3/_PtidesPlatform/Network3_PtidesPlatform.c _Network3/Network3_Test.c _Network3/_PtidesPlatform2/_PtidesPlatformContents/Network3_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _Network3/_PtidesPlatform2/_PtidesPlatformContents/Network3_PtidesPlatform2_PtidesPlatformContents_Merge.c _Network3/_PtidesPlatform2/_PtidesPlatformContents/Network3_PtidesPlatform2_PtidesPlatformContents.c _Network3/_PtidesPlatform2/Network3_PtidesPlatform2.c _Network3/Network3_CurrentTime2.c _Network3/Network3_TimeDelay.c _Network3/Network3_CurrentTime.c _Network3/_PtidesPlatform3/_PtidesPlatformContents/Network3_PtidesPlatform3_PtidesPlatformContents_TimeDelay.c _Network3/_PtidesPlatform3/_PtidesPlatformContents/Network3_PtidesPlatform3_PtidesPlatformContents.c _Network3/_PtidesPlatform3/_PtidesPlatformContents/Network3_PtidesPlatform3_PtidesPlatformContents_Accumulator.c _Network3/_PtidesPlatform3/_PtidesPlatformContents/Network3_PtidesPlatform3_PtidesPlatformContents_Merge.c _Network3/_PtidesPlatform3/Network3_PtidesPlatform3.c _Network3/Network3.c _Network3/Network3_Test3.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o Network3 -lm 
+In "/home/travis/cg", about to execute:
+    make -f Network3.mk run
+./Network3
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(4) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(5) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(6) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(7) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(8) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(9) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(10) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/NetworkPorts.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.NetworkPorts} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.NetworkPorts} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.NetworkPorts.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.NetworkPorts.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.NetworkPorts} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.NetworkPorts} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.NetworkPorts.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.NetworkPorts.PtidesPlatform2} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/NetworkPorts.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f NetworkPorts.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_NetworkPorts/_PtidesPlatform2 -I /home/travis/cg//_NetworkPorts/_PtidesPlatform -I /home/travis/cg//_NetworkPorts/_PtidesPlatform2/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_NetworkPorts -I /home/travis/cg//_NetworkPorts/_PtidesPlatform/_PtidesPlatformContents NetworkPorts_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _NetworkPorts/NetworkPorts_Test7.c _NetworkPorts/NetworkPorts_CurrentTime2.c _NetworkPorts/NetworkPorts_Test4.c _NetworkPorts/NetworkPorts_CurrentTime4.c _NetworkPorts/_PtidesPlatform/_PtidesPlatformContents/NetworkPorts_PtidesPlatform_PtidesPlatformContents.c _NetworkPorts/_PtidesPlatform/_PtidesPlatformContents/NetworkPorts_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _NetworkPorts/_PtidesPlatform/NetworkPorts_PtidesPlatform.c _NetworkPorts/NetworkPorts.c _NetworkPorts/NetworkPorts_Test3.c _NetworkPorts/NetworkPorts_Test5.c _NetworkPorts/NetworkPorts_Test6.c _NetworkPorts/NetworkPorts_SingleEvent.c _NetworkPorts/_PtidesPlatform2/_PtidesPlatformContents/NetworkPorts_PtidesPlatform2_PtidesPlatformContents_TimeDelay.c _NetworkPorts/_PtidesPlatform2/_PtidesPlatformContents/NetworkPorts_PtidesPlatform2_PtidesPlatformContents_Scale.c _NetworkPorts/_PtidesPlatform2/_PtidesPlatformContents/NetworkPorts_PtidesPlatform2_PtidesPlatformContents_Scale3.c _NetworkPorts/_PtidesPlatform2/_PtidesPlatformContents/NetworkPorts_PtidesPlatform2_PtidesPlatformContents_Scale2.c _NetworkPorts/_PtidesPlatform2/_PtidesPlatformContents/NetworkPorts_PtidesPlatform2_PtidesPlatformContents.c _NetworkPorts/_PtidesPlatform2/NetworkPorts_PtidesPlatform2.c _NetworkPorts/NetworkPorts_CurrentTime3.c _NetworkPorts/NetworkPorts_Test8.c _NetworkPorts/NetworkPorts_Merge.c _NetworkPorts/NetworkPorts_Test2.c _NetworkPorts/NetworkPorts_Test.c _NetworkPorts/NetworkPorts_CurrentTime.c -o NetworkPorts -lm 
+In "/home/travis/cg", about to execute:
+    make -f NetworkPorts.mk run
+./NetworkPorts
+commons/_CompositeActor.c:119: CompositeActorFire():(1) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(2) director did not transfer inputs?.
+commons/_CompositeActor.c:119: CompositeActorFire():(3) director did not transfer inputs?.
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/SafeToProcessInsideTransparent.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.SafeToProcessInsideTransparent} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.SafeToProcessInsideTransparent} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SafeToProcessInsideTransparent.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SafeToProcessInsideTransparent.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/SafeToProcessInsideTransparent.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f SafeToProcessInsideTransparent.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_SafeToProcessInsideTransparent/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg/commons/ -I /home/travis/cg//_SafeToProcessInsideTransparent -I /home/travis/cg//_SafeToProcessInsideTransparent/_PtidesPlatform SafeToProcessInsideTransparent_Main.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_Test4.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_Test7.c _SafeToProcessInsideTransparent/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessInsideTransparent_PtidesPlatform_PtidesPlatformContents_CompositeActor_Const.c _SafeToProcessInsideTransparent/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessInsideTransparent_PtidesPlatform_PtidesPlatformContents.c _SafeToProcessInsideTransparent/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessInsideTransparent_PtidesPlatform_PtidesPlatformContents_CompositeActor_TimeDelay.c _SafeToProcessInsideTransparent/_PtidesPlatform/SafeToProcessInsideTransparent_PtidesPlatform.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_DiscreteClock.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_Test3.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_CurrentTime2.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_Test8.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent.c _SafeToProcessInsideTransparent/SafeToProcessInsideTransparent_CurrentTime4.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o SafeToProcessInsideTransparent -lm 
+In "/home/travis/cg", about to execute:
+    make -f SafeToProcessInsideTransparent.mk run
+./SafeToProcessInsideTransparent
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/SafeToProcessTwoPaths.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.SafeToProcessTwoPaths} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.SafeToProcessTwoPaths} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SafeToProcessTwoPaths.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SafeToProcessTwoPaths.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/SafeToProcessTwoPaths.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f SafeToProcessTwoPaths.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_SafeToProcessTwoPaths/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg//_SafeToProcessTwoPaths -I /home/travis/cg//_SafeToProcessTwoPaths/_PtidesPlatform -I /home/travis/cg/commons/ SafeToProcessTwoPaths_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_CurrentTime3.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_Test6.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_DiscreteClock.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_DiscreteClock2.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_Test3.c _SafeToProcessTwoPaths/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessTwoPaths_PtidesPlatform_PtidesPlatformContents_TimeDelay2.c _SafeToProcessTwoPaths/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessTwoPaths_PtidesPlatform_PtidesPlatformContents_CompositeActor2_Const.c _SafeToProcessTwoPaths/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessTwoPaths_PtidesPlatform_PtidesPlatformContents.c _SafeToProcessTwoPaths/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessTwoPaths_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _SafeToProcessTwoPaths/_PtidesPlatform/_PtidesPlatformContents/SafeToProcessTwoPaths_PtidesPlatform_PtidesPlatformContents_CompositeActor2_Scale.c _SafeToProcessTwoPaths/_PtidesPlatform/SafeToProcessTwoPaths_PtidesPlatform.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_CurrentTime2.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_Test4.c _SafeToProcessTwoPaths/SafeToProcessTwoPaths_Test5.c -o SafeToProcessTwoPaths -lm 
+In "/home/travis/cg", about to execute:
+    make -f SafeToProcessTwoPaths.mk run
+./SafeToProcessTwoPaths
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Sensor.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.Sensor} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.Sensor} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Sensor.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.Sensor.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Sensor.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Sensor.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_Sensor -I /home/travis/cg//_Sensor/_PtidesPlatform/_PtidesPlatformContents -I /home/travis/cg//_Sensor/_PtidesPlatform Sensor_Main.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c _Sensor/_PtidesPlatform/_PtidesPlatformContents/Sensor_PtidesPlatform_PtidesPlatformContents.c _Sensor/_PtidesPlatform/_PtidesPlatformContents/Sensor_PtidesPlatform_PtidesPlatformContents_Test.c _Sensor/_PtidesPlatform/_PtidesPlatformContents/Sensor_PtidesPlatform_PtidesPlatformContents_CurrentTime.c _Sensor/_PtidesPlatform/_PtidesPlatformContents/Sensor_PtidesPlatform_PtidesPlatformContents_Test2.c _Sensor/_PtidesPlatform/Sensor_PtidesPlatform.c _Sensor/Sensor_DiscreteClock.c _Sensor/Sensor.c -o Sensor -lm 
+In "/home/travis/cg", about to execute:
+    make -f Sensor.mk run
+./Sensor
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/SensorActuatorModelDelayOnly.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.SensorActuatorModelDelayOnly} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.SensorActuatorModelDelayOnly} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SensorActuatorModelDelayOnly.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SensorActuatorModelDelayOnly.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/SensorActuatorModelDelayOnly.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f SensorActuatorModelDelayOnly.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_SensorActuatorModelDelayOnly -I /home/travis/cg//_SensorActuatorModelDelayOnly/_PtidesPlatform -I /home/travis/cg//_SensorActuatorModelDelayOnly/_PtidesPlatform/_PtidesPlatformContents SensorActuatorModelDelayOnly_Main.c _SensorActuatorModelDelayOnly/SensorActuatorModelDelayOnly.c _SensorActuatorModelDelayOnly/SensorActuatorModelDelayOnly_DiscreteClock.c _SensorActuatorModelDelayOnly/SensorActuatorModelDelayOnly_CurrentTime.c _SensorActuatorModelDelayOnly/_PtidesPlatform/_PtidesPlatformContents/SensorActuatorModelDelayOnly_PtidesPlatform_PtidesPlatformContents_TimeDelay.c _SensorActuatorModelDelayOnly/_PtidesPlatform/_PtidesPlatformContents/SensorActuatorModelDelayOnly_PtidesPlatform_PtidesPlatformContents.c _SensorActuatorModelDelayOnly/_PtidesPlatform/SensorActuatorModelDelayOnly_PtidesPlatform.c _SensorActuatorModelDelayOnly/SensorActuatorModelDelayOnly_Test2.c _SensorActuatorModelDelayOnly/SensorActuatorModelDelayOnly_Test.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o SensorActuatorModelDelayOnly -lm 
+In "/home/travis/cg", about to execute:
+    make -f SensorActuatorModelDelayOnly.mk run
+./SensorActuatorModelDelayOnly
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/SensorActuatorNoDelay.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.actor.TypedCompositeActor {.SensorActuatorNoDelay} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.actor.TypedCompositeActor {.SensorActuatorNoDelay} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator set the container? : actor.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SensorActuatorNoDelay.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): ptolemy.domains.ptides.kernel.PtidesPlatform {.SensorActuatorNoDelay.PtidesPlatform} _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/SensorActuatorNoDelay.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f SensorActuatorNoDelay.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_SensorActuatorNoDelay -I /home/travis/cg//_SensorActuatorNoDelay/_PtidesPlatform -I /home/travis/cg/commons/ -I /home/travis/cg//_SensorActuatorNoDelay/_PtidesPlatform/_PtidesPlatformContents SensorActuatorNoDelay_Main.c _SensorActuatorNoDelay/SensorActuatorNoDelay_DiscreteClock.c _SensorActuatorNoDelay/SensorActuatorNoDelay_CurrentTime.c _SensorActuatorNoDelay/SensorActuatorNoDelay_Test2.c _SensorActuatorNoDelay/_PtidesPlatform/SensorActuatorNoDelay_PtidesPlatform.c _SensorActuatorNoDelay/_PtidesPlatform/_PtidesPlatformContents/SensorActuatorNoDelay_PtidesPlatform_PtidesPlatformContents.c _SensorActuatorNoDelay/SensorActuatorNoDelay_Test.c _SensorActuatorNoDelay/SensorActuatorNoDelay.c commons/_CompositeActor.c commons/_DEEvent.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/_PtidesPort.c commons/pblHeap.c commons/_PtidesMirrorPort.c commons/_LocalClock.c commons/_PtidesPlatformDirector.c commons/pblIterator.c commons/_CalendarQueue.c commons/_Receiver.c commons/_PtidesEvent.c commons/_PtidesReceiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_DEDirector.c commons/_PtidesDirector.c commons/_TypedIOPort.c commons/pbl.c commons/_DEReceiver.c -o SensorActuatorNoDelay -lm 
+In "/home/travis/cg", about to execute:
+    make -f SensorActuatorNoDelay.mk run
+./SensorActuatorNoDelay
+All Done
+</pre>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>Apr 19, 2018 3:40:03 PM ptolemy.actor.lib.r.RExpression fire
+SEVERE: Error in _exec()
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: There has been a problem running the R script!
+It may be due to an error in your script, it may be that R is not
+installed on your system, or it may not be on your path and cannot
+be located by Kepler.  Please make sure R is installed and the
+R command line executable is in the path.For more information, see 
+ section 8.2.2 of the Kepler User Manual.
+  in .RExpression_Dataframe_Test.RExpression
+Because:
+java.lang.NullPointerException
+	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:860)
+	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: java.lang.NullPointerException
+	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:843)
+	... 8 more
+Apr 19, 2018 3:40:03 PM ptolemy.actor.lib.r.RExpression fire
+SEVERE: Error in _exec()
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: There has been a problem running the R script!
+It may be due to an error in your script, it may be that R is not
+installed on your system, or it may not be on your path and cannot
+be located by Kepler.  Please make sure R is installed and the
+R command line executable is in the path.For more information, see 
+ section 8.2.2 of the Kepler User Manual.
+  in .RExpression_Matrix_IO_Test.RExpression
+Because:
+java.lang.NullPointerException
+	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:860)
+	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: java.lang.NullPointerException
+	at ptolemy.actor.lib.r.RExpression.fire(RExpression.java:843)
+	... 8 more
+</pre>
+</body>
+</html>

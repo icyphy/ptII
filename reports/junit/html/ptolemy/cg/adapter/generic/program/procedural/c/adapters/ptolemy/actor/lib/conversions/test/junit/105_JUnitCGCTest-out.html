@@ -1,0 +1,44 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitCGCTest</title>
+</head>
+<body>
+<pre>No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test/auto/BooleanToAnything.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/BooleanToAnything.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f BooleanToAnything.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_BooleanToAnything BooleanToAnything_Main.c _BooleanToAnything/BooleanToAnything_Test.c _BooleanToAnything/BooleanToAnything_Sequence2.c _BooleanToAnything/BooleanToAnything_SDFSchedule.c _BooleanToAnything/BooleanToAnything_Sequence.c _BooleanToAnything/BooleanToAnything.c _BooleanToAnything/BooleanToAnything_BooleanToAnything.c _BooleanToAnything/BooleanToAnything_BooleanToAnything2.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o BooleanToAnything -lm 
+commons/_ptTypes.c: In function &lsquo;String_new&rsquo;:
+commons/_ptTypes.c:341:9: warning: implicit declaration of function &lsquo;strdup&rsquo; [-Wimplicit-function-declaration]
+         result-&gt;payload.String = strdup(s);
+         ^
+commons/_ptTypes.c:341:32: warning: assignment makes pointer from integer without a cast [enabled by default]
+         result-&gt;payload.String = strdup(s);
+                                ^
+In "/home/travis/cg", about to execute:
+    make -f BooleanToAnything.mk run
+./BooleanToAnything
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/test/auto/Round.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/Round.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f Round.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_Round Round_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _Round/Round_Round3.c _Round/Round_Round4.c _Round/Round_Const4.c _Round/Round_Round.c _Round/Round_SDFSchedule.c _Round/Round_Const3.c _Round/Round_Test.c _Round/Round_Round2.c _Round/Round.c _Round/Round_Const2.c _Round/Round_Const.c -o Round -lm 
+In "/home/travis/cg", about to execute:
+    make -f Round.mk run
+./Round
+All Done
+</pre>
+</body>
+</html>

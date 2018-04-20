@@ -1,0 +1,84 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitCGCTest</title>
+</head>
+<body>
+<pre>No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/StringCompare.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f StringCompare.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_StringCompare StringCompare_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _StringCompare/StringCompare_StringConst2.c _StringCompare/StringCompare.c _StringCompare/StringCompare_Test.c _StringCompare/StringCompare_SDFSchedule.c _StringCompare/StringCompare_StringCompare.c _StringCompare/StringCompare_StringConst.c -o StringCompare -lm 
+commons/_ptTypes.c: In function &lsquo;String_new&rsquo;:
+commons/_ptTypes.c:159:9: warning: implicit declaration of function &lsquo;strdup&rsquo; [-Wimplicit-function-declaration]
+         result-&gt;payload.String = strdup(s);
+         ^
+commons/_ptTypes.c:159:32: warning: assignment makes pointer from integer without a cast [enabled by default]
+         result-&gt;payload.String = strdup(s);
+                                ^
+In "/home/travis/cg", about to execute:
+    make -f StringCompare.mk run
+./StringCompare
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare2.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/StringCompare2.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f StringCompare2.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg/commons/ -I /home/travis/cg//_StringCompare2 StringCompare2_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _StringCompare2/StringCompare2_SDFSchedule.c _StringCompare2/StringCompare2_Const.c _StringCompare2/StringCompare2_Const2.c _StringCompare2/StringCompare2_StringCompare.c _StringCompare2/StringCompare2_Test.c _StringCompare2/StringCompare2.c -o StringCompare2 -lm 
+In "/home/travis/cg", about to execute:
+    make -f StringCompare2.mk run
+./StringCompare2
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringCompare3.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/StringCompare3.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f StringCompare3.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_StringCompare3 -I /home/travis/cg/commons/ StringCompare3_Main.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c _StringCompare3/StringCompare3_StringConst.c _StringCompare3/StringCompare3_SDFSchedule.c _StringCompare3/StringCompare3.c _StringCompare3/StringCompare3_Test.c _StringCompare3/StringCompare3_StringCompare.c -o StringCompare3 -lm 
+commons/_ptTypes.c: In function &lsquo;String_new&rsquo;:
+commons/_ptTypes.c:126:9: warning: implicit declaration of function &lsquo;strdup&rsquo; [-Wimplicit-function-declaration]
+         result-&gt;payload.String = strdup(s);
+         ^
+commons/_ptTypes.c:126:32: warning: assignment makes pointer from integer without a cast [enabled by default]
+         result-&gt;payload.String = strdup(s);
+                                ^
+In "/home/travis/cg", about to execute:
+    make -f StringCompare3.mk run
+./StringCompare3
+All Done
+----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/test/auto/StringLength.xmlCCodeGenerator._generateCode(): Deleting /home/travis/cg/
+CCodeGenerator set the container? : actor.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+CCodeGenerator include the container .h? : container.getContainer(): null _isTopLevel: true generateEmbeddedCode: false
+Reading "ptolemy/cg/kernel/generic/program/procedural/c/makefile.in",
+    writing "/home/travis/cg/StringLength.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f StringLength.mk
+gcc -D__int64="long long" -Wall -std=c99  -ggdb  -I /home/travis/cg//_StringLength -I /home/travis/cg/commons/ StringLength_Main.c _StringLength/StringLength_StringConst2.c _StringLength/StringLength_StringLength.c _StringLength/StringLength_StringLength2.c _StringLength/StringLength_StringConst.c _StringLength/StringLength_SDFSchedule.c _StringLength/StringLength.c _StringLength/StringLength_Test.c commons/_SDFReceiver.c commons/_CompositeActor.c commons/_AtomicActor.c commons/_Director.c commons/pblSet.c commons/pblHeap.c commons/_LocalClock.c commons/_SDFDirector.c commons/pblIterator.c commons/_Receiver.c commons/_IOPort.c commons/pblMap.c commons/_Actor.c commons/pblList.c commons/_ptTypes.c commons/pblCollection.c commons/pblPriorityQueue.c commons/pblhash.c commons/_TypedIOPort.c commons/pbl.c -o StringLength -lm 
+commons/_ptTypes.c: In function &lsquo;String_new&rsquo;:
+commons/_ptTypes.c:158:9: warning: implicit declaration of function &lsquo;strdup&rsquo; [-Wimplicit-function-declaration]
+         result-&gt;payload.String = strdup(s);
+         ^
+commons/_ptTypes.c:158:32: warning: assignment makes pointer from integer without a cast [enabled by default]
+         result-&gt;payload.String = strdup(s);
+                                ^
+In "/home/travis/cg", about to execute:
+    make -f StringLength.mk run
+./StringLength
+All Done
+</pre>
+</body>
+</html>
