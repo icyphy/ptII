@@ -339,7 +339,7 @@
     <exclude name="**/ptolemy/actor/lib/r/test/junit/JUnitTclTest.*" />
 
     <!-- OpenModelica is not typically installed. -->
-    <exclude name="**/ptolemy/domains/openmodelica/lib/test/junit/JUNitTclTest.*" />
+    <exclude name="**/ptolemy/domains/openmodelica/lib/test/junit/JUnitTclTest.*" />
 
     <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/arduino/**"/>
     <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/mbed/**" />
