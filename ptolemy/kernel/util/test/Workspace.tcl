@@ -350,13 +350,13 @@ test Workspace-8.3 {Test handling failure in getting read access} {
     $tw runTest
     list [$tw profile]
 } {{A0 got write access
-A2 failed to get read access
 A0 released write access
+A2 got read access
 A3 got read access
 A3 released read access
+A2 released read access
 A1 got write access
 A1 released write access
-A2 handled failure in getting read access
 }}
 
 ######################################################################
