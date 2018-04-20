@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
