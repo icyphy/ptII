@@ -92,7 +92,7 @@ lastLines=50
 # If Travis is running outside of a cronjob, then exit
 # See https://docs.travis-ci.com/user/cron-jobs/#Detecting-Builds-Triggered-by-Cron
 exitIfNotCron () {
-    if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+    if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
         echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", so this target is *not* being run."
         echo "$0: Exiting"
         exit 0
