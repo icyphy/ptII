@@ -173,6 +173,8 @@
     <include name="**/ptolemy/actor/lib/jjs/modules/k*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/m*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/n*/**/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/actor/lib/jjs/modules/o*/**/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/actor/lib/jjs/modules/p*/**/junit/JUnitTclTest.java" />
   </patternset>
   
   <!-- Exclude Cape Code tests from short, long and longest. -->
@@ -191,19 +193,20 @@
     <exclude name="**/ptolemy/actor/lib/jjs/modules/k*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/m*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/n*/**/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/actor/lib/jjs/modules/o*/**/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/actor/lib/jjs/modules/p*/**/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Second batch of tests for Cape Code. --> 
   <patternset id="test.capecode2.includes">
-    <include name="**/ptolemy/actor/lib/jjs/modules/o*/**/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/actor/lib/jjs/modules/p*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/q*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/r*/**/junit/JUnitTclTest.java" />
+    <!-- socket and serial take a long time. -->
     <include name="**/ptolemy/actor/lib/jjs/modules/s*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/t*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/u*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/v*/**/junit/JUnitTclTest.java" />        
-    <include name="**/ptolemy/actor/lib/jjs/modules/w*/**/junit/JUnitTclTest.java" />
+    <!-- websocket gets run in capecode3 -->
     <include name="**/ptolemy/actor/lib/jjs/modules/x*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/y*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/modules/z*/**/junit/JUnitTclTest.java" />
@@ -211,15 +214,13 @@
 
   <!-- Exclude Cape Code tests from short, long and longest. -->
   <patternset id="test.capecode2.excludes">
-    <exclude name="**/ptolemy/actor/lib/jjs/modules/o*/**/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/actor/lib/jjs/modules/p*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/q*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/r*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/s*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/t*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/u*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/v*/**/junit/JUnitTclTest.*" />        
-    <exclude name="**/ptolemy/actor/lib/jjs/modules/w*/**/junit/JUnitTclTest.*" />
+
     <exclude name="**/ptolemy/actor/lib/jjs/modules/x*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/y*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/z*/**/junit/JUnitTclTest.*" />
@@ -227,6 +228,8 @@
 
   <!-- Second batch of tests for Cape Code. --> 
   <patternset id="test.capecode3.includes">
+    <!-- websocket takes a long time, so we run it here. -->
+    <include name="**/ptolemy/actor/lib/jjs/modules/w*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.java" />
@@ -234,6 +237,7 @@
 
   <!-- Exclude Cape Code tests from short, long and longest. -->
   <patternset id="test.capecode3.excludes">
+    <exclude name="**/ptolemy/actor/lib/jjs/modules/w*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/accessor/accessors/web/**/junit/JUnitTclTest.*" />
@@ -244,33 +248,33 @@
     <include name="**/ptolemy/actor/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/data/**/test/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/domains/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/graph/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/gui/**/test/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/math/**/test/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/media/**/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core1.excludes">
     <exclude name="**/ptolemy/actor/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/data/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/domains/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/graph/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/gui/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/math/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/media/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the core, first batch. -->
   <patternset id="test.core2.includes">
+    <include name="**/ptolemy/domains/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/math/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/media/**/test/junit/JUnitTclTest.java" />
     <include name="**/doc/**/test/junit/JUnitTclTest.java" />
     <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core2.excludes">
+    <exclude name="**/ptolemy/domains/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/math/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/media/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/doc/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/ptolemy/**/test/junit/JUnitTclTest.*" />
   </patternset>
