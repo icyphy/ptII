@@ -438,10 +438,15 @@ public final class Workspace implements Nameable {
             try {
                 wait();
             } catch (InterruptedException ex) {
+                /* Throwing an exception is not correct here.
+                 * CompositeActor may interrupt this thread upon a change request.
+                 * We should just continue waiting.
+                 *
                 throw new InternalErrorException(this, ex,
                         current.getName()
                                 + ": Thread interrupted while waiting to get "
                                 + "read access: " + ex.getMessage());
+                 */
             }
         }
 
