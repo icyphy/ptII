@@ -183,7 +183,8 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/capecode/intro.htm")
                             + _aboutHTML("ptolemy/configs/capecode/docs.htm")
                             + _aboutHTML(
-                                    "ptolemy/configs/capecode/demonstrations.htm"));
+                                    "ptolemy/configs/capecode/demonstrations.htm")
+                            + _aboutHTML("ptolemy/configs/capecode/tour.htm"));
         }
         if (_configurationExists("cyphysim")) {
             htmlBuffer.append(
