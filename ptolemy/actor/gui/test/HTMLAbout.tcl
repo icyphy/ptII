@@ -190,6 +190,12 @@ tag specially.
     <td><a href="about:links#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/tour.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/tour.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/tour.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/tour.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
 <tr rowspan=4><center><b>CyPhySim</b></center></tr>
   <tr>
     <code>ptolemy/configs/cyphysim/intro.htm</code>
@@ -410,6 +416,9 @@ For each of the files below, we list demos that are not included in <a href="fil
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/tour.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/tour.htm</code></a></h2>
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm</code></a></h2>
