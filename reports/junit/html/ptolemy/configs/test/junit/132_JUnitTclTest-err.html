@@ -1,0 +1,114 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.Exception: Evaluating the Tcl file "/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl"resulted in a TclException being thrown.
+The Tcl errorInfo global variable has the value:
+com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/configs/viptos/configuration.xml at line 62 and column 73
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.domains.ptinyos.kernel.NCCompositeActor. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
+Because:
+-- /home/travis/build/icyphy/ptII/ptolemy/configs/viptos/ptolemy/domains/ptinyos/kernel/NCCompositeActor.xml (No such file or directory)
+-- XML file not found relative to classpath.
+-- /home/travis/build/icyphy/ptII/ptolemy/configs/test/ptolemy/domains/ptinyos/kernel/NCCompositeActor.xml
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/ptolemy/domains/ptinyos/kernel/NCCompositeActor.xml (No such file or directory)
+ in file:/home/travis/build/icyphy/ptII/ptolemy/configs/viptos/configuration.xml at line 62 and column 73
+    while executing
+"$parser {parse java.net.URL java.net.URL} $URL $URL"
+    invoked from within
+"set object [$parser {parse java.net.URL java.net.URL} $URL $URL]"
+    ("foreach" body line 68)
+    invoked from within
+"foreach i $configs {
+
+    
+    if {[regexp "jxta/" $i] == 1} {
+	puts "Skipping $i, running vergil -jxta brings up a window"
+	continue
+    }
+
+    puts ..."
+    (file "/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl" line 157)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:253)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 70; columnNumber: 152; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 48; columnNumber: 135; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 33; columnNumber: 131; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 34; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 89; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 89; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 32; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 78; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 81; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 30; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 78; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 81; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 94; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 30; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 123; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 83; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 123; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 97; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 94; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 92; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 86; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 30; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 91; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 116; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 94; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 100; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos1148226552364899081.xml; lineNumber: 20; columnNumber: 107; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos5540156103011991962.xml; lineNumber: 50; columnNumber: 162; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos5540156103011991962.xml; lineNumber: 50; columnNumber: 123; The entity "eacute" was referenced, but not declared.
+error: org.xml.sax.SAXParseException; systemId: file:///tmp/validDemos5540156103011991962.xml; lineNumber: 50; columnNumber: 123; The entity "eacute" was referenced, but not declared.
+</pre>
+</body>
+</html>
