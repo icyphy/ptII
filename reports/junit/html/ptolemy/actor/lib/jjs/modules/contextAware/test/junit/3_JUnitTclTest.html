@@ -195,9 +195,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.29 41576 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.3 41124 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.29 41576 10.20.1.172 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.3 41124 10.20.0.22 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +211,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '369255695';
+        cur['env.TRAVIS_BUILD_ID'] = '369365899';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '291';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '293';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '1dce281ae57651262fda0a1b926324e4f4285d4e';
+        cur['env.TRAVIS_COMMIT'] = '6d3974731e33c27aac53e50b0e065e84fd8dce69';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Check to see that the doclets were compiled and a PtDoc .xml file was created.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Skip the tests if TRAVIS_EVENT_TYPE != cron.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '05e2ef6cf05d...1dce281ae576';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '1dce281ae57651262fda0a1b926324e4f4285d4e...6d3974731e33c27aac53e50b0e065e84fd8dce69';
     
-        cur['env.TRAVIS_EVENT_TYPE'] = 'push';
+        cur['env.TRAVIS_EVENT_TYPE'] = 'cron';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '369255698';
+        cur['env.TRAVIS_JOB_ID'] = '369365902';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '291.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '293.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +417,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5167857654216558681.properties propsfile=/home/travis/build/icyphy/ptII/junit5559314313508877970.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.contextAware.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6106415706938882622.properties propsfile=/home/travis/build/icyphy/ptII/junit2754824597386858459.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +500,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="3_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="3_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="3_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>13.672</td><td>2018-04-20T18:32:49</td><td>travis-job-871b5bba-d25c-49f2-8c4a-f4658a4664d8</td>
+<td><a title="Display all tests" href="3_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="3_JUnitTclTest.html">4</a></td><td><a title="Display only errors" href="3_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>12.691</td><td>2018-04-21T00:28:42</td><td>travis-job-94103f17-312b-4db0-b23a-2131badec0cf</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -521,7 +521,7 @@
 <td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/ContextAware.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 423: Locked<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$514$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$512$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$505$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientResponseHandler$2.run(HttpClientHelper.java:341)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>13.186</td>
+</code></td><td>12.228</td>
 </tr>
 </table>
 <div class="Properties">

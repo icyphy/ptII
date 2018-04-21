@@ -89,7 +89,9 @@
     
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
+    
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -195,9 +197,10 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.25 36082 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.25 36082 10.20.1.178 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.28 34386 22';
+    
+        cur['env.SSH_CONNECTION'] = '10.10.4.28 34386 10.20.0.235 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +214,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '369255695';
+        cur['env.TRAVIS_BUILD_ID'] = '369365899';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '291';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '293';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '1dce281ae57651262fda0a1b926324e4f4285d4e';
+        cur['env.TRAVIS_COMMIT'] = '6d3974731e33c27aac53e50b0e065e84fd8dce69';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Check to see that the doclets were compiled and a PtDoc .xml file was created.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Skip the tests if TRAVIS_EVENT_TYPE != cron.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '05e2ef6cf05d...1dce281ae576';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '1dce281ae57651262fda0a1b926324e4f4285d4e...6d3974731e33c27aac53e50b0e065e84fd8dce69';
     
-        cur['env.TRAVIS_EVENT_TYPE'] = 'push';
+        cur['env.TRAVIS_EVENT_TYPE'] = 'cron';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '369255700';
+        cur['env.TRAVIS_JOB_ID'] = '369365904';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '291.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '293.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +420,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.accessors.web.services.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.accessors.web.services.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher581180171518190576.properties propsfile=/home/travis/build/icyphy/ptII/junit3105549273294738839.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.accessors.web.services.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.accessors.web.services.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8676130757676137310.properties propsfile=/home/travis/build/icyphy/ptII/junit7802638983463934615.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +503,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="0_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="0_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>44.719</td><td>2018-04-20T18:31:45</td><td>travis-job-275a8010-e6f9-4ee7-ba27-013f65bc5cee</td>
+<td><a title="Display all tests" href="0_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="0_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>50.797</td><td>2018-04-21T00:28:48</td><td>travis-job-90c15720-29d4-4966-a136-0277284c63e2</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -509,16 +512,16 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/services/test/auto/ReverseGeoCoderTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/services/test/auto/ReverseGeoCoderTest.xml (RunModel)</td><td>Success</td><td></td><td>44.122</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/services/test/auto/ReverseGeoCoderTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/services/test/auto/ReverseGeoCoderTest.xml (RunModel)</td><td>Success</td><td></td><td>50.195</td>
 </tr>
 </table>
 <div class="Properties">
