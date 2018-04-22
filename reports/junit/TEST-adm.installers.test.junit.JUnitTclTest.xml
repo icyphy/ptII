@@ -1,10 +1,236 @@
-<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
-<head>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Standard Output from JUnitTclTest</title>
-</head>
-<body>
-<pre>/home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="travis-job-8895ba26-fcd8-4981-a96d-3d134050f7ac" name="adm.installers.test.junit.JUnitTclTest" skipped="0" tests="4" time="1167.998" timestamp="2018-04-22T01:02:58">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="294.10" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.7 50256 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="test.installers" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.7 50256 10.20.0.50 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner adm.installers.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-adm.installers.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8110590708769769028.properties propsfile=/home/travis/build/icyphy/ptII/junit6555989140068830196.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="1dce281ae57651262fda0a1b926324e4f4285d4e...6d3974731e33c27aac53e50b0e065e84fd8dce69" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/timeout" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx1024m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="294" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="369630466" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="6d3974731e33c27aac53e50b0e065e84fd8dce69" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Skip the tests if TRAVIS_EVENT_TYPE != cron." />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/adm/installers/test" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.class.path" value="/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.3.0.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="env.TRAVIS_JOB_ID" value="369630476" />
+    <property name="user.country" value="US" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="model" value="" />
+    <property name="java.maxmemory.large" value="8000m" />
+    <property name="env.PT_TRAVIS_TEST_INSTALLERS" value="true" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl (RunTclFile)" time="1167.308" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.007" />
+  <system-out><![CDATA[/home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl
 testDefs.tcl: setting time out to 10042 seconds at Sun Apr 22 01:02:58 UTC 2018
 adm/test/Nightly.tcl: about to clean
 adm/test/nightlyMake.tcl: about to execute [make -C /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0 PTIIHOME=/home/travis/build/icyphy/ptII/adm/installers/test/../../.. PTIIADM=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm JAR=/usr/bin/jar TAR=/usr/local/bin/tar clean]
@@ -55,7 +281,7 @@ if [ ! -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/in
 		echo "Downloading izpack: `date`"; \
 		wget --quiet -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/izpack-dist-5.1.2.jar https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar; \
 	fi
-sed 's#@@PTII@@#/home/travis/build/icyphy/ptII/adm/installers/test/../../..#' izpackInstallDist.xml &gt; izpackInstall.xml
+sed 's#@@PTII@@#/home/travis/build/icyphy/ptII/adm/installers/test/../../..#' izpackInstallDist.xml > izpackInstall.xml
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors; java -jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/izpack-dist-5.1.2.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/izpackInstall.xml)
 Command line arguments: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/izpackInstall.xml 
 [ Starting automated installation ]
@@ -78,7 +304,7 @@ if [ ! -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/in
 		Linux) osfile=linux-x64;; \
 	    esac; \
 	    echo "Downloading /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/launch4j-3.11.tgz for $osfile: `date`"; \
-	    wget --quiet "https://osdn.net/frs/g_redir.php?m=kent&amp;f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-$osfile.tgz" -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/launch4j-3.11.tgz; \
+	    wget --quiet "https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-$osfile.tgz" -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/launch4j-3.11.tgz; \
         fi
 Creating L4J_DIR: /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 if [ ! -d /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j ]; then \
@@ -207,7 +433,7 @@ total 84
 -rw-rw-r-- 1 travis travis 3730 Apr 22 00:58 SystemJar.java
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/findclean)
 find: `./doc/codeDoc': No such file or directory
-rm: cannot remove &lsquo;./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core&rsquo;: Is a directory
+rm: cannot remove ‘./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core’: Is a directory
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; rm -rf `cat /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/src.ex`)
 # Copy 35Mb OpenCV dll into lib.
 cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/opencv_java320.dll /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib
@@ -218,7 +444,7 @@ mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/p
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/node; unzip -q /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/node/node-v7.10.1-win-x64.zip)
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors; ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer .)
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer
-lrwxrwxrwx 1 travis travis 77 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis 77 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
 # Remove the duktape binaries.
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 /home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant clean.duktape
@@ -246,7 +472,7 @@ Total time: 0 seconds
 # Java3D
 mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
 cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/* /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/
-cp: omitting directory &lsquo;/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib&rsquo;
+cp: omitting directory ‘/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib’
 make: [/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel] Error 1 (ignored)
 cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/* /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
 #
@@ -359,14 +585,14 @@ drwxrwxr-x  6 travis travis 4096 Apr 22 00:58 sun
 drwxrwxr-x  7 travis travis 4096 Apr 22 01:02 universalJavaApplicationStub
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors
 total 24
-lrwxrwxrwx 1 travis travis   77 Apr 22 01:03 installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
-lrwxrwxrwx 1 travis travis   74 Apr 22 01:03 izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+lrwxrwxrwx 1 travis travis   77 Apr 22 01:03 installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis   74 Apr 22 01:03 izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
 drwxrwxr-x 3 travis travis 4096 Apr 22 01:03 j3d
 drwxrwxr-x 3 travis travis 4096 Apr 22 01:03 jogl
 drwxrwxr-x 4 travis travis 4096 Apr 22 01:03 misc
 drwxrwxr-x 5 travis travis 4096 Apr 22 01:03 node
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack
-lrwxrwxrwx 1 travis travis   74 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+lrwxrwxrwx 1 travis travis   74 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack:
 total 28
@@ -379,7 +605,7 @@ drwxrwxr-x 2 travis travis 4096 Apr 22 01:03 Uninstaller
 drwxrwxr-x 3 travis travis 4096 Apr 22 01:03 utils
 ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j
-lrwxrwxrwx  1 travis travis   76 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx  1 travis travis   76 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j:
 total 264
@@ -456,22 +682,22 @@ touch /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII
 # Fix up doc/img/makefile
 egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/img/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/img/makefile_tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/img/makefile_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/img/makefile_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/img/makefile
 # Fix up doc/makefile
 egrep -v "coroutine|giotto.cgc|metroII|openmodelica" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/makefile_tmp
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/makefile \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/makefile_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/makefile_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/makefile
 #
 # jars.xml
 # 
 # Remove metroII and openmodelica from jars.xml
-egrep -v "^    &lt;include name=.*(metroII|openmodelica|/src)" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jars.xml \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jars.xml_tmp
+egrep -v "^    <include name=.*(metroII|openmodelica|/src)" \
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jars.xml \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jars.xml_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jars.xml_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jars.xml
 #
@@ -480,7 +706,7 @@ mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.
 # So, we use a trailing space.
 egrep -v "ViptosApplication.jar " \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/actor/gui/jnlp/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/actor/gui/jnlp/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/actor/gui/jnlp/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/actor/gui/jnlp/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/actor/gui/jnlp/makefile
 #
@@ -488,38 +714,38 @@ mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.
 #
 # Remove apps/hlacerti from cosimulation.xml
 egrep -v "apps/hlacerti" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/cosimulation.xml \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/cosimulation.xml_tmp
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/cosimulation.xml \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/cosimulation.xml_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/cosimulation.xml_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/cosimulation.xml
 # Remove apps.xml, corba.xml from the configuration
 egrep -v "apps.xml|corba.xml|mbed.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml_tmp
-sed 's/, &amp;quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&amp;quot;//' \
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml_tmp
+sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml_tmp \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/defaultFullConfiguration.xml
 # Fix up experimentalDirector.xml
 egrep -v "openmodelica" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/experimentalDirectors.xml \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/experimentalDirectors.xml_tmp
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/experimentalDirectors.xml \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/experimentalDirectors.xml_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/experimentalDirectors.xml_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/experimentalDirectors.xml
 # Remove things that should not be shipped from completeDemos.htm
 awk -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/dontship.awk /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/completeDemos.htm \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/completeDemos_tmp.htm
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/completeDemos_tmp.htm
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/completeDemos_tmp.htm \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/completeDemos.htm
 # Remove metroII and openmodelica from models.txt
 egrep -v "metroII|openmodelica" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/models.txt \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/models.txt_tmp
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/models.txt \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/models.txt_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/models.txt_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/configs/doc/models.txt
 # Fix up data/expr/test/makefile
 egrep -v Variable2.tcl \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/data/expr/test/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/data/expr/test/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/data/expr/test/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/data/expr/test/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/data/expr/test/makefile
 #
@@ -527,44 +753,44 @@ mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.
 #
 # Remove coroutine, metroII and openmodelica from domains/makefile
 egrep -v "coroutine|metroII|openmodelica" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/makefile_tmp
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/makefile \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/makefile_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/makefile_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/makefile
 # Fix up ptolemy/domains/csp/demo/DiningPhilosophers/makefile
 egrep -v checkDeadlock \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/csp/demo/DiningPhilosophers/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/csp/demo/DiningPhilosophers/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/csp/demo/DiningPhilosophers/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/csp/demo/DiningPhilosophers/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/csp/demo/DiningPhilosophers/makefile
 # Fix up dde/kernel/test/makefile
 egrep -v DDEDirector.tcl \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile
 # Fix up giotto/makefile
 egrep -v cgc \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/makefile
 # Fix up ptolemy/domains/giotto/demo
 egrep -v Legiotto \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/demo/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/demo/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/demo/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/demo/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/giotto/demo/makefile
 # Fix up tm/makefile
 egrep -v runtime \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/tm/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/tm/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/tm/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/tm/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/tm/makefile
 # Fix up ptolemy/domains/wireless/demo
 egrep -v Network \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/wireless/demo/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/wireless/demo/makefile.tmp
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/wireless/demo/makefile.tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/wireless/demo/makefile.tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/domains/wireless/demo/makefile
 #
@@ -572,8 +798,8 @@ mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.
 #
 # Remove ImportFMUAsJavaFMUAction.java from the makefile
 egrep -v "ImportFMUAsJavaFMUAction.java" \
-		&lt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/vergil/basic/imprt/fmu/makefile \
-		&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/vergil/basic/imprt/fmu/makefile_tmp
+		< /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/vergil/basic/imprt/fmu/makefile \
+		> /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/vergil/basic/imprt/fmu/makefile_tmp
 mv /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/vergil/basic/imprt/fmu/makefile_tmp \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/vergil/basic/imprt/fmu/makefile
 # Remove the html generated files, the filenames are too long
@@ -884,9 +1110,9 @@ configure: WARNING: Could not find the sphinx4 jar files.
     1. mkdir /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4
     2. Download these .jar files and place in ptolemy/vendors/misc/sphinx:
 
-      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-core&amp;v=5prealpha&amp;e=jar'
+      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar'
 
-      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar'
+      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar'
 
     3. Rerun
       (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; ./configure)
@@ -942,7 +1168,7 @@ build-message:
      [echo]   [bldmastr@sisyphus ptII]$ which java
      [echo]   /usr/bin/java
      [echo]   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
-     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -&gt; /usr/java/default/bin/java
+     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
      [echo]   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
      [echo]     
 
@@ -13826,45 +14052,45 @@ make[2]: Entering directory `/home/travis/build/icyphy/ptII/adm/dists/ptII11.0.d
 ./bin/mkl4j capecode ptolemy.vergil.VergilApplication \
 		doc/img/capecode.ico \
 		-capecode \
-		`echo ptolemy/ptsupport.jar doc/docConfig.jar lib/diva.jar lib/ptliblicenses.jar ptolemy/domains/domains.jar  ant/apache-ant-license.jar com/cureos/cureos.jar doc/codeDocCapeCode.jar doc/design/usingVergil/usingVergil.jar edu/umich/eecs/april/april.jar lib/svgSalamander.jar org/json/json.jar org/terraswarm/accessor/accessor.jar org/terraswarm/accessor/accessors/accessors.jar org/terraswarm/accessor/demo/demo.jar org/terraswarm/ros/demo/demo.jar org/ptolemy/ssm/ssm.jar org/ptolemy/machineLearning/machineLearning.jar org/ptolemy/optimization/optimization.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/io/comm/comm.jar ptolemy/actor/lib/io/comm/demo/demo.jar ptolemy/actor/lib/jjs/jjs.jar ptolemy/actor/lib/jjs/demo/demo.jar ptolemy/actor/lib/jjs/modules/demo.jar ptolemy/actor/lib/jjs/modules/modules.jar ptolemy/actor/lib/jjs/node/node.jar ptolemy/actor/lib/mail/mail.jar ptolemy/demo/CapeCodeDemos.jar ptolemy/vergil/basic/imprt/accessor/accessor.jar ptolemy/cg/cgAccessor.jar org/ptolemy/ptango/ptango.jar lib/jetty-all-8.1.5-v20120716.jar lib/javax.servlet-api-3.0.1.jar lib/jsoup-1.8.2.jar lib/smack.jar lib/smackx.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar  /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jna-4.0.0-variadic.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/javax.mail.jar lib/nrjavaserial-3.11.0.devel.jar org/ptolemy/opencv/opencv.jar /usr/share/OpenCV/java/opencv-341.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/org.eclipse.paho.client.mqttv3.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-api-1.7.13.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-simple-1.7.13.jar :/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-web-3.5.1.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/bridj-0.7.0.jar lib/xbjlib-1.1.0.nrjavaserial.jar lib/slf4j-simple-1.7.13.jar lib/slf4j-api-1.7.13.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/colt/colt.jar lib/ptcolt.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jsoup-1.8.2.jar ptolemy/vergil/basic/export/html/jsoup/jsoup.jar ptolemy/actor/gui/jnlp/CapeCodeApplication.jar bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/vergil/vergil.jar ptolemy/actor/parameters/demo/demo.jar doc/codeDoc.jar ptolemy/vergil/basic/export/html/html.jar ptolemy/vergil/basic/export/export.jar ptolemy/vergil/basic/export/web/web.jar  ptolemy/vergil/pdfrenderer/pdfrenderer.jar lib/PDFRenderer.jar com/jhlabs/jhlabs.jar ptolemy/actor/gui/syntax/syntax.jar ptolemy/data/ontologies/ontologies.jar ptolemy/vergil/ontologies/ontologies.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jsoup-1.8.2.jar ptolemy/vergil/basic/export/html/jsoup/jsoup.jar | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" | sed 's/:/ /g'` &gt; capecode_l4j.xml
+		`echo ptolemy/ptsupport.jar doc/docConfig.jar lib/diva.jar lib/ptliblicenses.jar ptolemy/domains/domains.jar  ant/apache-ant-license.jar com/cureos/cureos.jar doc/codeDocCapeCode.jar doc/design/usingVergil/usingVergil.jar edu/umich/eecs/april/april.jar lib/svgSalamander.jar org/json/json.jar org/terraswarm/accessor/accessor.jar org/terraswarm/accessor/accessors/accessors.jar org/terraswarm/accessor/demo/demo.jar org/terraswarm/ros/demo/demo.jar org/ptolemy/ssm/ssm.jar org/ptolemy/machineLearning/machineLearning.jar org/ptolemy/optimization/optimization.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/io/comm/comm.jar ptolemy/actor/lib/io/comm/demo/demo.jar ptolemy/actor/lib/jjs/jjs.jar ptolemy/actor/lib/jjs/demo/demo.jar ptolemy/actor/lib/jjs/modules/demo.jar ptolemy/actor/lib/jjs/modules/modules.jar ptolemy/actor/lib/jjs/node/node.jar ptolemy/actor/lib/mail/mail.jar ptolemy/demo/CapeCodeDemos.jar ptolemy/vergil/basic/imprt/accessor/accessor.jar ptolemy/cg/cgAccessor.jar org/ptolemy/ptango/ptango.jar lib/jetty-all-8.1.5-v20120716.jar lib/javax.servlet-api-3.0.1.jar lib/jsoup-1.8.2.jar lib/smack.jar lib/smackx.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar  /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jna-4.0.0-variadic.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/javax.mail.jar lib/nrjavaserial-3.11.0.devel.jar org/ptolemy/opencv/opencv.jar /usr/share/OpenCV/java/opencv-341.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/org.eclipse.paho.client.mqttv3.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-api-1.7.13.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-simple-1.7.13.jar :/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-web-3.5.1.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/bridj-0.7.0.jar lib/xbjlib-1.1.0.nrjavaserial.jar lib/slf4j-simple-1.7.13.jar lib/slf4j-api-1.7.13.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/colt/colt.jar lib/ptcolt.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jsoup-1.8.2.jar ptolemy/vergil/basic/export/html/jsoup/jsoup.jar ptolemy/actor/gui/jnlp/CapeCodeApplication.jar bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/vergil/vergil.jar ptolemy/actor/parameters/demo/demo.jar doc/codeDoc.jar ptolemy/vergil/basic/export/html/html.jar ptolemy/vergil/basic/export/export.jar ptolemy/vergil/basic/export/web/web.jar  ptolemy/vergil/pdfrenderer/pdfrenderer.jar lib/PDFRenderer.jar com/jhlabs/jhlabs.jar ptolemy/actor/gui/syntax/syntax.jar ptolemy/data/ontologies/ontologies.jar ptolemy/vergil/ontologies/ontologies.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jsoup-1.8.2.jar ptolemy/vergil/basic/export/html/jsoup/jsoup.jar | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" | sed 's/:/ /g'` > capecode_l4j.xml
 if [ ! -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer/PtolemyII_DigitalV1_02.pdf ]; then \
 		echo "Creating /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer/PtolemyII_DigitalV1_02.pdf: `date`"; \
 		wget --quiet -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer/PtolemyII_DigitalV1_02.pdf http://ptolemy.eecs.berkeley.edu/books/Systems/PtolemyII_DigitalV1_02.pdf; \
         fi
 ./bin/mkl4j ptbook ptolemy.actor.gui.BrowserLauncher \
 		 doc/img/pdf.ico \
-		 doc/books/systems/ ptolemy/ptsupport.jar &gt; ptbook_l4j.xml
+		 doc/books/systems/ ptolemy/ptsupport.jar > ptbook_l4j.xml
 chmod a+x doc/books/systems/
 ./bin/mkl4j hyvisual ptolemy.vergil.VergilApplication \
 		doc/img/hyvisual.ico \
 		-hyvisual \
-		`echo ptolemy/actor/gui/jnlp/HyVisualApplication.jar doc/design/hyvisual.jar doc/codeDocHyVisual.jar ptolemy/domains/continuous/continuous.jar ptolemy/domains/de/de.jar ptolemy/domains/gr/gr.jar ptolemy/domains/gr/demo/demo.jar ptolemy/domains/modal/modal.jar ptolemy/domains/sdf/lib/lib.jar ptolemy/domains/sdf/kernel/kernel.jar ptolemy/domains/sr/sr.jar lib/saxon8.jar lib/saxon8-dom.jar ptolemy/domains/continuous/demo/demo.jar ptolemy/domains/continuous/doc/doc.jar ptolemy/domains/modal/doc/doc.jar ptolemy/domains/modal/demo/demo.jar ptolemy/domains/sdf/demo/demo.jar ptolemy/domains/sdf/doc/doc.jar doc/docConfig.jar lib/diva.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/ptsupport.jar ptolemy/vergil/vergil.jar   | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" | sed 's/:/ /g'` &gt; hyvisual_l4j.xml
+		`echo ptolemy/actor/gui/jnlp/HyVisualApplication.jar doc/design/hyvisual.jar doc/codeDocHyVisual.jar ptolemy/domains/continuous/continuous.jar ptolemy/domains/de/de.jar ptolemy/domains/gr/gr.jar ptolemy/domains/gr/demo/demo.jar ptolemy/domains/modal/modal.jar ptolemy/domains/sdf/lib/lib.jar ptolemy/domains/sdf/kernel/kernel.jar ptolemy/domains/sr/sr.jar lib/saxon8.jar lib/saxon8-dom.jar ptolemy/domains/continuous/demo/demo.jar ptolemy/domains/continuous/doc/doc.jar ptolemy/domains/modal/doc/doc.jar ptolemy/domains/modal/demo/demo.jar ptolemy/domains/sdf/demo/demo.jar ptolemy/domains/sdf/doc/doc.jar doc/docConfig.jar lib/diva.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/ptsupport.jar ptolemy/vergil/vergil.jar   | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" | sed 's/:/ /g'` > hyvisual_l4j.xml
 ./bin/mkl4j ptiny ptolemy.vergil.VergilApplication \
 		doc/img/ptiny.ico \
 		-ptiny \
-		`echo ptolemy/actor/gui/jnlp/PtinyApplication.jar ptolemy/ptsupport.jar doc/docConfig.jar lib/diva.jar lib/ptliblicenses.jar ptolemy/domains/domains.jar  bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/vergil/vergil.jar ptolemy/actor/parameters/demo/demo.jar doc/codeDoc.jar doc/design/usingVergil/usingVergil.jar  ptolemy/actor/lib/colt/demo/demo.jar ptolemy/actor/lib/security/demo/demo.jar ptolemy/actor/lib/comm/demo/demo.jar ptolemy/actor/lib/hoc/demo/demo.jar ptolemy/actor/lib/io/demo/demo.jar ptolemy/actor/lib/javasound/demo/demo.jar ptolemy/data/type/demo/demo.jar ptolemy/data/unit/demo/demo.jar ptolemy/moml/demo/demo.jar ptolemy/vergil/kernel/attributes/demo/demo.jar ptolemy/actor/ptalon/antlr/antlr.jar ptolemy/actor/ptalon/demo/demo.jar ptolemy/actor/ptalon/ptalon.jar lib/jython.jar ptolemy/actor/lib/python/python.jar ptolemy/actor/lib/python/demo/demo.jar ptolemy/domains/continuous/demo/demo.jar ptolemy/domains/continuous/doc/doc.jar ptolemy/domains/modal/doc/doc.jar ptolemy/domains/modal/demo/demo.jar ptolemy/domains/sdf/demo/demo.jar ptolemy/domains/sdf/doc/doc.jar ptolemy/domains/ddf/demo/demo.jar ptolemy/domains/ddf/doc/doc.jar ptolemy/domains/de/demo/demo.jar ptolemy/domains/de/doc/doc.jar ptolemy/domains/hdf/demo/demo.jar ptolemy/domains/hdf/doc/doc.jar ptolemy/domains/pn/demo/demo.jar ptolemy/domains/pn/doc/doc.jar ptolemy/domains/rendezvous/demo/demo.jar ptolemy/domains/rendezvous/doc/doc.jar ptolemy/domains/sr/demo/demo.jar ptolemy/domains/sr/doc/doc.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/colt/colt.jar lib/ptcolt.jar | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" | sed 's/:/ /g'` &gt; ptiny_l4j.xml
+		`echo ptolemy/actor/gui/jnlp/PtinyApplication.jar ptolemy/ptsupport.jar doc/docConfig.jar lib/diva.jar lib/ptliblicenses.jar ptolemy/domains/domains.jar  bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/vergil/vergil.jar ptolemy/actor/parameters/demo/demo.jar doc/codeDoc.jar doc/design/usingVergil/usingVergil.jar  ptolemy/actor/lib/colt/demo/demo.jar ptolemy/actor/lib/security/demo/demo.jar ptolemy/actor/lib/comm/demo/demo.jar ptolemy/actor/lib/hoc/demo/demo.jar ptolemy/actor/lib/io/demo/demo.jar ptolemy/actor/lib/javasound/demo/demo.jar ptolemy/data/type/demo/demo.jar ptolemy/data/unit/demo/demo.jar ptolemy/moml/demo/demo.jar ptolemy/vergil/kernel/attributes/demo/demo.jar ptolemy/actor/ptalon/antlr/antlr.jar ptolemy/actor/ptalon/demo/demo.jar ptolemy/actor/ptalon/ptalon.jar lib/jython.jar ptolemy/actor/lib/python/python.jar ptolemy/actor/lib/python/demo/demo.jar ptolemy/domains/continuous/demo/demo.jar ptolemy/domains/continuous/doc/doc.jar ptolemy/domains/modal/doc/doc.jar ptolemy/domains/modal/demo/demo.jar ptolemy/domains/sdf/demo/demo.jar ptolemy/domains/sdf/doc/doc.jar ptolemy/domains/ddf/demo/demo.jar ptolemy/domains/ddf/doc/doc.jar ptolemy/domains/de/demo/demo.jar ptolemy/domains/de/doc/doc.jar ptolemy/domains/hdf/demo/demo.jar ptolemy/domains/hdf/doc/doc.jar ptolemy/domains/pn/demo/demo.jar ptolemy/domains/pn/doc/doc.jar ptolemy/domains/rendezvous/demo/demo.jar ptolemy/domains/rendezvous/doc/doc.jar ptolemy/domains/sr/demo/demo.jar ptolemy/domains/sr/doc/doc.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/colt/colt.jar lib/ptcolt.jar | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" | sed 's/:/ /g'` > ptiny_l4j.xml
 # Remove /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ for files like /var/lib/hudson/jobs/ptII/workspace/adm/dists/ptII11.0devel/vendors/oracle/javamail/javax.mail.jar and /home/hudson/jobs/ptII/workspace/adm/dists/ptII11.0.devel/lib/jsoup-1.7.3.jar
 ./bin/mkl4j vergil ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
 		"" \
-		`echo ptolemy/actor/gui/jnlp/FullApplication.jar lbnl/lbnl.jar lbnl/demo/demo.jar ant/apache-ant-license.jar com/cureos/cureos.jar doc/codeDocCapeCode.jar doc/design/usingVergil/usingVergil.jar edu/umich/eecs/april/april.jar lib/svgSalamander.jar org/json/json.jar org/terraswarm/accessor/accessor.jar org/terraswarm/accessor/accessors/accessors.jar org/terraswarm/accessor/demo/demo.jar org/terraswarm/ros/demo/demo.jar org/ptolemy/ssm/ssm.jar org/ptolemy/machineLearning/machineLearning.jar org/ptolemy/optimization/optimization.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/io/comm/comm.jar ptolemy/actor/lib/io/comm/demo/demo.jar ptolemy/actor/lib/jjs/jjs.jar ptolemy/actor/lib/jjs/demo/demo.jar ptolemy/actor/lib/jjs/modules/demo.jar ptolemy/actor/lib/jjs/modules/modules.jar ptolemy/actor/lib/jjs/node/node.jar ptolemy/actor/lib/mail/mail.jar ptolemy/demo/CapeCodeDemos.jar ptolemy/vergil/basic/imprt/accessor/accessor.jar ptolemy/cg/cgAccessor.jar org/ptolemy/ptango/ptango.jar lib/jetty-all-8.1.5-v20120716.jar lib/javax.servlet-api-3.0.1.jar lib/jsoup-1.8.2.jar lib/smack.jar lib/smackx.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar  /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jna-4.0.0-variadic.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/javax.mail.jar lib/nrjavaserial-3.11.0.devel.jar org/ptolemy/opencv/opencv.jar /usr/share/OpenCV/java/opencv-341.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/org.eclipse.paho.client.mqttv3.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-api-1.7.13.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-simple-1.7.13.jar :/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-web-3.5.1.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/bridj-0.7.0.jar lib/xbjlib-1.1.0.nrjavaserial.jar lib/slf4j-simple-1.7.13.jar lib/slf4j-api-1.7.13.jar ptolemy/ptsupport.jar doc/docConfig.jar lib/diva.jar lib/ptliblicenses.jar ptolemy/domains/domains.jar  bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/vergil/vergil.jar ptolemy/actor/parameters/demo/demo.jar doc/codeDoc.jar doc/design/usingVergil/usingVergil.jar  ptolemy/actor/lib/colt/demo/demo.jar ptolemy/actor/lib/security/demo/demo.jar ptolemy/actor/lib/comm/demo/demo.jar ptolemy/actor/lib/hoc/demo/demo.jar ptolemy/actor/lib/io/demo/demo.jar ptolemy/actor/lib/javasound/demo/demo.jar ptolemy/data/type/demo/demo.jar ptolemy/data/unit/demo/demo.jar ptolemy/moml/demo/demo.jar ptolemy/vergil/kernel/attributes/demo/demo.jar ptolemy/actor/ptalon/antlr/antlr.jar ptolemy/actor/ptalon/demo/demo.jar ptolemy/actor/ptalon/ptalon.jar lib/jython.jar ptolemy/actor/lib/python/python.jar ptolemy/actor/lib/python/demo/demo.jar ptolemy/domains/continuous/demo/demo.jar ptolemy/domains/continuous/doc/doc.jar ptolemy/domains/modal/doc/doc.jar ptolemy/domains/modal/demo/demo.jar ptolemy/domains/sdf/demo/demo.jar ptolemy/domains/sdf/doc/doc.jar ptolemy/domains/ddf/demo/demo.jar ptolemy/domains/ddf/doc/doc.jar ptolemy/domains/de/demo/demo.jar ptolemy/domains/de/doc/doc.jar ptolemy/domains/hdf/demo/demo.jar ptolemy/domains/hdf/doc/doc.jar ptolemy/domains/pn/demo/demo.jar ptolemy/domains/pn/doc/doc.jar ptolemy/domains/rendezvous/demo/demo.jar ptolemy/domains/rendezvous/doc/doc.jar ptolemy/domains/sr/demo/demo.jar ptolemy/domains/sr/doc/doc.jar lib/sootclasses.jar ptolemy/copernicus/copernicus.jar contrib/contrib.jar doc/books/systems/vergil/vergil.jar doc/design/design.jar doc/img/img.jar doc/papers/papers.jar ptolemy/vergil/basic/export/html/html.jar ptolemy/vergil/basic/export/export.jar ptolemy/vergil/basic/export/web/web.jar  lib/jetty-all-8.1.5-v20120716.jar lib/javax.servlet-api-3.0.1.jar lib/jsoup-1.8.2.jar lib/smack.jar lib/smackx.jar lib/jcerti.jar org/hlacerti/hlacerti.jar org/ptolemy/ptango/ptango.jar org/ptolemy/ptango/demo/demo.jar org/ptolemy/qss/qss.jar org/ptolemy/qss/demo/demo.jar lib/jna.jar lib/jna-4.0.0-variadic.jar org/ptolemy/fmi/fmi.jar ptolemy/actor/lib/fmi/fmi.jar ptolemy/actor/lib/fmi/demo/demo.jar ptolemy/vergil/basic/imprt/fmu/fmu.jar  ptolemy/actor/gt/gt.jar ptolemy/actor/gt/demo/demo.jar ptolemy/actor/lib/aspect/aspect.jar ptolemy/actor/lib/aspect/demo/demo.jar ptolemy/actor/lib/colt/colt.jar lib/ptcolt.jar ptolemy/actor/lib/fmi/demo/demo.jar ptolemy/actor/lib/gem5/gem5.jar ptolemy/actor/lib/gem5/demo/demo.jar ptolemy/actor/lib/jai/jai.jar ptolemy/actor/lib/jai/demo/demo.jar ptolemy/actor/lib/jmf/jmf.jar ptolemy/actor/lib/jmf/demo/demo.jar ptolemy/actor/lib/joystick/joystick.jar vendors/misc/joystick/Joystick.jar ptolemy/actor/lib/mail/mail.jar ptolemy/actor/lib/mail/demo/demo.jar ptolemy/actor/ptalon/gt/gt.jar ptolemy/actor/ptalon/gt/demo/demo.jar lib/ptCal.jar lib/saxon8.jar lib/saxon8-dom.jar lib/java_cup.jar ptolemy/backtrack/backtrack.jar ptolemy/backtrack/demo/demo.jar ptolemy/caltrop/caltrop.jar ptolemy/caltrop/demo/demo.jar ptolemy/distributed/distributed.jar ptolemy/distributed/domains/sdf/sdf.jar ptolemy/distributed/demo/demo.jar ptolemy/demo/demo.jar ptolemy/domains/experimentalDomains.jar ptolemy/domains/algebraic/demo/demo.jar ptolemy/domains/ca/demo/demo.jar ptolemy/domains/ci/demo/demo.jar ptolemy/domains/ci/doc/doc.jar ptolemy/domains/csp/demo/demo.jar ptolemy/domains/csp/doc/doc.jar ptolemy/domains/curriculum/curriculum.jar ptolemy/domains/dde/demo/demo.jar ptolemy/domains/dde/doc/doc.jar ptolemy/domains/dt/demo/demo.jar ptolemy/domains/dt/doc/doc.jar ptolemy/domains/giotto/demo/demo.jar ptolemy/domains/giotto/doc/doc.jar ptolemy/domains/gr/demo/demo.jar ptolemy/domains/gr/doc/doc.jar ptolemy/domains/petrinet/demo/demo.jar ptolemy/domains/psdf/psdf.jar ptolemy/domains/psdf/demo/demo.jar ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar ptolemy/domains/psdf/doc/doc.jar lib/mapss.jar ptolemy/domains/ptides/ptides.jar ptolemy/domains/ptides/demo/demo.jar ptolemy/domains/scr/scr.jar ptolemy/domains/scr/demo/demo.jar ptolemy/domains/sdf/lib/vq/vq.jar ptolemy/domains/sdf/lib/vq/data/data.jar ptolemy/domains/sdf/optimize/optimize.jar ptolemy/domains/sdf/optimize/demo/demo.jar ptolemy/domains/taskpt/taskpt.jar ptolemy/domains/taskpt/demo/demo.jar ptolemy/domains/taskpt/doc/doc.jar ptolemy/domains/tcs/tcs.jar ptolemy/domains/tcs/demo/demo.jar ptolemy/domains/tdl/tdl.jar ptolemy/domains/tdl/demo/demo.jar ptolemy/domains/tester/tester.jar ptolemy/domains/tm/demo/demo.jar ptolemy/domains/tm/doc/doc.jar ptolemy/domains/tm/tm.jar ptolemy/verification/verification.jar ptolemy/verification/demo/demo.jar ptolemy/domains/ptera/ptera.jar ptolemy/domains/ptera/demo/demo.jar ptolemy/domains/ptera/doc/doc.jar ptolemy/vergil/ptera/ptera.jar ptolemy/vergil/pdfrenderer/pdfrenderer.jar lib/PDFRenderer.jar ptolemy/vergil/basic/export/exportFull.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jsoup-1.8.2.jar ptolemy/vergil/basic/export/html/jsoup/jsoup.jar ptolemy/vergil/modal/fmv/fmv.jar ptolemy/vergil/gt/gt.jar ptolemy/vergil/scr/scr.jar ptolemy/vergil/tdl/tdl.jar ptolemy/cg/cg.jar ptolemy/data/ontologies/ontologies.jar ptolemy/data/ontologies/demo/demo.jar ptolemy/vergil/ontologies/ontologies.jar ptolemy/domains/sequence/sequence.jar ptolemy/domains/sequence/demo/demo.jar ptolemy/domains/pthales/pthales.jar ptolemy/domains/pthales/demo/demo.jar org/ptolemy/faultModels/faultModels.jar org/ptolemy/machineImprovisation/machineImprovisation.jar org/ptolemy/machineImprovisation/demo/demo.jar org/ptolemy/osc/osc.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/oscP5.jar lib/protobuf-java-2.4.1.jar ptolemy/domains/metroII/metroII.jar ptolemy/domains/metroII/demo/demo.jar ptolemy/domains/atc/atc.jar ptolemy/domains/atc/demo/demo.jar ptolemy/domains/fmima/fmima.jar ptolemy/domains/openmodelica/openmodelica.jar ptolemy/domains/scr/scr.jar ptolemy/domains/scr/demo/demo.jar ptolemy/vergil/scr/scr.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/g4ltl.jar ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar org/ptolemy/classloading/classloading.jar org/ptolemy/commons/commons.jar org/ptolemy/qss/qss.jar org/ptolemy/qss/demo/demo.jar ptolemy/actor/gui/syntax/syntax.jar ptolemy/domains/qss/qss.jar ptolemy/domains/qss/demo/demo.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar :/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/JRI.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/commons-logging-1.1.1.jar ptolemy/actor/lib/r/r.jar ptolemy/actor/lib/r/demo/demo.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar com/jgoodies/jgoodies.jar lib/bsh-2.0b4.jar org/mlc/mlc.jar ptolemy/actor/gui/run/run.jar ptolemy/domains/wireless/wireless.jar ptolemy/domains/wireless/demo/demo.jar ptolemy/domains/wireless/doc/doc.jar com/jhlabs/jhlabs.jar | sed 's/:/ /g' | sed 's/C:/c:/g' | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" ` &gt; vergil_l4j.xml
+		`echo ptolemy/actor/gui/jnlp/FullApplication.jar lbnl/lbnl.jar lbnl/demo/demo.jar ant/apache-ant-license.jar com/cureos/cureos.jar doc/codeDocCapeCode.jar doc/design/usingVergil/usingVergil.jar edu/umich/eecs/april/april.jar lib/svgSalamander.jar org/json/json.jar org/terraswarm/accessor/accessor.jar org/terraswarm/accessor/accessors/accessors.jar org/terraswarm/accessor/demo/demo.jar org/terraswarm/ros/demo/demo.jar org/ptolemy/ssm/ssm.jar org/ptolemy/machineLearning/machineLearning.jar org/ptolemy/optimization/optimization.jar ptolemy/actor/lib/conversions/json/json.jar ptolemy/actor/lib/io/comm/comm.jar ptolemy/actor/lib/io/comm/demo/demo.jar ptolemy/actor/lib/jjs/jjs.jar ptolemy/actor/lib/jjs/demo/demo.jar ptolemy/actor/lib/jjs/modules/demo.jar ptolemy/actor/lib/jjs/modules/modules.jar ptolemy/actor/lib/jjs/node/node.jar ptolemy/actor/lib/mail/mail.jar ptolemy/demo/CapeCodeDemos.jar ptolemy/vergil/basic/imprt/accessor/accessor.jar ptolemy/cg/cgAccessor.jar org/ptolemy/ptango/ptango.jar lib/jetty-all-8.1.5-v20120716.jar lib/javax.servlet-api-3.0.1.jar lib/jsoup-1.8.2.jar lib/smack.jar lib/smackx.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar  /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jna-4.0.0-variadic.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/javax.mail.jar lib/nrjavaserial-3.11.0.devel.jar org/ptolemy/opencv/opencv.jar /usr/share/OpenCV/java/opencv-341.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/org.eclipse.paho.client.mqttv3.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-api-1.7.13.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/slf4j-simple-1.7.13.jar :/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/vertx-web-3.5.1.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/bridj-0.7.0.jar lib/xbjlib-1.1.0.nrjavaserial.jar lib/slf4j-simple-1.7.13.jar lib/slf4j-api-1.7.13.jar ptolemy/ptsupport.jar doc/docConfig.jar lib/diva.jar lib/ptliblicenses.jar ptolemy/domains/domains.jar  bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar lib/kieler.jar ptolemy/vergil/basic/layout/layout.jar ptolemy/vergil/vergil.jar ptolemy/actor/parameters/demo/demo.jar doc/codeDoc.jar doc/design/usingVergil/usingVergil.jar  ptolemy/actor/lib/colt/demo/demo.jar ptolemy/actor/lib/security/demo/demo.jar ptolemy/actor/lib/comm/demo/demo.jar ptolemy/actor/lib/hoc/demo/demo.jar ptolemy/actor/lib/io/demo/demo.jar ptolemy/actor/lib/javasound/demo/demo.jar ptolemy/data/type/demo/demo.jar ptolemy/data/unit/demo/demo.jar ptolemy/moml/demo/demo.jar ptolemy/vergil/kernel/attributes/demo/demo.jar ptolemy/actor/ptalon/antlr/antlr.jar ptolemy/actor/ptalon/demo/demo.jar ptolemy/actor/ptalon/ptalon.jar lib/jython.jar ptolemy/actor/lib/python/python.jar ptolemy/actor/lib/python/demo/demo.jar ptolemy/domains/continuous/demo/demo.jar ptolemy/domains/continuous/doc/doc.jar ptolemy/domains/modal/doc/doc.jar ptolemy/domains/modal/demo/demo.jar ptolemy/domains/sdf/demo/demo.jar ptolemy/domains/sdf/doc/doc.jar ptolemy/domains/ddf/demo/demo.jar ptolemy/domains/ddf/doc/doc.jar ptolemy/domains/de/demo/demo.jar ptolemy/domains/de/doc/doc.jar ptolemy/domains/hdf/demo/demo.jar ptolemy/domains/hdf/doc/doc.jar ptolemy/domains/pn/demo/demo.jar ptolemy/domains/pn/doc/doc.jar ptolemy/domains/rendezvous/demo/demo.jar ptolemy/domains/rendezvous/doc/doc.jar ptolemy/domains/sr/demo/demo.jar ptolemy/domains/sr/doc/doc.jar lib/sootclasses.jar ptolemy/copernicus/copernicus.jar contrib/contrib.jar doc/books/systems/vergil/vergil.jar doc/design/design.jar doc/img/img.jar doc/papers/papers.jar ptolemy/vergil/basic/export/html/html.jar ptolemy/vergil/basic/export/export.jar ptolemy/vergil/basic/export/web/web.jar  lib/jetty-all-8.1.5-v20120716.jar lib/javax.servlet-api-3.0.1.jar lib/jsoup-1.8.2.jar lib/smack.jar lib/smackx.jar lib/jcerti.jar org/hlacerti/hlacerti.jar org/ptolemy/ptango/ptango.jar org/ptolemy/ptango/demo/demo.jar org/ptolemy/qss/qss.jar org/ptolemy/qss/demo/demo.jar lib/jna.jar lib/jna-4.0.0-variadic.jar org/ptolemy/fmi/fmi.jar ptolemy/actor/lib/fmi/fmi.jar ptolemy/actor/lib/fmi/demo/demo.jar ptolemy/vergil/basic/imprt/fmu/fmu.jar  ptolemy/actor/gt/gt.jar ptolemy/actor/gt/demo/demo.jar ptolemy/actor/lib/aspect/aspect.jar ptolemy/actor/lib/aspect/demo/demo.jar ptolemy/actor/lib/colt/colt.jar lib/ptcolt.jar ptolemy/actor/lib/fmi/demo/demo.jar ptolemy/actor/lib/gem5/gem5.jar ptolemy/actor/lib/gem5/demo/demo.jar ptolemy/actor/lib/jai/jai.jar ptolemy/actor/lib/jai/demo/demo.jar ptolemy/actor/lib/jmf/jmf.jar ptolemy/actor/lib/jmf/demo/demo.jar ptolemy/actor/lib/joystick/joystick.jar vendors/misc/joystick/Joystick.jar ptolemy/actor/lib/mail/mail.jar ptolemy/actor/lib/mail/demo/demo.jar ptolemy/actor/ptalon/gt/gt.jar ptolemy/actor/ptalon/gt/demo/demo.jar lib/ptCal.jar lib/saxon8.jar lib/saxon8-dom.jar lib/java_cup.jar ptolemy/backtrack/backtrack.jar ptolemy/backtrack/demo/demo.jar ptolemy/caltrop/caltrop.jar ptolemy/caltrop/demo/demo.jar ptolemy/distributed/distributed.jar ptolemy/distributed/domains/sdf/sdf.jar ptolemy/distributed/demo/demo.jar ptolemy/demo/demo.jar ptolemy/domains/experimentalDomains.jar ptolemy/domains/algebraic/demo/demo.jar ptolemy/domains/ca/demo/demo.jar ptolemy/domains/ci/demo/demo.jar ptolemy/domains/ci/doc/doc.jar ptolemy/domains/csp/demo/demo.jar ptolemy/domains/csp/doc/doc.jar ptolemy/domains/curriculum/curriculum.jar ptolemy/domains/dde/demo/demo.jar ptolemy/domains/dde/doc/doc.jar ptolemy/domains/dt/demo/demo.jar ptolemy/domains/dt/doc/doc.jar ptolemy/domains/giotto/demo/demo.jar ptolemy/domains/giotto/doc/doc.jar ptolemy/domains/gr/demo/demo.jar ptolemy/domains/gr/doc/doc.jar ptolemy/domains/petrinet/demo/demo.jar ptolemy/domains/psdf/psdf.jar ptolemy/domains/psdf/demo/demo.jar ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar ptolemy/domains/psdf/doc/doc.jar lib/mapss.jar ptolemy/domains/ptides/ptides.jar ptolemy/domains/ptides/demo/demo.jar ptolemy/domains/scr/scr.jar ptolemy/domains/scr/demo/demo.jar ptolemy/domains/sdf/lib/vq/vq.jar ptolemy/domains/sdf/lib/vq/data/data.jar ptolemy/domains/sdf/optimize/optimize.jar ptolemy/domains/sdf/optimize/demo/demo.jar ptolemy/domains/taskpt/taskpt.jar ptolemy/domains/taskpt/demo/demo.jar ptolemy/domains/taskpt/doc/doc.jar ptolemy/domains/tcs/tcs.jar ptolemy/domains/tcs/demo/demo.jar ptolemy/domains/tdl/tdl.jar ptolemy/domains/tdl/demo/demo.jar ptolemy/domains/tester/tester.jar ptolemy/domains/tm/demo/demo.jar ptolemy/domains/tm/doc/doc.jar ptolemy/domains/tm/tm.jar ptolemy/verification/verification.jar ptolemy/verification/demo/demo.jar ptolemy/domains/ptera/ptera.jar ptolemy/domains/ptera/demo/demo.jar ptolemy/domains/ptera/doc/doc.jar ptolemy/vergil/ptera/ptera.jar ptolemy/vergil/pdfrenderer/pdfrenderer.jar lib/PDFRenderer.jar ptolemy/vergil/basic/export/exportFull.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/jsoup-1.8.2.jar ptolemy/vergil/basic/export/html/jsoup/jsoup.jar ptolemy/vergil/modal/fmv/fmv.jar ptolemy/vergil/gt/gt.jar ptolemy/vergil/scr/scr.jar ptolemy/vergil/tdl/tdl.jar ptolemy/cg/cg.jar ptolemy/data/ontologies/ontologies.jar ptolemy/data/ontologies/demo/demo.jar ptolemy/vergil/ontologies/ontologies.jar ptolemy/domains/sequence/sequence.jar ptolemy/domains/sequence/demo/demo.jar ptolemy/domains/pthales/pthales.jar ptolemy/domains/pthales/demo/demo.jar org/ptolemy/faultModels/faultModels.jar org/ptolemy/machineImprovisation/machineImprovisation.jar org/ptolemy/machineImprovisation/demo/demo.jar org/ptolemy/osc/osc.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/oscP5.jar lib/protobuf-java-2.4.1.jar ptolemy/domains/metroII/metroII.jar ptolemy/domains/metroII/demo/demo.jar ptolemy/domains/atc/atc.jar ptolemy/domains/atc/demo/demo.jar ptolemy/domains/fmima/fmima.jar ptolemy/domains/openmodelica/openmodelica.jar ptolemy/domains/scr/scr.jar ptolemy/domains/scr/demo/demo.jar ptolemy/vergil/scr/scr.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/g4ltl.jar ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar org/ptolemy/classloading/classloading.jar org/ptolemy/commons/commons.jar org/ptolemy/qss/qss.jar org/ptolemy/qss/demo/demo.jar ptolemy/actor/gui/syntax/syntax.jar ptolemy/domains/qss/qss.jar ptolemy/domains/qss/demo/demo.jar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar :/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/JRI.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/commons-logging-1.1.1.jar ptolemy/actor/lib/r/r.jar ptolemy/actor/lib/r/demo/demo.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar com/jgoodies/jgoodies.jar lib/bsh-2.0b4.jar org/mlc/mlc.jar ptolemy/actor/gui/run/run.jar ptolemy/domains/wireless/wireless.jar ptolemy/domains/wireless/demo/demo.jar ptolemy/domains/wireless/doc/doc.jar com/jhlabs/jhlabs.jar | sed 's/:/ /g' | sed 's/C:/c:/g' | sed "s@/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/@@g" ` > vergil_l4j.xml
 ./bin/mkl4j histogram ptolemy.plot.plotml.HistogramMLApplication \
 		doc/img/histogram.ico \
-		"" ptolemy/plot/plotapplication.jar &gt; histogram_l4j.xml
+		"" ptolemy/plot/plotapplication.jar > histogram_l4j.xml
 ./bin/mkl4j ptplot ptolemy.plot.plotml.EditablePlotMLApplication \
 		doc/img/ptplot.ico \
-		"" ptolemy/plot/plotapplication.jar &gt; ptplot_l4j.xml
+		"" ptolemy/plot/plotapplication.jar > ptplot_l4j.xml
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j
 -rwxr-xr-x 1 travis travis 160 Jun 27  2017 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j
 ls -l `dirname /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j`
-lrwxrwxrwx 1 travis travis 76 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx 1 travis travis 76 Apr 22 01:03 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors
 total 28
-lrwxrwxrwx 1 travis travis   77 Apr 22 01:03 installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
-lrwxrwxrwx 1 travis travis   74 Apr 22 01:03 izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+lrwxrwxrwx 1 travis travis   77 Apr 22 01:03 installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis   74 Apr 22 01:03 izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
 drwxrwxr-x 3 travis travis 4096 Apr 22 01:03 j3d
 drwxrwxr-x 3 travis travis 4096 Apr 22 01:03 jogl
-lrwxrwxrwx 1 travis travis   76 Apr 22 01:03 launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx 1 travis travis   76 Apr 22 01:03 launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 drwxrwxr-x 4 travis travis 4096 Apr 22 01:03 misc
 drwxrwxr-x 5 travis travis 4096 Apr 22 01:03 node
 "/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j" `./bin/ptcygpath capecode_l4j.xml`
@@ -14230,7 +14456,7 @@ if [ -f lib/libbcvtb.jnilib ]; then \
 	else \
 		echo "$PTII/libbcvtb.jnilib does not exist creating dummy jar"; \
 		echo "$PTII/lib/libbcvtb.jnilib not found, see PTII/mk/jnlp.mk" \
-			&gt; lib/README_bcvtb.txt; \
+			> lib/README_bcvtb.txt; \
 		(cd lib; \
                 "/usr/bin/jar" -cvf bcvtbMacOSX.jar \
 			README_bcvtb.txt); \
@@ -15208,9 +15434,9 @@ configure: WARNING: Could not find the sphinx4 jar files.
     1. mkdir /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/vendors/misc/sphinx4
     2. Download these .jar files and place in ptolemy/vendors/misc/sphinx:
 
-      wget -O /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-core&amp;v=5prealpha&amp;e=jar'
+      wget -O /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar'
 
-      wget -O /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar'
+      wget -O /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar'
 
     3. Rerun
       (cd /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel; ./configure)
@@ -24342,7 +24568,7 @@ ls: cannot access ptolemy/plot/ptplotlocales: No such file or directory
 ls: cannot access ptolemy/util/test/FileUtilities-1.1.tmp: No such file or directory
 ls: cannot access ptolemy/vergil/toolbox/test/alljsimpletests.tcl: No such file or directory
 ls: cannot access signed: No such file or directory
-rm: cannot remove &lsquo;./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core&rsquo;: Is a directory
+rm: cannot remove ‘./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core’: Is a directory
 /home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant clean.duktape
 Buildfile: /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/org/terraswarm/accessor/accessors/web/build.xml
 
@@ -24365,25 +24591,25 @@ Total time: 0 seconds
 # Fix up doc/img/makefile
 #egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
 	#	src/ptII11.0.devel/doc/img/makefile \
-	#	&gt; src/ptII11.0.devel/doc/img/makefile.tmp
+	#	> src/ptII11.0.devel/doc/img/makefile.tmp
 #mv src/ptII11.0.devel/doc/img/makefile.tmp \
 	#	src/ptII11.0.devel/doc/img/makefile
 # Fix up dde/kernel/test/makefile
 #egrep -v DDEDirector.tcl \
 	#	src/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile \
-	#	&gt; src/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile.tmp
+	#	> src/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile.tmp
 #mv src/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile.tmp \
 	#	src/ptII11.0.devel/ptolemy/domains/dde/kernel/test/makefile
 # # Fix up giotto/makefile
 # egrep -v cgc \
 	# 	src/ptII11.0.devel/ptolemy/domains/giotto/makefile \
-	# 	&gt; src/ptII11.0.devel/ptolemy/domains/giotto/makefile.tmp
+	# 	> src/ptII11.0.devel/ptolemy/domains/giotto/makefile.tmp
 # mv src/ptII11.0.devel/ptolemy/domains/giotto/makefile.tmp \
 	# 	src/ptII11.0.devel/ptolemy/domains/giotto/makefile
 # # Fix up tm/makefile
 # egrep -v runtime \
 	# 	src/ptII11.0.devel/ptolemy/domains/tm/makefile \
-	# 	&gt; src/ptII11.0.devel/ptolemy/domains/tm/makefile.tmp
+	# 	> src/ptII11.0.devel/ptolemy/domains/tm/makefile.tmp
 # mv src/ptII11.0.devel/ptolemy/domains/tm/makefile.tmp \
 	# 	src/ptII11.0.devel/ptolemy/domains/tm/makefile
 # Copy libjvm.dll.a because it was removed by src.ex
@@ -24399,9 +24625,9 @@ Total time: 0 seconds
 ./updateversions: file is a binary file.
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/bcvtb/intro.htm
 16c16
-&lt; &lt;h1&gt;Ptolemy II Version 11.0.devel&lt;/h1&gt;
+< <h1>Ptolemy II Version 11.0.devel</h1>
 ---
-&gt; &lt;h1&gt;Ptolemy II Version 11.0.devel_20180422&lt;/h1&gt;
+> <h1>Ptolemy II Version 11.0.devel_20180422</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/bcvtb/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/bcvtb/overview.htm
 ./updateversions: file is a binary file.
@@ -24410,9 +24636,9 @@ Total time: 0 seconds
 ./updateversions: file is a binary file.
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/about.htm
 7c7
-&lt; &lt;h1&gt;About the Ptolemy 11.0.devel CapeCode Edition&lt;/h1&gt;
+< <h1>About the Ptolemy 11.0.devel CapeCode Edition</h1>
 ---
-&gt; &lt;h1&gt;About the Ptolemy 11.0.devel_20180422 CapeCode Edition&lt;/h1&gt;
+> <h1>About the Ptolemy 11.0.devel_20180422 CapeCode Edition</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/authors.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/capecodeEffigies.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/capecodeRefinements.xml
@@ -24420,13 +24646,13 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/copyright.htm
 3c3
-&lt; &lt;title&gt;Ptolemy II 11.0.devel, CapeCode Edition Copyright&lt;/title&gt;
+< <title>Ptolemy II 11.0.devel, CapeCode Edition Copyright</title>
 ---
-&gt; &lt;title&gt;Ptolemy II 11.0.devel_20180422, CapeCode Edition Copyright&lt;/title&gt;
+> <title>Ptolemy II 11.0.devel_20180422, CapeCode Edition Copyright</title>
 7c7
-&lt; &lt;h1&gt;Ptolemy II 11.0.devel, CapeCode Edition Copyright&lt;/h1&gt;
+< <h1>Ptolemy II 11.0.devel, CapeCode Edition Copyright</h1>
 ---
-&gt; &lt;h1&gt;Ptolemy II 11.0.devel_20180422, CapeCode Edition Copyright&lt;/h1&gt;
+> <h1>Ptolemy II 11.0.devel_20180422, CapeCode Edition Copyright</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/de.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/demonstrations.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/capecode/docs.htm
@@ -24445,20 +24671,20 @@ Total time: 0 seconds
 ./updateversions: file is a binary file.
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/about.htm
 7c7
-&lt; &lt;h1&gt;About the Ptolemy 11.0.devel CyPhySim Edition&lt;/h1&gt;
+< <h1>About the Ptolemy 11.0.devel CyPhySim Edition</h1>
 ---
-&gt; &lt;h1&gt;About the Ptolemy 11.0.devel_20180422 CyPhySim Edition&lt;/h1&gt;
+> <h1>About the Ptolemy 11.0.devel_20180422 CyPhySim Edition</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/authors.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/copyright.htm
 3c3
-&lt; &lt;title&gt;Ptolemy II 11.0.devel, CyPhySim Edition Copyright&lt;/title&gt;
+< <title>Ptolemy II 11.0.devel, CyPhySim Edition Copyright</title>
 ---
-&gt; &lt;title&gt;Ptolemy II 11.0.devel_20180422, CyPhySim Edition Copyright&lt;/title&gt;
+> <title>Ptolemy II 11.0.devel_20180422, CyPhySim Edition Copyright</title>
 7c7
-&lt; &lt;h1&gt;Ptolemy II 11.0.devel, CyPhySim Edition Copyright&lt;/h1&gt;
+< <h1>Ptolemy II 11.0.devel, CyPhySim Edition Copyright</h1>
 ---
-&gt; &lt;h1&gt;Ptolemy II 11.0.devel_20180422, CyPhySim Edition Copyright&lt;/h1&gt;
+> <h1>Ptolemy II 11.0.devel_20180422, CyPhySim Edition Copyright</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/cyphysimEffigies.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/cyphysimRefinements.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/cyphysim/de.xml
@@ -24486,13 +24712,13 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/completeDemosPtinyKepler.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/copyright.htm
 12c12
-&lt;       Ptolemy II Version 11.0.devel
+<       Ptolemy II Version 11.0.devel
 ---
-&gt;       Ptolemy II Version 11.0.devel_20180422
+>       Ptolemy II Version 11.0.devel_20180422
 1374c1374
-&lt;      ~/src/ptII11.0.devel/adm/bin/collectLicenses &gt;&gt; accessors-license.htm 
+<      ~/src/ptII11.0.devel/adm/bin/collectLicenses >> accessors-license.htm 
 ---
-&gt;      ~/src/ptII11.0.devel_20180422/adm/bin/collectLicenses &gt;&gt; accessors-license.htm 
+>      ~/src/ptII11.0.devel_20180422/adm/bin/collectLicenses >> accessors-license.htm 
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/demos.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/demosBcvtb.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/demosPtiny.htm
@@ -24511,21 +24737,21 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew10.0.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew11.0.htm
 24c24
-&lt;     &lt;h1&gt;Tour of What's New in Version 11.0.devel&lt;/h1&gt;
+<     <h1>Tour of What's New in Version 11.0.devel</h1>
 ---
-&gt;     &lt;h1&gt;Tour of What's New in Version 11.0.devel_20180422&lt;/h1&gt;
+>     <h1>Tour of What's New in Version 11.0.devel_20180422</h1>
 65c65
-&lt;     &lt;!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "&lt;a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml"&gt;\1&lt;/a&gt;@' | sort 
+<     <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
 ---
-&gt;     &lt;!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel_20180422 | grep demo | awk '{if ($4 !~ /\./) {print "&lt;a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel_20180422/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml"&gt;\1&lt;/a&gt;@' | sort 
+>     <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel_20180422 | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel_20180422/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
 95c95
-&lt;             grep "Only in .*ptII11.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+<             grep "Only in .*ptII11.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
 ---
-&gt;             grep "Only in .*ptII11.0.devel_20180422" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+>             grep "Only in .*ptII11.0.devel_20180422" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
 102c102
-&lt;         grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel" |  sort | sed 's@Only in .*ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "&lt;li&gt;&lt;a href=\"ptdoc:" $1 "." $2 "\"&gt;" $2 "&lt;/a&gt;"}' | sed 's/\. /./' | sed 's/&gt; /&gt;/'
+<         grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel" |  sort | sed 's@Only in .*ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
 ---
-&gt;         grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel_20180422" |  sort | sed 's@Only in .*ptII11.0.devel_20180422/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "&lt;li&gt;&lt;a href=\"ptdoc:" $1 "." $2 "\"&gt;" $2 "&lt;/a&gt;"}' | sed 's/\. /./' | sed 's/&gt; /&gt;/'
+>         grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel_20180422" |  sort | sed 's@Only in .*ptII11.0.devel_20180422/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew3.0.2.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew4.0.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew5.0.htm
@@ -24533,63 +24759,63 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew6.0.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew7.0.htm
 383c383
-&lt; &lt;!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "&lt;li&gt;&lt;a href="\"ptdoc:"" $1 "." $2 "\"&gt;" $2 "&lt;/a&gt;"}' | sed 's/\. /./' | sed 's/&gt; /&gt;/' --&gt;
+< <!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
 ---
-&gt; &lt;!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel_20180422/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "&lt;li&gt;&lt;a href="\"ptdoc:"" $1 "." $2 "\"&gt;" $2 "&lt;/a&gt;"}' | sed 's/\. /./' | sed 's/&gt; /&gt;/' --&gt;
+> <!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel_20180422/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/doc/whatsNew8.0.htm
 474c474
-&lt; &lt;!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "&lt;a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml"&gt;\1&lt;/a&gt;@' | sort --&gt;
+< <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort -->
 ---
-&gt; &lt;!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel_20180422 | grep demo | awk '{if ($4 !~ /\./) {print "&lt;a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel_20180422/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml"&gt;\1&lt;/a&gt;@' | sort --&gt;
+> <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel_20180422 | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel_20180422/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort -->
 534c534
-&lt; diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ptII11.0.devel ptII8.0.beta &gt;&amp; /tmp/p.diffs 
+< diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ptII11.0.devel ptII8.0.beta >& /tmp/p.diffs 
 ---
-&gt; diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ptII11.0.devel_20180422 ptII8.0.beta &gt;&amp; /tmp/p.diffs 
+> diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ptII11.0.devel_20180422 ptII8.0.beta >& /tmp/p.diffs 
 536c536
-&lt; grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "&lt;li&gt;&lt;a href="\"ptdoc:"" $1 "." $2 "\"&gt;" $2 "&lt;/a&gt;"}' | sed 's/\. /./' | sed 's/&gt; /&gt;/' --&gt;
+< grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
 ---
-&gt; grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel_20180422/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "&lt;li&gt;&lt;a href="\"ptdoc:"" $1 "." $2 "\"&gt;" $2 "&lt;/a&gt;"}' | sed 's/\. /./' | sed 's/&gt; /&gt;/' --&gt;
+> grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII11.0.devel_20180422/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/dsp/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/dsp/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, DSP Edition
+< Ptolemy II Version 11.0.devel, DSP Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, DSP Edition
+> Ptolemy II Version 11.0.devel_20180422, DSP Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/dsp/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/dsp/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/full/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/full/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel
+< Ptolemy II Version 11.0.devel
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422
+> Ptolemy II Version 11.0.devel_20180422
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/full/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/full/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/fullViewer/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/fullViewer/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, Viewer Edition
+< Ptolemy II Version 11.0.devel, Viewer Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, Viewer Edition
+> Ptolemy II Version 11.0.devel_20180422, Viewer Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/fullViewer/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/fullViewer/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/about.htm
 7c7
-&lt; &lt;h1&gt;About the HyVisual 11.0.devel Hybrid System Visual Modeler&lt;/h1&gt;
+< <h1>About the HyVisual 11.0.devel Hybrid System Visual Modeler</h1>
 ---
-&gt; &lt;h1&gt;About the HyVisual 11.0.devel_20180422 Hybrid System Visual Modeler&lt;/h1&gt;
+> <h1>About the HyVisual 11.0.devel_20180422 Hybrid System Visual Modeler</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/array.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/authors.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/copyright.htm
 3c3
-&lt; &lt;title&gt;HyVisual 11.0.devel Copyright&lt;/title&gt;
+< <title>HyVisual 11.0.devel Copyright</title>
 ---
-&gt; &lt;title&gt;HyVisual 11.0.devel_20180422 Copyright&lt;/title&gt;
+> <title>HyVisual 11.0.devel_20180422 Copyright</title>
 7c7
-&lt; &lt;h1&gt;HyVisual 11.0.devel Copyright&lt;/h1&gt;
+< <h1>HyVisual 11.0.devel Copyright</h1>
 ---
-&gt; &lt;h1&gt;HyVisual 11.0.devel_20180422 Copyright&lt;/h1&gt;
+> <h1>HyVisual 11.0.devel_20180422 Copyright</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/discrete.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/docs.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/flowcontrol.xml
@@ -24599,13 +24825,13 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/hyvisualRefinements.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/intro.htm
 14c14
-&lt; HyVisual 11.0.devel
+< HyVisual 11.0.devel
 ---
-&gt; HyVisual 11.0.devel_20180422
+> HyVisual 11.0.devel_20180422
 159c159
-&lt; In the 11.0.devel release, we ship with a shared library compiled against
+< In the 11.0.devel release, we ship with a shared library compiled against
 ---
-&gt; In the 11.0.devel_20180422 release, we ship with a shared library compiled against
+> In the 11.0.devel_20180422 release, we ship with a shared library compiled against
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/io.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/hyvisual/math.xml
@@ -24617,27 +24843,27 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/jxta/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/jxta/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, JXTA Edition
+< Ptolemy II Version 11.0.devel, JXTA Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, JXTA Edition
+> Ptolemy II Version 11.0.devel_20180422, JXTA Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/jxta/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/jxta/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/about.htm
 7c7
-&lt; &lt;h1&gt;About the Ptolemy 11.0.devel PN Edition&lt;/h1&gt;
+< <h1>About the Ptolemy 11.0.devel PN Edition</h1>
 ---
-&gt; &lt;h1&gt;About the Ptolemy 11.0.devel_20180422 PN Edition&lt;/h1&gt;
+> <h1>About the Ptolemy 11.0.devel_20180422 PN Edition</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/authors.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/copyright.htm
 3c3
-&lt; &lt;title&gt;Ptolemy II 11.0.devel, PN Edition Copyright&lt;/title&gt;
+< <title>Ptolemy II 11.0.devel, PN Edition Copyright</title>
 ---
-&gt; &lt;title&gt;Ptolemy II 11.0.devel_20180422, PN Edition Copyright&lt;/title&gt;
+> <title>Ptolemy II 11.0.devel_20180422, PN Edition Copyright</title>
 7c7
-&lt; &lt;h1&gt;Ptolemy II 11.0.devel, PN Edition Copyright&lt;/h1&gt;
+< <h1>Ptolemy II 11.0.devel, PN Edition Copyright</h1>
 ---
-&gt; &lt;h1&gt;Ptolemy II 11.0.devel_20180422, PN Edition Copyright&lt;/h1&gt;
+> <h1>Ptolemy II 11.0.devel_20180422, PN Edition Copyright</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/demonstrations.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/docs.htm
 ./updateversions: file is a binary file.
@@ -24645,9 +24871,9 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/hoc.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/intro.htm
 14c14
-&lt; Ptolemy 11.0.devel, PN Edition
+< Ptolemy 11.0.devel, PN Edition
 ---
-&gt; Ptolemy 11.0.devel_20180422, PN Edition
+> Ptolemy 11.0.devel_20180422, PN Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/io.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/pn/pnEffigies.xml
@@ -24658,9 +24884,9 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptdb/graphTableauFactoryPtdb.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptdb/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, PtolemyDB Edition
+< Ptolemy II Version 11.0.devel, PtolemyDB Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, PtolemyDB Edition
+> Ptolemy II Version 11.0.devel_20180422, PtolemyDB Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptdb/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptdb/searchFrameLibrary.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptdb/welcomeWindow.xml
@@ -24670,9 +24896,9 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptiny/graphTableauFactoryPtiny.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptiny/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, Ptiny Edition
+< Ptolemy II Version 11.0.devel, Ptiny Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, Ptiny Edition
+> Ptolemy II Version 11.0.devel_20180422, Ptiny Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptiny/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptiny/modalLibraryPtiny.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptiny/modalTableauFactoryPtiny.xml
@@ -24680,52 +24906,52 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyKepler/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyKepler/intro.htm
 11c11
-&lt;         Ptolemy II Version 11.0.devel, Ptiny Edition for Kepler
+<         Ptolemy II Version 11.0.devel, Ptiny Edition for Kepler
 ---
-&gt;         Ptolemy II Version 11.0.devel_20180422, Ptiny Edition for Kepler
+>         Ptolemy II Version 11.0.devel_20180422, Ptiny Edition for Kepler
 ./updateversions: file is a binary file.
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyKepler/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyKepler/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyViewer/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyViewer/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, Ptiny Viewer Edition
+< Ptolemy II Version 11.0.devel, Ptiny Viewer Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, Ptiny Viewer Edition
+> Ptolemy II Version 11.0.devel_20180422, Ptiny Viewer Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyViewer/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptinyViewer/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptserver/authors.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptserver/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptserver/intro.htm
 17c17
-&lt; Ptolemy II Version 11.0.devel, Ptserver Edition
+< Ptolemy II Version 11.0.devel, Ptserver Edition
 ---
-&gt; Ptolemy II Version 11.0.devel_20180422, Ptserver Edition
+> Ptolemy II Version 11.0.devel_20180422, Ptserver Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptserver/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/ptserver/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/about.htm
 7c7
-&lt; &lt;h1&gt;About the Ptolemy II 11.0.devel Space Managemen System&lt;/h1&gt;
+< <h1>About the Ptolemy II 11.0.devel Space Managemen System</h1>
 ---
-&gt; &lt;h1&gt;About the Ptolemy II 11.0.devel_20180422 Space Managemen System&lt;/h1&gt;
+> <h1>About the Ptolemy II 11.0.devel_20180422 Space Managemen System</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/authors.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/copyright.htm
 3c3
-&lt; &lt;title&gt;Ptolemy Space 11.0.devel Copyright&lt;/title&gt;
+< <title>Ptolemy Space 11.0.devel Copyright</title>
 ---
-&gt; &lt;title&gt;Ptolemy Space 11.0.devel_20180422 Copyright&lt;/title&gt;
+> <title>Ptolemy Space 11.0.devel_20180422 Copyright</title>
 7c7
-&lt; &lt;h1&gt;Ptolemy Space 11.0.devel Copyright&lt;/h1&gt;
+< <h1>Ptolemy Space 11.0.devel Copyright</h1>
 ---
-&gt; &lt;h1&gt;Ptolemy Space 11.0.devel_20180422 Copyright&lt;/h1&gt;
+> <h1>Ptolemy Space 11.0.devel_20180422 Copyright</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/demonstrations.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/help.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/intro.htm
 14c14
-&lt; Ptolemy 11.0.devel, Space Edition
+< Ptolemy 11.0.devel, Space Edition
 ---
-&gt; Ptolemy 11.0.devel_20180422, Space Edition
+> Ptolemy 11.0.devel_20180422, Space Edition
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/makefile
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/spaceEffigies.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/space/welcomeWindow.xml
@@ -24760,42 +24986,42 @@ Total time: 0 seconds
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/viptos/whatsNew.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/about.htm
 7c7
-&lt; &lt;h1&gt;About the VisualSense 11.0.devel Wireless Sensor Networks Modeler&lt;/h1&gt;
+< <h1>About the VisualSense 11.0.devel Wireless Sensor Networks Modeler</h1>
 ---
-&gt; &lt;h1&gt;About the VisualSense 11.0.devel_20180422 Wireless Sensor Networks Modeler&lt;/h1&gt;
+> <h1>About the VisualSense 11.0.devel_20180422 Wireless Sensor Networks Modeler</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/authors.htm
 9c9
-&lt; &lt;h1&gt;Principal Authors of VisualSense Version 11.0.devel&lt;/h1&gt;
+< <h1>Principal Authors of VisualSense Version 11.0.devel</h1>
 ---
-&gt; &lt;h1&gt;Principal Authors of VisualSense Version 11.0.devel_20180422&lt;/h1&gt;
+> <h1>Principal Authors of VisualSense Version 11.0.devel_20180422</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/completeDemos.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/configuration.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/copyright.htm
 3c3
-&lt; &lt;title&gt;VisualSense 11.0.devel Copyright&lt;/title&gt;
+< <title>VisualSense 11.0.devel Copyright</title>
 ---
-&gt; &lt;title&gt;VisualSense 11.0.devel_20180422 Copyright&lt;/title&gt;
+> <title>VisualSense 11.0.devel_20180422 Copyright</title>
 7c7
-&lt; &lt;h1&gt;VisualSense 11.0.devel Copyright&lt;/h1&gt;
+< <h1>VisualSense 11.0.devel Copyright</h1>
 ---
-&gt; &lt;h1&gt;VisualSense 11.0.devel_20180422 Copyright&lt;/h1&gt;
+> <h1>VisualSense 11.0.devel_20180422 Copyright</h1>
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/directors.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/docs.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/help.htm
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/intro.htm
 14c14
-&lt; VisualSense 11.0.devel - Modeling of Wireless Sensor Networks
+< VisualSense 11.0.devel - Modeling of Wireless Sensor Networks
 ---
-&gt; VisualSense 11.0.devel_20180422 - Modeling of Wireless Sensor Networks
+> VisualSense 11.0.devel_20180422 - Modeling of Wireless Sensor Networks
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/makefile
 ./updateversions: file is a binary file.
 ./updateversions: file is a binary file.
 ./updateversions: src/ptII11.0.devel/ptolemy/configs/visualsense/welcomeWindow.xml
 ./updateversions: src/ptII11.0.devel/ptolemy/kernel/attributes/VersionAttribute.java
 330c330
-&lt;             CURRENT_VERSION = new VersionAttribute("11.0.devel");
+<             CURRENT_VERSION = new VersionAttribute("11.0.devel");
 ---
-&gt;             CURRENT_VERSION = new VersionAttribute("11.0.devel_20180422");
+>             CURRENT_VERSION = new VersionAttribute("11.0.devel_20180422");
 (cd src; \
 		echo "#  Starting tar of /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar"; \
 		rm -f ptII11.0.devel/build.xml; \
@@ -24824,7 +25050,7 @@ drwxrwxr-x 4 travis travis 4096 Apr 22 01:03 misc
 rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip
 chmod g+w /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
 chgrp ptolemy /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
-chgrp: invalid group: &lsquo;ptolemy&rsquo;
+chgrp: invalid group: ‘ptolemy’
 make: [/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip] Error 1 (ignored)
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
 -rw-rw-r-- 1 travis travis 267455367 Apr 22 01:06 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
@@ -24874,7 +25100,7 @@ mkdir src_jar/ptII11.0.devel/org/terraswarm/accessor/accessors/web/node_modules
 (cd src_jar/ptII11.0.devel/org/terraswarm/accessor/accessors/web/node_modules; ln -s ../hosts @accessors-hosts)
 About to run /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/findclean
 (cd src_jar/ptII11.0.devel; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/findclean)
-rm: cannot remove &lsquo;./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core&rsquo;: Is a directory
+rm: cannot remove ‘./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core’: Is a directory
 (cd src_jar/ptII11.0.devel; rm -rf `cat ../../src.ex`)
 echo "About to remove unneeded sources from `pwd`"; \
 	(cd src_jar/ptII11.0.devel; rm -rf META-INF bin/ptcg.bat bin/comm.policy bin/convertToLazy bin/convertToLazy.bat bin/copernicus.bat bin/decompile.bat bin/emachine.bat bin/giottoc.bat bin/histogram.bat bin/jode.bat bin/mescal.bat bin/moml.bat bin/obfuscate.bat bin/ptcg bin/ptexecute.bat bin/ptjacl.bat bin/ptjaclapp.bat bin/ptjg bin/ptjg.bat bin/ptolemy.bat bin/ptinvoke bin/ptplot.bat bin/ptstartjini.bat bin/pxgraph.bat bin/soot.bat bin/startjini.gui.bat bin/tinic.bat bin/tinicomm.bat bin/tiniconverter.bat bin/vergil.bat config/jarTest.jar diva/build.xml diva/canvas/test/alljsimpletests.tcl diva/canvas/tutorial/doc-files diva/graph/test/alljsimpletests.tcl diva/util/test/alljsimpletests.tcl doc/img/banner.psd doc/img/ptIIbanner2.psd doc/img/PtolemyIICD.ec3 doc/img/PtolemyIISplash.psd doc/design/hyvisual.jar doc/design/visualsense.jar jar_dist lib/cachedir lib/ptII.properties lib/ptvr.jar mk/ptII.mk ptolemy/actor/gui/style/test/alljsimpletests.tcl ptolemy/actor/gui/test/alljsimpletests.tcl ptolemy/actor/lib/security/demo/Signature/ptKeystore ptolemy/actor/lib/security/test/foo.keystore ptolemy/actor/lib/test/Const.txt ptolemy/actor/lib/test/ReadFile1Output.txt ptolemy/component ptolemy/domains/coroutine ptolemy/domains/fmi ptolemy/vergil/basic/imprt/fmu/ImportFMUAsJavaFMUAction.java ptolemy/domains/giotto/cgc ptolemy/domains/gr/demo/Demo1 ptolemy/domains/gr/lib/vr ptolemy/domains/hs ptolemy/domains/metroII ptolemy/domains/openmodelica ptolemy/matlab/ptmatlab.exp ptolemy/matlab/ptmatlab.lib ptolemy/matlab/ptmatlab.obj ptolemy/media/test/tmp2_7.au ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties ptolemy/moml/jxta/JXTAClassLoader.class ptolemy/moml/jxta/JXTALibrary.class ptolemy/plot/ptplotlocales ptolemy/util/test/FileUtilities-1.1.tmp ptolemy/vergil/toolbox/test/alljsimpletests.tcl signed)
@@ -24938,7 +25164,7 @@ rm -f src_jar/capecode0.2.devel/org/terraswarm/accessor/accessors/web/package.js
 #
 # Remove jar files not included in CapeCode
 egrep -v "lib/chic.jar|lib/java_cup.jar|lib/mapss.jar|lib/ptCal.jar|lib/sootclasses.jar|ptolemy/actor/ptalon/antlr/antlr.jar|ptolemy/distributed/jini/jar|ptolemy/domains/ptinyos/lib/" src_jar/capecode0.2.devel/.classpath.default \
-		&gt; src_jar/capecode0.2.devel/.classpath.default.tmp 
+		> src_jar/capecode0.2.devel/.classpath.default.tmp 
 mv src_jar/capecode0.2.devel/.classpath.default.tmp \
 		src_jar/capecode0.2.devel/.classpath.default
 # Check out the jsdoc repo.
@@ -24971,56 +25197,56 @@ Total time: 0 seconds
 #
 # bin/makefile: Remove unused scripts
 egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/capecode0.2.devel/bin/makefile \
-		&gt; src_jar/capecode0.2.devel/bin/makefile.tmp
+		> src_jar/capecode0.2.devel/bin/makefile.tmp
 mv src_jar/capecode0.2.devel/bin/makefile.tmp \
 		src_jar/capecode0.2.devel/bin/makefile
 #
 # com/makefile
 egrep -v "jgoodies" \
 		src_jar/capecode0.2.devel/com/makefile \
-		&gt; src_jar/capecode0.2.devel/com/makefile.tmp
+		> src_jar/capecode0.2.devel/com/makefile.tmp
 mv src_jar/capecode0.2.devel/com/makefile.tmp \
 		src_jar/capecode0.2.devel/com/makefile
 #
 # Fix up doc/design/makefile
 egrep -v "hyvisual.pdf|ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
 		src_jar/capecode0.2.devel/doc/design/makefile \
-		&gt; src_jar/capecode0.2.devel/doc/design/makefile.tmp
+		> src_jar/capecode0.2.devel/doc/design/makefile.tmp
 mv src_jar/capecode0.2.devel/doc/design/makefile.tmp \
 		src_jar/capecode0.2.devel/doc/design/makefile
 #
 # Fix up doc/makefile
 egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|papers|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless|	codeDoc.jar|	codeDocBcvtb.jar|	codeDocHyVisual.jar|	codeDocViptos.jar|	codeDocVisualSense.jar" \
 		src_jar/capecode0.2.devel/doc/makefile \
-		&gt; src_jar/capecode0.2.devel/doc/makefile.tmp
+		> src_jar/capecode0.2.devel/doc/makefile.tmp
 mv src_jar/capecode0.2.devel/doc/makefile.tmp \
 		src_jar/capecode0.2.devel/doc/makefile
 #
 # Fix up doc/tutorial/makefile
 egrep -v "domains" \
 		src_jar/capecode0.2.devel/doc/tutorial/makefile \
-		&gt; src_jar/capecode0.2.devel/doc/tutorial/makefile.tmp
+		> src_jar/capecode0.2.devel/doc/tutorial/makefile.tmp
 mv src_jar/capecode0.2.devel/doc/tutorial/makefile.tmp \
 		src_jar/capecode0.2.devel/doc/tutorial/makefile
 #
 # Fix up makefile
 egrep -v ".eclipse.epf|doc/codeDoc.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|ptolemy/domains/experimentalDomains.jar|ptolemy/domains/de/demo/demo.jar|ptolemy/domains/sdf/demo/demo.jar|ptserver|thales|vergil/gt/gt.jar|vergil.*.jnlp.in" \
 		src_jar/capecode0.2.devel/makefile \
-		&gt; src_jar/capecode0.2.devel/makefile.tmp
+		> src_jar/capecode0.2.devel/makefile.tmp
 mv src_jar/capecode0.2.devel/makefile.tmp \
 		src_jar/capecode0.2.devel/makefile
 #
 # Fix up org/makefile
 egrep -v "hlacerti|mlc" \
 		src_jar/capecode0.2.devel/org/makefile \
-		&gt; src_jar/capecode0.2.devel/org/makefile.tmp
+		> src_jar/capecode0.2.devel/org/makefile.tmp
 mv src_jar/capecode0.2.devel/org/makefile.tmp \
 		src_jar/capecode0.2.devel/org/makefile
 #
 # Fix up org/ptolemy/makefile
 egrep -v "fmi|qss|PTANGO_DIR" \
 		src_jar/capecode0.2.devel/org/ptolemy/makefile \
-		&gt; src_jar/capecode0.2.devel/org/ptolemy/makefile.tmp
+		> src_jar/capecode0.2.devel/org/ptolemy/makefile.tmp
 mv src_jar/capecode0.2.devel/org/ptolemy/makefile.tmp \
 		src_jar/capecode0.2.devel/org/ptolemy/makefile
 #
@@ -25029,205 +25255,205 @@ mv src_jar/capecode0.2.devel/org/ptolemy/makefile.tmp \
 # So, we use a trailing space.
 egrep -v "ViptosApplication.jar " \
 		src_jar/capecode0.2.devel/ptolemy/actor/gui/jnlp/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/actor/gui/jnlp/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/actor/gui/jnlp/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/actor/gui/jnlp/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/actor/gui/jnlp/makefile
 #
 # Fix up ptolemy/actor/gui/test/makefile
 egrep -v "HTMLAbout.tcl|PtolemyApplication.tcl" \
 		src_jar/capecode0.2.devel/ptolemy/actor/gui/test/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/actor/gui/test/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/actor/gui/test/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/actor/gui/test/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/actor/gui/test/makefile
 #
 # Fix up ptolemy/actor/lib/makefile
 egrep -v "fmi|jopio|mbed|vhdl|video" \
 		src_jar/capecode0.2.devel/ptolemy/actor/lib/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/actor/lib/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/actor/lib/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/actor/lib/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/actor/lib/makefile
 #
 # Fix up ptolemy/actor/lib/test/makefile
 egrep -v "OrderedMerge.tcl|RampContinuous.tcl" \
 		src_jar/capecode0.2.devel/ptolemy/actor/lib/test/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/actor/lib/test/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/actor/lib/test/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/actor/lib/test/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/actor/lib/test/makefile
 #
 # Fix up ptolemy/actor/makefile
 egrep -v "corba|designs|gt" \
 		src_jar/capecode0.2.devel/ptolemy/actor/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/actor/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/actor/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/actor/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/actor/makefile
 #
 # Fix up ptolemy/cg/adapter/generic
 egrep -v "html" \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/makefile 
 #
 # Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile
 egrep -v "\.java|conversions|fmi|gui|hoc|logic|string" \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile
 #
 # Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile
 egrep -v "giotto" \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile
 #
 # Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
 #egrep -v "lib" \
 	#	src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile \
-	#	&gt; src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp
+	#	> src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp
 #mv src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp \
 	#	src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
 #
 # Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile
 egrep -v "vergil" \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile
 #
 # Fix up ptolemy/cg/kernel/generic
 egrep -v "html|syntactic" \
 		src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/makefile 
 #
 # Fix up ptolemy/cg/adapter/generic/program/procedural/makefile
 egrep -v "	c |c/c.jar|fmima|fmimahybrid|java" \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/adapter/generic/program/procedural/makefile
 #
 # Fix up ptolemy/cg/kernel/generic/program/procedural/makefile
 egrep -v " c |c.jar|fmima|fmimahybrid|java" \
 		src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/program/procedural/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/program/procedural/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/program/procedural/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/program/procedural/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/kernel/generic/program/procedural/makefile
 #
 # Fix up ptolemy/cg/lib/demo/makefile
 egrep -v "Modular|CompiledComposite|DECG" \
 		src_jar/capecode0.2.devel/ptolemy/cg/lib/demo/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/lib/demo/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/lib/demo/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/lib/demo/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/lib/demo/makefile 
 #
 # Fix up ptolemy/cg/lib/makefile
 egrep -v "Modular|syntactic" \
 		src_jar/capecode0.2.devel/ptolemy/cg/lib/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/lib/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/lib/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/lib/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/lib/makefile
 #
 # Fix up ptolemy/cg/lib/test
 egrep -v "Modular" \
 		src_jar/capecode0.2.devel/ptolemy/cg/lib/test/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/cg/lib/test/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/cg/lib/test/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/cg/lib/test/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/cg/lib/test/makefile 
 #
 # Fix up ptolemy/configs/makefile
 egrep -v "bcvtb|cyphysim|defaultFullConfiguration.xml|dsp|fmv|full|gt|hyvisual|iaEffigy|iaTablea|jxta|pn|ptdb|ptiny|Ptera|ptserver|space|test|viptos|visualsense" \
 		src_jar/capecode0.2.devel/ptolemy/configs/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/configs/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/configs/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/configs/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/configs/makefile
 #
 # Fix up ptolemy/demo/makefile
 egrep -v "AirManagement|ElectricPowerSystem|EnterpriseOntology|ExecDemos|FuelSystem|ProbabilisticModels|RobotMPC|PLC" \
 		src_jar/capecode0.2.devel/ptolemy/demo/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/demo/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/demo/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/demo/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/demo/makefile
 #
 # Fix up ptolemy/data/test/makefile
 egrep -v "/Variable2.tcl" \
 		src_jar/capecode0.2.devel/ptolemy/data/test/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/data/test/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/data/test/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/data/test/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/data/test/makefile
 #
 # Fix up ptolemy/domains/makefile
 #
-# Use this to sort: awk -F '|' '{for (i=1;i&lt;=NF;i++) {print }}' | sort |awk '{printf("%s|", )}'
+# Use this to sort: awk -F '|' '{for (i=1;i<=NF;i++) {print }}' | sort |awk '{printf("%s|", )}'
 #
 egrep -v "\(PTSPACEDOMAIN_JAR\)|algebraic.jar|algebraic/demo|ca.jar|ca/demo|ci.jar|continuous.jar|csp.jar|curriculum.jar|dde.jar|ddf.jar|ddf/demo|domains.xml|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|hdf/demo|petrinet.jar|pn.jar|pn/demo|ptera.jar|ptera/demo|ptera/demo|ptides|pthales.jar|pthales/demo|ptides.jar|ptinyDomains.xml|qss.jar|rendezvous/demo.jar|rendezvous.jar|scr.jar|space.jar|sr.jar|sr/demo/demo.jar|sr/doc/doc.jar|sysml.jar|taskpt.jar|tm.jar|wireless.jar" \
 		src_jar/capecode0.2.devel/ptolemy/domains/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/domains/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/domains/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/domains/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/domains/makefile
 #
 # Fix up ptolemy/domains/modal/kernel/makefile
 egrep -v "fmv|ia.jar" \
 		src_jar/capecode0.2.devel/ptolemy/domains/modal/kernel/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/domains/modal/kernel/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/domains/modal/kernel/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/domains/modal/kernel/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/domains/modal/kernel/makefile
 #
 # Fix up ptolemy/domains/modal/test/makefile
 egrep -v "SystemLevelType.tcl" \
 		src_jar/capecode0.2.devel/ptolemy/domains/modal/test/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/domains/modal/test/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/domains/modal/test/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/domains/modal/test/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/domains/modal/test/makefile
 #
 # Fix up ptolemy/makefile
 sed -e 's/\$(PTCALTROP_DIR)//' \
 	    -e 's/\$(PTCOPERNICUS_DIR)//' \
-		&lt; src_jar/capecode0.2.devel/ptolemy/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/makefile.tmp
+		< src_jar/capecode0.2.devel/ptolemy/makefile \
+		> src_jar/capecode0.2.devel/ptolemy/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/makefile
 egrep -v "backtrack|copernicus.jar|gt.jar|ptp|verification" \
-		&lt; src_jar/capecode0.2.devel/ptolemy/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/makefile.tmp
+		< src_jar/capecode0.2.devel/ptolemy/makefile \
+		> src_jar/capecode0.2.devel/ptolemy/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/makefile
 #
 # Fix up ptolemy/moml/filter/test/makefile
 egrep -v "BackwardCompatibilityPN.tcl|GRColorChanges.tcl|PropertyClassChangesHDF.tcl" \
 		src_jar/capecode0.2.devel/ptolemy/moml/filter/test/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/moml/filter/test/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/moml/filter/test/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/moml/filter/test/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/moml/filter/test/makefile
 #
 # Fix up ptolemy/vergil/makefile
 egrep -v "gt|ptera|scr|tdl" \
 		src_jar/capecode0.2.devel/ptolemy/vergil/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/vergil/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/vergil/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/vergil/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/vergil/makefile
 #
 # Fix up ptolemy/vergil/modal/makefile
 egrep -v "fmv|	ia |ia.jar" \
 		src_jar/capecode0.2.devel/ptolemy/vergil/modal/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/vergil/modal/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/vergil/modal/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/vergil/modal/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/vergil/modal/makefile
 #
 # Fix up ptolemy/vergil/basic/imprt
 egrep -v "fmu|g4ltl" \
 		src_jar/capecode0.2.devel/ptolemy/vergil/basic/imprt/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/vergil/basic/imprt/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/vergil/basic/imprt/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/vergil/basic/imprt/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/vergil/basic/imprt/makefile
 #
 # Fix up ptolemy/vergil/basic/layout/kieler/test/junit/makefile
 egrep -v "KielerJUnitTestExtendedModels.java" \
 		src_jar/capecode0.2.devel/ptolemy/vergil/basic/layout/kieler/test/junit/makefile \
-		&gt; src_jar/capecode0.2.devel/ptolemy/vergil/basic/layout/kieler/test/junit/makefile.tmp
+		> src_jar/capecode0.2.devel/ptolemy/vergil/basic/layout/kieler/test/junit/makefile.tmp
 mv src_jar/capecode0.2.devel/ptolemy/vergil/basic/layout/kieler/test/junit/makefile.tmp \
 		src_jar/capecode0.2.devel/ptolemy/vergil/basic/layout/kieler/test/junit/makefile
 #
@@ -25305,12 +25531,12 @@ Changing the Info.plist for the Mac installer app to require Java 1.8.
 if [ ! -f "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist.orig" ]; then \
 		cp "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist" "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist.orig"; \
         fi
-sed 's@&lt;string&gt;1.4+&lt;/string&gt;@&lt;string&gt;1.8*&lt;/string&gt;@' "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist" &gt; "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist.tmp"
+sed 's@<string>1.4+</string>@<string>1.8*</string>@' "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist" > "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist.tmp"
 diff "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist.tmp" "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist"
 28c28
-&lt;     &lt;string&gt;1.8*&lt;/string&gt;
+<     <string>1.8*</string>
 ---
-&gt;     &lt;string&gt;1.4+&lt;/string&gt;
+>     <string>1.4+</string>
 make: [izpackFix] Error 1 (ignored)
 mv "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist.tmp" "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist"
 javac -classpath `ls -1 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/lib/izpack-api-*.jar | head -1 | awk '{print $1}'`:`ls -1 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/lib/izpack-panel-*jar | head -1 | awk '{print $1}'` IzpackSetup.java
@@ -25512,28 +25738,28 @@ drwxrwxr-x  8 travis travis    4096 Apr 22 00:37 ptserver
 drwxrwxr-x  4 travis travis    4096 Apr 22 00:40 thales
 drwxrwxr-x  3 travis travis    4096 Apr 22 00:40 util
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil
-lrwxrwxrwx 1 travis travis 8 Apr 22 01:02 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil -&gt; ptinvoke
+lrwxrwxrwx 1 travis travis 8 Apr 22 01:02 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil -> ptinvoke
 rm -rf jre; mkdir jre
 (cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
 IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/izpackLogging.txt sh "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/bin/compile" -o ptII11_0_devel_setup_windows.jar ptII11_0_devel_setup_windows.xml
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : ptII11_0_devel_setup_windows.xml
--&gt; Output      : ptII11_0_devel_setup_windows.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : ptII11_0_devel_setup_windows.xml
+-> Output      : ptII11_0_devel_setup_windows.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:08:01 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:08:01 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:08:02 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -25820,9 +26046,9 @@ if [ ! -f ptII11_0_devel_setup_windows.exe ];  then \
 		ls -l ptII11_0_devel_setup_windows.exe; \
 	fi
 -rwxrwxr-x 1 travis travis 548700841 Apr 22 01:09 ptII11_0_devel_setup_windows.exe
-sed 's/setup_windows/setup_windows_64/' ptII11_0_devel_setup_windows_l4j.xml &gt; ptII11_0_devel_setup_windows_64_l4j.xml
+sed 's/setup_windows/setup_windows_64/' ptII11_0_devel_setup_windows_l4j.xml > ptII11_0_devel_setup_windows_64_l4j.xml
 sed 's/ShellLink.dll/ShellLink_x64.dll/' \
-	     ptII11_0_devel_setup_windows.xml &gt; ptII11_0_devel_setup_windows_64.xml
+	     ptII11_0_devel_setup_windows.xml > ptII11_0_devel_setup_windows_64.xml
 if [ ! -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/WinJre64.tar.gz ]; then \
 		echo "Downloading WinJre64 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/WinJre64.tar.gz: `date`"; \
 		wget --quiet -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer/WinJre64.tar.gz https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
@@ -25832,28 +26058,28 @@ tar -zxf /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/ins
 # Now building target setup64_jar: PTSETUP_64.jar: ptII11_0_devel_setup_windows_64.jar
 # Sun Apr 22 01:09:51 UTC 2018
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil
-lrwxrwxrwx 1 travis travis 8 Apr 22 01:02 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil -&gt; ptinvoke
+lrwxrwxrwx 1 travis travis 8 Apr 22 01:02 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil -> ptinvoke
 rm -rf jre; mkdir jre
 (cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
 IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/izpackLogging.txt sh "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/bin/compile" -o ptII11_0_devel_setup_windows_64.jar ptII11_0_devel_setup_windows_64.xml
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : ptII11_0_devel_setup_windows_64.xml
--&gt; Output      : ptII11_0_devel_setup_windows_64.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : ptII11_0_devel_setup_windows_64.xml
+-> Output      : ptII11_0_devel_setup_windows_64.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:09:52 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:09:52 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:09:52 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -26142,10 +26368,10 @@ if [ ! -f ptII11_0_devel_setup_windows_64.exe ];  then \
 -rwxrwxr-x 1 travis travis 560081033 Apr 22 01:11 ptII11_0_devel_setup_windows_64.exe
 awk -f linuxInclude.awk ptII11_0_devel_setup_windows.xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.so@' \
-	    -e 's@&lt;!-- NodeDirectory --&gt;@&lt;file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$INSTALL_PATH/vendors/node" os="unix"/&gt;@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
-	    -e 's@&lt;panel classname="ShortcutPanel" condition="showShortCutPanel"/&gt;@@' \
-	    &gt; ptII11.0.devel.setup.linux.xml
+	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
+	    > ptII11.0.devel.setup.linux.xml
 #
 # Now building Ptiny.app /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/Ptiny.app
 # Sun Apr 22 01:11:54 UTC 2018
@@ -26423,9 +26649,9 @@ configure: WARNING: Could not find the sphinx4 jar files.
     1. mkdir /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4
     2. Download these .jar files and place in ptolemy/vendors/misc/sphinx:
 
-      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-core&amp;v=5prealpha&amp;e=jar'
+      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar'
 
-      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar'
+      wget -O /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar'
 
     3. Rerun
       (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; ./configure)
@@ -26510,21 +26736,21 @@ IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/i
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : ptII11.0.devel.setup.linux.xml
--&gt; Output      : ptII11.0.devel.setup.linux.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : ptII11.0.devel.setup.linux.xml
+-> Output      : ptII11.0.devel.setup.linux.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:12:20 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:12:20 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:12:21 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -26745,9 +26971,9 @@ if [ ! -f ptII11.0.devel.setup.linux.jar ];  then \
 -rw-rw-r-- 1 travis travis 473125465 Apr 22 01:13 ptII11.0.devel.setup.linux.jar
 chmod a+x ptII11.0.devel.setup.linux.jar
 tar -zcf ptII11.0.devel.setup.linux.tar.gz ptII11.0.devel.setup.linux.jar
-sed 's/setup_windows/setup_windows_64/' capecode0_2_devel_setup_windows_l4j.xml &gt; capecode0_2_devel_setup_windows_64_l4j.xml
+sed 's/setup_windows/setup_windows_64/' capecode0_2_devel_setup_windows_l4j.xml > capecode0_2_devel_setup_windows_64_l4j.xml
 sed 's/ShellLink.dll/ShellLink_x64.dll/' \
-	     capecode0_2_devel_setup_windows.xml &gt; capecode0_2_devel_setup_windows_64.xml
+	     capecode0_2_devel_setup_windows.xml > capecode0_2_devel_setup_windows_64.xml
 #
 # Now building target capecode_setup_64_jar: (CAPECODE_SETUP_64).jar: capecode0_2_devel_setup_windows_64.jar
 # Sun Apr 22 01:13:58 UTC 2018
@@ -26757,21 +26983,21 @@ IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/i
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : capecode0_2_devel_setup_windows_64.xml
--&gt; Output      : capecode0_2_devel_setup_windows_64.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : capecode0_2_devel_setup_windows_64.xml
+-> Output      : capecode0_2_devel_setup_windows_64.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:13:59 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:13:59 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:14:00 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -27051,14 +27277,14 @@ if [ ! -f capecode0_2_devel_setup_windows_64.exe ];  then \
 	fi
 -rwxrwxr-x 1 travis travis 389924053 Apr 22 01:15 capecode0_2_devel_setup_windows_64.exe
 awk -f macOSInclude.awk ptII11_0_devel_setup_windows.xml | \
-	    sed -e 's@&lt;!-- Vergil.app --&gt;@&lt;file src="../dists/ptII11.0.devel/bin/Vergil.app" targetdir="$INSTALL_PATH/bin"/&gt; &lt;executable targetfile="$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/&gt;@' \
-	    -e 's@&lt;!-- Ptiny.app --&gt;@&lt;file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$INSTALL_PATH/bin"/&gt;  &lt;executable targetfile="$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/&gt;@' \
-	    -e 's@&lt;!-- CapeCode.app --&gt;@&lt;file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$INSTALL_PATH/bin"/&gt;  &lt;executable targetfile="$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/&gt;@' \
-	    -e 's@&lt;!-- MacJDKDirectory --&gt;@&lt;file src="../dists/ptII11.0.devel/jdk" targetdir="$INSTALL_PATH" os="mac"/&gt;@' \
-	    -e 's@&lt;!-- NodeDirectory --&gt;@&lt;file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/&gt;@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.devel/bin/Vergil.app" targetdir="$INSTALL_PATH/bin"/> <executable targetfile="$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$INSTALL_PATH/bin"/>  <executable targetfile="$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$INSTALL_PATH/bin"/>  <executable targetfile="$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
-	    &gt; ptII11.0.devel.setup.mac.xml
+	    > ptII11.0.devel.setup.mac.xml
 #
 # Now building target setup_mac_jar: (PTSETUP_MAC).jar: ptII11.0.devel.setup.mac.jar
 # Sun Apr 22 01:16:01 UTC 2018
@@ -27069,21 +27295,21 @@ IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/i
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : ptII11.0.devel.setup.mac.xml
--&gt; Output      : ptII11.0.devel.setup.mac.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : ptII11.0.devel.setup.mac.xml
+-> Output      : ptII11.0.devel.setup.mac.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:16:02 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:16:02 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:16:02 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -27609,13 +27835,13 @@ find ptII11.0.devel.setup.mac.app -type d -exec touch {} \;
 #cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../bin/macContents/Contents/Resources/ptolemy.icns ptII11.0.devel.setup.mac.app/Contents/Resources/izpack.icns
 tar -zcf ptII11.0.devel.setup.mac.app.tar.gz ptII11.0.devel.setup.mac.app
 awk -f macOSInclude.awk capecode0_2_devel_setup_windows.xml | \
-	    sed -e 's@&lt;!-- CapeCode.app --&gt;@&lt;file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$INSTALL_PATH/bin"/&gt;  &lt;executable targetfile="$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/&gt;@' \
-	    -e 's@&lt;!-- MacJDKDirectory --&gt;@&lt;file src="../dists/ptII11.0.devel/jdk" targetdir="$INSTALL_PATH" os="mac"/&gt;@' \
-	    -e 's@&lt;!-- NodeDirectory --&gt;@&lt;file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/&gt;@' \
+	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$INSTALL_PATH/bin"/>  <executable targetfile="$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
-	    -e 's@&lt;panel classname="ShortcutPanel" condition="showShortCutPanel"/&gt;@@' \
-	    &gt; capecode0.2.devel.setup.mac.xml
+	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
+	    > capecode0.2.devel.setup.mac.xml
 #
 # Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): capecode0.2.devel.setup.mac.jar
 # Sun Apr 22 01:18:31 UTC 2018
@@ -27626,21 +27852,21 @@ IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/i
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : capecode0.2.devel.setup.mac.xml
--&gt; Output      : capecode0.2.devel.setup.mac.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : capecode0.2.devel.setup.mac.xml
+-> Output      : capecode0.2.devel.setup.mac.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:18:31 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:18:31 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:18:32 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -28451,10 +28677,10 @@ tar -zcf capecode0.2.devel.setup.mac.app.tar.gz capecode0.2.devel.setup.mac.app
 awk -f linuxInclude.awk capecode0_2_devel_setup_windows.xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
 	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
-	    -e 's@&lt;!-- NodeDirectory --&gt;@&lt;file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$INSTALL_PATH/vendors/node" os="unix"/&gt;@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
-	    -e 's@&lt;panel classname="ShortcutPanel" condition="showShortCutPanel"/&gt;@@' \
-	    &gt; capecode0.2.devel.setup.linux.xml
+	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
+	    > capecode0.2.devel.setup.linux.xml
 #
 # Now building target setup_linux_jar: (CAPECODE_SETUP_LINUX): capecode0.2.devel.setup.linux.jar
 # Sun Apr 22 01:21:00 UTC 2018
@@ -28463,21 +28689,21 @@ IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/i
 
 .::  IzPack - Version 5.1.2 ::.
 
-&lt; compiler specifications version: 5.0 &gt;
+< compiler specifications version: 5.0 >
 
 - Copyright (c) 2001-2010 Julien Ponge and others. All Rights Reserved.
 - Visit http://izpack.org/ for the latest releases
 - Released under the terms of the Apache Software License version 2.0.
 
--&gt; Processing  : capecode0.2.devel.setup.linux.xml
--&gt; Output      : capecode0.2.devel.setup.linux.jar
--&gt; Base path   : .
--&gt; Kind        : standard
--&gt; Compression : default
--&gt; Compr. level: -1
--&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
+-> Processing  : capecode0.2.devel.setup.linux.xml
+-> Output      : capecode0.2.devel.setup.linux.jar
+-> Base path   : .
+-> Kind        : standard
+-> Compression : default
+-> Compr. level: -1
+-> IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-Apr 22, 2018 1:21:00 AM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+Apr 22, 2018 1:21:00 AM com.izforge.izpack.compiler.CompilerConfig <init>
 INFO: Logging initialized at level 'INFO'
 Apr 22, 2018 1:21:01 AM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
@@ -28888,6 +29114,6 @@ AutoTests.java: Vertx closed.
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
-</pre>
-</body>
-</html>
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
