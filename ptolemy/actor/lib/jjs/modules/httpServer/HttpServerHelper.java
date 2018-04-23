@@ -168,6 +168,11 @@ public class HttpServerHelper extends VertxHelperBase {
             _actor.clearTimeout(requestID);
 
             HttpServerResponse response = request.response();
+            
+            if (response.closed()) {
+                // Response has been closed already. Nothing to do.
+                return;
+            }
 
             response.setStatusCode(responseCode);
             response.headers()
@@ -301,7 +306,7 @@ public class HttpServerHelper extends VertxHelperBase {
     /** The host interface. */
     private String _hostInterface;
 
-    /** Pending requests to timeout ID map. */
+    /** Pending timeout ID to requests map. */
     private HashMap<Object, HttpServerRequest> _pendingRequests = new HashMap<Object, HttpServerRequest>();
 
     /** The port on which the server listens. */
