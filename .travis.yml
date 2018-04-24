@@ -37,6 +37,10 @@ env:
 
     - TRAVIS_TAG=nightly
 
+    # Weather accessor
+    - secure: "XFK6IofbdwwDu2VOu7OrJXFr62C+iYO+EPan+4MfrkBlW3gBVRdB7zbcOtgvFeqVbpokahsq0fxe6OuCPNC6HTZRP0RgMhS5u1uF9UGvRY+07zia3Xn2MiRffySwLuiS6cS2CxHKxfbMSVouovHUxTXQse0CLyydURCk19gLtoCDAUYzv1EI2HBDqR0zep7dzXWVAuBrIUuRwveYhQFbKlbmOtv2Kq9rZyjxZZS6/3DWhjSuuWGNXGRwZQoJgCxulya0COtvBzEjGY0RYirKuTnkMV94fZoPK7UJH+drPwEjtTGYnsXuEwLrXZ0k4Xipogfqg8l7AgYWnswqgz03PwCvKP1kfQ4e9E/tvyYn8bs4ZSFjfFHV+XzMGU6Gi6gBso/fM07eBX1WZs6d9VY8uFGGqsdhKw6/aKlTldwnLJk2ClkVvLU1qFB+qpb+LLV30qJlbd0tsoMa0Nn9hbu5E3wxDWt2P1qmxRo57av8gJQRCDbvnveAe38cD/db3wNi5VFws+flC/x2orXnfUiyjPO/Y9WayfTLopusIicdYaydiPI/afakH3tVZds0C9kKAlRZPWvrq6/llTKcMmJqVTHO48wuFkU+pC5ziyIBDjGggfS1exqLX8ahiM2QOfABIQh1qw6D+x/M1BJ85ul/2vxPAEjHmA7Fmg0Usa4X0G4="
+
+
 language: node_js
 
 # Node 8 breaks npm horribly, see http://www.accessors.org/wiki/Notes/Npm5
