@@ -89,7 +89,9 @@
     
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
+    
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -181,6 +183,8 @@
     
         cur['env.RUBY_VERSION'] = 'ruby-2.4.1';
     
+        cur['env.RUN_TESTS'] = 'true';
+    
         cur['env.rvm_bin_path'] = '/home/travis/.rvm/bin';
     
         cur['env.rvm_path'] = '/home/travis/.rvm';
@@ -195,9 +199,10 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.31 39222 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.31 39222 10.20.0.88 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.39 50408 22';
+    
+        cur['env.SSH_CONNECTION'] = '10.10.4.39 50408 10.20.255.148 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -211,25 +216,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '369895162';
+        cur['env.TRAVIS_BUILD_ID'] = '370754390';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '295';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '298';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '6d3974731e33c27aac53e50b0e065e84fd8dce69';
+        cur['env.TRAVIS_COMMIT'] = '76d8b8f16de7251c772ccd6354ba30cfeeba9a03';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Skip the tests if TRAVIS_EVENT_TYPE != cron.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Various attempts to get Travis tests to pass: increased stop time, added Stop actors etc.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '1dce281ae57651262fda0a1b926324e4f4285d4e...6d3974731e33c27aac53e50b0e065e84fd8dce69';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '361e07dbf8be...76d8b8f16de7';
     
-        cur['env.TRAVIS_EVENT_TYPE'] = 'cron';
+        cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '369895165';
+        cur['env.TRAVIS_JOB_ID'] = '370754393';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '295.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '298.3';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +422,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.mapManager.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.mapManager.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5137926557524245069.properties propsfile=/home/travis/build/icyphy/ptII/junit1523012677751158042.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.mapManager.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.mapManager.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5716641619972355874.properties propsfile=/home/travis/build/icyphy/ptII/junit1580720396914763868.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +505,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="7_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="7_JUnitTclTest.html">8</a></td><td>0</td><td>0</td><td>0</td><td>41.592</td><td>2018-04-23T00:46:06</td><td>travis-job-5258e2a2-0efe-4d10-879e-5832bf7819e6</td>
+<td><a title="Display all tests" href="7_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="7_JUnitTclTest.html">8</a></td><td>0</td><td>0</td><td>0</td><td>37.860</td><td>2018-04-24T20:40:00</td><td>travis-job-be6b9115-e29b-4d1b-b8d2-71b60e7b4308</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -509,28 +514,28 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml (RunModel)</td><td>Success</td><td></td><td>11.831</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml (RunModel)</td><td>Success</td><td></td><td>10.140</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml (RunModel)</td><td>Success</td><td></td><td>7.660</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml (RunModel)</td><td>Success</td><td></td><td>7.012</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml (RunModel)</td><td>Success</td><td></td><td>7.399</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml (RunModel)</td><td>Success</td><td></td><td>6.878</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml (RunModel)</td><td>Success</td><td></td><td>7.286</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml (RunModel)</td><td>Success</td><td></td><td>6.734</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml (RunModel)</td><td>Success</td><td></td><td>6.985</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml (RunModel)</td><td>Success</td><td></td><td>6.745</td>
 </tr>
 </table>
 <div class="Properties">
