@@ -90,7 +90,7 @@ console.log('Start of Common host: Spontaneous accessors');
 console.log('Start of Common host: Spontaneous accessors');
 describe('Common host: Spontaneous accessors', function(){
         // Increase default mocha timeout (originally 2000).  See https://mochajs.org/#timeouts
-    this.timeout(3000);
+    this.timeout(9876);
     
         before(function() {
                 b = commonHost.instantiateAccessor('TestSpontaneous', 'test/TestSpontaneous',

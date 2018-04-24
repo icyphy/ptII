@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2901408994088122">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.66547250747647, 165.6375090184419}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.6654725074764, 165.6375090184419}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -39,7 +39,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Once per second, send a message with a counting sequence:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Once per tenth of a second, send a message with a counting sequence:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 30.0}">
         </property>
@@ -53,6 +53,8 @@
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 85.0}">
         </property>
     </entity>
@@ -208,6 +210,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 300.0}">
         </property>
     </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 345}">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -224,6 +230,8 @@
         <vertex name="vertex1" value="[360.0, 245.0]">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ReceivedUDPPackets.input" relation="relation5"/>
     <link port="DiscreteClock.output" relation="relation2"/>
     <link port="DiscreteClock.start" relation="relation3"/>
@@ -234,4 +242,6 @@
     <link port="Listening.input" relation="relation3"/>
     <link port="UDPSocketSender.toSend" relation="relation6"/>
     <link port="Test.input" relation="relation5"/>
+    <link port="Test.output" relation="relation"/>
+    <link port="Stop.input" relation="relation"/>
 </entity>

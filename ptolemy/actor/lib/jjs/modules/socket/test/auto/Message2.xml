@@ -237,7 +237,7 @@
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1, 2, 3, 4, 5}}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -281,7 +281,7 @@
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5, 1, 2, 3, 4, 5}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

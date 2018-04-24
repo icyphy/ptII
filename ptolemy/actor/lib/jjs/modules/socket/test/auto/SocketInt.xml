@@ -10,10 +10,10 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0396799055849315">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.04788560956973, 198.64101135240455}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.04788560956985, 198.64101135240455}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
