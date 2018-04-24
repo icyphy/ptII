@@ -156,6 +156,96 @@ import ptolemy.matlab.Engine.ConversionParameters;
  <dd><code>Be sure that the matlab binary is in your path</code></dd>
  </dl>
 
+ <h2>Notes about Matlab 10.8 and later</h2>
+
+ <p>Note that under recent version of MacOS, the DYLD_LIBRARY_PATH is no longer used.
+ The workaround is to be sure that matlab is in your path and to run ./configure.</p>
+
+ <p>For example:</p>
+ <pre>
+ bash-3.2$ bash-3.2$ which matlab
+ /Applications/MATLAB_R2018a.app/bin/matlab
+ </pre>
+
+ <p>Then, running:</p>
+ <pre>
+ ./configure --enable-verbose
+ </pre>
+
+ <p>shows:</p>
+
+ <pre>
+ checking for matlab... /Applications/MATLAB_R2018a.app/bin/matlab
+ checking the value of the Matlab root directory ... '/Applications/MATLAB_R2018a.app'
+ checking for gcc... checking for gcc... /usr/bin/gcc
+ checking for malloc_size... yes
+ checking the extension for Matlab .mex files... mexmaci64
+ checking which major type of OS we are running under... MacOSX
+ using '/Applications/MATLAB_R2018a.app/bin/maci' for Matlab's engine libraries
+ </pre>
+
+ Then run
+ <pre>
+ cd $PTII
+ ant
+ cd $PTII/bin
+ make
+ cd $PTII/ptolemy/matlab
+ make clean; make
+ <pre>
+
+ <p>Here's what libraries are used by libptmatlab.jnilib</p>
+
+ <pre>
+ bash-3.2$ otool -L libptmatlab.jnilib
+ libptmatlab.jnilib:
+         libptmatlab64.jnilib (compatibility version 0.0.0, current version 0.0.0)
+         @rpath/libeng.dylib (compatibility version 0.0.0, current version 0.0.0)
+         @rpath/libmx.dylib (compatibility version 0.0.0, current version 0.0.0)
+         @rpath/libmex.dylib (compatibility version 0.0.0, current version 0.0.0)
+         /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.0.0)
+ bash-3.2$
+ </pre>
+
+ <p>To see the value of rpath:</p>
+
+ <pre>
+ otool -l libptmatlab.jnilib
+ ...
+ Load command 14
+           cmd LC_RPATH
+       cmdsize 56
+          path /Applications/MATLAB_R2018a.app/bin/maci64 (offset 12)
+ </pre>
+
+ <p>So, the above says that the shared library has an RPATH of /Applications/MATLAB_R2018a.app/bin/maci64, which is where libeng.dylib is:</p>
+
+ <pre>
+ bash-3.2$ ls -l /Applications/MATLAB_R2018a.app/bin/maci64/libeng.dylib
+ -r-xr-xr-x  1 cxh  admin  15664 Feb  6 01:17 /Applications/MATLAB_R2018a.app/bin/maci64/libeng.dylib
+ </pre>
+
+ </p>Edit loadLibrary() in
+ $PTII/ptolemy/data/expr/UtilityFunctions.java and set debug to true,
+ then I can see what file is loaded by loading the demo</p>
+
+ <pre>
+ bash-3.2$ $PTII/bin/vergil $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
+ UtilityFunctions.loadLibrary(ptolemy/matlab/ptmatlab)
+ UtilityFunctions.loadLibrary(ptolemy/matlab/ptmatlab): System.load()
+ UtilityFunctions.loadLibrary(ptolemy/matlab/ptmatlab): java.lang.UnsatisfiedLinkError: Expecting an absolute path ofthe library: ptolemy/matlab/ptmatlab
+ UtilityFunctions._loadLibrary(ptolemy/matlab/ptmatlab, jnilib): osName: Mac OS X
+ UtilityFunctions._loadLibrary(ptolemy/matlab/libptmatlab, jnilib): libraryWithSuffix: ptolemy/matlab/libptmatlab.jniib libraryPathExiststrue
+ UtilityFunctions._loadLibrary(ptolemy/matlab/libptmatlab, jnilib): System.load(/Users/cxh/src/ptII11.0.devel/ptolemy/matlab/libptmatlab.jnilib)
+ <pre>
+
+ <p>Use the <code>otool</code> <code>-L</code> and <code>-l</code>
+ commands to ensure that <code>libeng.dylib</code> can be found.</p>
+
+
+
+
+
  @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
  @version $Id$
  @since Ptolemy II 2.0
