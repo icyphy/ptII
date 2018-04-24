@@ -304,14 +304,6 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # No need to check in the log each time because this target is
     # easy to re-run.
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
-
-    # Check to see that the doclets were compiled.
-    echo "$PTII/doc/doclets:"
-    ls $PTII/doc/doclets/
-
-    # Check to see that a PtDoc file was created.
-    echo "$PTII/doc/JavaScript.xml"
-    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
 fi
 
 # This build produces less than 10K lines, so we don't save the
@@ -424,6 +416,16 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     exitIfNotCron
 
+    # Download the codeDoc*.jar files so that the docManager.tcl test will pass.
+    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
+    for jar in $jars
+    do
+        echo "Downloading $jar: `date`"
+        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
+        ls -l $PTII/doc/$jar
+        (cd $PTII; jar -xf $PTII/doc/$jar)
+    done
+
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     LOG=$PTII/reports/junit/test.core2.xml.txt
@@ -434,6 +436,15 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
 
     echo "$0: Start of last $lastLines lines of $LOG"
     tail -$lastLines $LOG
+
+    # Check to see that the doclets were compiled.
+    echo "$PTII/doc/doclets:"
+    ls $PTII/doc/doclets/
+
+    # Check to see that a PtDoc file was created.
+    echo "$PTII/doc/JavaScript.xml"
+    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
+    
     updateGhPages -junitreport $PTII/reports/junit reports/
 fi
 
