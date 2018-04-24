@@ -5,24 +5,24 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyReader.tcl
-testDefs.tcl: setting time out to 9000 seconds at Fri Apr 20 16:36:15 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Tue Apr 24 20:31:33 UTC 2018
 Creating keystore foo.keystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: $aliasName
-Creation date: Apr 20, 2018
+Creation date: Apr 24, 2018
 Entry type: PrivateKeyEntry
 Certificate chain length: 1
 Certificate[1]:
 Owner: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
 Issuer: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
-Serial number: 441cc2f3
-Valid from: Fri Apr 20 16:36:16 UTC 2018 until: Thu Jul 19 16:36:16 UTC 2018
+Serial number: 6fa618e3
+Valid from: Tue Apr 24 20:31:35 UTC 2018 until: Mon Jul 23 20:31:35 UTC 2018
 Certificate fingerprints:
-	 MD5:  CC:88:D5:37:60:51:0A:61:91:06:10:2F:EC:C2:1D:13
-	 SHA1: 49:7D:2D:92:42:99:6F:FA:A8:CF:72:F2:2C:56:B7:4A:0E:B2:64:9B
-	 SHA256: 27:51:F6:AC:2C:01:F2:DC:90:00:91:40:DA:4B:50:2D:7D:68:46:19:87:7C:A2:C4:C2:B0:A5:FC:2D:FA:07:70
+	 MD5:  CA:F9:25:FB:69:5F:92:A7:F8:4C:EF:67:5E:87:C7:EB
+	 SHA1: E8:15:DA:DE:60:C3:96:F0:40:38:3B:A1:72:F8:EF:E0:11:67:A4:97
+	 SHA256: B3:B0:9C:1C:0D:4D:5F:0C:76:DF:1A:1D:FA:DB:98:B7:D4:C6:CF:FE:18:1D:D7:2C:94:75:F6:04:52:32:FB:DA
 Signature algorithm name: SHA256withDSA
 Subject Public Key Algorithm: 2048-bit DSA key
 Version: 3
@@ -32,23 +32,23 @@ Extensions:
 #1: ObjectId: 2.5.29.14 Criticality=false
 SubjectKeyIdentifier [
 KeyIdentifier [
-0000: 65 40 24 3A 25 32 D5 6A   FA C1 80 F6 5E E2 10 3B  e@$:%2.j....^..;
-0010: 79 C0 26 25                                        y.&amp;%
+0000: 2D 38 A1 DB 31 7B 78 D2   A4 1C CF C3 4F 57 41 5D  -8..1.x.....OWA]
+0010: 60 36 C2 38                                        `6.8
 ]
 ]
 
-2144 ms. Memory: 116224K Free: 99118K (85%)
+2188 ms. Memory: 116224K Free: 98944K (85%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyToken.tcl
 Available Ciphers: PBEWITHHMACSHA384ANDAES_128 AES_256/GCM/NOPADDING AES_192/GCM/NOPADDING PBEWITHHMACSHA512ANDAES_128 AES_256/CBC/NOPADDING AES_256/ECB/NOPADDING PBEWITHHMACSHA224ANDAES_256 AES_128/CBC/NOPADDING AESWRAP_192 AESWRAP PBEWITHMD5ANDDES AES_192/CBC/NOPADDING PBEWITHHMACSHA256ANDAES_256 PBEWITHHMACSHA1ANDAES_128 PBEWITHSHA1ANDRC4_128 AES_192/OFB/NOPADDING AES_128/ECB/NOPADDING DESEDEWRAP AESWRAP_256 RC2 PBEWITHSHA1ANDRC4_40 RSA AESWRAP_128 PBEWITHHMACSHA512ANDAES_256 AES_192/CFB/NOPADDING DESEDE AES_128/CFB/NOPADDING AES_192/ECB/NOPADDING BLOWFISH ARCFOUR AES_256/CFB/NOPADDING AES AES_128/OFB/NOPADDING AES_128/GCM/NOPADDING DES PBEWITHHMACSHA256ANDAES_128 PBEWITHSHA1ANDDESEDE PBEWITHSHA1ANDRC2_40 PBEWITHHMACSHA384ANDAES_256 AES_256/OFB/NOPADDING PBEWITHSHA1ANDRC2_128 PBEWITHMD5ANDTRIPLEDES PBEWITHHMACSHA1ANDAES_256 PBEWITHHMACSHA224ANDAES_128
 Using BLOWFISH
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/info.tcl
-04/20/18 04:36:17
+04/24/18 08:31:36
 Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Fri Apr 20 16:36:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
+----------------- testing Tue Apr 24 20:31:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
 Creating keystore foo.keystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 keytool error: java.lang.Exception: Key pair not generated, alias &lt;$aliasName&gt; already exists
@@ -56,31 +56,31 @@ Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore
 keytool error: java.lang.ClassCastException: javax.crypto.spec.SecretKeySpec cannot be cast to java.security.PrivateKey
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: $aliasName
-Creation date: Apr 20, 2018
+Creation date: Apr 24, 2018
 Entry type: SecretKeyEntry
-1880 ms. Memory: 146944K Free: 124816K (85%)
+1831 ms. Memory: 146944K Free: 125491K (85%)
 reloadAllAccessors: .KeyReader
------------------ testing Fri Apr 20 16:36:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
-120 ms. Memory: 146944K Free: 107612K (73%)
+----------------- testing Tue Apr 24 20:31:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
+125 ms. Memory: 146944K Free: 108146K (74%)
 reloadAllAccessors: .KeyWriter
------------------ testing Fri Apr 20 16:36:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
+----------------- testing Tue Apr 24 20:31:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
 Creating keystore /home/travis/build/icyphy/ptII/ptKeystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: ptolemy
-Creation date: Apr 20, 2018
+Creation date: Apr 24, 2018
 Entry type: PrivateKeyEntry
 Certificate chain length: 1
 Certificate[1]:
 Owner: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
 Issuer: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
-Serial number: 66dc7b2f
-Valid from: Fri Apr 20 16:36:20 UTC 2018 until: Thu Jul 19 16:36:20 UTC 2018
+Serial number: 254a0fef
+Valid from: Tue Apr 24 20:31:39 UTC 2018 until: Mon Jul 23 20:31:39 UTC 2018
 Certificate fingerprints:
-	 MD5:  65:3A:36:1C:40:75:3B:AC:8B:FF:12:DF:61:DD:9A:62
-	 SHA1: B9:3F:8B:BF:58:ED:F4:02:DF:B5:2B:90:45:B8:A8:4D:7C:C4:3F:00
-	 SHA256: 82:B7:12:42:B9:00:DB:18:DD:98:D1:A4:6C:33:15:46:3F:40:4D:23:C7:E8:78:E4:D3:E1:CB:10:8D:17:7B:4B
+	 MD5:  28:59:6A:D2:BE:84:E2:02:DE:93:A3:B9:44:FD:F0:B5
+	 SHA1: 8C:6C:73:12:C7:68:42:3C:8E:F4:B2:30:C7:CB:41:9F:E8:0B:6C:9C
+	 SHA256: B0:1C:19:81:71:0C:FC:F0:5A:1B:FE:60:80:BA:F4:A0:FA:98:07:E2:47:50:F2:8A:1C:03:CB:9B:FA:B5:FE:7A
 Signature algorithm name: SHA256withDSA
 Subject Public Key Algorithm: 2048-bit DSA key
 Version: 3
@@ -90,15 +90,15 @@ Extensions:
 #1: ObjectId: 2.5.29.14 Criticality=false
 SubjectKeyIdentifier [
 KeyIdentifier [
-0000: 8C 20 A4 94 7E AA D3 B1   18 FC 91 4B 87 61 6C 14  . .........K.al.
-0010: 14 3A 13 4A                                        .:.J
+0000: CA 5E 31 17 4E 4C C8 5E   C5 3D 05 FF 42 DF 08 E2  .^1.NL.^.=..B...
+0010: F4 D5 84 15                                        ....
 ]
 ]
 
-1036 ms. Memory: 146944K Free: 93148K (63%)
+982 ms. Memory: 146944K Free: 93924K (64%)
 reloadAllAccessors: .Signature
------------------ testing Fri Apr 20 16:36:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
-720 ms. Memory: 210944K Free: 195454K (93%)
+----------------- testing Tue Apr 24 20:31:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
+741 ms. Memory: 210944K Free: 195405K (93%)
 reloadAllAccessors: .Symmetric
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
