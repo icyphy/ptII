@@ -4,12 +4,12 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>Apr 20, 2018 6:36:18 PM io.vertx.core.impl.ContextImpl
+<pre>Apr 24, 2018 12:34:05 AM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$1079$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:630)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$1078$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:582)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1076$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:630)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1075$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:582)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -50,11 +50,96 @@ java.lang.IllegalArgumentException: Invalid send data type: long
 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.lang.Thread.run(Thread.java:748)
 
-Apr 20, 2018 6:36:18 PM io.vertx.core.impl.ContextImpl
+Apr 24, 2018 12:34:05 AM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$1080$13304A$require.L:1#_opened(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:296)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1077$13304A$require.L:1#_opened(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:296)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper.lambda$null$0(SocketHelper.java:219)
+	at io.vertx.core.net.impl.NetClientImpl.lambda$connect$2(NetClientImpl.java:113)
+	at io.vertx.core.net.impl.NetClientImpl.lambda$null$9(NetClientImpl.java:251)
+	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
+	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
+	at io.vertx.core.net.impl.NetClientImpl.lambda$connected$10(NetClientImpl.java:247)
+	at io.vertx.core.net.impl.VertxHandler.setConnection(VertxHandler.java:46)
+	at io.vertx.core.net.impl.VertxNetHandler.handlerAdded(VertxNetHandler.java:39)
+	at io.netty.channel.DefaultChannelPipeline.callHandlerAdded0(DefaultChannelPipeline.java:606)
+	at io.netty.channel.DefaultChannelPipeline.addLast(DefaultChannelPipeline.java:235)
+	at io.netty.channel.DefaultChannelPipeline.addLast(DefaultChannelPipeline.java:201)
+	at io.vertx.core.net.impl.NetClientImpl.connected(NetClientImpl.java:257)
+	at io.vertx.core.net.impl.NetClientImpl.lambda$doConnect$7(NetClientImpl.java:212)
+	at io.vertx.core.net.impl.ChannelProvider.lambda$connect$0(ChannelProvider.java:52)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
+	at io.netty.channel.DefaultChannelPromise.trySuccess(DefaultChannelPromise.java:82)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:306)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:341)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+
+Apr 24, 2018 12:34:05 AM io.vertx.core.impl.ContextImpl
+SEVERE: Unhandled exception
+java.lang.IllegalArgumentException: Invalid send data type: long
+	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1076$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:630)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1075$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:582)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper.lambda$null$2(SocketHelper.java:394)
+	at io.vertx.core.net.impl.NetServerImpl.lambda$connected$11(NetServerImpl.java:457)
+	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
+	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
+	at io.vertx.core.net.impl.NetServerImpl.connected(NetServerImpl.java:453)
+	at io.vertx.core.net.impl.NetServerImpl.access$200(NetServerImpl.java:57)
+	at io.vertx.core.net.impl.NetServerImpl$1.initChannel(NetServerImpl.java:209)
+	at io.netty.channel.ChannelInitializer.initChannel(ChannelInitializer.java:113)
+	at io.netty.channel.ChannelInitializer.handlerAdded(ChannelInitializer.java:105)
+	at io.netty.channel.DefaultChannelPipeline.callHandlerAdded0(DefaultChannelPipeline.java:606)
+	at io.netty.channel.DefaultChannelPipeline.access$000(DefaultChannelPipeline.java:46)
+	at io.netty.channel.DefaultChannelPipeline$PendingHandlerAddedTask.execute(DefaultChannelPipeline.java:1412)
+	at io.netty.channel.DefaultChannelPipeline.callHandlerAddedForAllHandlers(DefaultChannelPipeline.java:1131)
+	at io.netty.channel.DefaultChannelPipeline.invokeHandlerAddedIfNeeded(DefaultChannelPipeline.java:656)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.register0(AbstractChannel.java:510)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.register(AbstractChannel.java:476)
+	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:80)
+	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:74)
+	at io.vertx.core.net.impl.VertxEventLoopGroup.register(VertxEventLoopGroup.java:53)
+	at io.netty.bootstrap.ServerBootstrap$ServerBootstrapAcceptor.channelRead(ServerBootstrap.java:255)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+
+Apr 24, 2018 12:34:05 AM io.vertx.core.impl.ContextImpl
+SEVERE: Unhandled exception
+java.lang.IllegalArgumentException: Invalid send data type: long
+	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1081$13304A$require.L:1#_opened(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:296)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -154,91 +239,6 @@ Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
-Apr 20, 2018 6:36:26 PM io.vertx.core.impl.ContextImpl
-SEVERE: Unhandled exception
-java.lang.IllegalArgumentException: Invalid send data type: unsignedint
-	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$2167$27606AAAAAA$require.L:1#Socket(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:630)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$2166$25670A$require.L:1#_socketCreated(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:582)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper.lambda$null$2(SocketHelper.java:394)
-	at io.vertx.core.net.impl.NetServerImpl.lambda$connected$11(NetServerImpl.java:457)
-	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
-	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
-	at io.vertx.core.net.impl.NetServerImpl.connected(NetServerImpl.java:453)
-	at io.vertx.core.net.impl.NetServerImpl.access$200(NetServerImpl.java:57)
-	at io.vertx.core.net.impl.NetServerImpl$1.initChannel(NetServerImpl.java:209)
-	at io.netty.channel.ChannelInitializer.initChannel(ChannelInitializer.java:113)
-	at io.netty.channel.ChannelInitializer.handlerAdded(ChannelInitializer.java:105)
-	at io.netty.channel.DefaultChannelPipeline.callHandlerAdded0(DefaultChannelPipeline.java:606)
-	at io.netty.channel.DefaultChannelPipeline.access$000(DefaultChannelPipeline.java:46)
-	at io.netty.channel.DefaultChannelPipeline$PendingHandlerAddedTask.execute(DefaultChannelPipeline.java:1412)
-	at io.netty.channel.DefaultChannelPipeline.callHandlerAddedForAllHandlers(DefaultChannelPipeline.java:1131)
-	at io.netty.channel.DefaultChannelPipeline.invokeHandlerAddedIfNeeded(DefaultChannelPipeline.java:656)
-	at io.netty.channel.AbstractChannel$AbstractUnsafe.register0(AbstractChannel.java:510)
-	at io.netty.channel.AbstractChannel$AbstractUnsafe.register(AbstractChannel.java:476)
-	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:80)
-	at io.netty.channel.SingleThreadEventLoop.register(SingleThreadEventLoop.java:74)
-	at io.vertx.core.net.impl.VertxEventLoopGroup.register(VertxEventLoopGroup.java:53)
-	at io.netty.bootstrap.ServerBootstrap$ServerBootstrapAcceptor.channelRead(ServerBootstrap.java:255)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
-	at io.netty.channel.nio.AbstractNioMessageChannel$NioMessageUnsafe.read(AbstractNioMessageChannel.java:93)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-
-Apr 20, 2018 6:36:26 PM io.vertx.core.impl.ContextImpl
-SEVERE: Unhandled exception
-java.lang.IllegalArgumentException: Invalid send data type: unsignedint
-	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$2168$13304A$require.L:1#_opened(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:296)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper.lambda$null$0(SocketHelper.java:219)
-	at io.vertx.core.net.impl.NetClientImpl.lambda$connect$2(NetClientImpl.java:113)
-	at io.vertx.core.net.impl.NetClientImpl.lambda$null$9(NetClientImpl.java:251)
-	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
-	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
-	at io.vertx.core.net.impl.NetClientImpl.lambda$connected$10(NetClientImpl.java:247)
-	at io.vertx.core.net.impl.VertxHandler.setConnection(VertxHandler.java:46)
-	at io.vertx.core.net.impl.VertxNetHandler.handlerAdded(VertxNetHandler.java:39)
-	at io.netty.channel.DefaultChannelPipeline.callHandlerAdded0(DefaultChannelPipeline.java:606)
-	at io.netty.channel.DefaultChannelPipeline.addLast(DefaultChannelPipeline.java:235)
-	at io.netty.channel.DefaultChannelPipeline.addLast(DefaultChannelPipeline.java:201)
-	at io.vertx.core.net.impl.NetClientImpl.connected(NetClientImpl.java:257)
-	at io.vertx.core.net.impl.NetClientImpl.lambda$doConnect$7(NetClientImpl.java:212)
-	at io.vertx.core.net.impl.ChannelProvider.lambda$connect$0(ChannelProvider.java:52)
-	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
-	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
-	at io.netty.util.concurrent.DefaultPromise.trySuccess(DefaultPromise.java:104)
-	at io.netty.channel.DefaultChannelPromise.trySuccess(DefaultChannelPromise.java:82)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:306)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:341)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -317,62 +317,6 @@ Connection refused: localhost/127.0.0.1:4000
 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
 	at ptolemy.actor.Manager.iterate(Manager.java:851)
 	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.moml.MoMLSimpleApplication.rerun(MoMLSimpleApplication.java:339)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:195)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .Message3.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
@@ -408,7 +352,7 @@ java.lang.RuntimeException: Execution failed
 Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
 Connection refused: localhost/127.0.0.1:4000
 Connection refused
-  in .Message3.Client
+  in .Message2.Client
 Because:
 Connection refused: localhost/127.0.0.1:4000
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
@@ -425,7 +369,7 @@ Connection refused: localhost/127.0.0.1:4000
 Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
 Connection refused: localhost/127.0.0.1:4000
 Connection refused
-  in .Message3.Client
+  in .Message2.Client
 Because:
 Connection refused: localhost/127.0.0.1:4000
 	... 9 more
@@ -443,6 +387,59 @@ Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connectio
 	at java.lang.Thread.run(Thread.java:748)
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .Message3.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .Message3.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .Message3.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .Message3.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .Message3.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7022$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7020$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -482,176 +479,289 @@ Value was: "aaa". Should have been: "aa"
 	at ptolemy.actor.Manager.execute(Manager.java:369)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketByte.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketByte.Test2
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketByte.Test3
+
+  in .SocketByte.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketByte.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketByte.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+[Thread-53] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketInt.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketInt.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketInt.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	... 9 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketShort.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketShort.Test2
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketShort.Test3
+
+  in .SocketShort.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketShort.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .SocketShort.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketTypicalUsage.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketTypicalUsage.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketTypicalUsage.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	... 9 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:41019
+Connection refused
+  in .TCPSocketSecureServerClient.ClientB
+Because:
+Connection refused: localhost/127.0.0.1:41019
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:41019
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:41019
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [50.0]
-WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [50.0]
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test3
-
-  in .SocketDouble.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDouble.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArray.Test
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArray.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArray.Test3
-
-  in .SocketDoubleArray.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArray.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArray.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArrayBatched.Test
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArrayBatched.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArrayBatched.Test3
-
-  in .SocketDoubleArrayBatched.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArrayBatched.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketDoubleArrayBatched.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketFloat.Test
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketFloat.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketFloat.Test3
-
-  in .SocketFloat.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketFloat.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketFloat.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
-[Thread-52] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketInt.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
+Connection refused: localhost/127.0.0.1:41019
 Connection refused
-  in .SocketInt.Client
+  in .TCPSocketSecureServerClient.ClientB
 Because:
-Connection refused: localhost/127.0.0.1:4000
+Connection refused: localhost/127.0.0.1:41019
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
 	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
@@ -664,13 +774,13 @@ Connection refused: localhost/127.0.0.1:4000
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
+Connection refused: localhost/127.0.0.1:41019
 Connection refused
-  in .SocketInt.Client
+  in .TCPSocketSecureServerClient.ClientB
 Because:
-Connection refused: localhost/127.0.0.1:4000
+Connection refused: localhost/127.0.0.1:41019
 	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:41019
 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
@@ -684,214 +794,22 @@ Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connectio
 	at java.lang.Thread.run(Thread.java:748)
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketShort.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketShort.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketShort.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketStringArray.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketStringArray.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4000
-Connection refused
-  in .SocketStringArray.Client
-Because:
-Connection refused: localhost/127.0.0.1:4000
-	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketUnsignedShort.Test
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketUnsignedShort.Test2
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketUnsignedShort.Test3
-
-  in .SocketUnsignedShort.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketUnsignedShort.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .SocketUnsignedShort.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest
+  in .TCPSocketTwoClients.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest2
+  in .TCPSocketTwoClients.TrainableTest2
 Because:
 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 
-  in .TCPSocketSecureServerClient.DE Director
+  in .TCPSocketTwoClients.DE Director
 Because:
 Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest
+  in .TCPSocketTwoClients.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
@@ -902,7 +820,7 @@ Error: TrainableTest: The input handler of this accessor was never invoked. Usua
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest
+  in .TCPSocketTwoClients.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
@@ -921,16 +839,14 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of th
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$50752$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$50750$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$57944$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$57942$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-WARNING: JavaScriptDiscreteClock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.096, 4.096]
-WARNING: JavaScriptDiscreteClock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.195, 4.195]
 </pre>
 </body>
 </html>
