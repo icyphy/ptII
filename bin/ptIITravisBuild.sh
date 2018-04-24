@@ -93,9 +93,14 @@ lastLines=50
 # See https://docs.travis-ci.com/user/cron-jobs/#Detecting-Builds-Triggered-by-Cron
 exitIfNotCron () {
     if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
-        echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", so this target is *not* being run."
-        echo "$0: Exiting"
-        exit 0
+        if [ "$RUN_TESTS" = "true" ]; then
+            echo "$0: RUN_TESTS was set to true, so the tests are being run even though TRAVIS_EVENT_TYPE is $TRAVIS_EVENT_TYPE, which is != true."
+        else
+            echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", so this target is *not* being run."
+            echo "$0: If you want to run the tests anyway, then set RUN_TESTS to true in https://travis-ci.org/icyphy/ptII/settings"
+            echo "$0: Exiting"
+            exit 0
+        fi
     fi        
 }
 
