@@ -1,0 +1,33 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .UDPSocketInt.Test
+
+  in .UDPSocketInt.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .UDPSocketInt.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+  in .UDPSocketInt.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:393)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+</pre>
+</body>
+</html>
