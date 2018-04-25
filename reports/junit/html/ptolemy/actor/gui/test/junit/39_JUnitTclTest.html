@@ -89,7 +89,9 @@
     
         cur['env.GEM_PATH'] = '/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global';
     
+    
         cur['env.GIT_ASKPASS'] = 'echo';
+    
     
         cur['env.GOPATH'] = '/home/travis/gopath';
     
@@ -197,9 +199,10 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.38 41874 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.38 41874 10.20.0.120 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.8 38182 22';
+    
+        cur['env.SSH_CONNECTION'] = '10.10.16.8 38182 10.20.0.90 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +216,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '370754390';
+        cur['env.TRAVIS_BUILD_ID'] = '370840540';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '298';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '301';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = '';
     
-        cur['env.TRAVIS_COMMIT'] = '76d8b8f16de7251c772ccd6354ba30cfeeba9a03';
+        cur['env.TRAVIS_COMMIT'] = '6b841493c2d5801fed2e42c9a4fe301ffd56e145';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Various attempts to get Travis tests to pass: increased stop time, added Stop actors etc.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Git pull is really not very good, is it.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '361e07dbf8be...76d8b8f16de7';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '1f8a8eda8221c02356ec1bfd19bd4a08953c88d9...6b841493c2d5801fed2e42c9a4fe301ffd56e145';
     
-        cur['env.TRAVIS_EVENT_TYPE'] = 'push';
+        cur['env.TRAVIS_EVENT_TYPE'] = 'cron';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '370754396';
+        cur['env.TRAVIS_JOB_ID'] = '370840546';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '298.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '301.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -278,6 +281,7 @@
         cur['env.TZ'] = 'UTC';
     
         cur['env.USER'] = 'travis';
+    
     
         cur['env.XDG_RUNTIME_DIR'] = '/run/user/2000';
     
@@ -419,7 +423,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4725655189466737821.properties propsfile=/home/travis/build/icyphy/ptII/junit8294758352094854688.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher200141845615789747.properties propsfile=/home/travis/build/icyphy/ptII/junit1466845496765129889.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +506,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="39_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="39_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>21.764</td><td>2018-04-24T20:28:07</td><td>travis-job-9e31dd21-fdcc-40e2-938c-58371557b5c4</td>
+<td><a title="Display all tests" href="39_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="39_JUnitTclTest.html">16</a></td><td>0</td><td>0</td><td>0</td><td>22.393</td><td>2018-04-25T00:45:31</td><td>travis-job-d415aaeb-e5e8-4f13-bff3-091f968a5beb</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -511,52 +515,52 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.616</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.689</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.104</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.120</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.583</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.436</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>2.015</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>2.023</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.027</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.023</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.004</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.005</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.338</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl (RunTclFile)</td><td>Success</td><td></td><td>5.756</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)</td><td>Success</td><td></td><td>2.593</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)"></a>[7] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl (RunTclFile)</td><td>Success</td><td></td><td>3.162</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.014</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)"></a>[8] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.013</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>4.014</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)"></a>[9] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>3.732</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.422</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)"></a>[10] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.361</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.585</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)"></a>[11] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.413</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)"></a>[12] /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl (RunTclFile)</td><td>Success</td><td></td><td>0.003</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.006</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.005</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.009</td>
 </tr>
 </table>
 <div class="Properties">
@@ -567,6 +571,11 @@
 <div class="Properties">
 <a href="./39_JUnitTclTest-out.html">
                         System.out &raquo;
+                    </a>
+</div>
+<div class="Properties">
+<a href="./39_JUnitTclTest-err.html">
+                        System.err &raquo;
                     </a>
 </div>
 </body>
