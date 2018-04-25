@@ -163,15 +163,36 @@ cache:
 #   - pwd
   
 deploy:
-  # - provider: pages
-  #   github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
-  #   # local-dir is relative to the current directory
-  #   local-dir: logs   
-  #   keep-history: true
-  #   on:
-  #     branch: master
-  #   skip-cleanup: true
-  #   verbose: true
+  # If PT_TRAVIS_TEST_CORE2_XML == true, then copy the SpaceCadet files
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file:
+      - $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
+      - $PTII/ptolemy/domains/space/demo/DOPCenter/DOP.csv
+      - $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.tex
+      - $PTII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf
+    on:
+      tags: true
+      condition: $PT_TRAVIS_TEST_CORE2_XML = true
+    overwrite: true
+    skip_cleanup: true    
+    verbose: true
+  # If PT_TRAVIS_DOCS == true, then update codeDoc tar files.
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file:
+      - $PTII/doc/codeDoc*.jar
+    on:
+      tags: true
+      condition: $PT_TRAVIS_DOCS = true
+    overwrite: true
+    skip_cleanup: true    
+    verbose: true
+  # If PT_TRAVIS_TEST_INSTALLERS == true, then deploy the installers
+  # If this errors out with timeouts, then see
+  # https://github.com/travis-ci/dpl/issues/796
   - provider: releases
     api_key: $GITHUB_TOKEN
     file_glob: true
@@ -188,18 +209,6 @@ deploy:
     on:
       tags: true
       condition: $PT_TRAVIS_TEST_INSTALLERS = true
-    overwrite: true
-    skip_cleanup: true    
-    verbose: true
-  # Update codeDoc tar files.
-  - provider: releases
-    api_key: $GITHUB_TOKEN
-    file_glob: true
-    file:
-      - $PTII/doc/codeDoc*.jar
-    on:
-      tags: true
-      condition: $PT_TRAVIS_DOCS = true
     overwrite: true
     skip_cleanup: true    
     verbose: true

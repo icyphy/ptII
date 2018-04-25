@@ -392,6 +392,7 @@ fi
 # Run the second batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     runTarget test.core2.xml.txt
+    $PTII/ptolemy/domains/space/demo/DOPCenter/updateDOPCenterImage
 fi
 
 # Run the third batch of core tests.
