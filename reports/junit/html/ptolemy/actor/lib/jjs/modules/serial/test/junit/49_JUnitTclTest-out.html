@@ -7,27 +7,26 @@
 <pre>No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml
 JavaScript: Closing serial port. (Thread[SerialHelloWorld,1,main])
-3245 ms. Memory: 227328K Free: 101801K (45%)
+2561 ms. Memory: 221184K Free: 79368K (36%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Fri Apr 20 17:19:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
------------------ Fri Apr 20 17:19:35 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- testing Wed Apr 25 00:35:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Wed Apr 25 00:35:07 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-Manager.initialize() finished: 10190 ms. Memory: 713728K Free: 389063K (55%)
 SerialPort: Closing serial port. (Thread[SerialLoopbackIntToString,1,main])
-15776 ms. Memory: 713728K Free: 330794K (46%)
+14050 ms. Memory: 705536K Free: 222197K (31%)
 reloadAllAccessors: .SerialLoopbackIntToString
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
 SerialPort: Serial port reader thread exiting. (Thread[Thread-10,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-11,1,main])
------------------ Fri Apr 20 17:20:05 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:20:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Wed Apr 25 00:35:35 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:35:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml
 SerialPort: Closing serial port. (Thread[Thread-7,5,main])
-13742 ms. Memory: 739328K Free: 498325K (67%)
------------------ testing Fri Apr 20 17:20:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
------------------ Fri Apr 20 17:20:24 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+13178 ms. Memory: 741888K Free: 408589K (55%)
+----------------- testing Wed Apr 25 00:35:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+----------------- Wed Apr 25 00:35:53 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-13,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-14,5,main])
 SerialPort: SerialPort: invalid data: a, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
@@ -135,13 +134,22 @@ abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
 abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 ^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
+SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
+abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+^ (Thread[Thread-18,1,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackInvalid,1,main])
-11573 ms. Memory: 776704K Free: 494459K (64%)
+11441 ms. Memory: 779776K Free: 424625K (54%)
 reloadAllAccessors: .SerialLoopbackInvalid
 SerialPort: Serial port reader thread exiting. (Thread[Thread-18,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-19,1,main])
------------------ Fri Apr 20 17:20:46 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:20:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+----------------- Wed Apr 25 00:36:15 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:36:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml
 SerialPort: SerialPort: invalid data: a, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
 a
 ^ (Thread[Thread-21,5,main])
@@ -250,81 +258,75 @@ abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
 abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 ^ (Thread[Thread-21,5,main])
-SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
-abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-^ (Thread[Thread-21,5,main])
-SerialPort: SerialPort: invalid data: abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, error: SyntaxError: Invalid JSON: &lt;json&gt;:1:0 Expected json literal but found a
-abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-^ (Thread[Thread-21,5,main])
 SerialPort: Closing serial port. (Thread[Thread-15,5,main])
-11880 ms. Memory: 794624K Free: 514313K (65%)
------------------ testing Fri Apr 20 17:21:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
------------------ Fri Apr 20 17:21:03 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+11685 ms. Memory: 793088K Free: 455541K (57%)
+----------------- testing Wed Apr 25 00:36:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+----------------- Wed Apr 25 00:36:32 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-21,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-22,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackJSON,1,main])
 JavaScriptJSON: JavaScriptTrueToken.wrapup() (Thread[SerialLoopbackJSON,1,main])
-12622 ms. Memory: 806400K Free: 572012K (71%)
+12320 ms. Memory: 807424K Free: 534220K (66%)
 reloadAllAccessors: .SerialLoopbackJSON
 SerialPort: Serial port reader thread exiting. (Thread[Thread-26,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-27,1,main])
------------------ Fri Apr 20 17:21:26 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:21:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+----------------- Wed Apr 25 00:36:54 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:36:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml
 SerialPort: Closing serial port. (Thread[Thread-23,5,main])
-SerialPort: Serial port reader thread exiting. (Thread[Thread-29,5,main])
 JavaScriptJSON: JavaScriptTrueToken.wrapup() (Thread[Thread-23,5,main])
-12440 ms. Memory: 820224K Free: 772991K (94%)
------------------ testing Fri Apr 20 17:21:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
------------------ Fri Apr 20 17:21:43 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+12118 ms. Memory: 818176K Free: 752575K (92%)
+----------------- testing Wed Apr 25 00:37:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+----------------- Wed Apr 25 00:37:11 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+SerialPort: Serial port reader thread exiting. (Thread[Thread-29,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-30,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackNumber,1,main])
-12139 ms. Memory: 823296K Free: 174383K (21%)
+12351 ms. Memory: 820224K Free: 168238K (21%)
 reloadAllAccessors: .SerialLoopbackNumber
 SerialPort: Serial port reader thread exiting. (Thread[Thread-34,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-35,1,main])
------------------ Fri Apr 20 17:22:06 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:22:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+----------------- Wed Apr 25 00:37:35 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:37:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml
 SerialPort: Closing serial port. (Thread[Thread-31,5,main])
-11586 ms. Memory: 838656K Free: 311822K (37%)
------------------ testing Fri Apr 20 17:22:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
------------------ Fri Apr 20 17:22:22 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+11486 ms. Memory: 838656K Free: 318641K (38%)
+----------------- testing Wed Apr 25 00:37:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Wed Apr 25 00:37:51 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-37,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-38,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackShort,1,main])
-11266 ms. Memory: 837632K Free: 425423K (51%)
+11532 ms. Memory: 837632K Free: 450774K (54%)
 reloadAllAccessors: .SerialLoopbackShort
 SerialPort: Serial port reader thread exiting. (Thread[Thread-42,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-43,1,main])
------------------ Fri Apr 20 17:22:44 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:22:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Wed Apr 25 00:38:13 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:38:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml
 SerialPort: Closing serial port. (Thread[Thread-39,5,main])
-11721 ms. Memory: 845824K Free: 583306K (69%)
------------------ testing Fri Apr 20 17:23:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
------------------ Fri Apr 20 17:23:01 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+12016 ms. Memory: 845824K Free: 630076K (74%)
+----------------- testing Wed Apr 25 00:38:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+----------------- Wed Apr 25 00:38:30 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-45,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-46,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackString,1,main])
-11752 ms. Memory: 851968K Free: 268090K (31%)
+12257 ms. Memory: 851968K Free: 328924K (39%)
 reloadAllAccessors: .SerialLoopbackString
-SerialPort: Serial port reader thread exiting. (Thread[Thread-50,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-51,1,main])
------------------ Fri Apr 20 17:23:22 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:23:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+----------------- Wed Apr 25 00:38:52 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
+SerialPort: Serial port reader thread exiting. (Thread[Thread-50,1,main])
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:38:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml
 SerialPort: Closing serial port. (Thread[Thread-47,5,main])
-11686 ms. Memory: 853504K Free: 236659K (28%)
------------------ testing Fri Apr 20 17:23:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
------------------ Fri Apr 20 17:23:39 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+11666 ms. Memory: 852480K Free: 317646K (37%)
+----------------- testing Wed Apr 25 00:39:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+----------------- Wed Apr 25 00:39:09 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Serial port reader thread exiting. (Thread[Thread-53,5,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-54,5,main])
 SerialPort: Closing serial port. (Thread[SerialLoopbackUnsignedByte,1,main])
-10853 ms. Memory: 861696K Free: 432583K (50%)
+11957 ms. Memory: 858624K Free: 527598K (61%)
 reloadAllAccessors: .SerialLoopbackUnsignedByte
 SerialPort: Serial port reader thread exiting. (Thread[Thread-58,1,main])
 SerialPort: Serial port writer thread exiting. (Thread[Thread-59,1,main])
------------------ Fri Apr 20 17:24:00 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
------------------ Reloaded Accessors and testing again Fri Apr 20 17:24:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+----------------- Wed Apr 25 00:39:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
+----------------- Reloaded Accessors and testing again Wed Apr 25 00:39:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml
 SerialPort: Closing serial port. (Thread[Thread-55,5,main])
-11682 ms. Memory: 861696K Free: 638376K (74%)
+11733 ms. Memory: 865280K Free: 756864K (87%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 </pre>
