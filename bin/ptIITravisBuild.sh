@@ -27,6 +27,7 @@
 #   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_RUN_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
 
 
 # Because we are using if statements, we use a script, see
@@ -66,6 +67,11 @@ fi
 echo "$0: maxTimeout: $maxTimeout"
 
 
+# Create token or key files that are secret.
+#
+# The problem is that some of the tests need a key or token to connect
+# to a database.  The solution is to use Travis' encryption keys.  See
+# https://docs.travis-ci.com/user/encryption-keys/
 set +x
 if [ ! -z "$SPACECADET_TOKEN" -a ! -f ~/.spacecadet ]; then
     echo "$SPACECADET_TOKEN" > ~/.spacecadet
@@ -94,14 +100,18 @@ if [ ! -z "$WEATHER_TOKEN" -a ! -f ~/.ptKeystore/weatherKey ]; then
     export WEATHER_TOKEN=resetByPtIITravisBuild.sh
 fi
 
+set -x
+
 # If the output is more than 10k lines, then Travis fails, so we
 # redirect voluminuous output into a log file.
 
-# Number of lines to show from the log file.
-lastLines=50
 
-# If Travis is running outside of a cronjob, then exit
-# See https://docs.travis-ci.com/user/cron-jobs/#Detecting-Builds-Triggered-by-Cron
+# If Travis is running outside of the Travis cron job, then exit.
+#
+# This means that we just run a smoke build most of the time, yet once
+# a day, we run a cron job.  To always run the tests, set RUN_TESTS to
+# true in the Travis environment variable settings.  See
+# https://docs.travis-ci.com/user/cron-jobs/#Detecting-Builds-Triggered-by-Cron
 exitIfNotCron () {
     if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
         if [ "$RUN_TESTS" = "true" ]; then
@@ -113,6 +123,50 @@ exitIfNotCron () {
             exit 0
         fi
     fi        
+}
+
+# Run the ant target named by the first argument.
+runTarget () {
+    target=$1
+    exitIfNotCron
+
+    # Download the codeDoc*.jar files so that the docManager.tcl test will pass.
+    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
+    for jar in $jars
+    do
+        echo "Downloading $jar: `date`"
+        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
+        ls -l $PTII/doc/$jar
+        (cd $PTII; jar -xf $PTII/doc/$jar)
+    done
+
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    log=$PTII/reports/junit/${target}.txt
+    timeout=`expr $maxTimeout - 700`
+    echo "$0: Output will appear in $log with timeout $timeout"
+    
+    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
+
+    # Number of lines to show from the log file.
+    lastLines=50
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $logG
+
+    # Check to see that the doclets were compiled.
+    echo "$PTII/doc/doclets:"
+    ls $PTII/doc/doclets/
+
+    # Check to see that a PtDoc file was created.
+    echo "$PTII/doc/JavaScript.xml"
+    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
+    
+    # Free up space for clone of gh-pages.
+    df -k .
+    rm -rf $PTII/adm/dists
+    ant clean
+
+    updateGhPages $PTII/reports/junit reports/
 }
 
 # Copy the file or directory named by
@@ -173,49 +227,8 @@ updateGhPages () {
 
     cd gh-pages
 
-    # # Delete report/junit/**/*.xml files that have a timestamp field older than one day.
-    # #
-    # # Using find on the file mod time does not work here.  It could be
-    # # Git not preserving the mod time, or it could be us removing the
-    # # GITHUB_TOKEN.  So, we look for the timestamp field.
-    # set +x
-    # filesToBeDeleted=""
-    # files=`find reports/junit -name "*.xml"`
-    # for file in $files
-    # do
-    #     grep timestamp $file >& /dev/null
-    #     status=$?
-    #     today=`date "+%Y-%m-%d"`
-    #     if [ $status -eq 0 ]; then
-    #         # echo $file
-    #         # Get the timestamp, convert it roughly to a day number, compare against today's day number
-    #         # and return 1 if the timestamp is more than one day old.  Leap years are ignored.
-    #         timestamp=`head -2 $file | grep timestamp | awk -F \" '{print $(NF-1)}' | awk -F T '{print $1}'`
-    #         older=`echo $timestamp |
-    #                     awk -v today=$today ' 
-    #                     BEGIN {
-    #                         mo["01"]=0; mo["02"]=31; mo["03"]=59; mo["04"]=90 
-    #                         mo["05"]=120; mo["06"]=151; mo["07"]=181; mo["08"]=212
-    #                         mo["Sep"]=243; mo["Oct"]=273; mo["Nov"]=304; mo["Dec"]=334
-    #                     } 
-    #                     {  
-    #                         split(today, todayYMD, "-")
-    #                         todayDoy = todayYMD[1] * 365 + mo[todayYMD[2]] + todayYMD[3]
-    #                         split($1, doyYMD, "-") 
-    #                         doy = doyYMD[1] *365 + mo[doyYMD[2]] + doyYMD[3]
-    #                         olderThanOneDay = (todayDoy - doy) > 1
-    #                         print olderThanOneDay
-    #                     }' -`
-    #          if [ $older -eq 1 ]; then
-    #              echo "$file: $timestamp is older than one day"
-    #              filesToBeDeleted="$filesToBeDeleted $file"
-    #          fi
-    #     fi
-    # done
-    # set -x
-
     if [ "$1" = "-clean" ]; then
-        # Don't remote the html files, we want to be able to browse them while the tests are being generated.
+        # Don't remove the html files, we want to be able to browse them while the tests are being generated.
         git rm -rf reports/junit/*.xml
         git commit -m "Travis Build gh-branch: Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
         git pull
@@ -236,6 +249,8 @@ updateGhPages () {
     fi
 
     if [ $1 = "-junitreport" ]; then
+        # Remove any preexisting report files.
+        git rm -rf reports/junit/html
         ant junitreport
     fi
 
@@ -265,7 +280,8 @@ updateGhPages () {
     date
     git status
 
-    # Commit and Push the Changes
+    # Commit and Push the Changes.
+    # Don't change 'Travis Build gh-branch' because people filter email on that string.
     git commit -m "Travis Build gh-branch: Latest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git pull
     git push origin gh-pages
@@ -275,6 +291,13 @@ updateGhPages () {
     rm -rf $TMP
     echo "updateGhPages(): End: `date`"
 }
+
+# Timeout a process.
+#
+# We used to use perl to send SIGALARM, but now we use the timeout
+# program to use kill -9.
+#
+# function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 
 # We use the timeout utility so that we can use kill -9
 # Mac: sudo port timeout
@@ -289,18 +312,21 @@ case `uname -s` in
         ;;
 esac     
 
-# Timeout a process.
-# function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+#########
 
 # Below here, the if statements should be in alphabetical order
 # according to variable name.
 
-# This build produces less than 10K lines, so we don't save the
-# output to a log file.
+
+# Just build the ptII tree.
+#
+# This target is always run.  This target produces less than 10K
+# lines, so we don't save the output to a log file.
 if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     ant build-all;
 fi
 
+# Build the docs, which are used by other targets.
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     exitIfNotCron
 
@@ -322,30 +348,12 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
-# This build produces less than 10K lines, so we don't save the
-# output to a log file.
-if [ ! -z "$PT_TRAVIS_GITHUB_ISSUE_JUNIT" ]; then
-    exitIfNotCron
-
-    mkdir node_modules
-    npm install @icyphy/github-issue-junit
-    export JUNIT_LABEL=junit-results
-    export JUNIT_RESULTS_NOT_DRY_RUN=false
-    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
-    (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
-fi
-
-# Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
+# Quickly test Travis.
+#
+# This target is not regularly run, it quickly runs "ant -p" and then
+# updated the gh-pages repo.
 if [ ! -z "$PT_TRAVIS_P" ]; then
-    exitIfNotCron
-
-    LOG=$PTII/logs/ant_p.txt
-    echo "$0: Output will appear in $LOG"
-    ant -p 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages $LOG logs/
+    runTarget -p
 fi
 
 # Prime the cache in $PTII/vendors/installer so that the installers
@@ -362,125 +370,65 @@ fi
 
 # Run the first batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
-    exitIfNotCron
-
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.capecode1.xml.txt
-    TIMEOUT=`expr $maxTimeout - 300`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode1.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages -junitreport $PTII/reports/junit reports/
+    runTarget test.capecode1.xml
 fi
 
 # Run the second batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE2_XML" ]; then
-    exitIfNotCron
-
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.capecode2.xml.txt
-    TIMEOUT=`expr $maxTimeout - 100`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode2.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages -junitreport $PTII/reports/junit reports/
+    runTarget test.capecode2.xml
 fi
 
 # Run the third batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE3_XML" ]; then
-    exitIfNotCron
-
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.capecode3.xml.txt
-    TIMEOUT=`expr $maxTimeout - 800`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.capecode3.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages -junitreport $PTII/reports/junit reports/
+    runTarget test.capecode3.xml
 fi
 
 # Run the first batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
-    exitIfNotCron
-    
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.core1.xml.txt
-    TIMEOUT=`expr $maxTimeout - 300`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core1.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages -junitreport $PTII/reports/junit reports/
+    runTarget test.core1.xml.txt
 fi
 
 # Run the second batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
-    exitIfNotCron
-
-    # Download the codeDoc*.jar files so that the docManager.tcl test will pass.
-    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
-    for jar in $jars
-    do
-        echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
-        ls -l $PTII/doc/$jar
-        (cd $PTII; jar -xf $PTII/doc/$jar)
-    done
-
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.core2.xml.txt
-    TIMEOUT=`expr $maxTimeout - 700`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core2.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-
-    # Check to see that the doclets were compiled.
-    echo "$PTII/doc/doclets:"
-    ls $PTII/doc/doclets/
-
-    # Check to see that a PtDoc file was created.
-    echo "$PTII/doc/JavaScript.xml"
-    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
-    
-    updateGhPages -junitreport $PTII/reports/junit reports/
+    runTarget test.core2.xml.txt
 fi
 
 # Run the third batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
-    exitIfNotCron
+    runTarget test.core3.xml.txt
+fi
 
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.core3.xml.txt
-    TIMEOUT=`expr $maxTimeout - 250`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core3.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
+# Run the fourth batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
+    runTarget test.core4.xml.txt
+fi
 
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
+# Build the installers.
+if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
+    runTests test.installers
+    ls -l $PTII/adm/gen-11.0
+    # We use Travis-ci deploy to upload the release because GitHub has
+    # a 100Mb limit unless we use Git LFS.
+fi
+
+
+# Run the short tests.
+# This target is not typically used, we use the core targets instead.
+if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
+    runTarget test.report.short
+fi
+
+# Run junitreport and update https://github.com/icyphy/ptII/issues/1
+#
+# This target is in the deploy stage, which is run after the other
+# targets that generate test data using JUnit.  See
+# https://docs.travis-ci.com/user/build-stages/
+if [ ! -z "$PT_TRAVIS_RUN_JUNITREPORT" ]; then
+    #exitIfNotCron
     updateGhPages -junitreport $PTII/reports/junit reports/
 
-    # This target runs the longest, so at the end, update the issue with the results.
+    # Update https://github.com/icyphy/ptII/issues/1
+    # See https://github.com/icyphy/github-issue-junit
     mkdir node_modules
     npm install @icyphy/github-issue-junit
     export JUNIT_LABEL=junit-results
@@ -488,93 +436,3 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 fi
-
-# Run the fourth batch of core tests.
-if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
-    exitIfNotCron
-
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.core4.xml.txt
-    TIMEOUT=`expr $maxTimeout - 600`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    $TIMEOUTCOMMAND $TIMEOUT ant build test.core4.xml 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages -junitreport $PTII/reports/junit reports/
-fi
-
-# Build the installers.
-if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
-    exitIfNotCron
-
-    LOG=$PTII/logs/installers.txt
-    TIMEOUT=`expr $maxTimeout - 400`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-    
-    # Copy any jar files that may have previously been created so that
-    # the build is faster.
-    jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
-    for jar in $jars
-    do
-        echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
-        ls -l $PTII/doc/$jar
-        (cd $PTII; jar -xf $PTII/doc/$jar)
-    done
-
-    # If the cache of OpenCV is failing to load, then comment out the
-    # build here and the deploy section in .travis.yml so that this
-    # target can run to completion.
-    $TIMEOUTCOMMAND $TIMEOUT ant test.installers 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG
- 
-    # Free up space for clone of gh-pages
-    df -k .
-    rm -rf $PTII/adm/dists
-    ant clean
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    cp $LOG $PTII/reports/junit
-    updateGhPages -junitreport $PTII/reports/junit reports/
-
-    ls -l $PTII/adm/gen-11.0
-
-    # We use Travis-ci deploy to upload the release because GitHub has
-    # a 100Mb limit unless we use Git LFS.
-fi
-
-
-# Run the short tests.
-if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
-    exitIfNotCron
-
-    # Keep the log file in reports/junit so that we only need to
-    # invoke updateGhPages once per target.
-    LOG=$PTII/reports/junit/test.report.short.txt
-    TIMEOUT=`expr $maxTimeout - 800`
-    echo "$0: Output will appear in $LOG with timeout $TIMEOUT"
-
-    # Copy just codeDoc.jar from the release.
-    # doc/test/docManager.tcl needs this.
-    jar=codeDoc.jar
-    if [ ! -f $PTII/doc/codeDoc.jar ]; then
-        echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
-        ls -l $PTII/doc/$jar
-    fi
-    echo "Unjarring $PTII/doc/$jar: `date`"
-    (cd $PTII; jar -xf $PTII/doc/$jar)
-
-    echo "Invoking ant: `date`"
-    # The timeouts should vary so as to avoid git conflicts.
-    # Use build-all so that we build in lbnl.
-    $TIMEOUTCOMMAND $TIMEOUT ant build-all test.report.short 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-
-    echo "$0: Start of last $lastLines lines of $LOG"
-    tail -$lastLines $LOG
-    updateGhPages -junitreport $PTII/reports/junit reports/
-fi
-

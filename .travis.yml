@@ -131,6 +131,14 @@ script:
   - kill %1
 
 
+# See https://docs.travis-ci.com/user/build-stages/ and
+# https://docs.travis-ci.com/user/build-stages/matrix-expansion/
+jobs:
+  include:
+    - stage: deploy
+      script: $PTII/bin/ptIITravisBuild.sh $SECONDS
+      env: PT_TRAVIS_RUN_JUNITREPORT=true
+
 # See https://docs.travis-ci.com/user/caching
 cache:
   directories:
