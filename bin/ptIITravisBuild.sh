@@ -67,6 +67,26 @@ fi
 echo "$0: maxTimeout: $maxTimeout"
 
 
+# Timeout a process.
+#
+# We used to use perl to send SIGALARM, but now we use the timeout
+# program to use kill -9.
+#
+# function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+
+# We use the timeout utility so that we can use kill -9
+# Mac: sudo port timeout
+
+case `uname -s` in
+    Darwin)
+        echo "If necessary, install timeout with 'sudo port timeout'"
+        TIMEOUTCOMMAND='timeout -9'
+        ;;
+    *)
+        TIMEOUTCOMMAND='timeout -s 9'
+        ;;
+esac     
+
 # Create token or key files that are secret.
 #
 # The problem is that some of the tests need a key or token to connect
@@ -151,7 +171,7 @@ runTarget () {
     # Number of lines to show from the log file.
     lastLines=50
     echo "$0: Start of last $lastLines lines of $log"
-    tail -$lastLines $logG
+    tail -$lastLines $log
 
     # Check to see that the doclets were compiled.
     echo "$PTII/doc/doclets:"
@@ -292,25 +312,6 @@ updateGhPages () {
     echo "updateGhPages(): End: `date`"
 }
 
-# Timeout a process.
-#
-# We used to use perl to send SIGALARM, but now we use the timeout
-# program to use kill -9.
-#
-# function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
-
-# We use the timeout utility so that we can use kill -9
-# Mac: sudo port timeout
-
-case `uname -s` in
-    Darwin)
-        echo "If necessary, install timeout with 'sudo port timeout'"
-        TIMEOUTCOMMAND='timeout -9'
-        ;;
-    *)
-        TIMEOUTCOMMAND='timeout -s 9'
-        ;;
-esac     
 
 #########
 
@@ -404,11 +405,12 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
 fi
 
 # Build the installers.
+#
+# We use Travis-ci deploy to upload the release because GitHub has a
+# 100Mb limit unless we use Git LFS.
 if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
     runTests test.installers
     ls -l $PTII/adm/gen-11.0
-    # We use Travis-ci deploy to upload the release because GitHub has
-    # a 100Mb limit unless we use Git LFS.
 fi
 
 
@@ -424,7 +426,7 @@ fi
 # targets that generate test data using JUnit.  See
 # https://docs.travis-ci.com/user/build-stages/
 if [ ! -z "$PT_TRAVIS_RUN_JUNITREPORT" ]; then
-    #exitIfNotCron
+    exitIfNotCron
     updateGhPages -junitreport $PTII/reports/junit reports/
 
     # Update https://github.com/icyphy/ptII/issues/1
