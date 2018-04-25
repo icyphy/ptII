@@ -8,12 +8,26 @@
 # This script is called by $PTII/.travis.yml as part of the Travis-ci
 # build at https://travis-ci.org/icyphy/ptII/
 
-# This script depends on a number of environment variables being passed to it.
+# Because we are using if statements, we use a script instead of
+# trying to do all of this in $PTII/.travis.yml, see
+# https://groups.google.com/forum/#!topic/travis-ci/uaAP9zEdiCg
+# http://steven.casagrande.io/articles/travis-ci-and-if-statements/
 
 # The script invokes various builds depending on various environment variables.
 
+# This script depends on a number of environment variables being passed to it.
 
-# To test, set the environment variable:
+# To test, set the environment variable(s) and invoke the script.
+#
+# GITHUB_TOKEN is used to update the gh-pages branch of the ptII repo
+# and the deployment area at https://github.com/icyphy/ptII/releases
+#
+# PT_TRAVIS* Variables that start with "PT_TRAVIS" name targets in this file.
+#
+# GEOCODING_TOKEN, SPACECADET_TOKEN, WEATHER_TOKEN are used to set up keys
+
+# Below are the comamands to run to try out various targets:
+#
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
@@ -28,11 +42,6 @@
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_RUN_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
-
-
-# Because we are using if statements, we use a script, see
-# https://groups.google.com/forum/#!topic/travis-ci/uaAP9zEdiCg
-# http://steven.casagrande.io/articles/travis-ci-and-if-statements/
 
 if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
@@ -92,6 +101,8 @@ esac
 # The problem is that some of the tests need a key or token to connect
 # to a database.  The solution is to use Travis' encryption keys.  See
 # https://docs.travis-ci.com/user/encryption-keys/
+
+# Use set +x to hide the token
 set +x
 if [ ! -z "$SPACECADET_TOKEN" -a ! -f ~/.spacecadet ]; then
     echo "$SPACECADET_TOKEN" > ~/.spacecadet
@@ -99,6 +110,7 @@ if [ ! -z "$SPACECADET_TOKEN" -a ! -f ~/.spacecadet ]; then
     export SPACECADET_TOKEN=resetByPtIITravisBuild.sh
 fi
 
+# Use set +x to hide the token
 set +x
 if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
     if [ ! -d ~/.ptKeystore ]; then
@@ -110,6 +122,7 @@ if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
 fi
 
 # Used by ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml 
+# Use set +x to hide the token
 set +x
 if [ ! -z "$WEATHER_TOKEN" -a ! -f ~/.ptKeystore/weatherKey ]; then
     if [ ! -d ~/.ptKeystore ]; then
@@ -148,6 +161,8 @@ exitIfNotCron () {
 # Run the ant target named by the first argument.
 runTarget () {
     target=$1
+
+    # Exit if we are not running a Travis cron job and RUN_TESTS is not set to true.
     exitIfNotCron
 
     # Download the codeDoc*.jar files so that the docManager.tcl test will pass.
@@ -163,9 +178,13 @@ runTarget () {
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     log=$PTII/reports/junit/${target}.txt
-    timeout=`expr $maxTimeout - 700`
+
+    # FIXME: we probably want to vary the timeout so that we can avoid
+    # git conflicts.
+    timeout=`expr $maxTimeout - 300`
     echo "$0: Output will appear in $log with timeout $timeout"
     
+    # Run the command and log the output.
     $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
 
     # Number of lines to show from the log file.
@@ -190,7 +209,7 @@ runTarget () {
 }
 
 # Copy the file or directory named by
-# source-file-or-directory to directory-in-gh-pages.  For example
+# source-file-or-directory to directory-in-gh-pages.  For example:
 #   updateGhPages logs/installers.txt logs
 # will copy logs/installers.txt to logs in the gh-pages and push it.
 # If the last argument ends in a /, then a directory by that name is created.
@@ -250,6 +269,7 @@ updateGhPages () {
     if [ "$1" = "-clean" ]; then
         # Don't remove the html files, we want to be able to browse them while the tests are being generated.
         git rm -rf reports/junit/*.xml
+        # Don't change 'Travis Build gh-branch' because people filter email on that string.
         git commit -m "Travis Build gh-branch: Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
         git pull
         git push origin gh-pages
@@ -349,6 +369,7 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
 fi
 
+
 # Quickly test Travis.
 #
 # This target is not regularly run, it quickly runs "ant -p" and then
@@ -356,6 +377,7 @@ fi
 if [ ! -z "$PT_TRAVIS_P" ]; then
     runTarget -p
 fi
+
 
 # Prime the cache in $PTII/vendors/installer so that the installers
 # target is faster.
@@ -368,6 +390,7 @@ if [ ! -z "$PT_TRAVIS_PRIME_INSTALLER" ]; then
     make -C $PTII/adm/gen-11.0 USER=travis PTIIHOME=$PTII COMPRESS=gzip prime_installer
     ls $PTII/vendors/installer
 fi
+
 
 # Run the first batch of CapeCode tests.
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE1_XML" ]; then
@@ -401,17 +424,19 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     runTarget test.core3.xml
 fi
 
+
 # Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     runTarget test.core4.xml
 fi
+
 
 # Build the installers.
 #
 # We use Travis-ci deploy to upload the release because GitHub has a
 # 100Mb limit unless we use Git LFS.
 if [ ! -z "$PT_TRAVIS_TEST_INSTALLERS" ]; then
-    runTests test.installers
+    runTarget test.installers
     ls -l $PTII/adm/gen-11.0
 fi
 
@@ -421,6 +446,7 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     runTarget test.report.short
 fi
+
 
 # Run junitreport and update https://github.com/icyphy/ptII/issues/1
 #
