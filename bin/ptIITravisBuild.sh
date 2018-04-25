@@ -135,7 +135,7 @@ set -x
 exitIfNotCron () {
     if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
         if [ "$RUN_TESTS" = "true" ]; then
-            echo "$0: RUN_TESTS was set to true, so the tests are being run even though TRAVIS_EVENT_TYPE is $TRAVIS_EVENT_TYPE, which is != true."
+            echo "$0: RUN_TESTS was set to true, so the tests are being run even though TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", which is != cron."
         else
             echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", so this target is *not* being run."
             echo "$0: If you want to run the tests anyway, then set RUN_TESTS to true in https://travis-ci.org/icyphy/ptII/settings"
@@ -386,23 +386,24 @@ fi
 
 # Run the first batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE1_XML" ]; then
-    runTarget test.core1.xml.txt
+    runTarget test.core1.xml
 fi
 
 # Run the second batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
-    runTarget test.core2.xml.txt
+    runTarget test.core2.xml
+    ant
     $PTII/ptolemy/domains/space/demo/DOPCenter/updateDOPCenterImage
 fi
 
 # Run the third batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
-    runTarget test.core3.xml.txt
+    runTarget test.core3.xml
 fi
 
 # Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
-    runTarget test.core4.xml.txt
+    runTarget test.core4.xml
 fi
 
 # Build the installers.
