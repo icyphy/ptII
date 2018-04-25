@@ -71,13 +71,13 @@ Caused by: java.io.IOException: Cannot read file '/tmp/movieOut.mov' or '/tmp/mo
 	at ptolemy.util.FileUtilities.nameToURL(FileUtilities.java:692)
 	at ptolemy.data.expr.FileParameter.asURL(FileParameter.java:252)
 	... 26 more
-Failed to configure: com.sun.media.PlaybackEngine@143caa1
+Failed to configure: com.sun.media.PlaybackEngine@361c9df9
   Bad header in the media: : Bad Atom size 0
 
-Error: Unable to realize com.sun.media.PlaybackEngine@143caa1
+Error: Unable to realize com.sun.media.PlaybackEngine@361c9df9
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exception thrown by media framework on com.sun.media.protocol.file.DataSource@95844d4
+Caused by: ptolemy.kernel.util.IllegalActionException: Exception thrown by media framework on com.sun.media.protocol.file.DataSource@72ce50c7
   in .StreamLoader.VideoPlayer
 Because:
 javax.media.CannotRealizeException
@@ -110,7 +110,7 @@ java.lang.reflect.InvocationTargetException
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exception thrown by media framework on com.sun.media.protocol.file.DataSource@95844d4
+Caused by: ptolemy.kernel.util.IllegalActionException: Exception thrown by media framework on com.sun.media.protocol.file.DataSource@72ce50c7
   in .StreamLoader.VideoPlayer
 Because:
 javax.media.CannotRealizeException
