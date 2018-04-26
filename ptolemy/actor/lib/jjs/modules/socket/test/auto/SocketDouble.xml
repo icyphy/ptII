@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{424.6071564288269, 202.70637461999286}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -53,7 +53,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4091,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -87,7 +87,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType')&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data + 1.0);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4091,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType')&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data + 1.0);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -198,7 +198,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4091,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -268,7 +268,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{855.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 330.0]">
         </property>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -279,7 +279,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Emit a true if all of the inputs have received a true.&#10; *  If the timeout is non-zero, then emit a true after the timeout.&#10; *&#10; *  This accessor is typically used to stop a model after all&#10; *  of the TrainableTest accessors have emitted a true.&#10; *&#10; *  @input input1 The first input&#10; *  @input input2 the second input&#10; *  @output output True if the inputs have seen true or if the&#10; *  timeout has occurred&#10; *  @param timeout If non-zero, the timeout in milliseconds.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2'); &#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = this.get('input1');&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;	self.sawInput2 = this.get('input2');&#10; 	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;&#10;    if (this.getParameter('timeout') &gt; 0) {&#10;        setTimeout(function () {&#10;	    console.log('JavaScriptBarrier: sending true after timeout.');&#10;	    self.send('output', true);&#10;        }, this.getParameter('timeout'));&#10;    }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Emit a true if all of the inputs have received a true.&#10; *  If the timeout is non-zero, then emit a true after the timeout.&#10; *&#10; *  This accessor is typically used to stop a model after all&#10; *  of the TrainableTest accessors have emitted a true.&#10; *&#10; *  @input input1 The first input&#10; *  @input input2 the second input&#10; *  @output output True if the inputs have seen true or if the&#10; *  timeout has occurred&#10; *  @param timeout If non-zero, the timeout in milliseconds.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;var sawInput3 = false;&#10;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2'); &#10;    this.input('input3');&#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = this.get('input1');&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;	self.sawInput2 = this.get('input2');&#10; 	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input3', function() {&#10;	self.sawInput3 = this.get('input3');&#10; 	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;&#10;    if (this.getParameter('timeout') &gt; 0) {&#10;        setTimeout(function () {&#10;	    console.log('JavaScriptBarrier: sending true after timeout.');&#10;	    self.send('output', true);&#10;        }, this.getParameter('timeout'));&#10;    }&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -291,7 +291,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{745.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 330.0]">
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter">
         </property>
@@ -303,6 +303,9 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="input3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -363,6 +366,8 @@
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Client.toSend" relation="relation"/>
     <link port="Client.reply" relation="relation4"/>
     <link port="Server.listening" relation="relation6"/>
@@ -376,8 +381,9 @@
     <link port="Const2.output" relation="relation8"/>
     <link port="Const2.trigger" relation="relation7"/>
     <link port="Test.input" relation="relation3"/>
+    <link port="Test.output" relation="relation11"/>
     <link port="Test2.input" relation="relation4"/>
-    <link port="Test2.output" relation="relation11"/>
+    <link port="Test2.output" relation="relation9"/>
     <link port="Test3.input" relation="relation5"/>
     <link port="Test3.output" relation="relation10"/>
     <link port="Client3.toSend" relation="relation8"/>
@@ -386,8 +392,9 @@
     <link port="ClientReceived.input" relation="relation5"/>
     <link port="DownSample.input" relation="relation2"/>
     <link port="DownSample.output" relation="relation7"/>
-    <link port="Stop.stop" relation="relation9"/>
-    <link port="And.input1" relation="relation11"/>
+    <link port="Stop.stop" relation="relation12"/>
+    <link port="And.input1" relation="relation9"/>
     <link port="And.input2" relation="relation10"/>
-    <link port="And.output" relation="relation9"/>
+    <link port="And.output" relation="relation12"/>
+    <link port="And.input3" relation="relation11"/>
 </entity>
