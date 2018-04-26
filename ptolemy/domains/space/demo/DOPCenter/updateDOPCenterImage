@@ -20,10 +20,7 @@
 # Use a png because there is already a .gif that is the background.
 # Note that png does not reliably display under Windows XP or Windows Server 2003.
 
-# Do a svn update on DOPCenter.png so as to avoid a conflict if a
-# second build is running somewhere.
 rm DOPCenter.png
-svn update DOPCenter.png
 
 cp DOPCenter.png DOPCenter.png.orig
 
@@ -37,8 +34,8 @@ status=$?
 if [ $status -ne 0 ]; then
    #echo "Added a 'Last Update Line'"
    #mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
-   echo "Committing changed files"
-   svn commit -m "Automatic update" DOPCenter.png DOPCenter.xml
+   #echo "Committing changed files"
+   #svn commit -m "Automatic update" DOPCenter.png DOPCenter.xml
 fi
 rm DOPCenter.png.orig
 
@@ -48,11 +45,24 @@ rm DOPCenter.png.orig
 # Create Placard.tex.
 $PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication Placard.xml
 
-# Create Placard.pdf, which changes each time, so it is not checked in.
-pdflatex Placard.tex
-
+if [ -f Placard.tex ]; then
+    # Create Placard.pdf, which changes each time, so it is not checked in.
+    pdflatex Placard.tex
+    if [ ! -f Placard.pdf ]; then
+        echo "$0: Failed to create Placard.pdf in `pwd`."
+        exit 2
+    fi
+else
+    echo "$0: `pwd`/Placard.tex does not exist?"
+    exit 3
+fi    
 # Clean up junk created by pdflatex and Ptolemy II.
 rm Placard.aux Placard.log
 
 # Update DOP.csv
 $PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication DOPCSV.xml
+
+if [ ! -f DOP.csv ]; then
+    echo "$0: Failed to create DOP.csv in `pwd`"
+fi    
+
