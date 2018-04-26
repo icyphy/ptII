@@ -1,0 +1,25 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 566.
+Value was: 16.9908933374105. Should have been: 1.6675178986274
+  in .FFTTest.TMCompositeFacade.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.actor.AtomicActor.iterate(AtomicActor.java:512)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.domains.tm.kernel.TMDirector.prefire(TMDirector.java:630)
+	at ptolemy.actor.CompositeActor.prefire(CompositeActor.java:1730)
+	at ptolemy.actor.Manager.iterate(Manager.java:850)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+</pre>
+</body>
+</html>
