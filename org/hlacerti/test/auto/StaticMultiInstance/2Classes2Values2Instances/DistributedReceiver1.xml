@@ -19,10 +19,10 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.55681818181813, 343.3394886363636}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver1TAR&quot;">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;ReceiverTAR222&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance222&quot;">
             <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance.fed">
