@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="3" failures="2" hostname="travis-job-a0348d46-1280-48b1-be4a-b8281696e2ae" name="ptolemy.configs.test.junit.JUnitTclTest" skipped="0" tests="9" time="1595.298" timestamp="2018-04-26T06:18:18">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="312.6" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="env.RUN_TESTS" value="true" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="env.PT_TRAVIS_TEST_CORE1_XML" value="true" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.2 46076 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="build,test.core1.xml" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.2 46076 10.20.0.69 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.configs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.configs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7325364417110546104.properties propsfile=/home/travis/build/icyphy/ptII/junit8101103006798180095.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="465b6dae8c16...c0cee0e6a7c4" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/timeout" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx1024m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="312" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="371403832" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="c0cee0e6a7c4984c2355c700cbff073413e225dd" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="More test tuning." />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/configs/test" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="Test" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="java.class.path" value="/home/travis/.ptolemyII:/home/travis/.ptolemyII/*:/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_JOB_ID" value="371403838" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="user.country" value="US" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="java.maxmemory.large" value="8000m" />
+    <property name="model" value="" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl (RunTclFile)" time="1361.137">
+    <error message="Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.&#xa;The Tcl errorInfo variable could not be obtained.&#xa;java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.&#xa;The Tcl errorInfo global variable has the value:&#xa;java.lang.OutOfMemoryError: GC overhead limit exceeded&#xa;    while executing&#xa;&quot;$parser {parse java.net.URL java.net.URL} $URL $URL&quot;&#xa;    invoked from within&#xa;&quot;set object [$parser {parse java.net.URL java.net.URL} $URL $URL]&quot;&#xa;    (&quot;foreach&quot; body line 73)&#xa;    invoked from within&#xa;&quot;foreach i $configs {&#xa;&#xa;    &#xa;    if {[regexp &quot;jxta/&quot; $i] == 1} {&#xa;&#x9;puts &quot;Skipping $i, running vergil -jxta brings up a window&quot;&#xa;&#x9;continue&#xa;    }&#xa;&#xa;    if {[...&quot;&#xa;    (file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot; line 157)" type="java.lang.Exception">java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.
+The Tcl errorInfo variable could not be obtained.
+java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot;resulted in a TclException being thrown.
+The Tcl errorInfo global variable has the value:
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+    while executing
+&quot;$parser {parse java.net.URL java.net.URL} $URL $URL&quot;
+    invoked from within
+&quot;set object [$parser {parse java.net.URL java.net.URL} $URL $URL]&quot;
+    (&quot;foreach&quot; body line 73)
+    invoked from within
+&quot;foreach i $configs {
+
+    
+    if {[regexp &quot;jxta/&quot; $i] == 1} {
+	puts &quot;Skipping $i, running vergil -jxta brings up a window&quot;
+	continue
+    }
+
+    if {[...&quot;
+    (file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl&quot; line 157)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:260)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+Caused by: java.lang.reflect.InvocationTargetException
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+Caused by: tcl.lang.ReflectException
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:257)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl (RunTclFile)" time="0.008">
+    <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;4&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;4&gt;
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+</failure>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl (RunTclFile)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl (RunTclFile)" time="15.783">
+    <error message="Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl&quot;resulted in a TclException being thrown.&#xa;The Tcl errorInfo variable could not be obtained.&#xa;java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl&quot;resulted in a TclException being thrown.&#xa;The Tcl errorInfo global variable has the value:&#xa;java.lang.OutOfMemoryError: GC overhead limit exceeded&#xa;    while executing&#xa;&quot;$configuration description&quot;&#xa;    (file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl&quot; line 55)" type="java.lang.Exception">java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl&quot;resulted in a TclException being thrown.
+The Tcl errorInfo variable could not be obtained.
+java.lang.Exception: Evaluating the Tcl file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl&quot;resulted in a TclException being thrown.
+The Tcl errorInfo global variable has the value:
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+    while executing
+&quot;$configuration description&quot;
+    (file &quot;/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl&quot; line 55)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:260)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+Caused by: java.lang.reflect.InvocationTargetException
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+Caused by: tcl.lang.ReflectException
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:257)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)" time="184.48">
+    <failure message="Number of failed tests is has increased. expected:&lt;4&gt; but was:&lt;6&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;4&gt; but was:&lt;6&gt;
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+</failure>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl (RunTclFile)" time="19.783">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+Caused by: java.lang.OutOfMemoryError: GC overhead limit exceeded
+</error>
+  </testcase>
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.004" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="3.447" />
+  <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 26 06:18:18 UTC 2018
+ Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+---- Second call to Configuration.check
+-------> Before clone
+-------> after clone
+ Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+---- Second call to Configuration.check
+-------> Before clone
+-------> after clone
+ Force everything to get expanded ptolemy/configs/space/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+---- Second call to Configuration.check
+Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
+-------> Before clone
+-------> after clone
+ Force everything to get expanded ptolemy/configs/dsp/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+---- Second call to Configuration.check
+Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
+-------> Before clone
+-------> after clone
+Skipping viptos/configuration.xml, PtinyOS is not typically installed.
+ Force everything to get expanded ptolemy/configs/pn/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+---- Second call to Configuration.check
+Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
+-------> Before clone
+-------> after clone
+ Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+---- Second call to Configuration.check
+Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
+-------> Before clone
+-------> after clone
+ Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+---- Second call to Configuration.check
+Skipping StateSpaceModel as this test iterates through the attributes and calls attributeChanged, which triggers a ConcurrentModificationException.  See org/ptolemy/ssm/test/SSMTest.java
+Skipping StateSpaceModel as this test iterates through the attributes and calls attributeChanged, which triggers a ConcurrentModificationException.  See org/ptolemy/ssm/test/SSMTest.java
+Skipping StateSpaceModel as this test iterates through the attributes and calls attributeChanged, which triggers a ConcurrentModificationException.  See org/ptolemy/ssm/test/SSMTest.java
+Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
+-------> Before clone
+-------> after clone
+ Force everything to get expanded ptolemy/configs/capecode/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/audio/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cameras/index.json
+No physical cameras found, using WebcamDummyDriver.
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/devices/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/image/index.json
+CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
+CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/net/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/robotics/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/geodesy/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/services/index.json
+Heartbeat: Heartbeat: Could not get $KEYSTORE/heartbeatKey:  ptolemy.kernel.util.IllegalActionException: Failed to read URI: /home/travis/.ptKeystore/heartbeatKey
+  in .configuration.actor library.Accessors.services.Heartbeat
+Because:
+Cannot read file '/home/travis/.ptKeystore/heartbeatKey' or '/home/travis/.ptKeystore/heartbeatKey'
+The key is not public, so this accessor is only useful If you have the key.  See https://www.icyphy.org/accessors/library/index.html?accessor=services.Heartbeat (Thread[main,5,main])
+Heartbeat: Heartbeat: Could not get $KEYSTORE/heartbeatKey:  ptolemy.kernel.util.IllegalActionException: Failed to read URI: /home/travis/.ptKeystore/heartbeatKey
+  in .configuration.actor library.Accessors.services.Heartbeat
+Because:
+Cannot read file '/home/travis/.ptKeystore/heartbeatKey' or '/home/travis/.ptKeystore/heartbeatKey'
+The key is not public, so this accessor is only useful If you have the key.  See https://www.icyphy.org/accessors/library/index.html?accessor=services.Heartbeat (Thread[main,5,main])
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/signals/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/test/index.json
+Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/utilities/index.json
+The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
+-------> Before clone
+-------> after clone
+
+Warning: In 'ptolemy.actor.lib.io.FileReader'
+  The getName() method returns
+   'fileOrURL' but the  field is named
+   'fileOrURLPort'
+   This is technically a violation  of the coding standard,
+   but permissible because the name  ends in 'Port'
+CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
+
+
+==== $PTII/ptolemy/configs/test/allConfigs.tcl: capecode/configuration.xml-3.1 Test to see if capecode/configuration.xml contains any actors whose type constraints don't clone
+==== Contents of test case:
+
+	    set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
+	    # FIXME: Need to call this twice to find problems with RecordAssembler.
+	    puts "---- Second call to Configuration.check"
+	    set results2 [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
+   	    # Don't call return as the last line of a test proc, since return
+	    # throws an exception.
+	    list $results $results2
+    
+==== Test generated error:
+    while executing
+ptolemy.kernel.util.InternalErrorException: The check for clone methods properly setting the fields failed.
+  in .configuration.actor library.Accessors.net.SecureCommClient
+Because:
+GC overhead limit exceeded
+	at ptolemy.actor.gui.Configuration.check(Configuration.java:424)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+Caused by: java.lang.OutOfMemoryError: GC overhead limit exceeded
+Caused by: java.lang.OutOfMemoryError: GC overhead limit exceeded
+
+    while executing
+ptolemy.kernel.util.InternalErrorException: The check for clone methods properly setting the fields failed.
+  in .configuration.actor library.Accessors.net.SecureCommClient
+Because:
+GC overhead limit exceeded
+    while executing
+"[java::cast ptolemy.actor.gui.Configuration $configuration] check"
+    invoked from within
+"set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]"
+    ("uplevel" body line 2)
+    invoked from within
+"uplevel $contents_of_test"
+
+
+==== $PTII/ptolemy/configs/test/allConfigs.tcl: capecode/configuration.xml-4.1 Test to see if capecode/configuration.xml contains any actors that might not drag and drop properly by creating ChangeRequests 
+==== Contents of test case:
+
+
+	# This test caught a problem with AudioReader, where the initial
+	# default source URL parameter had a bogus value.
+
+	# Create a base model.
+	set baseModel {<?xml version="1.0" standalone="no"?>
+	    <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+	    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+	    <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+	    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+	    <property name="iterations" value="2"/>
+	    </property>
+	    </entity>
+	}
+
+	set parser [java::new ptolemy.moml.MoMLParser]
+	$parser reset
+	set toplevel [java::cast ptolemy.actor.CompositeActor  [$parser parse $baseModel]]
+	set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+	$toplevel setManager $manager
+	
+
+	# Set up a StreamChangeListener to listen for errors
+	set stream [java::new java.io.ByteArrayOutputStream]
+	set printStream [java::new  {java.io.PrintStream java.io.OutputStream} $stream]
+	set listener [java::new ptolemy.kernel.util.StreamChangeListener  $printStream]
+	$toplevel addChangeListener $listener
+
+	set cloneConfiguration  [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	for {set iterator [$entityList iterator]}  {[$iterator hasNext] == 1} {} {
+   	    set entity [$iterator next]
+	    
+	    #puts [$entity toString]
+	    #if [java::instanceof $entity ptolemy.kernel.util.NamedObj] {
+	    #	puts [[java::cast ptolemy.kernel.util.NamedObj $entity]  #		  getName]
+	    #}
+
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		#puts "Actor: [$actor getFullName]"
+		set actorName [$actor getFullName]
+                if [regexp {StateSpaceModel} $actorName] {
+                    puts "Skipping StateSpaceModel as this test iterates through the attributes and calls attributeChanged, which triggers a ConcurrentModificationException.  See org/ptolemy/ssm/test/SSMTest.java"
+                }  {
+		    if [catch {set r [_dropTest $toplevel $actor $cloneConfiguration $stream $printStream 0]} errMsg] {
+			lappend results "Drag and Drop test of actor: [$actor getFullName] failed:\n$errMsg\n[jdkStackTrace]"
+		    }
+		}
+		if {[llength $r] != 0} {
+		    lappend results $r
+		}
+	    }
+
+        }
+	list $results
+    
+==== Test generated error:
+    while executing
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+
+    while executing
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+    while executing
+"$configuration clone"
+    invoked from within
+"java::cast ptolemy.kernel.CompositeEntity [$configuration clone]"
+    invoked from within
+"set cloneConfiguration  [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]"
+    ("uplevel" body line 30)
+    invoked from within
+"uplevel $contents_of_test"
+
+
+==== $PTII/ptolemy/configs/test/allConfigs.tcl: capecode/configuration.xml-4.2 Test to see if capecode/configuration.xml contains any attributes that might not drag and drop properly by creating ChangeRequests 
+==== Contents of test case:
+
+
+	# Use the baseModel from 4.1 above
+
+	# Set up a StreamChangeListener to listen for errors
+	set stream [java::new java.io.ByteArrayOutputStream]
+	set printStream [java::new  {java.io.PrintStream java.io.OutputStream} $stream]
+	set listener [java::new ptolemy.kernel.util.StreamChangeListener  $printStream]
+	$toplevel addChangeListener $listener
+
+	set cloneConfiguration  [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+
+	set entityList [$configuration deepNamedObjList]
+	set results {}
+	set count 0
+	for {set iterator [$entityList iterator]}  {[$iterator hasNext] == 1} {} {
+		set object [$iterator next]
+		#puts "6Attribute: [$object toString]"
+		if [java::instanceof $object ptolemy.moml.EntityLibrary] {
+		    #puts "---------- [$object toString]"
+
+		    # FIXME: I don't understand why I need to expand the entityLibraries
+		    # and get the attributes?
+		    set entityLibrary [java::cast ptolemy.moml.EntityLibrary $object]
+		    #puts [$entityLibrary exportMoML]
+		    set attributes [$entityLibrary attributeList]
+		    #puts [listToFullNames $attributes]
+		    for {set iterator2 [$attributes iterator]} {[$iterator2 hasNext] == 1} {} {
+			set attr [$iterator2 next]
+			#puts "attr: [java::instanceof $attr ptolemy.kernel.util.Attribute] [$attr toString] "
+			
+			set attribute [java::cast ptolemy.kernel.util.Attribute $attr]
+
+			if [java::instanceof $attribute ptolemy.domains.tm.kernel.SchedulePlotter] {
+			    puts "Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector"
+			    continue
+			}
+
+			set r [_dropTest $toplevel $attribute $cloneConfiguration $stream $printStream 1]
+			if {[llength $r] != 0} {
+			    lappend results $r
+			}
+		    }
+		}
+	    }
+	list $results
+    
+==== Test generated error:
+    while executing
+java.lang.InternalError: BMH.reinvoke=Lambda(a0:L/SpeciesData<L>,a1:I,a2:L,a3:I)=>{
+    t4:L=Species_L.argL0(a0:L);
+    t5:L=MethodHandle.invokeBasic(t4:L,a1:I,a2:L,a3:I);t5:L}
+	at java.lang.invoke.MethodHandleStatics.newInternalError(MethodHandleStatics.java:127)
+	at java.lang.invoke.LambdaForm.compileToBytecode(LambdaForm.java:660)
+	at java.lang.invoke.LambdaForm.prepare(LambdaForm.java:635)
+	at java.lang.invoke.MethodHandle.<init>(MethodHandle.java:461)
+	at java.lang.invoke.BoundMethodHandle.<init>(BoundMethodHandle.java:58)
+	at java.lang.invoke.BoundMethodHandle$Species_L.<init>(BoundMethodHandle.java:211)
+	at java.lang.invoke.BoundMethodHandle$Species_L.make(BoundMethodHandle.java:224)
+	at java.lang.invoke.BoundMethodHandle.makeReinvoker(BoundMethodHandle.java:141)
+	at java.lang.invoke.DirectMethodHandle.rebind(DirectMethodHandle.java:130)
+	at java.lang.invoke.MethodHandles.insertArguments(MethodHandles.java:2371)
+	at jdk.nashorn.internal.lookup.MethodHandleFactory$StandardMethodHandleFunctionality.insertArguments(MethodHandleFactory.java:401)
+	at jdk.nashorn.internal.runtime.CompiledFunction.createBuiltInConstructor(CompiledFunction.java:135)
+	at jdk.nashorn.internal.runtime.FinalScriptFunctionData.addInvoker(FinalScriptFunctionData.java:140)
+	at jdk.nashorn.internal.runtime.FinalScriptFunctionData.<init>(FinalScriptFunctionData.java:70)
+	at jdk.nashorn.internal.runtime.ScriptFunction.<init>(ScriptFunction.java:232)
+	at jdk.nashorn.internal.runtime.ScriptFunction.<init>(ScriptFunction.java:278)
+	at jdk.nashorn.internal.objects.NativeArray$Constructor.<init>(Unknown Source)
+	at sun.reflect.GeneratedConstructorAccessor36.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at java.lang.Class.newInstance(Class.java:442)
+	at jdk.nashorn.internal.objects.Global.initConstructor(Global.java:2566)
+	at jdk.nashorn.internal.objects.Global.initConstructorAndSwitchPoint(Global.java:2251)
+	at jdk.nashorn.internal.objects.Global.init(Global.java:2299)
+	at jdk.nashorn.internal.objects.Global.initBuiltinObjects(Global.java:1094)
+	at jdk.nashorn.internal.runtime.Context.initGlobal(Context.java:1150)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.createNashornGlobal(NashornScriptEngine.java:360)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.<init>(NashornScriptEngine.java:143)
+	at jdk.nashorn.api.scripting.NashornScriptEngineFactory.getScriptEngine(NashornScriptEngineFactory.java:148)
+	at javax.script.ScriptEngineManager.getEngineByName(ScriptEngineManager.java:238)
+	at ptolemy.actor.lib.jjs.JavaScript.clone(JavaScript.java:606)
+	at ptolemy.kernel.CompositeEntity.clone(CompositeEntity.java:362)
+	at ptolemy.moml.EntityLibrary.clone(EntityLibrary.java:261)
+	at ptolemy.kernel.CompositeEntity.clone(CompositeEntity.java:362)
+	at ptolemy.moml.EntityLibrary.clone(EntityLibrary.java:261)
+	at ptolemy.kernel.CompositeEntity.clone(CompositeEntity.java:362)
+	at ptolemy.kernel.CompositeEntity.clone(CompositeEntity.java:362)
+	at ptolemy.kernel.util.NamedObj.clone(NamedObj.java:450)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.ForeachCmd.cmdProc(ForeachCmd.java:116)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+Caused by: java.lang.OutOfMemoryError: GC overhead limit exceeded
+
+    while executing
+java.lang.InternalError: BMH.reinvoke=Lambda(a0:L/SpeciesData<L>,a1:I,a2:L,a3:I)=>{
+    t4:L=Species_L.argL0(a0:L);
+    t5:L=MethodHandle.invokeBasic(t4:L,a1:I,a2:L,a3:I);t5:L}
+    while executing
+"$configuration clone"
+    invoked from within
+"java::cast ptolemy.kernel.CompositeEntity [$configuration clone]"
+    invoked from within
+"set cloneConfiguration  [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]"
+    ("uplevel" body line 11)
+    invoked from within
+"uplevel $contents_of_test"
+Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
+-------> Before clone
+
+
+==== $PTII/ptolemy/configs/test/allConfigs.tcl: capecode/configuration.xml-6.1 Test that clone(Workspace) works on a new Actor.  Creating kars in Kepler does this.
+==== Contents of test case:
+
+	# In general, if we call getName on a public field in an actor,
+	# then the name that is returned should be the same as the name
+	# of the field.
+	puts "-------> Before clone"
+ 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
+	puts "-------> after clone"
+	set workspace61 [java::new ptolemy.kernel.util.Workspace "workspace61"]
+	set compositeEntity61 [java::new ptolemy.kernel.CompositeEntity $workspace61]
+	set workspace61Clone [java::new ptolemy.kernel.util.Workspace "workspace61Clone"]
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	for {set iterator [$entityList iterator]}  {[$iterator hasNext] == 1} {} {
+	    set entity [$iterator next]
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		set className [$actor getClassName]
+		# Create a new actor
+		set newActor [java::new $className $compositeEntity61 [$compositeEntity61 uniqueName [split $className . ]]]
+		# Clone it.
+		if [catch {set clonedActor [$newActor clone $workspace61Clone]} errMsg] {
+		    lappend $results "Cloning $className failed:\n$errMsg:\n[jdkStackTrace]\n"
+		}
+		[java::cast ptolemy.kernel.ComponentEntity $clonedActor] setContainer [java::null]
+	    }
+	}
+	[java::cast ptolemy.kernel.CompositeEntity $compositeEntity61] setContainer [java::null]
+	$cloneConfiguration setContainer [java::null]
+	list $results
+    
+==== Test generated error:
+    while executing
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+
+    while executing
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+    while executing
+"$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]"
+    invoked from within
+"java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]"
+    invoked from within
+"set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]"
+    ("uplevel" body line 6)
+    invoked from within
+"uplevel $contents_of_test"
+ Force everything to get expanded ptolemy/configs/full/configuration.xml
+    (Skipping certain optional packages, jxta and viptos)
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
+Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
+Simple standalone clone test
+The constraints of the master:
+  1. (TypeConstant, arrayType(double,2)) <= (variable .Top.Map.origin: arrayType(double))
+  2. (TypeConstant, double) <= (variable .Top.Map.resolution: double)
+  3. (TypeConstant, {grid = arrayType(int,2), height = int, width = int}) <= (variable .Top.Map.map: {grid = arrayType(int), height = int, width = int})
+  4. (port .Top.Map.map: unknown) <= (variable .Top.Map.map: {grid = arrayType(int), height = int, width = int})
+  5. (variable .Top.Map.map: {grid = arrayType(int), height = int, width = int}) <= (port .Top.Map.map: unknown)
+The constraints of the clone:
+  1. (TypeConstant, arrayType(double,2)) <= (variable .Top.Map.origin: arrayType(double))
+  2. (TypeConstant, double) <= (variable .Top.Map.resolution: double)
+  3. (TypeConstant, {grid = arrayType(int,2), height = int, width = int}) <= (variable .Top.Map.map: {grid = arrayType(int), height = int, width = int})
+  4. (port .Top.Map.map: unknown) <= (variable .Top.Map.map: {grid = arrayType(int), height = int, width = int})
+  5. (variable .Top.Map.map: {grid = arrayType(int), height = int, width = int}) <= (port .Top.Map.map: unknown)
+Congrats, the constraints are the same.
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl
+Checking file:/home/travis/build/icyphy/ptII/ptolemy/configs/ptdb/configuration.xml
+Expanding the configuration
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl
+Updating /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/doc/models.txt.  This could take a minute.
+
+
+==== $PTII/ptolemy/configs/test/missingDemos.tcl: missingDemos-0.5 Update ptolemy/configs/doc/models.txt
+==== Contents of test case:
+
+    puts "Updating $PTII/ptolemy/configs/doc/models.txt.  This could take a minute."
+    exec -stderrok make -C ../doc update
+    puts "Done updating $PTII/ptolemy/configs/doc/models.txt"
+    file exists ../doc/models.txt
+
+==== Test generated error:
+make: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
+(cd ../../../ptolemy/configs/capecode; make capecodeModels.txt)
+make[1]: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
+DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java" "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
+		-classpath "../../..::/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar::/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar::/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar::/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar::/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/lib/diva.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar::/home/travis/build/icyphy/ptII/lib/javax.mail.jar::/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar::/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:::/home/travis/build/icyphy/ptII/lib/oscP5.jar:/usr/lib/jvm/java-8-oracle/jre/../lib/tools.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar::/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar::/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar::/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar::/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar::/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:space/space.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar::/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar::/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar" \
+		ptolemy.actor.gui.HTMLAbout demonstrations.htm capecodeModels.txt
+Printing '.' for regular models, 'P' for models with LiveLinks.
+..PJSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+No physical cameras found, using WebcamDummyDriver.
+.P.P.P.P.P...PClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
+.P..P.P...P.....P..P..P.P.P..P..P...P...P.P..P..P...P.P.P.P..P.P..LC_ALL=C sort -f capecodeModels.txt  > capecodeModels.txt.sorted
+mv capecodeModels.txt.sorted capecodeModels.txt
+make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
+#
+# Starting to build models.txt: Thu Apr 26 06:42:14 UTC 2018
+#
+# See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY
+DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java"  -Xmx1500m "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
+		-classpath "../../..::/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar::/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar::/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar::/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar::/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/lib/diva.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar::/home/travis/build/icyphy/ptII/lib/javax.mail.jar::/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar::/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:::/home/travis/build/icyphy/ptII/lib/oscP5.jar:/usr/lib/jvm/java-8-oracle/jre/../lib/tools.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar::/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar::/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar::/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar::/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar::/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:space/space.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar::/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar::/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar" \
+		ptolemy.actor.gui.HTMLAbout 
+Printing '.' for regular models, 'P' for models with LiveLinks.
+...P...P.......P.......P....P..P............PJSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+...P...P..P....PNo physical cameras found, using WebcamDummyDriver.
+.P.P.........P.P....P....................P..P..PClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
+...P.....P......P......P.........P.....P...P..................P.................P......P....P.P........P.....P..P.....P..P...P....P........P......P..P......P.....P...P.P....P......P....P.P.....P....P......P.P.P...............P.P....P...........P..P...P..P..P.....P.....P.P...................P........P.P..........P.P............P....P..........P.....P.P.P.P............P...P............P...P............P..P....P...............P.........P.....P......P.....P.P..........P.........P.....P.P...P..P....P..P...P....P....P......P........P.........P...P..P..........P....P......P......P............................P..........# Include the models in the ExecDemos directory.
+ls -1 /home/travis/build/icyphy/ptII/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@/home/travis/build/icyphy/ptII@\$CLASSPATH@" >> models.txt
+LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
+mv /tmp/models.txt models.txt
+#
+# Done building models.txt: Thu Apr 26 06:43:54 UTC 2018
+#
+git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
+HEAD detached at c0cee0e6
+Untracked files:
+	../../../META-INF/
+	../../../junit8101103006798180095.properties
+	../../../junitvmwatcher7325364417110546104.properties
+	../../actor/lib/jai/test/auto/PtolemyII.bmp
+	../../actor/lib/jai/test/auto/PtolemyII.jpg
+	../../actor/lib/jai/test/auto/PtolemyII.pgm
+	../../actor/lib/jai/test/auto/PtolemyII.tif
+	../../actor/lib/jai/test/auto/file.png
+
+nothing added to commit but untracked files present
+rm -f doc.jar
+make doc.jar
+make[1]: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
+rm -rf ptjar_tmpdir doc.jar
+mkdir ptjar_tmpdir
+# Copy any class files from this directory
+mkdir -p ptjar_tmpdir/ptolemy/configs/doc
+cp *.class completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt basicHelp.htm book.htm ClassesIllustrated.png ClassesIllustrated.xml completeDemos.htm copyright.htm demos.htm docs.htm pt_cover_online.png vergilFsmEditorHelp.htm vergilGraphEditorHelp.htm whatsNew.htm whatsNew3.0.2.htm whatsNew4.0.htm whatsNew5.0.htm whatsNew5.1.htm whatsNew6.0.htm whatsNew7.0.htm whatsNew8.0.htm whatsNew10.0.htm whatsNew11.0.htm ptjar_tmpdir/ptolemy/configs/doc
+Creating doc.jar
+(cd ptjar_tmpdir; "/usr/lib/jvm/java-8-oracle/bin/jar"  -cvf tmp.jar .)
+added manifest
+adding: ptolemy/(in = 0) (out= 0)(stored 0%)
+adding: ptolemy/configs/(in = 0) (out= 0)(stored 0%)
+adding: ptolemy/configs/doc/(in = 0) (out= 0)(stored 0%)
+adding: ptolemy/configs/doc/completeDemos.htm(in = 115482) (out= 20211)(deflated 82%)
+adding: ptolemy/configs/doc/basicHelp.htm(in = 2016) (out= 890)(deflated 55%)
+adding: ptolemy/configs/doc/ClassesIllustrated.png(in = 68676) (out= 67144)(deflated 2%)
+adding: ptolemy/configs/doc/copyright.htm(in = 872094) (out= 205308)(deflated 76%)
+adding: ptolemy/configs/doc/completeDemosPtiny.htm(in = 27435) (out= 5853)(deflated 78%)
+adding: ptolemy/configs/doc/demosBcvtb.htm(in = 10834) (out= 3829)(deflated 64%)
+adding: ptolemy/configs/doc/docs.htm(in = 2442) (out= 959)(deflated 60%)
+adding: ptolemy/configs/doc/whatsNew11.0.htm(in = 5055) (out= 1763)(deflated 65%)
+adding: ptolemy/configs/doc/whatsNew5.0.htm(in = 23108) (out= 6211)(deflated 73%)
+adding: ptolemy/configs/doc/docsBcvtb.htm(in = 2819) (out= 1084)(deflated 61%)
+adding: ptolemy/configs/doc/docsPtdb.htm(in = 2658) (out= 1077)(deflated 59%)
+adding: ptolemy/configs/doc/whatsNew7.0.htm(in = 24218) (out= 7892)(deflated 67%)
+adding: ptolemy/configs/doc/models.txt(in = 55526) (out= 7600)(deflated 86%)
+adding: ptolemy/configs/doc/completeDemosBcvtb.htm(in = 13678) (out= 3481)(deflated 74%)
+adding: ptolemy/configs/doc/vergilFsmEditorHelp.htm(in = 621) (out= 361)(deflated 41%)
+adding: ptolemy/configs/doc/pt_cover_online.png(in = 138106) (out= 138151)(deflated 0%)
+adding: ptolemy/configs/doc/docsPtiny.htm(in = 2658) (out= 1077)(deflated 59%)
+adding: ptolemy/configs/doc/demosPtiny.htm(in = 21242) (out= 6808)(deflated 67%)
+adding: ptolemy/configs/doc/demosPtinyKepler.htm(in = 15279) (out= 5172)(deflated 66%)
+adding: ptolemy/configs/doc/whatsNew5.1.htm(in = 3412) (out= 1339)(deflated 60%)
+adding: ptolemy/configs/doc/docsPtinyKepler.htm(in = 2507) (out= 963)(deflated 61%)
+adding: ptolemy/configs/doc/book.htm(in = 2553) (out= 1017)(deflated 60%)
+adding: ptolemy/configs/doc/whatsNew8.0.htm(in = 53219) (out= 13709)(deflated 74%)
+adding: ptolemy/configs/doc/whatsNew.htm(in = 712) (out= 298)(deflated 58%)
+adding: ptolemy/configs/doc/vergilGraphEditorHelp.htm(in = 3278) (out= 1204)(deflated 63%)
+adding: ptolemy/configs/doc/whatsNew6.0.htm(in = 20237) (out= 6560)(deflated 67%)
+adding: ptolemy/configs/doc/whatsNew4.0.htm(in = 25979) (out= 6381)(deflated 75%)
+adding: ptolemy/configs/doc/demos.htm(in = 38256) (out= 11334)(deflated 70%)
+adding: ptolemy/configs/doc/whatsNew3.0.2.htm(in = 3199) (out= 1135)(deflated 64%)
+adding: ptolemy/configs/doc/ClassesIllustrated.xml(in = 16565) (out= 2158)(deflated 86%)
+adding: ptolemy/configs/doc/whatsNew10.0.htm(in = 55082) (out= 12449)(deflated 77%)
+adding: ptolemy/configs/doc/completeDemosPtinyKepler.htm(in = 22350) (out= 4906)(deflated 78%)
+mv ptjar_tmpdir/tmp.jar doc.jar
+"/usr/lib/jvm/java-8-oracle/bin/jar"  -i doc.jar
+rm -rf ptjar_tmpdir
+make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
+# The first commit will change completeDemosPtiny.htm, which will cause completeDemosBcvtb.htm to be updated
+if [ -d /home/travis/build/icyphy/ptII/.git ]; then \
+		echo "Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt"; \
+		git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt; \
+		git push; \
+        else \
+		echo "No /home/travis/build/icyphy/ptII/.git/ directory, so completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt are not being committed."; \
+		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
+        fi
+Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
+HEAD detached at c0cee0e6
+Untracked files:
+	../../../META-INF/
+	../../../junit8101103006798180095.properties
+	../../../junitvmwatcher7325364417110546104.properties
+	../../actor/lib/jai/test/auto/PtolemyII.bmp
+	../../actor/lib/jai/test/auto/PtolemyII.jpg
+	../../actor/lib/jai/test/auto/PtolemyII.pgm
+	../../actor/lib/jai/test/auto/PtolemyII.tif
+	../../actor/lib/jai/test/auto/file.png
+
+nothing added to commit but untracked files present
+make: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
+[main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+libdc1394 error: Failed to initialize libdc1394
+libdc1394 error: Failed to initialize libdc1394
+[main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+make: [update] Error 1 (ignored)
+cp: cannot stat ‘*.class’: No such file or directory
+make[1]: [doc.jar] Error 1 (ignored)
+fatal: You are not currently on a branch.
+To push the history leading to the current (detached HEAD)
+state now, use
+
+    git push origin HEAD:<name-of-remote-branch>
+
+make: *** [update] Error 128
+    while executing
+"exec -stderrok make -C ../doc update"
+    ("uplevel" body line 3)
+    invoked from within
+"uplevel $contents_of_test"
+Stderr for 'make -C ../doc missingDemos' was
+--start--
+
+--end--
+Stderr for '/home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/test/missingDemos' was
+--start--
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/test/missingDemos: 45: /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/test/missingDemos: Syntax error: Bad fd number
+--end--
+
+
+==== $PTII/ptolemy/configs/test/missingDemos.tcl: missingDemos-2.0 Run the missingDemos script.
+==== Contents of test case:
+
+    jdkCaptureOutAndErr {
+	# In the installer, missingDemos might not be executable.
+	exec chmod a+x $PTII/ptolemy/configs/test/missingDemos
+        exec $PTII/ptolemy/configs/test/missingDemos
+    } out err
+    puts "Stderr for '$PTII/ptolemy/configs/test/missingDemos' was\n--start--\n$err\n--end--"
+    regsub -all {make: [^']*'} $err {} err2
+    list $out $err2
+
+==== Result was:
+{} {/home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/test/missingDemos: 45: /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/test/missingDemos: Syntax error: Bad fd number}
+---- Result should have been:
+{} {}
+---- missingDemos-2.0 FAILED
+/home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl
+Validating the xml in /auto/ xml files after removing the configure blocks
+04/26/18 06:44:40
+Failed: 6  Total Tests: 60  ((Passed: 54, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+]]></system-out>
+  <system-err><![CDATA[[main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+java.lang.Exception: Evaluating the Tcl file "/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl"resulted in a TclException being thrown.
+The Tcl errorInfo global variable has the value:
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+    while executing
+"$parser {parse java.net.URL java.net.URL} $URL $URL"
+    invoked from within
+"set object [$parser {parse java.net.URL java.net.URL} $URL $URL]"
+    ("foreach" body line 73)
+    invoked from within
+"foreach i $configs {
+
+    
+    if {[regexp "jxta/" $i] == 1} {
+	puts "Skipping $i, running vergil -jxta brings up a window"
+	continue
+    }
+
+    if {[..."
+    (file "/home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl" line 157)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:253)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+java.lang.Exception: Evaluating the Tcl file "/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl"resulted in a TclException being thrown.
+The Tcl errorInfo global variable has the value:
+java.lang.OutOfMemoryError: GC overhead limit exceeded
+    while executing
+"$configuration description"
+    (file "/home/travis/build/icyphy/ptII/ptolemy/configs/test/configTest.tcl" line 55)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:253)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+]]></system-err>
+</testsuite>
