@@ -87,10 +87,15 @@ public class StateSpaceModel extends MirrorDecorator {
      */
     public Parameter prior;
 
-    /** The process noise. If the system contains multiple state
+    /** The process noise. This should be an expression that
+     * returns random data. If the system contains multiple state
      * variables, the process noise should be an expression that
-     * returns an ArrayToken. See multivariateGaussian for one such
-     * function.
+     * returns an ArrayToken. For example, multivariateGaussian is
+     * one such function. For a two-state system, for example,
+     * you could set this to
+     * "multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.0])"
+     * which will return a two-element Gaussian random vector
+     * with zero mean and the specified covariance function.
      */
     public Parameter processNoise;
 
