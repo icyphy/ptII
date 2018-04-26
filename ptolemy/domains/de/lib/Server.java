@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 //// Server
 
 /**
- This actor models a presemptive server with a fixed or variable service time.
+ This actor models a preemptive server with a fixed or variable service time.
  A server is either busy (serving a customer) or not busy at any given time.
  If an input arrives when the server is not busy, then the input token is
  produced on the output with a delay given by the <i>serviceTime</i>
@@ -57,7 +57,9 @@ import ptolemy.kernel.util.Workspace;
  on the output with a delay given by the <i>serviceTime</i> parameter
  value at the time that the input arrived.
  If several inputs arrive while the server is busy, then they are
- served on a first-come, first-served basis.
+ served in an order determined by the value of the <i>priority</i>
+ parameter at the time of arrival of the input, and for inputs with
+ identical priorities, on a first-come, first-served basis.
  On every firing, produce an output indicating the final queue size.
  <p>
  The service time and priority used for a job are the most recently arrived
