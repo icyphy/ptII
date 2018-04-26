@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -205,6 +205,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 120.0}">
         </property>
     </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{625, 120}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -217,6 +221,8 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="REST.error" relation="relation5"/>
     <link port="REST.trigger" relation="relation3"/>
     <link port="REST.response" relation="relation4"/>
@@ -227,4 +233,6 @@
     <link port="TimeDelay.output" relation="relation2"/>
     <link port="Display.input" relation="relation4"/>
     <link port="Test.input" relation="relation5"/>
+    <link port="Test.output" relation="relation6"/>
+    <link port="Stop.input" relation="relation6"/>
 </entity>
