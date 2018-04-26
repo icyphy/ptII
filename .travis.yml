@@ -93,7 +93,7 @@ install:
   # If ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
   # Building CERTI will result in a log of more than 10,000 lines, so we just show the last 50.
   - sudo -E org/hlacerti/build-certi.sh >& /tmp/build-certi.out || true
-  - tail -f 10 /tmp/build-certi.out
+  - tail -50 /tmp/build-certi.out
   - source ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh || true
   # - echo "CERTI_HOME: $CERTI_HOME" || true
 
