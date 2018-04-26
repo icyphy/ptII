@@ -31,6 +31,7 @@ import ptolemy.actor.Actor;
 
 /** An interface for the actors that are constrained by maps.
  *
+ *  @see Map
  *  @author Ilge Akkya
  *  @version $Id$
  */
