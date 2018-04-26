@@ -450,7 +450,6 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor
         Token _result;
         //FIXME: the noise sample does not have to be an arrayToken
 
-        Token processNoiseSample;
         double[] newState = new double[_stateSpaceSize];
 
         for (int i = 0; i < _stateSpaceSize; i++) {
@@ -473,17 +472,23 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor
             // set the control input values in scope
         }
 
-        _parseTree = _updateTrees.get(PROCESS_NOISE);
-        processNoiseSample = _parseTreeEvaluator.evaluateParseTree(_parseTree,
-                _scope);
-        if (processNoiseSample == null) {
-            throw new IllegalActionException(
-                    "Expression processNoise yields a null result.");
-        }
-
         // try to propagate state such that it satisfies map constraints, if any.
         int trials = 0;
         do {
+            // Generate process noise.
+            _parseTree = _updateTrees.get(PROCESS_NOISE);
+            Token processNoiseSample = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
+            if (!(processNoiseSample instanceof ArrayToken)) {
+                throw new IllegalActionException(
+                        "Expression processNoise should yield an array but yields: " + processNoiseSample);
+            }
+            if (((ArrayToken)processNoiseSample).length() != _stateSpaceSize) {
+                throw new IllegalActionException(
+                        "Expression processNoise should yield an array of dimension "
+                        + _stateSpaceSize
+                        + ", but it yields an array of dimension "
+                        + ((ArrayToken)processNoiseSample).length());
+            }
             for (int i = 0; i < _stateSpaceSize; i++) {
                 _parseTree = _updateTrees.get(_stateVariables[i]);
                 _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
@@ -508,7 +513,9 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor
 
         if (!satisfiesMapConstraints(newState)) {
             throw new IllegalActionException(this.getName()
-                    + ": Could not find a feasible state propagation that satisfies"
+                    + ": After "
+                    + MAX_TRIALS
+                    + " attempts, did not find a feasible state propagation that satisfies the"
                     + " current map constraints.");
         }
         _currentState = newState;
