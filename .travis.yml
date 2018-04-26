@@ -14,7 +14,8 @@ env:
     - PT_TRAVIS_TEST_CORE2_XML=true
     - PT_TRAVIS_TEST_CORE3_XML=true
     - PT_TRAVIS_TEST_CORE4_XML=true
-    - PT_TRAVIS_TEST_INSTALLERS=true
+    # Building the installers tends to fail in deployment, so do this last.
+    #   - PT_TRAVIS_TEST_INSTALLERS=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
@@ -59,8 +60,6 @@ install:
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
   
-  # Shorter running installations first.
-
   # Below are the packages that are needed, in alphabetical order:
   #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
@@ -130,19 +129,28 @@ script:
   # Killing background sleep loop.
   - kill %1
 
-# The report stage should be run before deploy because deploy may fail.
+# The report stage should be run before installers because deploying
+# installers might fail.
 stages:
   - test
   - report
+  - installers
   - deploy
 
+# Run three stages, test (which runs the script above), report and installers.
 # See https://docs.travis-ci.com/user/build-stages/ and
 # https://docs.travis-ci.com/user/build-stages/matrix-expansion/
 jobs:
   include:
+    # Run "ant junitreport" in the gh-branch, which uses a different
+    # build.xml than $PTII.
     - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
-      env: PT_TRAVIS_RUN_JUNITREPORT=true
+      env: PT_TRAVIS_JUNITREPORT=true
+    # Build the installers last because it might fail.
+    - stage: installers
+      script: $PTII/bin/ptIITravisBuild.sh $SECONDS
+      env: PT_TRAVIS_TEST_INSTALLERS=true
 
 # See https://docs.travis-ci.com/user/caching
 cache:
