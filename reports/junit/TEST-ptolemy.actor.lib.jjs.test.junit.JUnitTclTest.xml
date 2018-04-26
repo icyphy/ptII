@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="travis-job-846adbca-1f4e-40e7-a5f4-c5952c9029ca" name="ptolemy.actor.lib.jjs.test.junit.JUnitTclTest" skipped="0" tests="94" time="615.126" timestamp="2018-04-26T17:50:45">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="322.5" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="env.RUN_TESTS" value="true" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.7 57086 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="build,test.capecode3.xml" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="env.PT_TRAVIS_TEST_CAPECODE3_XML" value="true" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.7 57086 10.20.255.23 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher617096894984241824.properties propsfile=/home/travis/build/icyphy/ptII/junit6001251832869108292.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="81b40c7628c9...b355ca4de11a" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/timeout" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx1024m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="322" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="371671776" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="b355ca4de11a31fc03a8a108006a3123e3762f1a" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.matlab.*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Run &apos;ant junitreport&apos; before building the installers because building the installers may fail in deployment." />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="keystore" value="ptKeystore" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="Test" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="java.class.path" value="/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_JOB_ID" value="371671784" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="user.country" value="US" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="java.maxmemory.large" value="8000m" />
+    <property name="model" value="" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/NashornAccessorHostApplication.tcl (RunTclFile)" time="0.176" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/InputHandlers1.xml (RunModel)" time="10.592" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/InputHandlers2.xml (RunModel)" time="7.432" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter1.xml (RunModel)" time="6.991" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter2.xml (RunModel)" time="6.812" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter3.xml (RunModel)" time="6.932" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter4.xml (RunModel)" time="7.062" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter5.xml (RunModel)" time="6.54" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript1.xml (RunModel)" time="6.692" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript10.xml (RunModel)" time="6.374" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript11.xml (RunModel)" time="6.597" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript12.xml (RunModel)" time="6.972" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript13.xml (RunModel)" time="6.66" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript14.xml (RunModel)" time="6.435" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript15.xml (RunModel)" time="6.381" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript16.xml (RunModel)" time="6.529" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript17.xml (RunModel)" time="6.655" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript18.xml (RunModel)" time="6.279" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript19.xml (RunModel)" time="6.388" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript2.xml (RunModel)" time="6.289" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript20.xml (RunModel)" time="6.351" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript21.xml (RunModel)" time="6.345" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript22.xml (RunModel)" time="6.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript23.xml (RunModel)" time="6.284" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript24.xml (RunModel)" time="6.249" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript25.xml (RunModel)" time="6.293" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript26.xml (RunModel)" time="6.424" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript27.xml (RunModel)" time="6.191" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript3.xml (RunModel)" time="7.331" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript4.xml (RunModel)" time="6.79" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript5.xml (RunModel)" time="6.145" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript6.xml (RunModel)" time="7.449" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript7.xml (RunModel)" time="7.65" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript8.xml (RunModel)" time="6.175" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript9.xml (RunModel)" time="6.111" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptAbsentInputs.xml (RunModel)" time="6.272" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptAbsentInputsPersistent.xml (RunModel)" time="6.119" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptArray.xml (RunModel)" time="6.178" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptArray2.xml (RunModel)" time="6.427" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBooleanToken.xml (RunModel)" time="6.166" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModel.xml (RunModel)" time="6.415" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModelAndSend.xml (RunModel)" time="6.089" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModelAndSendAndReceive.xml (RunModel)" time="7.236" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptCount.xml (RunModel)" time="6.125" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptDoubleToken.xml (RunModel)" time="6.212" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptErrorOutput.xml (RunModel)" time="5.979" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptFactorial.xml (RunModel)" time="6.213" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler1.xml (RunModel)" time="6.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler2.xml (RunModel)" time="6.224" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler3.xml (RunModel)" time="6.428" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptIntToken.xml (RunModel)" time="6.192" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptLongToken.xml (RunModel)" time="6.517" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptLongToken2.xml (RunModel)" time="7.262" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReadParameter.xml (RunModel)" time="5.934" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml (RunModel)" time="6.189" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptRecord.xml (RunModel)" time="6.148" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[55] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptRecordToken.xml (RunModel)" time="6.148" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[56] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendArray.xml (RunModel)" time="6.199" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[57] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendArray2.xml (RunModel)" time="6.146" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[58] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendBoolean.xml (RunModel)" time="6.483" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[59] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendDate.xml (RunModel)" time="6.083" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[60] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendDouble.xml (RunModel)" time="6.105" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[61] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendInt.xml (RunModel)" time="6.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[62] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendMatrix.xml (RunModel)" time="6.162" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[63] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNativeArray.xml (RunModel)" time="7.368" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[64] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNativeObject.xml (RunModel)" time="7.349" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[65] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNull.xml (RunModel)" time="6.318" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[66] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNullToInput.xml (RunModel)" time="8.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[67] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord.xml (RunModel)" time="6.246" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[68] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord2.xml (RunModel)" time="6.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[69] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord3.xml (RunModel)" time="6.101" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[70] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendString.xml (RunModel)" time="6.161" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[71] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendToInput.xml (RunModel)" time="7.972" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[72] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetInterval.xml (RunModel)" time="6.624" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[73] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetInterval2.xml (RunModel)" time="6.491" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[74] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetTimeout.xml (RunModel)" time="6.517" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[75] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptStringToken.xml (RunModel)" time="6.153" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[76] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptTestAutoInputEtc.xml (RunModel)" time="8.21" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[77] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptThisActor.xml (RunModel)" time="6.216" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[78] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptTimeout.xml (RunModel)" time="6.527" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[79] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptWriteParameter.xml (RunModel)" time="6.148" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[80] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/RampDisplay.xml (RunModel)" time="28.527" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[81] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder.xml (RunModel)" time="6.251" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[82] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder10.xml (RunModel)" time="6.06" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[83] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder2.xml (RunModel)" time="6.111" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[84] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder3.xml (RunModel)" time="5.977" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[85] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder4.xml (RunModel)" time="6.166" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[86] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder5.xml (RunModel)" time="5.987" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[87] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder6.xml (RunModel)" time="6.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[88] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder7.xml (RunModel)" time="6.169" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[89] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder8.xml (RunModel)" time="6.157" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[90] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder9.xml (RunModel)" time="6.065" />
+  <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/NashornAccessorHostApplication.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu Apr 26 17:50:45 UTC 2018
+
+
+==== $PTII/ptolemy/actor/lib/jjs/test/NashornAccessorHostApplication.tcl: NashornAccessorHostApplication-0.0.1 No way to test the command line arguments
+==== Contents of test case:
+
+    list "Unfortunately, the Nashorn Host spawns a separate thread, so there"  "is no way to asyncronously wait to get the results back."  "This makes it difficult to test the command line argument processing."
+
+==== Result was:
+{Unfortunately, the Nashorn Host spawns a separate thread, so there} {is no way to asyncronously wait to get the results back.} {This makes it difficult to test the command line argument processing.}
+---- KNOWN Failure, Result should have been:
+1
+---- NashornAccessorHostApplication-0.0.1 Failed, but this is a KNOWN failure
+04/26/18 05:50:45
+Failed: 0  Total Tests: 1  ((Passed: 0, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu Apr 26 17:50:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/InputHandlers1.xml
+----------------- Thu Apr 26 17:50:46 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/InputHandlers1.xml
+1938 ms. Memory: 233984K Free: 148584K (64%)
+reloadAllAccessors: .InputHandlers1
+----------------- testing Thu Apr 26 17:50:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/InputHandlers2.xml
+----------------- Thu Apr 26 17:50:56 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/InputHandlers2.xml
+1426 ms. Memory: 363520K Free: 270251K (74%)
+reloadAllAccessors: .InputHandlers2
+----------------- testing Thu Apr 26 17:51:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter1.xml
+----------------- Thu Apr 26 17:51:04 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter1.xml
+1095 ms. Memory: 388096K Free: 125281K (32%)
+reloadAllAccessors: .JSParameter1
+----------------- testing Thu Apr 26 17:51:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter2.xml
+----------------- Thu Apr 26 17:51:11 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter2.xml
+1072 ms. Memory: 521216K Free: 210017K (40%)
+reloadAllAccessors: .JSParameter2
+----------------- testing Thu Apr 26 17:51:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter3.xml
+----------------- Thu Apr 26 17:51:17 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter3.xml
+1130 ms. Memory: 524800K Free: 291195K (55%)
+reloadAllAccessors: .JSParameter3
+----------------- testing Thu Apr 26 17:51:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter4.xml
+----------------- Thu Apr 26 17:51:24 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter4.xml
+1363 ms. Memory: 686592K Free: 609780K (89%)
+reloadAllAccessors: .JSParameter4
+----------------- testing Thu Apr 26 17:51:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter5.xml
+----------------- Thu Apr 26 17:51:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JSParameter5.xml
+916 ms. Memory: 686592K Free: 287251K (42%)
+reloadAllAccessors: .JSParameter5
+----------------- testing Thu Apr 26 17:51:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript1.xml
+----------------- Thu Apr 26 17:51:38 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript1.xml
+1104 ms. Memory: 690688K Free: 500008K (72%)
+reloadAllAccessors: .JavaScript1
+----------------- testing Thu Apr 26 17:51:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript10.xml
+----------------- Thu Apr 26 17:51:45 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript10.xml
+857 ms. Memory: 690688K Free: 186303K (27%)
+reloadAllAccessors: .JavaScript10
+----------------- testing Thu Apr 26 17:51:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript11.xml
+----------------- Thu Apr 26 17:51:51 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript11.xml
+948 ms. Memory: 638464K Free: 337834K (53%)
+reloadAllAccessors: .JavaScript11
+----------------- testing Thu Apr 26 17:51:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript12.xml
+----------------- Thu Apr 26 17:51:58 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript12.xml
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+6 ms. Memory: 693248K Free: 646626K (93%)
+1392 ms. Memory: 693248K Free: 646626K (93%)
+reloadAllAccessors: .JavaScript12
+----------------- testing Thu Apr 26 17:52:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript13.xml
+----------------- Thu Apr 26 17:52:05 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript13.xml
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+12 ms. Memory: 693248K Free: 328192K (47%)
+963 ms. Memory: 693248K Free: 325657K (47%)
+reloadAllAccessors: .JavaScript13
+----------------- testing Thu Apr 26 17:52:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript14.xml
+----------------- Thu Apr 26 17:52:11 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript14.xml
+931 ms. Memory: 692224K Free: 486080K (70%)
+reloadAllAccessors: .JavaScript14
+----------------- testing Thu Apr 26 17:52:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript15.xml
+----------------- Thu Apr 26 17:52:18 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript15.xml
+878 ms. Memory: 692224K Free: 174628K (25%)
+reloadAllAccessors: .JavaScript15
+----------------- testing Thu Apr 26 17:52:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript16.xml
+----------------- Thu Apr 26 17:52:24 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript16.xml
+896 ms. Memory: 692736K Free: 336754K (49%)
+reloadAllAccessors: .JavaScript16
+----------------- testing Thu Apr 26 17:52:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript17.xml
+----------------- Thu Apr 26 17:52:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript17.xml
+1146 ms. Memory: 710144K Free: 623256K (88%)
+reloadAllAccessors: .JavaScript17
+----------------- testing Thu Apr 26 17:52:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript18.xml
+----------------- Thu Apr 26 17:52:37 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript18.xml
+823 ms. Memory: 710144K Free: 309660K (44%)
+reloadAllAccessors: .JavaScript18
+----------------- testing Thu Apr 26 17:52:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript19.xml
+----------------- Thu Apr 26 17:52:44 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript19.xml
+880 ms. Memory: 710656K Free: 471726K (66%)
+reloadAllAccessors: .JavaScript19
+----------------- testing Thu Apr 26 17:52:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript2.xml
+----------------- Thu Apr 26 17:52:50 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript2.xml
+810 ms. Memory: 710656K Free: 153871K (22%)
+reloadAllAccessors: .JavaScript2
+----------------- testing Thu Apr 26 17:52:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript20.xml
+----------------- Thu Apr 26 17:52:56 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript20.xml
+828 ms. Memory: 709632K Free: 320839K (45%)
+reloadAllAccessors: .JavaScript20
+----------------- testing Thu Apr 26 17:53:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript21.xml
+----------------- Thu Apr 26 17:53:03 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript21.xml
+902 ms. Memory: 729600K Free: 610682K (84%)
+reloadAllAccessors: .JavaScript21
+----------------- testing Thu Apr 26 17:53:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript22.xml
+----------------- Thu Apr 26 17:53:09 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript22.xml
+685 ms. Memory: 729600K Free: 304745K (42%)
+reloadAllAccessors: .JavaScript22
+----------------- testing Thu Apr 26 17:53:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript23.xml
+----------------- Thu Apr 26 17:53:15 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript23.xml
+774 ms. Memory: 730624K Free: 473775K (65%)
+reloadAllAccessors: .JavaScript23
+----------------- testing Thu Apr 26 17:53:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript24.xml
+----------------- Thu Apr 26 17:53:21 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript24.xml
+786 ms. Memory: 730624K Free: 169753K (23%)
+reloadAllAccessors: .JavaScript24
+----------------- testing Thu Apr 26 17:53:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript25.xml
+----------------- Thu Apr 26 17:53:28 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript25.xml
+749 ms. Memory: 731648K Free: 344763K (47%)
+reloadAllAccessors: .JavaScript25
+----------------- testing Thu Apr 26 17:53:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript26.xml
+----------------- Thu Apr 26 17:53:34 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript26.xml
+969 ms. Memory: 731136K Free: 515865K (71%)
+reloadAllAccessors: .JavaScript26
+----------------- testing Thu Apr 26 17:53:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript27.xml
+----------------- Thu Apr 26 17:53:40 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript27.xml
+765 ms. Memory: 731136K Free: 207369K (28%)
+reloadAllAccessors: .JavaScript27
+----------------- testing Thu Apr 26 17:53:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript3.xml
+----------------- Thu Apr 26 17:53:47 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript3.xml
+1869 ms. Memory: 744448K Free: 378583K (51%)
+reloadAllAccessors: .JavaScript3
+----------------- testing Thu Apr 26 17:53:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript4.xml
+----------------- Thu Apr 26 17:53:54 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript4.xml
+1352 ms. Memory: 745472K Free: 406165K (54%)
+reloadAllAccessors: .JavaScript4
+----------------- testing Thu Apr 26 17:54:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript5.xml
+----------------- Thu Apr 26 17:54:01 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript5.xml
+767 ms. Memory: 746496K Free: 574367K (77%)
+reloadAllAccessors: .JavaScript5
+----------------- testing Thu Apr 26 17:54:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript6.xml
+----------------- Thu Apr 26 17:54:07 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript6.xml
+1631 ms. Memory: 747008K Free: 431155K (58%)
+reloadAllAccessors: .JavaScript6
+----------------- testing Thu Apr 26 17:54:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript7.xml
+----------------- Thu Apr 26 17:54:14 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript7.xml
+1753 ms. Memory: 762368K Free: 454972K (60%)
+reloadAllAccessors: .JavaScript7
+----------------- testing Thu Apr 26 17:54:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript8.xml
+----------------- Thu Apr 26 17:54:22 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript8.xml
+759 ms. Memory: 762368K Free: 635447K (83%)
+reloadAllAccessors: .JavaScript8
+----------------- testing Thu Apr 26 17:54:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript9.xml
+----------------- Thu Apr 26 17:54:28 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScript9.xml
+748 ms. Memory: 762368K Free: 320641K (42%)
+reloadAllAccessors: .JavaScript9
+----------------- testing Thu Apr 26 17:54:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptAbsentInputs.xml
+----------------- Thu Apr 26 17:54:34 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptAbsentInputs.xml
+860 ms. Memory: 763904K Free: 502475K (66%)
+reloadAllAccessors: .JavaScriptAbsentInputs
+----------------- testing Thu Apr 26 17:54:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptAbsentInputsPersistent.xml
+----------------- Thu Apr 26 17:54:40 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptAbsentInputsPersistent.xml
+683 ms. Memory: 763904K Free: 188418K (25%)
+reloadAllAccessors: .JavaScriptAbsentInputsPersistent
+----------------- testing Thu Apr 26 17:54:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptArray.xml
+----------------- Thu Apr 26 17:54:47 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptArray.xml
+662 ms. Memory: 764416K Free: 368656K (48%)
+reloadAllAccessors: .JavaScriptArray
+----------------- testing Thu Apr 26 17:54:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptArray2.xml
+----------------- Thu Apr 26 17:54:53 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptArray2.xml
+949 ms. Memory: 769024K Free: 711863K (93%)
+reloadAllAccessors: .JavaScriptArray2
+----------------- testing Thu Apr 26 17:54:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBooleanToken.xml
+----------------- Thu Apr 26 17:54:59 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBooleanToken.xml
+712 ms. Memory: 769024K Free: 400474K (52%)
+reloadAllAccessors: .JavaScriptBooleanToken
+----------------- testing Thu Apr 26 17:55:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModel.xml
+----------------- Thu Apr 26 17:55:05 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModel.xml
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+5 ms. Memory: 770048K Free: 590586K (77%)
+979 ms. Memory: 770048K Free: 588187K (76%)
+reloadAllAccessors: .JavaScriptBuildPtolemyModel
+----------------- testing Thu Apr 26 17:55:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModelAndSend.xml
+----------------- Thu Apr 26 17:55:12 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModelAndSend.xml
+651 ms. Memory: 770048K Free: 277689K (36%)
+reloadAllAccessors: .JavaScriptBuildPtolemyModelAndSend
+----------------- testing Thu Apr 26 17:55:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModelAndSendAndReceive.xml
+----------------- Thu Apr 26 17:55:18 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptBuildPtolemyModelAndSendAndReceive.xml
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+3 ms. Memory: 771072K Free: 164801K (21%)
+1353 ms. Memory: 771072K Free: 161248K (21%)
+reloadAllAccessors: .JavaScriptBuildPtolemyModelAndSendAndReceive
+----------------- testing Thu Apr 26 17:55:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptCount.xml
+----------------- Thu Apr 26 17:55:25 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptCount.xml
+660 ms. Memory: 771584K Free: 353434K (46%)
+reloadAllAccessors: .JavaScriptCount
+----------------- testing Thu Apr 26 17:55:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptDoubleToken.xml
+----------------- Thu Apr 26 17:55:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptDoubleToken.xml
+840 ms. Memory: 779776K Free: 701226K (90%)
+reloadAllAccessors: .JavaScriptDoubleToken
+----------------- testing Thu Apr 26 17:55:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptErrorOutput.xml
+----------------- Thu Apr 26 17:55:37 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptErrorOutput.xml
+601 ms. Memory: 779776K Free: 400757K (51%)
+reloadAllAccessors: .JavaScriptErrorOutput
+----------------- testing Thu Apr 26 17:55:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptFactorial.xml
+----------------- Thu Apr 26 17:55:43 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptFactorial.xml
+744 ms. Memory: 779776K Free: 584573K (75%)
+reloadAllAccessors: .JavaScriptFactorial
+----------------- testing Thu Apr 26 17:55:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler1.xml
+----------------- Thu Apr 26 17:55:50 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler1.xml
+653 ms. Memory: 779776K Free: 278069K (36%)
+reloadAllAccessors: .JavaScriptInputHandler1
+----------------- testing Thu Apr 26 17:55:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler2.xml
+----------------- Thu Apr 26 17:55:56 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler2.xml
+731 ms. Memory: 780288K Free: 464292K (60%)
+reloadAllAccessors: .JavaScriptInputHandler2
+----------------- testing Thu Apr 26 17:56:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler3.xml
+----------------- Thu Apr 26 17:56:02 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptInputHandler3.xml
+954 ms. Memory: 779776K Free: 640665K (82%)
+reloadAllAccessors: .JavaScriptInputHandler3
+----------------- testing Thu Apr 26 17:56:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptIntToken.xml
+----------------- Thu Apr 26 17:56:08 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptIntToken.xml
+766 ms. Memory: 779776K Free: 329110K (42%)
+reloadAllAccessors: .JavaScriptIntToken
+----------------- testing Thu Apr 26 17:56:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptLongToken.xml
+----------------- Thu Apr 26 17:56:15 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptLongToken.xml
+1089 ms. Memory: 786944K Free: 679945K (86%)
+reloadAllAccessors: .JavaScriptLongToken
+----------------- testing Thu Apr 26 17:56:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptLongToken2.xml
+----------------- Thu Apr 26 17:56:21 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptLongToken2.xml
+1408 ms. Memory: 787968K Free: 568723K (72%)
+reloadAllAccessors: .JavaScriptLongToken2
+----------------- testing Thu Apr 26 17:56:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReadParameter.xml
+----------------- Thu Apr 26 17:56:28 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReadParameter.xml
+570 ms. Memory: 787968K Free: 254646K (32%)
+reloadAllAccessors: .JavaScriptReadParameter
+----------------- testing Thu Apr 26 17:56:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml
+----------------- Thu Apr 26 17:56:34 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml
+JavaScript: localFunctions.js: convertToToken(Tue Jan 01 1957 00:00:00 GMT+0000 (UTC), -410227200000, Tue Jan 01 1957 00:00:00 GMT+0000 (UTC) (Thread[JavaScriptReceiveDate,1,main])
+706 ms. Memory: 788992K Free: 446166K (57%)
+reloadAllAccessors: .JavaScriptReceiveDate
+----------------- testing Thu Apr 26 17:56:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptRecord.xml
+----------------- Thu Apr 26 17:56:40 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptRecord.xml
+750 ms. Memory: 790016K Free: 636522K (81%)
+reloadAllAccessors: .JavaScriptRecord
+----------------- testing Thu Apr 26 17:56:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptRecordToken.xml
+----------------- Thu Apr 26 17:56:47 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptRecordToken.xml
+720 ms. Memory: 790016K Free: 319679K (40%)
+reloadAllAccessors: .JavaScriptRecordToken
+----------------- testing Thu Apr 26 17:56:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendArray.xml
+----------------- Thu Apr 26 17:56:53 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendArray.xml
+769 ms. Memory: 790528K Free: 521742K (66%)
+reloadAllAccessors: .JavaScriptSendArray
+----------------- testing Thu Apr 26 17:56:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendArray2.xml
+----------------- Thu Apr 26 17:56:59 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendArray2.xml
+715 ms. Memory: 790528K Free: 215991K (27%)
+reloadAllAccessors: .JavaScriptSendArray2
+----------------- testing Thu Apr 26 17:57:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendBoolean.xml
+----------------- Thu Apr 26 17:57:05 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendBoolean.xml
+1012 ms. Memory: 795648K Free: 619059K (78%)
+reloadAllAccessors: .JavaScriptSendBoolean
+----------------- testing Thu Apr 26 17:57:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendDate.xml
+----------------- Thu Apr 26 17:57:12 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendDate.xml
+JavaScript: localFunctions.js: convertToToken(Thu Nov 13 2014 16:37:14 GMT+0000 (UTC), 1415896634546, Thu Nov 13 2014 16:37:14 GMT+0000 (UTC) (Thread[JavaScriptSendDate,1,main])
+637 ms. Memory: 795648K Free: 313665K (39%)
+reloadAllAccessors: .JavaScriptSendDate
+----------------- testing Thu Apr 26 17:57:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendDouble.xml
+----------------- Thu Apr 26 17:57:18 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendDouble.xml
+624 ms. Memory: 796160K Free: 515778K (65%)
+reloadAllAccessors: .JavaScriptSendDouble
+----------------- testing Thu Apr 26 17:57:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendInt.xml
+----------------- Thu Apr 26 17:57:24 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendInt.xml
+665 ms. Memory: 796160K Free: 213541K (27%)
+reloadAllAccessors: .JavaScriptSendInt
+----------------- testing Thu Apr 26 17:57:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendMatrix.xml
+----------------- Thu Apr 26 17:57:30 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendMatrix.xml
+676 ms. Memory: 796672K Free: 415971K (52%)
+reloadAllAccessors: .JavaScriptSendMatrix
+----------------- testing Thu Apr 26 17:57:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNativeArray.xml
+----------------- Thu Apr 26 17:57:36 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNativeArray.xml
+1586 ms. Memory: 797184K Free: 315278K (40%)
+reloadAllAccessors: .JavaScriptSendNativeArray
+----------------- testing Thu Apr 26 17:57:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNativeObject.xml
+----------------- Thu Apr 26 17:57:43 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNativeObject.xml
+1338 ms. Memory: 797184K Free: 213187K (27%)
+reloadAllAccessors: .JavaScriptSendNativeObject
+----------------- testing Thu Apr 26 17:57:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNull.xml
+----------------- Thu Apr 26 17:57:51 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNull.xml
+870 ms. Memory: 800768K Free: 618875K (77%)
+reloadAllAccessors: .JavaScriptSendNull
+----------------- testing Thu Apr 26 17:57:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNullToInput.xml
+----------------- Thu Apr 26 17:57:57 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendNullToInput.xml
+2608 ms. Memory: 800768K Free: 307042K (38%)
+reloadAllAccessors: .JavaScriptSendNullToInput
+----------------- testing Thu Apr 26 17:58:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord.xml
+----------------- Thu Apr 26 17:58:05 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord.xml
+745 ms. Memory: 801792K Free: 510446K (64%)
+reloadAllAccessors: .JavaScriptSendRecord
+----------------- testing Thu Apr 26 17:58:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord2.xml
+----------------- Thu Apr 26 17:58:11 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord2.xml
+661 ms. Memory: 801792K Free: 206305K (26%)
+reloadAllAccessors: .JavaScriptSendRecord2
+----------------- testing Thu Apr 26 17:58:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord3.xml
+----------------- Thu Apr 26 17:58:17 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendRecord3.xml
+647 ms. Memory: 797184K Free: 408187K (51%)
+reloadAllAccessors: .JavaScriptSendRecord3
+----------------- testing Thu Apr 26 17:58:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendString.xml
+----------------- Thu Apr 26 17:58:23 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendString.xml
+730 ms. Memory: 801280K Free: 618404K (77%)
+reloadAllAccessors: .JavaScriptSendString
+----------------- testing Thu Apr 26 17:58:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendToInput.xml
+----------------- Thu Apr 26 17:58:30 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSendToInput.xml
+2594 ms. Memory: 801280K Free: 306473K (38%)
+reloadAllAccessors: .JavaScriptSendToInput
+----------------- testing Thu Apr 26 17:58:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetInterval.xml
+----------------- Thu Apr 26 17:58:38 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetInterval.xml
+1294 ms. Memory: 801280K Free: 509522K (64%)
+reloadAllAccessors: .JavaScriptSetInterval
+----------------- testing Thu Apr 26 17:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetInterval2.xml
+----------------- Thu Apr 26 17:58:44 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetInterval2.xml
+1143 ms. Memory: 801280K Free: 202837K (25%)
+reloadAllAccessors: .JavaScriptSetInterval2
+----------------- testing Thu Apr 26 17:58:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetTimeout.xml
+----------------- Thu Apr 26 17:58:51 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptSetTimeout.xml
+1102 ms. Memory: 805888K Free: 604351K (75%)
+reloadAllAccessors: .JavaScriptSetTimeout
+----------------- testing Thu Apr 26 17:58:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptStringToken.xml
+----------------- Thu Apr 26 17:58:57 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptStringToken.xml
+730 ms. Memory: 805888K Free: 295498K (37%)
+reloadAllAccessors: .JavaScriptStringToken
+----------------- testing Thu Apr 26 17:59:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptTestAutoInputEtc.xml
+----------------- Thu Apr 26 17:59:03 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptTestAutoInputEtc.xml
+2734 ms. Memory: 805888K Free: 488773K (61%)
+reloadAllAccessors: .JavaScriptTestAutoInputEtc
+----------------- testing Thu Apr 26 17:59:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptThisActor.xml
+----------------- Thu Apr 26 17:59:12 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptThisActor.xml
+822 ms. Memory: 806400K Free: 693778K (86%)
+reloadAllAccessors: .JavaScriptThisActor
+----------------- testing Thu Apr 26 17:59:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptTimeout.xml
+----------------- Thu Apr 26 17:59:18 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptTimeout.xml
+JavaScript: JavaScriptTimeout: timeout = 100 (Thread[JavaScriptTimeout,1,main])
+JavaScript: JavaScriptTimeout: timeout = 100 (Thread[JavaScriptTimeout,1,main])
+JavaScript: JavaScriptTimeout: timeout = 100 (Thread[JavaScriptTimeout,1,main])
+JavaScript: JavaScriptTimeout: timeout = 100 (Thread[JavaScriptTimeout,1,main])
+JavaScript: JavaScriptTimeout: timeout = 100 (Thread[JavaScriptTimeout,1,main])
+JavaScript: JavaScriptTimeout: timeout = 100 (Thread[JavaScriptTimeout,1,main])
+1146 ms. Memory: 806400K Free: 381022K (47%)
+reloadAllAccessors: .JavaScriptTimeout
+----------------- testing Thu Apr 26 17:59:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptWriteParameter.xml
+----------------- Thu Apr 26 17:59:24 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/JavaScriptWriteParameter.xml
+731 ms. Memory: 806400K Free: 571796K (71%)
+reloadAllAccessors: .JavaScriptWriteParameter
+----------------- testing Thu Apr 26 17:59:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/RampDisplay.xml
+----------------- Thu Apr 26 17:59:31 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/RampDisplay.xml
+JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+TextDisplayHelper: 1
+TextDisplayHelper: 2
+TextDisplayHelper: 3
+TextDisplayHelper: 4
+TextDisplayHelper: 5
+8005 ms. Memory: 818176K Free: 471838K (58%)
+reloadAllAccessors: .RampDisplay
+This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+----------------- Thu Apr 26 17:59:46 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/RampDisplay.xml
+----------------- Reloaded Accessors and testing again Thu Apr 26 17:59:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/RampDisplay.xml
+TextDisplayHelper: 1
+TextDisplayHelper: 2
+TextDisplayHelper: 3
+TextDisplayHelper: 4
+TextDisplayHelper: 5
+8023 ms. Memory: 816128K Free: 406012K (50%)
+----------------- testing Thu Apr 26 17:59:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder.xml
+----------------- Thu Apr 26 17:59:59 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder.xml
+825 ms. Memory: 818688K Free: 609482K (74%)
+reloadAllAccessors: .SelfBuilder
+----------------- testing Thu Apr 26 18:00:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder10.xml
+----------------- Thu Apr 26 18:00:05 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder10.xml
+667 ms. Memory: 818688K Free: 285990K (35%)
+reloadAllAccessors: .SelfBuilder10
+----------------- testing Thu Apr 26 18:00:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder2.xml
+----------------- Thu Apr 26 18:00:11 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder2.xml
+732 ms. Memory: 818688K Free: 491504K (60%)
+reloadAllAccessors: .SelfBuilder2
+----------------- testing Thu Apr 26 18:00:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder3.xml
+----------------- Thu Apr 26 18:00:17 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder3.xml
+625 ms. Memory: 818688K Free: 177397K (22%)
+reloadAllAccessors: .SelfBuilder3
+----------------- testing Thu Apr 26 18:00:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder4.xml
+----------------- Thu Apr 26 18:00:23 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder4.xml
+581 ms. Memory: 814080K Free: 573611K (70%)
+reloadAllAccessors: .SelfBuilder4
+----------------- testing Thu Apr 26 18:00:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder5.xml
+----------------- Thu Apr 26 18:00:30 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder5.xml
+600 ms. Memory: 814080K Free: 252519K (31%)
+reloadAllAccessors: .SelfBuilder5
+----------------- testing Thu Apr 26 18:00:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder6.xml
+----------------- Thu Apr 26 18:00:36 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder6.xml
+605 ms. Memory: 814592K Free: 442313K (54%)
+reloadAllAccessors: .SelfBuilder6
+----------------- testing Thu Apr 26 18:00:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder7.xml
+----------------- Thu Apr 26 18:00:42 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder7.xml
+791 ms. Memory: 815104K Free: 645535K (79%)
+reloadAllAccessors: .SelfBuilder7
+----------------- testing Thu Apr 26 18:00:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder8.xml
+----------------- Thu Apr 26 18:00:48 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder8.xml
+739 ms. Memory: 815104K Free: 323982K (40%)
+reloadAllAccessors: .SelfBuilder8
+----------------- testing Thu Apr 26 18:00:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder9.xml
+----------------- Thu Apr 26 18:00:54 UTC 2018 About to sleep for 5.0 seconds before rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/test/auto/SelfBuilder9.xml
+701 ms. Memory: 815104K Free: 521458K (64%)
+reloadAllAccessors: .SelfBuilder9
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+]]></system-out>
+  <system-err><![CDATA[WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.8]
+WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.6]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+]]></system-err>
+</testsuite>
