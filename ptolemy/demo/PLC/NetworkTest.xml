@@ -1,0 +1,532 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NetworkTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -145.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 1077, 710}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[843, 600]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2906743830068466">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{169.6995169995488, 55.74432373392412}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Time slotted">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -65.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Best effort">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has two tasks that generate data to send over&#10;a network in either its time-slotted phase (with deterministic&#10;latencies) or its best-effort phase (with random latencies).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -165.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The size parameter&#10;of each task determines&#10;how much time the&#10;message takes to send.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The speed parameter&#10;of the network&#10;determines how&#10;many units per&#10;second the network&#10;can transport.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 115.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The timeForTimeSlotted and timeForBestEffort parameters of the network determine&#10;the schedule for switching between the two modes.  The scale parameter determines &#10;the variability of the random delay introduced in the best effort mode.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 205.0]">
+        </property>
+    </property>
+    <class name="Task" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 160.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 50}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 185, 1046, 632}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 522]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.350293542074364">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{303.972463768116, 211.7700464221014}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a task that sends messages on the network.&#10;For an instance of this class, enable the Network aspect&#10;and choose whether to send messages during the timeSlotted&#10;or bestEffort phases of the bus. The size parameter specifies&#10;the size of the message to be sent, which determines the&#10;amount of time that the message will occupy the Network.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 30.0]">
+            </property>
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="100">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 85.0]">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 195.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 225.0]">
+            </property>
+            <property name="DecoratorAttributesFor_Network" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Network">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="TimeSlotted">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 205.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="name + &quot; &quot; + count">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 215.0]">
+            </property>
+            <port name="count" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="name" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="this.getContainer().getName()">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
+            </property>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 205.0]">
+            </property>
+            <port name="label" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="size" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="size">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 315.0]">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[50.0, 195.0]">
+            </vertex>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="trigger" relation="relation3"/>
+        <link port="out" relation="relation2"/>
+        <link port="Ramp.output" relation="relation"/>
+        <link port="Ramp.trigger" relation="relation3"/>
+        <link port="Expression.output" relation="relation5"/>
+        <link port="Expression.count" relation="relation"/>
+        <link port="Expression.name" relation="relation4"/>
+        <link port="Const.output" relation="relation4"/>
+        <link port="Const.trigger" relation="relation3"/>
+        <link port="RecordAssembler.output" relation="relation2"/>
+        <link port="RecordAssembler.label" relation="relation5"/>
+        <link port="RecordAssembler.size" relation="relation6"/>
+        <link port="Const2.output" relation="relation6"/>
+        <link port="Const2.trigger" relation="relation3"/>
+    </class>
+    <entity name="Network" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect">
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-330.0, -200.0]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 160.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 643}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 533]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3406211988785635">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{63.06187079559089, -32.75953125953674}">
+        </property>
+        <property name="speed" class="ptolemy.data.expr.Parameter" value="1000">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -205.0]">
+            </property>
+        </property>
+        <property name="timeForTimeSlotted" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -185.0]">
+            </property>
+        </property>
+        <property name="timeForBestEffort" class="ptolemy.data.expr.Parameter" value="1.8">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -165.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a time-sensitive network that alternates between &quot;time slotted&quot; and&#10;&quot;best effort&quot; transport.  In the &quot;time slotted&quot; period, payloads are sent through&#10;the network with a delay that depends on the payload size and, if a backlog&#10;builds up, the time needed to drain the queue of previous messages queued to&#10;send.&#10;&#10;During the &quot;best effort&quot; phase, this model introduces a random delay with a&#10;Rayleigh distribution with the given scaleParameter plus a fixed delay depending&#10;on the payload size.&#10;&#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -215.0}">
+            </property>
+        </property>
+        <property name="scaleParameter" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -145.0]">
+            </property>
+        </property>
+        <entity name="TimeSlotted" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-355.0, -45.0]">
+            </property>
+        </entity>
+        <entity name="Response" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 5.0]">
+            </property>
+        </entity>
+        <entity name="BestEffort" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-356.5, 95.0]">
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 5.0]">
+            </property>
+        </entity>
+        <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('timeSlottedSendRequest');&#10;	this.input('bestEffortSendRequest');&#10;	&#10;	this.output('timeSlottedReceived');&#10;	this.output('bestEffortReceived');&#10;	&#10;	// Network speed in arbitrary units (e.g. bytes/second).&#10;	this.parameter('speed', {'type':'number', 'value':1000});&#10;	&#10;	// Time slices allocated to each phase of the network, in seconds.&#10;	this.parameter('timeForTimeSlotted', {'type':'number', 'value':0.2});&#10;	this.parameter('timeForBestEffort', {'type':'number', 'value':0.8});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	// Convert times to milliseconds.&#10;	var timeForTimeSlotted = this.getParameter('timeForTimeSlotted')*1000;&#10;	var timeForBestEffort = this.getParameter('timeForBestEffort')*1000;&#10;	&#10;	// State variables indicating whether the network is in use.&#10;	var timeSlottedInUse = false;&#10;	var bestEffortInUse = false;&#10;	&#10;	// State variable indicating whether the network is in time slotted&#10;	// mode (true) or best effort mode (false).&#10;	var timeSlotted = true;&#10;		&#10;	// Queue for storing time slotted send requests.&#10;	var timeSlottedQueue = [];&#10;	&#10;	// Queue for storing best effort send requests.&#10;	var bestEffortQueue = [];&#10;	&#10;	// Time to the end of the current phase, in ms.&#10;	var endOfCurrentPhase = timeForTimeSlotted;&#10;	&#10;	// If the time slotted phase is in use, do nothing.&#10;	// Also, if there is no pending time slotted pending message,&#10;	// do nothing.&#10;	// Otherwise, extract the first time slotted pending&#10;	// message and schedule it to be sent to the output&#10;	// at the right time in the future.&#10;	// Mark the time slotted phase to be in use.&#10;	function scheduleTimeSlottedSend() {&#10;		if (timeSlottedInUse || timeSlottedQueue.length == 0) {&#10;			// console.log('** Nothing to do: ' + timeSlottedInUse);&#10;			return;&#10;		}&#10;		timeSlottedInUse = true;&#10;		// Current time in milliseconds.&#10;		var currentTime = actor.getDirector().getModelTime() * 1000;&#10;		// console.log('** current time: ' + currentTime);&#10;		// Message to send.&#10;		var toSend = timeSlottedQueue.shift();&#10;		// Extract size, if it exists. Default size is zero.&#10;		var size = toSend.token.size;&#10;		// console.log('size: ' + size);&#10;		if (!size) {&#10;			size = 0;&#10;		}&#10;		var speed = thiz.getParameter('speed');&#10;		// Convert duration to ms.&#10;		var duration = (size / speed) * 1000;&#10;		// console.log('duration: ' + duration);&#10;		if (toSend.delay) {&#10;			// The record to send includes an additional delay.&#10;			duration += toSend.delay * 1000;&#10;		}&#10;		var sendTime = currentTime + duration;&#10;		var phaseEnd = endOfCurrentPhase;&#10;		// console.log('endOfCurrentPhase: ' + endOfCurrentPhase);&#10;		if (!timeSlotted) {&#10;			// We are not in a time slotted phase.&#10;			sendTime = endOfCurrentPhase + duration;&#10;			phaseEnd = endOfCurrentPhase + timeForBestEffort;&#10;		}&#10;		while (sendTime &gt; phaseEnd) {&#10;			// sendTime is after the end of the current phase.&#10;			// increment by the time of the next phase.&#10;			sendTime += timeForBestEffort;&#10;			phaseEnd += timeForBestEffort + timeForTimeSlotted;&#10;		}&#10;		// console.log('sendTime: ' + sendTime);&#10;		var timeout = sendTime - currentTime;&#10;		// console.log('timeout: ' + timeout);&#10;		setTimeout(function() {&#10;			timeSlottedInUse = false;&#10;			thiz.send('timeSlottedReceived', toSend);&#10;			scheduleTimeSlottedSend();&#10;		}, timeout);&#10;	}&#10;	&#10;	// If the best effort phase is in use, do nothing.&#10;	// Also, if there is no pending best effort pending message,&#10;	// do nothing.&#10;	// Otherwise, extract the first best effort pending&#10;	// message and schedule it to be sent to the output&#10;	// at the right time in the future.&#10;	// Mark the best effort phase to be in use.&#10;	function scheduleBestEffortSend() {&#10;		if (bestEffortInUse || bestEffortQueue.length == 0) {&#10;			// console.log('** Nothing to do: ' + bestEffortInUse);&#10;			return;&#10;		}&#10;		bestEffortInUse = true;&#10;		// Current time in milliseconds.&#10;		var currentTime = actor.getDirector().getModelTime() * 1000;&#10;		// console.log('** current time: ' + currentTime);&#10;		// Message to send.&#10;		var toSend = bestEffortQueue.shift();&#10;		// Extract size, if it exists. Default size is zero.&#10;		var size = toSend.token.size;&#10;		// console.log('size: ' + size);&#10;		if (!size) {&#10;			size = 0;&#10;		}&#10;		var speed = thiz.getParameter('speed');&#10;		// Convert duration to ms.&#10;		var duration = (size / speed) * 1000;&#10;		// console.log('duration: ' + duration);&#10;		if (toSend.delay) {&#10;			// The record to send includes an additional delay.&#10;			duration += toSend.delay * 1000;&#10;		}&#10;		var sendTime = currentTime + duration;&#10;		var phaseEnd = endOfCurrentPhase;&#10;		if (timeSlotted) {&#10;			// We are not in a best effort phase.&#10;			sendTime = endOfCurrentPhase + duration;&#10;			phaseEnd = endOfCurrentPhase + timeForTimeSlotted;&#10;		}&#10;		while (sendTime &gt; phaseEnd) {&#10;			// sendTime is after the end of the current phase.&#10;			// increment by the time of the next phase.&#10;			sendTime += timeForTimeSlotted;&#10;			phaseEnd += timeForBestEffort + timeForTimeSlotted;&#10;		}&#10;		// console.log('sendTime: ' + sendTime);&#10;		var timeout = sendTime - currentTime;&#10;		// console.log('timeout: ' + timeout);&#10;		setTimeout(function() {&#10;			bestEffortInUse = false;&#10;			thiz.send('bestEffortReceived', toSend);&#10;			scheduleBestEffortSend();&#10;		}, timeout);&#10;	}&#10;&#10;	// Peridic action to switch modes.&#10;	function switchModes() {&#10;		if (timeSlotted) {&#10;			// console.log('switching to best effort');&#10;			timeSlotted = false;&#10;			endOfCurrentPhase += timeForBestEffort;&#10;			scheduleBestEffortSend();&#10;			setTimeout(switchModes, timeForBestEffort);&#10;		} else {&#10;			// console.log('switching to time slotted');&#10;			timeSlotted = true;&#10;			endOfCurrentPhase += timeForTimeSlotted;&#10;			scheduleTimeSlottedSend();&#10;			setTimeout(switchModes, timeForTimeSlotted);&#10;		}&#10;	}&#10;	// First callback to get it started.&#10;	setTimeout(switchModes, timeForTimeSlotted);&#10;	&#10;	// Respond to send requests for time slotted period.&#10;	this.addInputHandler('timeSlottedSendRequest', function() {&#10;		// console.log('++++ pushing on time slotted queue.');&#10;		timeSlottedQueue.push(thiz.get('timeSlottedSendRequest'));&#10;		if (timeSlotted) {&#10;			scheduleTimeSlottedSend();&#10;		}&#10;	});&#10;	&#10;	// Respond to send requests for best effort period.&#10;	this.addInputHandler('bestEffortSendRequest', function() {&#10;		bestEffortQueue.push(thiz.get('bestEffortSendRequest'));&#10;		if (!timeSlotted) {&#10;			scheduleBestEffortSend();&#10;		}&#10;	});&#10;}&#10;">
+                <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                    <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                    </property>
+                </property>
+            </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+                </property>
+                <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 10.0]">
+            </property>
+            <property name="timeForTimeSlotted" class="ptolemy.data.expr.Parameter" value="timeForTimeSlotted">
+            </property>
+            <property name="timeForBestEffort" class="ptolemy.data.expr.Parameter" value="timeForBestEffort">
+            </property>
+            <property name="speed" class="ptolemy.data.expr.Parameter" value="speed">
+            </property>
+            <port name="timeSlottedSendRequest" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="bestEffortSendRequest" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="timeSlottedReceived" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="bestEffortReceived" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="RecordUpdater" class="ptolemy.actor.lib.RecordUpdater">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-171.5, 85.0]">
+            </property>
+            <port name="delay" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Rician" class="ptolemy.actor.lib.Rician">
+            <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="scaleParameter">
+            </property>
+            <doc>Create an array of rician random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-236.5, 135.0]">
+            </property>
+        </entity>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[-301.5, 95.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="TimeSlotted.output" relation="relation"/>
+        <link port="Response.input" relation="relation4"/>
+        <link port="BestEffort.output" relation="relation6"/>
+        <link port="Merge.input" relation="relation3"/>
+        <link port="Merge.input" relation="relation5"/>
+        <link port="Merge.output" relation="relation4"/>
+        <link port="JavaScript.timeSlottedSendRequest" relation="relation"/>
+        <link port="JavaScript.bestEffortSendRequest" relation="relation7"/>
+        <link port="JavaScript.timeSlottedReceived" relation="relation3"/>
+        <link port="JavaScript.bestEffortReceived" relation="relation5"/>
+        <link port="RecordUpdater.output" relation="relation7"/>
+        <link port="RecordUpdater.input" relation="relation6"/>
+        <link port="RecordUpdater.delay" relation="relation2"/>
+        <link port="Rician.output" relation="relation2"/>
+        <link port="Rician.trigger" relation="relation6"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -35.0]">
+        </property>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={916, 629, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -30.0]">
+        </property>
+    </entity>
+    <entity name="TaskA" class="Task">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, -35.0]">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="DecoratorAttributesFor_Network" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="TaskB" class="Task">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 55.0]">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="DecoratorAttributesFor_Network" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="BestEffort">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.3}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 55.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="TimedDisplay.input" relation="relation2"/>
+    <link port="TimedDisplay.input" relation="relation4"/>
+    <link port="TaskA.trigger" relation="relation"/>
+    <link port="TaskA.out" relation="relation2"/>
+    <link port="TaskB.trigger" relation="relation3"/>
+    <link port="TaskB.out" relation="relation4"/>
+    <link port="DiscreteClock2.output" relation="relation3"/>
+</entity>
