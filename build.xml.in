@@ -326,9 +326,6 @@
     <exclude name="**/lbnl/test/junit/JUnitTclTest.*"/>
     <exclude name="**/KielerJUnitTest.*" />
 
-    <!-- FIXME: org/hlacerti/test/auto/2Values1Instance.xml hangs while exiting. -->
-    <exclude name="**/org/hlacerti/test/junit/JUnitTclTest.*" />
-
     <!-- FIXME: HeatConductor fails to load under Travis-ci, but we can't easily log in to run the croom command. -->
     <exclude name="**/ptolemy/actor/lib/fmi/fmus/omc/test/junit/JUnitTclTest.*" />
 
