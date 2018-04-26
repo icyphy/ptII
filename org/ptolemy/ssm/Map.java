@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.lib.image.PGMReader;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -58,7 +59,16 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * An occupancy grid map.
+ * The map input, which can come from an image file read by PGMReader,
+ * is a record with width, height, and grid fields. The width and height
+ * are positive integers, and the grid is an array of integer values for
+ * each position in the map.
+ * 
+ * This actor decorates any entity in the model that implements the
+ * MapConstrained interface.
  *
+ * @see MapConstrained
+ * @see PGMReader
  * @author Ilge Akkaya
  * @version $Id$
  * @since Ptolemy II 11.0
