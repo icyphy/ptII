@@ -146,7 +146,7 @@
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="200L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="500L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
