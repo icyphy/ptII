@@ -130,12 +130,17 @@ script:
   # Killing background sleep loop.
   - kill %1
 
+# The report stage should be run before deploy because deploy may fail.
+stages:
+  - test
+  - report
+  - deploy
 
 # See https://docs.travis-ci.com/user/build-stages/ and
 # https://docs.travis-ci.com/user/build-stages/matrix-expansion/
 jobs:
   include:
-    - stage: deploy
+    - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
       env: PT_TRAVIS_RUN_JUNITREPORT=true
 
@@ -151,17 +156,6 @@ cache:
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
-# before_deploy:
-#   # Set up git user name and tag this commit
-#   - git config --local user.name "cxbrooks"
-#   - git config --local user.email "cxh@eecs.berkeley.edu"
-#   #  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-#   - git tag nightly || true
-#   - git push origin --tags https://${GITHUB_TOKEN}@github.com/icyphy/ptII || true
-#   - echo $PTII
-#   - ls -l $PTII/logs
-#   - pwd
-  
 deploy:
   # If PT_TRAVIS_TEST_CORE2_XML == true, then copy the SpaceCadet files
   - provider: releases
