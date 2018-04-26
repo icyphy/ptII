@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1060461854430697">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.88808876811567, 254.5408344655797}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.88808876811555, 254.5408344655797}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -58,7 +58,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 85.0]">
         </property>
     </property>
-    <property name="portNumber" class="ptolemy.data.expr.Parameter" value="8060">
+    <property name="portNumber" class="ptolemy.data.expr.Parameter" value="8460">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -486,18 +486,12 @@
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="input2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">

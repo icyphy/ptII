@@ -33,7 +33,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41018">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41118">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[40.0, 40.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ClientA">
@@ -43,7 +43,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41018">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41118">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[40.0, 55.00000000000006]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ServerA">
@@ -53,7 +53,7 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41019">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41119">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[115.0, 65.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ServerB">
@@ -63,7 +63,7 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41019">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number 41119">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[95.0, 64.99999999999994]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ClientB">
@@ -78,10 +78,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-30.0, -105.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
     <entity name="ClientA" class="org.terraswarm.accessor.JSAccessor">
@@ -191,7 +187,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="41018">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="41118">
         </property>
         <port name="host" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -310,7 +306,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 330.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="41018">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="41118">
         </property>
         <property name="sslTls" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -456,7 +452,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 530.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="41019">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="41119">
         </property>
         <property name="sslTls" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -596,7 +592,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="41019">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="41119">
         </property>
         <port name="host" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -880,8 +876,6 @@
         </port>
         <port name="input4" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
