@@ -19,10 +19,10 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.59930419921875, 306.171875}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver1NER&quot;">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;ReceiverNER21&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance21&quot;">
             <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance.fed">
@@ -40,7 +40,7 @@
         <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Generate HLA reports ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 25.0}">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
