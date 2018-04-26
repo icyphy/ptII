@@ -232,7 +232,7 @@ updateGhPages () {
         length=$(($#-2))
         sources=${@:2:$length}
         destination=${@: -1}
-    elif [ $1!= "-clean" ]; then
+    elif [ $1 != "-clean" ]; then
         echo "$0: cleaning the reports/junit directory."
     else
         length=$(($#-1))
@@ -416,7 +416,7 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_CORE2_XML" ]; then
     runTarget test.core2.xml
     ant
-    $PTII/ptolemy/domains/space/demo/DOPCenter/updateDOPCenterImage
+    (cd $PTII/ptolemy/domains/space/demo/DOPCenter/; ./updateDOPCenterImage)
 fi
 
 # Run the third batch of core tests.
