@@ -72,6 +72,13 @@ public class TimedDisplay extends Display implements SequenceActor {
     @Override
     protected String _getInputString(int i) throws IllegalActionException {
         String value = super._getInputString(i);
+        if (value == null) {
+            if (_isSuppressBlankLines) {
+                return null;
+            }
+            // Replace with an empty string to show a blank line.
+            value = "";
+        }
 
         Director director = getDirector();
         if (director != null) {
