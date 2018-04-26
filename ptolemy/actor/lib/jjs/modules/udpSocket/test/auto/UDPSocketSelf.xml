@@ -89,7 +89,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 245.0]">
         </property>
-        <property name="listeningPort" class="ptolemy.actor.parameters.PortParameter" value="8084">
+        <property name="listeningPort" class="ptolemy.actor.parameters.PortParameter" value="8684">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor listens for UDP (datagram) messages on the specified&#10; host interface and port. If the value of the &lt;code&gt;port&lt;/code&gt; input is&#10; initially negative, then this accessor waits until it receives a&#10; non-negative &lt;code&gt;port&lt;/code&gt; input before initiating listening. Otherwise,&#10; it begins listening during initialization. If at any time during&#10; execution it receives a &lt;code&gt;port&lt;/code&gt; input, then it will close any open&#10; socket and, if the new &lt;code&gt;port&lt;/code&gt; value is non-negative, open a new&#10; socket to the current &lt;code&gt;host&lt;/code&gt; and &lt;code&gt;port&lt;/code&gt;.&lt;/p&gt;&#10;&lt;p&gt; When the connection is established, a &lt;code&gt;true&lt;/code&gt; boolean is sent to&#10; the &lt;code&gt;listening&lt;/code&gt; output. If the connection is broken during&#10; execution, then a &lt;code&gt;false&lt;/code&gt; boolean is sent to the &lt;code&gt;listening&lt;/code&gt;&#10; output. The swarmlet could respond to this by retrying to connect&#10; (send an event to the &lt;code&gt;port&lt;/code&gt; input).&lt;/p&gt;&#10;&lt;p&gt; The receive type can be any of those supported by the host.  The&#10; list of supported types will be provided as options for the and&#10; &lt;code&gt;receiveType&lt;/code&gt; parameter. For the Ptolemy II host, these include at&#10; least 'string', 'number', 'image', and a variety of numeric types.&lt;/p&gt;&#10;&lt;p&gt; Note that UDP, unlike TCP, has the notion of a &amp;quot;message&amp;quot; (a&#10; datagram). A message can contain more than one byte.  The&#10; &lt;code&gt;receiveType&lt;/code&gt; determines the type of the elements of the output of&#10; this accessor.&lt;/p&gt;">
@@ -224,7 +224,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 120.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -253,6 +253,8 @@
             </property>
             <property name="destinationPort (port)" class="ptolemy.kernel.util.StringAttribute" value="The port to send to.&#10;  This defaults to 8084.">
             </property>
+        </property>
+        <property name="destinationPort" class="ptolemy.actor.parameters.PortParameter" value="8684">
         </property>
         <port name="destinationAddress" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>

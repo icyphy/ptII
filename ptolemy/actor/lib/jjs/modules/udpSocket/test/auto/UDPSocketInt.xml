@@ -5,22 +5,22 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 0.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={424, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 23, 1193, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[959, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2901408994088122">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.66547250747647, 165.6375090184419}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.04210583438004, 165.6375090184419}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -51,7 +51,7 @@
         </property>
     </property>
     <entity name="ReceivedUDPPackets" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 140, 217, 263}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 140, 1016, 612}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1016, 568]">
         </property>
@@ -59,6 +59,8 @@
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 85.0}">
         </property>
     </entity>
@@ -91,7 +93,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 255.0]">
         </property>
-        <property name="listeningPort" class="ptolemy.actor.parameters.PortParameter" value="8084">
+        <property name="listeningPort" class="ptolemy.actor.parameters.PortParameter" value="8784">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor listens for UDP (datagram) messages on the specified&#10; host interface and port. If the value of the &lt;code&gt;port&lt;/code&gt; input is&#10; initially negative, then this accessor waits until it receives a&#10; non-negative &lt;code&gt;port&lt;/code&gt; input before initiating listening. Otherwise,&#10; it begins listening during initialization. If at any time during&#10; execution it receives a &lt;code&gt;port&lt;/code&gt; input, then it will close any open&#10; socket and, if the new &lt;code&gt;port&lt;/code&gt; value is non-negative, open a new&#10; socket to the current &lt;code&gt;host&lt;/code&gt; and &lt;code&gt;port&lt;/code&gt;.&lt;/p&gt;&#10;&lt;p&gt; When the connection is established, a &lt;code&gt;true&lt;/code&gt; boolean is sent to&#10; the &lt;code&gt;listening&lt;/code&gt; output. If the connection is broken during&#10; execution, then a &lt;code&gt;false&lt;/code&gt; boolean is sent to the &lt;code&gt;listening&lt;/code&gt;&#10; output. The swarmlet could respond to this by retrying to connect&#10; (send an event to the &lt;code&gt;port&lt;/code&gt; input).&lt;/p&gt;&#10;&lt;p&gt; The receive type can be any of those supported by the host.  The&#10; list of supported types will be provided as options for the and&#10; &lt;code&gt;receiveType&lt;/code&gt; parameter. For the Ptolemy II host, these include at&#10; least 'string', 'number', 'image', and a variety of numeric types.&lt;/p&gt;&#10;&lt;p&gt; Note that UDP, unlike TCP, has the notion of a &amp;quot;message&amp;quot; (a&#10; datagram). A message can contain more than one byte.  The&#10; &lt;code&gt;receiveType&lt;/code&gt; determines the type of the elements of the output of&#10; this accessor.&lt;/p&gt;">
@@ -188,6 +190,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 95.0}">
         </property>
+        <property name="destinationPort" class="ptolemy.actor.parameters.PortParameter" value="8784">
+        </property>
         <port name="destinationAddress" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -201,13 +205,17 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 300.0}">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{570, 300}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -226,6 +234,8 @@
         <vertex name="vertex1" value="[360.0, 245.0]">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ReceivedUDPPackets.input" relation="relation5"/>
     <link port="DiscreteClock.output" relation="relation2"/>
     <link port="DiscreteClock.start" relation="relation3"/>
@@ -236,4 +246,6 @@
     <link port="Listening.input" relation="relation3"/>
     <link port="UDPSocketSender.toSend" relation="relation6"/>
     <link port="Test.input" relation="relation5"/>
+    <link port="Test.output" relation="relation"/>
+    <link port="Stop.input" relation="relation"/>
 </entity>

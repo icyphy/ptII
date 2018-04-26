@@ -8,12 +8,12 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[819, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3676819856666962">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3884186386086579">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{167.75588787390518, 145.0908203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{158.9516566708858, 137.89732789993283}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="130">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -27,6 +27,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, -45.0}">
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
