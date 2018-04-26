@@ -267,7 +267,6 @@
     <include name="**/ptolemy/math/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/media/**/test/junit/JUnitTclTest.java" />
     <include name="**/doc/**/test/junit/JUnitTclTest.java" />
-    <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core2.excludes">
@@ -276,24 +275,23 @@
     <exclude name="**/ptolemy/math/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/media/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/doc/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/org/ptolemy/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the core, third batch. -->
   <patternset id="test.core3.includes">
-    <exclude name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/cg/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/demo/**/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core3.excludes">
-    <exclude name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/cg/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/demo/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the core, fourth batch. -->
   <patternset id="test.core4.includes">
+    <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
+    <include name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/distributed/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/moml/**/test/junit/JUnitTclTest.java" />
@@ -304,6 +302,8 @@
   </patternset>
 
   <patternset id="test.core4.excludes">
+    <exclude name="**/org/ptolemy/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/distributed/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/homer/**/test/junit/JUnitTclTest.*" />
