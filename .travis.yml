@@ -151,7 +151,13 @@ jobs:
       env: PT_TRAVIS_JUNITREPORT=true
     # Build the installers last because it might fail.
     - stage: installers
-      script: $PTII/bin/ptIITravisBuild.sh $SECONDS
+      script:
+        - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+        - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
+        - $PTII/bin/ptIITravisBuild.sh $SECONDS
+        - echo "Done with ptIITravisBuild.sh at $SECONDS seconds."
+        # Killing background sleep loop.
+        - kill %1
       env: PT_TRAVIS_TEST_INSTALLERS=true
 
 # See https://docs.travis-ci.com/user/caching
