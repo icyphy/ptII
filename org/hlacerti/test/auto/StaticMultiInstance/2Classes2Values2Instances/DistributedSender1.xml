@@ -69,10 +69,10 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Sender1TAR&quot;">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;SenderTAR222&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance222&quot;">
             <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance.fed">
@@ -99,7 +99,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={302, 352, 707, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={523, 322, 707, 632}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[473, 522]">
     </property>

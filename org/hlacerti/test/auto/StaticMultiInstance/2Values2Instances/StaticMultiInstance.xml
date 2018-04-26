@@ -4,13 +4,13 @@
 <entity name="StaticMultiInstance" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 937, 894}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 955, 886}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 776]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0802282793116365">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.09710549934726, 713.5546875000001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.09710549934726, 713.5546875000002}">
     </property>
     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
@@ -132,7 +132,7 @@
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="500L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>

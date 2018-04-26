@@ -4,7 +4,7 @@
 <entity name="2Values2Instances" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 955, 886}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={378, 22, 955, 886}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 776]">
     </property>
@@ -132,13 +132,13 @@
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 1010.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 940.0}">
         </property>
     </entity>
     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -146,13 +146,13 @@
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="500L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 955.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 1005.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
