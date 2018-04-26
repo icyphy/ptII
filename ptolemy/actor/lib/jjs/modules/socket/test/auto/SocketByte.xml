@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0467377189185394">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{423.17413268955596, 225.15707986856228}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{423.17413268955573, 225.1570798685624}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="150">
@@ -48,20 +48,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, -45.0}">
         </property>
     </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScriptBarrier has a timeout &#10;that is set to the same time as&#10;the stopTime of the DE Director.">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-285.0, 50.0]">
-        </property>
-    </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4011,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -95,7 +87,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType')&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data + 1);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4011,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType')&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data + 1);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -206,7 +198,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4011,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
