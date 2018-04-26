@@ -232,7 +232,7 @@ updateGhPages () {
         length=$(($#-2))
         sources=${@:2:$length}
         destination=${@: -1}
-    elif [ $1 != "-clean" ]; then
+    elif [ $1 = "-clean" ]; then
         echo "$0: cleaning the reports/junit directory."
     else
         length=$(($#-1))
