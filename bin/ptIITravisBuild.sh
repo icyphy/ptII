@@ -41,7 +41,7 @@
 #   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_RUN_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
 
 if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
@@ -453,7 +453,7 @@ fi
 # This target is in the deploy stage, which is run after the other
 # targets that generate test data using JUnit.  See
 # https://docs.travis-ci.com/user/build-stages/
-if [ ! -z "$PT_TRAVIS_RUN_JUNITREPORT" ]; then
+if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     exitIfNotCron
     updateGhPages -junitreport $PTII/reports/junit reports/
 
