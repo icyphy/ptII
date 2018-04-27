@@ -356,6 +356,12 @@ updateGhPages () {
 # lines, so we don't save the output to a log file.
 if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     ant build-all;
+    status=$?
+    if [ $status -ne 0 ]; then
+        echo "$0: ant build-all returned $status, which is non-zero."
+        echo "$0: exiting with a value of $status"
+        exit $status
+    fi
 fi
 
 # Build the docs, which are used by other targets.
