@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 3.88 seconds.
+     [exec] Finished running in 6.18 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -171,4 +171,4 @@ build-project:
 BUILD FAILED
 /home/travis/build/icyphy/ptII/build.xml:767: Compile failed; see the compiler error output for details.
 
-Total time: 13 seconds
+Total time: 18 seconds
