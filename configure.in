@@ -700,8 +700,18 @@ else
 fi
 
 # The Major and Minor version of the JDK.  1.6, 1.8 etc.  Used by ant in build.xml.in.
+# Sadly, javac 9 and later has a usability bug where "-target 9.0" fails, but "-target 9" works.
+# See https://bugs.openjdk.java.net/browse/JDK-8190556
+# If you get messages about "javac: invalid target release:", then check that JAVA_HOME
+# is set to same JDK as the one that is in your path.
 changequote(<<, >>)dnl
-JVERSION_TARGET=`echo "$JVERSION" | sed 's/\([1-9]*\.[^._]*\).*/\1/'`
+JVERSION_TARGET=`echo "$JVERSION" |
+    awk -F . '{ if ($1 > 8) {
+                   print $1
+                } else {
+		   print $0
+                }
+              }'`
 changequote([, ])dnl
 
 cd "$startdir"
@@ -1243,11 +1253,11 @@ PTVIEWER_DIR=viewer
 # PTVIEWER_PACKAGES is used in doc/makefile
 PTVIEWER_PACKAGES=ptolemy.media.viewer
 
-# Handle Java 9 fails.
+# Handle Java 9 and later fails.
 AC_MSG_CHECKING(Java 9 and later)
 echo "$JVERSION" | egrep '^9|^[1-9][0-9]' > /dev/null
 status=$?
-if test $status -eq 1 ; then
+if test "$status" = "0" ; then
     PT_MSG_RESULT(Java 9 or later is not present)
 else
     PT_MSG_RESULT(Java 9 or later present, so certain internal sun.* packages are not accessible)
