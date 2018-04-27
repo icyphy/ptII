@@ -65,6 +65,9 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MultiDataTypes.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="0.01">
+            <display name="*** If TAR is used, time step (s)"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 35.0}">
         </property>
     </property>
