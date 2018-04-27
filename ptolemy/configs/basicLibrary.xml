@@ -10,7 +10,6 @@
 
   <!-- Default utilities library. -->
   <input source="ptolemy/configs/utilitiesLibrary.xml"/>
-
   <!-- Default director library. -->
   <!-- This uses configure so that directors are not instantiated -->
   <!-- until (and unless) the library is opened. -->

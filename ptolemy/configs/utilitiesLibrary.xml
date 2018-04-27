@@ -19,6 +19,9 @@
         <!--input source="ptolemy/configs/utilityPteraModalModel.xml"/ -->
 
         <input source="ptolemy/configs/basicUtilities.xml"/>
+
+        <input source="ptolemy/configs/jjsUtilities.xml"/>
+
         <!-- Do not include this as singleton parameters are buggy. -->
         <!-- input source="ptolemy/configs/customize.xml"/ -->
         <input source="ptolemy/data/unit/unitSystems.xml"/>
