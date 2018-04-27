@@ -965,6 +965,7 @@ ALL_JNLP_JARS = \
 	$(SPACE_MAIN_JAR) \
 	$(VIPTOS_MAIN_JAR) \
 	com/jhlabs/jhlabs.jar \
+	$(OPENCV_JAR) \
 	lib/opencv-320.jar
 
 # Makefile variables used to set up keys for jar signing.
