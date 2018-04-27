@@ -4092,14 +4092,17 @@ else
         for OPENCV_DIR in $OPENCV_DIRS
         do
             if test -d $OPENCV_DIR; then
-                TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
-                # If the file is not the bad jar we already tried, then add it to the list
-                if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
-                    PT_MSG_RESULT($TMP_OPENCV_JAR)
-                    OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
-                fi
+                TMP_OPENCV_JARS=`find $OPENCV_DIR -name "opencv-*.jar"`
+                for TMP_OPENCV_JAR in $TMP_OPENCV_JARS
+                do
+                    # If the file is not the bad jar we already tried, then add it to the list
+                    if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                        OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
+                    fi
+                done
             fi
         done
+        PT_MSG_RESULT([OpenCV jars: $OPENCV_JARS])
 
         for TMP_OPENCV_JAR in $OPENCV_JARS
         do
