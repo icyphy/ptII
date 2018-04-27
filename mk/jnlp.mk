@@ -1747,15 +1747,18 @@ WEBSERVER_USER=ptolemy
 WEBSERVER=calweb-basic-prod-01.ist.berkeley.edu
 
 jnlp_dist_update:
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R ptolemy $(DIST_DIR)
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
-	# -tar -cf - $(SIGNED_DIR) $(JNLPS) \
-	# 	$(OTHER_FILES_TO_BE_DISTED) | \
-	# 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R ptolemy $(DIST_DIR)
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
-	# scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
+	-echo "Run $(MAKE) jnlp_dist_update_real if you really want to do the update."
+
+jnlp_dist_update_real:
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R ptolemy $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	-tar -cf - $(SIGNED_DIR) $(JNLPS) \
+		$(OTHER_FILES_TO_BE_DISTED) | \
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R ptolemy $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 $(HOME)/.certpw:
 	if [ ! -f $@ ]; then \
