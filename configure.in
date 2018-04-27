@@ -6088,7 +6088,13 @@ else
 	PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
     else
 	AC_MSG_WARN([$OJDBC_TARGET_JAR not found,
-    but only necessary to use database actors with Oracle.])
+    but only necessary to use database actors with Oracle.
+    If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+    To install ojdbc5.jar or ojdbc6.jar,
+    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    copy it to ptolemy/actor/lib/database
+    and rerun ./configure])
+    
     fi
 
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
