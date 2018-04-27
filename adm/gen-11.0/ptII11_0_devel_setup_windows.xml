@@ -190,8 +190,12 @@ The Ptiny pack is required.
 
 	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
             <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/opencv-320.jar"
+	          targetdir="$INSTALL_PATH/lib"/>
 <!--LinuxInclude -->
 <!--MacOSInclude-->
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/opencv-341.jar"
+	          targetdir="$INSTALL_PATH/lib"/>
 
 <!-- Mac and Linux: The makefile substitutes a directive to include the Mac and Linux Node directory for the next line. -->
 <!-- NodeDirectory -->

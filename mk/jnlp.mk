@@ -283,7 +283,8 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
-	$(OPENCV_JAR) \
+	lib/opencv-320.jar \
+	lib/opencv-341.jar \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTSLF4J_API_JAR) \
 	$(PTSLF4J_SIMPLE_JAR) \
@@ -965,8 +966,8 @@ ALL_JNLP_JARS = \
 	$(SPACE_MAIN_JAR) \
 	$(VIPTOS_MAIN_JAR) \
 	com/jhlabs/jhlabs.jar \
-	$(OPENCV_JAR) \
-	lib/opencv-320.jar
+	lib/opencv-320.jar \
+	lib/opencv-341.jar
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
