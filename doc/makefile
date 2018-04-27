@@ -777,16 +777,32 @@ all: suball whatsnew.htm whatsnewVergil.htm
 	@echo "   To build the javascript,"
 	@echo "   run \"make jsdocs\""
 
-# Building the jar files also builds javadoc, PtDoclet and actor indices
-install: all \
-	codeDoc/js/index.html \
-	jars \
+CODEDOC_JARS = \
 	codeDoc.jar \
 	codeDocBcvtb.jar \
 	codeDocCapeCode.jar \
 	codeDocHyVisual.jar \
 	codeDocViptos.jar \
 	codeDocVisualSense.jar 
+
+# Building the jar files also builds javadoc, PtDoclet and actor indices
+install: all \
+	codeDoc/js/index.html \
+	jars \
+	$(CODEDOC_JARS)
+
+# Download the jars from GitHub.  This is useful for building test installers.
+download_jars:
+	set $(CODEDOC_JARS); \
+	for jar do \
+		if [ ! -f $$jar ]; then \
+			echo "Downloading $$jar: `date`"; \
+		        wget --quiet -O $(ROOT)/doc/$$jar https://github.com/icyphy/ptII/releases/download/nightly/$$jar; \
+		fi; \
+	        ls -l $(ROOT)/doc/$$jar; \
+		echo "Unjaring $$jar"; \
+	        (cd $(ROOT); jar -xf doc/$$jar); \
+	done
 
 # Build with all common packages
 all_packages:
