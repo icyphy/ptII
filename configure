@@ -1826,7 +1826,7 @@ Optional Packages:
   --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
                           defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
-                          defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
+                          defaults to \$KEPLER/lib/jar/batik-all-1.9.jar
   --with-svgsalamanderjar=SVGSALAMANDER_JAR     use svgSalamander jar file,
                                   defaults to \$PTT/lib/svgSalamander.jar
   --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
@@ -13750,7 +13750,7 @@ $as_echo_n "checking for Batik SVG... " >&6; }
 if test "${with_batikjar+set}" = set; then :
   withval=$with_batikjar; PTSVG_JAR=$withval
 else
-  PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar
+  PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.9.jar
 fi
 
 
@@ -13765,11 +13765,15 @@ $as_echo "$PTSVG_JAR" >&6; }; fi
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
-    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&5
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+    batike-1.9/lib/batik-all-1.9.jar copied to $PTII/lib
+    and ./configure rerun." >&5
 $as_echo "$as_me: WARNING: Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
-    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+    batike-1.9/lib/batik-all-1.9.jar copied to $PTII/lib
+    and ./configure rerun." >&2;}
     fi
 fi
 
