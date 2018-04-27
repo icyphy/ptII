@@ -3858,7 +3858,7 @@ JVERSION_TARGET=`echo "$JVERSION" |
     awk -F . '{ if ($1 > 8) {
                    print $1
                 } else {
-		   print $0
+		   print $1 "." $2
                 }
               }'`
 
