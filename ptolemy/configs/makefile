@@ -93,6 +93,7 @@ OTHER_FILES_TO_BE_JARED = \
 	gtTableauFactory.xml \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
+	jjsUtilities.xml \
 	modalController.xml \
 	modalEffigyFactories.xml \
 	modalEffigyFactory.xml \

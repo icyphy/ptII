@@ -29,6 +29,8 @@
 <input source="ptolemy/configs/utilityParameters.xml"/>
 <input source="ptolemy/configs/utilityPorts.xml"/>
 <!-- actor/lib/jjs/JavaScript requires Nashorn and Java 1.8 -->
-<input source="ptolemy/actor/lib/jjs/js.xml"/>
+<!-- Don't include jjs/js.xml here because configurations like SpaceCadet don't need it.
+     Instead, include jjsUtilities.xml. -->
+<!-- <input source="ptolemy/actor/lib/jjs/js.xml"/> -->
 <input source="ptolemy/configs/utilityAnalysis.xml"/>
 </group>

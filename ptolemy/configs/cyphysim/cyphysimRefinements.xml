@@ -21,6 +21,7 @@
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
               <input source="ptolemy/configs/basicUtilities.xml"/>
+              <input source="ptolemy/configs/jjsUtilities.xml"/>
               <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"/>
               </entity>

@@ -61,7 +61,17 @@
     <property name="_libraryMarker"
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+            <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
+            <input source="ptolemy/configs/basicUtilities.xml"/>
+        </group>
+        ?>
+      </configure>
+    </entity>
 
     <!-- Custom actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
