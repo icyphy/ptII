@@ -22,22 +22,22 @@
 
 rm DOPCenter.png
 
-cp DOPCenter.png DOPCenter.png.orig
+#cp DOPCenter.png DOPCenter.png.orig
 
 # FIXME: we should not need to run ExportImage twice
 $PTII/bin/ptinvoke -Dptolemy.ptII.doNotExit= ptolemy.vergil.basic.export.ExportModel png -run -save $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 
 $PTII/bin/ptinvoke -Dptolemy.ptII.doNotExit= ptolemy.vergil.basic.export.ExportModel png -run -save $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 
-diff DOPCenter.png.orig DOPCenter.png
-status=$?
-if [ $status -ne 0 ]; then
-   #echo "Added a 'Last Update Line'"
-   #mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
-   #echo "Committing changed files"
-   #svn commit -m "Automatic update" DOPCenter.png DOPCenter.xml
-fi
-rm DOPCenter.png.orig
+#diff DOPCenter.png.orig DOPCenter.png
+#status=$?
+#if [ $status -ne 0 ]; then
+#   #echo "Added a 'Last Update Line'"
+#   #mogrify -font Courier -draw "text 10,20 \"Last updated: `date`\"" DOPCenter.png
+#   #echo "Committing changed files"
+#   #svn commit -m "Automatic update" DOPCenter.png DOPCenter.xml
+#fi
+#rm DOPCenter.png.orig
 
 # Create Placard.pdf for 
 # http://chess.eecs.berkeley.edu/ptexternal/src/ptII/ptolemy/domains/space/demo/DOPCenter/Placard.pdf

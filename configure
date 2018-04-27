@@ -10403,16 +10403,19 @@ $as_echo_n "checking for opencv-*.jar in $OPENCV_DIRS... " >&6; }
         for OPENCV_DIR in $OPENCV_DIRS
         do
             if test -d $OPENCV_DIR; then
-                TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
-                # If the file is not the bad jar we already tried, then add it to the list
-                if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
-                    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $TMP_OPENCV_JAR" >&5
-$as_echo "$TMP_OPENCV_JAR" >&6; }; fi
-                    OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
-                fi
+                TMP_OPENCV_JARS=`find $OPENCV_DIR -name "opencv-*.jar"`
+                for TMP_OPENCV_JAR in $TMP_OPENCV_JARS
+                do
+                    # If the file is not the bad jar we already tried, then add it to the list
+                    if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                        OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
+                    fi
+                done
             fi
         done
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: OpenCV jars: $OPENCV_JARS" >&5
+$as_echo "OpenCV jars: $OPENCV_JARS" >&6; }; fi
 
         for TMP_OPENCV_JAR in $OPENCV_JARS
         do

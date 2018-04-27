@@ -91,7 +91,9 @@ install:
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # If ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
-  - sudo -E org/hlacerti/build-certi.sh || true
+  # Building CERTI will result in a log of more than 10,000 lines, so we just show the last 50.
+  - sudo -E org/hlacerti/build-certi.sh >& /tmp/build-certi.out || true
+  - tail -50 /tmp/build-certi.out
   - source ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh || true
   # - echo "CERTI_HOME: $CERTI_HOME" || true
 
@@ -149,7 +151,13 @@ jobs:
       env: PT_TRAVIS_JUNITREPORT=true
     # Build the installers last because it might fail.
     - stage: installers
-      script: $PTII/bin/ptIITravisBuild.sh $SECONDS
+      script:
+        - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+        - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
+        - $PTII/bin/ptIITravisBuild.sh $SECONDS
+        - echo "Done with ptIITravisBuild.sh at $SECONDS seconds."
+        # Killing background sleep loop.
+        - kill %1
       env: PT_TRAVIS_TEST_INSTALLERS=true
 
 # See https://docs.travis-ci.com/user/caching
