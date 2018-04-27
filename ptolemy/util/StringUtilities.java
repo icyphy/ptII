@@ -426,6 +426,9 @@ public class StringUtilities {
 
         try {
             property = System.getProperty(propertyName);
+            // if (propertyName.equals("ptolemy.ptII.dir")) {
+            //     System.out.println("StringUtilities.getProperty(" + propertyName + "): " + property);
+            // }
         } catch (SecurityException ex) {
             if (!propertyName.equals("ptolemy.ptII.dir")) {
                 // Constants.java depends on this when running with
@@ -453,7 +456,13 @@ public class StringUtilities {
         // Check for cases where the ptII property starts with
         // the string "/cygdrive".  This can happen if the property
         // was set by doing "PTII=`pwd`" under Cygwin bash.
-        if (property != null) {
+        //
+        // If the property starts with $JAVAROOT, and the
+        // propertyName is ptolemy.ptII.dir, then don't return
+        // the property yet, instead, refine it.
+        if (property != null
+            && (! propertyName.equals("ptolemy.ptII.dir")
+                && !property.startsWith("$JAVAROOT"))) {
             if (propertyName.equals("ptolemy.ptII.dir")
                     && property.startsWith("/cygdrive")
                     && !_printedCygwinWarning) {
@@ -491,6 +500,7 @@ public class StringUtilities {
             if (propertyName.equals("ptolemy.ptII.dir")) {
                 if (_ptolemyPtIIDir != null) {
                     // Return the previously calculated value
+                    // System.out.println("StringUtilities.getProperty(" + propertyName + "): returning previous " + _ptolemyPtIIDir);
                     return _ptolemyPtIIDir;
                 } else {
                     String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
@@ -503,6 +513,7 @@ public class StringUtilities {
                         // Get the file portion of URL
                         String namedObjFileName = namedObjURL.getFile();
 
+                        // System.out.println("StringUtilities.getProperty(" + propertyName + "): namedObjURL: " + namedObjURL);
                         // FIXME: How do we get from a URL to a pathname?
                         if (namedObjFileName.startsWith("file:")) {
                             if (namedObjFileName.startsWith("file://")
@@ -610,6 +621,7 @@ public class StringUtilities {
                         // Ignore, we are probably running as an applet or -sandbox
                     }
 
+                    // System.out.println("StringUtilities.getProperty(" + propertyName + "): returning " + _ptolemyPtIIDir);
                     return _ptolemyPtIIDir;
                 }
             }
