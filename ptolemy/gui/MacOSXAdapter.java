@@ -186,7 +186,7 @@ public class MacOSXAdapter implements InvocationHandler {
                         _macOSXApplication = applicationClass
                                 .getConstructor((Class[]) null)
                                 .newInstance((Object[]) null);
-                    } catch (java.lang.reflect.InvocationTargetException ex) {
+                    } catch ( java.lang.reflect.InvocationTargetException ex) {
                         if (ex.getCause() instanceof SecurityException) {
                             if (!_printedSecurityExceptionMessage) {
                                 System.out.println("Warning: Failed to get the"
@@ -194,7 +194,16 @@ public class MacOSXAdapter implements InvocationHandler {
                                         + applicationClassName + "\" ("
                                         + applicationClass + "): " + ex
                                         + "(applets and -sandbox always causes this)");
+				_printedSecurityExceptionMessage = true;
                             }
+                        }
+                        return;
+                    } catch ( java.lang.IllegalAccessException ex2) {
+			if (!_printedIllegalAccessExceptionMessage) {
+			    System.out.println("Warning: Failed to access the Application class "
+					       + applicationClassName + "\" ("
+					       + applicationClass + "): " + ex2);
+			    _printedIllegalAccessExceptionMessage = true;
                         }
                         return;
                     }
@@ -235,8 +244,8 @@ public class MacOSXAdapter implements InvocationHandler {
      */
     private static Object _macOSXApplication;
 
-    /** True if we have printed the securityException message. */
-    private static boolean _printedSecurityExceptionMessage = false;
+    /** True if we have printed the IllegalAccess message. */
+    private static boolean _printedIllegalAccessExceptionMessage = false;
 
     /** True if we have printed the NoClassDefFound message for com.apple.eawt.Application. */
     private static boolean _printedNoClassDefFoundMessageApplication = false;
@@ -249,6 +258,9 @@ public class MacOSXAdapter implements InvocationHandler {
 
     /** True if we can't find the setEnabledAboutMenu method and have printed the message. */
     private static boolean _printedNoSuchMethodExceptionMessageAboutMenu = false;
+
+    /** True if we have printed the securityException message. */
+    private static boolean _printedSecurityExceptionMessage = false;
 
     /**  The name of a method in com.apple.eawt.ApplicationListener,
      *  for example "handleQuit".
