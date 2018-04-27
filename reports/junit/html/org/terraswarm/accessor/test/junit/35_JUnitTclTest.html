@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.3 45050 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.25 42934 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.3 45050 10.20.0.10 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.25 42934 10.20.0.172 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '371769961';
+        cur['env.TRAVIS_BUILD_ID'] = '371809132';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '326';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '328';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '632a46cffdf782a0ff278b69d3eca0b7a2ee8456';
+        cur['env.TRAVIS_COMMIT'] = '8b9a4766ed2b3571b864457f414ff7a68ed59de8';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Attempt to set up multiline script for the installers stage.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Yet more test tuning: port changes, increase stopTime.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '85a8c9b433a0...632a46cffdf7';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '40558c53bdaf...8b9a4766ed2b';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '371769966';
+        cur['env.TRAVIS_JOB_ID'] = '371809137';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '326.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '328.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3436700187443806843.properties propsfile=/home/travis/build/icyphy/ptII/junit759140324224200937.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8848233025571632216.properties propsfile=/home/travis/build/icyphy/ptII/junit4591165967535918171.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -501,8 +501,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Failure">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td>0</td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>368.569</td><td>2018-04-26T21:41:56</td><td>travis-job-9beb61cc-6a18-4737-9c86-1621c46b02d8</td>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td>0</td><td>0</td><td>0</td><td>265.979</td><td>2018-04-26T23:42:27</td><td>travis-job-0aa3d01f-7a17-458d-bd58-ef1d9080408f</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -511,94 +511,91 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)</td><td>Success</td><td></td><td>15.510</td>
-</tr>
-<tr valign="top" class="Failure">
-<td><a name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>
-<br>
-<code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>150.051</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)"></a>[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)</td><td>Success</td><td></td><td>15.941</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)"></a>[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)</td><td>Success</td><td></td><td>43.824</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)</td><td>Success</td><td></td><td>2.023</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)</td><td>Success</td><td></td><td>2.002</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)</td><td>Success</td><td></td><td>2.373</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)</td><td>Success</td><td></td><td>4.676</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)</td><td>Success</td><td></td><td>2.452</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)</td><td>Success</td><td></td><td>2.668</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)</td><td>Success</td><td></td><td>4.942</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)</td><td>Success</td><td></td><td>44.118</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)</td><td>Success</td><td></td><td>2.722</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)</td><td>Success</td><td></td><td>1.786</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)</td><td>Success</td><td></td><td>44.065</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)</td><td>Success</td><td></td><td>2.178</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)</td><td>Success</td><td></td><td>1.989</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)</td><td>Success</td><td></td><td>2.639</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)</td><td>Success</td><td></td><td>2.387</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)</td><td>Success</td><td></td><td>2.048</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)</td><td>Success</td><td></td><td>2.206</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)</td><td>Success</td><td></td><td>2.341</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)</td><td>Success</td><td></td><td>2.076</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)</td><td>Success</td><td></td><td>2.528</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)</td><td>Success</td><td></td><td>2.266</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)</td><td>Success</td><td></td><td>2.024</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)</td><td>Success</td><td></td><td>2.292</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)</td><td>Success</td><td></td><td>2.868</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)</td><td>Success</td><td></td><td>2.471</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)</td><td>Success</td><td></td><td>4.213</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)</td><td>Success</td><td></td><td>2.058</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)</td><td>Success</td><td></td><td>4.082</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)</td><td>Success</td><td></td><td>4.299</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)</td><td>Success</td><td></td><td>2.335</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)</td><td>Success</td><td></td><td>4.443</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)</td><td>Success</td><td></td><td>2.502</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)</td><td>Success</td><td></td><td>2.507</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)</td><td>Success</td><td></td><td>14.755</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)</td><td>Success</td><td></td><td>2.673</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)</td><td>Success</td><td></td><td>43.959</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)</td><td>Success</td><td></td><td>15.206</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)</td><td>Success</td><td></td><td>2.443</td>
+<td><a name="[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)</td><td>Success</td><td></td><td>44.164</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)</td><td>Success</td><td></td><td>3.033</td>
+<td><a name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)</td><td>Success</td><td></td><td>2.430</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)</td><td>Success</td><td></td><td>25.843</td>
+<td><a name="[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)"></a>[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)</td><td>Success</td><td></td><td>3.659</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)</td><td>Success</td><td></td><td>4.008</td>
+<td><a name="[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)"></a>[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)</td><td>Success</td><td></td><td>26.466</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)</td><td>Success</td><td></td><td>15.847</td>
+<td><a name="[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)"></a>[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)</td><td>Success</td><td></td><td>3.830</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)</td><td>Success</td><td></td><td>5.968</td>
+<td><a name="[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)"></a>[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)</td><td>Success</td><td></td><td>16.238</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)"></a>[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)</td><td>Success</td><td></td><td>5.882</td>
 </tr>
 </table>
 <div class="Properties">

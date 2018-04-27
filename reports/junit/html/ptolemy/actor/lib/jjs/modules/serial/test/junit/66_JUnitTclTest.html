@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.38 32932 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.19 60650 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.38 32932 10.20.1.80 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.19 60650 10.20.1.147 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '371769961';
+        cur['env.TRAVIS_BUILD_ID'] = '371809132';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '326';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '328';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '632a46cffdf782a0ff278b69d3eca0b7a2ee8456';
+        cur['env.TRAVIS_COMMIT'] = '8b9a4766ed2b3571b864457f414ff7a68ed59de8';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Attempt to set up multiline script for the installers stage.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Yet more test tuning: port changes, increase stopTime.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '85a8c9b433a0...632a46cffdf7';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '40558c53bdaf...8b9a4766ed2b';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '371769965';
+        cur['env.TRAVIS_JOB_ID'] = '371809136';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '326.4';
+        cur['env.TRAVIS_JOB_NUMBER'] = '328.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1007065157410452601.properties propsfile=/home/travis/build/icyphy/ptII/junit7005889890936269482.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.serial.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1803590152240929562.properties propsfile=/home/travis/build/icyphy/ptII/junit3030385962897016740.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -501,8 +501,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Pass">
-<td><a title="Display all tests" href="66_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="66_JUnitTclTest.html">10</a></td><td>0</td><td>0</td><td>0</td><td>335.736</td><td>2018-04-26T21:41:09</td><td>travis-job-0014d8e3-3e8e-4625-8313-3d73b3614785</td>
+<tr valign="top" class="Error">
+<td><a title="Display all tests" href="66_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="66_JUnitTclTest.html">10</a></td><td><a title="Display only errors" href="66_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>473.339</td><td>2018-04-26T23:41:48</td><td>travis-job-d7aa877c-92ed-4359-98d9-7ad67859d9a7</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -514,31 +514,34 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml (RunModel)</td><td>Success</td><td></td><td>8.213</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/knownFailedTests/SerialHelloWorld.xml (RunModel)</td><td>Success</td><td></td><td>7.815</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.004</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml (RunModel)</td><td>Success</td><td></td><td>54.594</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackIntToString.xml (RunModel)</td><td>Success</td><td></td><td>72.338</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml (RunModel)</td><td>Success</td><td></td><td>45.147</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackInvalid.xml (RunModel)</td><td>Success</td><td></td><td>65.171</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml (RunModel)</td><td>Success</td><td></td><td>45.483</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackJSON.xml (RunModel)</td><td>Success</td><td></td><td>66.623</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml (RunModel)</td><td>Success</td><td></td><td>46.546</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackNumber.xml (RunModel)</td><td>Success</td><td></td><td>66.790</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:195)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the react function: Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768" Stacktrace was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768"<br>	at &lt;anonymous&gt; (&lt;function&gt;:267)<br>	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)<br>	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728) in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt; at line number 1695 at column number 24<br>  in .SerialLoopbackShort.TrainableTest<br>Because:<br>Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768" Stacktrace was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768"<br>	at &lt;anonymous&gt; (&lt;function&gt;:267)<br>	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)<br>	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728) in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt; at line number 1695 at column number 24<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1102)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.moml.MoMLSimpleApplication.rerun(MoMLSimpleApplication.java:339)<br>Caused by: javax.script.ScriptException: Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768" Stacktrace was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768"<br>	at &lt;anonymous&gt; (&lt;function&gt;:267)<br>	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)<br>	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728) in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt; at line number 1695 at column number 24<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)<br>Caused by: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1695:24 Error: commonHost.js, react(), invoking a specific handler for "input": Exception occurred in input handler for accessor TrainableTest, which has now has been removed.  Exception was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768" Stacktrace was: Error: TrainableTest: After seeing 2 tokens, the input "-32763" is not within "1e-9" of the expected value "-32768"<br>	at &lt;anonymous&gt; (&lt;function&gt;:267)<br>	at invokeSpecificHandler (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1664)<br>	at react (/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728)<br>	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)<br>	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$24832$74558A$require.L:1#react#invokeSpecificHandler(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1695)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$24831$73967A$require.L:1#react(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:1728)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:639)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)<br>
+</code></td><td>62.231</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackShort.xml (RunModel)</td><td>Success</td><td></td><td>45.580</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml (RunModel)</td><td>Success</td><td></td><td>66.555</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackString.xml (RunModel)</td><td>Success</td><td></td><td>44.895</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml (RunModel)</td><td>Success</td><td></td><td>44.809</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/serial/test/auto/SerialLoopbackUnsignedByte.xml (RunModel)</td><td>Success</td><td></td><td>65.362</td>
 </tr>
 </table>
 <div class="Properties">
