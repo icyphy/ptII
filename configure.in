@@ -6262,9 +6262,9 @@ if test ! -d "$PTII/diva/util/java2d/svg"; then
 else
     AC_MSG_CHECKING([for Batik SVG])
     AC_ARG_WITH(batikjar, [  --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
-                          defaults to \$KEPLER/lib/jar/batik-all-1.6.jar],
+                          defaults to \$KEPLER/lib/jar/batik-all-1.9.jar],
 	PTSVG_JAR=$withval,
-	PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar)
+	PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.9.jar)
 
     if test -f "$PTSVG_JAR"; then
 	PT_MSG_RESULT([$PTSVG_JAR])
@@ -6275,7 +6275,9 @@ else
         AC_MSG_WARN([Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
-    Batik can be downloaded from http://xmlgraphics.apache.org/batik/])
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+    batike-1.9/lib/batik-all-1.9.jar copied to $PTII/lib
+    and ./configure rerun.])
     fi
 fi
 
