@@ -13516,9 +13516,20 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ORA
 $as_echo "$ORACLE_OJDBC_JAR" >&6; }; fi
     else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $OJDBC_TARGET_JAR not found,
-    but only necessary to use database actors with Oracle." >&5
+    but only necessary to use database actors with Oracle.
+    If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+    To install ojdbc5.jar or ojdbc6.jar,
+    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    copy it to ptolemy/actor/lib/database
+    and rerun ./configure" >&5
 $as_echo "$as_me: WARNING: $OJDBC_TARGET_JAR not found,
-    but only necessary to use database actors with Oracle." >&2;}
+    but only necessary to use database actors with Oracle.
+    If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+    To install ojdbc5.jar or ojdbc6.jar,
+    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    copy it to ptolemy/actor/lib/database
+    and rerun ./configure" >&2;}
+
     fi
 
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
