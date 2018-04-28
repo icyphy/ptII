@@ -200,13 +200,18 @@ runTarget () {
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
     status=${PIPESTATUS[0]}
     if [ $status -ne 0 ]; then
-        echo "$0: ant build $target returned $status, which is non-zero."
+        echo "$0: ant build $target returned $status, which is non-zero. `date`"
         echo "$0: exiting with a value of $status"
         tail -$lastLines $log
         ulimit -a
         free -m
         dmesg
-        exit $status
+        tail /var/adm/messages
+        if [ $status = 137 ]; then
+            echo "$0: status = $status, skipping exit for now"
+        else
+            exit $status
+        fi
     else
         echo "$0: ant build $target returned $status"
     fi
