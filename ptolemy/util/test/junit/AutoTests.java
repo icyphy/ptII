@@ -252,7 +252,7 @@ public class AutoTests extends ModelTests {
     }
 
     private static void _delay(String fullPath) {
-        int delay = 10000;
+        int delay = 25000;
         boolean match = fullPath.matches(".*(org/hlacerti|org/terraswarm/accessors|ptolemy/actor/lib/jjs).*");
         // System.out.println("AutoTests.java: fullPath: " + fullPath
         //                   + " match: " + match);
