@@ -197,6 +197,7 @@ runTarget () {
         echo "$0: ant build $target returned $status, which is non-zero."
         echo "$0: exiting with a value of $status"
         tail -$lastLines $log
+        dmesg
         exit $status
     else
         echo "$0: ant build $target returned $status"
