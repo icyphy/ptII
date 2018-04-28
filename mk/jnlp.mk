@@ -58,9 +58,11 @@
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
 
 # To sign using our key and update the website:
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_dist
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS2=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD2="-keypass xxx" jnlp_dist
 
-# To update the website:  make jnlp_dist_update
+# To update the website:  make jnlp_dist_update_real
+
+# See https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating
 
 # To build a set of models for a paper, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
 
