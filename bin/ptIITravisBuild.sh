@@ -88,7 +88,7 @@ echo "$0: maxTimeout: $maxTimeout"
 
 case `uname -s` in
     Darwin)
-        echo "If necessary, install timeout with 'sudo port timeout'"
+        echo "If necessary, install timeout with 'sudo port install timeout'"
         TIMEOUTCOMMAND='timeout -9'
         ;;
     *)
@@ -186,6 +186,17 @@ runTarget () {
     
     # Run the command and log the output.
     $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
+
+    # Get the return value of the ant command and exit if it is non-zero.
+    # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
+    status=${PIPESTATUS[0]}
+    if [ $status -ne 0 ]; then
+        echo "$0: ant build $target returned $status, which is non-zero."
+        echo "$0: exiting with a value of $status"
+        exit $status
+    else
+        echo "$0: ant build $target returned $status"
+    fi
 
     # Number of lines to show from the log file.
     lastLines=50
@@ -345,6 +356,12 @@ updateGhPages () {
 # lines, so we don't save the output to a log file.
 if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     ant build-all;
+    status=$?
+    if [ $status -ne 0 ]; then
+        echo "$0: ant build-all returned $status, which is non-zero."
+        echo "$0: exiting with a value of $status"
+        exit $status
+    fi
 fi
 
 # Build the docs, which are used by other targets.
