@@ -179,6 +179,9 @@ runTarget () {
     # invoke updateGhPages once per target.
     log=$PTII/reports/junit/${target}.txt
 
+    # Number of lines to show from the log file.
+    lastLines=50
+
     # FIXME: we probably want to vary the timeout so that we can avoid
     # git conflicts.
     timeout=`expr $maxTimeout - 300`
@@ -193,13 +196,13 @@ runTarget () {
     if [ $status -ne 0 ]; then
         echo "$0: ant build $target returned $status, which is non-zero."
         echo "$0: exiting with a value of $status"
+        tail -$lastLines $log
         exit $status
     else
         echo "$0: ant build $target returned $status"
     fi
 
-    # Number of lines to show from the log file.
-    lastLines=50
+
     echo "$0: Start of last $lastLines lines of $log"
     tail -$lastLines $log
 
