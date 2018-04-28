@@ -190,6 +190,12 @@ runTarget () {
     # Run the command and log the output.
     $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
 
+    # Increase stack size and avoid a 137 return code
+    # See https://github.com/travis-ci/travis-ci/issues/4192
+    ulimit -a
+    ulimit -s 1082768
+    ulimit -a
+
     # Get the return value of the ant command and exit if it is non-zero.
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
     status=${PIPESTATUS[0]}
