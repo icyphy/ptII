@@ -21,7 +21,7 @@ env:
     # Environment variables shared between all builds(in alphabetical order)
     - PTII=${TRAVIS_BUILD_DIR}
 
-    - ANT_OPTS=-Xmx1024m
+    - ANT_OPTS=-Xmx2048m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
 
     # GeoCoding
