@@ -55,7 +55,7 @@
     
         cur['env._system_version'] = '14.04';
     
-        cur['env.ANT_OPTS'] = '-Xmx1024m';
+        cur['env.ANT_OPTS'] = '-Xmx2048m';
     
         cur['env.BCVTB_HOME'] = '/home/travis/build/icyphy/ptII/lbnl';
     
@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.9 54242 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.10 46800 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.9 54242 10.20.0.19 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.10 46800 10.20.0.98 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '372465094';
+        cur['env.TRAVIS_BUILD_ID'] = '372521785';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '346';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '347';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '6caedee4e803a29c282a05be142909fcc8c22259';
+        cur['env.TRAVIS_COMMIT'] = '454c91b2498bed57d2ed87e4316d261aff82913e';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'If the exit status is 137, skip exiting for now.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Temporarily print out the amount of memory.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '53bf32851978...6caedee4e803';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '6caedee4e803...454c91b2498b';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '372465100';
+        cur['env.TRAVIS_JOB_ID'] = '372521791';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '346.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '347.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher920984514487582830.properties propsfile=/home/travis/build/icyphy/ptII/junit4359778019078689730.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.gui.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.gui.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2175796524782403066.properties propsfile=/home/travis/build/icyphy/ptII/junit2729851720796390421.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="48_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="48_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>0.516</td><td>2018-04-28T17:39:33</td><td>travis-job-cdf89ce3-e6d2-401e-ad89-b66871f12635</td>
+<td><a title="Display all tests" href="48_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="48_JUnitTclTest.html">4</a></td><td>0</td><td>0</td><td>0</td><td>0.467</td><td>2018-04-28T21:28:54</td><td>travis-job-21b23db6-9d01-44ee-995f-9f100e28b200</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -514,13 +514,13 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.005</td>
+<td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.004</td>
 </tr>
 </table>
 <div class="Properties">

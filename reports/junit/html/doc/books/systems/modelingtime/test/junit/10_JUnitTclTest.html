@@ -55,7 +55,7 @@
     
         cur['env._system_version'] = '14.04';
     
-        cur['env.ANT_OPTS'] = '-Xmx1024m';
+        cur['env.ANT_OPTS'] = '-Xmx2048m';
     
         cur['env.BCVTB_HOME'] = '/home/travis/build/icyphy/ptII/lbnl';
     
@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.8 36508 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.3 42366 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.8 36508 10.20.0.39 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.3 42366 10.20.0.129 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '372465094';
+        cur['env.TRAVIS_BUILD_ID'] = '372521785';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '346';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '347';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '6caedee4e803a29c282a05be142909fcc8c22259';
+        cur['env.TRAVIS_COMMIT'] = '454c91b2498bed57d2ed87e4316d261aff82913e';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'If the exit status is 137, skip exiting for now.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Temporarily print out the amount of memory.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '53bf32851978...6caedee4e803';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '6caedee4e803...454c91b2498b';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '372465101';
+        cur['env.TRAVIS_JOB_ID'] = '372521792';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '346.7';
+        cur['env.TRAVIS_JOB_NUMBER'] = '347.7';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.modelingtime.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.modelingtime.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6380592232082240178.properties propsfile=/home/travis/build/icyphy/ptII/junit3887810028620385209.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.modelingtime.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.modelingtime.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8632089648394038088.properties propsfile=/home/travis/build/icyphy/ptII/junit6114678065216624084.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="10_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="10_JUnitTclTest.html">23</a></td><td>0</td><td>0</td><td>0</td><td>6.229</td><td>2018-04-28T17:49:43</td><td>travis-job-173e90ea-9370-4536-91c7-eb39fdc94fe5</td>
+<td><a title="Display all tests" href="10_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="10_JUnitTclTest.html">23</a></td><td>0</td><td>0</td><td>0</td><td>7.167</td><td>2018-04-28T21:54:35</td><td>travis-job-59a703fb-1a54-446b-95f1-35dc7b3e7d2c</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -520,64 +520,64 @@
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml (RunModel)</td><td>Success</td><td></td><td>0.931</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml (RunModel)</td><td>Success</td><td></td><td>1.110</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml (RunModel)</td><td>Success</td><td></td><td>0.615</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml (RunModel)</td><td>Success</td><td></td><td>0.744</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml (RunModel)</td><td>Success</td><td></td><td>0.283</td>
+<td><a name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml (RunModel)</td><td>Success</td><td></td><td>0.280</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml (RunModel)</td><td>Success</td><td></td><td>0.078</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml (RunModel)</td><td>Success</td><td></td><td>0.050</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml (RunModel)</td><td>Success</td><td></td><td>0.077</td>
+<td><a name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml (RunModel)"></a>[4] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml (RunModel)</td><td>Success</td><td></td><td>0.076</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml (RunModel)</td><td>Success</td><td></td><td>1.180</td>
+<td><a name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml (RunModel)"></a>[5] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml (RunModel)</td><td>Success</td><td></td><td>1.220</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml (RunModel)</td><td>Success</td><td></td><td>0.176</td>
+<td><a name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml (RunModel)"></a>[6] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml (RunModel)</td><td>Success</td><td></td><td>0.247</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml (RunModel)</td><td>Success</td><td></td><td>0.233</td>
+<td><a name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml (RunModel)"></a>[7] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml (RunModel)</td><td>Success</td><td></td><td>0.302</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml (RunModel)</td><td>Success</td><td></td><td>0.328</td>
+<td><a name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml (RunModel)"></a>[8] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml (RunModel)</td><td>Success</td><td></td><td>0.331</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml (RunModel)</td><td>Success</td><td></td><td>0.216</td>
+<td><a name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml (RunModel)</td><td>Success</td><td></td><td>0.299</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml (RunModel)</td><td>Success</td><td></td><td>0.173</td>
+<td><a name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml (RunModel)"></a>[10] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml (RunModel)</td><td>Success</td><td></td><td>0.220</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml (RunModel)</td><td>Success</td><td></td><td>0.218</td>
+<td><a name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml (RunModel)"></a>[11] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml (RunModel)</td><td>Success</td><td></td><td>0.236</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml (RunModel)</td><td>Success</td><td></td><td>0.224</td>
+<td><a name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml (RunModel)"></a>[12] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml (RunModel)</td><td>Success</td><td></td><td>0.278</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml (RunModel)</td><td>Success</td><td></td><td>0.521</td>
+<td><a name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml (RunModel)"></a>[13] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml (RunModel)</td><td>Success</td><td></td><td>0.649</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml (RunModel)</td><td>Success</td><td></td><td>0.037</td>
+<td><a name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml (RunModel)"></a>[14] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml (RunModel)</td><td>Success</td><td></td><td>0.049</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml (RunModel)</td><td>Success</td><td></td><td>0.087</td>
+<td><a name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml (RunModel)</td><td>Success</td><td></td><td>0.103</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml (RunModel)</td><td>Success</td><td></td><td>0.091</td>
+<td><a name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml (RunModel)"></a>[16] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml (RunModel)</td><td>Success</td><td></td><td>0.115</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml (RunModel)</td><td>Success</td><td></td><td>0.076</td>
+<td><a name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml (RunModel)</td><td>Success</td><td></td><td>0.102</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[18] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml (RunModel)</td><td>Success</td><td></td><td>0.054</td>
+<td><a name="[18] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml (RunModel)"></a>[18] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml (RunModel)</td><td>Success</td><td></td><td>0.062</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[19] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml (RunModel)</td><td>Success</td><td></td><td>0.141</td>
+<td><a name="[19] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml (RunModel)</td><td>Success</td><td></td><td>0.152</td>
 </tr>
 </table>
 <div class="Properties">
