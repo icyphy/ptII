@@ -206,7 +206,7 @@ runTarget () {
         ulimit -a
         free -m
         dmesg
-        tail /var/adm/messages
+        tail -100 /var/log/messages
         if [ $status = 137 ]; then
             echo "$0: status = $status, skipping exit for now"
         else
@@ -214,20 +214,10 @@ runTarget () {
         fi
     else
         echo "$0: ant build $target returned $status"
+        echo "$0: Start of last $lastLines lines of $log"
+        tail -$lastLines $log
     fi
 
-
-    echo "$0: Start of last $lastLines lines of $log"
-    tail -$lastLines $log
-
-    # Check to see that the doclets were compiled.
-    echo "$PTII/doc/doclets:"
-    ls $PTII/doc/doclets/
-
-    # Check to see that a PtDoc file was created.
-    echo "$PTII/doc/JavaScript.xml"
-    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
-    
     # Free up space for clone of gh-pages.
     df -k .
     rm -rf $PTII/adm/dists
