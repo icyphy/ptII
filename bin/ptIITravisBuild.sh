@@ -73,7 +73,7 @@ else
         maxTimeout=2500
     fi
 fi
-echo "$0: maxTimeout: $maxTimeout"
+echo "$0: maxTimeout: $maxTimeout, which will be at `expr $maxTimeout + $SECONDS`"
 
 
 # Timeout a process.
@@ -200,11 +200,11 @@ runTarget () {
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
     status=${PIPESTATUS[0]}
     if [ $status -ne 0 ]; then
-        echo "$0: ant build $target returned $status, which is non-zero. `date`"
+        echo "$0: At $SECONDS, ant build $target returned $status, which is non-zero. `date`"
         echo "$0: exiting with a value of $status"
         tail -$lastLines $log
         if [ $status = 137 ]; then
-            echo "$0: status = $status, skipping exit for now"
+            echo "$0: Ant probably times out because status = $status, which is 128 + 9. Skipping exit for now"
         else
             exit $status
         fi
