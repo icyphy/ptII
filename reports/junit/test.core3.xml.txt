@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 4.67 seconds.
+     [exec] Finished running in 4.10 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -308,9 +308,9 @@ build-bin:
      [exec] ./makebat -q "`basename tinic.bat .bat`"
      [exec] rm -f "tiniconverter.bat"
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "startjini.gui.bat"
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "vergil.bat"
      [exec] ./makebat -q "`basename vergil.bat .bat`"
      [exec] rm -f makeapp
@@ -319,11 +319,11 @@ build-bin:
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Sun Apr 29 00:54:19 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Sun Apr 29 01:52:38 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Sun Apr 29 00:54:22 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Sun Apr 29 01:52:41 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -344,8 +344,8 @@ test.core3.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/html/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] ptolemy/util/test/junit/javachdir: memory:
     [junit]              total       used       free     shared    buffers     cached
-    [junit] Mem:          7479       5155       2324        189        128       4319
-    [junit] -/+ buffers/cache:        706       6772
+    [junit] Mem:          7479       5255       2224        189        128       4319
+    [junit] -/+ buffers/cache:        807       6672
     [junit] Swap:            0          0          0
     [junit] Running ptolemy.cg.adapter.generic.html.test.junit.JUnitTclTest
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/html/test
@@ -356,7 +356,7 @@ test.core3.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/html/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.59 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.506 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/html/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/html/test
@@ -371,8 +371,8 @@ test.core3.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmima/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] ptolemy/util/test/junit/javachdir: memory:
     [junit]              total       used       free     shared    buffers     cached
-    [junit] Mem:          7479       5171       2308        189        128       4321
-    [junit] -/+ buffers/cache:        721       6758
+    [junit] Mem:          7479       5251       2228        189        128       4321
+    [junit] -/+ buffers/cache:        801       6677
     [junit] Swap:            0          0          0
     [junit] Running ptolemy.cg.adapter.generic.program.procedural.fmima.test.junit.JUnitTclTest
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmima/test
@@ -383,7 +383,7 @@ test.core3.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmima/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.451 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.462 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmima/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmima/test
@@ -398,8 +398,8 @@ test.core3.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] ptolemy/util/test/junit/javachdir: memory:
     [junit]              total       used       free     shared    buffers     cached
-    [junit] Mem:          7479       5177       2301        189        128       4321
-    [junit] -/+ buffers/cache:        727       6751
+    [junit] Mem:          7479       5253       2226        189        128       4321
+    [junit] -/+ buffers/cache:        803       6676
     [junit] Swap:            0          0          0
     [junit] Running ptolemy.cg.adapter.generic.program.procedural.fmimahybrid.test.junit.JUnitTclTest
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/test
@@ -410,7 +410,7 @@ test.core3.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.46 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.513 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/test
@@ -425,18 +425,9 @@ test.core3.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] ptolemy/util/test/junit/javachdir: memory:
     [junit]              total       used       free     shared    buffers     cached
-    [junit] Mem:          7479       5190       2289        189        128       4321
-    [junit] -/+ buffers/cache:        740       6739
+    [junit] Mem:          7479       5253       2226        189        128       4321
+    [junit] -/+ buffers/cache:        804       6675
     [junit] Swap:            0          0          0
     [junit] Running ptolemy.cg.kernel.generic.accessor.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Sun Apr 29 00:54:30 UTC 2018
-    [junit] JSAccessor: found node
-    [junit] RunnableCodeGenerator: run command: (cd /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg; /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH localhost /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg/top.js   npmInstall  )
-    [junit] In "/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg", about to execute:
-    [junit]     /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/accessorInvok
-    [junit] eSSH localhost
-    [junit] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg/top.js
-    [junit] npmInstall
-    [junit] /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH: Note that the timeout defaults to 15000
-    [junit] ### accessorInvokeSSH: Creating cg/node_modules and cg/top on localhost
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Sun Apr 29 01:52:49 UTC 2018
