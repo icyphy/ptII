@@ -203,9 +203,6 @@ runTarget () {
         echo "$0: ant build $target returned $status, which is non-zero. `date`"
         echo "$0: exiting with a value of $status"
         tail -$lastLines $log
-        ulimit -a
-        free -m
-        
         if [ $status = 137 ]; then
             echo "$0: status = $status, skipping exit for now"
         else
@@ -479,6 +476,9 @@ fi
 if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     exitIfNotCron
     updateGhPages -junitreport $PTII/reports/junit reports/
+
+    # Sleep so that the updated pages can appear on the website.
+    sleep 70
 
     # Update https://github.com/icyphy/ptII/issues/1
     # See https://github.com/icyphy/github-issue-junit
