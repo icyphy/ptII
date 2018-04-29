@@ -205,8 +205,8 @@ runTarget () {
         tail -$lastLines $log
         ulimit -a
         free -m
-        dmesg
-        tail -100 /var/log/messages
+        ls -l /var/log
+        
         if [ $status = 137 ]; then
             echo "$0: status = $status, skipping exit for now"
         else
