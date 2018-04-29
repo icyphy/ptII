@@ -1,0 +1,73 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: initialize() was called after wrapup() was called but preinitialize() was not called after wrapup().
+	at ptolemy.actor.lib.hoc.test.PreinitializeMustBeInvoked.initialize(PreinitializeMustBeInvoked.java:78)
+	at ptolemy.actor.Director.initialize(Director.java:938)
+	at ptolemy.actor.Director.initialize(Director.java:907)
+	at ptolemy.actor.sched.StaticSchedulingDirector.initialize(StaticSchedulingDirector.java:159)
+	at ptolemy.domains.sdf.kernel.SDFDirector.initialize(SDFDirector.java:544)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)
+	at ptolemy.actor.lib.hoc.LifeCycleManager._executeInsideModel(LifeCycleManager.java:339)
+	at ptolemy.actor.lib.hoc.RunCompositeActor.fire(RunCompositeActor.java:205)
+	at ptolemy.actor.CompositeActor.iterate(CompositeActor.java:1146)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoKnownFailedTests.RunModel(AutoKnownFailedTests.java:107)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
+Caused by: ptolemy.kernel.util.IllegalActionException: initialize() was called after wrapup() was called but preinitialize() was not called after wrapup().
+	at ptolemy.actor.lib.hoc.test.PreinitializeMustBeInvoked.initialize(PreinitializeMustBeInvoked.java:78)
+	at ptolemy.actor.Director.initialize(Director.java:938)
+	at ptolemy.actor.Director.initialize(Director.java:907)
+	at ptolemy.actor.sched.StaticSchedulingDirector.initialize(StaticSchedulingDirector.java:159)
+	at ptolemy.domains.sdf.kernel.SDFDirector.initialize(SDFDirector.java:544)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)
+	at ptolemy.actor.lib.hoc.LifeCycleManager._executeInsideModel(LifeCycleManager.java:339)
+	at ptolemy.actor.lib.hoc.RunCompositeActor.fire(RunCompositeActor.java:205)
+	at ptolemy.actor.CompositeActor.iterate(CompositeActor.java:1146)
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:216)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Inside thread was interrupted.
+  in .MulticoreExecution.ThreadedComposite.ThreadedDirector
+	at ptolemy.actor.lib.hoc.ThreadedComposite$ThreadedDirector.fire(ThreadedComposite.java:646)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)
+	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+</pre>
+</body>
+</html>
