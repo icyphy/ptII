@@ -120,7 +120,7 @@ script:
   # See https://github.com/travis-ci/travis-ci/issues/4190
 
   # Echo status messages so that Travis knows we are alive
-  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; free -m; done &
 
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
 
