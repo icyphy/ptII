@@ -60,14 +60,20 @@ fi
 # because we want to copy the output to gh-pages. The timeouts should
 # vary so as to avoid git conflicts.
 
+# The amount of time after ant completes.  This must be enough time to
+# update gh-pages, update the cache and deploy.  If Travis is timing
+# out, then bump this up, but look out for a return code of 137 from
+# ant
+timeAfterBuild=150
 if [ ! -z "$SECONDS" -a "$SECONDS" -gt 100 ]; then
     echo "$0: SECONDS environment variable is $SECONDS."
-    maxTimeout=`expr 3000 - $SECONDS - 300`
+
+    maxTimeout=`expr 3000 - $SECONDS - timeAfterBuild`
 else
     if [ $# -eq 1 ]; then
         echo "$0: Using $1 as current seconds since the start of the job."
         SECONDS=$1
-        maxTimeout=`expr 3000 - $SECONDS - 300`
+        maxTimeout=`expr 3000 - $SECONDS - timeAfterBuild`
     else
         echo "$0: SECONDS environment variable not present or less than 100 and no argument passed."
         maxTimeout=2500
@@ -184,16 +190,10 @@ runTarget () {
 
     # FIXME: we probably want to vary the timeout so that we can avoid
     # git conflicts.
-    #timeout=`expr $maxTimeout - 300`
+    #timeout=`expr $maxTimeout - 120`
     timeout=$maxTimeout
     echo "$0: Output will appear in $log with timeout $timeout"
     
-    # Increase stack size and avoid a 137 return code
-    # See https://github.com/travis-ci/travis-ci/issues/4192
-    ulimit -a
-    ulimit -s 1082768
-    ulimit -a
-
     # Run the command and log the output.
     $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
 
@@ -202,11 +202,14 @@ runTarget () {
     status=${PIPESTATUS[0]}
     if [ $status -ne 0 ]; then
         echo "$0: At $SECONDS, ant build $target returned $status, which is non-zero. `date`"
-        echo "$0: exiting with a value of $status"
         tail -$lastLines $log
         if [ $status = 137 ]; then
-            echo "$0: Ant probably times out because status = $status, which is 128 + 9. Skipping exit for now"
+            echo "######################################################"
+            echo "$0: WARNING! Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
+            echo "See https://github.com/travis-ci/travis-ci/issues/4192"
+            echo "######################################################"
         else
+            echo "$0: exiting with a value of $status"
             exit $status
         fi
     else
