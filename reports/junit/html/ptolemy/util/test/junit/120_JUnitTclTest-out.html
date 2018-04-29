@@ -1,0 +1,98 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/util/test/CancelException.tcl
+testDefs.tcl: setting time out to 9000 seconds at Sun Apr 29 15:20:02 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/util/test/ClassUtilities.tcl
+ClassUtilities-3.1: file:/home/travis/build/icyphy/ptII/ file:/home/travis/build/icyphy/ptII/
+/home/travis/build/icyphy/ptII/ptolemy/util/test/FileUtilities.tcl
+/home/travis/build/icyphy/ptII/ptolemy/util/test/MessageHandler.tcl
+/home/travis/build/icyphy/ptII/ptolemy/util/test/StreamExec.tcl
+sleeping 2 seconds: About to execute:
+    echo AtTop
+About to execute:
+    sleep 10
+AtTop
+All Done
+
+
+==== $PTII/ptolemy/util/test/StreamExec.tcl: StreamExec-3.0 Test for pattern matching
+==== Contents of test case:
+
+    set commands [java::new java.util.LinkedList]
+    $commands add "echo first"
+    $commands add "echo second"
+    $commands add "echo Failed: 1 of 2"
+    $commands add "make notATarget"
+
+    set streamExec [java::new ptolemy.util.StreamExec]
+    $streamExec setCommands $commands
+    $streamExec setPattern {^sec.*|.*\*\*\*.*|^Failed: [1-9].*}
+    jdkCapture {    
+	jdkCaptureErr {
+	    $streamExec start
+	    # Sleep so that we are sure to get stderr and stdout.
+	    # Sleep is defined in $PTII/util/testsuite/testDefs.tcl
+	    # Sleep for 2 seconds, don't print dots.
+	    sleep 2 0
+        } stderr
+    } stdout
+    # puts "StreamExec-3.0: stdout: $stdout"
+    # puts "StreamExec-3.0: stderr: $stderr"
+    set result [$streamExec getPatternLog]
+
+    regsub -all {make\[.*]} $result {make} result2
+    regsub -all {.  Stop.} $result2 {.} result3
+    list $result3
+
+==== Result was:
+{make: *** No rule to make target `notATarget'.
+Failed: 1 of 2
+second
+}
+---- Result should have been:
+{second
+Failed: 1 of 2
+make: *** No rule to make target `notATarget'.
+}
+---- StreamExec-3.0 FAILED
+/home/travis/build/icyphy/ptII/ptolemy/util/test/StringUtilities.tcl
+# About to run "make test_policy SCRIPT=policy/userName.tcl"
+# About to run "make test_policy SCRIPT=policy/ptolemyPtIIDir.tcl"
+'/home/travis/build/icyphy/ptII' == '/home/travis/build/icyphy/ptII'
+
+
+==== $PTII/ptolemy/util/test/StringUtilities.tcl: StringUtilities-3.8.3 getProperty: PTII includes cygdrive  
+==== Contents of test case:
+
+    set pathSeparator [java::call ptolemy.util.StringUtilities  getProperty path.separator]
+
+    # We use exec here so that we get the message each time
+    catch {
+	set results [exec -stderrok make test_cygdrive]
+    } errMsg
+    regsub -all {^make\[.*$\n*} $errMsg {} errMsg2
+    list $errMsg2
+
+==== Result was:
+{couldn't read file "ptolemy_ptII_dir.tcl"}
+---- KNOWN Failure, Result should have been:
+{/cygdrive/c/ptII
+ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}
+---- StringUtilities-3.8.3 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/util/test/XSLTUtilities.tcl
+04/29/18 03:20:12
+Failed: 1  Total Tests: 98  ((Passed: 96, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/util/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
