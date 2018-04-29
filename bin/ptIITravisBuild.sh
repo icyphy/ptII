@@ -205,7 +205,7 @@ runTarget () {
         tail -$lastLines $log
         ulimit -a
         free -m
-        tail -100 /var/log/syslog
+        sudo -E tail -100 /var/log/syslog
         
         if [ $status = 137 ]; then
             echo "$0: status = $status, skipping exit for now"
