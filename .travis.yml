@@ -119,8 +119,9 @@ script:
   # travis_wait does not help here because we want to redirect the output of cmake.
   # See https://github.com/travis-ci/travis-ci/issues/4190
 
-  # Echo status messages so that Travis knows we are alive
-  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; free -m; done &
+  # Echo status messages so that Travis knows we are alive.
+  # If you need to get status about available memory, insert "free -m" inside the loop.
+  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
 
