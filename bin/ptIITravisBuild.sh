@@ -68,12 +68,12 @@ timeAfterBuild=150
 if [ ! -z "$SECONDS" -a "$SECONDS" -gt 100 ]; then
     echo "$0: SECONDS environment variable is $SECONDS."
 
-    maxTimeout=`expr 3000 - $SECONDS - timeAfterBuild`
+    maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
 else
     if [ $# -eq 1 ]; then
         echo "$0: Using $1 as current seconds since the start of the job."
         SECONDS=$1
-        maxTimeout=`expr 3000 - $SECONDS - timeAfterBuild`
+        maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
     else
         echo "$0: SECONDS environment variable not present or less than 100 and no argument passed."
         maxTimeout=2500
