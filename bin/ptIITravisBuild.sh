@@ -184,7 +184,8 @@ runTarget () {
 
     # FIXME: we probably want to vary the timeout so that we can avoid
     # git conflicts.
-    timeout=`expr $maxTimeout - 300`
+    #timeout=`expr $maxTimeout - 300`
+    timeout=$maxTimeout
     echo "$0: Output will appear in $log with timeout $timeout"
     
     # Increase stack size and avoid a 137 return code
