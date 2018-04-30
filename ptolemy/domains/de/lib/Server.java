@@ -27,8 +27,10 @@
  */
 package ptolemy.domains.de.lib;
 
-import java.util.*;
-
+import java.util.Comparator;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
