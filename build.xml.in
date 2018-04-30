@@ -1236,6 +1236,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1268,6 +1269,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1300,6 +1302,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1338,6 +1341,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1373,6 +1377,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1408,6 +1413,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1443,6 +1449,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1482,6 +1489,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1521,6 +1529,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1560,6 +1569,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1974,6 +1984,7 @@ For example:
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
@@ -2016,6 +2027,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -2070,6 +2082,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
@@ -2174,6 +2187,7 @@ For example:
     </echo>
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -2227,6 +2241,7 @@ For example:
    </echo>
    <junit fork="yes"
           jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
           printsummary="withOutAndErr"
           showoutput="yes"
           timeout="${timeout.long}">
@@ -2287,6 +2302,7 @@ For example:
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.short}">
