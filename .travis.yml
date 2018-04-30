@@ -48,6 +48,9 @@ language: node_js
 node_js:
   - "7"
 
+addons:
+  ssh_known_hosts: localhost
+
 # Need X11 to create the DOP Center map and for testing.
 before_install:
   - export DISPLAY=:99.0
@@ -60,6 +63,11 @@ install:
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
   
+  # Set up and test 'ssh localhost' for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
+  - ssh-keygen -N '' -f ~/.ssh/id_rsa
+  - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+  - ssh localhost cat /etc/issue
+
   # Below are the packages that are needed, in alphabetical order:
   #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
