@@ -201,11 +201,11 @@ runTarget () {
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
     status=${PIPESTATUS[0]}
     if [ $status -ne 0 ]; then
-        echo "$0: At $SECONDS, ant build $target returned $status, which is non-zero. `date`"
+        echo "$0: `date`: At $SECONDS, ant build $target returned $status, which is non-zero. `date`"
         tail -$lastLines $log
         if [ $status = 137 ]; then
             echo "######################################################"
-            echo "$0: WARNING! Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
+            echo "$0: WARNING! `date`: Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
             echo "See https://github.com/travis-ci/travis-ci/issues/4192"
             echo "######################################################"
         else
@@ -213,7 +213,7 @@ runTarget () {
             exit $status
         fi
     else
-        echo "$0: ant build $target returned $status"
+        echo "$0: `date`: ant build $target returned $status"
         echo "$0: Start of last $lastLines lines of $log"
         tail -$lastLines $log
     fi
