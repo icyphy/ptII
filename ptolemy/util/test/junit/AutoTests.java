@@ -185,14 +185,17 @@ public class AutoTests extends ModelTests {
                 // Reload all the accessors and invoke rerun.
                 if (((Boolean) _jsAccessorReloadAllAccessorsMethod.invoke(null,
                         new Object[] { toplevel })).booleanValue()) {
-
-                    _delay(fullPath);
-
-                    System.out.println(
-                            "----------------- Reloaded Accessors and testing again " + (new java.util.Date()) + " "
-                                    + fullPath);
+                    System.out.println("-------------- Reloaded accessors, but skipping rerun for now"
+                                       + (new java.util.Date()) + " "
+                                       + fullPath);
                     System.out.flush();
-                    rerunMethod.invoke(instance, (Object[]) null);
+                    // _delay(fullPath);
+
+                    // System.out.println(
+                    //         "----------------- Reloaded Accessors and testing again " + (new java.util.Date()) + " "
+                    //                 + fullPath);
+                    // System.out.flush();
+                    // rerunMethod.invoke(instance, (Object[]) null);
                 }
             }
         } else {
@@ -252,7 +255,7 @@ public class AutoTests extends ModelTests {
     }
 
     private static void _delay(String fullPath) {
-        int delay = 25000;
+        int delay = 5000;
         boolean match = fullPath.matches(".*(org/hlacerti|org/terraswarm/accessors|ptolemy/actor/lib/jjs).*");
         // System.out.println("AutoTests.java: fullPath: " + fullPath
         //                   + " match: " + match);
