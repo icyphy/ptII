@@ -172,7 +172,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 140.0]">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="25000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="45000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
