@@ -528,6 +528,8 @@ foreach i $configs {
 	$cloneConfiguration setContainer [java::null]
 	list $results
     } {{}}
+
+    $configuration setContainer [java::null]
 }
 
 # The list of filters is static, so we reset it
