@@ -300,6 +300,7 @@ public class Configuration extends CompositeEntity
         Iterator containedObjects = deepNamedObjList().iterator();
         while (containedObjects.hasNext()) {
             NamedObj containedObject = (NamedObj) containedObjects.next();
+            System.out.println("Configuration.check: containedObject: " + containedObject);
             // Check the clone fields on AtomicActors and Attributes.
             // Note that Director extends Attribute, so we get the
             // Directors as well
@@ -322,6 +323,7 @@ public class Configuration extends CompositeEntity
             Iterator attributes = composite.attributeList().iterator();
             while (attributes.hasNext()) {
                 Attribute attribute = (Attribute) attributes.next();
+                System.out.println("Configuration.check: attribute: " + attribute);
                 if (!attribute.getClass().isMemberClass()) {
                     // If an attribute is an inner class, it makes
                     // no sense to clone to a different workspace because
@@ -414,8 +416,10 @@ public class Configuration extends CompositeEntity
         // Check atomic actors for clone problems related to types
         List entityList = allAtomicEntityList();
         Iterator entities = entityList.iterator();
+        long startTime = (new java.util.Date()).getTime();
         while (entities.hasNext()) {
             Object entity = entities.next();
+            System.out.println("Configuration.check: entity: " + entity + " " + ptolemy.actor.Manager.timeAndMemory(startTime));
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
                 try {
