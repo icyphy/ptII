@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.8 60032 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.7 48386 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.8 60032 10.20.0.252 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.7 48386 10.20.0.89 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '373052924';
+        cur['env.TRAVIS_BUILD_ID'] = '373198576';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '364';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '365';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '4b91cfbd3ba6d089332916eed6e534b10c24e12b';
+        cur['env.TRAVIS_COMMIT'] = 'd6c0b59ef9575ab7ba21adb608351a7c14a197ca';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added date to messages displayed for non-zero returns.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Reduce memory usage by setting the container of the configuration to null.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '48a471711a17...4b91cfbd3ba6';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '4b91cfbd3ba6...d6c0b59ef957';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '373052933';
+        cur['env.TRAVIS_JOB_ID'] = '373198585';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '364.9';
+        cur['env.TRAVIS_JOB_NUMBER'] = '365.9';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8587802583865233729.properties propsfile=/home/travis/build/icyphy/ptII/junit5809800147274824496.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5449473877424828453.properties propsfile=/home/travis/build/icyphy/ptII/junit7912553593283131865.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="31_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="31_JUnitTclTest.html">21</a></td><td><a title="Display only errors" href="31_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>219.615</td><td>2018-04-30T14:57:40</td><td>travis-job-d6002c4d-4a25-4120-a276-27e9252c32dc</td>
+<td><a title="Display all tests" href="31_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="31_JUnitTclTest.html">21</a></td><td><a title="Display only errors" href="31_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>205.833</td><td>2018-04-30T20:42:25</td><td>travis-job-3b5c4398-d682-4d41-821e-3e63269bde75</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -514,7 +514,7 @@
 <td><a name="[9] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml (RunModel)"></a>[9] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:160)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: "&lt;!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\"&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache Server at &lt;a href=\"mailto:unix-tickets@berkeley.edu\"&gt;ptolemy.berkeley.edu&lt;/a&gt; Port 80&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;". Should have been: "&lt;!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\"&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 443&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;"<br>  in .HttpPut.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.024</td>
+</code></td><td>0.825</td>
 </tr>
 </table>
 <div class="Properties">
