@@ -77,7 +77,7 @@ public class PreemptableServer extends Server {
                 .doubleValue();
         Time currentTime = getDirector().getModelTime();
 
-        if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
+        if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && queueSize() > 0) {
             _nextTimeFree = currentTime.add(serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
