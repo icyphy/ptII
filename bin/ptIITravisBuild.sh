@@ -64,7 +64,8 @@ fi
 # update gh-pages, update the cache and deploy.  If Travis is timing
 # out, then bump this up, but look out for a return code of 137 from
 # ant
-timeAfterBuild=150
+# core3 timed out 150 seconds, so increase the remaining time after the build to 180 seconds.
+timeAfterBuild=180
 if [ ! -z "$SECONDS" -a "$SECONDS" -gt 100 ]; then
     echo "$0: SECONDS environment variable is $SECONDS."
 
