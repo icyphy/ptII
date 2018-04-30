@@ -140,7 +140,7 @@ if [ ! -z "$WEATHER_TOKEN" -a ! -f ~/.ptKeystore/weatherKey ]; then
     export WEATHER_TOKEN=resetByPtIITravisBuild.sh
 fi
 
-set -x
+# set -x
 
 # If the output is more than 10k lines, then Travis fails, so we
 # redirect voluminuous output into a log file.
@@ -209,15 +209,16 @@ runTarget () {
             echo "$0: WARNING! `date`: Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
             echo "See https://github.com/travis-ci/travis-ci/issues/4192"
             echo "######################################################"
-        else
-            echo "$0: exiting with a value of $status"
-            exit $status
         fi
+        echo "$0: exiting with a value of $status"
+        exit $status
     else
         echo "$0: `date`: ant build $target returned $status"
         echo "$0: Start of last $lastLines lines of $log"
         tail -$lastLines $log
     fi
+
+    date
 
     # Free up space for clone of gh-pages.
     df -k .
