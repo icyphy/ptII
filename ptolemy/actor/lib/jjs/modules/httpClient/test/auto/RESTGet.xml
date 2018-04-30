@@ -170,7 +170,7 @@
             <property name="arguments (port)" class="ptolemy.kernel.util.StringAttribute" value="Arguments to the command.">
             </property>
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="25000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -373,7 +373,7 @@
             <property name="arguments (port)" class="ptolemy.kernel.util.StringAttribute" value="Arguments to the command.">
             </property>
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="25000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -576,7 +576,7 @@
             <property name="arguments (port)" class="ptolemy.kernel.util.StringAttribute" value="Arguments to the command.">
             </property>
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="25000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -740,8 +740,6 @@
         </port>
         <port name="input3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
