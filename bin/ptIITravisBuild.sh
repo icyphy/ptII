@@ -209,9 +209,10 @@ runTarget () {
             echo "$0: WARNING! `date`: Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
             echo "See https://github.com/travis-ci/travis-ci/issues/4192"
             echo "######################################################"
+        else
+            echo "$0: exiting with a value of $status"
+            exit $status
         fi
-        echo "$0: exiting with a value of $status"
-        exit $status
     else
         echo "$0: `date`: ant build $target returned $status"
         echo "$0: Start of last $lastLines lines of $log"
