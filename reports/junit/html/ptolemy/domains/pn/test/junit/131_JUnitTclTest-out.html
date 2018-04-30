@@ -1,0 +1,173 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/PNDirector.tcl
+testDefs.tcl: setting time out to 9000 seconds at Mon Apr 30 14:59:02 UTC 2018
+84 ms. Memory: 116224K Free: 86616K (75%)
+12 ms. Memory: 116224K Free: 107320K (92%)
+/home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/TimedPNDirector.tcl
+
+
+==== $PTII/ptolemy/domains/pn/test/TimedPNDirector.tcl: TimedPNDirector-6.1 Test an application
+==== Contents of test case:
+
+
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    set director [java::new ptolemy.domains.pn.kernel.TimedPNDirector]
+    $e0 setDirector $director
+    $e0 setName top
+    $e0 setManager $manager
+
+    # FIXME: why doesn't the getParameter option work.
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set param [java::cast ptolemy.data.expr.Parameter  [$ramp getAttribute  firingCountLimit]]
+    $param setExpression 20
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect  [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]  [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    error "Running this test sometimes causes an endless loop" 
+
+#    [$e0 getManager] execute
+#    enumToTokenValues [$rec getRecord 0]
+
+
+.... Test generated KNOWN error:
+Running this test sometimes causes an endless loop
+    while executing
+"error "Running this test sometimes causes an endless loop" "
+    ("uplevel" body line 18)
+    invoked from within
+"uplevel $contents_of_test"
+04/30/18 02:59:03
+Failed: 0  Total Tests: 3  ((Passed: 2, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Mon Apr 30 14:59:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/Branching-switch-PN-ptolemy-2.xml
+27 ms. Memory: 116224K Free: 100752K (87%)
+reloadAllAccessors: .Branching-switch-PN-ptolemy-2
+----------------- testing Mon Apr 30 14:59:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/Branching-switch-PN-ptolemy.xml
+36 ms. Memory: 116224K Free: 90888K (78%)
+reloadAllAccessors: .Branching-switch-PN-ptolemy
+----------------- testing Mon Apr 30 14:59:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/BrockAckermanTest.xml
+222 ms. Memory: 116224K Free: 104832K (90%)
+reloadAllAccessors: .BrockAckermanTest
+----------------- testing Mon Apr 30 14:59:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/CounterMachine.xml
+871 ms. Memory: 209920K Free: 152000K (72%)
+reloadAllAccessors: .CounterMachine
+----------------- testing Mon Apr 30 14:59:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/CounterMachine1.xml
+760 ms. Memory: 209920K Free: 137969K (66%)
+reloadAllAccessors: .CounterMachine1
+----------------- testing Mon Apr 30 14:59:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/CounterMachineWithException.xml
+419 ms. Memory: 332800K Free: 236466K (71%)
+reloadAllAccessors: .CounterMachineWithException
+----------------- testing Mon Apr 30 14:59:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/FinalState.xml
+10 ms. Memory: 332800K Free: 228756K (69%)
+reloadAllAccessors: .FinalState
+----------------- testing Mon Apr 30 14:59:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/FourExpressions.xml
+17 ms. Memory: 332800K Free: 219469K (66%)
+reloadAllAccessors: .FourExpressions
+----------------- testing Mon Apr 30 14:59:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/Identity.xml
+14 ms. Memory: 332800K Free: 212370K (64%)
+reloadAllAccessors: .Identity
+----------------- testing Mon Apr 30 14:59:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/IdentityWithFeedback.xml
+12 ms. Memory: 332800K Free: 206484K (62%)
+reloadAllAccessors: .IdentityWithFeedback
+----------------- testing Mon Apr 30 14:59:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/NondeterministicMergeTest.xml
+17 ms. Memory: 332800K Free: 199015K (60%)
+reloadAllAccessors: .NondeterministicMergeTest
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/OrderedMerge.xml
+144 ms. Memory: 332800K Free: 188378K (57%)
+reloadAllAccessors: .OrderedMerge
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/PNAbstractReceiverTest.xml
+20 ms. Memory: 332800K Free: 184304K (55%)
+reloadAllAccessors: .PNAbstractReceiverTest
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/QR.xml
+23 ms. Memory: 332800K Free: 172401K (52%)
+reloadAllAccessors: .QR
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/RemoveNilTokens.xml
+21 ms. Memory: 332800K Free: 161441K (49%)
+reloadAllAccessors: .RemoveNilTokens
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/Stack.xml
+56 ms. Memory: 332800K Free: 135747K (41%)
+reloadAllAccessors: .Stack
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/TestRemoveNilTokens.xml
+15 ms. Memory: 332800K Free: 127817K (38%)
+reloadAllAccessors: .TestRemoveNilTokens
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/TestSeq2Array.xml
+20 ms. Memory: 332800K Free: 120662K (36%)
+reloadAllAccessors: .TestSeq2Array
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/TrivialIdentity.xml
+12 ms. Memory: 332800K Free: 115407K (35%)
+reloadAllAccessors: .TrivialIdentity
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/WidthInferenceTest1.xml
+13 ms. Memory: 332800K Free: 108811K (33%)
+reloadAllAccessors: .1
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/WidthInferenceTest2.xml
+20 ms. Memory: 332800K Free: 101556K (31%)
+reloadAllAccessors: .2
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/WidthInferenceTest3.xml
+16 ms. Memory: 332800K Free: 86205K (26%)
+reloadAllAccessors: .3
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/WidthInferenceTest4.xml
+22 ms. Memory: 332800K Free: 316074K (95%)
+reloadAllAccessors: .WidthInferenceTest4
+----------------- testing Mon Apr 30 14:59:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/WidthInferenceTest5.xml
+49 ms. Memory: 332800K Free: 298647K (90%)
+reloadAllAccessors: .WidthInferenceTest5
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/controlled_kahnnet.xml
+22 ms. Memory: 332800K Free: 292201K (88%)
+reloadAllAccessors: .controlled_kahnnet
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/demandDriven.xml
+10 ms. Memory: 332800K Free: 286703K (86%)
+reloadAllAccessors: .demandDriven
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/feedback.xml
+9 ms. Memory: 332800K Free: 281361K (85%)
+reloadAllAccessors: .feedback
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/helloWorld.xml
+8 ms. Memory: 332800K Free: 278132K (84%)
+reloadAllAccessors: .helloWorld
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/helloWorld2.xml
+8 ms. Memory: 332800K Free: 272428K (82%)
+reloadAllAccessors: .helloWorld2
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/noOutput.xml
+20 ms. Memory: 332800K Free: 266323K (80%)
+reloadAllAccessors: .noOutput
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup.xml
+9 ms. Memory: 332800K Free: 262329K (79%)
+reloadAllAccessors: .relationGroup
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup2.xml
+6 ms. Memory: 332800K Free: 259650K (78%)
+reloadAllAccessors: .relationGroup2
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup3.xml
+8 ms. Memory: 332800K Free: 256421K (77%)
+reloadAllAccessors: .relationGroup3
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup4.xml
+6 ms. Memory: 332800K Free: 253742K (76%)
+reloadAllAccessors: .relationGroup4
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup5.xml
+8 ms. Memory: 332800K Free: 250528K (75%)
+reloadAllAccessors: .relationGroup5
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup6.xml
+6 ms. Memory: 332800K Free: 246731K (74%)
+reloadAllAccessors: .relationGroup6
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup7.xml
+7 ms. Memory: 332800K Free: 242352K (73%)
+reloadAllAccessors: .relationGroup7
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/relationGroup8.xml
+2 ms. Memory: 332800K Free: 238499K (72%)
+reloadAllAccessors: .relationGroup8
+----------------- testing Mon Apr 30 14:59:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/pn/test/auto/widthTest.xml
+14 ms. Memory: 332800K Free: 234323K (70%)
+reloadAllAccessors: .widthTest
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
