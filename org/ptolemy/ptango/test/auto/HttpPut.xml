@@ -79,7 +79,7 @@ occur on all operating systems</text></svg></configure>
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML 2.0//EN\&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 443&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML 2.0//EN\&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache Server at &lt;a href=\&quot;mailto:unix-tickets@berkeley.edu\&quot;&gt;ptolemy.berkeley.edu&lt;/a&gt; Port 80&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
