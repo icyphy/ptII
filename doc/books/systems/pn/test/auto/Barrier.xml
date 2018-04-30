@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Barrier" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 964, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 1126, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[730, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[892, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{365.0, 214.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{446.0, 214.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a design pattern with rendezvous&#10;called a &quot;barrier synchronization.&quot; In this example, the&#10;two Ramps are sending increasing sequences of integers&#10;to the Displays. However, the transfer is constrained to&#10;occur only when both the Barrier actor and the Sleep&#10;actor read inputs. Thus, a multi-way rendezvous between&#10;the two Ramp actors, the two Display actors, the Barrier&#10;actor, and the Sleep actor constrains the two transfers&#10;to the Display actors to occur simultaneously.  The&#10;Sleep actor will sleep a random amount of time after&#10;reading its input, and during that time will not accept&#10;additional inputs. Thus, after the first two (why two?)&#10;transfers to the Display actors the time between&#10;transfers is controlled by the Sleep actor.">
@@ -139,12 +139,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{596.0, -4.5}">
         </property>
     </entity>
-    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{681.0, -9.5}">
-        </property>
-    </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{686.0, 30.5}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 75.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -154,6 +150,37 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 130.0]">
         </property>
+    </entity>
+    <entity name="And" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Emit a true if all of the inputs have received a true.&#10; *  If the timeout is non-zero, then emit a true after the timeout.&#10; *&#10; *  This accessor is typically used to stop a model after all&#10; *  of the TrainableTest accessors have emitted a true.&#10; *&#10; *  @input input1 The first input&#10; *  @input input2 the second input&#10; *  @output output True if the inputs have seen true or if the&#10; *  timeout has occurred&#10; *  @param timeout If non-zero, the timeout in milliseconds.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2'); &#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    this.parameter('timeout');&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = this.get('input1');&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;	self.sawInput2 = this.get('input2');&#10; 	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true) {&#10;    	    self.send('output', true);&#10;    	}&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;&#10;    if (this.getParameter('timeout') &gt; 0) {&#10;        setTimeout(function () {&#10;	    console.log('JavaScriptBarrier: sending true after timeout.');&#10;	    self.send('output', true);&#10;        }, this.getParameter('timeout'));&#10;    }&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 75.0]">
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="input2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[540.0, 110.0]">
@@ -173,6 +200,8 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -190,9 +219,11 @@
     <link port="Discard.input" relation="relation4"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test.output" relation="relation7"/>
-    <link port="TrueGate.input" relation="relation7"/>
-    <link port="TrueGate.output" relation="relation8"/>
-    <link port="Stop.input" relation="relation8"/>
+    <link port="Stop.input" relation="relation9"/>
     <link port="Test2.input" relation="relation5"/>
+    <link port="Test2.output" relation="relation8"/>
+    <link port="And.input1" relation="relation7"/>
+    <link port="And.input2" relation="relation8"/>
+    <link port="And.output" relation="relation9"/>
     <link relation1="relation2" relation2="relation6"/>
 </entity>
