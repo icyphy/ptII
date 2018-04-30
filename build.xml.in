@@ -332,6 +332,9 @@
     <!-- FIXME: EightFourInFourOutsJNI fails under Travis-ci because lib/libJNIFMU is not found. -->
     <exclude name="**/ptolemy/actor/lib/fmi/jni/test/junit/JUnitTclTest.*" />
 
+    <!-- FIXME: Not testing fmipp right now. -->
+    <exclude name="**/ptolemy/actor/lib/fmi/fmipp/test/junit/JUnitTclTest.*" />
+
     <!-- The R language is not typically installed. -->
     <exclude name="**/ptolemy/actor/lib/r/test/junit/JUnitTclTest.*" />
 
