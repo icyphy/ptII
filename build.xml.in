@@ -246,7 +246,6 @@
   <!-- Tests of the core, first batch. -->
   <patternset id="test.core1.includes">
     <include name="**/ptolemy/actor/**/test/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/data/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/graph/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/gui/**/test/junit/JUnitTclTest.java" />
@@ -254,7 +253,6 @@
 
   <patternset id="test.core1.excludes">
     <exclude name="**/ptolemy/actor/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/data/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/graph/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/gui/**/test/junit/JUnitTclTest.*" />
@@ -293,6 +291,7 @@
     <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/distributed/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/moml/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/homer/**/test/junit/JUnitTclTest.java" />
@@ -305,6 +304,7 @@
     <exclude name="**/org/ptolemy/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/distributed/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/homer/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/moml/**/test/junit/JUnitTclTest.*" />
