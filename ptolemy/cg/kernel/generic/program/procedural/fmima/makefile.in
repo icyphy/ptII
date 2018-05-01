@@ -97,6 +97,7 @@ CPP_SRCS = fmi/parser/XmlElement.cpp fmi/parser/XmlParser.cpp fmi/parser/XmlPars
 
 PTCGPPCompiler=@PTCGPPCompiler@
 @modelName@: @modelName@.o fmi/shared/sim_support.o $(CPP_SRCS)
+	rm -rf @modelName@
 	@PTCGPPCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CFLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES) $(LIBFLAGS)
 
 # Each subdirectory must supply rules for building sources it contributes
