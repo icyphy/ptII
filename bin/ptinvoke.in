@@ -1769,6 +1769,14 @@ EOF4
 	(cd $PTII; make --no-print-directory echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
 	  awk '{ for(i=1;i<=NF;i++) { printf("        <string>$JAVAROOT/../../../../../%s</string>\n", $i)}}' >> $MACAPP_PLIST
 
+        # If there are multiple lib/opencv*.jar files, then only include one with the greatest version number
+        # because we include opencv-320.jar for Windows.
+        OPENCV_JAR=`egrep 'lib/opencv.*.jar' $MACAPP_PLIST | sort | tail -1`
+	MACAPP_PLIST_TMP=$MACAPP_APP/Contents/Info.plist.tmp
+        egrep -v 'lib/opencv.*.jar' $MACAPP_PLIST > $MACAPP_PLIST_TMP
+        mv $MACAPP_PLIST_TMP $MACAPP_PLIST
+        echo "$OPENCV_JAR" >> $MACAPP_PLIST
+
       # Here's the last part of the file:
       cat >>$MACAPP_PLIST <<EOF6        
       </array>
