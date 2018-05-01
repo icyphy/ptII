@@ -37,12 +37,12 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-set VERBOSE 1
+#set VERBOSE 1
 
 if {[string compare test [info procs parseConfiguration]] == 1} then {
     source configurationTools.tcl
 } {}
 
-checkConstraints capeCode/configuration.xml
+checkConstraints capecode/configuration.xml
 
 puts "checkCapeCodeConstraints.tcl done!"
