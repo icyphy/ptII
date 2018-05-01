@@ -57,9 +57,10 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   # Add npm to path for AccessorSSHCodeGenerator.tcl
-  - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" > ~/.bashrc
+  - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" >> ~/.bashrc
+  - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" >> ~/.bash_profile
   - cat ~/.bashrc
-  - ln -s ~/.bashrc ~/.bash_profile
+  - cat ~/.bash_profile
   
 install:
   # We keep logs in a directory to avoid the 10k line problem.
