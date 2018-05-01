@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-ea093804-c846-4ac0-97bd-a58a538b1656" name="ptolemy.actor.lib.mail.test.junit.JUnitTclTest" skipped="0" tests="4" time="0.896" timestamp="2018-05-01T02:11:28">
+<testsuite errors="0" failures="0" hostname="travis-job-ea093804-c846-4ac0-97bd-a58a538b1656" name="ptolemy.graph.sched.test.junit.JUnitTclTest" skipped="0" tests="5" time="0.679" timestamp="2018-05-01T02:14:11">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
@@ -71,7 +71,7 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.mail.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.mail.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3795088537213028608.properties propsfile=/home/travis/build/icyphy/ptII/junit7088338975729106586.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.graph.sched.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.graph.sched.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2186557106260429060.properties propsfile=/home/travis/build/icyphy/ptII/junit1200243161007639260.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
@@ -174,7 +174,7 @@
     <property name="keystore" value="ptKeystore" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
     <property name="npm.return.code" value="0" />
-    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/test" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/graph/sched/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
     <property name="env.TRAVIS_EVENT_TYPE" value="push" />
@@ -227,18 +227,21 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/graph/sched/test/Firing.tcl (RunTclFile)" time="0.199" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/graph/sched/test/Schedule.tcl (RunTclFile)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.007" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/test/auto/SendMail.xml (RunModel)" time="0.384" />
-  <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/test
-No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/test
-No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/test
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/graph/sched/test/Firing.tcl
+testDefs.tcl: setting time out to 9000 seconds at Tue May 01 02:14:11 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/graph/sched/test/Schedule.tcl
+05/01/18 02:14:12
+Failed: 0  Total Tests: 23  ((Passed: 23, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/graph/sched/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/graph/sched/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/graph/sched/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Tue May 01 02:11:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/test/auto/SendMail.xml
-69 ms. Memory: 116224K Free: 110845K (95%)
-reloadAllAccessors: .SendMail
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/graph/sched/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
