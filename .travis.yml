@@ -14,6 +14,7 @@ env:
     - PT_TRAVIS_TEST_CORE2_XML=true
     - PT_TRAVIS_TEST_CORE3_XML=true
     - PT_TRAVIS_TEST_CORE4_XML=true
+    - PT_TRAVIS_TEST_CORE5_XML=true
     # Building the installers tends to fail in deployment, so do this last.
     #   - PT_TRAVIS_TEST_INSTALLERS=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true

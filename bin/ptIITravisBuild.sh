@@ -39,6 +39,7 @@
 #   PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
@@ -455,6 +456,11 @@ fi
 # Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     runTarget test.core4.xml
+fi
+
+# Run the fifth batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE5_XML" ]; then
+    runTarget test.core5.xml
 fi
 
 
