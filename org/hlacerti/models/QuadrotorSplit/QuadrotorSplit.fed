@@ -1,0 +1,38 @@
+;; quadrotor
+
+(FED
+	(Federation TwoQuadrotors)
+	(FEDversion v1.3)
+	(spaces 
+		(space HyperSpace)
+	)
+	(objects 
+	    (class ObjectRoot 
+		 (attribute privilegeToDelete  reliable timestamp)
+		 (class RTIprivate)
+		 (class quadrotor			 			
+			 (attribute X reliable timestamp)
+			 (attribute Y reliable timestamp)
+			 (attribute Z reliable timestamp)
+			 (attribute Vx reliable timestamp)
+			 (attribute Vy reliable timestamp)
+			 (attribute Vz reliable timestamp)
+ 			)
+                (class control
+			 (attribute pitch reliable timestamp)
+			 (attribute roll reliable timestamp)
+			 (attribute yaw reliable timestamp)			
+			 (attribute thrust reliable timestamp)
+ 			)
+		)
+	)
+	(interactions 
+		(class InteractionRoot  reliable timestamp
+			(class RTIprivate  reliable timestamp)
+			
+			(class StopFreeze reliable receive
+				(parameter KillActivity)
+			)
+		)
+	)
+)
