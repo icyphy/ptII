@@ -1,10 +1,10 @@
 # Makefile for the Java classes used to test the Vergil configuration
 #
-# @Authors: Steve Neuendorffer
+# @Authors: Steve Neuendorffer, Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2015 The Regents of the University of California.
+# @Copyright (c) 1997-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,6 +58,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	allConfigs.tcl \
 	allDemos.tcl \
+	checkFullConstraints.tcl \
 	missingDemos.tcl \
 	validDemos.tcl
 
