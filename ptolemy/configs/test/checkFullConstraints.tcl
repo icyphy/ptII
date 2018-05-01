@@ -43,14 +43,12 @@ if {[string compare test [info procs parseConfiguration]] == 1} then {
     source configurationTools.tcl
 } {}
 
-cd ..
 puts "FIXME FIXME FIXME FIXME FIXME FIXME" 
 puts "ptolemy/configs/test/checkFullConstraints.tcl: FIXME: Invoking Configuration.check() "
 puts "results in a memory leak that consumes"
 puts "more than 4gig of memory and causes problems under Travis."
 puts "so, we check the constraints only of the full configuration."
 puts "FIXME FIXME FIXME FIXME FIXME FIXME" 
-
 
 checkConstraints full/configuration.xml
 
