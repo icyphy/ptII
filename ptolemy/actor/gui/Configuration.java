@@ -1561,6 +1561,12 @@ public class Configuration extends CompositeEntity
                 if (container == null) {
                     // Put the effigy into the directory
                     ModelDirectory directory = getDirectory();
+                    if (directory == null) {
+                        throw new NullPointerException("While trying to open " + entity + " in "
+                                                       + container + ", getDirectory() returned null?  "
+                                                       + "Perhaps an entity of name \""
+                                                       + _DIRECTORY_NAME + "\" was not created?");
+                    }
                     effigy.setName(directory.uniqueName(entity.getName()));
                     effigy.setContainer(directory);
                 } else {
