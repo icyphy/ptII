@@ -1,0 +1,93 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/CarPedestrian.xml
+73 ms. Memory: 116224K Free: 98735K (85%)
+reloadAllAccessors: .CarPedestrian
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/CarPedestrianConcurrent.xml
+82 ms. Memory: 116224K Free: 105011K (90%)
+reloadAllAccessors: .CarPedestrianConcurrent
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSMSourceSink.xml
+11 ms. Memory: 116224K Free: 99986K (86%)
+reloadAllAccessors: .FSMSourceSink
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSMSourceSinkConcurrent.xml
+8 ms. Memory: 116224K Free: 94813K (82%)
+reloadAllAccessors: .FSMSourceSinkConcurrent
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSM_MultipleEvents.xml
+9 ms. Memory: 116224K Free: 88249K (76%)
+reloadAllAccessors: .FSM_MultipleEvents
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSM_MultipleEvents2.xml
+25 ms. Memory: 116224K Free: 82923K (71%)
+reloadAllAccessors: .FSM_MultipleEvents2
+----------------- testing Tue May 01 02:23:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSM_MultipleEvents2Concurrent.xml
+38 ms. Memory: 146944K Free: 137782K (94%)
+reloadAllAccessors: .FSM_MultipleEvents2Concurrent
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSM_MultipleEventsConcurrent.xml
+28 ms. Memory: 146944K Free: 129383K (88%)
+reloadAllAccessors: .FSM_MultipleEventsConcurrent
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSMtoFSM.xml
+61 ms. Memory: 146944K Free: 116299K (79%)
+reloadAllAccessors: .FSMtoFSM
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSMtoFSMConcurrent.xml
+59 ms. Memory: 146944K Free: 102896K (70%)
+reloadAllAccessors: .FSMtoFSMConcurrent
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSMtoFSM_MultipleEvents.xml
+16 ms. Memory: 146944K Free: 91612K (62%)
+reloadAllAccessors: .FSMtoFSM_MultipleEvents
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/FSMtoFSM_MultipleEventsConcurrent.xml
+42 ms. Memory: 146944K Free: 139794K (95%)
+reloadAllAccessors: .FSMtoFSM_MultipleEventsConcurrent
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/InternalBlockDiagramSequential.xml
+100 ms. Memory: 146944K Free: 102226K (70%)
+reloadAllAccessors: .InternalBlockDiagramSequential
+----------------- testing Tue May 01 02:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/InternalBlockDiagramSequentialWithStepCounter.xml
+FMU Builder messages:
+
+Attempting to build /tmp/FMUFile688022505730714468.tmp/binaries/linux64/stepCounter.so
+architecture: linux64 isWindows: false  command: make target: linux64
+make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter.so
+make[1]: Entering directory `/tmp/FMUFile688022505730714468.tmp/sources'
+echo `pwd`
+/tmp/FMUFile688022505730714468.tmp/sources
+cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounter.c -o stepCounter.o
+Creating ../binaries/linux64/
+cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounter.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounter.so stepCounter.o 
+rm stepCounter.o
+make[1]: Leaving directory `/tmp/FMUFile688022505730714468.tmp/sources'
+
+293 ms. Memory: 208896K Free: 185128K (89%)
+reloadAllAccessors: .InternalBlockDiagramSequentialWithStepCounter
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/OutputsInInitialize.xml
+48 ms. Memory: 208896K Free: 144154K (69%)
+reloadAllAccessors: .OutputsInInitialize
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/TimedSourceSink.xml
+6 ms. Memory: 208896K Free: 140861K (67%)
+reloadAllAccessors: .TimedSourceSink
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/TimedSourceSink2.xml
+3 ms. Memory: 208896K Free: 137225K (66%)
+reloadAllAccessors: .TimedSourceSink2
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/TimedSourceSink2Concurrent.xml
+9 ms. Memory: 208896K Free: 131466K (63%)
+reloadAllAccessors: .TimedSourceSink2Concurrent
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/TimedSourceSinkConcurrent.xml
+9 ms. Memory: 208896K Free: 126175K (60%)
+reloadAllAccessors: .TimedSourceSinkConcurrent
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/TwoClocks.xml
+9 ms. Memory: 208896K Free: 121188K (58%)
+reloadAllAccessors: .TwoClocks
+----------------- testing Tue May 01 02:23:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sysml/test/auto/TwoClocksConcurrent.xml
+13 ms. Memory: 208896K Free: 111301K (53%)
+reloadAllAccessors: .TwoClocksConcurrent
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
