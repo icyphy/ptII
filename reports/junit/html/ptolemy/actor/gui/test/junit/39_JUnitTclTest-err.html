@@ -1,0 +1,19 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>[main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+RecorderMessageHandler: Failed to populate library. com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/home/travis/build/icyphy/ptII/ptolemy/matlab/matlab.xml at line 5 and column 58
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.matlab.Expression. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the third party package was found at compile time.  It may be necessary to upgrade Java or install the third party package, reconfigure and recompile.
+Because:
+-- /home/travis/build/icyphy/ptII/ptolemy/matlab/ptolemy/matlab/Expression.xml (No such file or directory)
+-- XML file not found relative to classpath.
+-- /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ptolemy/matlab/Expression.xml
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ptolemy/matlab/Expression.xml (No such file or directory)
+ in file:/home/travis/build/icyphy/ptII/ptolemy/matlab/matlab.xml at line 5 and column 58
+</pre>
+</body>
+</html>
