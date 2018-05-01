@@ -1,6 +1,6 @@
 /* Base class for objects with a name and a container.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -333,9 +333,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void addHierarchyListener(HierarchyListener listener) {
         if (_hierarchyListeners == null) {
-            _hierarchyListeners = new HashSet<HierarchyListener>();
+            _hierarchyListeners = new HashSet<WeakReference<HierarchyListener>>();
         }
-        _hierarchyListeners.add(listener);
+        _hierarchyListeners.add(new WeakReference(listener));
 
         // Add to the container.
         NamedObj container = getContainer();
@@ -1812,7 +1812,15 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void removeHierarchyListener(HierarchyListener listener) {
         if (_hierarchyListeners != null) {
-            _hierarchyListeners.remove(listener);
+            Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                .iterator();
+            while (listeners.hasNext()) {
+                WeakReference<HierarchyListener> reference = listeners
+                    .next();
+                if (reference.get() == listener) {
+                    listeners.remove();
+                }
+            }
 
             // Remove from the container.
             NamedObj container = getContainer();
@@ -2853,13 +2861,23 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // because notification may result in exceptions.
             NamedObj container = getContainer();
             if (container != null) {
-                for (HierarchyListener listener : _hierarchyListeners) {
-                    container.addHierarchyListener(listener);
+                Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                            .iterator();
+                while (listeners.hasNext()) {
+                        WeakReference<HierarchyListener> reference = listeners
+                                .next();
+                        container.addHierarchyListener(reference.get());
                 }
             }
 
-            for (HierarchyListener listener : _hierarchyListeners) {
-                listener.hierarchyChanged();
+            Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                .iterator();
+            while (listeners.hasNext()) {
+                WeakReference<HierarchyListener> reference = listeners
+                    .next();
+                reference.get().hierarchyChanged();
+            //for (HierarchyListener listener : _hierarchyListeners) {
+            //    listener.hierarchyChanged();
             }
         }
     }
@@ -2874,8 +2892,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     protected void _notifyHierarchyListenersBeforeChange()
             throws IllegalActionException {
         if (_hierarchyListeners != null) {
-            for (HierarchyListener listener : _hierarchyListeners) {
-                listener.hierarchyWillChange();
+            Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                .iterator();
+            while (listeners.hasNext()) {
+                WeakReference<HierarchyListener> reference = listeners
+                    .next();
+                reference.get().hierarchyWillChange();
             }
             // If changing the hierarchy is acceptable to all listeners,
             // then we get to here. At this point, we should remove all
@@ -2883,8 +2905,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // re-add them after the change in the hierarchy is complete.
             NamedObj container = getContainer();
             if (container != null) {
-                for (HierarchyListener listener : _hierarchyListeners) {
-                    container.removeHierarchyListener(listener);
+                Iterator<WeakReference<HierarchyListener>> listeners2 = _hierarchyListeners
+                    .iterator();
+                while (listeners2.hasNext()) {
+                    WeakReference<HierarchyListener> reference = listeners2
+                        .next();
+                    container.removeHierarchyListener(reference.get());
                 }
             }
         }
@@ -3535,7 +3561,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     private long _fullNameVersion = -1;
 
     /** List of hierarchy listeners, if any. */
-    private Set<HierarchyListener> _hierarchyListeners;
+    private HashSet<WeakReference<HierarchyListener>> _hierarchyListeners;
 
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
