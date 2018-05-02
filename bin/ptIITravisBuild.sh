@@ -129,6 +129,17 @@ if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
     export GEOCODING_TOKEN=resetByPtIITravisBuild.sh
 fi
 
+# Use set +x to hide the token
+set +x
+if [ ! -z "$HEARTBEAT_TOKEN" -a ! -f ~/.ptKeystore/heartbeatKey ]; then
+    if [ ! -d ~/.ptKeystore ]; then
+        mkdir ~/.ptKeystore
+    fi
+    echo "$HEARTBEAT_TOKEN" > ~/.ptKeystore/heartbeatKey
+    ls -l ~/.ptKeystore/heartbeatKey
+    export HEARTBEAT_TOKEN=resetByPtIITravisBuild.sh
+fi
+
 # Used by ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml 
 # Use set +x to hide the token
 set +x
@@ -197,7 +208,7 @@ runTarget () {
     echo "$0: Output will appear in $log with timeout $timeout"
     
     # Run the command and log the output.
-    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
+    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|HEARTBEAT_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
 
     # Get the return value of the ant command and exit if it is non-zero.
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
