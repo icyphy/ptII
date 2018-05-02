@@ -49,6 +49,7 @@ include $(CONFIG)
 TCL_SRCS = \
 	cloneTest.tcl \
 	configTest.tcl \
+	configurationTools.tcl \
 	testDefs.tcl
 
 JSRCS = \
