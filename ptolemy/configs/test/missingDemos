@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 # Find missing demos
 # $Id$
 # 1) Get all the demos from ptolemy/configs/doc/models.txt
