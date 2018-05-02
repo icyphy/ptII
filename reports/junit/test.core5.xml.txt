@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 5.83 seconds.
+     [exec] Finished running in 4.93 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -308,18 +308,166 @@ build-bin:
      [exec] ./makebat -q "`basename tinic.bat .bat`"
      [exec] rm -f "tiniconverter.bat"
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "startjini.gui.bat"
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
      [exec] rm -f "vergil.bat"
      [exec] ./makebat -q "`basename vergil.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f makeapp
      [exec] ln -s ptinvoke makeapp
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May  2 15:44:29 UTC 2018
+     [exec] Error: This Java instance does not support a 32-bit JVM.
+     [exec] Please install the desired version.
+     [exec] configure: WARNING: Running java -d32 -version failed,
+     [exec]     and ./bin/java does not exist.
+     [exec]     Perhaps you need to install a separate 32-bit JVM
+     [exec]     or rerun configure with --with-java32?
+     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
+     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
+     [exec]     the same as '/usr/bin/java'.
+     [exec]     Perhaps '/usr/bin/java' is in your path before
+     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
+     [exec]     If you have problems later, be sure that you don't have a mismatch
+     [exec]     in JDK versions.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
+     [exec] 	 the same as '/usr/bin/javac'.
+     [exec] 	 Perhaps '/usr/bin/javac' is in your path
+     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
+     [exec] 	 If you have problems later, be sure that you don't have a mismatch
+     [exec] 	 in JDK versions.
+     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
+     [exec]     This is only a problem if you want to rebuild the Functional
+     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
+     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
+     [exec]     Checkstyle is only necessary for code cleaning.
+     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
+     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
+     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
+     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
+     [exec]     Cobertura is only necessary to for code coverage.
+     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
+     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
+     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
+     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
+     [exec]     CUnit is only necessary to test the C templates of the code generation facility
+     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
+     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
+     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+     [exec]     so the Mbed CG facility will not be run.
+     [exec] JAITest.java:28: error: package javax.media.jai does not exist
+     [exec] import javax.media.jai.*;
+     [exec] ^
+     [exec] 1 error
+     [exec] configure: WARNING: JAI not found in the default classpath
+     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+     [exec]     which is part of JModelica.
+     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
+     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
+     [exec] JMFTest.java:28: error: package javax.media does not exist
+     [exec] import javax.media.CaptureDeviceInfo;
+     [exec]                   ^
+     [exec] 1 error
+     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
+     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
+     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
+     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
+     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
+     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
+     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
+     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
+     [exec]     so we will try other jars.
+     [exec] libdc1394 error: Failed to initialize libdc1394
+     [exec] configure: WARNING: Could not find directory
+     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
+     [exec]     so we search for the jjtree command.
+     [exec] configure: WARNING: Failed to find jjtree
+     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
+     [exec]     in ptolemy/data/expr.
+     [exec]     JavaCC is available from
+     [exec]     http://javacc.dev.java.net/
+     [exec] 
+     [exec]     Note that the zip file that gets downloaded is actually an installer
+     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
+     [exec] 
+     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+     [exec]     ReInit() being static or not static.
+     [exec] 
+     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+     [exec]     we recommend JavaCC-5.0.
+     [exec] 
+     [exec]     Try:
+     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
+     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+     [exec]     tar -zxf javacc-5.0.tar.gz
+     [exec]     cd /home/travis/build/icyphy/ptII
+     [exec]     ./configure
+     [exec] 
+     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
+     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
+     [exec]     and then rerun configure.'
+     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
+     [exec] configure: WARNING: Failed to find matlab executable in the path.
+     [exec]     Perhaps Matlab is not installed?
+     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
+     [exec]     $PTII/ptolemy/matlab will not be usable.
+     [exec] configure: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.
+     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
+     [exec]     Rebuilding the OpenModelica fmus will not be possible.
+     [exec]     Running the OpenModelica models will not be possible.
+     [exec]     This is only a concern if you are interested in OpenModelica
+     [exec] configure: WARNING: Failed to find PowerMock.
+     [exec]     Perhaps PowerMock was not installed?
+     [exec]     You need not download these packages if you would like
+     [exec]     to run the tests.  To install PowerMock, go to
+     [exec]     http://code.google.com/p/powermock/ and download
+     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+     [exec]     then rerun configure.
+     [exec]     Other versions of PowerMock _may_ work, but are untested.
+     [exec] configure: WARNING: Failed to find the scalac binary,
+     [exec]     so org/ptolemy/scala will be excluded
+     [exec] configure: WARNING: ojdbc5.jar not found,
+     [exec]     but only necessary to use database actors with Oracle.
+     [exec]     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+     [exec]     To install ojdbc5.jar or ojdbc6.jar,
+     [exec]     download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+     [exec]     copy it to ptolemy/actor/lib/database
+     [exec]     and rerun ./configure
+     [exec] configure: WARNING: Failed to find Batik Jar file
+     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
+     [exec]     for use with Kepler.
+     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+     [exec]     batike-1.9/lib/batik-all-1.9.jar copied to /home/travis/build/icyphy/ptII/lib
+     [exec]     and ./configure rerun.
+     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
+     [exec] configure: WARNING: $TOSROOT is set to '',
+     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
+     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
+     [exec] configure: WARNING: Failed to find giotto/gdk.jar
+     [exec]     perhaps Giotto is not installed?
+     [exec]     You need not download Giotto unless you plan on generating code for
+     [exec]     Giotto models.
+     [exec]     The Giotto SDK can be
+     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
+     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
+     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
+     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
+     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
+     [exec]     will not be compiled. FMI++ is an extension of the
+     [exec]     Functional Mockup Interface, see
+     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May  2 16:47:21 UTC 2018
      [exec] tar: This does not look like a tar archive
      [exec] 
      [exec] gzip: stdin: unexpected end of file
@@ -345,8 +493,8 @@ test.core5.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/configs/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.configs.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 15:44:30 UTC 2018
-    [junit] 1525275871006 ms. Memory: 116224K Free: 94016K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 16:47:22 UTC 2018
+    [junit] 1525279642869 ms. Memory: 116224K Free: 94017K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -360,9 +508,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275887372 ms. Memory: 986624K Free: 771661K (78%)
+    [junit] 1525279657016 ms. Memory: 740352K Free: 163709K (22%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275887736 ms. Memory: 1025536K Free: 951514K (93%)
+    [junit] 1525279657480 ms. Memory: 762368K Free: 691631K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -376,9 +524,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275901668 ms. Memory: 1313792K Free: 807740K (61%)
+    [junit] 1525279670280 ms. Memory: 1020416K Free: 383180K (38%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275902472 ms. Memory: 1527808K Free: 1397681K (91%)
+    [junit] 1525279671018 ms. Memory: 1025024K Free: 903352K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -386,9 +534,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275902746 ms. Memory: 1527808K Free: 1319990K (86%)
+    [junit] 1525279671277 ms. Memory: 1025024K Free: 836472K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275903200 ms. Memory: 1537024K Free: 1407582K (92%)
+    [junit] 1525279671858 ms. Memory: 1025024K Free: 904364K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -403,9 +551,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275907518 ms. Memory: 1549824K Free: 739908K (48%)
+    [junit] 1525279675910 ms. Memory: 1175552K Free: 721810K (61%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275908092 ms. Memory: 1546240K Free: 1396484K (90%)
+    [junit] 1525279676439 ms. Memory: 1185280K Free: 1043577K (88%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -421,9 +569,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275914953 ms. Memory: 1674240K Free: 371039K (22%)
+    [junit] 1525279682656 ms. Memory: 1252864K Free: 441536K (35%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275915656 ms. Memory: 1679872K Free: 1502348K (89%)
+    [junit] 1525279683281 ms. Memory: 1312256K Free: 1143072K (87%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -438,9 +586,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275930860 ms. Memory: 1809920K Free: 346486K (19%)
+    [junit] 1525279697913 ms. Memory: 1449984K Free: 940298K (65%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275932538 ms. Memory: 1820672K Free: 1557609K (86%)
+    [junit] 1525279699173 ms. Memory: 1543680K Free: 1288575K (83%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -458,9 +606,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275947628 ms. Memory: 1974272K Free: 780438K (40%)
+    [junit] 1525279711676 ms. Memory: 1785856K Free: 749903K (42%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275949304 ms. Memory: 1944576K Free: 1617714K (83%)
+    [junit] 1525279713518 ms. Memory: 1879040K Free: 1555522K (83%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -498,9 +646,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276070124 ms. Memory: 2220544K Free: 1142793K (51%)
+    [junit] 1525279816248 ms. Memory: 1714176K Free: 350359K (20%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276073557 ms. Memory: 2220544K Free: 1516626K (68%)
+    [junit] 1525279819828 ms. Memory: 2191872K Free: 1483662K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -533,9 +681,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276184182 ms. Memory: 2781184K Free: 973983K (35%)
+    [junit] 1525279914307 ms. Memory: 2685440K Free: 833341K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276188324 ms. Memory: 2835968K Free: 1699762K (60%)
+    [junit] 1525279919290 ms. Memory: 2694144K Free: 1553536K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -543,9 +691,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276188345 ms. Memory: 2835968K Free: 1699760K (60%)
+    [junit] 1525279919319 ms. Memory: 2694144K Free: 1547715K (57%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276190962 ms. Memory: 2835968K Free: 1707647K (60%)
+    [junit] 1525279921508 ms. Memory: 2715136K Free: 1585399K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -559,9 +707,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276198733 ms. Memory: 2422784K Free: 614384K (25%)
+    [junit] 1525279928434 ms. Memory: 2715136K Free: 1441277K (53%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276202180 ms. Memory: 2744832K Free: 1577595K (57%)
+    [junit] 1525279931777 ms. Memory: 2710016K Free: 1531597K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -575,9 +723,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276211013 ms. Memory: 2796544K Free: 1174625K (42%)
+    [junit] 1525279939505 ms. Memory: 2750976K Free: 1188292K (43%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276214463 ms. Memory: 2778624K Free: 1562227K (56%)
+    [junit] 1525279942927 ms. Memory: 2432000K Free: 1211523K (50%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -586,18 +734,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276214549 ms. Memory: 2778624K Free: 1518001K (55%)
+    [junit] 1525279943005 ms. Memory: 2432000K Free: 1174226K (48%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276218189 ms. Memory: 2390528K Free: 1170244K (49%)
+    [junit] 1525279947213 ms. Memory: 2720256K Free: 1495544K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276222055 ms. Memory: 2786304K Free: 1433892K (51%)
+    [junit] 1525279950618 ms. Memory: 2732544K Free: 803627K (29%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276225479 ms. Memory: 2768384K Free: 1528384K (55%)
+    [junit] 1525279953930 ms. Memory: 2735616K Free: 1496582K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -611,9 +759,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276232894 ms. Memory: 2777088K Free: 1249682K (45%)
+    [junit] 1525279960507 ms. Memory: 2767360K Free: 877953K (32%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276236547 ms. Memory: 2580992K Free: 1296923K (50%)
+    [junit] 1525279964025 ms. Memory: 2770432K Free: 1482077K (53%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -688,7 +836,7 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
-    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525276597297 ms. Memory: 4679680K Free: 1192085K (25%)
+    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525280265491 ms. Memory: 4692480K Free: 1037744K (22%)
     [junit] Setting containers of atomic entities to null
     [junit] checkFullConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
@@ -982,9 +1130,9 @@ test.core5.xml:
     [junit]                             <group>
     [junit]                                 <doc>Decortative attributes</doc>
     [junit]                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 3:56:37 PM">
+    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 4:57:45 PM">
     [junit]                                     </property>
-    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 3:56:37 PM">
+    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 4:57:45 PM">
     [junit]                                     </property>
     [junit]                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
     [junit]                                     </property>
@@ -3553,11 +3701,6 @@ test.core5.xml:
     [junit]                                     <configure>
     [junit]                                         <group>
     [junit]                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="input"/>
-    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
     [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="output"/>
     [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -3613,9 +3756,9 @@ test.core5.xml:
     [junit]                                             <entity name="Slicer" class="ptolemy.actor.lib.comm.Slicer">
     [junit]                                             </entity>
     [junit]                                             <entity name="TrellisDecoder" class="ptolemy.actor.lib.comm.TrellisDecoder">
-    [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="output"/>
-    [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
+    [junit]                                                     <property name="input"/>
+    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
     [junit]                                                     </property>
     [junit]                                                 </port>
     [junit]                                             </entity>
@@ -3623,11 +3766,6 @@ test.core5.xml:
     [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="input"/>
     [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
-    [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="output"/>
-    [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
     [junit]                                                     </property>
     [junit]                                                 </port>
     [junit]                                             </entity>
@@ -7562,7 +7700,7 @@ test.core5.xml:
     [junit] mv capecodeModels.txt.sorted capecodeModels.txt
     [junit] make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
     [junit] #
-    [junit] # Starting to build models.txt: Wed May  2 15:57:48 UTC 2018
+    [junit] # Starting to build models.txt: Wed May  2 16:58:49 UTC 2018
     [junit] #
     [junit] # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY
     [junit] DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java"  -Xmx1500m "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
@@ -7577,14 +7715,14 @@ test.core5.xml:
     [junit] LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
     [junit] mv /tmp/models.txt models.txt
     [junit] #
-    [junit] # Done building models.txt: Wed May  2 15:59:57 UTC 2018
+    [junit] # Done building models.txt: Wed May  2 17:00:36 UTC 2018
     [junit] #
     [junit] git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at c7d1d7de
+    [junit] HEAD detached at c207d2ec
     [junit] Untracked files:
     [junit] 	../../../META-INF/
-    [junit] 	../../../junit1428835738514708025.properties
-    [junit] 	../../../junitvmwatcher8351775352085086075.properties
+    [junit] 	../../../junit4921942385629985503.properties
+    [junit] 	../../../junitvmwatcher7892612913161387206.properties
     [junit] 
     [junit] nothing added to commit but untracked files present
     [junit] rm -f doc.jar
@@ -7647,18 +7785,18 @@ test.core5.xml:
     [junit] 		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
     [junit]         fi
     [junit] Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at c7d1d7de
+    [junit] HEAD detached at c207d2ec
     [junit] Untracked files:
     [junit] 	../../../META-INF/
-    [junit] 	../../../junit1428835738514708025.properties
-    [junit] 	../../../junitvmwatcher8351775352085086075.properties
+    [junit] 	../../../junit4921942385629985503.properties
+    [junit] 	../../../junitvmwatcher7892612913161387206.properties
     [junit] 
     [junit] nothing added to commit but untracked files present
     [junit] make: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
     [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] libdc1394 error: Failed to initialize libdc1394
+    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] make: [update] Error 1 (ignored)
     [junit] cp: cannot stat ‘*.class’: No such file or directory
     [junit] make[1]: [doc.jar] Error 1 (ignored)
@@ -7703,365 +7841,11 @@ test.core5.xml:
     [junit] ---- missingDemos-2.0 FAILED
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl
     [junit] Validating the xml in /auto/ xml files after removing the configure blocks
-    [junit] ..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/DuplicateClassInstanceName.xml, file /tmp/validDemos600793793507737807.xml was
-    [junit] <?xml version="1.0" standalone="no"?>
-    [junit] <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    [junit]     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-    [junit] <entity name="DuplicateClassInstanceName" class="ptolemy.actor.TypedCompositeActor">
-    [junit]     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
-    [junit]     </property>
-    [junit]     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 343, 867, 655}, maximized=false}">
-    [junit]     </property>
-    [junit]     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 545]">
-    [junit]     </property>
-    [junit]     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0802282793116365">
-    [junit]     </property>
-    [junit]     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.3649742983029, 606.6328430972587}">
-    [junit]     </property>
-    [junit]     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ing�nierie - http://www.ciele.fr">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 1035.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance. &#10;&#10;The two tests below show the illegal usage of duplicated class instance name.&#10;&#10;- Sender1 tests duplicate class instance name detection with HlaPublisher.&#10;&#10;- Receiver1 tests duplicate class intance name detection with HlaSubscriber. ">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 605.0}">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 805.0]">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]     </property>
-    [junit]     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedSender1 model: last federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 825.0}">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 780.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Feature:&#10;             Static HLA multi instance&#10;&#10;Expected result:&#10;             The 2 tests must succeed&#10;----------------------------------------------------------------&#10;&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 355.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Director" class="ptolemy.actor.Director">
-    [junit]         <doc>Simple director that executes actors in the order in which they were created.</doc>
-    [junit]         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 920.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 870.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 980.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 925.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 970.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit] </entity>
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] ==== $PTII/ptolemy/configs/test/validDemos.tcl: validDemos-2830 Validating parse of /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/DuplicateClassInstanceName.xml after removing configure
-    [junit] ==== Contents of test case:
-    [junit] 
-    [junit] 	    set errMsg {}
-    [junit] 	    if [catch {java::call ptolemy.configs.test.ValidatingXMLParser parse $filename} errMsg] {
-    [junit] 		puts "Could not parse $modelPath, file $filename was"
-    [junit] 		# Print out the contents of the failed file.
-    [junit] 		# A common failure is a version control system conflict.
-    [junit] 		set fp [open $filename r]
-    [junit] 		puts [read $fp]
-    [junit] 		close $fp
-    [junit] 	    }
-    [junit] 
-    [junit] 	    list $errMsg
-    [junit] 	
-    [junit] ==== Result was:
-    [junit] {com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: Invalid byte 2 of 3-byte UTF-8 sequence.}
-    [junit] ---- Result should have been:
-    [junit] {}
-    [junit] ---- validDemos-2830 FAILED
-    [junit] ....Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/2Classes2Values2Instances.xml, file /tmp/validDemos600793793507737807.xml was
-    [junit] <?xml version="1.0" standalone="no"?>
-    [junit] <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    [junit]     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-    [junit] <entity name="2Classes2Values2Instances" class="ptolemy.actor.TypedCompositeActor">
-    [junit]     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
-    [junit]     </property>
-    [junit]     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 955, 886}, maximized=false}">
-    [junit]     </property>
-    [junit]     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 776]">
-    [junit]     </property>
-    [junit]     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0802282793116365">
-    [junit]     </property>
-    [junit]     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.09710549934726, 713.5546875000002}">
-    [junit]     </property>
-    [junit]     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ing�nierie - http://www.ciele.fr">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 1045.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance. &#10;&#10;The test shows:&#10;&#10;- a sender which publishes updates of the attribute values (val1, ValueTransfer,&#10;instance1) and (val2, AnotherValueTransfer, instance2).&#10;&#10;- a receiver which deploys two HLA subscribers to receive updates&#10;of attribute values 'val1' and 'val2 ' with the corresponding object class names and&#10;class instance names.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 605.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 835.0}">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]     </property>
-    [junit]     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedSender1 model: last federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 855.0]">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Classes2Values2Instances/DistributedSender1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/2classes1Instance/DistributedSender1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 810.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Feature:&#10;             Static HLA multi instance&#10;&#10;Expected result:&#10;             This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 355.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Director" class="ptolemy.actor.Director">
-    [junit]         <doc>Simple director that executes actors in the order in which they were created.</doc>
-    [junit]         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 950.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 900.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 1010.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/2Classes2Values2Instances/DistributedSender1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 955.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 1000.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit] </entity>
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] ==== $PTII/ptolemy/configs/test/validDemos.tcl: validDemos-2834 Validating parse of /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/2Classes2Values2Instances.xml after removing configure
-    [junit] ==== Contents of test case:
-    [junit] 
-    [junit] 	    set errMsg {}
-    [junit] 	    if [catch {java::call ptolemy.configs.test.ValidatingXMLParser parse $filename} errMsg] {
-    [junit] 		puts "Could not parse $modelPath, file $filename was"
-    [junit] 		# Print out the contents of the failed file.
-    [junit] 		# A common failure is a version control system conflict.
-    [junit] 		set fp [open $filename r]
-    [junit] 		puts [read $fp]
-    [junit] 		close $fp
-    [junit] 	    }
-    [junit] 
-    [junit] 	    list $errMsg
-    [junit] 	
-    [junit] ==== Result was:
-    [junit] {com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: Invalid byte 2 of 3-byte UTF-8 sequence.}
-    [junit] ---- Result should have been:
-    [junit] {}
-    [junit] ---- validDemos-2834 FAILED
-    [junit] ...............................................................................................................................Checked 2961 demos from configs/doc/models.txt
+    [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2961 demos from configs/doc/models.txt
     [junit] Validating the xml in demo xml files after removing the configure blocks
     [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 753 demos from configs/doc/models.txt
-    [junit] 05/02/18 04:00:57
-    [junit] Failed: 4  Total Tests: 3809  ((Passed: 3805, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+    [junit] 05/02/18 05:01:23
+    [junit] Failed: 2  Total Tests: 3809  ((Passed: 3807, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
@@ -8069,11 +7853,11 @@ test.core5.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 986.396 sec
+    [junit] Tests run: 11, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 840.584 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 15:44:30 UTC 2018
-    [junit] 1525275871006 ms. Memory: 116224K Free: 94016K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 16:47:22 UTC 2018
+    [junit] 1525279642869 ms. Memory: 116224K Free: 94017K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8087,9 +7871,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275887372 ms. Memory: 986624K Free: 771661K (78%)
+    [junit] 1525279657016 ms. Memory: 740352K Free: 163709K (22%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275887736 ms. Memory: 1025536K Free: 951514K (93%)
+    [junit] 1525279657480 ms. Memory: 762368K Free: 691631K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8103,9 +7887,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275901668 ms. Memory: 1313792K Free: 807740K (61%)
+    [junit] 1525279670280 ms. Memory: 1020416K Free: 383180K (38%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275902472 ms. Memory: 1527808K Free: 1397681K (91%)
+    [junit] 1525279671018 ms. Memory: 1025024K Free: 903352K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8113,9 +7897,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275902746 ms. Memory: 1527808K Free: 1319990K (86%)
+    [junit] 1525279671277 ms. Memory: 1025024K Free: 836472K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275903200 ms. Memory: 1537024K Free: 1407582K (92%)
+    [junit] 1525279671858 ms. Memory: 1025024K Free: 904364K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8130,9 +7914,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275907518 ms. Memory: 1549824K Free: 739908K (48%)
+    [junit] 1525279675910 ms. Memory: 1175552K Free: 721810K (61%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275908092 ms. Memory: 1546240K Free: 1396484K (90%)
+    [junit] 1525279676439 ms. Memory: 1185280K Free: 1043577K (88%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -8148,9 +7932,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275914953 ms. Memory: 1674240K Free: 371039K (22%)
+    [junit] 1525279682656 ms. Memory: 1252864K Free: 441536K (35%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275915656 ms. Memory: 1679872K Free: 1502348K (89%)
+    [junit] 1525279683281 ms. Memory: 1312256K Free: 1143072K (87%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8165,9 +7949,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275930860 ms. Memory: 1809920K Free: 346486K (19%)
+    [junit] 1525279697913 ms. Memory: 1449984K Free: 940298K (65%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275932538 ms. Memory: 1820672K Free: 1557609K (86%)
+    [junit] 1525279699173 ms. Memory: 1543680K Free: 1288575K (83%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8185,9 +7969,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525275947628 ms. Memory: 1974272K Free: 780438K (40%)
+    [junit] 1525279711676 ms. Memory: 1785856K Free: 749903K (42%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525275949304 ms. Memory: 1944576K Free: 1617714K (83%)
+    [junit] 1525279713518 ms. Memory: 1879040K Free: 1555522K (83%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -8222,9 +8006,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276070124 ms. Memory: 2220544K Free: 1142793K (51%)
+    [junit] 1525279816248 ms. Memory: 1714176K Free: 350359K (20%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276073557 ms. Memory: 2220544K Free: 1516626K (68%)
+    [junit] 1525279819828 ms. Memory: 2191872K Free: 1483662K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -8257,9 +8041,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276184182 ms. Memory: 2781184K Free: 973983K (35%)
+    [junit] 1525279914307 ms. Memory: 2685440K Free: 833341K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276188324 ms. Memory: 2835968K Free: 1699762K (60%)
+    [junit] 1525279919290 ms. Memory: 2694144K Free: 1553536K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8267,9 +8051,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276188345 ms. Memory: 2835968K Free: 1699760K (60%)
+    [junit] 1525279919319 ms. Memory: 2694144K Free: 1547715K (57%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276190962 ms. Memory: 2835968K Free: 1707647K (60%)
+    [junit] 1525279921508 ms. Memory: 2715136K Free: 1585399K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8283,9 +8067,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276198733 ms. Memory: 2422784K Free: 614384K (25%)
+    [junit] 1525279928434 ms. Memory: 2715136K Free: 1441277K (53%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276202180 ms. Memory: 2744832K Free: 1577595K (57%)
+    [junit] 1525279931777 ms. Memory: 2710016K Free: 1531597K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8299,9 +8083,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276211013 ms. Memory: 2796544K Free: 1174625K (42%)
+    [junit] 1525279939505 ms. Memory: 2750976K Free: 1188292K (43%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276214463 ms. Memory: 2778624K Free: 1562227K (56%)
+    [junit] 1525279942927 ms. Memory: 2432000K Free: 1211523K (50%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -8310,18 +8094,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276214549 ms. Memory: 2778624K Free: 1518001K (55%)
+    [junit] 1525279943005 ms. Memory: 2432000K Free: 1174226K (48%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276218189 ms. Memory: 2390528K Free: 1170244K (49%)
+    [junit] 1525279947213 ms. Memory: 2720256K Free: 1495544K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276222055 ms. Memory: 2786304K Free: 1433892K (51%)
+    [junit] 1525279950618 ms. Memory: 2732544K Free: 803627K (29%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276225479 ms. Memory: 2768384K Free: 1528384K (55%)
+    [junit] 1525279953930 ms. Memory: 2735616K Free: 1496582K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -8335,9 +8119,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525276232894 ms. Memory: 2777088K Free: 1249682K (45%)
+    [junit] 1525279960507 ms. Memory: 2767360K Free: 877953K (32%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525276236547 ms. Memory: 2580992K Free: 1296923K (50%)
+    [junit] 1525279964025 ms. Memory: 2770432K Free: 1482077K (53%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -8412,7 +8196,7 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
-    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525276597297 ms. Memory: 4679680K Free: 1192085K (25%)
+    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525280265491 ms. Memory: 4692480K Free: 1037744K (22%)
     [junit] Setting containers of atomic entities to null
     [junit] checkFullConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
@@ -8706,9 +8490,9 @@ test.core5.xml:
     [junit]                             <group>
     [junit]                                 <doc>Decortative attributes</doc>
     [junit]                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 3:56:37 PM">
+    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 4:57:45 PM">
     [junit]                                     </property>
-    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 3:56:37 PM">
+    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 4:57:45 PM">
     [junit]                                     </property>
     [junit]                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
     [junit]                                     </property>
@@ -11277,11 +11061,6 @@ test.core5.xml:
     [junit]                                     <configure>
     [junit]                                         <group>
     [junit]                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="input"/>
-    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
     [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="output"/>
     [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -11337,9 +11116,9 @@ test.core5.xml:
     [junit]                                             <entity name="Slicer" class="ptolemy.actor.lib.comm.Slicer">
     [junit]                                             </entity>
     [junit]                                             <entity name="TrellisDecoder" class="ptolemy.actor.lib.comm.TrellisDecoder">
-    [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="output"/>
-    [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
+    [junit]                                                     <property name="input"/>
+    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
     [junit]                                                     </property>
     [junit]                                                 </port>
     [junit]                                             </entity>
@@ -11347,11 +11126,6 @@ test.core5.xml:
     [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="input"/>
     [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
-    [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="output"/>
-    [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
     [junit]                                                     </property>
     [junit]                                                 </port>
     [junit]                                             </entity>
@@ -15286,7 +15060,7 @@ test.core5.xml:
     [junit] mv capecodeModels.txt.sorted capecodeModels.txt
     [junit] make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
     [junit] #
-    [junit] # Starting to build models.txt: Wed May  2 15:57:48 UTC 2018
+    [junit] # Starting to build models.txt: Wed May  2 16:58:49 UTC 2018
     [junit] #
     [junit] # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY
     [junit] DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java"  -Xmx1500m "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
@@ -15301,14 +15075,14 @@ test.core5.xml:
     [junit] LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
     [junit] mv /tmp/models.txt models.txt
     [junit] #
-    [junit] # Done building models.txt: Wed May  2 15:59:57 UTC 2018
+    [junit] # Done building models.txt: Wed May  2 17:00:36 UTC 2018
     [junit] #
     [junit] git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at c7d1d7de
+    [junit] HEAD detached at c207d2ec
     [junit] Untracked files:
     [junit] 	../../../META-INF/
-    [junit] 	../../../junit1428835738514708025.properties
-    [junit] 	../../../junitvmwatcher8351775352085086075.properties
+    [junit] 	../../../junit4921942385629985503.properties
+    [junit] 	../../../junitvmwatcher7892612913161387206.properties
     [junit] 
     [junit] nothing added to commit but untracked files present
     [junit] rm -f doc.jar
@@ -15371,18 +15145,18 @@ test.core5.xml:
     [junit] 		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
     [junit]         fi
     [junit] Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at c7d1d7de
+    [junit] HEAD detached at c207d2ec
     [junit] Untracked files:
     [junit] 	../../../META-INF/
-    [junit] 	../../../junit1428835738514708025.properties
-    [junit] 	../../../junitvmwatcher8351775352085086075.properties
+    [junit] 	../../../junit4921942385629985503.properties
+    [junit] 	../../../junitvmwatcher7892612913161387206.properties
     [junit] 
     [junit] nothing added to commit but untracked files present
     [junit] make: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
     [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] libdc1394 error: Failed to initialize libdc1394
+    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] make: [update] Error 1 (ignored)
     [junit] cp: cannot stat ‘*.class’: No such file or directory
     [junit] make[1]: [doc.jar] Error 1 (ignored)
@@ -15427,365 +15201,11 @@ test.core5.xml:
     [junit] ---- missingDemos-2.0 FAILED
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl
     [junit] Validating the xml in /auto/ xml files after removing the configure blocks
-    [junit] ..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/DuplicateClassInstanceName.xml, file /tmp/validDemos600793793507737807.xml was
-    [junit] <?xml version="1.0" standalone="no"?>
-    [junit] <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    [junit]     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-    [junit] <entity name="DuplicateClassInstanceName" class="ptolemy.actor.TypedCompositeActor">
-    [junit]     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
-    [junit]     </property>
-    [junit]     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 343, 867, 655}, maximized=false}">
-    [junit]     </property>
-    [junit]     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[633, 545]">
-    [junit]     </property>
-    [junit]     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0802282793116365">
-    [junit]     </property>
-    [junit]     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.3649742983029, 606.6328430972587}">
-    [junit]     </property>
-    [junit]     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ing�nierie - http://www.ciele.fr">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 1035.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance. &#10;&#10;The two tests below show the illegal usage of duplicated class instance name.&#10;&#10;- Sender1 tests duplicate class instance name detection with HlaPublisher.&#10;&#10;- Receiver1 tests duplicate class intance name detection with HlaSubscriber. ">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 605.0}">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 805.0]">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]     </property>
-    [junit]     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedSender1 model: last federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 825.0}">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 780.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Feature:&#10;             Static HLA multi instance&#10;&#10;Expected result:&#10;             The 2 tests must succeed&#10;----------------------------------------------------------------&#10;&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 355.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Director" class="ptolemy.actor.Director">
-    [junit]         <doc>Simple director that executes actors in the order in which they were created.</doc>
-    [junit]         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 920.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 870.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/DuplicateClassInstanceName/DistributedReceiver1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 980.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/DuplicateClassInstanceName/DistributedSender1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 925.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 970.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit] </entity>
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] ==== $PTII/ptolemy/configs/test/validDemos.tcl: validDemos-2830 Validating parse of /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/DuplicateClassInstanceName.xml after removing configure
-    [junit] ==== Contents of test case:
-    [junit] 
-    [junit] 	    set errMsg {}
-    [junit] 	    if [catch {java::call ptolemy.configs.test.ValidatingXMLParser parse $filename} errMsg] {
-    [junit] 		puts "Could not parse $modelPath, file $filename was"
-    [junit] 		# Print out the contents of the failed file.
-    [junit] 		# A common failure is a version control system conflict.
-    [junit] 		set fp [open $filename r]
-    [junit] 		puts [read $fp]
-    [junit] 		close $fp
-    [junit] 	    }
-    [junit] 
-    [junit] 	    list $errMsg
-    [junit] 	
-    [junit] ==== Result was:
-    [junit] {com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: Invalid byte 2 of 3-byte UTF-8 sequence.}
-    [junit] ---- Result should have been:
-    [junit] {}
-    [junit] ---- validDemos-2830 FAILED
-    [junit] ....Could not parse /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/2Classes2Values2Instances.xml, file /tmp/validDemos600793793507737807.xml was
-    [junit] <?xml version="1.0" standalone="no"?>
-    [junit] <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    [junit]     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-    [junit] <entity name="2Classes2Values2Instances" class="ptolemy.actor.TypedCompositeActor">
-    [junit]     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
-    [junit]     </property>
-    [junit]     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 63, 955, 886}, maximized=false}">
-    [junit]     </property>
-    [junit]     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 776]">
-    [junit]     </property>
-    [junit]     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0802282793116365">
-    [junit]     </property>
-    [junit]     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.09710549934726, 713.5546875000002}">
-    [junit]     </property>
-    [junit]     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ing�nierie - http://www.ciele.fr">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 1045.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance. &#10;&#10;The test shows:&#10;&#10;- a sender which publishes updates of the attribute values (val1, ValueTransfer,&#10;instance1) and (val2, AnotherValueTransfer, instance2).&#10;&#10;- a receiver which deploys two HLA subscribers to receive updates&#10;of attribute values 'val1' and 'val2 ' with the corresponding object class names and&#10;class instance names.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 605.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 835.0}">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]     </property>
-    [junit]     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedSender1 model: last federate to be launched.">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 855.0]">
-    [junit]         </property>
-    [junit]         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstance/2Classes2Values2Instances/DistributedSender1.xml">
-    [junit]             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-    [junit]             </property>
-    [junit]             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-    [junit]                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]                 </property>
-    [junit]             </property>
-    [junit]             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    [junit]             </property>
-    [junit]             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/2classes1Instance/DistributedSender1/index.html">
-    [junit]             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-    [junit]             </property>
-    [junit]             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-    [junit]             </property>
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 810.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-    [junit]         </property>
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Feature:&#10;             Static HLA multi instance&#10;&#10;Expected result:&#10;             This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 355.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Director" class="ptolemy.actor.Director">
-    [junit]         <doc>Simple director that executes actors in the order in which they were created.</doc>
-    [junit]         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 950.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-    [junit]         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-    [junit]         </property>
-    [junit]         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 900.0]">
-    [junit]         </property>
-    [junit]     </property>
-    [junit]     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/2Classes2Values2Instances/DistributedReceiver1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 1010.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-    [junit]         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/2Classes2Values2Instances/DistributedSender1.xml">
-    [junit]         </property>
-    [junit]         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-    [junit]         </property>
-    [junit]         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
-    [junit]         </property>
-    [junit]         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-    [junit]         </property>
-    [junit]         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-    [junit]         </property>
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 955.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit]     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-    [junit]         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 1000.0]">
-    [junit]         </property>
-    [junit]     </entity>
-    [junit] </entity>
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] 
-    [junit] ==== $PTII/ptolemy/configs/test/validDemos.tcl: validDemos-2834 Validating parse of /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../org/hlacerti/test/auto/testWithException/2Classes2Values2Instances.xml after removing configure
-    [junit] ==== Contents of test case:
-    [junit] 
-    [junit] 	    set errMsg {}
-    [junit] 	    if [catch {java::call ptolemy.configs.test.ValidatingXMLParser parse $filename} errMsg] {
-    [junit] 		puts "Could not parse $modelPath, file $filename was"
-    [junit] 		# Print out the contents of the failed file.
-    [junit] 		# A common failure is a version control system conflict.
-    [junit] 		set fp [open $filename r]
-    [junit] 		puts [read $fp]
-    [junit] 		close $fp
-    [junit] 	    }
-    [junit] 
-    [junit] 	    list $errMsg
-    [junit] 	
-    [junit] ==== Result was:
-    [junit] {com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: Invalid byte 2 of 3-byte UTF-8 sequence.}
-    [junit] ---- Result should have been:
-    [junit] {}
-    [junit] ---- validDemos-2834 FAILED
-    [junit] ...............................................................................................................................Checked 2961 demos from configs/doc/models.txt
+    [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2961 demos from configs/doc/models.txt
     [junit] Validating the xml in demo xml files after removing the configure blocks
     [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 753 demos from configs/doc/models.txt
-    [junit] 05/02/18 04:00:57
-    [junit] Failed: 4  Total Tests: 3809  ((Passed: 3805, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+    [junit] 05/02/18 05:01:23
+    [junit] Failed: 2  Total Tests: 3809  ((Passed: 3807, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
@@ -15800,4 +15220,4 @@ test.core5.xml:
     [junit] Test ptolemy.configs.test.junit.JUnitTclTest FAILED
 
 BUILD SUCCESSFUL
-Total time: 17 minutes 54 seconds
+Total time: 15 minutes 37 seconds
