@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="150">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -31,7 +31,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of the WebServer accessor.&#10;This starts a web server on localhost on port 8096&#10;and sends back a simple &quot;Hello World&quot; response to&#10;any request.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of the WebServer accessor.&#10;This starts a web server on localhost on port 8496&#10;and sends back a simple &quot;Hello World&quot; response to&#10;any request.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, -15.0}">
         </property>
@@ -106,7 +106,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 320.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8096">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8496">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -171,7 +171,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot; : &quot;http://localhost:8096&quot;}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot; : &quot;http://localhost:8496&quot;}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -193,7 +193,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="8000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="28000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
