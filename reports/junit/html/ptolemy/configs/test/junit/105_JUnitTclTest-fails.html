@@ -199,9 +199,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.21 48144 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.5 53588 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.21 48144 10.20.0.15 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.5 53588 10.20.0.100 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -215,25 +215,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '374002652';
+        cur['env.TRAVIS_BUILD_ID'] = '374048212';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '382';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '383';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = 'c207d2ecf6b441f0f856ff325b8a5f8fdafefefd';
+        cur['env.TRAVIS_COMMIT'] = 'e8d8306c2258d28c1c9dd8b028718a922869e1ab';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'More debugging messages.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Invoke using bash and avoid "Syntax error: Bad fd number".';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '1adf8b37eadb...c207d2ecf6b4';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'c207d2ecf6b4...e8d8306c2258';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '374002662';
+        cur['env.TRAVIS_JOB_ID'] = '374048224';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '382.10';
+        cur['env.TRAVIS_JOB_NUMBER'] = '383.10';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -421,7 +421,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.configs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.configs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7892612913161387206.properties propsfile=/home/travis/build/icyphy/ptII/junit4921942385629985503.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.configs.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.configs.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1463352522431026274.properties propsfile=/home/travis/build/icyphy/ptII/junit5609500685670820525.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -504,7 +504,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a title="Display all tests" href="105_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="105_JUnitTclTest.html">11</a></td><td>0</td><td><a title="Display only failures" href="105_JUnitTclTest-fails.html">1</a></td><td>0</td><td>840.584</td><td>2018-05-02T16:47:22</td><td>travis-job-4f9ccfc3-cf77-4d1e-a9e1-b37590a85596</td>
+<td><a title="Display all tests" href="105_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="105_JUnitTclTest.html">11</a></td><td>0</td><td><a title="Display only failures" href="105_JUnitTclTest-fails.html">1</a></td><td>0</td><td>928.857</td><td>2018-05-02T18:17:06</td><td>travis-job-61799ece-a85c-4495-9653-8ed9cf5aae4d</td>
 </tr>
 </table>
 <h2>Failures</h2>
@@ -513,10 +513,10 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="Failure">
-<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;<br>
+<td><a name="[6] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)"></a>[6] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl (RunTclFile)</td><td>Failure</td><td>Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>
 <br>
-<code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;2&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
-</code></td><td>181.474</td>
+<code>junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;<br>	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)<br>	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)<br>	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)<br>	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)<br>
+</code></td><td>203.708</td>
 </tr>
 </table>
 <div class="Properties">
