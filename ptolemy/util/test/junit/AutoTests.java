@@ -157,6 +157,7 @@ public class AutoTests extends ModelTests {
             // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
             _delay(fullPath);
 
+            System.out.println("----------------- Instantiating " + fullPath);
             Object instance = _applicationConstructor.newInstance(fullPath);
             Method rerunMethod = _applicationClass.getMethod("rerun",
                                                              (Class<?>[]) null);
@@ -173,10 +174,12 @@ public class AutoTests extends ModelTests {
             } else {
                 // JSAccessor is present, reload and rerun.
                 
+                System.out.println("----------------- Invoking toplevel() on " + instance);
                 _applicationToplevelMethod = _applicationClass
                         .getMethod("toplevel", new Class[] {});
                 Object toplevel = _applicationToplevelMethod.invoke(instance,
                         (Object[]) null);
+                System.out.println("----------------- Done invoking toplevel() on " + instance);
 
                 if (_jsAccessorReloadAllAccessorsMethod == null) {
                     throw new InternalError(
@@ -185,7 +188,7 @@ public class AutoTests extends ModelTests {
                 // Reload all the accessors and invoke rerun.
                 if (((Boolean) _jsAccessorReloadAllAccessorsMethod.invoke(null,
                         new Object[] { toplevel })).booleanValue()) {
-                    System.out.println("-------------- Reloaded accessors, but skipping rerun for now"
+                    System.out.println("-------------- Reloaded accessors, but skipping rerun for now. "
                                        + (new java.util.Date()) + " "
                                        + fullPath);
                     System.out.flush();
@@ -262,7 +265,7 @@ public class AutoTests extends ModelTests {
         if (match) {
             System.out.println("----------------- " + (new java.util.Date())
                     + " About to sleep for " + delay / 1000.0
-                    + " seconds before rerunning.  Test is: " + fullPath);
+                    + " seconds before running or rerunning.  Test is: " + fullPath);
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException ex) {
@@ -270,6 +273,7 @@ public class AutoTests extends ModelTests {
                         "Sleep before rerunning was interrupted: "
                                 + ex);
             }
+            System.out.println("Done sleeping");
         }
     }
 
