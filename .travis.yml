@@ -129,6 +129,8 @@ install:
   - ssh-keygen -N '' -f ~/.ssh/id_rsa
   - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
   - ssh localhost cat /etc/issue
+  - sudo ln -s `which npm` /usr/local/bin/npm
+  - sudo ln -s `which node` /usr/local/bin/node
   - ssh localhost  npm --version || true
 
 script:
