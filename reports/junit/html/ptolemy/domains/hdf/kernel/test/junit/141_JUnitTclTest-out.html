@@ -1,0 +1,253 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/RateErrorChecking.tcl
+testDefs.tcl: setting time out to 9000 seconds at Wed May 02 16:38:37 UTC 2018
+
+
+==== $PTII/ptolemy/domains/hdf/kernel/test/RateErrorChecking.tcl: RateErrorChecking-1.0 
+==== Contents of test case:
+
+    catch {createAndExecute "badFSMRateChanges.xml"} foo
+    list $foo
+
+==== Result was:
+{java.io.FileNotFoundException: /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/badFSMRateChanges.xml (No such file or directory)}
+---- KNOWN Failure, Result should have been:
+{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .badFSMRateChanges.SDF Director
+Because:
+The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
+    in .badFSMRateChanges.typed composite actor.output.tokenProductionRate}
+---- RateErrorChecking-1.0 Failed, but this is a KNOWN failure
+05/02/18 04:38:37
+Failed: 0  Total Tests: 1  ((Passed: 0, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/knownFailedTests/badFSMRateChanges.xml
+83 ms. Memory: 116224K Free: 95650K (82%)
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Wed May 02 16:38:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/ConstVariableRateTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/ConstVariableRateTest.xml
+54 ms. Memory: 116224K Free: 84884K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a7adbfa
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a7adbfa
+reloadAllAccessors: .ConstVariableRateTest
+----------------- testing Wed May 02 16:38:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates.xml
+33 ms. Memory: 116224K Free: 99764K (86%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6dcc4c61
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6dcc4c61
+reloadAllAccessors: .DifferentRefinedRates
+----------------- testing Wed May 02 16:38:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates2.xml
+38 ms. Memory: 116224K Free: 83872K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@311d0dc6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@311d0dc6
+reloadAllAccessors: .DifferentRefinedRates2
+----------------- testing Wed May 02 16:38:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates3.xml
+32 ms. Memory: 146944K Free: 133032K (91%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4c6ccc2f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4c6ccc2f
+reloadAllAccessors: .DifferentRefinedRates3
+----------------- testing Wed May 02 16:38:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates4.xml
+41 ms. Memory: 146944K Free: 114344K (78%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@731d5c19
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@731d5c19
+reloadAllAccessors: .NewHDFtest1
+----------------- testing Wed May 02 16:38:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates5.xml
+38 ms. Memory: 146944K Free: 96954K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57f84f78
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57f84f78
+reloadAllAccessors: .NewHDFtest2
+----------------- testing Wed May 02 16:38:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DifferentRefinedRates6.xml
+27 ms. Memory: 146944K Free: 81743K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@244281fc
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@244281fc
+reloadAllAccessors: .DifferentRefinedRates6
+----------------- testing Wed May 02 16:38:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DownSample_PowerOfTwo.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/DownSample_PowerOfTwo.xml
+269 ms. Memory: 146944K Free: 116133K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@581573f4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@581573f4
+reloadAllAccessors: .SDFDownSample
+----------------- testing Wed May 02 16:38:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithNullInitial.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithNullInitial.xml
+200 ms. Memory: 146944K Free: 90132K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f1e318
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f1e318
+reloadAllAccessors: .FibonacciWithNullInitial
+----------------- testing Wed May 02 16:38:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithNullInitial1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithNullInitial1.xml
+146 ms. Memory: 208896K Free: 186639K (89%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38b79694
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38b79694
+reloadAllAccessors: .FibonacciWithNullInitial1
+----------------- testing Wed May 02 16:38:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithTransientStates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithTransientStates.xml
+120 ms. Memory: 208896K Free: 156692K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb15cd8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb15cd8
+reloadAllAccessors: .FibonacciWithTransientStates
+----------------- testing Wed May 02 16:38:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithTransientStates2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithTransientStates2.xml
+44 ms. Memory: 208896K Free: 133347K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b161c18
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b161c18
+reloadAllAccessors: .FibonacciWithTransientStates2
+----------------- testing Wed May 02 16:38:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithoutHistoryInitial.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/FibonacciWithoutHistoryInitial.xml
+141 ms. Memory: 208896K Free: 108770K (52%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fa4fdfd
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fa4fdfd
+reloadAllAccessors: .FibonacciWithoutHistoryInitial
+----------------- testing Wed May 02 16:38:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/GuardUsingPastTokens.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/GuardUsingPastTokens.xml
+34 ms. Memory: 208896K Free: 91095K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a0d6304
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a0d6304
+reloadAllAccessors: .GuardUsingPastTokens
+----------------- testing Wed May 02 16:38:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/GuardWithResets.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/GuardWithResets.xml
+40 ms. Memory: 208896K Free: 193857K (93%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10aa729e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10aa729e
+reloadAllAccessors: .GuardWithResets
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hierarchy_2Level_Test1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hierarchy_2Level_Test1.xml
+33 ms. Memory: 208896K Free: 173887K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5719eba
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5719eba
+reloadAllAccessors: .Hierarchy_2Level_Test1
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hierarchy_2Level_Test2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hierarchy_2Level_Test2.xml
+29 ms. Memory: 208896K Free: 153949K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1040a86b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1040a86b
+reloadAllAccessors: .Hierarchy_4Level_Test2
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hysteresis.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Hysteresis.xml
+27 ms. Memory: 208896K Free: 141336K (68%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@360534cd
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@360534cd
+reloadAllAccessors: .Hysteresis
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/InitTransient.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/InitTransient.xml
+30 ms. Memory: 208896K Free: 118940K (57%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4e1c8c5e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4e1c8c5e
+reloadAllAccessors: .InitTransient
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Merge.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/Merge.xml
+37 ms. Memory: 208896K Free: 98970K (47%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@29aff68f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@29aff68f
+reloadAllAccessors: .Merge
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/ModalModelBooleanSwitch.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/ModalModelBooleanSwitch.xml
+53 ms. Memory: 332288K Free: 322558K (97%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@421d3d0e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@421d3d0e
+reloadAllAccessors: .BooleanSwitchWithModel
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRates.xml
+16 ms. Memory: 332288K Free: 306353K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d466d9e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d466d9e
+reloadAllAccessors: .SameRates
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRefinedRates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRefinedRates.xml
+25 ms. Memory: 332288K Free: 289608K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fea3b8a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fea3b8a
+reloadAllAccessors: .SameRefinedRates
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRefinedRates2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/SameRefinedRates2.xml
+20 ms. Memory: 332288K Free: 273223K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e7342b1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e7342b1
+reloadAllAccessors: .SameRefinedRates2
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TransientStates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TransientStates.xml
+31 ms. Memory: 332288K Free: 249924K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7af60a46
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7af60a46
+reloadAllAccessors: .TransientStates
+----------------- testing Wed May 02 16:38:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoHammingCodec.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoHammingCodec.xml
+41 ms. Memory: 332288K Free: 226561K (68%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6372c296
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6372c296
+reloadAllAccessors: .TwoHammingCodec
+----------------- testing Wed May 02 16:38:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoHammingCodec1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoHammingCodec1.xml
+51 ms. Memory: 332288K Free: 198708K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ea965b3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ea965b3
+reloadAllAccessors: .twoHammingCodec1
+----------------- testing Wed May 02 16:38:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy.xml
+52 ms. Memory: 332288K Free: 149129K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4005ed06
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4005ed06
+reloadAllAccessors: .TwoLevelHierarchy
+----------------- testing Wed May 02 16:38:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy1.xml
+61 ms. Memory: 332288K Free: 99599K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@29c6f09e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@29c6f09e
+reloadAllAccessors: .TwoLevelHierarchy1
+----------------- testing Wed May 02 16:38:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchy2.xml
+59 ms. Memory: 332288K Free: 305339K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17cab7e3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17cab7e3
+reloadAllAccessors: .TwoLevelHierarchy2
+----------------- testing Wed May 02 16:38:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
+59 ms. Memory: 332288K Free: 247746K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7e01ac29
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7e01ac29
+reloadAllAccessors: .TwoLevelHierarchyNullStates
+----------------- testing Wed May 02 16:38:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResets.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResets.xml
+78 ms. Memory: 332288K Free: 195068K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@129a63c0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@129a63c0
+reloadAllAccessors: .TwoLevelHierarchy1
+----------------- testing Wed May 02 16:38:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
+83 ms. Memory: 332288K Free: 127645K (38%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d05ed7f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d05ed7f
+reloadAllAccessors: .TwoLevelHierarchyWithResetsNullStates
+----------------- testing Wed May 02 16:38:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/WaterTank_HDF.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/WaterTank_HDF.xml
+69 ms. Memory: 332288K Free: 92990K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@416a2d21
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@416a2d21
+reloadAllAccessors: .WaterTank_HDF
+----------------- testing Wed May 02 16:38:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/WaterTank_HDF2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/WaterTank_HDF2.xml
+49 ms. Memory: 480256K Free: 447443K (93%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@623db90f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@623db90f
+reloadAllAccessors: .WaterTank_HDF2
+----------------- testing Wed May 02 16:38:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/badFSMRateChanges.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/hdf/kernel/test/auto/badFSMRateChanges.xml
+20 ms. Memory: 480256K Free: 428821K (89%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@655de5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@655de5
+reloadAllAccessors: .badFSMRateChanges
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

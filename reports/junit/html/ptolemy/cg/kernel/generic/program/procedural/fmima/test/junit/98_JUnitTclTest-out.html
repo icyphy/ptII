@@ -1,0 +1,95 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/FMIMACodeGenerator.tcl
+testDefs.tcl: setting time out to 9000 seconds at Wed May 02 16:39:45 UTC 2018
+Reading "ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in",
+    writing "/home/travis/cg/top.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in
+Writing top.c in file:/home/travis/cg/ (20502 characters)
+Reading "ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in",
+    writing "/home/travis/cg/top.mk"
+Using ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in
+In "/home/travis/cg", about to execute:
+    make -f top.mk
+gcc -o top.o -c top.c -std=gnu99 -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser -Ifmi/shared -Wall   -ggdb
+top.c:30:0: warning: "__USE_BSD" redefined [enabled by default]
+ #define __USE_BSD
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from top.c:26:
+/usr/include/features.h:320:0: note: this is the location of the previous definition
+ # define __USE_BSD 1
+ ^
+top.c:40:0: warning: "_BSD_SOURCE" redefined [enabled by default]
+ #define _BSD_SOURCE
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from top.c:26:
+/usr/include/features.h:188:0: note: this is the location of the previous definition
+ # define _BSD_SOURCE 1
+ ^
+top.c: In function &lsquo;main&rsquo;:
+top.c:418:17: warning: unused variable &lsquo;visible&rsquo; [-Wunused-variable]
+     fmi2Boolean visible = fmi2False;           // no simulator user interface
+                 ^
+top.c: At top level:
+top.c:73:22: warning: &lsquo;initializeFMU&rsquo; defined but not used [-Wunused-function]
+ static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible, fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* name) {
+                      ^
+gcc -o fmi/shared/sim_support.o -c fmi/shared/sim_support.c -std=gnu99 -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser -Ifmi/shared -Wall   -ggdb
+fmi/shared/sim_support.c:20:0: warning: "__USE_BSD" redefined [enabled by default]
+ #define __USE_BSD
+ ^
+In file included from /usr/include/stdio.h:27:0,
+                 from fmi/shared/sim_support.c:16:
+/usr/include/features.h:320:0: note: this is the location of the previous definition
+ # define __USE_BSD 1
+ ^
+rm -rf top
+g++ -D__int64="long long" -Wall -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser -Ifmi/shared   -ggdb  top.o fmi/shared/sim_support.o fmi/parser/XmlElement.cpp fmi/parser/XmlParser.cpp fmi/parser/XmlParserCApi.cpp -o top -lm  -lexpat -ldl -lxml2
+fmi/parser/XmlParser.cpp: In member function &lsquo;ModelDescription* XmlParser::parse()&rsquo;:
+fmi/parser/XmlParser.cpp:24:43: warning: format not a string literal and no format arguments [-Wformat-security]
+ #define logThis(n, ...) printf(__VA_ARGS__);printf("\n")
+                                           ^
+fmi/parser/XmlParser.cpp:105:13: note: in expansion of macro &lsquo;logThis&rsquo;
+             logThis(ERROR_ERROR, e.what());
+             ^
+In "/home/travis/cg", about to execute:
+    make -f top.mk run
+FIXME: Update ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in so that the names of the fmus are not hardwired in to the 'run' rule.
+./top 15 1
+-&gt; Parsing arguments...
+FMU Simulator: run 'top' from t=0..15 with step size h=1, loggingOn=0, csv separator=',' log categories={ }
+Checking for legacy FMUs!
+Simulation from 0 to 15 terminated successful
+  steps ............ 14
+  fixed step size .. 1
+CSV file 'result.csv' written
+All Done
+05/02/18 04:39:47
+Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Wed May 02 16:39:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml
+89 ms. Memory: 146944K Free: 115388K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@691bd8f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@691bd8f
+reloadAllAccessors: .FMUIncScale20pt
+----------------- testing Wed May 02 16:39:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml
+21 ms. Memory: 146944K Free: 104993K (71%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67a3db27
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67a3db27
+reloadAllAccessors: .emsoft2013
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
