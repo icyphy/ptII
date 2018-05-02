@@ -5399,7 +5399,10 @@ changequote([, ])dnl
 fi
 
 if test -z "$PTMATLAB_DIR"; then
-    updateExcludes "ptolemy/matlab/"
+    # The Matlab Expression actor is in the configuration, so we might as well compile it.
+    # ptolemy/actor/gui/test/UserActorLibrary.tcl depends on ptolemy/matlab/Expression.class being present.
+    AC_MSG_WARN([Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.])
+    # updateExcludes "ptolemy/matlab/"
 else
     # Set to the matlab jars that need to be signed if matlab was found.
     # Used in jnlp.mk
