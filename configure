@@ -12552,7 +12552,11 @@ $as_echo "$as_me: WARNING: Failed to find javah at '$JAVAH',
 fi
 
 if test -z "$PTMATLAB_DIR"; then
-    updateExcludes "ptolemy/matlab/"
+    # The Matlab Expression actor is in the configuration, so we might as well compile it.
+    # ptolemy/actor/gui/test/UserActorLibrary.tcl depends on ptolemy/matlab/Expression.class being present.
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok." >&5
+$as_echo "$as_me: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok." >&2;}
+    # updateExcludes "ptolemy/matlab/"
 else
     # Set to the matlab jars that need to be signed if matlab was found.
     # Used in jnlp.mk
