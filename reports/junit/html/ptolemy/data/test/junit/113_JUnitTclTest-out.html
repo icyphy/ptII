@@ -1,0 +1,441 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/data/test/AWTImageToken.tcl
+testDefs.tcl: setting time out to 9000 seconds at Tue May 01 23:11:11 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/data/test/ArrayToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/BooleanMatrixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/BooleanToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/ComplexMatrixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/ComplexToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/DateToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/DoubleMatrixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/DoubleToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/EventToken.tcl
+
+
+==== $PTII/ptolemy/data/test/EventToken.tcl: EventToken-2.6 Test isEqualTo
+==== Contents of test case:
+
+    set p1 [java::new ptolemy.data.EventToken]
+    set p2 [java::new ptolemy.data.EventToken]
+    catch {$p1 {isEqualTo ptolemy.data.EventToken} $p2} msg
+    list $msg
+
+==== Result was:
+{no such method "isEqualTo ptolemy.data.EventToken" in class ptolemy.data.EventToken}
+---- KNOWN Failure, Result should have been:
+{ptolemy.kernel.util.IllegalActionException: isEqualTo operation not supported between ptolemy.data.EventToken 'present' and ptolemy.data.EventToken 'present'}
+---- EventToken-2.6 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/EventToken.tcl: EventToken-2.6.1 Test isCloseTo
+==== Contents of test case:
+
+    set p1 [java::new ptolemy.data.EventToken]
+    set p2 [java::new ptolemy.data.EventToken]
+    catch {$p1 {isCloseTo ptolemy.data.EventToken} $p2} msg
+    list $msg
+
+==== Result was:
+{no such method "isCloseTo ptolemy.data.EventToken" in class ptolemy.data.EventToken}
+---- KNOWN Failure, Result should have been:
+{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.EventToken 'present' and ptolemy.data.EventToken 'present'}
+---- EventToken-2.6.1 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/data/test/FixMatrixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/FixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/FloatToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/FunctionToken.tcl
+
+
+==== $PTII/ptolemy/data/test/FunctionToken.tcl: FunctionToken-2.1 Test add
+==== Contents of test case:
+
+    # first record is {name="foo", value=1, extra1=2}
+    set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
+    set r2 [java::new {ptolemy.data.FunctionToken} "function(a,b) 8+2"]
+
+    [$r1 add $r2] toString
+
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.FunctionToken '(function(x, y) (4+x+y))' and ptolemy.data.FunctionToken '(function(a, b) 10)'
+	at ptolemy.data.Token.add(Token.java:114)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.FunctionToken '(function(x, y) (4+x+y))' and ptolemy.data.FunctionToken '(function(a, b) 10)'
+    while executing
+"$r1 add $r2"
+    invoked from within
+"[$r1 add $r2] toString
+"
+    ("uplevel" body line 6)
+    invoked from within
+"uplevel $contents_of_test"
+
+
+==== $PTII/ptolemy/data/test/FunctionToken.tcl: FunctionToken-2.2 test apply
+==== Contents of test case:
+
+    set arg [java::new {ptolemy.data.IntToken} 1]
+    set args [java::new {ptolemy.data.Token[]} 1]
+    $args set 0 $arg
+
+    set r1 [java::new {ptolemy.data.FunctionToken} "(function(x:int) x+1)"] 
+    
+    set r2 [java::new {ptolemy.data.FunctionToken} "(function(x:double) x+1)"] 
+    set r3 [java::new {ptolemy.data.FunctionToken} "(function(x:int) x+1.0)"] 
+    
+    list [[$r1 apply $args] toString] [[$r2 apply $args] toString] [[$r3 apply $args] toString]
+
+==== Result was:
+2 2 2.0
+---- KNOWN Failure, Result should have been:
+2 2.0 2.0
+---- FunctionToken-2.2 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/data/test/IntMatrixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/IntToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/LongMatrixToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/LongToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/NilToken.tcl
+Token add addReverse divide divideReverse modulo moduloReverse multiply multiplyReverse subtract subtractReverse.
+DoubleToken add addReverse divide divideReverse modulo moduloReverse multiply multiplyReverse subtract subtractReverse absolute isEqualTo.
+IntToken add addReverse divide divideReverse modulo moduloReverse multiply multiplyReverse subtract subtractReverse absolute isEqualTo.
+LongToken add addReverse divide divideReverse modulo moduloReverse multiply multiplyReverse subtract subtractReverse absolute isEqualTo.
+UnsignedByteToken add addReverse divide divideReverse modulo moduloReverse multiply multiplyReverse subtract subtractReverse absolute isEqualTo.
+BooleanMatrixToken  convert(nil).
+ComplexMatrixToken  convert(nil).
+DoubleMatrixToken  convert(nil).
+IntMatrixToken  convert(nil) convert(nil, 2).
+LongMatrixToken  convert(nil) convert(nil, 2).
+/home/travis/build/icyphy/ptII/ptolemy/data/test/ObjectToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/OrderedRecordToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/PetiteToken.tcl
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-2.0 Create a non-empty instance and query its value as a Complex
+==== Contents of test case:
+
+    set p [java::new {ptolemy.data.PetiteToken double} 0.5]
+    set res [$p complexValue]
+    list [$res toString]
+
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '0.5p' to the type Complex.
+	at ptolemy.data.ScalarToken.complexValue(ScalarToken.java:391)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.GeneratedMethodAccessor35.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.GeneratedMethodAccessor34.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '0.5p' to the type Complex.
+    while executing
+"$p complexValue"
+    invoked from within
+"set res [$p complexValue]"
+    ("uplevel" body line 3)
+    invoked from within
+"uplevel $contents_of_test"
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-2.1 Create a non-empty instance and query its value as a double
+==== Contents of test case:
+
+    set p [java::new {ptolemy.data.PetiteToken double} 0.6]
+    set res1 [$p doubleValue]
+    list $res1
+
+==== Result was:
+0.6
+---- KNOWN Failure, Result should have been:
+3.3
+---- PetiteToken-2.1 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-5.1 Test equality between petites and ints.
+==== Contents of test case:
+
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0]
+    set tok2 [java::new {ptolemy.data.IntToken int} 0]
+    set tok3 [java::new {ptolemy.data.PetiteToken double} -1]
+    set tok4 [java::new {ptolemy.data.IntToken int} -1]
+
+    catch {set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]} msg
+    #set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok4]
+    #set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
+    #set res3 [$tok3 {isEqualTo ptolemy.data.Token} $tok4]
+
+    #list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+    list $msg
+
+==== Result was:
+{ptolemy.kernel.util.IllegalActionException: isEqualTo method not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.IntToken '0' because the types are incomparable.}
+---- KNOWN Failure, Result should have been:
+{ptolemy.kernel.util.IllegalActionException: isEqualTo method not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.IntToken '-1' because the types are incomparable.}
+---- PetiteToken-5.1 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-5.7 Test closeness between petites
+==== Contents of test case:
+
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
+    java::field ptolemy.math.Complex EPSILON $epsilon
+
+    set token1 [java::new {ptolemy.data.PetiteToken double} 12.0]
+    set notCloseToken1 [java::new {ptolemy.data.PetiteToken double}  [expr {12.0 + $epsilon*100.0} ] ]
+    set closeToken1 [java::new {ptolemy.data.PetiteToken double}  [expr {12.0 - (0.9 * $epsilon)}] ]
+
+    #puts "5.7: $epsilon [$token1 toString] [$notCloseToken1 toString]  #	    [$closeToken1 toString]"
+    set res1 [$token1 {isCloseTo ptolemy.data.Token} $notCloseToken1]
+    set res2 [$token1 {isCloseTo ptolemy.data.Token} $closeToken1]
+    set res3 [$notCloseToken1 {isCloseTo ptolemy.data.Token} $token1]
+    set res4 [$closeToken1 {isCloseTo ptolemy.data.Token} $token1]
+
+    java::field ptolemy.math.Complex EPSILON $oldEpsilon
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+
+==== Result was:
+true true true true
+---- KNOWN Failure, Result should have been:
+false true false true
+---- PetiteToken-5.7 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-5.9 Test closeness between a double and a String
+==== Contents of test case:
+
+    set doubleToken [java::new {ptolemy.data.PetiteToken double} 0.59]
+    set stringToken [java::new ptolemy.data.StringToken "0.59"]
+    catch {[$doubleToken {isCloseTo ptolemy.data.Token} $stringToken] toString} errMsg1
+    catch {[$stringToken {isCloseTo ptolemy.data.Token} $doubleToken] toString} errMsg2
+    list [lrange $errMsg2 0 10] [lrange $errMsg2 0 10]
+
+==== Result was:
+false false
+---- KNOWN Failure, Result should have been:
+true true
+---- PetiteToken-5.9 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-6.0 Test modulo between petites.
+==== Contents of test case:
+
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.2]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.6]
+
+    set res1 [$tok1 modulo $tok1]
+    set res2 [$tok1 moduloReverse $tok2]
+
+    list [$res1 toString] [$res2 toString]
+
+==== Result was:
+0.0p 0.2p
+---- KNOWN Failure, Result should have been:
+
+---- PetiteToken-6.0 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-7.0 Test multiply operator between petites.
+==== Contents of test case:
+
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.7]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.1]
+
+    set res1 [$tok1 multiply $tok1]
+    set res2 [$tok1 multiplyReverse $tok2]
+
+    list [$res1 toString] [$res2 toString]
+
+==== Result was:
+0.49p 0.07p
+---- KNOWN Failure, Result should have been:
+148.84 26.84
+---- PetiteToken-7.0 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-8.0 Test subtract operator between petites.
+==== Contents of test case:
+
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.8]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.08]
+
+    set res1 [$tok1 subtract $tok1]
+    set res2 [$tok1 subtractReverse $tok2]
+
+    list [$res1 toString] [$res2 toString]
+
+==== Result was:
+0.0p -0.72p
+---- KNOWN Failure, Result should have been:
+0.0 -0.72
+---- PetiteToken-8.0 Failed, but this is a KNOWN failure
+
+
+==== $PTII/ptolemy/data/test/PetiteToken.tcl: PetiteToken-10.0 Test hashCode
+==== Contents of test case:
+
+    set t1 [java::new {ptolemy.data.PetiteToken double} 0.1]
+    set t2 [java::new {ptolemy.data.PetiteToken double} 0.1]
+    set t3 [java::new {ptolemy.data.PetiteToken double} -0.1]
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+
+==== Result was:
+-1507852285 -1507852285 639631363
+---- KNOWN Failure, Result should have been:
+3 3 -8
+---- PetiteToken-10.0 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/data/test/RecordToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/ShortToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/SmoothToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/StringToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/Token.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/TokenUtilities.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/UnsignedByteToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/UnsizedArrayToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/UpdatedArrayToken.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/test/XMLToken.tcl
+05/01/18 11:11:13
+Failed: 0  Total Tests: 1009  ((Passed: 996, Newly Passed: 0)  Known Failed: 13) /home/travis/build/icyphy/ptII/ptolemy/data/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

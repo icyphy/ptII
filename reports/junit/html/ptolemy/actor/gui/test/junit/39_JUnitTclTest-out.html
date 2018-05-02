@@ -5,15 +5,16 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl
-testDefs.tcl: setting time out to 9000 seconds at Tue May 01 21:17:08 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Tue May 01 23:05:09 UTC 2018
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl
-26 ms. Memory: 116224K Free: 96481K (83%)
-11 ms. Memory: 116224K Free: 94580K (81%)
-sleeping 2 seconds: 9 ms. Memory: 116224K Free: 89576K (77%)
-12 ms. Memory: 116224K Free: 88881K (76%)
+20 ms. Memory: 116224K Free: 96753K (83%)
+7 ms. Memory: 116224K Free: 94808K (82%)
+3 ms. Memory: 116224K Free: 94114K (81%)
+sleeping 2 seconds: 21 ms. Memory: 116224K Free: 87285K (75%)
+22 ms. Memory: 116224K Free: 87285K (75%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl
-14 ms. Memory: 331264K Free: 261104K (79%)
+7 ms. Memory: 331776K Free: 303154K (91%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl
 test 1.0: filterSize: 13, newFilterSize: 15
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl
@@ -33,10 +34,10 @@ java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.ht
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl
 sleeping 3 seconds: /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl
 /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl
-4 ms. Memory: 635392K Free: 424100K (67%)
-sleeping 2 seconds: 15 ms. Memory: 821760K Free: 748351K (91%)
+4 ms. Memory: 767488K Free: 523388K (68%)
+sleeping 2 seconds: 12 ms. Memory: 825344K Free: 571235K (69%)
 .test
-sleeping 2 seconds: 13 ms. Memory: 997376K Free: 809099K (81%)
+sleeping 2 seconds: 12 ms. Memory: 946688K Free: 884188K (93%)
 &lt;?xml version="1.0" standalone="no"?&gt;
 &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
@@ -457,10 +458,10 @@ java.lang.RuntimeException: Normally, we would exit here because Manager.exitAft
     list $results	
 
 ==== Test generated error:
-
+While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
-java.lang.NullPointerException
-	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1564)
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
+	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1565)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1245)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1203)
 	at ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(UserActorLibrary.java:323)
@@ -542,7 +543,7 @@ java.lang.NullPointerException
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
 
     while executing
-java.lang.NullPointerException
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
 "java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity"
     (procedure "testSaveComponentInLibrary" line 4)
@@ -575,10 +576,10 @@ java.lang.NullPointerException
 
 
 ==== Test generated error:
-
+While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
-java.lang.NullPointerException
-	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1564)
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
+	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1565)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1245)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1203)
 	at ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(UserActorLibrary.java:323)
@@ -648,7 +649,7 @@ java.lang.NullPointerException
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
 
     while executing
-java.lang.NullPointerException
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
 "java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2"
     ("uplevel" body line 7)
@@ -670,10 +671,10 @@ java.lang.NullPointerException
     java::call ptolemy.actor.gui.UserActorLibrary saveComponentInLibrary  $configuration $entity2
 
 ==== Test generated error:
-
+While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
-java.lang.NullPointerException
-	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1564)
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
+	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1565)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1245)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1203)
 	at ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(UserActorLibrary.java:323)
@@ -743,7 +744,7 @@ java.lang.NullPointerException
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
 
     while executing
-java.lang.NullPointerException
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
 "java::call ptolemy.actor.gui.UserActorLibrary saveComponentInLibrary  $configuration $entity2
 "
@@ -763,10 +764,10 @@ java.lang.NullPointerException
     list [$errorHandler getMessages] [$messageHandler getMessages]
 
 ==== Test generated error:
-
+While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
-java.lang.NullPointerException
-	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1564)
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
+	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1565)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1245)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1203)
 	at ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(UserActorLibrary.java:323)
@@ -836,7 +837,7 @@ java.lang.NullPointerException
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
 
     while executing
-java.lang.NullPointerException
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
 "java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $toplevel"
     ("uplevel" body line 6)
@@ -855,10 +856,10 @@ java.lang.NullPointerException
     list [$errorHandler getMessages] [$messageHandler getMessages]
 
 ==== Test generated error:
-
+While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
-java.lang.NullPointerException
-	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1564)
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
+	at ptolemy.actor.gui.Configuration._openModel(Configuration.java:1565)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1245)
 	at ptolemy.actor.gui.Configuration.openModel(Configuration.java:1203)
 	at ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(UserActorLibrary.java:323)
@@ -928,7 +929,7 @@ java.lang.NullPointerException
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
 
     while executing
-java.lang.NullPointerException
+java.lang.NullPointerException: While trying to open ptolemy.moml.EntityLibrary {.testUserActorLibrary_OK_2_DELETE} in null, getDirectory() returned null?  Perhaps an entity of name "directory" was not created?
     while executing
 "java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $toplevel2_1"
     ("uplevel" body line 6)
@@ -964,7 +965,7 @@ java.lang.NullPointerException
 ---- Result should have been:
 {java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}
 ---- ZZZConfiguration-100.0 FAILED
-05/01/18 09:18:40
+05/01/18 11:06:37
 Failed: 8  Total Tests: 55  ((Passed: 47, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
