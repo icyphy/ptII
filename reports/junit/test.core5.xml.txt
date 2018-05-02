@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 5.19 seconds.
+     [exec] Finished running in 4.45 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -308,24 +308,24 @@ build-bin:
      [exec] ./makebat -q "`basename tinic.bat .bat`"
      [exec] rm -f "tiniconverter.bat"
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "startjini.gui.bat"
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
      [exec] rm -f "vergil.bat"
      [exec] ./makebat -q "`basename vergil.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f makeapp
      [exec] ln -s ptinvoke makeapp
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May  2 01:13:46 UTC 2018
      [exec] tar: This does not look like a tar archive
      [exec] 
      [exec] gzip: stdin: unexpected end of file
      [exec] tar: Child returned status 1
      [exec] tar: Error is not recoverable: exiting now
      [exec] make: *** [CapeCode.app] Error 2
-     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Tue May  1 23:37:05 UTC 2018
      [exec] Result: 2
 
 build:
@@ -345,8 +345,8 @@ test.core5.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/configs/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.configs.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Tue May 01 23:37:07 UTC 2018
-    [junit] 1525217827494 ms. Memory: 116224K Free: 93987K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 01:13:47 UTC 2018
+    [junit] 1525223628099 ms. Memory: 116224K Free: 94005K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -360,9 +360,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217844124 ms. Memory: 970240K Free: 731581K (75%)
+    [junit] 1525223642432 ms. Memory: 749056K Free: 162852K (22%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217844556 ms. Memory: 1008128K Free: 934219K (93%)
+    [junit] 1525223642879 ms. Memory: 766464K Free: 695664K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -376,9 +376,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217859588 ms. Memory: 1376768K Free: 884865K (64%)
+    [junit] 1525223655826 ms. Memory: 1049600K Free: 441838K (42%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217860450 ms. Memory: 1657344K Free: 1524720K (92%)
+    [junit] 1525223656489 ms. Memory: 1054208K Free: 932360K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -386,9 +386,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217860762 ms. Memory: 1657344K Free: 1464485K (88%)
+    [junit] 1525223656721 ms. Memory: 1054208K Free: 865380K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217861254 ms. Memory: 1666048K Free: 1534378K (92%)
+    [junit] 1525223657193 ms. Memory: 1104384K Free: 982744K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -403,9 +403,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217865464 ms. Memory: 1678336K Free: 998999K (60%)
+    [junit] 1525223661422 ms. Memory: 1199616K Free: 898070K (75%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217866137 ms. Memory: 1674752K Free: 1522198K (91%)
+    [junit] 1525223661909 ms. Memory: 1165312K Free: 1020868K (88%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -421,9 +421,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217873206 ms. Memory: 1828864K Free: 611879K (33%)
+    [junit] 1525223668995 ms. Memory: 1325056K Free: 638830K (48%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217873870 ms. Memory: 1825792K Free: 1645394K (90%)
+    [junit] 1525223669641 ms. Memory: 1334784K Free: 1165652K (87%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -438,9 +438,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217888940 ms. Memory: 1818624K Free: 832742K (46%)
+    [junit] 1525223684679 ms. Memory: 1565696K Free: 1212124K (77%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217890482 ms. Memory: 1828864K Free: 1565400K (86%)
+    [junit] 1525223685993 ms. Memory: 1577984K Free: 1322957K (84%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -458,9 +458,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525217905763 ms. Memory: 1938944K Free: 735382K (38%)
+    [junit] 1525223698835 ms. Memory: 1671680K Free: 862712K (52%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525217907254 ms. Memory: 1927680K Free: 1600224K (83%)
+    [junit] 1525223700561 ms. Memory: 1763840K Free: 1437923K (82%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -508,9 +508,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218035969 ms. Memory: 2191872K Free: 887315K (40%)
+    [junit] 1525223805207 ms. Memory: 2248192K Free: 1291660K (57%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218040886 ms. Memory: 2191872K Free: 1485760K (68%)
+    [junit] 1525223808719 ms. Memory: 2236928K Free: 1527357K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -553,9 +553,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218150123 ms. Memory: 2890752K Free: 1105167K (38%)
+    [junit] 1525223896555 ms. Memory: 2739712K Free: 1031571K (38%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218154454 ms. Memory: 2798592K Free: 1670185K (60%)
+    [junit] 1525223900819 ms. Memory: 2735104K Free: 1594722K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -563,9 +563,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218154485 ms. Memory: 2798592K Free: 1662600K (59%)
+    [junit] 1525223900842 ms. Memory: 2735104K Free: 1588865K (58%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218156734 ms. Memory: 2844672K Free: 1716549K (60%)
+    [junit] 1525223903017 ms. Memory: 2752000K Free: 1622754K (59%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -579,9 +579,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218163344 ms. Memory: 2824704K Free: 1190112K (42%)
+    [junit] 1525223909796 ms. Memory: 2752512K Free: 1428865K (52%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218166730 ms. Memory: 2360320K Free: 1186007K (50%)
+    [junit] 1525223912950 ms. Memory: 2745856K Free: 1568491K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -595,9 +595,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218174150 ms. Memory: 2803712K Free: 1341807K (48%)
+    [junit] 1525223920549 ms. Memory: 2782720K Free: 1161282K (42%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218177448 ms. Memory: 2467328K Free: 1250371K (51%)
+    [junit] 1525223923941 ms. Memory: 2458112K Free: 1242934K (51%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -606,18 +606,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218177529 ms. Memory: 2467328K Free: 1204096K (49%)
+    [junit] 1525223924013 ms. Memory: 2458112K Free: 1202150K (49%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218180967 ms. Memory: 2771968K Free: 1550789K (56%)
+    [junit] 1525223927694 ms. Memory: 2752000K Free: 1527961K (56%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218184086 ms. Memory: 2778112K Free: 1430427K (51%)
+    [junit] 1525223930982 ms. Memory: 2764288K Free: 852233K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218187307 ms. Memory: 2494464K Free: 1252523K (50%)
+    [junit] 1525223934328 ms. Memory: 2764288K Free: 1521350K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -631,9 +631,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525218193734 ms. Memory: 2792960K Free: 1344352K (48%)
+    [junit] 1525223941021 ms. Memory: 2790912K Free: 861763K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525218197081 ms. Memory: 2794496K Free: 1508787K (54%)
+    [junit] 1525223944530 ms. Memory: 2785792K Free: 1498977K (54%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -747,7 +747,7 @@ test.core5.xml:
     [junit] Because:
     [junit] Cannot read file '/home/travis/.ptKeystore/heartbeatKey' or '/home/travis/.ptKeystore/heartbeatKey'
     [junit] The key is not public, so this accessor is only useful If you have the key.  See https://www.icyphy.org/accessors/library/index.html?accessor=services.Heartbeat (Thread[main,5,main])
-    [junit] #############################################################################################################################1525218495689 ms. Memory: 4179456K Free: 1115184K (27%)
+    [junit] #############################################################################################################################1525224218614 ms. Memory: 4578816K Free: 1680207K (37%)
     [junit] Setting containers of atomic entities to null
     [junit] checkCapeCodeConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/checkFullConstraints.tcl
@@ -861,3 +861,8 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
+    [junit] ########################################Heartbeat: Heartbeat: Could not get $KEYSTORE/heartbeatKey:  ptolemy.kernel.util.IllegalActionException: Failed to read URI: /home/travis/.ptKeystore/heartbeatKey
+    [junit]   in .configuration.actor library.MoreLibraries.Accessors.services.Heartbeat
+    [junit] Because:
+    [junit] Cannot read file '/home/travis/.ptKeystore/heartbeatKey' or '/home/travis/.ptKeystore/heartbeatKey'
+    [junit] The key is not public, so this accessor is only useful If you have the key.  See https://www.icyphy.org/accessors/library/index.html?accessor=services.Heartbeat (Thread[main,5,main])
