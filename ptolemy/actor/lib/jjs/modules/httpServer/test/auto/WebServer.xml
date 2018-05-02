@@ -165,7 +165,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 132.5]">
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="8000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="28000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -302,7 +302,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 135.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;200: OK&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
