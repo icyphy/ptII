@@ -1,0 +1,364 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl
+testDefs.tcl: setting time out to 9000 seconds at Wed May 02 12:08:18 UTC 2018
+JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:9981/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
+6211 ms. Memory: 673280K Free: 587055K (87%)
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:9981/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+5226 ms. Memory: 781824K Free: 529453K (68%)
+reloadAllAccessors: .WebSocketClientJS
+This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:9981/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
+WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
+5239 ms. Memory: 957952K Free: 583894K (61%)
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8982/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8982/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8982/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8982/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8982/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: undefined: WebSocketClient.js: Error: Connection failed after 6 tries: Connection refused: localhost/127.0.0.1:8982/nConnection refused (Thread[vert.x-eventloop-thread-1,1,main])
+WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
+123988 ms. Memory: 1250304K Free: 999814K (80%)
+
+
+==== $PTII/org/terraswarm/accessor/test/WebSocketClientTest.tcl: WebSocketClientTest-3.1 Run WebSocketClientJS.xml and then WebSocketClient2JS.xml with reloading of the accessor
+==== Contents of test case:
+
+    set application [java::new ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml]
+    $application rerun
+    set toplevel [$application toplevel]
+    java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel
+    $application rerun
+
+    set $application [java::null]
+    java::call System gc
+
+    set application2 [java::new ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml]
+    $application2 rerun
+    set toplevel2 [$application2 toplevel]
+    java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel2
+    $application2 rerun
+
+    set $application2 [java::null]
+    java::call System gc
+
+    # Success is not throwing an exception.
+    list true
+
+==== Test generated error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient2JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WebSocketClient2JS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient2JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient2JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7357$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7355$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient2JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2216)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	... 8 more
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7357$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7355$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2193)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2111)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7357$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7355$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 10 more
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient2JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WebSocketClient2JS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WebSocketClient2JS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+    while executing
+"java::new ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml"
+    invoked from within
+"set application2 [java::new ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml]"
+    ("uplevel" body line 11)
+    invoked from within
+"uplevel $contents_of_test"
+05/02/18 12:11:02
+Failed: 1  Total Tests: 14  ((Passed: 13, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Wed May 02 12:11:02 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+573 ms. Memory: 1250304K Free: 638272K (51%)
+reloadAllAccessors: .AccessViolation
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:03 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+----------------- testing Wed May 02 12:11:03 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+719 ms. Memory: 1250304K Free: 240035K (19%)
+reloadAllAccessors: .AccessViolation2
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:04 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+----------------- testing Wed May 02 12:11:04 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+1575 ms. Memory: 1308672K Free: 612369K (47%)
+reloadAllAccessors: .Accessor1
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:08 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+----------------- testing Wed May 02 12:11:08 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+992 ms. Memory: 1476096K Free: 1164892K (79%)
+reloadAllAccessors: .Accessor2
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:10 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+----------------- testing Wed May 02 12:11:10 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+21538 ms. Memory: 1476096K Free: 450330K (31%)
+reloadAllAccessors: .CallbackWithSuppress
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:33 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+----------------- testing Wed May 02 12:11:33 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+DerivedA: base set up (Thread[Thread-29,5,main])
+DerivedA: derived set up (Thread[Thread-29,5,main])
+DerivedA: base set up (Thread[Thread-29,5,main])
+DerivedA: derived set up (Thread[Thread-29,5,main])
+DerivedA: base set up (Thread[Derived,1,main])
+DerivedA: derived set up (Thread[Derived,1,main])
+DerivedA: base set up (Thread[Derived,1,main])
+DerivedA: derived set up (Thread[Derived,1,main])
+DerivedA: base set up (Thread[Derived,1,main])
+DerivedA: derived set up (Thread[Derived,1,main])
+DerivedA: base set up (Thread[Derived,1,main])
+DerivedA: derived set up (Thread[Derived,1,main])
+DerivedA: base set up (Thread[Derived,1,main])
+DerivedA: derived set up (Thread[Derived,1,main])
+DerivedA: base init (Thread[Derived,1,main])
+DerivedA: derived init (Thread[Derived,1,main])
+DerivedA: derived wrapped up (Thread[Derived,1,main])
+599 ms. Memory: 1483264K Free: 1000775K (67%)
+reloadAllAccessors: .Derived
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedA.js
+DerivedA: base set up (Thread[Thread-29,5,main])
+DerivedA: derived set up (Thread[Thread-29,5,main])
+DerivedA: base set up (Thread[Thread-29,5,main])
+DerivedA: derived set up (Thread[Thread-29,5,main])
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:34 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+----------------- testing Wed May 02 12:11:34 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+DerivedB2: printing non-prototype properties (Thread[Derived2,1,main])
+DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
+DerivedB2: setup: function () {
+        this.extend('BaseB');
+    } (Thread[Derived2,1,main])
+DerivedB2: inputHandler: function () {
+    console.log('sending false');
+    this.send('output', false);
+} (Thread[Derived2,1,main])
+DerivedB2: initialize: function () {
+    exports.ssuper.initialize.call(this);
+    printProperties(exports);
+} (Thread[Derived2,1,main])
+DerivedB2: printing protoytpe (Thread[Derived2,1,main])
+DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
+DerivedB2: setup: function () {
+        this.extend('BaseB');
+    } (Thread[Derived2,1,main])
+DerivedB2: initialize: function () {
+    exports.ssuper.initialize.call(this);
+    printProperties(exports);
+} (Thread[Derived2,1,main])
+DerivedB2: inputHandler: function () {
+    console.log('sending false');
+    this.send('output', false);
+} (Thread[Derived2,1,main])
+DerivedB2: sending false (Thread[Derived2,1,main])
+681 ms. Memory: 1483264K Free: 584704K (39%)
+reloadAllAccessors: .Derived2
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedB.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:36 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+----------------- testing Wed May 02 12:11:36 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+735 ms. Memory: 1483264K Free: 182079K (12%)
+reloadAllAccessors: .Derived3
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedC.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:38 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+----------------- testing Wed May 02 12:11:38 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+640 ms. Memory: 1703936K Free: 1248658K (73%)
+reloadAllAccessors: .Derived4
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedD.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:39 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+----------------- testing Wed May 02 12:11:39 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+743 ms. Memory: 1703936K Free: 842317K (49%)
+reloadAllAccessors: .Derived5
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedE.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+----------------- testing Wed May 02 12:11:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+854 ms. Memory: 1703936K Free: 426548K (25%)
+reloadAllAccessors: .Derived6
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedF.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:42 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+----------------- testing Wed May 02 12:11:42 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+859 ms. Memory: 1712128K Free: 1217723K (71%)
+reloadAllAccessors: .Derived8
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedH.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+----------------- testing Wed May 02 12:11:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+890 ms. Memory: 1712128K Free: 795384K (46%)
+reloadAllAccessors: .Derived9
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedI.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+----------------- testing Wed May 02 12:11:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+1841 ms. Memory: 1712128K Free: 376598K (22%)
+reloadAllAccessors: .DerivedAgain
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainA.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+----------------- testing Wed May 02 12:11:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+1848 ms. Memory: 1887232K Free: 1339793K (71%)
+reloadAllAccessors: .DerivedAgain2
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainB.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:51 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+----------------- testing Wed May 02 12:11:51 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+755 ms. Memory: 1887232K Free: 921534K (49%)
+reloadAllAccessors: .DerivedAgain4
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainD.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+----------------- testing Wed May 02 12:11:53 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+751 ms. Memory: 1887232K Free: 492144K (26%)
+reloadAllAccessors: .DerivedAgain5
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainE.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:11:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+----------------- testing Wed May 02 12:11:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+REST: Making an HTTP request. (Thread[GetDate,1,main])
+5702 ms. Memory: 1918464K Free: 1467622K (76%)
+reloadAllAccessors: .GetDate
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:12:04 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+----------------- testing Wed May 02 12:12:04 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+21228 ms. Memory: 1918464K Free: 496395K (26%)
+reloadAllAccessors: .HandlerWithSuppress
+Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.js
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:12:27 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+----------------- testing Wed May 02 12:12:27 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+963 ms. Memory: 1881600K Free: 1298021K (69%)
+reloadAllAccessors: .HttpRequest
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:12:29 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+----------------- testing Wed May 02 12:12:29 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
+JavaScript: { data: 1 } (Thread[JSON,1,main])
+JavaScript3: 1 (Thread[JSON,1,main])
+2471 ms. Memory: 1881600K Free: 587112K (31%)
+reloadAllAccessors: .JSON
+----------------- testing Wed May 02 12:12:32 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+12326 ms. Memory: 1970688K Free: 1323278K (67%)
+reloadAllAccessors: .ReadURL
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:12:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+----------------- testing Wed May 02 12:12:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+1047 ms. Memory: 1970688K Free: 536167K (27%)
+reloadAllAccessors: .SendNullToOwnInput
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:12:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+----------------- testing Wed May 02 12:12:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+TextDisplayHelper: 0
+TextDisplayHelper: 1
+TextDisplayHelper: 2
+TextDisplayHelper: 3
+6662 ms. Memory: 1920000K Free: 339625K (18%)
+reloadAllAccessors: .Stop
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:12:57 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+----------------- testing Wed May 02 12:12:57 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+2580 ms. Memory: 1971200K Free: 1128931K (57%)
+reloadAllAccessors: .Stop2
+-------------- Reloaded accessors, but skipping rerun for nowWed May 02 12:13:00 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
