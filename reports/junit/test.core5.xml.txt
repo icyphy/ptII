@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 5.72 seconds.
+     [exec] Finished running in 6.20 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -306,8 +306,8 @@ build-bin:
      [exec] ./makebat -q "`basename tinicomm.bat .bat`"
      [exec] rm -f "tinic.bat"
      [exec] ./makebat -q "`basename tinic.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "tiniconverter.bat"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
      [exec] rm -f "startjini.gui.bat"
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
@@ -319,7 +319,155 @@ build-bin:
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May  2 18:17:05 UTC 2018
+     [exec] Error: This Java instance does not support a 32-bit JVM.
+     [exec] Please install the desired version.
+     [exec] configure: WARNING: Running java -d32 -version failed,
+     [exec]     and ./bin/java does not exist.
+     [exec]     Perhaps you need to install a separate 32-bit JVM
+     [exec]     or rerun configure with --with-java32?
+     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
+     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
+     [exec]     the same as '/usr/bin/java'.
+     [exec]     Perhaps '/usr/bin/java' is in your path before
+     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
+     [exec]     If you have problems later, be sure that you don't have a mismatch
+     [exec]     in JDK versions.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
+     [exec] 	 the same as '/usr/bin/javac'.
+     [exec] 	 Perhaps '/usr/bin/javac' is in your path
+     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
+     [exec] 	 If you have problems later, be sure that you don't have a mismatch
+     [exec] 	 in JDK versions.
+     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
+     [exec]     This is only a problem if you want to rebuild the Functional
+     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
+     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
+     [exec]     Checkstyle is only necessary for code cleaning.
+     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
+     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
+     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
+     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
+     [exec]     Cobertura is only necessary to for code coverage.
+     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
+     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
+     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
+     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
+     [exec]     CUnit is only necessary to test the C templates of the code generation facility
+     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
+     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
+     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+     [exec]     so the Mbed CG facility will not be run.
+     [exec] JAITest.java:28: error: package javax.media.jai does not exist
+     [exec] import javax.media.jai.*;
+     [exec] ^
+     [exec] 1 error
+     [exec] configure: WARNING: JAI not found in the default classpath
+     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+     [exec]     which is part of JModelica.
+     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
+     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
+     [exec] JMFTest.java:28: error: package javax.media does not exist
+     [exec] import javax.media.CaptureDeviceInfo;
+     [exec]                   ^
+     [exec] 1 error
+     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
+     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
+     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
+     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
+     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
+     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
+     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
+     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
+     [exec]     so we will try other jars.
+     [exec] libdc1394 error: Failed to initialize libdc1394
+     [exec] configure: WARNING: Could not find directory
+     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
+     [exec]     so we search for the jjtree command.
+     [exec] configure: WARNING: Failed to find jjtree
+     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
+     [exec]     in ptolemy/data/expr.
+     [exec]     JavaCC is available from
+     [exec]     http://javacc.dev.java.net/
+     [exec] 
+     [exec]     Note that the zip file that gets downloaded is actually an installer
+     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
+     [exec] 
+     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+     [exec]     ReInit() being static or not static.
+     [exec] 
+     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+     [exec]     we recommend JavaCC-5.0.
+     [exec] 
+     [exec]     Try:
+     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
+     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+     [exec]     tar -zxf javacc-5.0.tar.gz
+     [exec]     cd /home/travis/build/icyphy/ptII
+     [exec]     ./configure
+     [exec] 
+     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
+     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
+     [exec]     and then rerun configure.'
+     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
+     [exec] configure: WARNING: Failed to find matlab executable in the path.
+     [exec]     Perhaps Matlab is not installed?
+     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
+     [exec]     $PTII/ptolemy/matlab will not be usable.
+     [exec] configure: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.
+     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
+     [exec]     Rebuilding the OpenModelica fmus will not be possible.
+     [exec]     Running the OpenModelica models will not be possible.
+     [exec]     This is only a concern if you are interested in OpenModelica
+     [exec] configure: WARNING: Failed to find PowerMock.
+     [exec]     Perhaps PowerMock was not installed?
+     [exec]     You need not download these packages if you would like
+     [exec]     to run the tests.  To install PowerMock, go to
+     [exec]     http://code.google.com/p/powermock/ and download
+     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+     [exec]     then rerun configure.
+     [exec]     Other versions of PowerMock _may_ work, but are untested.
+     [exec] configure: WARNING: Failed to find the scalac binary,
+     [exec]     so org/ptolemy/scala will be excluded
+     [exec] configure: WARNING: ojdbc5.jar not found,
+     [exec]     but only necessary to use database actors with Oracle.
+     [exec]     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+     [exec]     To install ojdbc5.jar or ojdbc6.jar,
+     [exec]     download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+     [exec]     copy it to ptolemy/actor/lib/database
+     [exec]     and rerun ./configure
+     [exec] configure: WARNING: Failed to find Batik Jar file
+     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
+     [exec]     for use with Kepler.
+     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+     [exec]     batike-1.9/lib/batik-all-1.9.jar copied to /home/travis/build/icyphy/ptII/lib
+     [exec]     and ./configure rerun.
+     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
+     [exec] configure: WARNING: $TOSROOT is set to '',
+     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
+     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
+     [exec] configure: WARNING: Failed to find giotto/gdk.jar
+     [exec]     perhaps Giotto is not installed?
+     [exec]     You need not download Giotto unless you plan on generating code for
+     [exec]     Giotto models.
+     [exec]     The Giotto SDK can be
+     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
+     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
+     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
+     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
+     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
+     [exec]     will not be compiled. FMI++ is an extension of the
+     [exec]     Functional Mockup Interface, see
+     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May  3 01:09:25 UTC 2018
      [exec] tar: This does not look like a tar archive
      [exec] 
      [exec] gzip: stdin: unexpected end of file
@@ -345,8 +493,8 @@ test.core5.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/configs/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.configs.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 18:17:06 UTC 2018
-    [junit] 1525285026814 ms. Memory: 116224K Free: 93996K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu May 03 01:09:27 UTC 2018
+    [junit] 1525309767594 ms. Memory: 116224K Free: 94016K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -360,9 +508,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285042065 ms. Memory: 772096K Free: 200459K (26%)
+    [junit] 1525309784195 ms. Memory: 737792K Free: 164945K (22%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285042561 ms. Memory: 798208K Free: 726757K (91%)
+    [junit] 1525309784618 ms. Memory: 760320K Free: 689589K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -376,9 +524,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285056911 ms. Memory: 1160704K Free: 819883K (71%)
+    [junit] 1525309800884 ms. Memory: 1018880K Free: 368540K (36%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285057663 ms. Memory: 1171968K Free: 1047629K (89%)
+    [junit] 1525309801578 ms. Memory: 1022464K Free: 900874K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -386,9 +534,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285057975 ms. Memory: 1171968K Free: 967033K (83%)
+    [junit] 1525309801885 ms. Memory: 1022464K Free: 834065K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285058495 ms. Memory: 1171968K Free: 1048669K (89%)
+    [junit] 1525309802364 ms. Memory: 1022464K Free: 901898K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -403,9 +551,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285063180 ms. Memory: 1284096K Free: 200976K (16%)
+    [junit] 1525309807562 ms. Memory: 1164800K Free: 713748K (61%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285063880 ms. Memory: 1283584K Free: 1139771K (89%)
+    [junit] 1525309808077 ms. Memory: 1173504K Free: 1032060K (88%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -421,9 +569,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285070725 ms. Memory: 1392128K Free: 716248K (51%)
+    [junit] 1525309815532 ms. Memory: 1253376K Free: 415134K (33%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285071389 ms. Memory: 1348608K Free: 1177922K (87%)
+    [junit] 1525309816121 ms. Memory: 1315840K Free: 1146673K (87%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -438,9 +586,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285085625 ms. Memory: 1490944K Free: 149025K (10%)
+    [junit] 1525309832956 ms. Memory: 1464832K Free: 993904K (68%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285087074 ms. Memory: 1579520K Free: 1323374K (84%)
+    [junit] 1525309834120 ms. Memory: 1557504K Free: 1302557K (84%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -458,9 +606,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285102245 ms. Memory: 1967616K Free: 1259109K (64%)
+    [junit] 1525309847379 ms. Memory: 1713664K Free: 995944K (58%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285103838 ms. Memory: 2099200K Free: 1768163K (84%)
+    [junit] 1525309849045 ms. Memory: 1719808K Free: 1399397K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -498,9 +646,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285221336 ms. Memory: 2247168K Free: 1002834K (45%)
+    [junit] 1525309971707 ms. Memory: 2217472K Free: 922995K (42%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285225150 ms. Memory: 2247168K Free: 1543068K (69%)
+    [junit] 1525309974108 ms. Memory: 2198016K Free: 1492448K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -533,9 +681,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285326793 ms. Memory: 2969600K Free: 1075191K (36%)
+    [junit] 1525310083980 ms. Memory: 2753024K Free: 1106082K (40%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285331896 ms. Memory: 2937344K Free: 1802532K (61%)
+    [junit] 1525310088256 ms. Memory: 2628096K Free: 1486454K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -543,9 +691,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285331924 ms. Memory: 2937344K Free: 1783474K (61%)
+    [junit] 1525310088279 ms. Memory: 2628096K Free: 1480244K (56%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285334222 ms. Memory: 2962432K Free: 1829420K (62%)
+    [junit] 1525310090382 ms. Memory: 2767872K Free: 1639926K (59%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -559,9 +707,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285341666 ms. Memory: 2957824K Free: 1078826K (36%)
+    [junit] 1525310097535 ms. Memory: 2751488K Free: 1193533K (43%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285345092 ms. Memory: 2946560K Free: 1763519K (60%)
+    [junit] 1525310100597 ms. Memory: 2731520K Free: 1562762K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -575,9 +723,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285353803 ms. Memory: 2993152K Free: 1144630K (38%)
+    [junit] 1525310108882 ms. Memory: 2750464K Free: 850650K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285357286 ms. Memory: 2998272K Free: 1775012K (59%)
+    [junit] 1525310112067 ms. Memory: 2427392K Free: 1209450K (50%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -586,18 +734,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285357360 ms. Memory: 2998272K Free: 1730219K (58%)
+    [junit] 1525310112190 ms. Memory: 2427392K Free: 1161234K (48%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285362258 ms. Memory: 2697216K Free: 1477385K (55%)
+    [junit] 1525310115985 ms. Memory: 2720768K Free: 1502537K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285365835 ms. Memory: 3018752K Free: 1299747K (43%)
+    [junit] 1525310119873 ms. Memory: 2720256K Free: 1480217K (54%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285369227 ms. Memory: 3005952K Free: 1764058K (59%)
+    [junit] 1525310123072 ms. Memory: 2447360K Free: 1206243K (49%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -611,9 +759,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285376327 ms. Memory: 3031552K Free: 1632855K (54%)
+    [junit] 1525310130483 ms. Memory: 2731520K Free: 1437219K (53%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285380041 ms. Memory: 2868224K Free: 1578244K (55%)
+    [junit] 1525310133828 ms. Memory: 2725376K Free: 1444765K (53%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -688,7 +836,7 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
-    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525285704116 ms. Memory: 4590592K Free: 918815K (20%)
+    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525310499671 ms. Memory: 4736512K Free: 1471586K (31%)
     [junit] Setting containers of atomic entities to null
     [junit] checkFullConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
@@ -982,9 +1130,9 @@ test.core5.xml:
     [junit]                             <group>
     [junit]                                 <doc>Decortative attributes</doc>
     [junit]                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 6:28:24 PM">
+    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 3, 2018 1:21:39 AM">
     [junit]                                     </property>
-    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 6:28:24 PM">
+    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 3, 2018 1:21:39 AM">
     [junit]                                     </property>
     [junit]                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
     [junit]                                     </property>
@@ -3553,11 +3701,6 @@ test.core5.xml:
     [junit]                                     <configure>
     [junit]                                         <group>
     [junit]                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="input"/>
-    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
     [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="output"/>
     [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -3623,11 +3766,6 @@ test.core5.xml:
     [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="input"/>
     [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
-    [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="output"/>
-    [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
     [junit]                                                     </property>
     [junit]                                                 </port>
     [junit]                                             </entity>
@@ -7537,143 +7675,7 @@ test.core5.xml:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/configurationTools.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl
     [junit] Updating /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/doc/models.txt.  This could take a minute.
-    [junit] 
-    [junit] 
-    [junit] ==== $PTII/ptolemy/configs/test/missingDemos.tcl: missingDemos-0.5 Update ptolemy/configs/doc/models.txt
-    [junit] ==== Contents of test case:
-    [junit] 
-    [junit]     puts "Updating $PTII/ptolemy/configs/doc/models.txt.  This could take a minute."
-    [junit]     exec -stderrok make -C ../doc update
-    [junit]     puts "Done updating $PTII/ptolemy/configs/doc/models.txt"
-    [junit]     file exists ../doc/models.txt
-    [junit] 
-    [junit] ==== Test generated error:
-    [junit] make: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] (cd ../../../ptolemy/configs/capecode; make capecodeModels.txt)
-    [junit] make[1]: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
-    [junit] DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java" "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
-    [junit] 		-classpath "../../..::/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar::/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar::/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar::/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar::/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/lib/diva.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar::/home/travis/build/icyphy/ptII/lib/javax.mail.jar::/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar::/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:::/home/travis/build/icyphy/ptII/lib/oscP5.jar:/usr/lib/jvm/java-8-oracle/jre/../lib/tools.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar::/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar::/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar::/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar::/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar::/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:space/space.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar::/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar::/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar" \
-    [junit] 		ptolemy.actor.gui.HTMLAbout demonstrations.htm capecodeModels.txt
-    [junit] Printing '.' for regular models, 'P' for models with LiveLinks.
-    [junit] ..PJSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] No physical cameras found, using WebcamDummyDriver.
-    [junit] .P.P.P.P.P...PClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
-    [junit] .P..P.P...P.....P..P..P.P.P..P..P...P...P.P..P..P...P.P.P.P..P.P..LC_ALL=C sort -f capecodeModels.txt  > capecodeModels.txt.sorted
-    [junit] mv capecodeModels.txt.sorted capecodeModels.txt
-    [junit] make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
-    [junit] #
-    [junit] # Starting to build models.txt: Wed May  2 18:29:43 UTC 2018
-    [junit] #
-    [junit] # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY
-    [junit] DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java"  -Xmx1500m "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
-    [junit] 		-classpath "../../..::/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar::/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar::/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar::/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar::/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/lib/diva.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar::/home/travis/build/icyphy/ptII/lib/javax.mail.jar::/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar::/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:::/home/travis/build/icyphy/ptII/lib/oscP5.jar:/usr/lib/jvm/java-8-oracle/jre/../lib/tools.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar::/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar::/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar::/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar::/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar::/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:space/space.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar::/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar::/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar" \
-    [junit] 		ptolemy.actor.gui.HTMLAbout 
-    [junit] Printing '.' for regular models, 'P' for models with LiveLinks.
-    [junit] ...P...P.......P.......P....P..P............PJSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] ...P...P..P....PNo physical cameras found, using WebcamDummyDriver.
-    [junit] .P.P.........P.P....P....................P..P..PClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
-    [junit] ...P.....P......P......P.........P.....P...P..................P.................P......P....P.P........P.....P..P.....P..P...P....P........P......P..P......P.....P...P.P....P......P....P.P.....P....P......P.P.P...............P.P....P...........P..P...P..P..P.....P.....P.P...................P........P.P..........P.P............P....P..........P.....P.P.P.P............P...P............P...P............P..P....P...............P.........P.....P......P.....P.P..........P.........P.....P.P...P..P....P..P...P....P....P......P........P.........P...P..P..........P....P......P......P............................P..........# Include the models in the ExecDemos directory.
-    [junit] ls -1 /home/travis/build/icyphy/ptII/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@/home/travis/build/icyphy/ptII@\$CLASSPATH@" >> models.txt
-    [junit] LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
-    [junit] mv /tmp/models.txt models.txt
-    [junit] #
-    [junit] # Done building models.txt: Wed May  2 18:31:41 UTC 2018
-    [junit] #
-    [junit] git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at e8d8306c
-    [junit] Untracked files:
-    [junit] 	../../../META-INF/
-    [junit] 	../../../junit5609500685670820525.properties
-    [junit] 	../../../junitvmwatcher1463352522431026274.properties
-    [junit] 
-    [junit] nothing added to commit but untracked files present
-    [junit] rm -f doc.jar
-    [junit] make doc.jar
-    [junit] make[1]: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] rm -rf ptjar_tmpdir doc.jar
-    [junit] mkdir ptjar_tmpdir
-    [junit] # Copy any class files from this directory
-    [junit] mkdir -p ptjar_tmpdir/ptolemy/configs/doc
-    [junit] cp *.class completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt basicHelp.htm book.htm ClassesIllustrated.png ClassesIllustrated.xml completeDemos.htm copyright.htm demos.htm docs.htm pt_cover_online.png vergilFsmEditorHelp.htm vergilGraphEditorHelp.htm whatsNew.htm whatsNew3.0.2.htm whatsNew4.0.htm whatsNew5.0.htm whatsNew5.1.htm whatsNew6.0.htm whatsNew7.0.htm whatsNew8.0.htm whatsNew10.0.htm whatsNew11.0.htm ptjar_tmpdir/ptolemy/configs/doc
-    [junit] Creating doc.jar
-    [junit] (cd ptjar_tmpdir; "/usr/lib/jvm/java-8-oracle/bin/jar"  -cvf tmp.jar .)
-    [junit] added manifest
-    [junit] adding: ptolemy/(in = 0) (out= 0)(stored 0%)
-    [junit] adding: ptolemy/configs/(in = 0) (out= 0)(stored 0%)
-    [junit] adding: ptolemy/configs/doc/(in = 0) (out= 0)(stored 0%)
-    [junit] adding: ptolemy/configs/doc/completeDemos.htm(in = 115482) (out= 20211)(deflated 82%)
-    [junit] adding: ptolemy/configs/doc/basicHelp.htm(in = 2016) (out= 890)(deflated 55%)
-    [junit] adding: ptolemy/configs/doc/ClassesIllustrated.png(in = 68676) (out= 67144)(deflated 2%)
-    [junit] adding: ptolemy/configs/doc/copyright.htm(in = 872094) (out= 205308)(deflated 76%)
-    [junit] adding: ptolemy/configs/doc/completeDemosPtiny.htm(in = 27435) (out= 5853)(deflated 78%)
-    [junit] adding: ptolemy/configs/doc/demosBcvtb.htm(in = 10834) (out= 3829)(deflated 64%)
-    [junit] adding: ptolemy/configs/doc/docs.htm(in = 2442) (out= 959)(deflated 60%)
-    [junit] adding: ptolemy/configs/doc/whatsNew11.0.htm(in = 5055) (out= 1763)(deflated 65%)
-    [junit] adding: ptolemy/configs/doc/whatsNew5.0.htm(in = 23108) (out= 6211)(deflated 73%)
-    [junit] adding: ptolemy/configs/doc/docsBcvtb.htm(in = 2819) (out= 1084)(deflated 61%)
-    [junit] adding: ptolemy/configs/doc/docsPtdb.htm(in = 2658) (out= 1077)(deflated 59%)
-    [junit] adding: ptolemy/configs/doc/whatsNew7.0.htm(in = 24218) (out= 7892)(deflated 67%)
-    [junit] adding: ptolemy/configs/doc/models.txt(in = 55526) (out= 7600)(deflated 86%)
-    [junit] adding: ptolemy/configs/doc/completeDemosBcvtb.htm(in = 13678) (out= 3481)(deflated 74%)
-    [junit] adding: ptolemy/configs/doc/vergilFsmEditorHelp.htm(in = 621) (out= 361)(deflated 41%)
-    [junit] adding: ptolemy/configs/doc/pt_cover_online.png(in = 138106) (out= 138151)(deflated 0%)
-    [junit] adding: ptolemy/configs/doc/docsPtiny.htm(in = 2658) (out= 1077)(deflated 59%)
-    [junit] adding: ptolemy/configs/doc/demosPtiny.htm(in = 21242) (out= 6808)(deflated 67%)
-    [junit] adding: ptolemy/configs/doc/demosPtinyKepler.htm(in = 15279) (out= 5172)(deflated 66%)
-    [junit] adding: ptolemy/configs/doc/whatsNew5.1.htm(in = 3412) (out= 1339)(deflated 60%)
-    [junit] adding: ptolemy/configs/doc/docsPtinyKepler.htm(in = 2507) (out= 963)(deflated 61%)
-    [junit] adding: ptolemy/configs/doc/book.htm(in = 2553) (out= 1017)(deflated 60%)
-    [junit] adding: ptolemy/configs/doc/whatsNew8.0.htm(in = 53219) (out= 13709)(deflated 74%)
-    [junit] adding: ptolemy/configs/doc/whatsNew.htm(in = 712) (out= 298)(deflated 58%)
-    [junit] adding: ptolemy/configs/doc/vergilGraphEditorHelp.htm(in = 3278) (out= 1204)(deflated 63%)
-    [junit] adding: ptolemy/configs/doc/whatsNew6.0.htm(in = 20237) (out= 6560)(deflated 67%)
-    [junit] adding: ptolemy/configs/doc/whatsNew4.0.htm(in = 25979) (out= 6381)(deflated 75%)
-    [junit] adding: ptolemy/configs/doc/demos.htm(in = 38256) (out= 11334)(deflated 70%)
-    [junit] adding: ptolemy/configs/doc/whatsNew3.0.2.htm(in = 3199) (out= 1135)(deflated 64%)
-    [junit] adding: ptolemy/configs/doc/ClassesIllustrated.xml(in = 16565) (out= 2158)(deflated 86%)
-    [junit] adding: ptolemy/configs/doc/whatsNew10.0.htm(in = 55082) (out= 12449)(deflated 77%)
-    [junit] adding: ptolemy/configs/doc/completeDemosPtinyKepler.htm(in = 22350) (out= 4906)(deflated 78%)
-    [junit] mv ptjar_tmpdir/tmp.jar doc.jar
-    [junit] "/usr/lib/jvm/java-8-oracle/bin/jar"  -i doc.jar
-    [junit] rm -rf ptjar_tmpdir
-    [junit] make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] # The first commit will change completeDemosPtiny.htm, which will cause completeDemosBcvtb.htm to be updated
-    [junit] if [ -d /home/travis/build/icyphy/ptII/.git ]; then \
-    [junit] 		echo "Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt"; \
-    [junit] 		git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt; \
-    [junit] 		git push; \
-    [junit]         else \
-    [junit] 		echo "No /home/travis/build/icyphy/ptII/.git/ directory, so completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt are not being committed."; \
-    [junit] 		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
-    [junit]         fi
-    [junit] Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at e8d8306c
-    [junit] Untracked files:
-    [junit] 	../../../META-INF/
-    [junit] 	../../../junit5609500685670820525.properties
-    [junit] 	../../../junitvmwatcher1463352522431026274.properties
-    [junit] 
-    [junit] nothing added to commit but untracked files present
-    [junit] make: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-    [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-    [junit] make: [update] Error 1 (ignored)
-    [junit] cp: cannot stat ‘*.class’: No such file or directory
-    [junit] make[1]: [doc.jar] Error 1 (ignored)
-    [junit] fatal: You are not currently on a branch.
-    [junit] To push the history leading to the current (detached HEAD)
-    [junit] state now, use
-    [junit] 
-    [junit]     git push origin HEAD:<name-of-remote-branch>
-    [junit] 
-    [junit] make: *** [update] Error 128
-    [junit]     while executing
-    [junit] "exec -stderrok make -C ../doc update"
-    [junit]     ("uplevel" body line 3)
-    [junit]     invoked from within
-    [junit] "uplevel $contents_of_test"
+    [junit] Done updating /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/doc/models.txt
     [junit] Stderr for 'make -C ../doc missingDemos' was
     [junit] --start--
     [junit] 
@@ -7687,8 +7689,8 @@ test.core5.xml:
     [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2961 demos from configs/doc/models.txt
     [junit] Validating the xml in demo xml files after removing the configure blocks
     [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 753 demos from configs/doc/models.txt
-    [junit] 05/02/18 06:32:35
-    [junit] Failed: 1  Total Tests: 3809  ((Passed: 3808, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+    [junit] 05/03/18 01:26:11
+    [junit] Failed: 0  Total Tests: 3809  ((Passed: 3809, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
@@ -7696,11 +7698,11 @@ test.core5.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 11, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 928.857 sec
+    [junit] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1,004.541 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 02 18:17:06 UTC 2018
-    [junit] 1525285026814 ms. Memory: 116224K Free: 93996K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Thu May 03 01:09:27 UTC 2018
+    [junit] 1525309767594 ms. Memory: 116224K Free: 94016K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7714,9 +7716,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285042065 ms. Memory: 772096K Free: 200459K (26%)
+    [junit] 1525309784195 ms. Memory: 737792K Free: 164945K (22%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285042561 ms. Memory: 798208K Free: 726757K (91%)
+    [junit] 1525309784618 ms. Memory: 760320K Free: 689589K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7730,9 +7732,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285056911 ms. Memory: 1160704K Free: 819883K (71%)
+    [junit] 1525309800884 ms. Memory: 1018880K Free: 368540K (36%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285057663 ms. Memory: 1171968K Free: 1047629K (89%)
+    [junit] 1525309801578 ms. Memory: 1022464K Free: 900874K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7740,9 +7742,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285057975 ms. Memory: 1171968K Free: 967033K (83%)
+    [junit] 1525309801885 ms. Memory: 1022464K Free: 834065K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285058495 ms. Memory: 1171968K Free: 1048669K (89%)
+    [junit] 1525309802364 ms. Memory: 1022464K Free: 901898K (88%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7757,9 +7759,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285063180 ms. Memory: 1284096K Free: 200976K (16%)
+    [junit] 1525309807562 ms. Memory: 1164800K Free: 713748K (61%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285063880 ms. Memory: 1283584K Free: 1139771K (89%)
+    [junit] 1525309808077 ms. Memory: 1173504K Free: 1032060K (88%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -7775,9 +7777,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285070725 ms. Memory: 1392128K Free: 716248K (51%)
+    [junit] 1525309815532 ms. Memory: 1253376K Free: 415134K (33%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285071389 ms. Memory: 1348608K Free: 1177922K (87%)
+    [junit] 1525309816121 ms. Memory: 1315840K Free: 1146673K (87%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7792,9 +7794,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285085625 ms. Memory: 1490944K Free: 149025K (10%)
+    [junit] 1525309832956 ms. Memory: 1464832K Free: 993904K (68%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285087074 ms. Memory: 1579520K Free: 1323374K (84%)
+    [junit] 1525309834120 ms. Memory: 1557504K Free: 1302557K (84%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7812,9 +7814,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285102245 ms. Memory: 1967616K Free: 1259109K (64%)
+    [junit] 1525309847379 ms. Memory: 1713664K Free: 995944K (58%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285103838 ms. Memory: 2099200K Free: 1768163K (84%)
+    [junit] 1525309849045 ms. Memory: 1719808K Free: 1399397K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -7849,9 +7851,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285221336 ms. Memory: 2247168K Free: 1002834K (45%)
+    [junit] 1525309971707 ms. Memory: 2217472K Free: 922995K (42%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285225150 ms. Memory: 2247168K Free: 1543068K (69%)
+    [junit] 1525309974108 ms. Memory: 2198016K Free: 1492448K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -7884,9 +7886,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285326793 ms. Memory: 2969600K Free: 1075191K (36%)
+    [junit] 1525310083980 ms. Memory: 2753024K Free: 1106082K (40%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285331896 ms. Memory: 2937344K Free: 1802532K (61%)
+    [junit] 1525310088256 ms. Memory: 2628096K Free: 1486454K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7894,9 +7896,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285331924 ms. Memory: 2937344K Free: 1783474K (61%)
+    [junit] 1525310088279 ms. Memory: 2628096K Free: 1480244K (56%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285334222 ms. Memory: 2962432K Free: 1829420K (62%)
+    [junit] 1525310090382 ms. Memory: 2767872K Free: 1639926K (59%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7910,9 +7912,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285341666 ms. Memory: 2957824K Free: 1078826K (36%)
+    [junit] 1525310097535 ms. Memory: 2751488K Free: 1193533K (43%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285345092 ms. Memory: 2946560K Free: 1763519K (60%)
+    [junit] 1525310100597 ms. Memory: 2731520K Free: 1562762K (57%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7926,9 +7928,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285353803 ms. Memory: 2993152K Free: 1144630K (38%)
+    [junit] 1525310108882 ms. Memory: 2750464K Free: 850650K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285357286 ms. Memory: 2998272K Free: 1775012K (59%)
+    [junit] 1525310112067 ms. Memory: 2427392K Free: 1209450K (50%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -7937,18 +7939,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285357360 ms. Memory: 2998272K Free: 1730219K (58%)
+    [junit] 1525310112190 ms. Memory: 2427392K Free: 1161234K (48%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285362258 ms. Memory: 2697216K Free: 1477385K (55%)
+    [junit] 1525310115985 ms. Memory: 2720768K Free: 1502537K (55%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285365835 ms. Memory: 3018752K Free: 1299747K (43%)
+    [junit] 1525310119873 ms. Memory: 2720256K Free: 1480217K (54%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285369227 ms. Memory: 3005952K Free: 1764058K (59%)
+    [junit] 1525310123072 ms. Memory: 2447360K Free: 1206243K (49%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7962,9 +7964,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525285376327 ms. Memory: 3031552K Free: 1632855K (54%)
+    [junit] 1525310130483 ms. Memory: 2731520K Free: 1437219K (53%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525285380041 ms. Memory: 2868224K Free: 1578244K (55%)
+    [junit] 1525310133828 ms. Memory: 2725376K Free: 1444765K (53%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -8039,7 +8041,7 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
-    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525285704116 ms. Memory: 4590592K Free: 918815K (20%)
+    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525310499671 ms. Memory: 4736512K Free: 1471586K (31%)
     [junit] Setting containers of atomic entities to null
     [junit] checkFullConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
@@ -8333,9 +8335,9 @@ test.core5.xml:
     [junit]                             <group>
     [junit]                                 <doc>Decortative attributes</doc>
     [junit]                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 6:28:24 PM">
+    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 3, 2018 1:21:39 AM">
     [junit]                                     </property>
-    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 2, 2018 6:28:24 PM">
+    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 3, 2018 1:21:39 AM">
     [junit]                                     </property>
     [junit]                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
     [junit]                                     </property>
@@ -10904,11 +10906,6 @@ test.core5.xml:
     [junit]                                     <configure>
     [junit]                                         <group>
     [junit]                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="input"/>
-    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
     [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="output"/>
     [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -10974,11 +10971,6 @@ test.core5.xml:
     [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="input"/>
     [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-    [junit]                                                     </property>
-    [junit]                                                 </port>
-    [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
-    [junit]                                                     <property name="output"/>
-    [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
     [junit]                                                     </property>
     [junit]                                                 </port>
     [junit]                                             </entity>
@@ -14888,143 +14880,7 @@ test.core5.xml:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/configurationTools.tcl
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/missingDemos.tcl
     [junit] Updating /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/doc/models.txt.  This could take a minute.
-    [junit] 
-    [junit] 
-    [junit] ==== $PTII/ptolemy/configs/test/missingDemos.tcl: missingDemos-0.5 Update ptolemy/configs/doc/models.txt
-    [junit] ==== Contents of test case:
-    [junit] 
-    [junit]     puts "Updating $PTII/ptolemy/configs/doc/models.txt.  This could take a minute."
-    [junit]     exec -stderrok make -C ../doc update
-    [junit]     puts "Done updating $PTII/ptolemy/configs/doc/models.txt"
-    [junit]     file exists ../doc/models.txt
-    [junit] 
-    [junit] ==== Test generated error:
-    [junit] make: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] (cd ../../../ptolemy/configs/capecode; make capecodeModels.txt)
-    [junit] make[1]: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
-    [junit] DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java" "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
-    [junit] 		-classpath "../../..::/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar::/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar::/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar::/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar::/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/lib/diva.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar::/home/travis/build/icyphy/ptII/lib/javax.mail.jar::/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar::/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:::/home/travis/build/icyphy/ptII/lib/oscP5.jar:/usr/lib/jvm/java-8-oracle/jre/../lib/tools.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar::/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar::/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar::/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar::/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar::/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:space/space.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar::/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar::/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar" \
-    [junit] 		ptolemy.actor.gui.HTMLAbout demonstrations.htm capecodeModels.txt
-    [junit] Printing '.' for regular models, 'P' for models with LiveLinks.
-    [junit] ..PJSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] No physical cameras found, using WebcamDummyDriver.
-    [junit] .P.P.P.P.P...PClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
-    [junit] .P..P.P...P.....P..P..P.P.P..P..P...P...P.P..P..P...P.P.P.P..P.P..LC_ALL=C sort -f capecodeModels.txt  > capecodeModels.txt.sorted
-    [junit] mv capecodeModels.txt.sorted capecodeModels.txt
-    [junit] make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/capecode'
-    [junit] #
-    [junit] # Starting to build models.txt: Wed May  2 18:29:43 UTC 2018
-    [junit] #
-    [junit] # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY
-    [junit] DISPLAY="" "/usr/lib/jvm/java-8-oracle/bin/java"  -Xmx1500m "-Dptolemy.ptII.dir=/home/travis/build/icyphy/ptII" \
-    [junit] 		-classpath "../../..::/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar::/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar::/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar::/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar::/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/home/travis/build/icyphy/ptII/lib/diva.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar::/home/travis/build/icyphy/ptII/lib/javax.mail.jar::/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar::/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:::/home/travis/build/icyphy/ptII/lib/oscP5.jar:/usr/lib/jvm/java-8-oracle/jre/../lib/tools.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar::/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar::/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar::/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar::/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar::/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:space/space.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/jdom.jar:/home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/lib/nesc.jar::/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar::/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar" \
-    [junit] 		ptolemy.actor.gui.HTMLAbout 
-    [junit] Printing '.' for regular models, 'P' for models with LiveLinks.
-    [junit] ...P...P.......P.......P....P..P............PJSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] ...P...P..P....PNo physical cameras found, using WebcamDummyDriver.
-    [junit] .P.P.........P.P....P....................P..P..PClipPlayerHelper: failed to instantiate a JFXPanel, which can happen if a graphical display is not present: java.lang.UnsupportedOperationException: Unable to open DISPLAY
-    [junit] ...P.....P......P......P.........P.....P...P..................P.................P......P....P.P........P.....P..P.....P..P...P....P........P......P..P......P.....P...P.P....P......P....P.P.....P....P......P.P.P...............P.P....P...........P..P...P..P..P.....P.....P.P...................P........P.P..........P.P............P....P..........P.....P.P.P.P............P...P............P...P............P..P....P...............P.........P.....P......P.....P.P..........P.........P.....P.P...P..P....P..P...P....P....P......P........P.........P...P..P..........P....P......P......P............................P..........# Include the models in the ExecDemos directory.
-    [junit] ls -1 /home/travis/build/icyphy/ptII/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@/home/travis/build/icyphy/ptII@\$CLASSPATH@" >> models.txt
-    [junit] LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
-    [junit] mv /tmp/models.txt models.txt
-    [junit] #
-    [junit] # Done building models.txt: Wed May  2 18:31:41 UTC 2018
-    [junit] #
-    [junit] git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at e8d8306c
-    [junit] Untracked files:
-    [junit] 	../../../META-INF/
-    [junit] 	../../../junit5609500685670820525.properties
-    [junit] 	../../../junitvmwatcher1463352522431026274.properties
-    [junit] 
-    [junit] nothing added to commit but untracked files present
-    [junit] rm -f doc.jar
-    [junit] make doc.jar
-    [junit] make[1]: Entering directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] rm -rf ptjar_tmpdir doc.jar
-    [junit] mkdir ptjar_tmpdir
-    [junit] # Copy any class files from this directory
-    [junit] mkdir -p ptjar_tmpdir/ptolemy/configs/doc
-    [junit] cp *.class completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt basicHelp.htm book.htm ClassesIllustrated.png ClassesIllustrated.xml completeDemos.htm copyright.htm demos.htm docs.htm pt_cover_online.png vergilFsmEditorHelp.htm vergilGraphEditorHelp.htm whatsNew.htm whatsNew3.0.2.htm whatsNew4.0.htm whatsNew5.0.htm whatsNew5.1.htm whatsNew6.0.htm whatsNew7.0.htm whatsNew8.0.htm whatsNew10.0.htm whatsNew11.0.htm ptjar_tmpdir/ptolemy/configs/doc
-    [junit] Creating doc.jar
-    [junit] (cd ptjar_tmpdir; "/usr/lib/jvm/java-8-oracle/bin/jar"  -cvf tmp.jar .)
-    [junit] added manifest
-    [junit] adding: ptolemy/(in = 0) (out= 0)(stored 0%)
-    [junit] adding: ptolemy/configs/(in = 0) (out= 0)(stored 0%)
-    [junit] adding: ptolemy/configs/doc/(in = 0) (out= 0)(stored 0%)
-    [junit] adding: ptolemy/configs/doc/completeDemos.htm(in = 115482) (out= 20211)(deflated 82%)
-    [junit] adding: ptolemy/configs/doc/basicHelp.htm(in = 2016) (out= 890)(deflated 55%)
-    [junit] adding: ptolemy/configs/doc/ClassesIllustrated.png(in = 68676) (out= 67144)(deflated 2%)
-    [junit] adding: ptolemy/configs/doc/copyright.htm(in = 872094) (out= 205308)(deflated 76%)
-    [junit] adding: ptolemy/configs/doc/completeDemosPtiny.htm(in = 27435) (out= 5853)(deflated 78%)
-    [junit] adding: ptolemy/configs/doc/demosBcvtb.htm(in = 10834) (out= 3829)(deflated 64%)
-    [junit] adding: ptolemy/configs/doc/docs.htm(in = 2442) (out= 959)(deflated 60%)
-    [junit] adding: ptolemy/configs/doc/whatsNew11.0.htm(in = 5055) (out= 1763)(deflated 65%)
-    [junit] adding: ptolemy/configs/doc/whatsNew5.0.htm(in = 23108) (out= 6211)(deflated 73%)
-    [junit] adding: ptolemy/configs/doc/docsBcvtb.htm(in = 2819) (out= 1084)(deflated 61%)
-    [junit] adding: ptolemy/configs/doc/docsPtdb.htm(in = 2658) (out= 1077)(deflated 59%)
-    [junit] adding: ptolemy/configs/doc/whatsNew7.0.htm(in = 24218) (out= 7892)(deflated 67%)
-    [junit] adding: ptolemy/configs/doc/models.txt(in = 55526) (out= 7600)(deflated 86%)
-    [junit] adding: ptolemy/configs/doc/completeDemosBcvtb.htm(in = 13678) (out= 3481)(deflated 74%)
-    [junit] adding: ptolemy/configs/doc/vergilFsmEditorHelp.htm(in = 621) (out= 361)(deflated 41%)
-    [junit] adding: ptolemy/configs/doc/pt_cover_online.png(in = 138106) (out= 138151)(deflated 0%)
-    [junit] adding: ptolemy/configs/doc/docsPtiny.htm(in = 2658) (out= 1077)(deflated 59%)
-    [junit] adding: ptolemy/configs/doc/demosPtiny.htm(in = 21242) (out= 6808)(deflated 67%)
-    [junit] adding: ptolemy/configs/doc/demosPtinyKepler.htm(in = 15279) (out= 5172)(deflated 66%)
-    [junit] adding: ptolemy/configs/doc/whatsNew5.1.htm(in = 3412) (out= 1339)(deflated 60%)
-    [junit] adding: ptolemy/configs/doc/docsPtinyKepler.htm(in = 2507) (out= 963)(deflated 61%)
-    [junit] adding: ptolemy/configs/doc/book.htm(in = 2553) (out= 1017)(deflated 60%)
-    [junit] adding: ptolemy/configs/doc/whatsNew8.0.htm(in = 53219) (out= 13709)(deflated 74%)
-    [junit] adding: ptolemy/configs/doc/whatsNew.htm(in = 712) (out= 298)(deflated 58%)
-    [junit] adding: ptolemy/configs/doc/vergilGraphEditorHelp.htm(in = 3278) (out= 1204)(deflated 63%)
-    [junit] adding: ptolemy/configs/doc/whatsNew6.0.htm(in = 20237) (out= 6560)(deflated 67%)
-    [junit] adding: ptolemy/configs/doc/whatsNew4.0.htm(in = 25979) (out= 6381)(deflated 75%)
-    [junit] adding: ptolemy/configs/doc/demos.htm(in = 38256) (out= 11334)(deflated 70%)
-    [junit] adding: ptolemy/configs/doc/whatsNew3.0.2.htm(in = 3199) (out= 1135)(deflated 64%)
-    [junit] adding: ptolemy/configs/doc/ClassesIllustrated.xml(in = 16565) (out= 2158)(deflated 86%)
-    [junit] adding: ptolemy/configs/doc/whatsNew10.0.htm(in = 55082) (out= 12449)(deflated 77%)
-    [junit] adding: ptolemy/configs/doc/completeDemosPtinyKepler.htm(in = 22350) (out= 4906)(deflated 78%)
-    [junit] mv ptjar_tmpdir/tmp.jar doc.jar
-    [junit] "/usr/lib/jvm/java-8-oracle/bin/jar"  -i doc.jar
-    [junit] rm -rf ptjar_tmpdir
-    [junit] make[1]: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] # The first commit will change completeDemosPtiny.htm, which will cause completeDemosBcvtb.htm to be updated
-    [junit] if [ -d /home/travis/build/icyphy/ptII/.git ]; then \
-    [junit] 		echo "Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt"; \
-    [junit] 		git commit -m "Master files changed" completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt; \
-    [junit] 		git push; \
-    [junit]         else \
-    [junit] 		echo "No /home/travis/build/icyphy/ptII/.git/ directory, so completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt are not being committed."; \
-    [junit] 		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
-    [junit]         fi
-    [junit] Committing changes to completeDemosBcvtb.htm completeDemosPtiny.htm completeDemosPtinyKepler.htm demosPtiny.htm demosBcvtb.htm demosPtinyKepler.htm docsBcvtb.htm docsPtdb.htm docsPtiny.htm docsPtinyKepler.htm models.txt
-    [junit] HEAD detached at e8d8306c
-    [junit] Untracked files:
-    [junit] 	../../../META-INF/
-    [junit] 	../../../junit5609500685670820525.properties
-    [junit] 	../../../junitvmwatcher1463352522431026274.properties
-    [junit] 
-    [junit] nothing added to commit but untracked files present
-    [junit] make: Leaving directory `/home/travis/build/icyphy/ptII/ptolemy/configs/doc'
-    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-    [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-    [junit] make: [update] Error 1 (ignored)
-    [junit] cp: cannot stat ‘*.class’: No such file or directory
-    [junit] make[1]: [doc.jar] Error 1 (ignored)
-    [junit] fatal: You are not currently on a branch.
-    [junit] To push the history leading to the current (detached HEAD)
-    [junit] state now, use
-    [junit] 
-    [junit]     git push origin HEAD:<name-of-remote-branch>
-    [junit] 
-    [junit] make: *** [update] Error 128
-    [junit]     while executing
-    [junit] "exec -stderrok make -C ../doc update"
-    [junit]     ("uplevel" body line 3)
-    [junit]     invoked from within
-    [junit] "uplevel $contents_of_test"
+    [junit] Done updating /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../../ptolemy/configs/doc/models.txt
     [junit] Stderr for 'make -C ../doc missingDemos' was
     [junit] --start--
     [junit] 
@@ -15038,8 +14894,8 @@ test.core5.xml:
     [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2961 demos from configs/doc/models.txt
     [junit] Validating the xml in demo xml files after removing the configure blocks
     [junit] .................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 753 demos from configs/doc/models.txt
-    [junit] 05/02/18 06:32:35
-    [junit] Failed: 1  Total Tests: 3809  ((Passed: 3808, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+    [junit] 05/03/18 01:26:11
+    [junit] Failed: 0  Total Tests: 3809  ((Passed: 3809, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
@@ -15051,7 +14907,6 @@ test.core5.xml:
     [junit] Error: 
     [junit] [main] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
     [junit] 
-    [junit] Test ptolemy.configs.test.junit.JUnitTclTest FAILED
 
 BUILD SUCCESSFUL
-Total time: 16 minutes 54 seconds
+Total time: 18 minutes 42 seconds
