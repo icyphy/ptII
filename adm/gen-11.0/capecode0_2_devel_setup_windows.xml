@@ -167,7 +167,12 @@
             <file src="../dists/ptII11.0.devel/README.md" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
-            <file src="../dists/ptII11.0.devel/bin" targetdir="$INSTALL_PATH"/>
+            <fileset dir="../dists/ptII11.0.devel"
+                     targetdir="$INSTALL_PATH">
+              <include name="bin/*"/>
+              <exclude name="bin/Vergil.app"/>
+              <exclude name="bin/Ptiny.app"/>
+            </fileset>
 
 <!-- Mac: The makefile substitutes a directive to include the jdk directory for the next line. -->
 <!-- MacJDKDirectory -->	    
@@ -333,9 +338,11 @@
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
 
-	    <file src="../dists/ptII11.0.devel/jar_dist/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar"
-                  targetdir="$INSTALL_PATH/bin/Vergil.app/Contents/MacOS"
+	    <file src="../dists/ptII11.0.devel/jar_dist/lib/universalJavaApplicationStub-license.jar"
+                  targetdir="$INSTALL_PATH/lib"
                   os="mac"/>
+
+
 
 <!--LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.mail.jar"
