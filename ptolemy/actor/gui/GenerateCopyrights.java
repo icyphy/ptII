@@ -139,7 +139,11 @@ public class GenerateCopyrights {
 
         _addIfFilePresent(copyrightsMap,
                 "$CLASSPATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub",
-                "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html");
+                "lib/universalJavaApplicationStub-license.html");
+
+        _addIfFilePresent(copyrightsMap,
+                "$CLASSPATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub",
+                "lib/universalJavaApplicationStub-license.html");
 
         _addIfClassPresent(copyrightsMap,
                 "edu.umich.eecs.april.image.AprilTagFilter",
