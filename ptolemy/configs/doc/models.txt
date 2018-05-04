@@ -441,6 +441,7 @@ $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/ProbabilisticModels.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml
+$CLASSPATH/ptolemy/demo/Quarry/Quarry.xml
 $CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidance.xml
 $CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidanceWithAccModel.xml
 $CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidanceWithObservationRobots.xml
