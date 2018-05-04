@@ -845,7 +845,6 @@ public class HlaManager extends AbstractInitializableAttribute
             }
              */ //jc: for make the reading easier. If needed, we can go back to this print.
             try {
-                // XXX: FIXME: why tick2() hangs the simulation?
                 _rtia.tick();
 
                 if (_enableHlaReporter) {
@@ -976,7 +975,7 @@ public class HlaManager extends AbstractInitializableAttribute
         }
         suppAttributes.add(_getAttributeHandleFromTab(tObj), bAttributeValue);
 
-        // XXX: FIXME: this information seems not use in our case (see decoding part)?
+        // Note: this information is not used in the current implementation.
         byte[] tag = EncodingHelpers.encodeString(hp.getFullName());
 
         // Create a representation of uav-event timestamp for CERTI.
@@ -1607,15 +1606,15 @@ public class HlaManager extends AbstractInitializableAttribute
         _hlaAttributesToPublish.clear();
         List<HlaPublisher> _hlaPublishers = ce.entityList(HlaPublisher.class);
         for (HlaPublisher hp : _hlaPublishers) {
-            // FIXME: XXX: check if this case may occur. The HLA attribute
-            // name is no more associated to the HlaPublisher actor name.
-            // As Ptolemy do not accept two actors of the same name at a same
-            // model level.
-            if (_hlaAttributesToPublish.get(hp.getFullName()) != null) {
-                throw new IllegalActionException(this,
-                        "A HLA attribute with the same name is already "
-                                + "registered for publication.");
-            }
+            // Note: The HLA attribute name is no more associated to the 
+            // HlaPublisher actor name. As Ptolemy do not accept two actors
+            // of the same name at a same model level the following test is no
+            // more required.
+            //if (_hlaAttributesToPublish.get(hp.getFullName()) != null) {
+            //    throw new IllegalActionException(this,
+            //            "A HLA attribute with the same name is already "
+            //                    + "registered for publication.");
+            //}
 
             // Note: asked by JC on 20171128, the current implementation is not
             // optimized and may slow the model initialization step if there is
@@ -1680,11 +1679,15 @@ public class HlaManager extends AbstractInitializableAttribute
         List<HlaSubscriber> _hlaSubscribers = _getHlaSubscribers(ce);
 
         for (HlaSubscriber hs : _hlaSubscribers) {
-            if (_hlaAttributesToSubscribeTo.get(hs.getFullName()) != null) {
-                throw new IllegalActionException(this,
-                        "A HLA attribute with the same name is already "
-                                + "registered for subscription.");
-            }
+            // Note: The HLA attribute name is no more associated to the 
+            // HlaSubscriber actor name. As Ptolemy do not accept two actors
+            // of the same name at a same model level the following test is no
+            // more required.
+            //if (_hlaAttributesToSubscribeTo.get(hs.getFullName()) != null) {
+            //    throw new IllegalActionException(this,
+            //            "A HLA attribute with the same name is already "
+            //                    + "registered for subscription.");
+            //}
 
             // Note: asked by JC on 20171128, the current implementation is not
             // optimized and may slow the model initialization step if there is
@@ -1818,8 +1821,6 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // If any RAV-event received by HlaSubscriber actors, RAV(tau) with tau < ptolemy startTime
                 // are put in the event queue with timestamp startTime
-                // FIXME: XXX: Or should it be an exception because there is something wrong with
-                //the overall simulation ??
                 if (ravEvent.timeStamp
                         .compareTo(_director.getModelStartTime()) < 0) {
                     ravEvent.timeStamp = _director.getModelStartTime();
@@ -2244,7 +2245,6 @@ public class HlaManager extends AbstractInitializableAttribute
          */
         public Boolean inPause;
 
-        // XXX: FIXME: GiL: getter/setter methods ?
         /** Indicates if an RAV has been received. */
         public Boolean hasReceivedRAV;
 
@@ -2428,9 +2428,8 @@ public class HlaManager extends AbstractInitializableAttribute
 
                             ts = new Time(_director, timeValue);
 
-                            // FIXME: XXX: It appears that sometimes a received RAV value is different
-                            // than the UAV value sent. We need to investigate it this difference comes
-                            // from Ptolemy or from CERTI.
+                            // Note: Sometimes a received RAV value is different than the UAV value sent.
+                            // This could come from the decodeHlaValue and encodeHlaValue CERTI methods.
                             value = MessageProcessing.decodeHlaValue(hs,
                                     (BaseType) _getTypeFromTab(tObj),
                                     theAttributes.getValue(i));
@@ -2461,15 +2460,23 @@ public class HlaManager extends AbstractInitializableAttribute
                             }
                         }
                     } catch (ArrayIndexOutOfBounds e) {
-                        // FIXME: XXX: how to encapsulate in a specific RTI exception?
-                        System.out.println(
-                                "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds");
-                        e.printStackTrace();
+                        // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
+                        //System.out.println(
+                        //        "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds");
+                        //e.printStackTrace();
+                        
+                        throw new FederateInternalError(
+                                "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds: " 
+                                + e.getMessage());
                     } catch (IllegalActionException e) {
-                        // FIXME: XXX: how to encapsulate in a specific RTI exception?
-                        System.out.println(
-                                "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException");
-                        e.printStackTrace();
+                        // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
+                        //System.out.println(
+                        //        "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException");
+                        //e.printStackTrace();
+                        
+                        throw new FederateInternalError(
+                                "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException: " 
+                                + e.getMessage());
                     }
                 }
             }
@@ -2534,10 +2541,14 @@ public class HlaManager extends AbstractInitializableAttribute
                         _debug("INNER callback: discoverObjectInstance: found an instance class already registered: "
                                 + someName);
                     }
-                    // XXX: FIXME: if this case happen, raise an exception?
+                    // Note: this case should not happen with the new implementation from CIELE. But as it is
+                    // difficult to test this cas, we raise an exception.
+                    throw new FederateInternalError(
+                            "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
+                            + "found an instance class already registered: " + someName);
+                           
                 } else {
                     _discoverObjectInstanceMap.put(objectInstanceId, someName);
-
                     matchingName = someName;
                 }
 
@@ -2575,8 +2586,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
                         }
                     } catch (IllegalActionException e) {
-                        // FIXME: XXX: encapsulate in RTI exception ?
-                        e.printStackTrace();
+                        throw new FederateInternalError(
+                                "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
+                                + "cannot retrieve HlaSubscriber actor class instance name.");
                     }
                 }
             }
