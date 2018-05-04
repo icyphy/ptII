@@ -1881,7 +1881,11 @@ public class JavaScript extends AbstractPlaceableActor
             _setOptionsForSelect(parameter, options);
             // Check for value option.
             Object value = options.get("value");
-            if (value != null && !parameter.isOverridden()) {
+            // If the parameter is not overridden and not inherited, then set
+            // the value.
+            if (value != null && !parameter.isOverridden()
+                     && parameter.getDerivedLevel() == Integer.MAX_VALUE) {
+                
                 // There is a specified value, and the parameter value
                 // has not been overridden.
 
@@ -2778,14 +2782,17 @@ public class JavaScript extends AbstractPlaceableActor
             Token token = ((Parameter) sync).getToken();
             if (token instanceof BooleanToken
                     && !((BooleanToken) token).booleanValue()) {
-                try {
-                    MessageHandler.warning(
-                            "Using a timeout in JavaScript, but the director's"
-                                    + " synchronizeToRealTime parameter is set to false."
-                                    + " To get real-time behavior, set it to true.");
-                } catch (CancelException e) {
-                    throw new IllegalActionException(this,
-                            "Execution cancelled");
+                if (!_timeWarningIssued) {
+                    _timeWarningIssued = true;
+                    try {
+                        MessageHandler.warning(
+                                "Using a timeout in JavaScript, but the director's"
+                                        + " synchronizeToRealTime parameter is set to false."
+                                        + " To get real-time behavior, set it to true.");
+                    } catch (CancelException e) {
+                        throw new IllegalActionException(this,
+                                "Execution cancelled");
+                    }
                 }
             }
         }
@@ -2864,6 +2871,9 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
+    
+    /** True if a warning has been issued about synchronizeToRealTime. */
+    private boolean _timeWarningIssued;
 
     /** Queue containing callback functions that are to be invoked in the fire
      *  method as soon as possible.
