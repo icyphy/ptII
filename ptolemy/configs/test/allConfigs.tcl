@@ -37,9 +37,14 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare test [info procs parseConfiguration]] == 1} then {
+    source configurationTools.tcl
+} {}
 
+puts "[java::call ptolemy.actor.Manager timeAndMemory 0]"
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
+
 
 # Test the suggestedModalModelDirectors() method by constructing each
 # element of the array.
@@ -172,63 +177,7 @@ foreach i $configs {
 
     set parser [java::new ptolemy.moml.MoMLParser]
 
-    # The list of filters is static, so we reset it in case there
-    # filters were already added.
-    $parser setMoMLFilters [java::null]
-
-    # Add backward compatibility filters
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-
-    # Add optional .xml files to be skipped to this list.
-    set inputFileNamesToSkip [java::new java.util.LinkedList]
-    # Alphabetical please
-    $inputFileNamesToSkip add "/apps/apps.xml"
-    $inputFileNamesToSkip add "/apps/superb/superb.xml"
-    #$inputFileNamesToSkip add "/attributes/decorative.xml"
-    $inputFileNamesToSkip add "/chic/chic.xml"
-    #$inputFileNamesToSkip add "/codegen.xml"
-    #$inputFileNamesToSkip add "/configs/ellipse.xml"
-    #$inputFileNamesToSkip add "/gr.xml"
-    $inputFileNamesToSkip add "/io/comm/comm.xml"
-    #$inputFileNamesToSkip add "/image.xml"
-    #$inputFileNamesToSkip add "/experimentalDirectors.xml"
-    #$inputFileNamesToSkip add "/lib/interactive.xml"
-    #$inputFileNamesToSkip add "/line.xml"
-    $inputFileNamesToSkip add "/jai/jai.xml"
-    $inputFileNamesToSkip add "/jmf/jmf.xml"
-    $inputFileNamesToSkip add "/joystick/jstick.xml"
-    $inputFileNamesToSkip add "/jxta/jxta.xml"
-    $inputFileNamesToSkip add "/ptinyos/lib/lib-composite.xml"
-    #$inputFileNamesToSkip add "/rectangle.xml"
-    $inputFileNamesToSkip add "TOSIndex.xml"
-    $inputFileNamesToSkip add "/quicktime.xml"
-    $inputFileNamesToSkip add "/matlab.xml"
-    #$inputFileNamesToSkip add "/x10/x10.xml"
-    #$inputFileNamesToSkip add "utilityIDAttribute.xml"
-
-    # set osName [java::call System getProperty {os.name}]
-    # set osNameStartsWith [string range $osName 0 5]
-    #if {$osNameStartsWith == "Mac OS"} {
-    #   puts "Skipping backtrack.xml because Backtracking has problems on the Mac"
-    #   $inputFileNamesToSkip add "/backtrack.xml"
-    #}
-    
-    # Tell the parser to skip inputting the above files
-    java::field $parser inputFileNamesToSkip $inputFileNamesToSkip 
-
-    # Filter out graphical classes while inside MoMLParser
-    # See ptII/util/testsuite/removeGraphicalClasses.tcl
-    # removeGraphicalClasses $parser
-
-    set loader [[$parser getClass] getClassLoader]
-    
-    set URL [$loader getResource ptolemy/configs/$i]
-    if {[java::isnull $URL]} {
-	error "Could not get the  ptolemy/configs/$i resources"
-    }
-    set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
-    set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
+    set configuration [parseConfiguration $i $parser]
     
     # The configuration has a removeGraphicalClasses parameter that
     # defaults to false so we set it to true.
@@ -237,298 +186,330 @@ foreach i $configs {
 
 
     test "$i-1.1" "Test to see if $i contains any bad XML" {
-	# force everything to get expanded
-	expr [string length [$configuration description]] > 0
+        # force everything to get expanded
+        expr [string length [$configuration description]] > 0
     } {1}
 
     test "$i-2.1" "Test to see if $i has fields with names that are wrong" {
-	# In general, if we call getName on a public field in an actor,
-	# then the name that is returned should be the same as the name
-	# of the field.
-	puts "-------> Before clone"
- 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
-	puts "-------> after clone"
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	set logfile [open logfile2-1 "w"]
-	for {set iterator [$entityList iterator]} \
-		{[$iterator hasNext] == 1} {} {
-	    set entity [$iterator next]
-	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set className [$actor getClassName]
-		if [java::instanceof $entity $className] {
-		    set realActor [java::cast $className $entity]
-		    set fields [java::info fields $realActor]
-		    # This puts seems to be necessary, or else we get
-		    # field being set to 'tcl.lang.FieldSig@2b6fc7'
-		    # instead of 'factor'
-  		    puts $logfile "actor: $className fields: $fields"
-		    foreach field $fields {
-			# If the field is actually defined in the parent class
-			# then java::field will not find the field
-			set fieldObj [java::null]
-			catch {
-			    # We use -noconvert here in case there is a public
-			    # int or double. hde.ArrayMem has a public int.
-			    set fieldObj [java::field -noconvert \
-				    $realActor $field]
-			}
-			if {![java::isnull $fieldObj]} {
-			    if [catch {set dottedName [$fieldObj getName $entity]} errMsg] {
-				set msg "\n\nIn '$className'\n\
-					On the field '$field'\n\
-					The getName() method failed:\n\
-					$errMsg\n\
-					Perhaps the field is a basic type?\n"
-				lappend results $msg
-			    } else {
-				set sanitizedName [java::call ptolemy.util.StringUtilities sanitizeName $dottedName]
-				if {"$sanitizedName" != "$field"} {
-				    if { "${sanitizedName}Port" == "$field"} {
-					# FileReader needs this:
-					puts "\nWarning: In '$className'\n \
-					    The getName() method returns\n  \
-					    '[$fieldObj getName]' but the \
-					    field is named\n   '$field'\n  \
-					    This is technically a violation \
-					    of the coding standard,\n  \
-					    but permissible because the name \
-					    ends in 'Port'"
+        # In general, if we call getName on a public field in an actor,
+        # then the name that is returned should be the same as the name
+        # of the field.
+        puts "-------> Before clone"
+        set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
+        puts "-------> after clone"
+        set entityList [$configuration allAtomicEntityList]
+        set results {}
+        set logfile [open logfile2-1 "w"]
+        for {set iterator [$entityList iterator]} \
+        	{[$iterator hasNext] == 1} {} {
+            set entity [$iterator next]
+            if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+        	set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+        	set className [$actor getClassName]
+        	if [java::instanceof $entity $className] {
+        	    set realActor [java::cast $className $entity]
+        	    set fields [java::info fields $realActor]
+        	    # This puts seems to be necessary, or else we get
+        	    # field being set to 'tcl.lang.FieldSig@2b6fc7'
+        	    # instead of 'factor'
+        	    puts $logfile "actor: $className fields: $fields"
+        	    foreach field $fields {
+        		# If the field is actually defined in the parent class
+        		# then java::field will not find the field
+        		set fieldObj [java::null]
+        		catch {
+        		    # We use -noconvert here in case there is a public
+        		    # int or double. hde.ArrayMem has a public int.
+        		    set fieldObj [java::field -noconvert \
+        			    $realActor $field]
+        		}
+        		if {![java::isnull $fieldObj]} {
+        		    if [catch {set dottedName [$fieldObj getName $entity]} errMsg] {
+        			set msg "\n\nIn '$className'\n\
+        				On the field '$field'\n\
+        				The getName() method failed:\n\
+        				$errMsg\n\
+        				Perhaps the field is a basic type?\n"
+        			lappend results $msg
+        		    } else {
+        			set sanitizedName [java::call ptolemy.util.StringUtilities sanitizeName $dottedName]
+        			if {"$sanitizedName" != "$field"} {
+        			    if { "${sanitizedName}Port" == "$field"} {
+        				# FileReader needs this:
+        				puts "\nWarning: In '$className'\n \
+        				    The getName() method returns\n  \
+        				    '[$fieldObj getName]' but the \
+        				    field is named\n   '$field'\n  \
+        				    This is technically a violation \
+        				    of the coding standard,\n  \
+        				    but permissible because the name \
+        				    ends in 'Port'"
 
-				    } else {
-					set msg "\n\nIn '$className'\n\
-					    The getName() method returns\n \
-					    '$sanitizedName' != '$field' \
-					    '[$fieldObj getName]' but the \
-					    field is named\n  '$field'.\n \
+        			    } else {
+        				set msg "\n\nIn '$className'\n\
+        				    The getName() method returns\n \
+        				    '$sanitizedName' != '$field' \
+        				    '[$fieldObj getName]' but the \
+        				    field is named\n  '$field'.\n \
                                             Perhaps you should use an \
                                             underscore followed by the field \
                                             name\n, see how SDFTransformer \
                                             keeps a reference to objecs that \
                                             are not directly contained."
-				lappend results $msg
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-	close $logfile
-	file delete logfile2-1
-	list $results
+        			lappend results $msg
+        			    }
+        			}
+        		    }
+        		}
+        	    }
+        	}
+            }
+        }
+        close $logfile
+        file delete logfile2-1
+        $cloneConfiguration setContainer [java::null]
+        list $results
     } {{}}
 
-    test "$i-3.1" "Test to see if $i contains any actors whose type constraints don't clone" {
-	    set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
-	    # FIXME: Need to call this twice to find problems with RecordAssembler.
-	    puts "---- Second call to Configuration.check"
-	    set results2 [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
-   	    # Don't call return as the last line of a test proc, since return
-	    # throws an exception.
-	    list $results $results2
-    } {{} {}}
+    # test "$i-3.1" "Test to see if $i contains any actors whose type constraints don't clone" {
+    #         set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
+    #         # FIXME: Need to call this twice to find problems with RecordAssembler.
+    #         puts "---- Second call to Configuration.check"
+    #         set results2 [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
+    #         # Don't call return as the last line of a test proc, since return
+    #         # throws an exception.
+    #         list $results $results2
+    # } {{} {}}
 
 
     test "$i-4.1" "Test to see if $i contains any actors that might not drag and drop properly by creating ChangeRequests " {
 
-	# This test caught a problem with AudioReader, where the initial
-	# default source URL parameter had a bogus value.
+        # This test caught a problem with AudioReader, where the initial
+        # default source URL parameter had a bogus value.
 
-	# Create a base model.
-	set baseModel {<?xml version="1.0" standalone="no"?>
-	    <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-	    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-	    <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-	    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
-	    <property name="iterations" value="2"/>
-	    </property>
-	    </entity>
-	}
+        # Create a base model.
+        set baseModel {<?xml version="1.0" standalone="no"?>
+            <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+            "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+            <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+            <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" value="2"/>
+            </property>
+            </entity>
+        }
 
-	set parser [java::new ptolemy.moml.MoMLParser]
-	$parser reset
-	set toplevel [java::cast ptolemy.actor.CompositeActor \
-			  [$parser parse $baseModel]]
-	set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
-	$toplevel setManager $manager
+        set parser [java::new ptolemy.moml.MoMLParser]
+        $parser reset
+        set toplevel [java::cast ptolemy.actor.CompositeActor \
+        		  [$parser parse $baseModel]]
+        set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+        $toplevel setManager $manager
 	
 
-	# Set up a StreamChangeListener to listen for errors
-	set stream [java::new java.io.ByteArrayOutputStream]
-	set printStream [java::new \
-		     {java.io.PrintStream java.io.OutputStream} $stream]
-	set listener [java::new ptolemy.kernel.util.StreamChangeListener \
-			  $printStream]
-	$toplevel addChangeListener $listener
+        # Set up a StreamChangeListener to listen for errors
+        set stream [java::new java.io.ByteArrayOutputStream]
+        set printStream [java::new \
+        	     {java.io.PrintStream java.io.OutputStream} $stream]
+        set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+        		  $printStream]
+        $toplevel addChangeListener $listener
 
-	set cloneConfiguration \
-	    [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+        set cloneConfiguration \
+            [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
 
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	for {set iterator [$entityList iterator]} \
-	    {[$iterator hasNext] == 1} {} {
-   	    set entity [$iterator next]
+        set entityList [$configuration allAtomicEntityList]
+        set results {}
+        for {set iterator [$entityList iterator]} \
+            {[$iterator hasNext] == 1} {} {
+            set entity [$iterator next]
 	    
-	    #puts [$entity toString]
-	    #if [java::instanceof $entity ptolemy.kernel.util.NamedObj] {
-	    #	puts [[java::cast ptolemy.kernel.util.NamedObj $entity] \
-	    #		  getName]
-	    #}
+            #puts [$entity toString]
+            #if [java::instanceof $entity ptolemy.kernel.util.NamedObj] {
+            #	puts [[java::cast ptolemy.kernel.util.NamedObj $entity] \
+            #		  getName]
+            #}
 
-	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		#puts "Actor: [$actor getFullName]"
-		set actorName [$actor getFullName]
+            if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+        	set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+        	#puts "Actor: [$actor getFullName]"
+        	set actorName [$actor getFullName]
                 if [regexp {StateSpaceModel} $actorName] {
                     puts "Skipping StateSpaceModel as this test iterates through the attributes and calls attributeChanged, which triggers a ConcurrentModificationException.  See org/ptolemy/ssm/test/SSMTest.java"
                 }  {
-		    if [catch {set r [_dropTest $toplevel $actor $cloneConfiguration $stream $printStream 0]} errMsg] {
-			lappend results "Drag and Drop test of actor: [$actor getFullName] failed:\n$errMsg\n[jdkStackTrace]"
-		    }
-		}
-		if {[llength $r] != 0} {
-		    lappend results $r
-		}
-	    }
+        	    if [catch {set r [_dropTest $toplevel $actor $cloneConfiguration $stream $printStream 0]} errMsg] {
+        		lappend results "Drag and Drop test of actor: [$actor getFullName] failed:\n$errMsg\n[jdkStackTrace]"
+        	    }
+        	}
+        	if {[llength $r] != 0} {
+        	    lappend results $r
+        	}
+                $actor setContainer [java::null]
+            }
 
         }
-	list $results
+        $cloneConfiguration setContainer [java::null]
+        list $results
     } {{}}
 
     test "$i-4.2" "Test to see if $i contains any attributes that might not drag and drop properly by creating ChangeRequests " {
 
-	# Use the baseModel from 4.1 above
+        # Use the baseModel from 4.1 above
 
-	# Set up a StreamChangeListener to listen for errors
-	set stream [java::new java.io.ByteArrayOutputStream]
-	set printStream [java::new \
-		     {java.io.PrintStream java.io.OutputStream} $stream]
-	set listener [java::new ptolemy.kernel.util.StreamChangeListener \
-			  $printStream]
-	$toplevel addChangeListener $listener
+        # Set up a StreamChangeListener to listen for errors
+        set stream [java::new java.io.ByteArrayOutputStream]
+        set printStream [java::new \
+        	     {java.io.PrintStream java.io.OutputStream} $stream]
+        set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+        		  $printStream]
+        $toplevel addChangeListener $listener
 
-	set cloneConfiguration \
-	    [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+        set cloneConfiguration \
+            [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
 
-	set entityList [$configuration deepNamedObjList]
-	set results {}
-	set count 0
-	for {set iterator [$entityList iterator]} \
-	    {[$iterator hasNext] == 1} {} {
-		set object [$iterator next]
-		#puts "6Attribute: [$object toString]"
-		if [java::instanceof $object ptolemy.moml.EntityLibrary] {
-		    #puts "---------- [$object toString]"
+        set entityList [$configuration deepNamedObjList]
+        set results {}
+        set count 0
+        for {set iterator [$entityList iterator]} \
+            {[$iterator hasNext] == 1} {} {
+        	set object [$iterator next]
+        	#puts "6Attribute: [$object toString]"
+        	if [java::instanceof $object ptolemy.moml.EntityLibrary] {
+        	    #puts "---------- [$object toString]"
 
-		    # FIXME: I don't understand why I need to expand the entityLibraries
-		    # and get the attributes?
-		    set entityLibrary [java::cast ptolemy.moml.EntityLibrary $object]
-		    #puts [$entityLibrary exportMoML]
-		    set attributes [$entityLibrary attributeList]
-		    #puts [listToFullNames $attributes]
-		    for {set iterator2 [$attributes iterator]} {[$iterator2 hasNext] == 1} {} {
-			set attr [$iterator2 next]
-			#puts "attr: [java::instanceof $attr ptolemy.kernel.util.Attribute] [$attr toString] "
+        	    # FIXME: I don't understand why I need to expand the entityLibraries
+        	    # and get the attributes?
+        	    set entityLibrary [java::cast ptolemy.moml.EntityLibrary $object]
+        	    #puts [$entityLibrary exportMoML]
+        	    set attributes [$entityLibrary attributeList]
+        	    #puts [listToFullNames $attributes]
+        	    for {set iterator2 [$attributes iterator]} {[$iterator2 hasNext] == 1} {} {
+        		set attr [$iterator2 next]
+        		#puts "attr: [java::instanceof $attr ptolemy.kernel.util.Attribute] [$attr toString] "
 			
-			set attribute [java::cast ptolemy.kernel.util.Attribute $attr]
+        		set attribute [java::cast ptolemy.kernel.util.Attribute $attr]
 
-			if [java::instanceof $attribute ptolemy.domains.tm.kernel.SchedulePlotter] {
-			    puts "Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector"
-			    continue
-			}
+        		if [java::instanceof $attribute ptolemy.domains.tm.kernel.SchedulePlotter] {
+        		    puts "Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector"
+        		    continue
+        		}
 
-			set r [_dropTest $toplevel $attribute $cloneConfiguration $stream $printStream 1]
-			if {[llength $r] != 0} {
-			    lappend results $r
-			}
-		    }
-		}
-	    }
-	list $results
+        		set r [_dropTest $toplevel $attribute $cloneConfiguration $stream $printStream 1]
+        		if {[llength $r] != 0} {
+        		    lappend results $r
+        		}
+        	    }
+        	}
+            }
+        $cloneConfiguration setContainer [java::null]
+        list $results
     } {{}}
 
 
     test "$i-5.1" "Test directors in $i " {
-	#set entityList [$configuration allAtomicEntityList]
-	set actorLibrary [java::cast ptolemy.kernel.CompositeEntity \
-		[$configuration getEntity {actor library}]]
-	set results {}
-	if [ java::isnull $actorLibrary] {
-	    puts "Warning: $i has no 'actor library'?  (this is ok for ptinyViewer)"
-	} else {
-	    set directors [java::cast ptolemy.kernel.CompositeEntity \
-			       [$actorLibrary getEntity {Directors}]]
-	    if [java::isnull $directors] {
-		puts "Warning: $i has no 'actor library.Directors'? (this is ok for dsp, viptos)"
-	    } else {
-		set attributeList [$directors attributeList]
-		set allDirectors [java::new java.util.LinkedList $attributeList]
-		set experimentalDirectors \
-		    [$directors getEntity ExperimentalDirectors]
+        #set entityList [$configuration allAtomicEntityList]
+        set actorLibrary [java::cast ptolemy.kernel.CompositeEntity \
+        	[$configuration getEntity {actor library}]]
+        set results {}
+        if [ java::isnull $actorLibrary] {
+            puts "Warning: $i has no 'actor library'?  (this is ok for ptinyViewer)"
+        } else {
+            set directors [java::cast ptolemy.kernel.CompositeEntity \
+        		       [$actorLibrary getEntity {Directors}]]
+            if [java::isnull $directors] {
+        	puts "Warning: $i has no 'actor library.Directors'? (this is ok for dsp, viptos)"
+            } else {
+        	set attributeList [$directors attributeList]
+        	set allDirectors [java::new java.util.LinkedList $attributeList]
+        	set experimentalDirectors \
+        	    [$directors getEntity ExperimentalDirectors]
 	
-		if {![java::isnull $experimentalDirectors]} {
-		    set moreDirectors [$experimentalDirectors attributeList]
-		    $allDirectors addAll $moreDirectors
-		}
+        	if {![java::isnull $experimentalDirectors]} {
+        	    set moreDirectors [$experimentalDirectors attributeList]
+        	    $allDirectors addAll $moreDirectors
+        	}
 
-		#puts "Testing as many as [$allDirectors size] directors in $i"
-		for {set iterator [$allDirectors iterator]} \
-		    {[$iterator hasNext] == 1} {} {
-			set entity [$iterator next]
+        	#puts "Testing as many as [$allDirectors size] directors in $i"
+        	for {set iterator [$allDirectors iterator]} \
+        	    {[$iterator hasNext] == 1} {} {
+        		set entity [$iterator next]
 
-			# Call all the suggestedModalModelDirectors methods
-			# and instantiate each director that is returned.
-			if [java::instanceof $entity ptolemy.actor.Director] {
-			    set director [java::cast ptolemy.actor.Director $entity]
-			    #puts "testing director [$director getName]"
-			    set msg {}
-			    catch {testSuggestedModalModelDirectors $director} msg
-			    if {"$msg" != ""} {
-				lappend results $msg
-			    }
-			}
-		    }
-	    }
-	}
-	list $results
+        		# Call all the suggestedModalModelDirectors methods
+        		# and instantiate each director that is returned.
+        		if [java::instanceof $entity ptolemy.actor.Director] {
+        		    set director [java::cast ptolemy.actor.Director $entity]
+        		    #puts "testing director [$director getName]"
+        		    set msg {}
+        		    catch {testSuggestedModalModelDirectors $director} msg
+        		    if {"$msg" != ""} {
+        			lappend results $msg
+        		    }
+        		}
+        	    }
+            }
+        }
+        list $results
     } {{}}
 
     test "$i-6.1" "Test that clone(Workspace) works on a new Actor.  Creating kars in Kepler does this." {
-	# In general, if we call getName on a public field in an actor,
-	# then the name that is returned should be the same as the name
-	# of the field.
-	puts "-------> Before clone"
- 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
-	puts "-------> after clone"
-	set workspace61 [java::new ptolemy.kernel.util.Workspace "workspace61"]
-	set compositeEntity61 [java::new ptolemy.kernel.CompositeEntity $workspace61]
-	set workspace61Clone [java::new ptolemy.kernel.util.Workspace "workspace61Clone"]
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	for {set iterator [$entityList iterator]} \
-		{[$iterator hasNext] == 1} {} {
-	    set entity [$iterator next]
-	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set className [$actor getClassName]
-		# Create a new actor
-		set newActor [java::new $className $compositeEntity61 [$compositeEntity61 uniqueName [split $className . ]]]
-		# Clone it.
-		if [catch {set clonedActor [$newActor clone $workspace61Clone]} errMsg] {
-		    lappend $results "Cloning $className failed:\n$errMsg:\n[jdkStackTrace]\n"
-		}
-		[java::cast ptolemy.kernel.ComponentEntity $clonedActor] setContainer [java::null]
-	    }
-	}
-	[java::cast ptolemy.kernel.CompositeEntity $compositeEntity61] setContainer [java::null]
-	$cloneConfiguration setContainer [java::null]
-	list $results
+        # In general, if we call getName on a public field in an actor,
+        # then the name that is returned should be the same as the name
+        # of the field.
+        puts "-------> Before clone"
+        set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone [java::new ptolemy.kernel.util.Workspace {clonedWorkspace}]]]
+        puts "-------> after clone"
+        set workspace61 [java::new ptolemy.kernel.util.Workspace "workspace61"]
+        set compositeEntity61 [java::new ptolemy.kernel.CompositeEntity $workspace61]
+        set workspace61Clone [java::new ptolemy.kernel.util.Workspace "workspace61Clone"]
+        set entityList [$configuration allAtomicEntityList]
+        set results {}
+        for {set iterator [$entityList iterator]} \
+        	{[$iterator hasNext] == 1} {} {
+            set entity [$iterator next]
+            if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+        	set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+        	set className [$actor getClassName]
+        	# Create a new actor
+        	set newActor [java::new $className $compositeEntity61 [$compositeEntity61 uniqueName [split $className . ]]]
+        	# Clone it.
+        	if [catch {set clonedActor [$newActor clone $workspace61Clone]} errMsg] {
+        	    lappend $results "Cloning $className failed:\n$errMsg:\n[jdkStackTrace]\n"
+        	}
+        	[java::cast ptolemy.kernel.ComponentEntity $clonedActor] setContainer [java::null]
+                $newActor setContainer [java::null]
+                $actor setContainer [java::null]
+            }
+        }
+        [java::cast ptolemy.kernel.CompositeEntity $compositeEntity61] setContainer [java::null]
+        $cloneConfiguration setContainer [java::null]
+        list $results
     } {{}}
+
+    puts "[java::call ptolemy.actor.Manager timeAndMemory 0]"
+
+    puts "Setting containers of atomic entities to null"
+    set entityList [$configuration allAtomicEntityList]
+    for {set iterator [$entityList iterator]} {[$iterator hasNext] == 1} {} {
+        set entity [$iterator next]
+        [java::cast ptolemy.kernel.ComponentEntity $entity] setContainer [java::null]
+    }
+
+    $configuration setContainer [java::null]
+
+    set $configuration [java::null]
+
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    $parser resetAll
+    set $parser [java::null]
+
+    java::call System gc
+    puts "[java::call ptolemy.actor.Manager timeAndMemory 0]"
+
+    #puts "######## sleeping"
+    #java::call Thread sleep 1000000
+    #sleep 10000 0
 }
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+
+puts "allConfigs.tcl done!"

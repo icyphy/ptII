@@ -49,17 +49,20 @@
 # To test a file, run:    make jnlp_run
 
 # For information about our code signing certificate, see
-# https://chess.eecs.berkeley.edu/ptolemy/sysadmin/certificates.htm (login required)
-# The key is stored on the nightly build machine in ~/.certpw
+# https://wiki.eecs.berkeley.edu/ptexternal/Main/JavaCodeSigningCertificatesForBerkeley
+
+# The key is stored in the ealprivi git epo, see https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/Accounts
 
 # To display our key:
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
 
 # To sign using our key and update the website:
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_dist
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS2=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD2="-keypass xxx" jnlp_dist
 
-# To update the website:  make jnlp_dist_update
+# To update the website:  make jnlp_dist_update_real
+
+# See https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating
 
 # To build a set of models for a paper, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
 
@@ -199,7 +202,7 @@ CORE_NONGUI_JARS = \
 	$(PTMATLAB_JARS)
 
 CORE_JNLP_GUI_JARS = \
-	bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar \
+	lib/universalJavaApplicationStub-license.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/vergil/vergil.jar \
@@ -255,6 +258,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	doc/design/usingVergil/usingVergil.jar \
 	edu/umich/eecs/april/april.jar \
 	lib/svgSalamander.jar \
+	com/jhlabs/jhlabs.jar \
 	org/json/json.jar \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/accessors/accessors.jar \
@@ -283,7 +287,8 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
-	$(OPENCV_JAR) \
+	lib/opencv-320.jar \
+	lib/opencv-341.jar \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTSLF4J_API_JAR) \
 	$(PTSLF4J_SIMPLE_JAR) \
@@ -310,7 +315,6 @@ CAPECODE_JNLP_JARS = \
 	$(DOC_CODEDOC_JAR) \
 	$(EXPORT_JARS) \
 	$(PDFRENDERER_JARS) \
-	com/jhlabs/jhlabs.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
@@ -965,7 +969,8 @@ ALL_JNLP_JARS = \
 	$(SPACE_MAIN_JAR) \
 	$(VIPTOS_MAIN_JAR) \
 	com/jhlabs/jhlabs.jar \
-	lib/opencv-320.jar
+	lib/opencv-320.jar \
+	lib/opencv-341.jar
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -1717,8 +1722,8 @@ key_list:
 
 # Update a location with the files necessary to download
 DIST_BASE = ptolemyII/ptII11.0/jnlp-$(PTVERSION)
-DIST_DIR = /home/www/ptweb/$(DIST_BASE)
-DIST_URL = https://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
+DIST_DIR = /users/ptolemy/apache2/ptweb/$(DIST_BASE)
+DIST_URL = https://ptolemy.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
 
@@ -1737,21 +1742,25 @@ jnlp_dist_1:
 		PTII_LOCALURL="$(DIST_URL)" jnlp_sign
 
 # Change this if your user name on the webserver is different than your username on the local machine.
-WEBSERVER_USER=$(USER)
+#WEBSERVER_USER=$(USER)
+WEBSERVER_USER=ptolemy
 
 # We use a non-fully qualified domain name to avoid people accidentally hitting our webserver
-WEBSERVER=moog
+WEBSERVER=calweb-basic-prod-01.ist.berkeley.edu
 
 jnlp_dist_update:
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
-	# -tar -cf - $(SIGNED_DIR) $(JNLPS) \
-	# 	$(OTHER_FILES_TO_BE_DISTED) | \
-	# 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
-	# -ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
-	# scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
+	-echo "Run $(MAKE) jnlp_dist_update_real if you really want to do the update."
+
+jnlp_dist_update_real:
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R ptolemy $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	-tar -cf - $(SIGNED_DIR) $(JNLPS) \
+		$(OTHER_FILES_TO_BE_DISTED) | \
+		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R ptolemy $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
+	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 $(HOME)/.certpw:
 	if [ ! -f $@ ]; then \
@@ -2044,7 +2053,7 @@ echo_jars:
 # The echo_plist_jars rule is used by $PTII/bin/makeapp to create Contents/Info.plist.
 # sed is used to make the paths relative for things like lib/js.jar and to replace colons with spaces.
 echo_plist_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | sed -e 's@$(PTII)/@@g' -e 's/:/ /g'
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar|lib/opencv-320.jar)" | sed -e 's@$(PTII)/@@g' -e 's/:/ /g'
 
 # make echo_classpath_jars JARS=PTINY_JNLP_JARS
 echo_classpath_jars:
@@ -2270,9 +2279,9 @@ osgi_demo_test:
 # * you need access to the password, which /users/ptII/adm/certs/.pw on $(WEBSERVER) 
 #
 # 1. To build all the jars and copy them to the webserver:
-#   First: create the directory on moog.  You must have an ssh account on moog
+#   First: create the directory on the webserer.  You must have an ssh access to the ptolemy account on the webserver
 #   and be in the ptolemy group:
-#     ssh moog "mkdir ~www/ptweb/ptolemyII/ptII11.0/jnlp-modularSemantics"
+#     ssh ptolemy@calweb-basic-prod-01  "mkdir ~/apache/ptweb/ptolemyII/ptII11.0/jnlp-modularSemantics"
 #   Then, run these commands:
 #     cd $PTII
 #     ant build javadoc

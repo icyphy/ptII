@@ -4,47 +4,18 @@
 <entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={781, 338, 760, 418}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 238, 760, 637}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[526, 308]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[526, 527]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1845495122860286">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.200839977091534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{241.8043191306483, 72.96785593688605}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.849609375, 162.44762521196705}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -25.0]">
-        </property>
-    </property>
-    <property name="autopilot" class="org.hlacerti.lib.HlaManager">
-        <display name="AutoPilot"/>
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;AutoPilot&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;PRISE_V2&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
-            <display name="Path for .fed file"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARtimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
-            <display name="lookahead (in ms)"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Generate HLA reports ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -15.0]">
         </property>
     </property>
     <property name="TARtimeStep" class="ptolemy.data.expr.Parameter" value="0.010">
@@ -89,6 +60,31 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The federate &quot;AutoPilot&quot; (controller) sends the command to the&#10;Elevator Deflector of federate &quot;Aircraft&quot;.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 160.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;AutoPilot&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;PRISE_V2&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
+            <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+            <display name="Time Management Service"/>
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARtimeStep">
+            <display name="*** If TAR is used, time step (s)"/>
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+            <display name="lookahead (s)"/>
+        </property>
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="Generate HLA reports ?"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, -10.0]">
         </property>
     </property>
     <entity name="AutoPilotDE" class="ptolemy.actor.TypedCompositeActor">
@@ -510,7 +506,7 @@
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Elevator Command">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 662, 578, 314}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 662, 578, 332}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[578, 270]">
             </property>
@@ -531,8 +527,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.01" max="12.0"/>
-<yRange min="-1.8331599325296006" max="1.2345178893510163"/>
+<xRange min="-1.0225679590416668" max="12.973704352958334"/>
+<yRange min="-2.0898153568905493" max="1.491173313711965"/>
 </plot>?>
             </configure>
         </entity>

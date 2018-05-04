@@ -1016,7 +1016,7 @@ case $commandname in
 	# domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
 	# domains/wireless/test/auto/performance.xml
 	# all fail if we use Xmx384
-	javaflag="-Xmx1024M"
+	javaflag="-Xmx4096M"
         ;;
     decompile)
 	if [ -f "$JODE_JAR" ]; then
@@ -1730,7 +1730,7 @@ EOF2
 	cat >>$MACAPP_PLIST <<EOF3
       </array>
       <key>VMOptions</key>
-      <string>-Xmx1024m</string>
+      <string>-Xmx4096m</string>
       <key>Arguments</key>
       <string>$MACAPP_ARGUMENT</string>
       <key>Properties</key>
@@ -1769,11 +1769,19 @@ EOF4
 	(cd $PTII; make --no-print-directory echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
 	  awk '{ for(i=1;i<=NF;i++) { printf("        <string>$JAVAROOT/../../../../../%s</string>\n", $i)}}' >> $MACAPP_PLIST
 
+        # If there are multiple lib/opencv*.jar files, then only include one with the greatest version number
+        # because we include opencv-320.jar for Windows.
+        OPENCV_JAR=`egrep 'lib/opencv.*.jar' $MACAPP_PLIST | sort | tail -1`
+	MACAPP_PLIST_TMP=$MACAPP_APP/Contents/Info.plist.tmp
+        egrep -v 'lib/opencv.*.jar' $MACAPP_PLIST > $MACAPP_PLIST_TMP
+        mv $MACAPP_PLIST_TMP $MACAPP_PLIST
+        echo "$OPENCV_JAR" >> $MACAPP_PLIST
+
       # Here's the last part of the file:
       cat >>$MACAPP_PLIST <<EOF6        
       </array>
       <key>VMOptions</key>
-      <string>-Xmx1024m</string>
+      <string>-Xmx4096m</string>
       <key>Properties</key>
       <dict>
         <key>com.apple.mrj.application.apple.menu.about.name</key>

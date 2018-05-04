@@ -700,8 +700,18 @@ else
 fi
 
 # The Major and Minor version of the JDK.  1.6, 1.8 etc.  Used by ant in build.xml.in.
+# Sadly, javac 9 and later has a usability bug where "-target 9.0" fails, but "-target 9" works.
+# See https://bugs.openjdk.java.net/browse/JDK-8190556
+# If you get messages about "javac: invalid target release:", then check that JAVA_HOME
+# is set to same JDK as the one that is in your path.
 changequote(<<, >>)dnl
-JVERSION_TARGET=`echo "$JVERSION" | sed 's/\([1-9]*\.[^._]*\).*/\1/'`
+JVERSION_TARGET=`echo "$JVERSION" |
+    awk -F . '{ if ($1 > 8) {
+                   print $1
+                } else {
+		   print $1 "." $2
+                }
+              }'`
 changequote([, ])dnl
 
 cd "$startdir"
@@ -1243,11 +1253,11 @@ PTVIEWER_DIR=viewer
 # PTVIEWER_PACKAGES is used in doc/makefile
 PTVIEWER_PACKAGES=ptolemy.media.viewer
 
-# Handle Java 9 fails.
+# Handle Java 9 and later fails.
 AC_MSG_CHECKING(Java 9 and later)
 echo "$JVERSION" | egrep '^9|^[1-9][0-9]' > /dev/null
 status=$?
-if test $status -eq 1 ; then
+if test "$status" = "0" ; then
     PT_MSG_RESULT(Java 9 or later is not present)
 else
     PT_MSG_RESULT(Java 9 or later present, so certain internal sun.* packages are not accessible)
@@ -4092,14 +4102,17 @@ else
         for OPENCV_DIR in $OPENCV_DIRS
         do
             if test -d $OPENCV_DIR; then
-                TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
-                # If the file is not the bad jar we already tried, then add it to the list
-                if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
-                    PT_MSG_RESULT($TMP_OPENCV_JAR)
-                    OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
-                fi
+                TMP_OPENCV_JARS=`find $OPENCV_DIR -name "opencv-*.jar"`
+                for TMP_OPENCV_JAR in $TMP_OPENCV_JARS
+                do
+                    # If the file is not the bad jar we already tried, then add it to the list
+                    if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                        OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
+                    fi
+                done
             fi
         done
+        PT_MSG_RESULT([OpenCV jars: $OPENCV_JARS])
 
         for TMP_OPENCV_JAR in $OPENCV_JARS
         do
@@ -5386,7 +5399,10 @@ changequote([, ])dnl
 fi
 
 if test -z "$PTMATLAB_DIR"; then
-    updateExcludes "ptolemy/matlab/"
+    # The Matlab Expression actor is in the configuration, so we might as well compile it.
+    # ptolemy/actor/gui/test/UserActorLibrary.tcl depends on ptolemy/matlab/Expression.class being present.
+    AC_MSG_WARN([Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.])
+    # updateExcludes "ptolemy/matlab/"
 else
     # Set to the matlab jars that need to be signed if matlab was found.
     # Used in jnlp.mk
@@ -6075,7 +6091,13 @@ else
 	PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
     else
 	AC_MSG_WARN([$OJDBC_TARGET_JAR not found,
-    but only necessary to use database actors with Oracle.])
+    but only necessary to use database actors with Oracle.
+    If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+    To install ojdbc5.jar or ojdbc6.jar,
+    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    copy it to ptolemy/actor/lib/database
+    and rerun ./configure])
+    
     fi
 
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
@@ -6243,9 +6265,9 @@ if test ! -d "$PTII/diva/util/java2d/svg"; then
 else
     AC_MSG_CHECKING([for Batik SVG])
     AC_ARG_WITH(batikjar, [  --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
-                          defaults to \$KEPLER/lib/jar/batik-all-1.6.jar],
+                          defaults to \$KEPLER/lib/jar/batik-all-1.9.jar],
 	PTSVG_JAR=$withval,
-	PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar)
+	PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.9.jar)
 
     if test -f "$PTSVG_JAR"; then
 	PT_MSG_RESULT([$PTSVG_JAR])
@@ -6256,7 +6278,9 @@ else
         AC_MSG_WARN([Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
-    Batik can be downloaded from http://xmlgraphics.apache.org/batik/])
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+    batike-1.9/lib/batik-all-1.9.jar copied to $PTII/lib
+    and ./configure rerun.])
     fi
 fi
 

@@ -31,7 +31,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that WebServer accessor returns error if timeout expires.&#10;This starts a web server on localhost on port 8097.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that WebServer accessor returns error if timeout expires.&#10;This starts a web server on localhost on port 8597.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 0.0]">
         </property>
@@ -57,16 +57,6 @@
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="@node@ ../../../hosts/node/nodeHostInvoke.js  net/test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{565.0, 100.0}">
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Don't set the stop time to more than 20 because &#10;mocha tests have a timeout of 20000 ms.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 45.0]">
         </property>
     </property>
     <entity name="WebServer" class="org.terraswarm.accessor.JSAccessor">
@@ -116,7 +106,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 315.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8097">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8597">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -181,7 +171,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot; : &quot;http://localhost:8097&quot;}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot; : &quot;http://localhost:8597&quot;}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -203,7 +193,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="15000">
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="28000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>

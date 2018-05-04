@@ -14,13 +14,15 @@ env:
     - PT_TRAVIS_TEST_CORE2_XML=true
     - PT_TRAVIS_TEST_CORE3_XML=true
     - PT_TRAVIS_TEST_CORE4_XML=true
-    - PT_TRAVIS_TEST_INSTALLERS=true
+    - PT_TRAVIS_TEST_CORE5_XML=true
+    # Building the installers tends to fail in deployment, so do this last.
+    #   - PT_TRAVIS_TEST_INSTALLERS=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
     - PTII=${TRAVIS_BUILD_DIR}
 
-    - ANT_OPTS=-Xmx1024m
+    - ANT_OPTS=-Xmx2048m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
 
     # GeoCoding
@@ -31,6 +33,9 @@ env:
     # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
     - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools
     - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
+
+    # Heartbeat
+    - secure: "yFRoAj3VTJs0ue19oKxJ8qxjM/LbthiJFx/iTJiUK1PPVWeOQpBlraXnhSEtefxNq7KXnXJY1OjQpTbr+j9hFipxOjoGgAGU7rv3iOCKP9ttdlnzUrsyu7iXSx/xoyQPRpnCiJBrgl839PzpolzF0dGeTfwtjXKO0d4YF8YUn7a9QJesqh0vxjnmxcHcdfJnaufzw9uUQpggrJInrtnp8B+WWH24RJpeJhlE/cOzi1SZIlhsCBaNGr11N6iJWoUvyv/lkw1fbVJRgUIRP5kN9bwAUQ7azcXB0cpgpa3RHP8fybBGGM2yVhR+RNwxuLKwF6Zqm38qq3ty1YVSWprgX/HGvAeyC0voFyuj3XhvFqMKSICNB7kjIfjbnjRrPgbIiCDCXukFejII+jvJ7bXgmZqgk7SBP8FtugEX4hIMy6PoxUf9pLPRyUAugqPGbNg5SSE2zLUKGtnT/VizeMeHZjd0tArlKdZkN6s1+oO3EmG5LtyYtwczVIsc6YxXunyXxZfNxI1GBfUDHyAKRMhK0JXBIrj/aLSs11KmkNOytU3qghXl8oChLbnV2YnkwPl2J6qCcYNlubVpHlsQgO51LuPaU3tpvxp4TZ0qZhTPvmGucqfD/tjL/ztK+t0FtvElOZZd981wy9Irok9m1X19tavY4dsaiVTDzehQZUeaxaY="
 
     # SpaceCadet
     - secure: "rF8A4+P8J7oQe7VUOxD1Ei70U04kZu5RBHI9I2PICQwBM5op8Jl+sG/me83FH1txDEv2q3dov8BjbFotZGRQ//wHntmkvzGomxUkjiMGtg42KxC0uV1lo7kSWsjD4Fap4SivDiT9+1BQpd/2eLtwhvQETeM4QZE/t7ix5BKqelkiu3pfCqQXvUK30/+C0R4IjXsrNQXRjueb5a2Aor2RoO9NGrLpANAIp1479j6oa/qwQXCLfhg58JkR8qSxSxiLGHrdZHyIOOthTtHNu9BRqpYgGeA12I4YktilZJt0Dr2Tw4WHgxXX6LqYcvb531PpeKbfjCvkhzIgYG/bB7OmcuZ2kLCH91ubyNuq8AI1JFg6892zsYUeP24xT/F0twJ/xrZCSmMMQ6pXtzPRns/bKcpzmmgRUguFWdbKVOggj9Z7HRG/TxZnUmUdrR98DkOoOdC/lYwYP7LhOiciGHUdFSu0T1ep1EcQGCYHz2z9bUY/9OQqXtohfG4FI/yyFEJ6EEnObPKSypcf7RweR132RLTQmJDu+akD8bwDgas2Rr2YDMFK0oypejU2HawXcdEHUhHwZWBNzhF2nOoMTyi0PvLivuXqlzgxrEc42vru6dx5xIJI/lVvDHvtAyMDj36EAQTlRquOBDD0o+jgXIM3dZJD160Xs676gD6B7s7bzOU="
@@ -47,11 +52,19 @@ language: node_js
 node_js:
   - "7"
 
+addons:
+  ssh_known_hosts: localhost
+
 # Need X11 to create the DOP Center map and for testing.
 before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-
+  # Add npm to path for AccessorSSHCodeGenerator.tcl
+  - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" >> ~/.bashrc
+  - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" >> ~/.bash_profile
+  - cat ~/.bashrc
+  - cat ~/.bash_profile
+  
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
@@ -59,8 +72,6 @@ install:
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
   
-  # Shorter running installations first.
-
   # Below are the packages that are needed, in alphabetical order:
   #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
@@ -92,7 +103,9 @@ install:
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # If ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
-  - sudo -E org/hlacerti/build-certi.sh || true
+  # Building CERTI will result in a log of more than 10,000 lines, so we just show the last 50.
+  - sudo -E org/hlacerti/build-certi.sh >& /tmp/build-certi.out || true
+  - tail -50 /tmp/build-certi.out
   - source ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh || true
   # - echo "CERTI_HOME: $CERTI_HOME" || true
 
@@ -112,13 +125,22 @@ install:
   - env | sort
   - ./configure --enable-verbose
 
+  # Set up and test 'ssh localhost' for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
+  - ssh-keygen -N '' -f ~/.ssh/id_rsa
+  - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+  - ssh localhost cat /etc/issue
+  - sudo ln -s `which npm` /usr/local/bin/npm
+  - sudo ln -s `which node` /usr/local/bin/node
+  - ssh localhost  npm --version || true
+
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
  
   # travis_wait does not help here because we want to redirect the output of cmake.
   # See https://github.com/travis-ci/travis-ci/issues/4190
 
-  # Echo status messages so that Travis knows we are alive
+  # Echo status messages so that Travis knows we are alive.
+  # If you need to get status about available memory, insert "free -m" inside the loop.
   - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
@@ -130,14 +152,34 @@ script:
   # Killing background sleep loop.
   - kill %1
 
+# The report stage should be run before installers because deploying
+# installers might fail.
+stages:
+  - test
+  - report
+  - installers
+  - deploy
 
+# Run three stages, test (which runs the script above), report and installers.
 # See https://docs.travis-ci.com/user/build-stages/ and
 # https://docs.travis-ci.com/user/build-stages/matrix-expansion/
 jobs:
   include:
-    - stage: deploy
+    # Run "ant junitreport" in the gh-branch, which uses a different
+    # build.xml than $PTII.
+    - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
-      env: PT_TRAVIS_RUN_JUNITREPORT=true
+      env: PT_TRAVIS_JUNITREPORT=true
+    # Build the installers last because it might fail.
+    - stage: installers
+      script:
+        - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+        - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
+        - $PTII/bin/ptIITravisBuild.sh $SECONDS
+        - echo "Done with ptIITravisBuild.sh at $SECONDS seconds."
+        # Killing background sleep loop.
+        - kill %1
+      env: PT_TRAVIS_TEST_INSTALLERS=true
 
 # See https://docs.travis-ci.com/user/caching
 cache:
@@ -151,17 +193,6 @@ cache:
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
-# before_deploy:
-#   # Set up git user name and tag this commit
-#   - git config --local user.name "cxbrooks"
-#   - git config --local user.email "cxh@eecs.berkeley.edu"
-#   #  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-#   - git tag nightly || true
-#   - git push origin --tags https://${GITHUB_TOKEN}@github.com/icyphy/ptII || true
-#   - echo $PTII
-#   - ls -l $PTII/logs
-#   - pwd
-  
 deploy:
   # If PT_TRAVIS_TEST_CORE2_XML == true, then copy the SpaceCadet files
   - provider: releases

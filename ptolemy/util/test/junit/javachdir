@@ -53,4 +53,9 @@ echo "javachdir: pwd: `pwd`  Invoking with -Djava.net.preferIPv4Stack=true"
 #
 # See https://docs.oracle.com/javase/7/docs/api/java/net/doc-files/net-properties.html
 
+#if [ `uname -s` = "Linux" ]; then
+#   echo "$0: memory:"
+#   free -m
+#fi   
+
 java -Djava.net.preferIPv4Stack=true $@

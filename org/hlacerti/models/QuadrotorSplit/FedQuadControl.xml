@@ -1,0 +1,2465 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FedQuadControl" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 22, 875, 641}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 531]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0635620589290697">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.33439228035905, 233.6796875}">
+    </property>
+    <property name="stopT" class="ptolemy.data.expr.Parameter" value="30.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, -5.0]">
+        </property>
+    </property>
+    <property name="Twp" class="ptolemy.data.expr.Parameter" value="22.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, -5.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, 20.0}">
+        </property>
+    </property>
+    <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.005">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The composite actor &quot;quadrotor&quot; encapsulate a &#10;quadrotor model with a Continuous director. The&#10;Sampler actors allows an interface with a top DE&#10;level model for using it as a HLA federate (adding&#10;HlaManager, HlaSubscriber and HlaPublish actors).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 395.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;QuadControl&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;QuadrotorSplit&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="QuadrotorSplit.fed">
+            <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
+            <display name="Time Management Service"/>
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="0.05">
+            <display name="*** If TAR is used, time step (s)"/>
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+            <display name="lookahead (s)"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 55.0]">
+        </property>
+    </property>
+    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sebastien Jaillant, ISAE-SUPAERO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WPs du quadrotor1 :&#10;WP1_UAV2=[0,0,0];&#10;WP2_UAV2=[1,2,3];&#10;WP1_UAV3=[2,2,2];&#10;WP2_UAV4=[0,0,0];">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 45.0]">
+        </property>
+    </property>
+    <entity name="Control" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[143.41796875, 190.91796875]">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WPs du quadrotor1 :&#10;WP1_UAV2=[0,0,0];&#10;WP2_UAV2=[1,2,3];&#10;WP1_UAV3=[2,2,2];&#10;WP2_UAV4=[0,0,0];">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{411.0, 233.0}">
+            </property>
+        </property>
+        <property name="Yref_wp1" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 245.0]">
+            </property>
+        </property>
+        <property name="Xref_wp2" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 260.0]">
+            </property>
+        </property>
+        <property name="Zref_wp1" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 245.0]">
+            </property>
+        </property>
+        <property name="Yref_wp2" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 260.0]">
+            </property>
+        </property>
+        <property name="yaw_des" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 560.0]">
+            </property>
+        </property>
+        <property name="Zref_wp2" class="ptolemy.data.expr.Parameter" value="3.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 260.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 28, 948, 595}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 579]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9604694023394892">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{442.57812499999994, 520.7664197858778}">
+        </property>
+        <property name="Xref_wp1" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[534.0, 242.0]">
+            </property>
+        </property>
+        <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopT">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{116.5852355072464, 252.66255661231892}">
+            </property>
+        </property>
+        <property name="Xref_wp3" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0000000000002, 275.0]">
+            </property>
+        </property>
+        <property name="Yref_wp3" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0000000000002, 275.0]">
+            </property>
+        </property>
+        <property name="Zref_wp3" class="ptolemy.data.expr.Parameter" value="2.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0000000000002, 275.0]">
+            </property>
+        </property>
+        <property name="Xref_wp4" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 290.0]">
+            </property>
+        </property>
+        <property name="Yref_wp4" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 290.0]">
+            </property>
+        </property>
+        <property name="Zref_wp4" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[729.9999999999998, 290.0]">
+            </property>
+        </property>
+        <port name="Yaw" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 480.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Pitch" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 410.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Roll" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 345.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Vz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 750.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Vy" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 690.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Xmes" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 435.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Zmes" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 565.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Ymes" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 505.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Vx" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 640.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Thrust" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 565.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="PositionControl" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={763, 66, 662, 594}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[572, 743]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1768863294287024">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.76562499999997, 513.5399521797153}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 435.0]">
+            </property>
+            <port name="X_des(m)" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 275.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Y_des(m)" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 385.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Z_des(m)" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 500.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="X_mes(m)" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 310.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Y_mes(m)" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 425.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Z_mes(m)" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 570.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Vx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 345.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Vy" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 460.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Vz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 535.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Yaw_des" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{31.5, 640.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Yaw" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 600.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Roll_des(rad)" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 290.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Pitch_des(rad)" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 335.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Yaw_des(rad)" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 640.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="Thrust(N)" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 390.0}">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{236.5, 640.0}">
+                </property>
+            </entity>
+            <entity name="ControlForXY" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={742, 530, 686, 359}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[572, 743]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1635380006209772">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{236.08896042713602, 318.89725269474604}">
+                </property>
+                <property name="KpVx" class="ptolemy.data.expr.Parameter" value="0.31">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 130.0]">
+                    </property>
+                </property>
+                <property name="KiVx" class="ptolemy.data.expr.Parameter" value="0.0005">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 145.0]">
+                    </property>
+                </property>
+                <property name="KpVy" class="ptolemy.data.expr.Parameter" value="0.31">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 250.0]">
+                    </property>
+                </property>
+                <property name="KiVy" class="ptolemy.data.expr.Parameter" value="0.0005">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 265.0]">
+                    </property>
+                </property>
+                <property name="KpX" class="ptolemy.data.expr.Parameter" value="1.1">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 45.0]">
+                    </property>
+                </property>
+                <property name="KpY" class="ptolemy.data.expr.Parameter" value="1.1">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 180.0]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 325.0}">
+                </property>
+                <port name="X_desired (m)" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="X_mesure(m)" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 115.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Vx_mesure" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 160.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="U_des" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 105.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Y_desired(m)" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 200.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Y_mesure(m)" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 240.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="V_des" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 220.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Vy_mesure" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 275.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <entity name="AddSubtract5" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 80.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="Scale4" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="KpX">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 80.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="AddSubtract6" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 100.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="Scale5" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 105.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="AddSubtract7" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 210.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="Scale6" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="KpY">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 210.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="AddSubtract8" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 220.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="ContinuousTransferFunction3" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
+                    <property name="numerator" class="ptolemy.data.expr.Parameter" value="{KpVx, KiVx}">
+                    </property>
+                    <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0,0.0}">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 100.0]">
+                    </property>
+                    <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    </entity>
+                    <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    </entity>
+                    <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
+                        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                        </property>
+                        <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                            </property>
+                        </port>
+                        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                            <property name="input"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="Feedback0" class="ptolemy.actor.lib.Scale">
+                        <property name="factor" class="ptolemy.data.expr.Parameter" value="-0.0">
+                        </property>
+                        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
+                        <property name="factor" class="ptolemy.data.expr.Parameter" value="5.0E-4">
+                        </property>
+                        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="ScaleD" class="ptolemy.actor.lib.Scale">
+                        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.31">
+                        </property>
+                        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                            </property>
+                        </property>
+                    </entity>
+                    <relation name="node0" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <link port="input" relation="inputRelation"/>
+                    <link port="output" relation="outputRelation"/>
+                    <link port="InputAdder.plus" relation="_R"/>
+                    <link port="InputAdder.plus" relation="inputRelation"/>
+                    <link port="InputAdder.output" relation="_R3"/>
+                    <link port="OutputAdder.plus" relation="_R2"/>
+                    <link port="OutputAdder.plus" relation="_R4"/>
+                    <link port="OutputAdder.output" relation="outputRelation"/>
+                    <link port="Integrator0.derivative" relation="_R3"/>
+                    <link port="Integrator0.state" relation="node0"/>
+                    <link port="Feedback0.input" relation="node0"/>
+                    <link port="Feedback0.output" relation="_R"/>
+                    <link port="Feedforward0.input" relation="node0"/>
+                    <link port="Feedforward0.output" relation="_R2"/>
+                    <link port="ScaleD.input" relation="inputRelation"/>
+                    <link port="ScaleD.output" relation="_R4"/>
+                </entity>
+                <entity name="ContinuousTransferFunction4" class="ptolemy.domains.continuous.lib.ContinuousTransferFunction">
+                    <property name="numerator" class="ptolemy.data.expr.Parameter" value="{KpVy, KiVy}">
+                    </property>
+                    <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0,0.0}">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 220.0]">
+                    </property>
+                    <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    </entity>
+                    <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
+                    </entity>
+                    <entity name="Integrator0" class="ptolemy.domains.continuous.lib.Integrator">
+                        <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                        </property>
+                        <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                            <property name="input"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                            </property>
+                        </port>
+                        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                            <property name="input"/>
+                            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                            </property>
+                        </port>
+                    </entity>
+                    <entity name="Feedback0" class="ptolemy.actor.lib.Scale">
+                        <property name="factor" class="ptolemy.data.expr.Parameter" value="-0.0">
+                        </property>
+                        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
+                        <property name="factor" class="ptolemy.data.expr.Parameter" value="5.0E-4">
+                        </property>
+                        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                            </property>
+                        </property>
+                    </entity>
+                    <entity name="ScaleD" class="ptolemy.actor.lib.Scale">
+                        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.31">
+                        </property>
+                        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                            </property>
+                        </property>
+                    </entity>
+                    <relation name="node0" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                        </property>
+                    </relation>
+                    <link port="input" relation="inputRelation"/>
+                    <link port="output" relation="outputRelation"/>
+                    <link port="InputAdder.plus" relation="_R"/>
+                    <link port="InputAdder.plus" relation="inputRelation"/>
+                    <link port="InputAdder.output" relation="_R3"/>
+                    <link port="OutputAdder.plus" relation="_R2"/>
+                    <link port="OutputAdder.plus" relation="_R4"/>
+                    <link port="OutputAdder.output" relation="outputRelation"/>
+                    <link port="Integrator0.derivative" relation="_R3"/>
+                    <link port="Integrator0.state" relation="node0"/>
+                    <link port="Feedback0.input" relation="node0"/>
+                    <link port="Feedback0.output" relation="_R"/>
+                    <link port="Feedforward0.input" relation="node0"/>
+                    <link port="Feedforward0.output" relation="_R2"/>
+                    <link port="ScaleD.input" relation="inputRelation"/>
+                    <link port="ScaleD.output" relation="_R4"/>
+                </entity>
+                <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="X_desired (m)" relation="relation3"/>
+                <link port="X_mesure(m)" relation="relation4"/>
+                <link port="Vx_mesure" relation="relation8"/>
+                <link port="U_des" relation="relation"/>
+                <link port="Y_desired(m)" relation="relation5"/>
+                <link port="Y_mesure(m)" relation="relation6"/>
+                <link port="V_des" relation="relation2"/>
+                <link port="Vy_mesure" relation="relation7"/>
+                <link port="AddSubtract5.plus" relation="relation3"/>
+                <link port="AddSubtract5.minus" relation="relation4"/>
+                <link port="AddSubtract5.output" relation="relation16"/>
+                <link port="Scale4.input" relation="relation16"/>
+                <link port="Scale4.output" relation="relation17"/>
+                <link port="AddSubtract6.plus" relation="relation17"/>
+                <link port="AddSubtract6.minus" relation="relation8"/>
+                <link port="AddSubtract6.output" relation="relation20"/>
+                <link port="Scale5.input" relation="relation21"/>
+                <link port="Scale5.output" relation="relation"/>
+                <link port="AddSubtract7.plus" relation="relation5"/>
+                <link port="AddSubtract7.minus" relation="relation6"/>
+                <link port="AddSubtract7.output" relation="relation18"/>
+                <link port="Scale6.input" relation="relation18"/>
+                <link port="Scale6.output" relation="relation19"/>
+                <link port="AddSubtract8.plus" relation="relation19"/>
+                <link port="AddSubtract8.minus" relation="relation7"/>
+                <link port="AddSubtract8.output" relation="relation22"/>
+                <link port="ContinuousTransferFunction3.input" relation="relation20"/>
+                <link port="ContinuousTransferFunction3.output" relation="relation21"/>
+                <link port="ContinuousTransferFunction4.input" relation="relation22"/>
+                <link port="ContinuousTransferFunction4.output" relation="relation2"/>
+            </entity>
+            <entity name="BodyToEarth" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 594, 585, 306}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[572, 743]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0212959282185246">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{412.14062500000006, 290.9827902580071}">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 335.0}">
+                </property>
+                <port name="Cde_U" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 5.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Cde_V" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 190.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Thrust" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 225.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Yaw" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 85.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Roll" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 145.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Pitch" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 50.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Thrust (N)" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 225.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <entity name="Limiter3" class="ptolemy.actor.lib.Limiter">
+                    <property name="bottom" class="ptolemy.data.expr.Parameter" value="-7.848">
+                    </property>
+                    <property name="top" class="ptolemy.data.expr.Parameter" value="7.848">
+                    </property>
+                    <property name="LimiterIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                            </property>
+                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                            </property>
+                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                            </property>
+                        </property>
+                        <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -16.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="30.0">
+                            </property>
+                            <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="6.0">
+                            </property>
+                        </property>
+                        <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 16.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
+                            </property>
+                            <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="6.0">
+                            </property>
+                        </property>
+                        <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                            <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+                            </property>
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="top">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-14.0, -21.0}">
+                            </property>
+                        </property>
+                        <property name="ParameterExpression2" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                            <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+                            </property>
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="bottom">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, 5.0]">
+                            </property>
+                        </property>
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={383, 231, 913, 588}, maximized=false}">
+                        </property>
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
+                        </property>
+                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                        </property>
+                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.75}">
+                        </property>
+                        <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -17.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                        </property>
+                        <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 17.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 225.0]">
+                    </property>
+                </entity>
+                <entity name="MultiplyDivide5" class="ptolemy.actor.lib.MultiplyDivide">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 20.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="MultiplyDivide6" class="ptolemy.actor.lib.MultiplyDivide">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 65.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="MultiplyDivide7" class="ptolemy.actor.lib.MultiplyDivide">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 115.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="MultiplyDivide8" class="ptolemy.actor.lib.MultiplyDivide">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 160.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="TrigFunction5" class="ptolemy.actor.lib.TrigFunction">
+                    <property name="function" class="ptolemy.data.expr.StringParameter" value="cos">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 30.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="TrigFunction6" class="ptolemy.actor.lib.TrigFunction">
+                    <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 65.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="TrigFunction7" class="ptolemy.actor.lib.TrigFunction">
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 100.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="TrigFunction8" class="ptolemy.actor.lib.TrigFunction">
+                    <property name="function" class="ptolemy.data.expr.StringParameter" value="cos">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 135.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="Scale3" class="ptolemy.actor.lib.Scale">
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 85.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="Scale4" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 160.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 50.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="AddSubtract4" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 145.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </entity>
+                <entity name="Limiter4" class="ptolemy.actor.lib.Limiter">
+                    <property name="bottom" class="ptolemy.data.expr.Parameter" value="-0.3">
+                    </property>
+                    <property name="top" class="ptolemy.data.expr.Parameter" value="0.3">
+                    </property>
+                    <property name="LimiterIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                            </property>
+                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                            </property>
+                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                            </property>
+                        </property>
+                        <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -16.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="30.0">
+                            </property>
+                            <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="6.0">
+                            </property>
+                        </property>
+                        <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 16.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
+                            </property>
+                            <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="6.0">
+                            </property>
+                        </property>
+                        <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                            <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+                            </property>
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="top">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-14.0, -21.0}">
+                            </property>
+                        </property>
+                        <property name="ParameterExpression2" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                            <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+                            </property>
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="bottom">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, 5.0]">
+                            </property>
+                        </property>
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={383, 231, 913, 588}, maximized=false}">
+                        </property>
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
+                        </property>
+                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                        </property>
+                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.75}">
+                        </property>
+                        <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -17.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                        </property>
+                        <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 17.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 50.0]">
+                    </property>
+                </entity>
+                <entity name="Limiter5" class="ptolemy.actor.lib.Limiter">
+                    <property name="bottom" class="ptolemy.data.expr.Parameter" value="-0.3">
+                    </property>
+                    <property name="top" class="ptolemy.data.expr.Parameter" value="0.3">
+                    </property>
+                    <property name="LimiterIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                            </property>
+                            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                            </property>
+                            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                            </property>
+                        </property>
+                        <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -16.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="30.0">
+                            </property>
+                            <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="6.0">
+                            </property>
+                        </property>
+                        <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 16.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
+                            </property>
+                            <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="6.0">
+                            </property>
+                        </property>
+                        <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                            <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+                            </property>
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="top">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="{-14.0, -21.0}">
+                            </property>
+                        </property>
+                        <property name="ParameterExpression2" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                            <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+                            </property>
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="bottom">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                            </property>
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, 5.0]">
+                            </property>
+                        </property>
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={383, 231, 913, 588}, maximized=false}">
+                        </property>
+                        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 478]">
+                        </property>
+                        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                        </property>
+                        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.75}">
+                        </property>
+                        <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -17.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                        </property>
+                        <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                            <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, 17.0]">
+                            </property>
+                            <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                            </property>
+                            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 145.0]">
+                    </property>
+                </entity>
+                <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="[280.0, 190.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="[185.0, 85.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="[270.0, 5.0]">
+                    </vertex>
+                </relation>
+                <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="Cde_U" relation="relation36"/>
+                <link port="Cde_V" relation="relation32"/>
+                <link port="Thrust" relation="relation16"/>
+                <link port="Yaw" relation="relation35"/>
+                <link port="Roll" relation="relation"/>
+                <link port="Pitch" relation="relation2"/>
+                <link port="Thrust (N)" relation="relation17"/>
+                <link port="Limiter3.input" relation="relation16"/>
+                <link port="Limiter3.output" relation="relation17"/>
+                <link port="MultiplyDivide5.multiply" relation="relation36"/>
+                <link port="MultiplyDivide5.multiply" relation="relation31"/>
+                <link port="MultiplyDivide5.output" relation="relation22"/>
+                <link port="MultiplyDivide6.multiply" relation="relation28"/>
+                <link port="MultiplyDivide6.multiply" relation="relation29"/>
+                <link port="MultiplyDivide6.output" relation="relation23"/>
+                <link port="MultiplyDivide7.multiply" relation="relation26"/>
+                <link port="MultiplyDivide7.multiply" relation="relation30"/>
+                <link port="MultiplyDivide7.output" relation="relation24"/>
+                <link port="MultiplyDivide8.multiply" relation="relation27"/>
+                <link port="MultiplyDivide8.multiply" relation="relation32"/>
+                <link port="MultiplyDivide8.output" relation="relation25"/>
+                <link port="TrigFunction5.input" relation="relation35"/>
+                <link port="TrigFunction5.output" relation="relation31"/>
+                <link port="TrigFunction6.input" relation="relation35"/>
+                <link port="TrigFunction6.output" relation="relation28"/>
+                <link port="TrigFunction7.input" relation="relation35"/>
+                <link port="TrigFunction7.output" relation="relation26"/>
+                <link port="TrigFunction8.input" relation="relation35"/>
+                <link port="TrigFunction8.output" relation="relation27"/>
+                <link port="Scale3.input" relation="relation32"/>
+                <link port="Scale3.output" relation="relation29"/>
+                <link port="Scale4.input" relation="relation36"/>
+                <link port="Scale4.output" relation="relation30"/>
+                <link port="AddSubtract3.plus" relation="relation22"/>
+                <link port="AddSubtract3.plus" relation="relation23"/>
+                <link port="AddSubtract3.output" relation="relation21"/>
+                <link port="AddSubtract4.plus" relation="relation24"/>
+                <link port="AddSubtract4.plus" relation="relation25"/>
+                <link port="AddSubtract4.output" relation="relation20"/>
+                <link port="Limiter4.input" relation="relation21"/>
+                <link port="Limiter4.output" relation="relation2"/>
+                <link port="Limiter5.input" relation="relation20"/>
+                <link port="Limiter5.output" relation="relation"/>
+            </entity>
+            <entity name="ControlForZ" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 583, 549, 307}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[572, 743]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3605952831922656">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.8866233825684, 411.49238979434637}">
+                </property>
+                <property name="MassQuad" class="ptolemy.data.expr.Parameter" value="0.4">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 440.0]">
+                    </property>
+                </property>
+                <property name="g" class="ptolemy.data.expr.Parameter" value="9.8">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 440.0]">
+                    </property>
+                </property>
+                <property name="ZetaAlti" class="ptolemy.data.expr.Parameter" value="1">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 335.0]">
+                    </property>
+                </property>
+                <property name="WAlti" class="ptolemy.data.expr.Parameter" value="1.8850">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 350.0]">
+                    </property>
+                </property>
+                <property name="TakeOff" class="ptolemy.data.expr.Parameter" value="1.0">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 390.0]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 510.0}">
+                </property>
+                <port name="Z_des(m)" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Vz_mes" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 305.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Z_mes(m)" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Thrust" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 275.0]">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 230.0]">
+                    </property>
+                </entity>
+                <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 240.0]">
+                    </property>
+                </entity>
+                <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 230.0]">
+                    </property>
+                </entity>
+                <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="2*ZetaAlti/WAlti">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 305.0]">
+                    </property>
+                </entity>
+                <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 275.0]">
+                    </property>
+                </entity>
+                <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 385.0]">
+                    </property>
+                </entity>
+                <entity name="Scale3" class="ptolemy.actor.lib.Scale">
+                    <property name="factor" class="ptolemy.data.expr.Parameter" value="g">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 420.0]">
+                    </property>
+                </entity>
+                <entity name="Mass" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="MassQuad">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 420.0]">
+                    </property>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="TakeOff">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 370.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="Z_des(m)" relation="relation10"/>
+                <link port="Vz_mes" relation="relation12"/>
+                <link port="Z_mes(m)" relation="relation11"/>
+                <link port="Thrust" relation="relation9"/>
+                <link port="AddSubtract.plus" relation="relation10"/>
+                <link port="AddSubtract.minus" relation="relation11"/>
+                <link port="AddSubtract.output" relation="relation"/>
+                <link port="AddSubtract2.plus" relation="relation2"/>
+                <link port="AddSubtract2.minus" relation="relation3"/>
+                <link port="AddSubtract2.output" relation="relation4"/>
+                <link port="Scale.input" relation="relation"/>
+                <link port="Scale.output" relation="relation2"/>
+                <link port="Scale2.input" relation="relation12"/>
+                <link port="Scale2.output" relation="relation3"/>
+                <link port="AddSubtract3.plus" relation="relation4"/>
+                <link port="AddSubtract3.plus" relation="relation5"/>
+                <link port="AddSubtract3.output" relation="relation9"/>
+                <link port="MultiplyDivide.multiply" relation="relation7"/>
+                <link port="MultiplyDivide.multiply" relation="relation8"/>
+                <link port="MultiplyDivide.output" relation="relation5"/>
+                <link port="Scale3.input" relation="relation6"/>
+                <link port="Scale3.output" relation="relation8"/>
+                <link port="Mass.output" relation="relation6"/>
+                <link port="Const.output" relation="relation7"/>
+            </entity>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="{270.0, 600.0}">
+                </vertex>
+            </relation>
+            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="{120.0, 460.0}">
+                </vertex>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="{105.0, 425.0}">
+                </vertex>
+            </relation>
+            <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="{140.0, 570.0}">
+                </vertex>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="X_des(m)" relation="relation16"/>
+            <link port="Y_des(m)" relation="relation18"/>
+            <link port="Z_des(m)" relation="relation8"/>
+            <link port="X_mes(m)" relation="relation14"/>
+            <link port="Y_mes(m)" relation="relation5"/>
+            <link port="Z_mes(m)" relation="relation"/>
+            <link port="Vx" relation="relation17"/>
+            <link port="Vy" relation="relation12"/>
+            <link port="Vz" relation="relation4"/>
+            <link port="Yaw_des" relation="relation10"/>
+            <link port="Yaw" relation="relation11"/>
+            <link port="Roll_des(rad)" relation="relation7"/>
+            <link port="Pitch_des(rad)" relation="relation6"/>
+            <link port="Yaw_des(rad)" relation="relation9"/>
+            <link port="Thrust(N)" relation="relation15"/>
+            <link port="Scale.input" relation="relation10"/>
+            <link port="Scale.output" relation="relation9"/>
+            <link port="ControlForXY.X_desired (m)" relation="relation16"/>
+            <link port="ControlForXY.X_mesure(m)" relation="relation14"/>
+            <link port="ControlForXY.Vx_mesure" relation="relation17"/>
+            <link port="ControlForXY.U_des" relation="relation2"/>
+            <link port="ControlForXY.Y_desired(m)" relation="relation18"/>
+            <link port="ControlForXY.Y_mesure(m)" relation="relation5"/>
+            <link port="ControlForXY.V_des" relation="relation3"/>
+            <link port="ControlForXY.Vy_mesure" relation="relation12"/>
+            <link port="BodyToEarth.Cde_U" relation="relation2"/>
+            <link port="BodyToEarth.Cde_V" relation="relation3"/>
+            <link port="BodyToEarth.Thrust" relation="relation13"/>
+            <link port="BodyToEarth.Yaw" relation="relation11"/>
+            <link port="BodyToEarth.Roll" relation="relation7"/>
+            <link port="BodyToEarth.Pitch" relation="relation6"/>
+            <link port="BodyToEarth.Thrust (N)" relation="relation15"/>
+            <link port="ControlForZ.Z_des(m)" relation="relation8"/>
+            <link port="ControlForZ.Vz_mes" relation="relation4"/>
+            <link port="ControlForZ.Z_mes(m)" relation="relation"/>
+            <link port="ControlForZ.Thrust" relation="relation13"/>
+        </entity>
+        <entity name="Xref" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Twp">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, Twp/4, Twp/2, Twp*0.75}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{Xref_wp1, Xref_wp2,Xref_wp3, Xref_wp4}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 325.0]">
+            </property>
+        </entity>
+        <entity name="Yref" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Twp">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, Twp/4, Twp/2, Twp*0.75}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{Yref_wp1, Yref_wp2,Yref_wp3, Yref_wp4}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 390.0]">
+            </property>
+        </entity>
+        <entity name="Zref" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Twp">
+            </property>
+            <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, Twp/4, Twp/2, Twp*0.75}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{Zref_wp1, Zref_wp2, Zref_wp3, Zref_wp4}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 465.0]">
+            </property>
+        </entity>
+        <entity name="WayPointsSequence" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="xref, yref, zref">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 641, 940, 191}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[940, 147]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 290.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="30.0"/>
+<yRange min="0.0" max="3.0"/>
+<default connected="no" marks="points"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 325.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold2" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[158.0, 391.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold3" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 465.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="yaw_des">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 480.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold4" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 435.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold5" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 500.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold6" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 565.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold7" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 640.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold8" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 690.0]">
+            </property>
+        </entity>
+        <entity name="ZeroOrderHold9" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 750.0]">
+            </property>
+        </entity>
+        <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+            <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 345.0]">
+            </property>
+        </entity>
+        <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+            <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 410.0]">
+            </property>
+        </entity>
+        <entity name="PeriodicSampler3" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+            <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 480.0]">
+            </property>
+        </entity>
+        <entity name="PeriodicSampler4" class="ptolemy.domains.continuous.lib.PeriodicSampler">
+            <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 565.0]">
+            </property>
+        </entity>
+        <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[200.0, 325.0]">
+            </vertex>
+        </relation>
+        <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[225.0, 390.0]">
+            </vertex>
+        </relation>
+        <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[245.0, 400.0]">
+            </vertex>
+        </relation>
+        <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[660.0, 500.0]">
+            </vertex>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[660.0, 445.0]">
+            </vertex>
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[525.0, 500.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="Yaw" relation="relation21"/>
+        <link port="Pitch" relation="relation20"/>
+        <link port="Roll" relation="relation2"/>
+        <link port="Vz" relation="relation18"/>
+        <link port="Vy" relation="relation16"/>
+        <link port="Xmes" relation="relation5"/>
+        <link port="Zmes" relation="relation9"/>
+        <link port="Ymes" relation="relation7"/>
+        <link port="Vx" relation="relation14"/>
+        <link port="Thrust" relation="relation10"/>
+        <link port="PositionControl.X_des(m)" relation="relation23"/>
+        <link port="PositionControl.Y_des(m)" relation="relation24"/>
+        <link port="PositionControl.Z_des(m)" relation="relation25"/>
+        <link port="PositionControl.X_mes(m)" relation="relation3"/>
+        <link port="PositionControl.Y_mes(m)" relation="relation6"/>
+        <link port="PositionControl.Z_mes(m)" relation="relation8"/>
+        <link port="PositionControl.Vx" relation="relation11"/>
+        <link port="PositionControl.Vy" relation="relation15"/>
+        <link port="PositionControl.Vz" relation="relation17"/>
+        <link port="PositionControl.Yaw_des" relation="relation29"/>
+        <link port="PositionControl.Yaw" relation="relation13"/>
+        <link port="PositionControl.Roll_des(rad)" relation="relation"/>
+        <link port="PositionControl.Pitch_des(rad)" relation="relation19"/>
+        <link port="PositionControl.Yaw_des(rad)" relation="relation12"/>
+        <link port="PositionControl.Thrust(N)" relation="relation22"/>
+        <link port="Xref.output" relation="relation26"/>
+        <link port="Yref.output" relation="relation27"/>
+        <link port="Zref.output" relation="relation28"/>
+        <link port="WayPointsSequence.input" relation="relation23"/>
+        <link port="WayPointsSequence.input" relation="relation24"/>
+        <link port="WayPointsSequence.input" relation="relation25"/>
+        <link port="ZeroOrderHold.input" relation="relation26"/>
+        <link port="ZeroOrderHold.output" relation="relation23"/>
+        <link port="ZeroOrderHold2.input" relation="relation27"/>
+        <link port="ZeroOrderHold2.output" relation="relation24"/>
+        <link port="ZeroOrderHold3.input" relation="relation28"/>
+        <link port="ZeroOrderHold3.output" relation="relation25"/>
+        <link port="Const.output" relation="relation29"/>
+        <link port="ZeroOrderHold4.input" relation="relation5"/>
+        <link port="ZeroOrderHold4.output" relation="relation3"/>
+        <link port="ZeroOrderHold5.input" relation="relation7"/>
+        <link port="ZeroOrderHold5.output" relation="relation6"/>
+        <link port="ZeroOrderHold6.input" relation="relation9"/>
+        <link port="ZeroOrderHold6.output" relation="relation8"/>
+        <link port="ZeroOrderHold7.input" relation="relation14"/>
+        <link port="ZeroOrderHold7.output" relation="relation11"/>
+        <link port="ZeroOrderHold8.input" relation="relation16"/>
+        <link port="ZeroOrderHold8.output" relation="relation15"/>
+        <link port="ZeroOrderHold9.input" relation="relation18"/>
+        <link port="ZeroOrderHold9.output" relation="relation17"/>
+        <link port="PeriodicSampler.input" relation="relation"/>
+        <link port="PeriodicSampler.output" relation="relation2"/>
+        <link port="PeriodicSampler2.input" relation="relation19"/>
+        <link port="PeriodicSampler2.output" relation="relation20"/>
+        <link port="PeriodicSampler3.input" relation="relation12"/>
+        <link port="PeriodicSampler3.output" relation="relation21"/>
+        <link port="PeriodicSampler4.input" relation="relation22"/>
+        <link port="PeriodicSampler4.output" relation="relation10"/>
+        <link relation1="relation4" relation2="relation12"/>
+        <link relation1="relation4" relation2="relation13"/>
+    </entity>
+    <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;yaw&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;control&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ctrl1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[313.41796875, 170.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaPublisher3" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;roll&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;control&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ctrl1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 265.0}">
+        </property>
+    </entity>
+    <entity name="HlaPublisher2" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;pitch&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;control&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ctrl1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[313.41796875, 215.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;Vz&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;quadrotor&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.58203125, 80.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaPublisher4" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;thrust&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;control&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;ctrl1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[313.41796875, 315.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaSubscriber2" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;Vy&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;quadrotor&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.58203125, 130.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaSubscriber3" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;X&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;quadrotor&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.58203125, 180.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaSubscriber4" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;Z&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;quadrotor&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.58203125, 225.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaSubscriber5" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;Y&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;quadrotor&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.58203125, 275.91796875]">
+        </property>
+    </entity>
+    <entity name="HlaSubscriber6" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;Vx&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;quadrotor&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-41.58203125, 325.91796875]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Yaw&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaPublisher.input&quot;,x=313.41796875,y=170.91796875}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Pitch&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaPublisher2.input&quot;,x=313.41796875,y=215.91796875}, points={228.41796875,180.91796875,228.41796875,215.91796875} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Thrust&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaPublisher4.input&quot;,x=313.41796875,y=315.91796875}, points={198.41796875,210.91796875,198.41796875,315.91796875} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Vz&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaSubscriber.output&quot;,x=-41.58203125,y=80.91796875}, points={68.41796875,160.91796875,68.41796875,80.91796875} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Vy&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaSubscriber2.output&quot;,x=-41.58203125,y=130.91796875}, points={53.41796875,170.91796875,53.41796875,130.91796875} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Xmes&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaSubscriber3.output&quot;,x=-41.58203125,y=180.91796875}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Zmes&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaSubscriber4.output&quot;,x=-41.58203125,y=225.91796875}, points={53.41796875,200.91796875,53.41796875,225.91796875} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Ymes&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaSubscriber5.output&quot;,x=-41.58203125,y=275.91796875}, points={68.41796875,210.91796875,68.41796875,275.91796875} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Control.Vx&quot;,x=143.41796875,y=190.91796875}, tail={id=&quot;HlaSubscriber6.output&quot;,x=-41.58203125,y=325.91796875}, points={83.41796875,220.91796875,83.41796875,325.91796875} } }">
+        </property>
+    </relation>
+    <link port="Control.Yaw" relation="relation"/>
+    <link port="Control.Pitch" relation="relation2"/>
+    <link port="Control.Roll" relation="relation3"/>
+    <link port="Control.Vz" relation="relation5"/>
+    <link port="Control.Vy" relation="relation6"/>
+    <link port="Control.Xmes" relation="relation7"/>
+    <link port="Control.Zmes" relation="relation8"/>
+    <link port="Control.Ymes" relation="relation9"/>
+    <link port="Control.Vx" relation="relation10"/>
+    <link port="Control.Thrust" relation="relation4"/>
+    <link port="HlaPublisher.input" relation="relation"/>
+    <link port="HlaPublisher3.input" relation="relation3"/>
+    <link port="HlaPublisher2.input" relation="relation2"/>
+    <link port="HlaSubscriber.output" relation="relation5"/>
+    <link port="HlaPublisher4.input" relation="relation4"/>
+    <link port="HlaSubscriber2.output" relation="relation6"/>
+    <link port="HlaSubscriber3.output" relation="relation7"/>
+    <link port="HlaSubscriber4.output" relation="relation8"/>
+    <link port="HlaSubscriber5.output" relation="relation9"/>
+    <link port="HlaSubscriber6.output" relation="relation10"/>
+</entity>

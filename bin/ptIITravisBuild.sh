@@ -39,9 +39,10 @@
 #   PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_RUN_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
+#   PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
 
 if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
@@ -60,20 +61,27 @@ fi
 # because we want to copy the output to gh-pages. The timeouts should
 # vary so as to avoid git conflicts.
 
+# The amount of time after ant completes.  This must be enough time to
+# update gh-pages, update the cache and deploy.  If Travis is timing
+# out, then bump this up, but look out for a return code of 137 from
+# ant
+# core3 timed out 150 seconds, so increase the remaining time after the build to 180 seconds.
+timeAfterBuild=180
 if [ ! -z "$SECONDS" -a "$SECONDS" -gt 100 ]; then
     echo "$0: SECONDS environment variable is $SECONDS."
-    maxTimeout=`expr 3000 - $SECONDS - 300`
+
+    maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
 else
     if [ $# -eq 1 ]; then
         echo "$0: Using $1 as current seconds since the start of the job."
         SECONDS=$1
-        maxTimeout=`expr 3000 - $SECONDS - 300`
+        maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
     else
         echo "$0: SECONDS environment variable not present or less than 100 and no argument passed."
         maxTimeout=2500
     fi
 fi
-echo "$0: maxTimeout: $maxTimeout"
+echo "$0: maxTimeout: $maxTimeout, which will be at `expr $maxTimeout + $SECONDS`"
 
 
 # Timeout a process.
@@ -88,7 +96,7 @@ echo "$0: maxTimeout: $maxTimeout"
 
 case `uname -s` in
     Darwin)
-        echo "If necessary, install timeout with 'sudo port timeout'"
+        echo "If necessary, install timeout with 'sudo port install timeout'"
         TIMEOUTCOMMAND='timeout -9'
         ;;
     *)
@@ -121,6 +129,17 @@ if [ ! -z "$GEOCODING_TOKEN" -a ! -f ~/.ptKeystore/geoCodingKey ]; then
     export GEOCODING_TOKEN=resetByPtIITravisBuild.sh
 fi
 
+# Use set +x to hide the token
+set +x
+if [ ! -z "$HEARTBEAT_TOKEN" -a ! -f ~/.ptKeystore/heartbeatKey ]; then
+    if [ ! -d ~/.ptKeystore ]; then
+        mkdir ~/.ptKeystore
+    fi
+    echo "$HEARTBEAT_TOKEN" > ~/.ptKeystore/heartbeatKey
+    ls -l ~/.ptKeystore/heartbeatKey
+    export HEARTBEAT_TOKEN=resetByPtIITravisBuild.sh
+fi
+
 # Used by ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml 
 # Use set +x to hide the token
 set +x
@@ -133,7 +152,7 @@ if [ ! -z "$WEATHER_TOKEN" -a ! -f ~/.ptKeystore/weatherKey ]; then
     export WEATHER_TOKEN=resetByPtIITravisBuild.sh
 fi
 
-set -x
+# set -x
 
 # If the output is more than 10k lines, then Travis fails, so we
 # redirect voluminuous output into a log file.
@@ -179,27 +198,41 @@ runTarget () {
     # invoke updateGhPages once per target.
     log=$PTII/reports/junit/${target}.txt
 
+    # Number of lines to show from the log file.
+    lastLines=50
+
     # FIXME: we probably want to vary the timeout so that we can avoid
     # git conflicts.
-    timeout=`expr $maxTimeout - 300`
+    #timeout=`expr $maxTimeout - 120`
+    timeout=$maxTimeout
     echo "$0: Output will appear in $log with timeout $timeout"
     
     # Run the command and log the output.
-    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
+    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|HEARTBEAT_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
 
-    # Number of lines to show from the log file.
-    lastLines=50
-    echo "$0: Start of last $lastLines lines of $log"
-    tail -$lastLines $log
+    # Get the return value of the ant command and exit if it is non-zero.
+    # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
+    status=${PIPESTATUS[0]}
+    if [ $status -ne 0 ]; then
+        echo "$0: `date`: At $SECONDS, ant build $target returned $status, which is non-zero. `date`"
+        tail -$lastLines $log
+        if [ $status = 137 ]; then
+            echo "######################################################"
+            echo "$0: WARNING! `date`: Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
+            echo "See https://github.com/travis-ci/travis-ci/issues/4192"
+            echo "######################################################"
+        else
+            echo "$0: exiting with a value of $status"
+            exit $status
+        fi
+    else
+        echo "$0: `date`: ant build $target returned $status"
+        echo "$0: Start of last $lastLines lines of $log"
+        tail -$lastLines $log
+    fi
 
-    # Check to see that the doclets were compiled.
-    echo "$PTII/doc/doclets:"
-    ls $PTII/doc/doclets/
+    date
 
-    # Check to see that a PtDoc file was created.
-    echo "$PTII/doc/JavaScript.xml"
-    ls -l $PTII/doc/codeDoc/ptolemy/actor/lib/jjs/JavaScript.xml 
-    
     # Free up space for clone of gh-pages.
     df -k .
     rm -rf $PTII/adm/dists
@@ -345,6 +378,12 @@ updateGhPages () {
 # lines, so we don't save the output to a log file.
 if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     ant build-all;
+    status=$?
+    if [ $status -ne 0 ]; then
+        echo "$0: ant build-all returned $status, which is non-zero."
+        echo "$0: exiting with a value of $status"
+        exit $status
+    fi
 fi
 
 # Build the docs, which are used by other targets.
@@ -430,6 +469,11 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     runTarget test.core4.xml
 fi
 
+# Run the fifth batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE5_XML" ]; then
+    runTarget test.core5.xml
+fi
+
 
 # Build the installers.
 #
@@ -453,9 +497,12 @@ fi
 # This target is in the deploy stage, which is run after the other
 # targets that generate test data using JUnit.  See
 # https://docs.travis-ci.com/user/build-stages/
-if [ ! -z "$PT_TRAVIS_RUN_JUNITREPORT" ]; then
+if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     exitIfNotCron
     updateGhPages -junitreport $PTII/reports/junit reports/
+
+    # Sleep so that the updated pages can appear on the website.
+    sleep 70
 
     # Update https://github.com/icyphy/ptII/issues/1
     # See https://github.com/icyphy/github-issue-junit

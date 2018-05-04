@@ -1826,7 +1826,7 @@ Optional Packages:
   --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
                           defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
-                          defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
+                          defaults to \$KEPLER/lib/jar/batik-all-1.9.jar
   --with-svgsalamanderjar=SVGSALAMANDER_JAR     use svgSalamander jar file,
                                   defaults to \$PTT/lib/svgSalamander.jar
   --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
@@ -3850,7 +3850,17 @@ else
 fi
 
 # The Major and Minor version of the JDK.  1.6, 1.8 etc.  Used by ant in build.xml.in.
-JVERSION_TARGET=`echo "$JVERSION" | sed 's/\([1-9]*\.[^._]*\).*/\1/'`
+# Sadly, javac 9 and later has a usability bug where "-target 9.0" fails, but "-target 9" works.
+# See https://bugs.openjdk.java.net/browse/JDK-8190556
+# If you get messages about "javac: invalid target release:", then check that JAVA_HOME
+# is set to same JDK as the one that is in your path.
+JVERSION_TARGET=`echo "$JVERSION" |
+    awk -F . '{ if ($1 > 8) {
+                   print $1
+                } else {
+		   print $1 "." $2
+                }
+              }'`
 
 cd "$startdir"
 
@@ -4702,12 +4712,12 @@ PTVIEWER_DIR=viewer
 # PTVIEWER_PACKAGES is used in doc/makefile
 PTVIEWER_PACKAGES=ptolemy.media.viewer
 
-# Handle Java 9 fails.
+# Handle Java 9 and later fails.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking Java 9 and later" >&5
 $as_echo_n "checking Java 9 and later... " >&6; }
 echo "$JVERSION" | egrep '^9|^1-90-9' > /dev/null
 status=$?
-if test $status -eq 1 ; then
+if test "$status" = "0" ; then
     if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Java 9 or later is not present" >&5
 $as_echo "Java 9 or later is not present" >&6; }; fi
@@ -10403,16 +10413,19 @@ $as_echo_n "checking for opencv-*.jar in $OPENCV_DIRS... " >&6; }
         for OPENCV_DIR in $OPENCV_DIRS
         do
             if test -d $OPENCV_DIR; then
-                TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
-                # If the file is not the bad jar we already tried, then add it to the list
-                if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
-                    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $TMP_OPENCV_JAR" >&5
-$as_echo "$TMP_OPENCV_JAR" >&6; }; fi
-                    OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
-                fi
+                TMP_OPENCV_JARS=`find $OPENCV_DIR -name "opencv-*.jar"`
+                for TMP_OPENCV_JAR in $TMP_OPENCV_JARS
+                do
+                    # If the file is not the bad jar we already tried, then add it to the list
+                    if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                        OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
+                    fi
+                done
             fi
         done
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: OpenCV jars: $OPENCV_JARS" >&5
+$as_echo "OpenCV jars: $OPENCV_JARS" >&6; }; fi
 
         for TMP_OPENCV_JAR in $OPENCV_JARS
         do
@@ -12539,7 +12552,11 @@ $as_echo "$as_me: WARNING: Failed to find javah at '$JAVAH',
 fi
 
 if test -z "$PTMATLAB_DIR"; then
-    updateExcludes "ptolemy/matlab/"
+    # The Matlab Expression actor is in the configuration, so we might as well compile it.
+    # ptolemy/actor/gui/test/UserActorLibrary.tcl depends on ptolemy/matlab/Expression.class being present.
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok." >&5
+$as_echo "$as_me: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok." >&2;}
+    # updateExcludes "ptolemy/matlab/"
 else
     # Set to the matlab jars that need to be signed if matlab was found.
     # Used in jnlp.mk
@@ -13503,9 +13520,20 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ORA
 $as_echo "$ORACLE_OJDBC_JAR" >&6; }; fi
     else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $OJDBC_TARGET_JAR not found,
-    but only necessary to use database actors with Oracle." >&5
+    but only necessary to use database actors with Oracle.
+    If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+    To install ojdbc5.jar or ojdbc6.jar,
+    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    copy it to ptolemy/actor/lib/database
+    and rerun ./configure" >&5
 $as_echo "$as_me: WARNING: $OJDBC_TARGET_JAR not found,
-    but only necessary to use database actors with Oracle." >&2;}
+    but only necessary to use database actors with Oracle.
+    If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+    To install ojdbc5.jar or ojdbc6.jar,
+    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    copy it to ptolemy/actor/lib/database
+    and rerun ./configure" >&2;}
+
     fi
 
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
@@ -13726,7 +13754,7 @@ $as_echo_n "checking for Batik SVG... " >&6; }
 if test "${with_batikjar+set}" = set; then :
   withval=$with_batikjar; PTSVG_JAR=$withval
 else
-  PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar
+  PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.9.jar
 fi
 
 
@@ -13741,11 +13769,15 @@ $as_echo "$PTSVG_JAR" >&6; }; fi
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
-    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&5
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+    batike-1.9/lib/batik-all-1.9.jar copied to $PTII/lib
+    and ./configure rerun." >&5
 $as_echo "$as_me: WARNING: Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
-    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+    batike-1.9/lib/batik-all-1.9.jar copied to $PTII/lib
+    and ./configure rerun." >&2;}
     fi
 fi
 

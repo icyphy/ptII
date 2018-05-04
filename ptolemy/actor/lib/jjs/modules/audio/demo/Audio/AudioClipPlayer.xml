@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2426858995066439">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.949235802457, 272.90721909066906}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.949235802457, 272.9072190906691}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please turn your speakers on and run the model.&#10;You should hear jazz music from a .mp3 download&#10;from the Ptolemy website.  After 8 seconds, there&#10;is a 2 second silence, and then a guitar from a&#10;local .wav file is played.">
@@ -158,7 +158,7 @@
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 205.0]">
         </property>
     </entity>
     <entity name="SecondStop" class="ptolemy.actor.lib.SingleEvent">
@@ -168,7 +168,7 @@
         </property>
     </entity>
     <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 275.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -184,16 +184,10 @@
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FirstStop.output&quot;,x=150.0,y=180.0}, tail={id=&quot;Merge2.input&quot;,x=250.0,y=185.0,index=2}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SecondStop.output&quot;,x=150.0,y=250.0}, tail={id=&quot;Merge2.input&quot;,x=250.0,y=185.0,index=2}, points={210.0,250.0,210.0,185.0} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=255.0,y=360.0,index=2}, tail={id=&quot;Const.output&quot;,x=160.0,y=360.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>

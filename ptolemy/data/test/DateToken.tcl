@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2014 The Regents of the University of California.
+# @Copyright (c) 1997-2018 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -178,9 +178,12 @@ test DateToken-10.0 {Test isLessThan} {
 ######################################################################
 ####
 # 
+set PRECISION_MILLISECOND [java::field ptolemy.data.DateToken PRECISION_MILLISECOND]
+
 test DateToken-14.0 {Add two Dates} {
-    set t1 [java::new {ptolemy.data.DateToken long} 1]
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
+    # Use timezone because this might run on Travis in a different timezone.
+    set t1 [java::new {ptolemy.data.DateToken long int String} 1 $PRECISION_MILLISECOND "GMT-8"]
+    set t2 [java::new {ptolemy.data.DateToken long int String} 2 $PRECISION_MILLISECOND "GMT-8"]
     catch {$t1 add $t2} err
     list $err
 } {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
@@ -189,8 +192,8 @@ test DateToken-14.0 {Add two Dates} {
 ####
 # 
 test DateToken-14.1 {Divide two Dates} {
-    set t1 [java::new {ptolemy.data.DateToken long} 1]
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
+    set t1 [java::new {ptolemy.data.DateToken long int String} 1 $PRECISION_MILLISECOND "GMT-8"]
+    set t2 [java::new {ptolemy.data.DateToken long int String} 2 $PRECISION_MILLISECOND "GMT-8"]
     catch {$t1 divide $t2} err
     list $err
 } {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
@@ -199,8 +202,8 @@ test DateToken-14.1 {Divide two Dates} {
 ####
 # 
 test DateToken-14.2 {Modulo two Dates} {
-    set t1 [java::new {ptolemy.data.DateToken long} 1]
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
+    set t1 [java::new {ptolemy.data.DateToken long int String} 1 $PRECISION_MILLISECOND "GMT-8"]
+    set t2 [java::new {ptolemy.data.DateToken long int String} 2 $PRECISION_MILLISECOND "GMT-8"]
     catch {$t1 modulo $t2} err
     list $err
 } {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
@@ -209,8 +212,8 @@ test DateToken-14.2 {Modulo two Dates} {
 ####
 # 
 test DateToken-14.3 {Multiply two Dates} {
-    set t1 [java::new {ptolemy.data.DateToken long} 1]
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
+    set t1 [java::new {ptolemy.data.DateToken long int String} 1 $PRECISION_MILLISECOND "GMT-8"]
+    set t2 [java::new {ptolemy.data.DateToken long int String} 2 $PRECISION_MILLISECOND "GMT-8"]
     catch {$t1 multiply $t2} err
     list $err
 } {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
@@ -219,8 +222,8 @@ test DateToken-14.3 {Multiply two Dates} {
 ####
 # 
 test DateToken-14.4 {Subtract two Dates} {
-    set t1 [java::new {ptolemy.data.DateToken long} 1]
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
+    set t1 [java::new {ptolemy.data.DateToken long int String} 1 $PRECISION_MILLISECOND "GMT-8"]
+    set t2 [java::new {ptolemy.data.DateToken long int String} 2 $PRECISION_MILLISECOND "GMT-8"]
     catch {$t1 subtract $t2} err
     list $err
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
@@ -229,6 +232,7 @@ test DateToken-14.4 {Subtract two Dates} {
 ####
 # 
 test DateToken-14.5 {compare two Dates} {
+    # Use the local timezone.
     set t1 [java::new {ptolemy.data.DateToken long} 1]
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     set res [$t1 isCloseTo $t2] 

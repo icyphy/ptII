@@ -602,8 +602,12 @@ public class JSAccessor extends JavaScript {
                 }
             } catch (IOException ex) {
                 System.out.println(
-                        "JSAccessor: Could not look up the local accessor directory: "
-                                + ex);
+                        "JSAccessor: Could not look up the local accessor directory.  "
+			+ "The String URL of the accessor or *PtDoc.xml file: \"" + urlSpec + "\".  "
+			+ "The proposed URL of the accessor or *PtDoc.xml file: \"" + accessorOrPtDocURL
+			+ "\" (which is being returned).  "
+			+ "Exception was: " + ex);
+		ex.printStackTrace();
             }
         }
         return accessorOrPtDocURL;

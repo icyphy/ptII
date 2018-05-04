@@ -190,8 +190,12 @@ The Ptiny pack is required.
 
 	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
             <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/opencv-320.jar"
+	          targetdir="$INSTALL_PATH/lib"/>
 <!--LinuxInclude -->
 <!--MacOSInclude-->
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/opencv-341.jar"
+	          targetdir="$INSTALL_PATH/lib"/>
 
 <!-- Mac and Linux: The makefile substitutes a directive to include the Mac and Linux Node directory for the next line. -->
 <!-- NodeDirectory -->
@@ -481,8 +485,8 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/demo"/>
 
-	    <file src="../dists/ptII11.0.devel/jar_dist/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar"
-                  targetdir="$INSTALL_PATH/bin/Vergil.app/Contents/MacOS"
+	    <file src="../dists/ptII11.0.devel/jar_dist/lib/universalJavaApplicationStub-license.jar"
+                  targetdir="$INSTALL_PATH/lib"
                   os="mac"/>
 
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.mail.jar"

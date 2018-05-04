@@ -27,7 +27,10 @@
  */
 package ptolemy.domains.de.lib;
 
+import java.util.Comparator;
+import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
@@ -108,9 +111,10 @@ public class Server extends DETransformer {
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        _queue = new PriorityQueue();
+        _queues = new TreeMap<Double, PriorityQueue<Job>>(new PriorityComparator());
 
         _queueCounter = 0;
+        _queueSize = 0;
 
         size = new TypedIOPort(this, "size", false, true);
         size.setTypeEquals(BaseType.INT);
@@ -179,9 +183,9 @@ public class Server extends DETransformer {
             }
         } else if (attribute == capacity) {
             int newCapacity = ((IntToken) capacity.getToken()).intValue();
-            if (newCapacity > 0 && _queue.size() > newCapacity) {
+            if (newCapacity > 0 && queueSize() > newCapacity) {
                 throw new IllegalActionException(this,
-                        "Queue size (" + _queue.size()
+                        "Queue size (" + queueSize()
                                 + ") exceed requested capacity "
                                 + newCapacity + ").");
             }
@@ -201,7 +205,7 @@ public class Server extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Server newObject = (Server) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._queue = new PriorityQueue<Job>();
+        newObject._queues = new TreeMap<Double, PriorityQueue<Job>>(new PriorityComparator());
         return newObject;
     }
 
@@ -254,7 +258,7 @@ public class Server extends DETransformer {
             if (_debugging) {
                 _debug("Read input with value " + token
                         + ", and put into queue, which now has size"
-                        + _queue.size() + " at time " + currentTime
+                        + queueSize() + " at time " + currentTime
                         + ". Event will be processes with service time "
                         + serviceTimeValue);
             }
@@ -271,27 +275,43 @@ public class Server extends DETransformer {
             // Indicate that the server is free.
             if (_debugging) {
                 _debug("Produced output " + outputToken
-                        + ", so queue now has size " + _queue.size()
+                        + ", so queue now has size " + queueSize()
                         + " at time " + currentTime);
             }
         }
-        size.send(0, new IntToken(_queue.size()));
+        size.send(0, new IntToken(queueSize()));
+    }
+
+    protected int queueSize() {
+        return _queueSize;
+    }
+
+    private Map.Entry<Double, PriorityQueue<Job>> getHighestPriorityQueue() {
+        return _queues.firstEntry();
     }
 
     private Job peekQueue() {
-        return _queue.peek();
+        Map.Entry<Double, PriorityQueue<Job>> entry = getHighestPriorityQueue();
+        Job result = entry != null ? entry.getValue().peek() : null;
+        return result;
     }
 
     private void enqueue(Job newJob) throws IllegalActionException {
         int currentCapacity = ((IntToken) capacity.getToken()).intValue();
-        if (currentCapacity > 0 && _queue.size() >= currentCapacity) {
+        if (currentCapacity > 0 && queueSize() >= currentCapacity) {
             throw new IllegalActionException(this,
-                    "Queue size (" + _queue.size()
+                    "Queue size (" + queueSize()
                             + ") is already at maximum capacity "
                             + currentCapacity + ").");
         }
         newJob.queueCounter = _queueCounter;
-        _queue.add(newJob);
+        PriorityQueue<Job> queue = _queues.get(newJob.priority);
+        if (queue == null) {
+            queue = new PriorityQueue<Job>();
+            _queues.put(newJob.priority, queue);
+        }
+        queue.add(newJob);
+        ++_queueSize;
         ++_queueCounter;
         updateNextTimeFree();
     }
@@ -305,9 +325,20 @@ public class Server extends DETransformer {
     }
 
     private Job dequeue() throws IllegalActionException {
-        Job job = _queue.poll();
-        if (job == null) {
-            throw new IllegalActionException(this, "Queue is empty");
+        Job job = null;
+        while (job == null && !_queues.isEmpty()) {
+            Map.Entry<Double, PriorityQueue<Job>> entry = getHighestPriorityQueue();
+            PriorityQueue<Job> queue = entry.getValue();
+            if (!queue.isEmpty()) {
+                job = queue.poll();
+            }
+            if (queue.isEmpty()) {
+                _queues.remove(entry.getKey());
+            }
+        }
+        assert job != null : "No job found (was queue not empty?)";
+        if (job != null) {
+            --_queueSize;
         }
         updateNextTimeFree();
         return job;
@@ -321,8 +352,9 @@ public class Server extends DETransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextTimeFree = Time.NEGATIVE_INFINITY;
-        _queue.clear();
+        _queues.clear();
         _queueCounter = 0;
+        _queueSize = 0;
     }
 
     /** If the server is free and there is at least one token in the queue,
@@ -333,7 +365,7 @@ public class Server extends DETransformer {
     @Override
     public boolean postfire() throws IllegalActionException {
         updateNextTimeFree();
-        if (!_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
+        if (!_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && queueSize() > 0) {
             if (_debugging) {
                 _debug("In postfire, requesting a refiring at time "
                         + _nextTimeFree);
@@ -349,8 +381,9 @@ public class Server extends DETransformer {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _queue.clear();
+        _queues.clear();
         _queueCounter = 0;
+        _queueSize = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -359,14 +392,25 @@ public class Server extends DETransformer {
     /** Next time the server becomes free. */
     protected Time _nextTimeFree;
 
-    /** The min heap. */
-    protected PriorityQueue<Job> _queue;
+    protected TreeMap<Double /* the dynamic (possibly modified) priority of the queue */, PriorityQueue<Job>> _queues;
+
+    protected int _queueSize;
 
     /** The counter for tie-breaking the queue by insertion order. */
     protected long _queueCounter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    private static class PriorityComparator implements Comparator<Double> {
+        public static int compare(double a, double b) {
+            return Double.compare(b, a);  // Note the swapped order (higher priorities come first)
+        }
+        @Override
+        public int compare(Double a, Double b) {
+            return compare((double)a, (double)b);
+        }
+    }
 
     /** A data structure containing a token and a service time. */
     private static class Job implements Comparable<Job> {
@@ -388,8 +432,7 @@ public class Server extends DETransformer {
         public int compareTo(Job other) {
             int result = 0;
             if (result == 0) {
-                result = Double.compare(this.priority, other.priority);
-                result = -result;  // higher priorities are smaller for min heap
+                result = PriorityComparator.compare(this.priority, other.priority);
             }
             if (result == 0) {
                 result = this.creationTime.compareTo(other.creationTime);

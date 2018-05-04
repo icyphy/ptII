@@ -55,6 +55,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -300,6 +301,7 @@ public class Configuration extends CompositeEntity
         Iterator containedObjects = deepNamedObjList().iterator();
         while (containedObjects.hasNext()) {
             NamedObj containedObject = (NamedObj) containedObjects.next();
+            // System.out.println("Configuration.check: containedObject: " + containedObject);
             // Check the clone fields on AtomicActors and Attributes.
             // Note that Director extends Attribute, so we get the
             // Directors as well
@@ -322,6 +324,7 @@ public class Configuration extends CompositeEntity
             Iterator attributes = composite.attributeList().iterator();
             while (attributes.hasNext()) {
                 Attribute attribute = (Attribute) attributes.next();
+                // System.out.println("Configuration.check: attribute: " + attribute);
                 if (!attribute.getClass().isMemberClass()) {
                     // If an attribute is an inner class, it makes
                     // no sense to clone to a different workspace because
@@ -409,13 +412,17 @@ public class Configuration extends CompositeEntity
                     }
                 }
             }
+            clonedComposite.setContainer(null);
         }
 
         // Check atomic actors for clone problems related to types
         List entityList = allAtomicEntityList();
         Iterator entities = entityList.iterator();
+        long startTime = (new java.util.Date()).getTime();
         while (entities.hasNext()) {
             Object entity = entities.next();
+            // System.out.println("Configuration.check: entity: " + entity + " " + ptolemy.actor.Manager.timeAndMemory(startTime));
+            System.out.print("#");
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
                 try {
@@ -582,6 +589,8 @@ public class Configuration extends CompositeEntity
                 }
             }
         }
+        // Free up space.
+        cloneConfiguration.setContainer(null);
         return results.toString();
     }
 
@@ -600,10 +609,9 @@ public class Configuration extends CompositeEntity
      *  @exception ClassNotFoundException If a class cannot be found.
      */
     public static String checkCloneFields(NamedObj namedObj)
-            throws CloneNotSupportedException, IllegalAccessException,
+        throws CloneNotSupportedException, IllegalAccessException, IllegalActionException, NameDuplicationException,
             ClassNotFoundException {
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
-
         StringBuffer results = new StringBuffer();
         Class namedObjClass = namedObj.getClass();
 
@@ -625,6 +633,15 @@ public class Configuration extends CompositeEntity
                         _checkCloneField(namedObj, namedObjClone, field));
             }
         }
+
+        if (namedObjClone instanceof Attribute) {
+            ((Attribute)namedObjClone).setContainer(null);
+        } else if (namedObjClone instanceof ComponentEntity) {
+            ((ComponentEntity)namedObjClone).setContainer(null);
+        } else if (namedObjClone instanceof Port) {
+            ((Port)namedObjClone).setContainer(null);
+        }
+
         return results.toString();
     }
 
@@ -830,8 +847,8 @@ public class Configuration extends CompositeEntity
                         // by Eclipse for Kepler.  See also TextEffigy.newTextEffigy()
                         if (toRead == null) {
                             toRead = ClassUtilities.sourceResource(filename);
-                            System.out.println("Configuration: sourceResource "
-                                    + filename + " " + toRead);
+                            //  System.out.println("Configuration: sourceResource "
+                            //        + filename + " " + toRead);
                         }
 
                         if (toRead != null) {
@@ -1231,17 +1248,21 @@ public class Configuration extends CompositeEntity
     /** If the argument is not null, then throw an exception.
      *  This ensures that the object is always at the top level of
      *  a hierarchy.
-     *  @param container The proposed container.
+     *  @param container The proposed container.  If the proposed
+     *  container is null, then super.setContainer(null) is invoked,
+     *  which may free up memory.
      *  @exception IllegalActionException If the argument is not null.
+     *  @exception NameDuplicationException If thrown by a parent class.
      */
     @Override
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException {
+    public void setContainer(CompositeEntity container) throws
+        IllegalActionException, NameDuplicationException {
         if (container != null) {
             throw new IllegalActionException(this,
                     "Configuration can only be at the top level "
                             + "of a hierarchy.");
         }
+        super.setContainer(null);
     }
 
     /** Find all instances of Tableau deeply contained in the directory
@@ -1540,6 +1561,12 @@ public class Configuration extends CompositeEntity
                 if (container == null) {
                     // Put the effigy into the directory
                     ModelDirectory directory = getDirectory();
+                    if (directory == null) {
+                        throw new NullPointerException("While trying to open " + entity + " in "
+                                                       + container + ", getDirectory() returned null?  "
+                                                       + "Perhaps an entity of name \""
+                                                       + _DIRECTORY_NAME + "\" was not created?");
+                    }
                     effigy.setName(directory.uniqueName(entity.getName()));
                     effigy.setContainer(directory);
                 } else {
