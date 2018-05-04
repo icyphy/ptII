@@ -24,9 +24,9 @@
   <resources>
          <!-- Bump maximum heap size to 768Mb, use JVM Props. to confirm -->
 	 <!-- Possibly require 32bit for shared libraries  java-vm-args="-d64" -->
-   	<j2se version="1.6+" max-heap-size="768m"/>
-        <extension href="http://ptolemy.eecs.berkeley.edu/ptolemyII/java3d/java3d-1.5.2.jnlp"/>
-	<extension href="http://ptolemy.eecs.berkeley.edu/ptolemyII/jai/jai-1.1.3-latest.jnlp"/>
+   	<j2se version="1.8+" max-heap-size="768m"/>
+        <extension href="https://ptolemy.berkeley.edu/ptolemyII/java3d/java3d-1.5.2.jnlp"/>
+	<extension href="https://ptolemy.berkeley.edu/ptolemyII/jai/jai-1.1.3-latest.jnlp"/>
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>

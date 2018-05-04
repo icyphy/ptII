@@ -1899,7 +1899,7 @@ EOF6
                            mkdir -p $INSTALLER_SRCS
                        fi
 		       echo "$0: Could not find MacJVMTar in $MacJVMTar, downloading it now: `date`"
-                       wget --quiet -O $MacJVMTar https://ptolemy.eecs.berkeley.edu/ptolemyII/MacJVM.tar.gz
+                       wget --quiet -O $MacJVMTar https://ptolemy.berkeley.edu/ptolemyII/MacJVM.tar.gz
                    fi
 		   if [ -f "$MacJVMTar" ]; then
 		       echo "Untaring $MacJVMTar in $PTII/ now: `date`"

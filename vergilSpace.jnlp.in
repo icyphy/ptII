@@ -22,7 +22,7 @@
   </security> 
   <resources>
         <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
-  	<j2se version="1.6+" max-heap-size="128m" />
+  	<j2se version="1.8+" max-heap-size="128m" />
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
