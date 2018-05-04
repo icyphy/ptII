@@ -131,7 +131,7 @@
     <include name="ptolemy/data/ontologies/demo/demo.jar" />
     <include name="ptolemy/data/type/demo/demo.jar" />
     <include name="ptolemy/data/unit/demo/demo.jar" />
-    <include name="ptolemy/demo/demo.jar" />
+    <include name="jar.ptolemy/demo/demo" />
     <include name="ptolemy/demo/CapeCodeDemos.jar" />
     <include name="ptolemy/distributed/client/client.jar" />
     <include name="ptolemy/distributed/demo/demo.jar" />
@@ -390,6 +390,7 @@
     <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
     <include name="ptolemy/demo/Office/Office.jar" />
     <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
+    <include name="ptolemy/demo/Quarry/Quarry.jar" />
     <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
     <include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.jar" />
     <include name="ptolemy/domains/algebraic/demo/RLC/RLC.jar" />
@@ -7247,6 +7248,14 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/ProbabilisticModels/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/Quarry/Quarry.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/Quarry/*.xml"/>
        </fileset>
     </jar>
 
