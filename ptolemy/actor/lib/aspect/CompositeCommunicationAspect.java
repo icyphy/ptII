@@ -165,6 +165,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
         newObject._decoratedObjects = null;
         newObject._decoratedObjectsVersion = -1L;
+        newObject._communicationRequestPortNames = null;
         return newObject;
     }
 
@@ -398,6 +399,12 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
             throws IllegalActionException {
         String name = _communicationRequestPortNames
                 .get(receiver.getContainer());
+        if (name == null) {
+            throw new IllegalActionException(this,
+                    "No communication input port has been specified for "
+                    + receiver.getContainer().getFullName());
+        }
+
         CommunicationRequestPort port = (CommunicationRequestPort) getEntity(
                 name);
         if (port == null) {
