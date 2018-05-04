@@ -97,6 +97,7 @@
 
       <input source="ptolemy/configs/utilityModalModel.xml"/>
       <input source="ptolemy/configs/basicUtilities.xml"/>
+      <input source="ptolemy/configs/jjsUtilities.xml"/>
       <!-- Override default background color so that CyPhySim looks different. -->
       <!-- properties have classes here so that doc/test/docManager.tcl can expand the configuration. -->
       <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">

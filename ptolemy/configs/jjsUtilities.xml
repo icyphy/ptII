@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- JavaScript actor that should not be included in basicUtilities
+     because if it is, then SpaceCadet will have the JavaScript actor -->
+
+<group>
+   <!-- actor/lib/jjs/JavaScript requires Nashorn and Java 1.8 -->
+   <input source="ptolemy/actor/lib/jjs/js.xml"/>
+</group>

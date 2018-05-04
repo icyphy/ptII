@@ -37,7 +37,7 @@ ME =		ptolemy/actor/lib/jjs/modules/httpServer/test/junit
 ROOT =		../../../../../../../..
 
 # JUNIT_JAR is searched for by /Users/cxh/src/ptII11.0.devel/configure and set in /Users/cxh/src/ptII11.0.devel/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

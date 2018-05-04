@@ -128,7 +128,7 @@ if [ ! -z "$npmInstall" ]; then
     # This assumes that npm is installed.
     echo "### accessorInvokeSSH: Running npm install @terraswarm/accessors pm2 $modules"
     echo "### accessorInvokeSSH:   Ignore messages like: 'npm WARN enoent ENOENT: no such file or directory, open $runDirectory/package.json'"
-    ssh $userHost "cd $cg; npm install @terraswarm/accessors pm2 $modules"
+    ssh $userHost "cd $cg; echo $PATH; which npm; npm install @terraswarm/accessors pm2 $modules"
 
     # We could check on the remote machine if we need to update the modules, but instead we just do it anyway.
     echo "### accessorInvokeSSH: Running npm update @terraswarm/accessors pm2 $modules"

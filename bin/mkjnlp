@@ -87,6 +87,12 @@ fi
 
 for file in $otherjars
 do
+    echo "$file" | egrep '^bin/' >& /dev/null
+    status=$?
+    if [ $status -eq 0 ]; then
+	echo "$0: Skipping $file because web servers don't always serve files in bin/ directories."
+	continue;
+    fi
     # Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
     file=`echo $file | sed "s@$PTII/@@"`
     if [ ! -f $basedirectory/$file ]; then
@@ -146,6 +152,10 @@ awk '{
 	}
 
 	for(n = 1; n <= njars; n++) {
+            # Skipping  jars[n] because it starts with bin/
+            if (jars[n] ~ /^bin\//) {
+                continue;
+            }
             if (index(jars[n], ptII) != 0) {
                ptIILength=length(ptII)
                jars[n] = substr(jars[n], ptIILength+2, length(jars[n]) - ptIILength);

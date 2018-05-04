@@ -56,6 +56,7 @@ RTIG.log
 /jnlp_sandbox_manifest.txt
 /node_modules
 /.project
+/package-lock.json
 /ptKeystore
 /reports
 /signed
@@ -569,3 +570,4 @@ thales/actor/gui/doc/
 thales/vergil/doc/
 thales/vergil/navigable/doc/
 util/testsuite/doc/
+vendors/node/

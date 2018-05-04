@@ -47,7 +47,9 @@ if {[string compare test [info procs jdkCapture]] == 1} then {
 
 test missingDemos-0.5 {Update ptolemy/configs/doc/models.txt} {
     puts "Updating $PTII/ptolemy/configs/doc/models.txt.  This could take a minute."
-    exec -stderrok make -C ../doc update
+    # Use the all target instead of update because travis might not have
+    # write access to the repo.
+    exec -stderrok make -C ../doc all
     puts "Done updating $PTII/ptolemy/configs/doc/models.txt"
     file exists ../doc/models.txt
 } {1}

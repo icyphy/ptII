@@ -33,7 +33,7 @@
        that consume a lot of memory.  This will probably not work
        under 32-bit Windows.  See
        http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
-  <property name="java.maxmemory.large" value="8000m" />
+  <property name="java.maxmemory.large" value="5000m" />
 
   <!-- Packages to exclude from targets that call javadoc.
        Unfortunately, <fileset> results in a command line that is too long.
@@ -246,7 +246,6 @@
   <!-- Tests of the core, first batch. -->
   <patternset id="test.core1.includes">
     <include name="**/ptolemy/actor/**/test/junit/JUnitTclTest.java" />
-    <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/data/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/graph/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/gui/**/test/junit/JUnitTclTest.java" />
@@ -254,7 +253,6 @@
 
   <patternset id="test.core1.excludes">
     <exclude name="**/ptolemy/actor/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/data/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/graph/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/gui/**/test/junit/JUnitTclTest.*" />
@@ -313,6 +311,15 @@
     <exclude name="**/ptserver/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
+  <!-- Tests of the core, fourth batch. -->
+  <patternset id="test.core5.includes">
+    <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
+  </patternset>
+
+  <patternset id="test.core5.excludes">
+    <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
+  </patternset>
+
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     @ANT_EXCLUDE_TESTS@
@@ -326,14 +333,14 @@
     <exclude name="**/lbnl/test/junit/JUnitTclTest.*"/>
     <exclude name="**/KielerJUnitTest.*" />
 
-    <!-- FIXME: org/hlacerti/test/auto/2Values1Instance.xml hangs while exiting. -->
-    <exclude name="**/org/hlacerti/test/junit/JUnitTclTest.*" />
-
     <!-- FIXME: HeatConductor fails to load under Travis-ci, but we can't easily log in to run the croom command. -->
     <exclude name="**/ptolemy/actor/lib/fmi/fmus/omc/test/junit/JUnitTclTest.*" />
 
     <!-- FIXME: EightFourInFourOutsJNI fails under Travis-ci because lib/libJNIFMU is not found. -->
     <exclude name="**/ptolemy/actor/lib/fmi/jni/test/junit/JUnitTclTest.*" />
+
+    <!-- FIXME: Not testing fmipp right now. -->
+    <exclude name="**/ptolemy/actor/lib/fmi/fmipp/test/junit/JUnitTclTest.*" />
 
     <!-- The R language is not typically installed. -->
     <exclude name="**/ptolemy/actor/lib/r/test/junit/JUnitTclTest.*" />
@@ -1239,6 +1246,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1271,6 +1279,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1303,6 +1312,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1341,6 +1351,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1376,6 +1387,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1411,6 +1423,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1446,6 +1459,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1463,6 +1477,7 @@ For example:
 	  <patternset refid="test.core2.excludes" />
 	  <patternset refid="test.core3.excludes" />
 	  <patternset refid="test.core4.excludes" />
+	  <patternset refid="test.core5.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1485,6 +1500,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1502,6 +1518,7 @@ For example:
 	  <patternset refid="test.core1.excludes" />
 	  <patternset refid="test.core3.excludes" />
 	  <patternset refid="test.core4.excludes" />
+	  <patternset refid="test.core5.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1524,6 +1541,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1541,6 +1559,7 @@ For example:
 	  <patternset refid="test.core1.excludes" />
 	  <patternset refid="test.core2.excludes" />
 	  <patternset refid="test.core4.excludes" />
+	  <patternset refid="test.core5.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1563,6 +1582,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -1580,6 +1600,48 @@ For example:
 	  <patternset refid="test.core1.excludes" />
 	  <patternset refid="test.core2.excludes" />
 	  <patternset refid="test.core3.excludes" />
+	  <patternset refid="test.core5.excludes" />
+	  <patternset refid="test.excludes" />
+	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.core5.xml" depends="initReports"
+	  description="Run the fourth batch of core tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.core5.xml ==
+      This target runs the fifth batch of core tests
+      and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.core5.includes" />
+	  <patternset refid="test.capecode1.excludes" />
+	  <patternset refid="test.capecode2.excludes" />
+	  <patternset refid="test.capecode3.excludes" />
+	  <patternset refid="test.core1.excludes" />
+	  <patternset refid="test.core2.excludes" />
+	  <patternset refid="test.core3.excludes" />
+	  <patternset refid="test.core4.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1977,6 +2039,7 @@ For example:
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
@@ -2019,6 +2082,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -2073,6 +2137,7 @@ For example:
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
@@ -2177,6 +2242,7 @@ For example:
     </echo>
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.long}">
@@ -2230,6 +2296,7 @@ For example:
    </echo>
    <junit fork="yes"
           jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
           printsummary="withOutAndErr"
           showoutput="yes"
           timeout="${timeout.long}">
@@ -2290,6 +2357,7 @@ For example:
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.short}">
