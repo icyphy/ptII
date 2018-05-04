@@ -1,22 +1,25 @@
+---
+layout: default
+---
 # PtII Downloads
 
 **Some of these links lead to development-grade code, which may have serious bugs.**
 
-For better quality release-grade code, see the [Ptolemy II Website](http://ptolemy.eecs.berkeley.edu/ptolemyII).
+For better quality release-grade code, see the [Ptolemy II Website](https://ptolemy.berkeley.edu/ptolemyII).
 
 See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](http://capecode.org) downloads. The downloads on this page are a superset of the CapeCode Downloads.
 
-| Platform | [Ptolemy II 10.0.1](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/) 12/18/2014 _Production Quality_ | Stable installers 11/03/2015. Use these to access features since the production 10.0.1 release. Not all features may work. _Tested by hand_ | Most Recent Nightly Build _Experimental, not tested by hand_ |
+| Platform | [Ptolemy II 10.0.1](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/) 12/18/2014 _Production Quality_ | Stable installers 11/03/2015. Use these to access features since the production 10.0.1 release. Not all features may work. _Tested by hand_ | Most Recent Nightly Build _Experimental, not tested by hand_ |
 | --- | --- | --- | --- |
 | Git sources **_(Preferred)_** | **[Git instructions](http://chess.eecs.berkeley.edu/ptexternal)** |
-| Mac OS X | [ptII10.0.1.setup.mac.dmg](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.setup.mac.dmg) | [ptII11.0.devel.setup.mac.jar](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11.0.devel.setup.mac.jar) (invoke with `java -jar ptII11.0.devel.setup.mac.jar`) | [ptII11.0.devel.setup.mac.app.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.mac.app.tar.gz) (Untar, then right click on the .app file and select Open. See [Notes for Mac OS X](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm)
+| Mac OS X | [ptII10.0.1.setup.mac.dmg](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.setup.mac.dmg) | [ptII11.0.devel.setup.mac.jar](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11.0.devel.setup.mac.jar) (invoke with `java -jar ptII11.0.devel.setup.mac.jar`) | [ptII11.0.devel.setup.mac.app.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.mac.app.tar.gz) (Untar, then right click on the .app file and select Open. See [Notes for Mac OS X](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm)
 | Linux | NA | This _might work_: [ptII11.0.devel.setup.mac.jar](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11.0.devel.setup.mac.jar) (invoke with `java -jar ptII11.0.devel.setup.mac.jar`) | [ptII11.0.devel.setup.linux.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz) (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` |
-| 32-bit Windows (**Really?**) | [ptII10\_0\_1\_setup\_windows.exe](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows.exe) | [ptII11\_0\_devel\_setup\_windows-2015-11-03.exe](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11_0_devel_setup_windows-2015-11-03.exe) | NA |
-| 64-bit Windows | [ptII10\_0\_1\_setup\_windows_64.exe](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows_64.exe) | [ptII11\_0\_devel\_setup\_windows_64-2015-11-03.exe](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11_0_devel_setup_windows_64-2015-11-03.exe) | [ptII11\_0\_devel\_setup\_windows_64.exe](https://github.com/icyphy/ptII/releases/download/nightly/ptII11_0_devel_setup_windows_64.exe) |
-| Sources: Windows line endings | [ptII10.0.1.src.zip](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.zip) | NA | [ptII11.0.devel.src.zip](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.zip) |
-| Sources: Unix line endings | [ptII10.0.1.src.tar.gz](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz) | [ptII11.0.devel-2015-11-03.tar.gz](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11.0.devel-2015-11-03.tar.gz) | [ptII11.0.devel.src.tar](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.tar) ([Eclipse instructions](http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/eclipse/index.htm))
-| Web Copy | [ptII10.0.1](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/doc/index.htm) | NA | NA |
-| WebStart | [ptII10.0.1 vergil.jnlp](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.1/vergil.jnlp) | NA | [ptII11.0.devel vergil.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergil.jnlp), [ptII 11.0.devel vergilSpace.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergilSpace.jnlp) _Not updated every night_
+| 32-bit Windows (**Really?**) | [ptII10\_0\_1\_setup\_windows.exe](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows.exe) | [ptII11\_0\_devel\_setup\_windows-2015-11-03.exe](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11_0_devel_setup_windows-2015-11-03.exe) | NA |
+| 64-bit Windows | [ptII10\_0\_1\_setup\_windows_64.exe](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows_64.exe) | [ptII11\_0\_devel\_setup\_windows_64-2015-11-03.exe](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11_0_devel_setup_windows_64-2015-11-03.exe) | [ptII11\_0\_devel\_setup\_windows_64.exe](https://github.com/icyphy/ptII/releases/download/nightly/ptII11_0_devel_setup_windows_64.exe) |
+| Sources: Windows line endings | [ptII10.0.1.src.zip](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.zip) | NA | [ptII11.0.devel.src.zip](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.zip) |
+| Sources: Unix line endings | [ptII10.0.1.src.tar.gz](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz) | [ptII11.0.devel-2015-11-03.tar.gz](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11.0.devel-2015-11-03.tar.gz) | [ptII11.0.devel.src.tar](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.tar) ([Eclipse instructions](http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/eclipse/index.htm))
+| Web Copy | [ptII10.0.1](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/doc/index.htm) | NA | NA |
+| WebStart | [ptII10.0.1 vergil.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.1/vergil.jnlp) | NA | [ptII11.0.devel vergil.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergil.jnlp), [ptII 11.0.devel vergilSpace.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergilSpace.jnlp) _Not updated every night_
 
 Windows 32-bit vs 64-bit
 ------------------------

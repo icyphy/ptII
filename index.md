@@ -6,8 +6,8 @@ Below are instructions for accessing the current development version of Ptolemy 
 
 ## Other key resources:
 
-* [Book on Ptolemy II](http://ptolemy.eecs.berkeley.edu/systems) (free download)
-* [Ptolemy II main page](http://ptolemy.eecs.berkeley.edu/ptolemyII)
+* [Book on Ptolemy II](https://ptolemy.berkeley.edu/systems) (free download)
+* [Ptolemy II main page](https://ptolemy.berkeley.edu/ptolemyII)
 * [Javadoc](doc/codeDoc/) output for Java files
 * [JsDoc](doc/codeDoc/js/index.html) output for Javascript
 * [Travis Build](https://travis-ci.org/icyphy/ptII)
@@ -36,10 +36,10 @@ To develop Ptolemy II code, we recommend that you follow the
 
 Or, see the [Ant](http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/ant.htm) instructions.
 
-Windows users, Eclipse is the preferred installation method.  If you want to build with Cygwin, see</p>
+Windows users, Eclipse is the preferred installation method.  If you want to build with Cygwin, see:
 
-* [Cygwin Instructions](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm)
-* [Ptolemy II Installation Insructions](//ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm)
+* [Cygwin Instructions](https://ptolemy.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm)
+* [Ptolemy II Installation Insructions](https://ptolemy.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm)
 
 ## See Also
 * [Summary of how to get Ptolemy II](summaryOfHowToGetPtII.html)
