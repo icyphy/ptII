@@ -22,7 +22,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
 | Sources: Windows line endings | [ptII10.0.1.src.zip](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.zip) | NA | [ptII11.0.devel.src.zip](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.zip) |
 | Sources: Unix line endings | [ptII10.0.1.src.tar.gz](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz) | [ptII11.0.devel-2015-11-03.tar.gz](http://chess.eecs.berkeley.edu/ptexternal/nightly/stable/ptII11.0.devel-2015-11-03.tar.gz) | [ptII11.0.devel.src.tar](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.tar) ([Eclipse instructions](http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/eclipse/index.htm))
 | Web Copy | [ptII10.0.1](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/doc/index.htm) | NA | NA |
-| WebStart | [ptII10.0.1 vergil.jnlp](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.1/vergil.jnlp) | NA | [ptII11.0.devel vergil.jnlp](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergil.jnlp)
+| WebStart | [ptII10.0.1 vergil.jnlp](http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.1/vergil.jnlp) | NA | [ptII11.0.devel vergil.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergil.jnlp), [ptII 11.0.devel vergilSpace.jnlp](https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/jnlp-11.0.devel/vergilSpace.jnlp) _Not updated every night_
 
 Windows 32-bit vs 64-bit
 ------------------------
