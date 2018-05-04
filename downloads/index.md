@@ -1,10 +1,4 @@
-PtII Downloads
-
-PtII Downloads
-==============
-
-Ptolemy II downloads
---------------------
+# PtII Downloads
 
 **Some of these links lead to development-grade code, which may have serious bugs.**
 
