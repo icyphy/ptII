@@ -1791,7 +1791,7 @@ update_applet_files:
 	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR); tar -xvf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
 
-#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=https://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=https://ptolemy.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)
@@ -1897,7 +1897,7 @@ bcvtb.exe: bcvtb_l4j.xml $(L4JC)
 	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
 
 BOOK_PDF=PtolemyII_DigitalV1_02.pdf
-BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
+BOOK_URL= https://ptolemy.berkeley.edu/books/Systems/$(BOOK_PDF)
 INSTALLER_SRCS=$(PTII)/vendors/installer
 $(INSTALLER_SRCS):
 	mkdir -p $@
