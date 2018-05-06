@@ -1,0 +1,1310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="travis-job-5c6f0007-fbca-45cf-bb71-0b7381532b03" name="ptolemy.domains.continuous.test.junit.JUnitTclTest" skipped="0" tests="155" time="80.628" timestamp="2018-05-06T01:00:25">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.HEARTBEAT_TOKEN" value="resetByPtIITravisBuild.sh" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="395.7" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="env.RUN_TESTS" value="false" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.5 54730 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="build,test.core2.xml" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.5 54730 10.20.0.47 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.continuous.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.continuous.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher880444634355432347.properties propsfile=/home/travis/build/icyphy/ptII/junit4223049566801144948.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="c1d4b3590e5e37e66df0f439fdc8bc2f8c8ab1aa...30e375cd027a8ee6ea4b96c5c95b2870259ed9af" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/timeout" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx2048m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="395" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="375410591" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="30e375cd027a8ee6ea4b96c5c95b2870259ed9af" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.copernicus.applet.*,ptolemy.media.viewer.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Updating Ptolemy-HLA manual." />
+    <property name="keystore" value="ptKeystore" />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PT_TRAVIS_TEST_CORE2_XML" value="true" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="Test" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="java.class.path" value="/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="env.TRAVIS_JOB_ID" value="375410598" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="user.country" value="US" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="java.maxmemory.large" value="5000m" />
+    <property name="model" value="" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml (RunModel)" time="3.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml (RunModel)" time="0.895" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml (RunModel)" time="0.1" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml (RunModel)" time="3.834" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml (RunModel)" time="0.534" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml (RunModel)" time="0.034" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml (RunModel)" time="0.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml (RunModel)" time="0.081" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml (RunModel)" time="2.759" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml (RunModel)" time="0.09" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml (RunModel)" time="0.094" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml (RunModel)" time="0.03" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml (RunModel)" time="0.136" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml (RunModel)" time="0.07" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml (RunModel)" time="0.045" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml (RunModel)" time="0.118" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml (RunModel)" time="0.111" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml (RunModel)" time="0.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml (RunModel)" time="0.067" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml (RunModel)" time="0.048" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml (RunModel)" time="0.177" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml (RunModel)" time="0.098" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge1.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml (RunModel)" time="0.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml (RunModel)" time="0.076" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[44] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml (RunModel)" time="0.096" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[45] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[46] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[47] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[48] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml (RunModel)" time="16.112" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[49] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[50] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[51] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml (RunModel)" time="0.193" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[52] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[53] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[54] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml (RunModel)" time="0.086" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[55] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml (RunModel)" time="0.133" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[56] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml (RunModel)" time="0.034" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[57] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml (RunModel)" time="1.495" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[58] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml (RunModel)" time="3.689" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[59] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml (RunModel)" time="2.449" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[60] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HybridPlant.xml (RunModel)" time="0.581" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[61] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml (RunModel)" time="0.172" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[62] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml (RunModel)" time="0.217" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[63] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml (RunModel)" time="2.393" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[64] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[65] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[66] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[67] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml (RunModel)" time="0.645" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[68] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[69] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml (RunModel)" time="0.009" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[70] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml (RunModel)" time="0.089" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[71] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[72] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml (RunModel)" time="0.011" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[73] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml (RunModel)" time="0.011" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[74] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[75] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[76] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[77] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[78] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[79] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml (RunModel)" time="0.014" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[80] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[81] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[82] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml (RunModel)" time="0.079" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[83] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml (RunModel)" time="0.06" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[84] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml (RunModel)" time="0.012" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[85] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml (RunModel)" time="0.038" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[86] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml (RunModel)" time="6.228" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[87] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml (RunModel)" time="1.215" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[88] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml (RunModel)" time="1.797" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[89] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml (RunModel)" time="0.937" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[90] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml (RunModel)" time="0.022" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[91] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[92] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[93] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[94] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml (RunModel)" time="0.025" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[95] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml (RunModel)" time="0.056" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[96] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml (RunModel)" time="0.034" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[97] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml (RunModel)" time="0.789" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[98] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml (RunModel)" time="1.318" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[99] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml (RunModel)" time="0.985" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[100] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml (RunModel)" time="0.748" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[101] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml (RunModel)" time="1.337" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[102] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml (RunModel)" time="0.187" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[103] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml (RunModel)" time="0.76" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[104] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml (RunModel)" time="0.4" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[105] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml (RunModel)" time="1.213" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[106] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml (RunModel)" time="0.183" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[107] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml (RunModel)" time="0.01" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[108] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[109] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml (RunModel)" time="0.064" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[110] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml (RunModel)" time="0.433" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[111] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml (RunModel)" time="0.011" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[112] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[113] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[114] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml (RunModel)" time="0.556" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[115] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[116] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[117] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[118] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[119] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[120] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[121] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[122] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[123] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml (RunModel)" time="0.994" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[124] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml (RunModel)" time="2.535" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[125] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml (RunModel)" time="0.862" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[126] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[127] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml (RunModel)" time="1.066" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[128] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml (RunModel)" time="0.016" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[129] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidWithMultipleImpulses.xml (RunModel)" time="0.013" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[130] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml (RunModel)" time="0.199" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[131] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml (RunModel)" time="3.4" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[132] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml (RunModel)" time="2.57" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[133] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml (RunModel)" time="0.185" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[134] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml (RunModel)" time="0.062" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[135] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[136] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml (RunModel)" time="0.063" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[137] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml (RunModel)" time="0.188" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[138] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml (RunModel)" time="0.018" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[139] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml (RunModel)" time="0.02" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[140] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml (RunModel)" time="0.01" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[141] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml (RunModel)" time="0.101" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[142] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml (RunModel)" time="0.775" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[143] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml (RunModel)" time="0.105" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[144] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml (RunModel)" time="2.922" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[145] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml (RunModel)" time="0.942" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[146] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[147] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[148] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[149] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[150] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel4.xml (RunModel)" time="0.031" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[151] /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml (RunModel)" time="0.156" />
+  <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Sun May 06 01:00:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBall.xml
+2498 ms. Memory: 331776K Free: 322586K (97%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15f0be15
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15f0be15
+reloadAllAccessors: .BouncingBall
+----------------- testing Sun May 06 01:00:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/BouncingBallWithoutGR.xml
+767 ms. Memory: 331776K Free: 135218K (41%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c853d4b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c853d4b
+reloadAllAccessors: .BouncingBallWithoutGR
+----------------- testing Sun May 06 01:00:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Brownian.xml
+43 ms. Memory: 331776K Free: 122956K (37%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62510358
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62510358
+reloadAllAccessors: .Brownian
+----------------- testing Sun May 06 01:00:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CarTracking.xml
+3421 ms. Memory: 479744K Free: 313299K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@259ff730
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@259ff730
+reloadAllAccessors: .CarTracking
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CartPendulum.xml
+398 ms. Memory: 479744K Free: 209371K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a721692
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a721692
+reloadAllAccessors: .CartPendulum
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface10.xml
+5 ms. Memory: 479744K Free: 193662K (40%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@45ddd85d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@45ddd85d
+reloadAllAccessors: .CausalityInterface10
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface11.xml
+7 ms. Memory: 479744K Free: 181881K (38%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5948b95c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5948b95c
+reloadAllAccessors: .CausalityInterface11
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface12.xml
+11 ms. Memory: 479744K Free: 170018K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@21c1b75
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@21c1b75
+reloadAllAccessors: .CausalityInterface12
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface13.xml
+9 ms. Memory: 479744K Free: 154422K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@27e453d2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@27e453d2
+reloadAllAccessors: .CausalityInterface13
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface14.xml
+6 ms. Memory: 479744K Free: 142641K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16607804
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16607804
+reloadAllAccessors: .CausalityInterface14
+----------------- testing Sun May 06 01:00:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface4.xml
+7 ms. Memory: 479744K Free: 130860K (27%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d106cde
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d106cde
+reloadAllAccessors: .CausalityInterface4
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface5.xml
+8 ms. Memory: 479744K Free: 119079K (25%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2608d0dd
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2608d0dd
+reloadAllAccessors: .CausalityInterface5
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface6.xml
+7 ms. Memory: 479744K Free: 107297K (22%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b4f1f68
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b4f1f68
+reloadAllAccessors: .CausalityInterface6
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface7.xml
+13 ms. Memory: 479744K Free: 87782K (18%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6107bfb8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6107bfb8
+reloadAllAccessors: .CausalityInterface7
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface8.xml
+4 ms. Memory: 716288K Free: 701498K (98%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3adb0999
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3adb0999
+reloadAllAccessors: .CausalityInterface8
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterface9.xml
+5 ms. Memory: 716288K Free: 680600K (95%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7bf31bd5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7bf31bd5
+reloadAllAccessors: .CausalityInterface9
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback1.xml
+4 ms. Memory: 716288K Free: 668025K (93%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1400db2e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1400db2e
+reloadAllAccessors: .CausalityInterfaceFeedback1
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CausalityInterfaceFeedback2.xml
+3 ms. Memory: 716288K Free: 655451K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@106cae01
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@106cae01
+reloadAllAccessors: .CausalityInterfaceFeedback2
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/CompareWithCurrentTime.xml
+3 ms. Memory: 716288K Free: 647067K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fc41732
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fc41732
+reloadAllAccessors: .CompareWithCurrentTime
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ComparedClocks.xml
+10 ms. Memory: 716288K Free: 626085K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44aa27a3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44aa27a3
+reloadAllAccessors: .ComparedClocks
+----------------- testing Sun May 06 01:00:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousAOCClone.xml
+2528 ms. Memory: 716288K Free: 88944K (12%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@cde0cf0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@cde0cf0
+reloadAllAccessors: .ContinuousAOCClone
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousClock.xml
+25 ms. Memory: 680960K Free: 654984K (96%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5e5538e2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5e5538e2
+reloadAllAccessors: .ContinuousClock
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuous.xml
+43 ms. Memory: 680960K Free: 624381K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a7cfab
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a7cfab
+reloadAllAccessors: .ContinuousInContinuous
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInContinuousInContinuous.xml
+5 ms. Memory: 680960K Free: 612392K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51a3c573
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51a3c573
+reloadAllAccessors: .ContinuousInContinuousInContinuous
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE.xml
+113 ms. Memory: 680960K Free: 596409K (88%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ec9d796
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ec9d796
+reloadAllAccessors: .ContinuousInDE
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE2.xml
+44 ms. Memory: 680960K Free: 577880K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cad0dc0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cad0dc0
+reloadAllAccessors: .ContinuousInDE2
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE3.xml
+38 ms. Memory: 680960K Free: 561890K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52321af9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52321af9
+reloadAllAccessors: .ContinuousInDE3
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDE4.xml
+16 ms. Memory: 680960K Free: 549901K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@487df447
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@487df447
+reloadAllAccessors: .ContinuousInDE4
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinements.xml
+48 ms. Memory: 680960K Free: 511324K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2303a901
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2303a901
+reloadAllAccessors: .ContinuousInDEDifferentRefinements
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEDifferentRefinementsPreemptive.xml
+60 ms. Memory: 680960K Free: 475261K (70%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5133520b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5133520b
+reloadAllAccessors: .ContinuousInDEDifferentRefinementsPreemptive
+----------------- testing Sun May 06 01:00:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous2.xml
+44 ms. Memory: 680960K Free: 455260K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f64132a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f64132a
+reloadAllAccessors: .ContinuousInDEInContinuous2
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInContinuous3.xml
+38 ms. Memory: 680960K Free: 432738K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65f07465
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65f07465
+reloadAllAccessors: .ContinuousInDEInContinuous3
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput.xml
+26 ms. Memory: 680960K Free: 420741K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48f51793
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48f51793
+reloadAllAccessors: .ContinuousInDEInput
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput2.xml
+17 ms. Memory: 680960K Free: 408760K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2bd699d5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2bd699d5
+reloadAllAccessors: .ContinuousInDEInput2
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEInput3.xml
+19 ms. Memory: 680960K Free: 394241K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cd62dda
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cd62dda
+reloadAllAccessors: .ContinuousInDEInput3
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDESharingRefinement.xml
+144 ms. Memory: 680960K Free: 294168K (43%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3e577a12
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3e577a12
+reloadAllAccessors: .ContinuousInDESharingRefinement
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInDEwithNoPorts.xml
+5 ms. Memory: 680960K Free: 286181K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32d54331
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32d54331
+reloadAllAccessors: .ContinuousInDEwithNoPorts
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousInsideDE.xml
+56 ms. Memory: 680960K Free: 263658K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@566f7e4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@566f7e4
+reloadAllAccessors: .ContinuousInsideDE
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge1.xml
+3 ms. Memory: 680960K Free: 255670K (38%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7bdcb90d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7bdcb90d
+reloadAllAccessors: .ContinuousMerge1
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge2.xml
+15 ms. Memory: 680960K Free: 239672K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a878a83
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a878a83
+reloadAllAccessors: .ContinuousMerge2
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousMerge3.xml
+50 ms. Memory: 680960K Free: 223681K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@213d8c8b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@213d8c8b
+reloadAllAccessors: .ContinuousMerge3
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous.xml
+48 ms. Memory: 680960K Free: 205152K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a411d49
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a411d49
+reloadAllAccessors: .ContinuousWithinContinuous
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous2.xml
+84 ms. Memory: 680960K Free: 193171K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d6190a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d6190a
+reloadAllAccessors: .ContinuousWithinContinuous2
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous3.xml
+18 ms. Memory: 680960K Free: 181174K (27%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a42b1a0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a42b1a0
+reloadAllAccessors: .ContinuousWithinContinuous3
+----------------- testing Sun May 06 01:00:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous4.xml
+83 ms. Memory: 680960K Free: 158651K (23%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5988a3f6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5988a3f6
+reloadAllAccessors: .ContinuousWithinContinuous4
+----------------- testing Sun May 06 01:00:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous5.xml
+15 ms. Memory: 680960K Free: 146662K (22%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6514aeb9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6514aeb9
+reloadAllAccessors: .ContinuousWithinContinuous5
+----------------- testing Sun May 06 01:00:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous6.xml
+14 ms. Memory: 680960K Free: 134673K (20%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d010ea1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d010ea1
+reloadAllAccessors: .ContinuousWithinContinuous6
+----------------- testing Sun May 06 01:00:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ContinuousWithinContinuous7.xml
+68 ms. Memory: 680960K Free: 120154K (18%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ad9f85e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ad9f85e
+reloadAllAccessors: .ContinuousWithinContinuous7
+----------------- testing Sun May 06 01:00:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DCMotor.xml
+16031 ms. Memory: 509952K Free: 268243K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46335ba8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46335ba8
+reloadAllAccessors: .DCMotor
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEInContinuous.xml
+7 ms. Memory: 509952K Free: 248183K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15bbc810
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15bbc810
+reloadAllAccessors: .DEInContinuous
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DEinContinuous2.xml
+6 ms. Memory: 509952K Free: 229752K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@435aa07c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@435aa07c
+reloadAllAccessors: .DEinContinuous2
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative.xml
+142 ms. Memory: 509952K Free: 186881K (37%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@50700b07
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@50700b07
+reloadAllAccessors: .Derivative2
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Derivative1.xml
+18 ms. Memory: 509952K Free: 159863K (31%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c16e285
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c16e285
+reloadAllAccessors: .Derivative1
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/DiscreteClock.xml
+13 ms. Memory: 509952K Free: 141432K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d00d8f7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d00d8f7
+reloadAllAccessors: .DiscreteClock
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/EfficiencyCurve.xml
+57 ms. Memory: 509952K Free: 124290K (24%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a1aa427
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a1aa427
+reloadAllAccessors: .EfficiencyCurve
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponse.xml
+108 ms. Memory: 509952K Free: 97288K (19%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41dda125
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41dda125
+reloadAllAccessors: .ExponentialResponse
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ExponentialResponseRK45.xml
+25 ms. Memory: 509952K Free: 78857K (15%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ca70b79
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ca70b79
+reloadAllAccessors: .ExponentialResponseRK45
+----------------- testing Sun May 06 01:00:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Friction.xml
+1395 ms. Memory: 471552K Free: 423866K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ba59b35
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ba59b35
+reloadAllAccessors: .Friction
+----------------- testing Sun May 06 01:00:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/FurutaPendulum.xml
+3509 ms. Memory: 456192K Free: 291296K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cc75f55
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cc75f55
+reloadAllAccessors: .FurutaPendulum
+----------------- testing Sun May 06 01:01:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HierarchicalExecution.xml
+2106 ms. Memory: 441344K Free: 326253K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1bffed82
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1bffed82
+reloadAllAccessors: .HierarchicalExecution
+----------------- testing Sun May 06 01:01:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HybridPlant.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HybridPlant.xml
+521 ms. Memory: 420864K Free: 379054K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d0b1aba
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d0b1aba
+reloadAllAccessors: .HybridPlant
+----------------- testing Sun May 06 01:01:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Hysteresis.xml
+133 ms. Memory: 420864K Free: 313691K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@701e02f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@701e02f
+reloadAllAccessors: .Hysteresis
+----------------- testing Sun May 06 01:01:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomDelay.xml
+166 ms. Memory: 420864K Free: 232968K (55%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2bda85df
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2bda85df
+reloadAllAccessors: .HysteresisWithRandomDelay
+----------------- testing Sun May 06 01:01:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/HysteresisWithRandomLosses.xml
+2319 ms. Memory: 390656K Free: 73868K (19%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@357fabd5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@357fabd5
+reloadAllAccessors: .HysteresisWithRandomLosses
+----------------- testing Sun May 06 01:01:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImmediateTransitions.xml
+8 ms. Memory: 390656K Free: 59501K (15%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@402c171b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@402c171b
+reloadAllAccessors: .ImmediateTransitions
+----------------- testing Sun May 06 01:01:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback.xml
+8 ms. Memory: 376832K Free: 346443K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67c6972b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67c6972b
+reloadAllAccessors: .ImpulseFeedback
+----------------- testing Sun May 06 01:01:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ImpulseFeedback2.xml
+6 ms. Memory: 376832K Free: 337684K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41772412
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41772412
+reloadAllAccessors: .ImpulseFeedback2
+----------------- testing Sun May 06 01:01:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IncreasingRatePoisson.xml
+621 ms. Memory: 370176K Free: 320974K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3966bd5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3966bd5
+reloadAllAccessors: .IncreasingRatePoisson
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/InitialStateFeedback.xml
+3 ms. Memory: 370176K Free: 313447K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@360dc207
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@360dc207
+reloadAllAccessors: .InitialStateFeedback
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration.xml
+2 ms. Memory: 370176K Free: 306937K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6ee7e859
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6ee7e859
+reloadAllAccessors: .Integration
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration2.xml
+78 ms. Memory: 370176K Free: 289157K (78%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d12412a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d12412a
+reloadAllAccessors: .Integration2
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration3.xml
+2 ms. Memory: 370176K Free: 282647K (76%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@abc55e9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@abc55e9
+reloadAllAccessors: .Integration3
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Integration5.xml
+2 ms. Memory: 370176K Free: 276137K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@78237039
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@78237039
+reloadAllAccessors: .Integration5
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse.xml
+2 ms. Memory: 370176K Free: 269556K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@68004584
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@68004584
+reloadAllAccessors: .IntegratorImpulse
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/IntegratorImpulse2.xml
+3 ms. Memory: 370176K Free: 263109K (71%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@277fbb15
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@277fbb15
+reloadAllAccessors: .IntegratorImpulse2
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing1.xml
+2 ms. Memory: 370176K Free: 256599K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6dfebedb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6dfebedb
+reloadAllAccessors: .LevelCrossing1
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing2.xml
+2 ms. Memory: 370176K Free: 250097K (68%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@102a3e55
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@102a3e55
+reloadAllAccessors: .LevelCrossing2
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing3.xml
+2 ms. Memory: 370176K Free: 243595K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d60bf4a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d60bf4a
+reloadAllAccessors: .LevelCrossing3
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing4.xml
+3 ms. Memory: 370176K Free: 235108K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15a6a724
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15a6a724
+reloadAllAccessors: .LevelCrossing4
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing5.xml
+3 ms. Memory: 370176K Free: 228615K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@12689e4b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@12689e4b
+reloadAllAccessors: .LevelCrossing5
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossing6.xml
+2 ms. Memory: 370176K Free: 222121K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@eec193
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@eec193
+reloadAllAccessors: .LevelCrossing6
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetector.xml
+12 ms. Memory: 370176K Free: 208104K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@540d702b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@540d702b
+reloadAllAccessors: .LevelCrossingDetector
+----------------- testing Sun May 06 01:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectingDirections.xml
+52 ms. Memory: 370176K Free: 186555K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d228a51
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d228a51
+reloadAllAccessors: .LevelCrossingDetectorDetectingDirections
+----------------- testing Sun May 06 01:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingDetectorDetectsGlitches.xml
+22 ms. Memory: 370176K Free: 159298K (43%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55b7f540
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55b7f540
+reloadAllAccessors: .LevelCrossingDetectorDetectsGlitches
+----------------- testing Sun May 06 01:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LevelCrossingNoInitialOuput.xml
+2 ms. Memory: 370176K Free: 152733K (41%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@20815bb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@20815bb
+reloadAllAccessors: .LevelCrossingNoInitialOuput
+----------------- testing Sun May 06 01:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LinearStateSpaceExample.xml
+18 ms. Memory: 370176K Free: 142461K (38%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2aa66a17
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2aa66a17
+reloadAllAccessors: .LinearStateSpace_Example
+----------------- testing Sun May 06 01:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Lorenz.xml
+6147 ms. Memory: 339456K Free: 58999K (17%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14871ae0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14871ae0
+reloadAllAccessors: .Lorenz
+----------------- testing Sun May 06 01:01:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystem.xml
+1114 ms. Memory: 329728K Free: 141985K (43%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5597a69a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5597a69a
+reloadAllAccessors: .LorenzDifferentialSystem
+----------------- testing Sun May 06 01:01:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithInput.xml
+1710 ms. Memory: 324096K Free: 163204K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4c4778a9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4c4778a9
+reloadAllAccessors: .LorenzDifferentialSystemWithInput
+----------------- testing Sun May 06 01:01:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/LorenzDifferentialSystemWithTime.xml
+920 ms. Memory: 307200K Free: 256516K (84%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5289c3a2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5289c3a2
+reloadAllAccessors: .LorenzDifferentialSystemWithTime
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Microsteps.xml
+6 ms. Memory: 307200K Free: 247250K (80%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@485258e8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@485258e8
+reloadAllAccessors: .Microsteps
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal1.xml
+10 ms. Memory: 307200K Free: 231217K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@569f26c2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@569f26c2
+reloadAllAccessors: .Modal1
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Modal2.xml
+30 ms. Memory: 307200K Free: 212222K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4989c216
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4989c216
+reloadAllAccessors: .Modal2
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithReset.xml
+8 ms. Memory: 307200K Free: 199241K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cbc17e8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cbc17e8
+reloadAllAccessors: .ModalTransitionGuardWithReset
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition.xml
+8 ms. Memory: 307200K Free: 186243K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@683ea20c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@683ea20c
+reloadAllAccessors: .ModalTransitionGuardWithResetUsingPreemptiveTransition
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition2.xml
+7 ms. Memory: 307200K Free: 173286K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@207898b6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@207898b6
+reloadAllAccessors: .ModalTransitionGuardWithResetUsingPreemptiveTransition2
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ModalTransitionGuardWithResetUsingPreemptiveTransition3.xml
+12 ms. Memory: 307200K Free: 160289K (52%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ec867de
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ec867de
+reloadAllAccessors: .ModalTransitionGuardWithResetUsingPreemptiveTransition3
+----------------- testing Sun May 06 01:01:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradle.xml
+641 ms. Memory: 307712K Free: 100773K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@61a2b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@61a2b
+reloadAllAccessors: .NewtonsCradle
+----------------- testing Sun May 06 01:01:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleAnimated.xml
+1184 ms. Memory: 279552K Free: 73354K (26%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cf33bb3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cf33bb3
+reloadAllAccessors: .NewtonsCradleAnimated
+----------------- testing Sun May 06 01:01:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleComplicated.xml
+871 ms. Memory: 319488K Free: 235477K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5edd58f5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5edd58f5
+reloadAllAccessors: .NewtonsCradleComplicated
+----------------- testing Sun May 06 01:01:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradleNondeterministic.xml
+650 ms. Memory: 379904K Free: 313243K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ee269e4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ee269e4
+reloadAllAccessors: .NewtonsCradleNondeterministic
+----------------- testing Sun May 06 01:01:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NewtonsCradlePerfectlyInelastic1.xml
+1235 ms. Memory: 445952K Free: 354084K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72c678f9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72c678f9
+reloadAllAccessors: .NewtonsCradlePerfectlyInelastic1
+----------------- testing Sun May 06 01:01:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Noise.xml
+151 ms. Memory: 445952K Free: 283441K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d7b797e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d7b797e
+reloadAllAccessors: .Noise
+----------------- testing Sun May 06 01:01:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/NoiseSpectrum.xml
+663 ms. Memory: 445952K Free: 135102K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2152cd24
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2152cd24
+reloadAllAccessors: .NoiseSpectrum
+----------------- testing Sun May 06 01:01:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimated.xml
+300 ms. Memory: 524800K Free: 456710K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fbf5bf3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fbf5bf3
+reloadAllAccessors: .ParameterizedNewtonsCradleAnimated
+----------------- testing Sun May 06 01:01:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ParameterizedNewtonsCradleAnimatedNondeterministic.xml
+1106 ms. Memory: 524800K Free: 108068K (21%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fefb569
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fefb569
+reloadAllAccessors: .ParameterizedNewtonsCradleAnimatedNondeterministic
+----------------- testing Sun May 06 01:01:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Pendulum3D.xml
+121 ms. Memory: 524800K Free: 48057K (9%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56699214
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56699214
+reloadAllAccessors: .Pendulum3D
+----------------- testing Sun May 06 01:01:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler.xml
+2 ms. Memory: 524800K Free: 41287K (8%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f2d952
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f2d952
+reloadAllAccessors: .PeriodicSampler
+----------------- testing Sun May 06 01:01:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler1.xml
+15 ms. Memory: 503808K Free: 440150K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3430adee
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3430adee
+reloadAllAccessors: .PeriodicSampler1
+----------------- testing Sun May 06 01:01:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PeriodicSampler2.xml
+39 ms. Memory: 503808K Free: 408237K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@20843aba
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@20843aba
+reloadAllAccessors: .PeriodicSampler2
+----------------- testing Sun May 06 01:01:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Poisson.xml
+408 ms. Memory: 503808K Free: 178733K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@412e75db
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@412e75db
+reloadAllAccessors: .Poisson
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock.xml
+1 ms. Memory: 503808K Free: 169372K (34%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3223ee9f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3223ee9f
+reloadAllAccessors: .PoissonClock
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PoissonClock2.xml
+4 ms. Memory: 503808K Free: 160026K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e51b49
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e51b49
+reloadAllAccessors: .PoissonClock2
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/PortParameterHierarchy.xml
+5 ms. Memory: 503808K Free: 150606K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@439b8aa5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@439b8aa5
+reloadAllAccessors: .PortParameterHierarchy
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/RandomHybridPlant.xml
+506 ms. Memory: 484352K Free: 255553K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@373364c9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@373364c9
+reloadAllAccessors: .RandomHybridPlant
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime1.xml
+16 ms. Memory: 484352K Free: 236883K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ef4c760
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ef4c760
+reloadAllAccessors: .ResetTransitionWithStartTime1
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime2.xml
+19 ms. Memory: 484352K Free: 219876K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@120a5670
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@120a5670
+reloadAllAccessors: .ResetTransitionWithStartTime2
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime3.xml
+30 ms. Memory: 484352K Free: 202755K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5b67ca18
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5b67ca18
+reloadAllAccessors: .ResetTransitionWithStartTime3
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime4.xml
+7 ms. Memory: 484352K Free: 189749K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4364ba8c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4364ba8c
+reloadAllAccessors: .ResetTransitionWithStartTime4
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime5.xml
+18 ms. Memory: 484352K Free: 172734K (36%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d1b1c39
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d1b1c39
+reloadAllAccessors: .ResetTransitionWithStartTime5
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/ResetTransitionWithStartTime6.xml
+8 ms. Memory: 484352K Free: 157657K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a6c889d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a6c889d
+reloadAllAccessors: .ResetTransitionWithStartTime6
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SRinContinuous.xml
+7 ms. Memory: 484352K Free: 146692K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cc93cb0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cc93cb0
+reloadAllAccessors: .SRinContinuous
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SampledClocks.xml
+8 ms. Memory: 484352K Free: 135646K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a6435c2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a6435c2
+reloadAllAccessors: .SampledClocks
+----------------- testing Sun May 06 01:01:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Satellite.xml
+971 ms. Memory: 471552K Free: 338734K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a9ad40f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a9ad40f
+reloadAllAccessors: .Satellite
+----------------- testing Sun May 06 01:01:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SigmaDelta.xml
+2391 ms. Memory: 453632K Free: 314821K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@263826c5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@263826c5
+reloadAllAccessors: .SigmaDelta
+----------------- testing Sun May 06 01:01:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinuBouncingBall.xml
+751 ms. Memory: 453632K Free: 84525K (19%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b03877c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b03877c
+reloadAllAccessors: .SinuBouncingBall
+----------------- testing Sun May 06 01:01:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Sinusoid.xml
+5 ms. Memory: 453632K Free: 78113K (17%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46ade30b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46ade30b
+reloadAllAccessors: .Sinusoid
+----------------- testing Sun May 06 01:01:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidInNoise.xml
+1024 ms. Memory: 432640K Free: 212346K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@724b27c5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@724b27c5
+reloadAllAccessors: .SinusoidInNoise
+----------------- testing Sun May 06 01:01:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidRK45.xml
+2 ms. Memory: 432640K Free: 205174K (47%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74f646d5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74f646d5
+reloadAllAccessors: .SinusoidRK45
+----------------- testing Sun May 06 01:01:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidWithMultipleImpulses.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SinusoidWithMultipleImpulses.xml
+4 ms. Memory: 432640K Free: 198993K (46%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@19805a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@19805a
+reloadAllAccessors: .SinusoidWithMultipleImpulses
+----------------- testing Sun May 06 01:01:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/SquareWave.xml
+172 ms. Memory: 432640K Free: 170002K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6a89592b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6a89592b
+reloadAllAccessors: .SquareWave
+----------------- testing Sun May 06 01:01:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Starmac.xml
+3056 ms. Memory: 418816K Free: 121755K (29%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@775f1b0a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@775f1b0a
+reloadAllAccessors: .Starmac
+----------------- testing Sun May 06 01:01:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StaticUnits.xml
+2134 ms. Memory: 386048K Free: 251640K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74c6b78
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74c6b78
+reloadAllAccessors: .StaticUnits
+----------------- testing Sun May 06 01:01:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StickyMasses.xml
+129 ms. Memory: 386048K Free: 189883K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c56f8aa
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c56f8aa
+reloadAllAccessors: .StickyMasses
+----------------- testing Sun May 06 01:01:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime.xml
+38 ms. Memory: 386048K Free: 160373K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13aa0e68
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13aa0e68
+reloadAllAccessors: .StopTime
+----------------- testing Sun May 06 01:01:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/StopTime2.xml
+33 ms. Memory: 386048K Free: 132946K (34%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dd5216c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dd5216c
+reloadAllAccessors: .StopTime2
+----------------- testing Sun May 06 01:01:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Switch.xml
+39 ms. Memory: 386048K Free: 103437K (27%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@634bc10e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@634bc10e
+reloadAllAccessors: .Switch
+----------------- testing Sun May 06 01:01:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Thermostat.xml
+166 ms. Memory: 386048K Free: 25056K (6%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4fc9187b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4fc9187b
+reloadAllAccessors: .Thermostat
+----------------- testing Sun May 06 01:01:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay.xml
+5 ms. Memory: 386048K Free: 17999K (5%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1236ce16
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1236ce16
+reloadAllAccessors: .TimeDelay
+----------------- testing Sun May 06 01:01:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay2.xml
+10 ms. Memory: 386048K Free: 8904K (2%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@390e6bce
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@390e6bce
+reloadAllAccessors: .TimeDelay2
+----------------- testing Sun May 06 01:01:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TimeDelay3.xml
+3 ms. Memory: 379904K Free: 300405K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d76a549
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d76a549
+reloadAllAccessors: .TimeDelay3
+----------------- testing Sun May 06 01:01:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TransferAbsentToInside.xml
+27 ms. Memory: 379904K Free: 241171K (63%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@31bbc29f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@31bbc29f
+reloadAllAccessors: .TransferAbsentToInside
+----------------- testing Sun May 06 01:01:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/Transmission.xml
+746 ms. Memory: 359936K Free: 255333K (71%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3649c91b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3649c91b
+reloadAllAccessors: .Transmission
+----------------- testing Sun May 06 01:01:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TriggeredContinuousClock.xml
+42 ms. Memory: 359936K Free: 219360K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1565c752
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1565c752
+reloadAllAccessors: .TriggeredContinuousClock
+----------------- testing Sun May 06 01:01:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/TwoMachineInfiniteBusControl.xml
+2778 ms. Memory: 303616K Free: 208809K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@787acd5b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@787acd5b
+reloadAllAccessors: .TwoMachineInfiniteBusControl
+----------------- testing Sun May 06 01:01:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/V2V.xml
+760 ms. Memory: 299008K Free: 254591K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@28d20638
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@28d20638
+reloadAllAccessors: .V2V
+----------------- testing Sun May 06 01:01:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel.xml
+8 ms. Memory: 299008K Free: 236189K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ff14f4a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ff14f4a
+reloadAllAccessors: .hierarchicalModalModel
+----------------- testing Sun May 06 01:01:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel1.xml
+8 ms. Memory: 299008K Free: 217403K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10b6ee6e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10b6ee6e
+reloadAllAccessors: .hierarchicalModalModel1
+----------------- testing Sun May 06 01:01:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel2.xml
+5 ms. Memory: 299008K Free: 201816K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15907c49
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15907c49
+reloadAllAccessors: .hierarchicalModalModel2
+----------------- testing Sun May 06 01:01:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel3.xml
+5 ms. Memory: 299008K Free: 187866K (63%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@205b2298
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@205b2298
+reloadAllAccessors: .hierarchicalModalModel3
+----------------- testing Sun May 06 01:01:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/hierarchicalModalModel4.xml
+4 ms. Memory: 299008K Free: 172337K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@242d1b4c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@242d1b4c
+reloadAllAccessors: .hierarchicalModalModel4
+----------------- testing Sun May 06 01:01:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/continuous/test/auto/junk.xml
+138 ms. Memory: 299008K Free: 138975K (46%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fe9333b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fe9333b
+reloadAllAccessors: .junk
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+]]></system-out>
+  <system-err><![CDATA[Warning: '.HysteresisWithRandomDelay.NonStrictTest3' The test produced only 26 tokens, yet the correctValues parameter was expecting 30 tokens.
+Warning: '.IncreasingRatePoisson.NonStrictTest' The test produced only 364 tokens, yet the correctValues parameter was expecting 402 tokens.
+Warning: '.Poisson.NonStrictTest' The test produced only 396 tokens, yet the correctValues parameter was expecting 430 tokens.
+]]></system-err>
+</testsuite>
