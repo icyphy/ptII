@@ -1606,7 +1606,8 @@ public class JavaScript extends AbstractPlaceableActor
             // Set the value of the parameter unless
             // the parameter already has a value that is an override,
             // in which case, allow that to prevail by doing nothing here.
-            if (token != null && !parameter.isOverridden()) {
+            if (token != null && !parameter.isOverridden()
+                    && parameter.getDerivedLevel() == Integer.MAX_VALUE) {
                 if (parameter.getAttribute("_JSON") != null
                         && !(token instanceof StringToken)) {
                     // Attempt to convert the token to a JSON string.
@@ -1620,7 +1621,7 @@ public class JavaScript extends AbstractPlaceableActor
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
             }
-            if (parameter.isOverridden()) {
+            if (parameter.isOverridden() || parameter.getDerivedLevel() < Integer.MAX_VALUE) {
                 result = previousValue;
             }
             // If there was a previous value from a parameter that got deleted, then override the
@@ -1901,6 +1902,8 @@ public class JavaScript extends AbstractPlaceableActor
                 }
                 if (token instanceof Token) {
                     ((Parameter) parameter).setToken((Token) token);
+                    // Need to propagate!!!
+                    ((Parameter) parameter).propagateValue();
                 } else {
                     throw new IllegalActionException(this,
                             "Unsupported value: " + value);
@@ -1911,7 +1914,7 @@ public class JavaScript extends AbstractPlaceableActor
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
             }
-            if (parameter.isOverridden()) {
+            if (parameter.isOverridden() || parameter.getDerivedLevel() < Integer.MAX_VALUE) {
                 result = ((Parameter) parameter).getToken();
             }
 
@@ -2777,6 +2780,8 @@ public class JavaScript extends AbstractPlaceableActor
         }
         // If the director has a synchronizeToRealTime parameter, check that its
         // value is true.
+        // NO! This is a real nuissance for regression tests and for fast simulations.
+        /*
         Attribute sync = director.getAttribute("synchronizeToRealTime");
         if (sync instanceof Parameter) {
             Token token = ((Parameter) sync).getToken();
@@ -2796,6 +2801,7 @@ public class JavaScript extends AbstractPlaceableActor
                 }
             }
         }
+        */
         final Time callbackTime = currentTime.add(milliseconds * 0.001);
 
         Time responseTime = director.fireAt(this, callbackTime);
@@ -2873,7 +2879,7 @@ public class JavaScript extends AbstractPlaceableActor
     private boolean _inFire;
     
     /** True if a warning has been issued about synchronizeToRealTime. */
-    private boolean _timeWarningIssued;
+    // private static boolean _timeWarningIssued;
 
     /** Queue containing callback functions that are to be invoked in the fire
      *  method as soon as possible.
