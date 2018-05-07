@@ -1,0 +1,341 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="Crossing" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
+    </property>
+    <property name="speed" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 45}">
+        </property>
+    </property>
+    <property name="length" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 268, 1127, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{436.5, 251.0}">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+        <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, -1.0]">
+            </property>
+            <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="80.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="4.0, -1.0">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="80.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, -1.0]">
+            </property>
+            <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="39.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="79.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="length">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, -16.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="length:">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-33.0, -17.0]">
+            </property>
+        </property>
+        <property name="ParameterValue2" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="speed">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, -4.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="speed:">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-33.0, -5.0]">
+            </property>
+        </property>
+    </property>
+    <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model a crossing that can be occupied by only one&#10;vehicle at a time. The time it takes the vehicle to&#10;cross the crossing is length/speed.&#10;&#10;If an input arrives on one of the inputs in1 or in2&#10;and there is no vehicle in the crossing, then the vehicle&#10;begins occupying the crossing. At the end of the time&#10;period, if a pause input with value true has not been received&#10;by its destination, then it will exit to the destination, freeing&#10;the crossing.  If a pause input has been received, then&#10;it will continue to occupy the crossing until it receives a&#10;pause input with value false.  Whenever a vehicle occupies&#10;the crossing, a true output is sent to both full1 and full2.&#10;&#10;If an input arrives after a true has been sent to the corresponding&#10;full output, then an exception is thrown.&#10;&#10;If two inputs arrive simultaneously, and the crossing is free,&#10;then in1 will be admitted first. The vehicle at in2 will wait until&#10;in1 has exited and will then begin its traversal.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 10.0]">
+        </property>
+    </property>
+    <port name="in1" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="out1" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="in2" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 175.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="out2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 160.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="pause1" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 220.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="pause2" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 270.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+        </property>
+    </port>
+    <port name="full1" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="full2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 245.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="population">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Ctr" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('in1');&#10;	this.input('in2');&#10;	this.input('pause1');&#10;	this.input('pause2');&#10;	this.output('out1');&#10;	this.output('out2');&#10;	this.output('full1', {'spontaneous':true});&#10;	this.output('full2', {'spontaneous':true});&#10;	this.output('population');&#10;	this.parameter('timeDelay', {'type':'number', 'value':1.0});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var out1Paused = false;&#10;	var out2Paused = false;&#10;	var inFlight1 = null;&#10;	var inFlight2 = null;&#10;	var out1Pending = null;&#10;	var out2Pending = null;&#10;	var in1Pending = null;&#10;	var in2Pending = null;&#10;	&#10;	function send1() {&#10;		thiz.send('out1', inFlight1);&#10;		inFlight1 = null;&#10;		// If in2 has a pending input, process it now.&#10;		if (in2Pending !== null) {&#10;			thiz.send('population', 1);&#10;			inFlight2 = in2Pending;&#10;			in2Pending = null;&#10;			var timeDelay = thiz.get('timeDelay');&#10;			setTimeout(function() {&#10;				if (!out2Paused) {&#10;					send2();&#10;				} else {&#10;					out2Pending = inFlight2;&#10;				}&#10;			}, timeDelay*1000);&#10;		} else {&#10;			thiz.send('population', 0);&#10;			// Notify both that they can resume sending.&#10;			thiz.send('full1', false);&#10;			thiz.send('full2', false);&#10;		}&#10;	}&#10;	&#10;	function send2() {&#10;		thiz.send('out2', inFlight2);&#10;		inFlight2 = null;&#10;		// If in1 has a pending input, process it now.&#10;		if (in1Pending !== null) {&#10;			thiz.send('population', 1);&#10;			inFlight1 = in1Pending;&#10;			in1Pending = null;&#10;			var timeDelay = thiz.get('timeDelay');&#10;			setTimeout(function() {&#10;				if (!out1Paused) {&#10;					send1();&#10;				} else {&#10;					out1Pending = inFlight1;&#10;				}&#10;			}, timeDelay*1000);&#10;		} else {&#10;			thiz.send('population', 0);&#10;			// Notify both that they can resume sending.&#10;			thiz.send('full1', false);&#10;			thiz.send('full2', false);&#10;		}&#10;	}&#10;	&#10;	this.addInputHandler('pause1', function() {&#10;		out1Paused = thiz.get('pause1');&#10;		if (!out1Paused &amp;&amp; out1Pending !== null) {&#10;			send1();&#10;		}&#10;	});&#10;	&#10;	this.addInputHandler('pause2', function() {&#10;		out2Paused = thiz.get('pause2');&#10;		if (!out2Paused &amp;&amp; out2Pending !== null) {&#10;			send2();&#10;		}&#10;	});&#10;&#10;	this.addInputHandler('in1', function() {&#10;		// Tell both sources upstream to pause.&#10;		thiz.send('full1', true);&#10;		thiz.send('full2', true);&#10;&#10;		var input = thiz.get('in1');&#10;		if (inFlight1 !== null) {&#10;			throw('Collision: Crossing is occupied and input has arrived on in1.');&#10;		}&#10;		if (inFlight2 !== null) {&#10;			// There is an input from in2 in flight.&#10;			if (in1Pending !== null) {&#10;				throw('Collision: Crossing is occupied by an input from in2 and there is already a pending input on in1.');&#10;			}&#10;			in1Pending = input;&#10;			thiz.send('population', 2);&#10;			return;&#10;		}&#10;		inFlight1 = input;&#10;		thiz.send('population', 1);&#10;		var timeDelay = thiz.get('timeDelay');&#10;		setTimeout(function() {&#10;			// I assume timeout function is invoked before input handlers&#10;			// if there is a simulataneous input.&#10;			if (!out1Paused) {&#10;				send1();&#10;			} else {&#10;				out1Pending = inFlight1;&#10;			}&#10;		}, timeDelay*1000);&#10;	});&#10;	&#10;	this.addInputHandler('in2', function() {&#10;		// Tell both sources upstream to pause.&#10;		thiz.send('full1', true);&#10;		thiz.send('full2', true);&#10;&#10;		var input = thiz.get('in2');&#10;		if (inFlight2 !== null) {&#10;			throw('Collision: Crossing is occupied and input has arrived on in2.');&#10;		}&#10;		if (inFlight1 !== null) {&#10;			// There is an input from in1 in flight.&#10;			if (in2Pending !== null) {&#10;				throw('Collision: Crossing is occupied by an input from in1 and there is already a pending input on in2.');&#10;			}&#10;			in2Pending = input;&#10;			thiz.send('population', 2);&#10;			return;&#10;		}&#10;		inFlight2 = input;&#10;		thiz.send('population', 1);&#10;		var timeDelay = thiz.get('timeDelay');&#10;		setTimeout(function() {&#10;			// I assume timeout function is invoked before input handlers&#10;			// if there is a simulataneous input.&#10;			if (!out2Paused) {&#10;				send2();&#10;			} else {&#10;				out2Pending = inFlight2;&#10;			}&#10;		}, timeDelay*1000);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 185.0}">
+        </property>
+        <property name="timeDelay" class="ptolemy.data.expr.Parameter" value="length/speed">
+        </property>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="out2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="full1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="full2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="population" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="in2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="pause1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="pause2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="in1" relation="relation"/>
+    <link port="out1" relation="relation6"/>
+    <link port="in2" relation="relation2"/>
+    <link port="out2" relation="relation7"/>
+    <link port="pause1" relation="relation4"/>
+    <link port="pause2" relation="relation3"/>
+    <link port="full1" relation="relation8"/>
+    <link port="full2" relation="relation9"/>
+    <link port="SetVariable.input" relation="relation5"/>
+    <link port="Ctr.out1" relation="relation6"/>
+    <link port="Ctr.out2" relation="relation7"/>
+    <link port="Ctr.full1" relation="relation8"/>
+    <link port="Ctr.full2" relation="relation9"/>
+    <link port="Ctr.population" relation="relation5"/>
+    <link port="Ctr.in1" relation="relation"/>
+    <link port="Ctr.in2" relation="relation2"/>
+    <link port="Ctr.pause1" relation="relation4"/>
+    <link port="Ctr.pause2" relation="relation3"/>
+</class>

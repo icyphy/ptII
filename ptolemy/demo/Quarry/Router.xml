@@ -1,0 +1,245 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="Router" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 145.0]">
+    </property>
+    <property name="speed" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 45}">
+        </property>
+    </property>
+    <property name="length" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-167, 478, 1127, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[893, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{446.5, 261.0}">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+        <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -1.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="blocked? {1.0, 0.7, 0.7, 1.0} : {0.7, 1.0, 0.7, 1.0}">
+            </property>
+            <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -10, 20, -10, 40, 0, 60, 0, 60, -15, 55, -20, 60, -25, 60, -40, 40, -40, 20, -30, 0, -30}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 934, 632}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+        </property>
+    </property>
+    <property name="blocked" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 330.0}">
+        </property>
+        <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model a router that alternately routes inputs to each of two&#10;outputs. After each input flows to an output, the state will be&#10;changed to route to the other output and the upstream source&#10;will be informed of whether the destination for that output is&#10;full or not by sending a true or false to the &quot;full&quot; output.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 10.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <port name="in" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="out1" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="pause1" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 220.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="full" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="out2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 160.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="pause2" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 270.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+        </property>
+    </port>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="blocked">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Ctr" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('in');&#10;	this.input('pause1');&#10;	this.input('pause2');&#10;	this.output('out1');&#10;	this.output('out2');&#10;	this.output('full', {'spontaneous':true});&#10;	this.output('blocked');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	// State alternates between 1 and 2 each time something&#10;	// flows from input to output.&#10;	var state = 1;&#10;	&#10;	var out1Paused = false;&#10;	var out2Paused = false;&#10;&#10;	var out1Pending = null;&#10;	var out2Pending = null;&#10;	var in1Pending = null;&#10;	var in2Pending = null;&#10;	&#10;	this.addInputHandler('pause1', function() {&#10;		out1Paused = thiz.get('pause1');&#10;		if (state === 1) {&#10;			thiz.send('full', out1Paused);&#10;		}&#10;	});&#10;	&#10;	this.addInputHandler('pause2', function() {&#10;		out2Paused = thiz.get('pause2');&#10;		if (state === 2) {&#10;			thiz.send('full', out2Paused);&#10;		}&#10;	});&#10;&#10;	this.addInputHandler('in', function() {&#10;		var input = thiz.get('in');&#10;		// Send the input directly to the proper output.&#10;		if (state === 1) {&#10;			thiz.send('out1', input);&#10;			state = 2;&#10;			thiz.send('full', out2Paused);&#10;		} else {&#10;			thiz.send('out2', input);&#10;			state = 1;&#10;			thiz.send('full', out1Paused);&#10;		}&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 185.0}">
+        </property>
+        <property name="timeDelay" class="ptolemy.data.expr.Parameter" value="length/speed">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="pause1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="pause2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="out2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="full" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="blocked" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="in" relation="relation2"/>
+    <link port="out1" relation="relation5"/>
+    <link port="pause1" relation="relation3"/>
+    <link port="full" relation="relation7"/>
+    <link port="out2" relation="relation6"/>
+    <link port="pause2" relation="relation4"/>
+    <link port="SetVariable.input" relation="relation"/>
+    <link port="Ctr.in" relation="relation2"/>
+    <link port="Ctr.pause1" relation="relation3"/>
+    <link port="Ctr.pause2" relation="relation4"/>
+    <link port="Ctr.out1" relation="relation5"/>
+    <link port="Ctr.out2" relation="relation6"/>
+    <link port="Ctr.full" relation="relation7"/>
+    <link port="Ctr.blocked" relation="relation"/>
+</class>

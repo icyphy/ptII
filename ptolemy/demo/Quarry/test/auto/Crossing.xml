@@ -1,0 +1,167 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Crossing" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 65}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={305, 23, 934, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 251.0}">
+    </property>
+    <entity name="Crossing" class="ptolemy.demo.Quarry.Crossing">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 295.0]">
+        </property>
+        <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <entity name="Ctr" class="ptolemy.actor.lib.jjs.JavaScript">
+            <port name="full1" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="full2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="Garage" class="ptolemy.demo.Quarry.Garage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 295.0]">
+        </property>
+        <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <entity name="Throttle" class="Throttle">
+            <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
+                <port name="full" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+            </entity>
+        </entity>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={919, 521, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Garage2" class="ptolemy.demo.Quarry.Garage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 405.0]">
+        </property>
+        <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <entity name="Throttle" class="Throttle">
+            <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
+                <port name="full" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+            </entity>
+        </entity>
+    </entity>
+    <entity name="TimedDisplay2" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={914, 101, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 90.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.0, 5.0, 7.0, 9.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 4.0, 6.0, 8.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 425.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[325.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[440.0, 285.0]">
+        </vertex>
+    </relation>
+    <link port="Crossing.in1" relation="relation"/>
+    <link port="Crossing.out1" relation="relation9"/>
+    <link port="Crossing.in2" relation="relation4"/>
+    <link port="Crossing.out2" relation="relation7"/>
+    <link port="Crossing.full1" relation="relation2"/>
+    <link port="Crossing.full2" relation="relation5"/>
+    <link port="Garage.out" relation="relation"/>
+    <link port="Garage.pause" relation="relation2"/>
+    <link port="TimedDisplay.input" relation="relation9"/>
+    <link port="Garage2.out" relation="relation4"/>
+    <link port="Garage2.pause" relation="relation5"/>
+    <link port="TimedDisplay2.input" relation="relation7"/>
+    <link port="Test.input" relation="relation6"/>
+    <link port="CurrentTime.output" relation="relation6"/>
+    <link port="CurrentTime.trigger" relation="relation7"/>
+    <link port="Test2.input" relation="relation7"/>
+    <link port="Test3.input" relation="relation8"/>
+    <link port="CurrentTime2.output" relation="relation8"/>
+    <link port="CurrentTime2.trigger" relation="relation9"/>
+    <link port="Test4.input" relation="relation9"/>
+</entity>
