@@ -1,0 +1,231 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="Throttle" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 175.0}">
+    </property>
+    <property name="capacity" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 385.0]">
+        </property>
+    </property>
+    <property name="minimumOutputInterval" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 405.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite is intended to be used within a component C that has a limited&#10;capacity for objects moving through it and that sends outputs to other components&#10;that similarly have a limited capacity. Whenever the number of objects moving through&#10;C changes, a &quot;population&quot; output will be produced with the current number of objects in C.&#10;&#10;The &quot;input&quot; port should be fed any inputs that enter C. This composite will monitor&#10;the number of such inputs that have arrived and the number of outputs that have been&#10;allowed to exit so that if the capacity is reached, then a &quot;pause&quot; output will value true&#10;will be produced. If additional inputs arrive before the population has dropped below the&#10;capacity, then an exception will be thrown.&#10;&#10;Initially, inputs received at the &quot;requestOutput&quot; port will be sent directly to the output,&#10;decreasing the population by one. However, if a &quot;paused&quot; input is received with value true,&#10;then &quot;requestOutput&quot; inputs will be queued until a &quot;paused&quot; input is received with value false.&#10;At that time, this composite will start producing outputs, decreasing the population,&#10;with a minimum interval between outputs given by the &quot;minimumOutputInterval&quot; parameter.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 23, 969, 650}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 540]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.5, 340.376953125}">
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+        <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 1.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+            </property>
+            <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 20, -15, 40, -15, 60, 0, 60, -40, 40, -25, 20, -25, 0, -40}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 934, 632}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.0}">
+        </property>
+    </property>
+    <property name="initialPopulation" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 425.0]">
+        </property>
+    </property>
+    <port name="requestOutput" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[48.0, 385.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 385.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="full" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[363.0, 440.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="input" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[48.0, 440.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="population" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 495.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="pause" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[48.0, 495.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[273.0, 385.0]">
+        </property>
+    </entity>
+    <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('requestOutput');&#10;	this.input('input');&#10;	this.input('pause');&#10;	this.output('triggerOutput');&#10;	this.output('full', {'spontaneous':true});&#10;	this.output('population', {'type':'int'});&#10;	this.parameter('capacity', {'type':'int', 'value':5});&#10;	this.parameter('minimumOutputInterval', {'type':'number', 'value':1.0});&#10;	this.parameter('initialPopulation', {'type':'int', 'value':0});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var population = this.getParameter('initialPopulation');&#10;	var paused = false;&#10;	var pendingOutput = 0;&#10;	&#10;	this.addInputHandler('input', function() {&#10;		population++;&#10;		thiz.send('population', population);&#10;		var capacity = thiz.getParameter('capacity');&#10;		if (population &gt;= capacity) {&#10;			if (population &gt; capacity) {&#10;				throw('Capacity of ' + capacity + ' has been exceeded!');&#10;			}&#10;			// Delay this output so that cycles work without a MicrostepDelay.&#10;			setTimeout(function() {&#10;				thiz.send('full', true);&#10;			}, 0);&#10;		}&#10;	});&#10;	&#10;	function triggerOutput() {&#10;		// Just in case, also check for a current pause input.&#10;		var pauseRequest = thiz.get('pause');&#10;		if (pauseRequest === true) {&#10;			paused = true;&#10;		} else if (pauseRequest === false) {&#10;			paused = false;&#10;		}&#10;		if (!paused &amp;&amp; pendingOutput &gt; 0) {&#10;			thiz.send('triggerOutput', true);&#10;			pendingOutput--;&#10;			population--;&#10;			thiz.send('population', population);&#10;			var capacity = thiz.getParameter('capacity');&#10;			if (population &lt; capacity) {&#10;				thiz.send('full', false);&#10;			}&#10;			if (pendingOutput &gt; 0) {&#10;				// After a delay that maintains the spacing, trigger another&#10;				// output.&#10;				var minimumOutputInterval = thiz.getParameter('minimumOutputInterval');&#10;				setTimeout(function() {&#10;					triggerOutput.call(thiz);&#10;				}, minimumOutputInterval);&#10;			}&#10;		}&#10;	}&#10;	this.addInputHandler('pause', triggerOutput.bind(this));&#10;&#10;	this.addInputHandler('requestOutput', function() {&#10;		if (!paused) {&#10;			thiz.send('triggerOutput', true);&#10;			population--;&#10;			thiz.send('population', population);&#10;			var capacity = thiz.getParameter('capacity');&#10;			if (population &lt; capacity) {&#10;				thiz.send('full', false);&#10;			}&#10;		} else {&#10;			pendingOutput++;&#10;		}&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[198.0, 440.0]">
+        </property>
+        <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
+        </property>
+        <property name="minimumOutputInterval" class="ptolemy.data.expr.Parameter" value="minimumOutputInterval">
+        </property>
+        <property name="initialPopulation" class="ptolemy.data.expr.Parameter" value="initialPopulation">
+        </property>
+        <port name="requestOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="pause" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="full" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="population" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[148.0, 385.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3_5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8_6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="requestOutput" relation="relation6"/>
+    <link port="output" relation="relation2"/>
+    <link port="full" relation="relation5"/>
+    <link port="input" relation="relation3_5"/>
+    <link port="population" relation="relation8_6"/>
+    <link port="pause" relation="relation4"/>
+    <link port="Queue.input" relation="relation6"/>
+    <link port="Queue.output" relation="relation2"/>
+    <link port="Queue.trigger" relation="relation7"/>
+    <link port="Controller.requestOutput" relation="relation6"/>
+    <link port="Controller.triggerOutput" relation="relation7"/>
+    <link port="Controller.input" relation="relation3_5"/>
+    <link port="Controller.pause" relation="relation4"/>
+    <link port="Controller.full" relation="relation5"/>
+    <link port="Controller.population" relation="relation8_6"/>
+</class>
