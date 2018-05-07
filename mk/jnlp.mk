@@ -51,18 +51,19 @@
 # For information about our code signing certificate, see
 # https://wiki.eecs.berkeley.edu/ptexternal/Main/JavaCodeSigningCertificatesForBerkeley
 
-# The key is stored in the ealprivi git epo, see https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/Accounts
-
+# The key is stored in the ealprivi git repo, see https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/Accounts
+#
 # To display our key:
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
+#
+# To sign using our key:
+#   make KEYSTORE2=/users/ptII/adm/certs/ptkeystore KEYALIAS2=ptolemy STOREPASSWORD2="-storepass xxx" KEYPASSWORD2="-keypass xxx" jnlp_dist
 
-# To sign using our key and update the website:
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS2=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD2="-keypass xxx" jnlp_dist
+# To update the website:
+#   make jnlp_dist_update_real
 
-# To update the website:  make jnlp_dist_update_real
-
-# See https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating
+# For details about Mac errors and SpaceCadet, see https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating
 
 # To build a set of models for a paper, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
 
@@ -246,6 +247,13 @@ PTXBEE_JARS = \
 # https://accessors.org and makes them available in an actor
 # library to drag and drop into models.
 
+JJS_JARS = \
+	ptolemy/actor/lib/jjs/jjs.jar \
+	ptolemy/actor/lib/jjs/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/demo.jar \
+	ptolemy/actor/lib/jjs/modules/modules.jar \
+	ptolemy/actor/lib/jjs/node/node.jar
+
 # Jar files that will appear in a CapeCode only JNLP Ptolemy II Runtime.
 #
 # doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
@@ -270,11 +278,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
-	ptolemy/actor/lib/jjs/jjs.jar \
-	ptolemy/actor/lib/jjs/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/demo.jar \
-	ptolemy/actor/lib/jjs/modules/modules.jar \
-	ptolemy/actor/lib/jjs/node/node.jar \
+	$(JJS_JARS) \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/demo/CapeCodeDemos.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
@@ -540,6 +544,7 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/security/demo/demo.jar \
 	$(SDF_DEMO_JARS) \
 	$(PTALON_JARS) \
+	$(JJS_JARS) \
 	$(JYTHON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/domains/ddf/demo/demo.jar \
@@ -1739,6 +1744,8 @@ jnlp_dist_clean:
 jnlp_dist_1:
 	$(MAKE) KEYSTORE="$(KEYSTORE2)" \
 		KEYALIAS="$(KEYALIAS2)" \
+		STOREPASSWORD="$(STOREPASSWORD2)" \
+		KEYPASSWORD="$(KEYPASSWORD2)" \
 		PTII_LOCALURL="$(DIST_URL)" jnlp_sign
 
 # Change this if your user name on the webserver is different than your username on the local machine.
