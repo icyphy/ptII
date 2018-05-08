@@ -4,34 +4,20 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.252, 0.253]
+<pre>WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.248, 0.249]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.138, 0.139]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.133, 0.134]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.791, 0.79]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.721, 0.72]
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.158]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.652, 0.651]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.687]
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.681]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.614]
 WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
-May 07, 2018 12:39:03 AM io.vertx.core.http.impl.HttpClientResponseImpl
-SEVERE: io.vertx.core.VertxException: Connection was closed
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: REST: Request failed with code 503: Service Unavailable
-	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
-	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$20412$3480A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$20410$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$20402$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientResponseHandler$2.run(HttpClientHelper.java:343)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: 42. Should have been: 43
+  in .DerivedAgain4.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
