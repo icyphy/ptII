@@ -14280,7 +14280,7 @@ fi
             for jar in $jars
     	    do
 # Use changequote here to preserve square brackets
-	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
+	        file=`find "$PTVERTX_JAR_DIR" -name "$jar" | sort -nr | head -1`
                 if test -z $file; then
                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Hmm, while searching for Vert.x jar files, could not find $jar?" >&5
 $as_echo "$as_me: WARNING: Hmm, while searching for Vert.x jar files, could not find $jar?" >&2;};
