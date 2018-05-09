@@ -6677,7 +6677,7 @@ changequote([, ])dnl
     	    do
 # Use changequote here to preserve square brackets
 changequote(<<, >>)dnl
-	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
+	        file=`find "$PTVERTX_JAR_DIR" -name "$jar" | sort -nr | head -1`
 changequote([, ])dnl
                 if test -z $file; then
                     AC_MSG_WARN([Hmm, while searching for Vert.x jar files, could not find $jar?]);
