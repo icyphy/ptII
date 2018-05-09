@@ -345,7 +345,7 @@ updateGhPages () {
 	retval=$?
 	if [ $retval != 1 ]; then
             echo -n "$file "
-            egrep -v "SECRET_REGEX" $file > $file.tmp
+            egrep -v "$SECRET_REGEX" $file > $file.tmp
             mv $file.tmp $file
         fi
     done        
