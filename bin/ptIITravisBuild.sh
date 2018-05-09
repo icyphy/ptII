@@ -512,4 +512,7 @@ if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     export JUNIT_RESULTS_NOT_DRY_RUN=false
     export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
+
+    # Clean JUnit results older than 30 days.
+    (cd node_modules/@icyphy/github-issue-junit/scripts; node clean-issues.js) 
 fi
