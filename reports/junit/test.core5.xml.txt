@@ -240,7 +240,6 @@ build-bin:
      [exec] ./makebat -q "`basename tinicomm.bat .bat`"
      [exec] rm -f "tinic.bat"
      [exec] ./makebat -q "`basename tinic.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "tiniconverter.bat"
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
      [exec] rm -f "startjini.gui.bat"
@@ -252,8 +251,9 @@ build-bin:
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Tue May  8 01:18:05 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May  9 01:12:00 UTC 2018
      [exec] tar: This does not look like a tar archive
      [exec] 
      [exec] gzip: stdin: unexpected end of file
@@ -279,8 +279,8 @@ test.core5.xml:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/configs/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.configs.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Tue May 08 01:18:07 UTC 2018
-    [junit] 1525742287326 ms. Memory: 116224K Free: 93846K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 09 01:12:01 UTC 2018
+    [junit] 1525828321652 ms. Memory: 116224K Free: 93843K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -294,9 +294,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742301642 ms. Memory: 749056K Free: 165359K (22%)
+    [junit] 1525828334464 ms. Memory: 762880K Free: 192339K (25%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742302091 ms. Memory: 765952K Free: 695186K (91%)
+    [junit] 1525828334911 ms. Memory: 784896K Free: 713742K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -310,9 +310,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742315281 ms. Memory: 1059328K Free: 462392K (44%)
+    [junit] 1525828346623 ms. Memory: 1118720K Free: 693877K (62%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742315993 ms. Memory: 1064448K Free: 942409K (89%)
+    [junit] 1525828347347 ms. Memory: 1126400K Free: 1002940K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -320,9 +320,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742316237 ms. Memory: 1064448K Free: 873809K (82%)
+    [junit] 1525828347572 ms. Memory: 1126400K Free: 926765K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742316709 ms. Memory: 1111040K Free: 989280K (89%)
+    [junit] 1525828348005 ms. Memory: 1126400K Free: 1003883K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -337,9 +337,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742320859 ms. Memory: 1221632K Free: 936749K (77%)
+    [junit] 1525828351409 ms. Memory: 1182208K Free: 1013234K (86%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742321495 ms. Memory: 1182720K Free: 1037880K (88%)
+    [junit] 1525828351863 ms. Memory: 1297920K Free: 1151259K (89%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -355,9 +355,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742328314 ms. Memory: 1333760K Free: 670976K (50%)
+    [junit] 1525828358273 ms. Memory: 1427456K Free: 890090K (62%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742329032 ms. Memory: 1350656K Free: 1181340K (87%)
+    [junit] 1525828358867 ms. Memory: 1521152K Free: 1347991K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -372,9 +372,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742342690 ms. Memory: 1579520K Free: 1295065K (82%)
+    [junit] 1525828371255 ms. Memory: 1706496K Free: 915530K (54%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742344048 ms. Memory: 1592832K Free: 1337487K (84%)
+    [junit] 1525828372609 ms. Memory: 1716224K Free: 1459736K (85%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -392,9 +392,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742356732 ms. Memory: 1691136K Free: 944193K (56%)
+    [junit] 1525828383537 ms. Memory: 1830912K Free: 239135K (13%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742358437 ms. Memory: 1799168K Free: 1473124K (82%)
+    [junit] 1525828385095 ms. Memory: 1831936K Free: 1504690K (82%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -432,9 +432,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742461884 ms. Memory: 2233856K Free: 1268546K (57%)
+    [junit] 1525828488302 ms. Memory: 2227712K Free: 1233649K (55%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742465242 ms. Memory: 2213376K Free: 1510175K (68%)
+    [junit] 1525828491271 ms. Memory: 2227712K Free: 1520363K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -467,9 +467,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742557721 ms. Memory: 2785280K Free: 1018990K (37%)
+    [junit] 1525828582116 ms. Memory: 2902528K Free: 1098215K (38%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742561951 ms. Memory: 2790400K Free: 1661036K (60%)
+    [junit] 1525828585919 ms. Memory: 2906112K Free: 1750507K (60%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -477,9 +477,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742561976 ms. Memory: 2790400K Free: 1652181K (59%)
+    [junit] 1525828585955 ms. Memory: 2906112K Free: 1750507K (60%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742564453 ms. Memory: 2813952K Free: 1683762K (60%)
+    [junit] 1525828588069 ms. Memory: 2911744K Free: 1779732K (61%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -493,9 +493,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742572694 ms. Memory: 2814976K Free: 1574144K (56%)
+    [junit] 1525828593612 ms. Memory: 2930688K Free: 1614233K (55%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742575865 ms. Memory: 2806784K Free: 1627682K (58%)
+    [junit] 1525828596402 ms. Memory: 2598912K Free: 1415940K (54%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -509,9 +509,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742583509 ms. Memory: 2842624K Free: 1275013K (45%)
+    [junit] 1525828601969 ms. Memory: 2938880K Free: 917788K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742586749 ms. Memory: 2532352K Free: 1312030K (52%)
+    [junit] 1525828604876 ms. Memory: 2658304K Free: 1435465K (54%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -520,18 +520,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742586823 ms. Memory: 2532352K Free: 1273775K (50%)
+    [junit] 1525828604949 ms. Memory: 2658304K Free: 1395341K (52%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742590530 ms. Memory: 2813440K Free: 1588244K (56%)
+    [junit] 1525828608030 ms. Memory: 2916352K Free: 1690751K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742594073 ms. Memory: 2825216K Free: 904293K (32%)
+    [junit] 1525828610555 ms. Memory: 2925568K Free: 1088143K (37%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742597345 ms. Memory: 2826240K Free: 1580922K (56%)
+    [junit] 1525828613418 ms. Memory: 2935296K Free: 1687934K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -545,9 +545,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742604300 ms. Memory: 2854912K Free: 1021859K (36%)
+    [junit] 1525828619070 ms. Memory: 2968576K Free: 1351825K (46%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742607797 ms. Memory: 2853888K Free: 1571247K (55%)
+    [junit] 1525828622190 ms. Memory: 2980864K Free: 1690822K (57%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -622,7 +622,7 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
-    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525742890699 ms. Memory: 4314112K Free: 859748K (20%)
+    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525828944701 ms. Memory: 4691456K Free: 1461360K (31%)
     [junit] Setting containers of atomic entities to null
     [junit] checkFullConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
@@ -916,9 +916,9 @@ test.core5.xml:
     [junit]                             <group>
     [junit]                                 <doc>Decortative attributes</doc>
     [junit]                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 8, 2018 1:28:10 AM">
+    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 9, 2018 1:22:24 AM">
     [junit]                                     </property>
-    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 8, 2018 1:28:10 AM">
+    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 9, 2018 1:22:24 AM">
     [junit]                                     </property>
     [junit]                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
     [junit]                                     </property>
@@ -3487,6 +3487,11 @@ test.core5.xml:
     [junit]                                     <configure>
     [junit]                                         <group>
     [junit]                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
+    [junit]                                                     <property name="input"/>
+    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+    [junit]                                                     </property>
+    [junit]                                                 </port>
     [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="output"/>
     [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -7482,11 +7487,11 @@ test.core5.xml:
     [junit] --end--
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl
     [junit] Validating the xml in /auto/ xml files after removing the configure blocks
-    [junit] ....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2964 demos from configs/doc/models.txt
+    [junit] .....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2965 demos from configs/doc/models.txt
     [junit] Validating the xml in demo xml files after removing the configure blocks
     [junit] ..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 754 demos from configs/doc/models.txt
-    [junit] 05/08/18 01:31:59
-    [junit] Failed: 0  Total Tests: 3813  ((Passed: 3813, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+    [junit] 05/09/18 01:25:58
+    [junit] Failed: 0  Total Tests: 3814  ((Passed: 3814, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
@@ -7494,11 +7499,11 @@ test.core5.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 832.107 sec
+    [junit] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 837.601 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allConfigs.tcl
-    [junit] testDefs.tcl: setting time out to 9000 seconds at Tue May 08 01:18:07 UTC 2018
-    [junit] 1525742287326 ms. Memory: 116224K Free: 93846K (81%)
+    [junit] testDefs.tcl: setting time out to 9000 seconds at Wed May 09 01:12:01 UTC 2018
+    [junit] 1525828321652 ms. Memory: 116224K Free: 93843K (81%)
     [junit]  Force everything to get expanded ptolemy/configs/bcvtb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7512,9 +7517,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742301642 ms. Memory: 749056K Free: 165359K (22%)
+    [junit] 1525828334464 ms. Memory: 762880K Free: 192339K (25%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742302091 ms. Memory: 765952K Free: 695186K (91%)
+    [junit] 1525828334911 ms. Memory: 784896K Free: 713742K (91%)
     [junit]  Force everything to get expanded ptolemy/configs/ptiny/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7528,9 +7533,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742315281 ms. Memory: 1059328K Free: 462392K (44%)
+    [junit] 1525828346623 ms. Memory: 1118720K Free: 693877K (62%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742315993 ms. Memory: 1064448K Free: 942409K (89%)
+    [junit] 1525828347347 ms. Memory: 1126400K Free: 1002940K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/space/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7538,9 +7543,9 @@ test.core5.xml:
     [junit] Warning: space/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742316237 ms. Memory: 1064448K Free: 873809K (82%)
+    [junit] 1525828347572 ms. Memory: 1126400K Free: 926765K (82%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742316709 ms. Memory: 1111040K Free: 989280K (89%)
+    [junit] 1525828348005 ms. Memory: 1126400K Free: 1003883K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/dsp/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7555,9 +7560,9 @@ test.core5.xml:
     [junit] Warning: dsp/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742320859 ms. Memory: 1221632K Free: 936749K (77%)
+    [junit] 1525828351409 ms. Memory: 1182208K Free: 1013234K (86%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742321495 ms. Memory: 1182720K Free: 1037880K (88%)
+    [junit] 1525828351863 ms. Memory: 1297920K Free: 1151259K (89%)
     [junit] Skipping viptos/configuration.xml, PtinyOS is not typically installed.
     [junit]  Force everything to get expanded ptolemy/configs/pn/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -7573,9 +7578,9 @@ test.core5.xml:
     [junit] Warning: pn/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742328314 ms. Memory: 1333760K Free: 670976K (50%)
+    [junit] 1525828358273 ms. Memory: 1427456K Free: 890090K (62%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742329032 ms. Memory: 1350656K Free: 1181340K (87%)
+    [junit] 1525828358867 ms. Memory: 1521152K Free: 1347991K (89%)
     [junit]  Force everything to get expanded ptolemy/configs/ptdb/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7590,9 +7595,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742342690 ms. Memory: 1579520K Free: 1295065K (82%)
+    [junit] 1525828371255 ms. Memory: 1706496K Free: 915530K (54%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742344048 ms. Memory: 1592832K Free: 1337487K (84%)
+    [junit] 1525828372609 ms. Memory: 1716224K Free: 1459736K (85%)
     [junit]  Force everything to get expanded ptolemy/configs/cyphysim/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7610,9 +7615,9 @@ test.core5.xml:
     [junit] Warning: cyphysim/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742356732 ms. Memory: 1691136K Free: 944193K (56%)
+    [junit] 1525828383537 ms. Memory: 1830912K Free: 239135K (13%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742358437 ms. Memory: 1799168K Free: 1473124K (82%)
+    [junit] 1525828385095 ms. Memory: 1831936K Free: 1504690K (82%)
     [junit]  Force everything to get expanded ptolemy/configs/capecode/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
@@ -7647,9 +7652,9 @@ test.core5.xml:
     [junit] Warning: capecode/configuration.xml has no 'actor library.Directors'? (this is ok for dsp, viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742461884 ms. Memory: 2233856K Free: 1268546K (57%)
+    [junit] 1525828488302 ms. Memory: 2227712K Free: 1233649K (55%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742465242 ms. Memory: 2213376K Free: 1510175K (68%)
+    [junit] 1525828491271 ms. Memory: 2227712K Free: 1520363K (68%)
     [junit]  Force everything to get expanded ptolemy/configs/full/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] Retrieving library from file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/index.json
@@ -7682,9 +7687,9 @@ test.core5.xml:
     [junit] Skipping drop test of tm.kernel.SchedulePlotter because it must be dropped into a container that has a TMDirector
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742557721 ms. Memory: 2785280K Free: 1018990K (37%)
+    [junit] 1525828582116 ms. Memory: 2902528K Free: 1098215K (38%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742561951 ms. Memory: 2790400K Free: 1661036K (60%)
+    [junit] 1525828585919 ms. Memory: 2906112K Free: 1750507K (60%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7692,9 +7697,9 @@ test.core5.xml:
     [junit] Warning: ptinyViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742561976 ms. Memory: 2790400K Free: 1652181K (59%)
+    [junit] 1525828585955 ms. Memory: 2906112K Free: 1750507K (60%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742564453 ms. Memory: 2813952K Free: 1683762K (60%)
+    [junit] 1525828588069 ms. Memory: 2911744K Free: 1779732K (61%)
     [junit]  Force everything to get expanded ptolemy/configs/ptserver/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7708,9 +7713,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742572694 ms. Memory: 2814976K Free: 1574144K (56%)
+    [junit] 1525828593612 ms. Memory: 2930688K Free: 1614233K (55%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742575865 ms. Memory: 2806784K Free: 1627682K (58%)
+    [junit] 1525828596402 ms. Memory: 2598912K Free: 1415940K (54%)
     [junit]  Force everything to get expanded ptolemy/configs/visualsense/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7724,9 +7729,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742583509 ms. Memory: 2842624K Free: 1275013K (45%)
+    [junit] 1525828601969 ms. Memory: 2938880K Free: 917788K (31%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742586749 ms. Memory: 2532352K Free: 1312030K (52%)
+    [junit] 1525828604876 ms. Memory: 2658304K Free: 1435465K (54%)
     [junit] Skipping jxta/configuration.xml, running vergil -jxta brings up a window
     [junit]  Force everything to get expanded ptolemy/configs/fullViewer/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
@@ -7735,18 +7740,18 @@ test.core5.xml:
     [junit] Warning: fullViewer/configuration.xml has no 'actor library'?  (this is ok for ptinyViewer)
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742586823 ms. Memory: 2532352K Free: 1273775K (50%)
+    [junit] 1525828604949 ms. Memory: 2658304K Free: 1395341K (52%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742590530 ms. Memory: 2813440K Free: 1588244K (56%)
+    [junit] 1525828608030 ms. Memory: 2916352K Free: 1690751K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/hyvisual/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
     [junit] -------> after clone
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742594073 ms. Memory: 2825216K Free: 904293K (32%)
+    [junit] 1525828610555 ms. Memory: 2925568K Free: 1088143K (37%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742597345 ms. Memory: 2826240K Free: 1580922K (56%)
+    [junit] 1525828613418 ms. Memory: 2935296K Free: 1687934K (58%)
     [junit]  Force everything to get expanded ptolemy/configs/ptinyKepler/configuration.xml
     [junit]     (Skipping certain optional packages, jxta and viptos)
     [junit] -------> Before clone
@@ -7760,9 +7765,9 @@ test.core5.xml:
     [junit]    but permissible because the name  ends in 'Port'
     [junit] -------> Before clone
     [junit] -------> after clone
-    [junit] 1525742604300 ms. Memory: 2854912K Free: 1021859K (36%)
+    [junit] 1525828619070 ms. Memory: 2968576K Free: 1351825K (46%)
     [junit] Setting containers of atomic entities to null
-    [junit] 1525742607797 ms. Memory: 2853888K Free: 1571247K (55%)
+    [junit] 1525828622190 ms. Memory: 2980864K Free: 1690822K (57%)
     [junit] allConfigs.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/allDemos.tcl
     [junit] Skipping allDemos-1.0, use cd /home/travis/build/icyphy/ptII/ptolemy/configs/test/../../..; ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
@@ -7837,7 +7842,7 @@ test.core5.xml:
     [junit] The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
     [junit] #########################################################################################################################################################################################################################################################################################################################################---- Second call to Configuration.check
     [junit] #################################################################################################################################################################################################################################################################################################################################################################CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
-    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525742890699 ms. Memory: 4314112K Free: 859748K (20%)
+    [junit] #########################################################################################################################################################################################################################################################################################################################################################################################################1525828944701 ms. Memory: 4691456K Free: 1461360K (31%)
     [junit] Setting containers of atomic entities to null
     [junit] checkFullConstraints.tcl done!
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/cloneTest.tcl
@@ -8131,9 +8136,9 @@ test.core5.xml:
     [junit]                             <group>
     [junit]                                 <doc>Decortative attributes</doc>
     [junit]                                 <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 8, 2018 1:28:10 AM">
+    [junit]                                     <property name="created" class="ptolemy.kernel.util.StringAttribute" value="May 9, 2018 1:22:24 AM">
     [junit]                                     </property>
-    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 8, 2018 1:28:10 AM">
+    [junit]                                     <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 9, 2018 1:22:24 AM">
     [junit]                                     </property>
     [junit]                                     <property name="author" class="ptolemy.kernel.util.StringAttribute" value="travis">
     [junit]                                     </property>
@@ -10702,6 +10707,11 @@ test.core5.xml:
     [junit]                                     <configure>
     [junit]                                         <group>
     [junit]                                             <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+    [junit]                                                 <port name="input" class="ptolemy.actor.TypedIOPort">
+    [junit]                                                     <property name="input"/>
+    [junit]                                                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+    [junit]                                                     </property>
+    [junit]                                                 </port>
     [junit]                                                 <port name="output" class="ptolemy.actor.TypedIOPort">
     [junit]                                                     <property name="output"/>
     [junit]                                                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -14697,11 +14707,11 @@ test.core5.xml:
     [junit] --end--
     [junit] /home/travis/build/icyphy/ptII/ptolemy/configs/test/validDemos.tcl
     [junit] Validating the xml in /auto/ xml files after removing the configure blocks
-    [junit] ....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2964 demos from configs/doc/models.txt
+    [junit] .....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 2965 demos from configs/doc/models.txt
     [junit] Validating the xml in demo xml files after removing the configure blocks
     [junit] ..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................Checked 754 demos from configs/doc/models.txt
-    [junit] 05/08/18 01:31:59
-    [junit] Failed: 0  Total Tests: 3813  ((Passed: 3813, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
+    [junit] 05/09/18 01:25:58
+    [junit] Failed: 0  Total Tests: 3814  ((Passed: 3814, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/configs/test
     [junit] AutoTests.java: About to close Vertx.
@@ -14715,4 +14725,4 @@ test.core5.xml:
     [junit] 
 
 BUILD SUCCESSFUL
-Total time: 14 minutes 58 seconds
+Total time: 14 minutes 57 seconds
