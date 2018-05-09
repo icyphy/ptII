@@ -243,56 +243,69 @@ public class StringUtilities {
      *  @return A new string with special characters replaced.
      */
     public static String escapeForXML(String string) {
-        // This method gets called quite a bit when parsing large
-        // files, so rather than calling substitute() many times,
-        // we combine all the loops in one pass.
+        return escapeForXML(string, true);
+    }
 
-        // A different solution might be to scan the string for
-        // escaped xml characters and if any are found, then create a
-        // StringBuffer and do the conversion.  Using a profiler would
-        // help here.
-        if (string == null) {
-            return null;
-        }
-        StringBuffer buffer = new StringBuffer(string);
-        int i = 0;
-        int length = string.length();
-        while (i < length) {
-            switch (buffer.charAt(i)) {
-            case '\n':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&#10;");
-                length += 4;
-                break;
-            case '\r':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&#13;");
-                length += 4;
-                break;
-            case '"':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&quot;");
-                length += 5;
-                break;
-            case '&':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&amp;");
-                length += 4;
-                break;
-            case '<':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&lt;");
-                length += 3;
-                break;
-            case '>':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&gt;");
-                length += 3;
-                break;
+    /** Given a string, replace all the instances of XML special characters
+     *  with their corresponding XML entities.  This is necessary to
+     *  allow arbitrary strings to be encoded within XML.
+     *
+     *  <p>In this method, we make the following translations:
+     *  <pre>
+     *  &amp; becomes &amp;amp;
+     *  " becomes &amp;quot;
+     *  &lt; becomes &amp;lt;
+     *  &gt; becomes &amp;gt;
+     *  newline becomes &amp;#10;, if requested.
+     *  carriage return becomes $amp;#13;, if requested.
+     *  </pre>
+     *  @see #unescapeForXML(String)
+     *
+     *  @param string The string to escape.
+     *  @param string Whether or not to escape line break characters.
+     *  @return A new string with special characters replaced.
+     */
+    public static String escapeForXML(String string, boolean escapeLinebreaks) {
+        if (string != null) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.ensureCapacity(string.length());
+            for (int i = 0, n = string.length(); i < n; ++i) {
+                char c = string.charAt(i);
+                switch (c) {
+                case '\n':
+                    if (escapeLinebreaks) {
+                        buffer.append("&#10;");
+                    } else {
+                        buffer.append(c);
+                    }
+                    break;
+                case '\r':
+                    if (escapeLinebreaks) {
+                        buffer.append("&#13;");
+                    } else {
+                        buffer.append(c);
+                    }
+                    break;
+                case '"':
+                    buffer.append("&quot;");
+                    break;
+                case '&':
+                    buffer.append("&amp;");
+                    break;
+                case '<':
+                    buffer.append("&lt;");
+                    break;
+                case '>':
+                    buffer.append("&gt;");
+                    break;
+                default:
+                    buffer.append(c);
+                    break;
+                }
             }
-            i++;
+            string = buffer.toString();
         }
-        return buffer.toString();
+        return string;
     }
 
     /** Given a string, return a string that when fed to the
