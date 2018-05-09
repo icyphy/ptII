@@ -110,6 +110,9 @@ esac
 # to a database.  The solution is to use Travis' encryption keys.  See
 # https://docs.travis-ci.com/user/encryption-keys/
 
+# SECRET_REGEX is used to filter secrets out of the log files.
+SECRET_REGEX='(GITHUB_TOKEN|GEOCODING_TOKEN|env.SECRET|HEARTBEAT_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)'
+
 # Use set +x to hide the token
 set +x
 if [ ! -z "$SPACECADET_TOKEN" -a ! -f ~/.spacecadet ]; then
@@ -208,7 +211,7 @@ runTarget () {
     echo "$0: Output will appear in $log with timeout $timeout"
     
     # Run the command and log the output.
-    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|HEARTBEAT_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $log
+    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v "$SECRET_REGEX" > $log
 
     # Get the return value of the ant command and exit if it is non-zero.
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
@@ -338,11 +341,11 @@ updateGhPages () {
     files=`find . -type f`
     for file in $files
     do
-        egrep -e  "(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)" $file > /dev/null
+        egrep -e  "$SECRET_REGEX" $file > /dev/null
 	retval=$?
 	if [ $retval != 1 ]; then
             echo -n "$file "
-            egrep -v "(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)" $file > $file.tmp
+            egrep -v "SECRET_REGEX" $file > $file.tmp
             mv $file.tmp $file
         fi
     done        
@@ -400,8 +403,8 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # Note that there is a chance that the installer will use javadoc
     # jar files that are slightly out of date.
 
-    ant javadoc jsdoc 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' > $LOG 
-    (cd doc; make install) 2>&1 | egrep -v '(GITHUB_TOKEN|GEOCODING_TOKEN|SPACECADET_TOKEN|WEATHER_TOKEN)' >> $LOG 
+    ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG 
+    (cd doc; make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG 
 
     # No need to check in the log each time because this target is
     # easy to re-run.
