@@ -323,6 +323,7 @@ public class ExportModelJUnitTest {
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
+                "org/hlacerti", // hlacerti is hanging.                          
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
