@@ -379,8 +379,7 @@ public class NonStrictTest extends Sink {
             if (!_firedOnce) {
                 String errorMessage = "The fire() method of this actor was never called. "
                         + "Usually, this is an error indicating that "
-                        + "starvation is occurring."
-                    + "\nThreads:\n" + util.testsuite.PrintThreads.allThreads(true);
+                        + "starvation is occurring.";
 
                 String fireCompatProperty = "ptolemy.actor.lib.NonStrictTest.fire.compat";
 
@@ -403,8 +402,7 @@ public class NonStrictTest extends Sink {
                         + " tokens, yet the correctValues parameter was "
                         + "expecting "
                         + ((ArrayToken) correctValues.getToken()).length()
-                        + " tokens."
-                    + "\nThreads:\n" + util.testsuite.PrintThreads.allThreads(true);
+                        + " tokens.";
                 if (((BooleanToken) requireAllCorrectValues.getToken())
                         .booleanValue()) {
                     _initialized = false;

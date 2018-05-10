@@ -100,7 +100,19 @@ case `uname -s` in
         TIMEOUTCOMMAND='timeout -9'
         ;;
     *)
-        TIMEOUTCOMMAND='timeout -s 9'
+        usage=`timeout --help`
+        # Check to see if --kill-after is supported
+        grep kill-after $usage >& /dev/null
+        status=$?
+        if [ $status -eq 0 ]; then
+            echo "timeout supports --kill-after"
+            # Use a -3 signal to get a stack trace, then 20 seconds later, use kill -9.
+            TIMEOUTCOMMAND='timeout -s 3 --kill-after=20'
+        else
+            echo "timeout does not support --kill-after"
+            # Use a -9 signal to kill.
+            TIMEOUTCOMMAND='timeout -s 9'
+        fi
         ;;
 esac     
 
