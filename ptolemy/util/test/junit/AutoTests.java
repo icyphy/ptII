@@ -95,6 +95,30 @@ public class AutoTests extends ModelTests {
 
     }
 
+    /** If the fullPath is a hlacerti or accessor demo, then
+     *  delay so that the system can stabilize.
+     *  @param fullPath The forward slash separated path of the demo.
+     */
+    public static void delayIfNecessary(String fullPath) {
+        int delay = 5000;
+        boolean match = fullPath.matches(".*(org/hlacerti|org/terraswarm/accessors|ptolemy/actor/lib/jjs).*");
+        // System.out.println("AutoTests.java: fullPath: " + fullPath
+        //                   + " match: " + match);
+        if (match) {
+            System.out.println("----------------- " + (new java.util.Date())
+                    + " About to sleep for " + delay / 1000.0
+                    + " seconds before running or rerunning.  Test is: " + fullPath);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException ex) {
+                System.err.println(
+                        "Sleep before rerunning was interrupted: "
+                                + ex);
+            }
+            System.out.println("Done sleeping");
+        }
+    }
+
     /**
      * Execute a model and time out after 900000 ms.
      *
@@ -155,7 +179,7 @@ public class AutoTests extends ModelTests {
             // org/terraswarm/accessors/test, the delay before
             // reloading.  See
             // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
-            _delay(fullPath);
+            AutoTests.delayIfNecessary(fullPath);
 
             System.out.println("----------------- Instantiating " + fullPath);
             Object instance = _applicationConstructor.newInstance(fullPath);
@@ -192,7 +216,7 @@ public class AutoTests extends ModelTests {
                                        + (new java.util.Date()) + " "
                                        + fullPath);
                     System.out.flush();
-                    // _delay(fullPath);
+                    // Autotests.delayIfNecessary(fullPath);
 
                     // System.out.println(
                     //         "----------------- Reloaded Accessors and testing again " + (new java.util.Date()) + " "
@@ -254,26 +278,6 @@ public class AutoTests extends ModelTests {
             // is not present.
             _jsAccessorClass = null;
             _jsAccessorReloadAllAccessorsMethod = null;
-        }
-    }
-
-    private static void _delay(String fullPath) {
-        int delay = 5000;
-        boolean match = fullPath.matches(".*(org/hlacerti|org/terraswarm/accessors|ptolemy/actor/lib/jjs).*");
-        // System.out.println("AutoTests.java: fullPath: " + fullPath
-        //                   + " match: " + match);
-        if (match) {
-            System.out.println("----------------- " + (new java.util.Date())
-                    + " About to sleep for " + delay / 1000.0
-                    + " seconds before running or rerunning.  Test is: " + fullPath);
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException ex) {
-                System.err.println(
-                        "Sleep before rerunning was interrupted: "
-                                + ex);
-            }
-            System.out.println("Done sleeping");
         }
     }
 

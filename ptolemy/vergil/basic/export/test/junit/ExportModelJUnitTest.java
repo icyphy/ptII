@@ -48,6 +48,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
+import ptolemy.util.test.junit.AutoTests;
 import ptolemy.vergil.basic.export.ExportModel;
 
 ///////////////////////////////////////////////////////////////////
@@ -138,6 +139,9 @@ public class ExportModelJUnitTest {
         }
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
+
+        // Delay if the model is a hlacerti or accessor.
+        AutoTests.delayIfNecessary(fullModelPath);
 
         ExportModel exportModel = new ExportModel();
         try {
@@ -323,7 +327,12 @@ public class ExportModelJUnitTest {
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
-                "org/hlacerti", // hlacerti is hanging.                          
+
+                          // If hlacerti models are hanging, see
+                          // AutoTests.delayIfNecessary() and consider
+                          // increasing the amount of delay time
+
+                          // "org/hlacerti",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
