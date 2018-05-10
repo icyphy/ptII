@@ -47,6 +47,7 @@ JSRCS = \
 	ExportModelJUnitTestBatch.java \
 	ExportModelJUnitTestBatch1.java \
 	ExportModelJUnitTestBatch2.java \
+	ExportModelJUnitTestBatch3.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl

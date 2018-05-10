@@ -486,6 +486,16 @@ if [ ! -z "$PT_TRAVIS_TEST_EXPORT1_XML" ]; then
     runTarget test.export1.xml
 fi
 
+# Run the second batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT2_XML" ]; then
+    runTarget test.export2.xml
+fi
+
+# Run the third batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT3_XML" ]; then
+    runTarget test.export3.xml
+fi
+
 # Build the installers.
 #
 # We use Travis-ci deploy to upload the release because GitHub has a
