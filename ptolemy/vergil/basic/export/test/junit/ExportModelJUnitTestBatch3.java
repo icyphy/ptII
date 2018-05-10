@@ -1,4 +1,4 @@
-/* JUnit test that exports the first batch of demos.
+/* JUnit test that exports the second batch of demos.
 
    Copyright (c) 2018 The Regents of the University of California.
    All rights reserved.
@@ -52,7 +52,7 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.ExportModel;
 
 ///////////////////////////////////////////////////////////////////
-//// ExportModelJUnitTestBatch1
+//// ExportModelJUnitTestBatch3
 /**
  * JUnit test that exports the demos between two indices.
  *
@@ -60,14 +60,14 @@ import ptolemy.vergil.basic.export.ExportModel;
  * <pre>
  * cd $PTII
  * ./configure
- * ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch1 -Djunit.formatter=plain
+ * ant test.single -Dtest.name=ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3 -Djunit.formatter=plain
  * </pre>
  * or
  * <pre>
  * cd $PTII/ptolemy/vergil/basic/export/test/junit/;
  * export CLASSPATH=${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar;
  * export JAVAFLAGS="-Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true"
- * $PTII/bin/ptinvoke org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch1
+ * $PTII/bin/ptinvoke org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3
  * </pre>
  * <p>
  * This test uses JUnitParams from <a
@@ -82,10 +82,10 @@ import ptolemy.vergil.basic.export.ExportModel;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(JUnitParamsRunner.class)
-public class ExportModelJUnitTestBatch1 extends ExportModelJUnitTestBatch {
+public class ExportModelJUnitTestBatch3 extends ExportModelJUnitTestBatch {
 
-    /** Run demos 1 through 180. */
+    /** Run demos 391 through 540. */
     public Object[] demos() throws IOException {
-        return super.demos(1, 180);
+        return super.demos(391, 540);
     }
 }
