@@ -66,7 +66,7 @@ SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
 # FTP Directory
 # Use this for release
-PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
+PTII_FTP = /users/ptolemy/apache2/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
@@ -1832,23 +1832,25 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 
 ##########
 
+WEBUSER=ptolemy
+WEBSERVER=calweb-basic-prod-01.ist.berkeley.edu
 update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
 		$(CAPECODE_SRC_TAR) \
-		$(USER)@moog:$(PTII_FTP)
+		$(WEBUSER)@$(WEBSERVER):$(PTII_FTP)
 	#$(PTSETUP_MAC).dmg
 
 untar:
-	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh moog "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh $(WEBUSER)@$(WEBSERVER) rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh $(WEBUSER)@$(WEBSERVER) "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
-	ssh moog "cd $(PTII_FTP)/ptII$(VERSION); ln -s ../jnlp-$(VERSION)/signed ."
-	ssh moog gzip -9 $(PTII_FTP)/ptII$(VERSION).tar
+	ssh $(WEBUSER)@$(WEBSERVER) "cd $(PTII_FTP)/ptII$(VERSION); ln -s ../jnlp-$(VERSION)/signed ."
+	ssh $(WEBUSER)@$(WEBSERVER) gzip -9 $(PTII_FTP)/ptII$(VERSION).tar
 
 update_ftp_book: PtolemyII_DigitalV1_02.pdf
-	scp PtolemyII_DigitalV1_02.pdf $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/
+	scp PtolemyII_DigitalV1_02.pdf $(WEBUSER)@$(WEBSERVER):$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/
 
 PtolemyII_DigitalV1_02.pdf: $(INSTALLER_SRCS)/PtolemyII_DigitalV1_02.pdf
 	cp $< $@
@@ -1870,11 +1872,11 @@ $(PTIIDIST_BOOK_PDF): $(BOOK_LOCAL_SRC)
 	cp $< $@
 
 update_ftp_index:
-	scp index2.htm $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/index.htm
+	scp index2.htm $(WEBUSER)@$(WEBSERVER):$(PTII_FTP)/ptII$(VERSION)/index.htm
 
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
-	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip $(USER)@moog:$(PTII_FTP)
+	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip $(WEBUSER)@$(WEBSERVER):$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -4171,7 +4173,7 @@ $(CAPECODE_SETUP_MAC).dmg: $(CAPECODE_SETUP_MAC).app
 	rm -rf dmg
 
 update_mac: $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg
-	scp -p $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg moog:$(PTII_FTP)
+	scp -p $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg $(WEBUSER)@$(WEBSERVER):$(PTII_FTP)
 
 
 # Use dmg above instead. 
@@ -4223,8 +4225,8 @@ $(JNLPS_TAR): $(TARGET_JNLP)
 	(cd $(JNLPDIST); tar -cf $(PTIIDIST)/$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
 
 updateJNLPs: $(JNLPS_TAR)
-	scp $(JNLPS_TAR) $(USER)@moog:$(PTII_FTP)
-	ssh moog "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
+	scp $(JNLPS_TAR) $(WEBUSER)@$(WEBSERVER):$(PTII_FTP)
+	ssh $(WEBUSER)@$(WEBSERVER) "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
 
 ###################################################################
 # Update moog
