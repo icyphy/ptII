@@ -5,7 +5,7 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl
-testDefs.tcl: setting time out to 10042 seconds at Thu May 10 16:09:51 UTC 2018
+testDefs.tcl: setting time out to 10042 seconds at Thu May 10 17:16:38 UTC 2018
 adm/test/Nightly.tcl: about to clean
 adm/test/nightlyMake.tcl: about to execute [make -C /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0 PTIIHOME=/home/travis/build/icyphy/ptII/adm/installers/test/../../.. PTIIADM=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm JAR=/usr/bin/jar TAR=/usr/local/bin/tar clean]
 About to execute:
@@ -20,8 +20,8 @@ rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptI
 #
 # Now cleaning old tar files
 #
-clean Thu May 10 16:09:51 UTC 2018
- 16:09:51 up 6 min,  1 user,  load average: 1.52, 1.06, 0.49
+clean Thu May 10 17:16:38 UTC 2018
+ 17:16:38 up 6 min,  1 user,  load average: 1.86, 1.18, 0.53
 rm -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptolemy.devel11.0.devel.src.tar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar
 rm -f opencv_java320.dll
 rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar src_jar
@@ -110,22 +110,22 @@ if [ ! -f "node/node-v7.10.1-darwin-x64.tar.gz" ]; then \
 		echo "Downloading node darwin node/node-v7.10.1-darwin-x64.tar.gz: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v7.10.1/node-v7.10.1-darwin-x64.tar.gz); \
 	fi
-Downloading node darwin node/node-v7.10.1-darwin-x64.tar.gz: Thu May 10 16:09:53 UTC 2018
+Downloading node darwin node/node-v7.10.1-darwin-x64.tar.gz: Thu May 10 17:16:40 UTC 2018
 if [ ! -f "node/node-v7.10.1-linux-x64.tar.xz" ]; then \
 		echo "Downloading node linux node/node-v7.10.1-linux-x64.tar.xz: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v7.10.1/node-v7.10.1-linux-x64.tar.xz); \
 	fi
-Downloading node linux node/node-v7.10.1-linux-x64.tar.xz: Thu May 10 16:09:54 UTC 2018
+Downloading node linux node/node-v7.10.1-linux-x64.tar.xz: Thu May 10 17:16:41 UTC 2018
 if [ ! -f "node/node-v7.10.1-win-x64.zip" ]; then \
 		echo "Downloading node win node/node-v7.10.1-win-x64.zip: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v7.10.1/node-v7.10.1-win-x64.zip); \
 	fi
-Downloading node win node/node-v7.10.1-win-x64.zip: Thu May 10 16:09:55 UTC 2018
+Downloading node win node/node-v7.10.1-win-x64.zip: Thu May 10 17:16:42 UTC 2018
 #
 # Now creating PTIIDIST: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel Thu May 10 16:09:56 UTC 2018
- 16:09:56 up 6 min,  1 user,  load average: 1.40, 1.04, 0.49
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel Thu May 10 17:16:43 UTC 2018
+ 17:16:43 up 6 min,  1 user,  load average: 1.71, 1.16, 0.53
 OPENCV_DLL: opencv_java320.dll
 NODE_DARWIN: node/node-v7.10.1-darwin-x64.tar.gz
 NODE_LINUX: node/node-v7.10.1-linux-x64.tar.xz
@@ -135,10 +135,21 @@ L4J_DIR: /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/lau
 mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel
 git pull in /home/travis/build/icyphy/ptII/adm/installers/test/../../..
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../..; git pull)
-Updating 7f7223a6..947fdda3
+From https://github.com/icyphy/ptII
+   0f63c119..42d60639  master     -&gt; origin/master
+Updating 947fdda3..42d60639
 Fast-forward
- org/hlacerti/manual-ptii-hla.pdf | Bin 810291 -&gt; 813453 bytes
- 1 file changed, 0 insertions(+), 0 deletions(-)
+ .travis.yml                                        |  1 +
+ bin/ptIITravisBuild.sh                             | 10 +++
+ build.xml.in                                       | 41 +++++++++-
+ ptolemy/util/test/junit/AutoTests.java             | 48 ++++++------
+ .../export/test/junit/ExportModelJUnitTest.java    | 11 ++-
+ .../test/junit/ExportModelJUnitTestBatch1.java     |  4 +-
+ .../test/junit/ExportModelJUnitTestBatch2.java     |  4 +-
+ .../test/junit/ExportModelJUnitTestBatch3.java     | 91 ++++++++++++++++++++++
+ ptolemy/vergil/basic/export/test/junit/makefile    |  1 +
+ 9 files changed, 182 insertions(+), 29 deletions(-)
+ create mode 100644 ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch3.java
 git pull in /home/travis/build/icyphy/ptII/adm/installers/test/../../../org/terraswarm/accessor/accessors/web
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../org/terraswarm/accessor/accessors/web; git pull)
 Already up to date.
@@ -159,55 +170,55 @@ Already up to date.
 Removing other documentation
 #@echo "  tar -X does not seem to work under Cygwin"
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config
--rwxrwxr-x 1 travis travis 630292 May 10 16:09 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
+-rwxrwxr-x 1 travis travis 630292 May 10 17:11 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config:
 total 84
--rw-rw-r-- 1 travis travis 1647 May 10 16:04 confTest.java
--rw-rw-r-- 1 travis travis 1659 May 10 16:04 CORBATest.java
--rw-rw-r-- 1 travis travis 1717 May 10 16:04 EclipseITreeSelection.java
--rw-rw-r-- 1 travis travis 5183 May 10 16:04 FindClass.java
--rw-rw-r-- 1 travis travis  289 May 10 16:04 gmpTest2.cc
--rw-rw-r-- 1 travis travis  163 May 10 16:04 gmpTest.c
--rwxrwxr-x 1 travis travis 2585 May 10 16:04 install-sh
--rw-rw-r-- 1 travis travis 1689 May 10 16:04 JAITest.java
--rw-rw-r-- 1 travis travis 1653 May 10 16:04 java3dTest.java
--rw-rw-r-- 1 travis travis 1841 May 10 16:04 JavaFXTest.java
--rw-rw-r-- 1 travis travis 1914 May 10 16:04 JavaHome.java
--rw-rw-r-- 1 travis travis 1522 May 10 16:04 javasoundTest.java
--rw-rw-r-- 1 travis travis 1739 May 10 16:04 JMFTest.java
--rw-rw-r-- 1 travis travis 1707 May 10 16:04 JXLTest.java
--rw-rw-r-- 1 travis travis 1727 May 10 16:04 MajorOSName.java
--rw-rw-r-- 1 travis travis 3229 May 10 16:04 OpenCVTest.java
--rw-rw-r-- 1 travis travis 1715 May 10 16:04 quickTimeTest.java
--rw-rw-r-- 1 travis travis 4848 May 10 16:04 RootDirectory.java
--rw-rw-r-- 1 travis travis 3730 May 10 16:04 SystemJar.java
+-rw-rw-r-- 1 travis travis 1647 May 10 17:11 confTest.java
+-rw-rw-r-- 1 travis travis 1659 May 10 17:11 CORBATest.java
+-rw-rw-r-- 1 travis travis 1717 May 10 17:11 EclipseITreeSelection.java
+-rw-rw-r-- 1 travis travis 5183 May 10 17:11 FindClass.java
+-rw-rw-r-- 1 travis travis  289 May 10 17:11 gmpTest2.cc
+-rw-rw-r-- 1 travis travis  163 May 10 17:11 gmpTest.c
+-rwxrwxr-x 1 travis travis 2585 May 10 17:11 install-sh
+-rw-rw-r-- 1 travis travis 1689 May 10 17:11 JAITest.java
+-rw-rw-r-- 1 travis travis 1653 May 10 17:11 java3dTest.java
+-rw-rw-r-- 1 travis travis 1841 May 10 17:11 JavaFXTest.java
+-rw-rw-r-- 1 travis travis 1914 May 10 17:11 JavaHome.java
+-rw-rw-r-- 1 travis travis 1522 May 10 17:11 javasoundTest.java
+-rw-rw-r-- 1 travis travis 1739 May 10 17:11 JMFTest.java
+-rw-rw-r-- 1 travis travis 1707 May 10 17:11 JXLTest.java
+-rw-rw-r-- 1 travis travis 1727 May 10 17:11 MajorOSName.java
+-rw-rw-r-- 1 travis travis 3229 May 10 17:11 OpenCVTest.java
+-rw-rw-r-- 1 travis travis 1715 May 10 17:11 quickTimeTest.java
+-rw-rw-r-- 1 travis travis 4848 May 10 17:11 RootDirectory.java
+-rw-rw-r-- 1 travis travis 3730 May 10 17:11 SystemJar.java
 rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config/*.jar \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config/*.class
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config
--rwxrwxr-x 1 travis travis 630292 May 10 16:09 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
+-rwxrwxr-x 1 travis travis 630292 May 10 17:11 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config:
 total 84
--rw-rw-r-- 1 travis travis 1647 May 10 16:04 confTest.java
--rw-rw-r-- 1 travis travis 1659 May 10 16:04 CORBATest.java
--rw-rw-r-- 1 travis travis 1717 May 10 16:04 EclipseITreeSelection.java
--rw-rw-r-- 1 travis travis 5183 May 10 16:04 FindClass.java
--rw-rw-r-- 1 travis travis  289 May 10 16:04 gmpTest2.cc
--rw-rw-r-- 1 travis travis  163 May 10 16:04 gmpTest.c
--rwxrwxr-x 1 travis travis 2585 May 10 16:04 install-sh
--rw-rw-r-- 1 travis travis 1689 May 10 16:04 JAITest.java
--rw-rw-r-- 1 travis travis 1653 May 10 16:04 java3dTest.java
--rw-rw-r-- 1 travis travis 1841 May 10 16:04 JavaFXTest.java
--rw-rw-r-- 1 travis travis 1914 May 10 16:04 JavaHome.java
--rw-rw-r-- 1 travis travis 1522 May 10 16:04 javasoundTest.java
--rw-rw-r-- 1 travis travis 1739 May 10 16:04 JMFTest.java
--rw-rw-r-- 1 travis travis 1707 May 10 16:04 JXLTest.java
--rw-rw-r-- 1 travis travis 1727 May 10 16:04 MajorOSName.java
--rw-rw-r-- 1 travis travis 3229 May 10 16:04 OpenCVTest.java
--rw-rw-r-- 1 travis travis 1715 May 10 16:04 quickTimeTest.java
--rw-rw-r-- 1 travis travis 4848 May 10 16:04 RootDirectory.java
--rw-rw-r-- 1 travis travis 3730 May 10 16:04 SystemJar.java
+-rw-rw-r-- 1 travis travis 1647 May 10 17:11 confTest.java
+-rw-rw-r-- 1 travis travis 1659 May 10 17:11 CORBATest.java
+-rw-rw-r-- 1 travis travis 1717 May 10 17:11 EclipseITreeSelection.java
+-rw-rw-r-- 1 travis travis 5183 May 10 17:11 FindClass.java
+-rw-rw-r-- 1 travis travis  289 May 10 17:11 gmpTest2.cc
+-rw-rw-r-- 1 travis travis  163 May 10 17:11 gmpTest.c
+-rwxrwxr-x 1 travis travis 2585 May 10 17:11 install-sh
+-rw-rw-r-- 1 travis travis 1689 May 10 17:11 JAITest.java
+-rw-rw-r-- 1 travis travis 1653 May 10 17:11 java3dTest.java
+-rw-rw-r-- 1 travis travis 1841 May 10 17:11 JavaFXTest.java
+-rw-rw-r-- 1 travis travis 1914 May 10 17:11 JavaHome.java
+-rw-rw-r-- 1 travis travis 1522 May 10 17:11 javasoundTest.java
+-rw-rw-r-- 1 travis travis 1739 May 10 17:11 JMFTest.java
+-rw-rw-r-- 1 travis travis 1707 May 10 17:11 JXLTest.java
+-rw-rw-r-- 1 travis travis 1727 May 10 17:11 MajorOSName.java
+-rw-rw-r-- 1 travis travis 3229 May 10 17:11 OpenCVTest.java
+-rw-rw-r-- 1 travis travis 1715 May 10 17:11 quickTimeTest.java
+-rw-rw-r-- 1 travis travis 4848 May 10 17:11 RootDirectory.java
+-rw-rw-r-- 1 travis travis 3730 May 10 17:11 SystemJar.java
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/findclean)
 find: `./doc/codeDoc': No such file or directory
 rm: cannot remove &lsquo;./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core&rsquo;: Is a directory
@@ -221,7 +232,7 @@ mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/p
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/node; unzip -q /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/node/node-v7.10.1-win-x64.zip)
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors; ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer .)
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer
-lrwxrwxrwx 1 travis travis 77 May 10 16:10 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis 77 May 10 17:17 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
 # Remove the duktape binaries.
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 /home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant clean.duktape
@@ -338,51 +349,51 @@ cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/misc/joys
 ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors
 total 88
-drwxrwxr-x  3 travis travis 4096 May 10 16:04 adm
-drwxrwxr-x  2 travis travis 4096 May 10 16:04 cm
-drwxrwxr-x  2 travis travis 4096 May 10 16:04 fmucheck
-drwxrwxr-x  6 travis travis 4096 May 10 16:04 fmusdk
-drwxrwxr-x  2 travis travis 4096 May 10 16:04 gc
+drwxrwxr-x  3 travis travis 4096 May 10 17:12 adm
+drwxrwxr-x  2 travis travis 4096 May 10 17:11 cm
+drwxrwxr-x  2 travis travis 4096 May 10 17:11 fmucheck
+drwxrwxr-x  6 travis travis 4096 May 10 17:11 fmusdk
+drwxrwxr-x  2 travis travis 4096 May 10 17:11 gc
 drwxrwxr-x  2 travis travis 4096 Apr  9 23:25 installer
-drwxrwxr-x  9 travis travis 4096 May 10 16:09 izpack
-drwxrwxr-x  3 travis travis 4096 May 10 16:04 j3d
+drwxrwxr-x  9 travis travis 4096 May 10 17:16 izpack
+drwxrwxr-x  3 travis travis 4096 May 10 17:11 j3d
 drwxr-xr-x  3 travis travis 4096 Sep 17  2004 jai-1_1_2_01
 drwxrwxr-x  5 travis travis 4096 Apr  9 22:20 JMF-2.1.1e
-drwxrwxr-x  5 travis travis 4096 May 10 16:04 jode
+drwxrwxr-x  5 travis travis 4096 May 10 17:11 jode
 drwxrwxr-x  3 travis travis 4096 Apr  9 23:18 jogl
 drwxr-xr-x 16 travis travis 4096 Jun 27  2017 launch4j
-drwxrwxr-x  9 travis travis 4096 May 10 16:04 misc
-drwxrwxr-x  4 travis travis 4096 May 10 16:04 ocp
+drwxrwxr-x  9 travis travis 4096 May 10 17:12 misc
+drwxrwxr-x  4 travis travis 4096 May 10 17:11 ocp
 drwxrwxr-x  5 travis travis 4096 Apr  9 22:43 opencv
-drwxrwxr-x  2 travis travis 4096 May 10 16:04 oracle
-drwxrwxr-x  2 travis travis 4096 May 10 16:04 oscP5
--rw-rw-r--  1 travis travis 1543 May 10 16:04 README.txt
-drwxrwxr-x  2 travis travis 4096 May 10 16:04 soot
-drwxrwxr-x  6 travis travis 4096 May 10 16:04 sun
-drwxrwxr-x  7 travis travis 4096 May 10 16:09 universalJavaApplicationStub
+drwxrwxr-x  2 travis travis 4096 May 10 17:11 oracle
+drwxrwxr-x  2 travis travis 4096 May 10 17:11 oscP5
+-rw-rw-r--  1 travis travis 1543 May 10 17:11 README.txt
+drwxrwxr-x  2 travis travis 4096 May 10 17:11 soot
+drwxrwxr-x  6 travis travis 4096 May 10 17:11 sun
+drwxrwxr-x  7 travis travis 4096 May 10 17:16 universalJavaApplicationStub
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors
 total 24
-lrwxrwxrwx 1 travis travis   77 May 10 16:10 installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
-lrwxrwxrwx 1 travis travis   74 May 10 16:10 izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
-drwxrwxr-x 3 travis travis 4096 May 10 16:10 j3d
-drwxrwxr-x 3 travis travis 4096 May 10 16:10 jogl
-drwxrwxr-x 4 travis travis 4096 May 10 16:10 misc
-drwxrwxr-x 5 travis travis 4096 May 10 16:10 node
+lrwxrwxrwx 1 travis travis   77 May 10 17:17 installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis   74 May 10 17:17 izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+drwxrwxr-x 3 travis travis 4096 May 10 17:17 j3d
+drwxrwxr-x 3 travis travis 4096 May 10 17:17 jogl
+drwxrwxr-x 4 travis travis 4096 May 10 17:17 misc
+drwxrwxr-x 5 travis travis 4096 May 10 17:16 node
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack
-lrwxrwxrwx 1 travis travis   74 May 10 16:10 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+lrwxrwxrwx 1 travis travis   74 May 10 17:17 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack:
 total 28
-drwxrwxr-x 2 travis travis 4096 May 10 16:09 bin
-drwxrwxr-x 2 travis travis 4096 May 10 16:09 icons
-drwxrwxr-x 2 travis travis 4096 May 10 16:09 legal
-drwxrwxr-x 2 travis travis 4096 May 10 16:09 lib
-drwxrwxr-x 3 travis travis 4096 May 10 16:09 schema
-drwxrwxr-x 2 travis travis 4096 May 10 16:09 Uninstaller
-drwxrwxr-x 3 travis travis 4096 May 10 16:09 utils
+drwxrwxr-x 2 travis travis 4096 May 10 17:16 bin
+drwxrwxr-x 2 travis travis 4096 May 10 17:16 icons
+drwxrwxr-x 2 travis travis 4096 May 10 17:16 legal
+drwxrwxr-x 2 travis travis 4096 May 10 17:16 lib
+drwxrwxr-x 3 travis travis 4096 May 10 17:16 schema
+drwxrwxr-x 2 travis travis 4096 May 10 17:16 Uninstaller
+drwxrwxr-x 3 travis travis 4096 May 10 17:16 utils
 ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j
-lrwxrwxrwx  1 travis travis   76 May 10 16:10 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx  1 travis travis   76 May 10 17:17 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j:
 total 264
@@ -415,29 +426,29 @@ drwxr-xr-x 2 travis travis   4096 Jun 27  2017 web
 rm -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/.glimpse*
 cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../.glimpse_exclude /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config
--rwxrwxr-x 1 travis travis 630292 May 10 16:09 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
+-rwxrwxr-x 1 travis travis 630292 May 10 17:11 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config:
 total 84
--rw-rw-r-- 1 travis travis 1647 May 10 16:04 confTest.java
--rw-rw-r-- 1 travis travis 1659 May 10 16:04 CORBATest.java
--rw-rw-r-- 1 travis travis 1717 May 10 16:04 EclipseITreeSelection.java
--rw-rw-r-- 1 travis travis 5183 May 10 16:04 FindClass.java
--rw-rw-r-- 1 travis travis  289 May 10 16:04 gmpTest2.cc
--rw-rw-r-- 1 travis travis  163 May 10 16:04 gmpTest.c
--rwxrwxr-x 1 travis travis 2585 May 10 16:04 install-sh
--rw-rw-r-- 1 travis travis 1689 May 10 16:04 JAITest.java
--rw-rw-r-- 1 travis travis 1653 May 10 16:04 java3dTest.java
--rw-rw-r-- 1 travis travis 1841 May 10 16:04 JavaFXTest.java
--rw-rw-r-- 1 travis travis 1914 May 10 16:04 JavaHome.java
--rw-rw-r-- 1 travis travis 1522 May 10 16:04 javasoundTest.java
--rw-rw-r-- 1 travis travis 1739 May 10 16:04 JMFTest.java
--rw-rw-r-- 1 travis travis 1707 May 10 16:04 JXLTest.java
--rw-rw-r-- 1 travis travis 1727 May 10 16:04 MajorOSName.java
--rw-rw-r-- 1 travis travis 3229 May 10 16:04 OpenCVTest.java
--rw-rw-r-- 1 travis travis 1715 May 10 16:04 quickTimeTest.java
--rw-rw-r-- 1 travis travis 4848 May 10 16:04 RootDirectory.java
--rw-rw-r-- 1 travis travis 3730 May 10 16:04 SystemJar.java
+-rw-rw-r-- 1 travis travis 1647 May 10 17:11 confTest.java
+-rw-rw-r-- 1 travis travis 1659 May 10 17:11 CORBATest.java
+-rw-rw-r-- 1 travis travis 1717 May 10 17:11 EclipseITreeSelection.java
+-rw-rw-r-- 1 travis travis 5183 May 10 17:11 FindClass.java
+-rw-rw-r-- 1 travis travis  289 May 10 17:11 gmpTest2.cc
+-rw-rw-r-- 1 travis travis  163 May 10 17:11 gmpTest.c
+-rwxrwxr-x 1 travis travis 2585 May 10 17:11 install-sh
+-rw-rw-r-- 1 travis travis 1689 May 10 17:11 JAITest.java
+-rw-rw-r-- 1 travis travis 1653 May 10 17:11 java3dTest.java
+-rw-rw-r-- 1 travis travis 1841 May 10 17:11 JavaFXTest.java
+-rw-rw-r-- 1 travis travis 1914 May 10 17:11 JavaHome.java
+-rw-rw-r-- 1 travis travis 1522 May 10 17:11 javasoundTest.java
+-rw-rw-r-- 1 travis travis 1739 May 10 17:11 JMFTest.java
+-rw-rw-r-- 1 travis travis 1707 May 10 17:11 JXLTest.java
+-rw-rw-r-- 1 travis travis 1727 May 10 17:11 MajorOSName.java
+-rw-rw-r-- 1 travis travis 3229 May 10 17:11 OpenCVTest.java
+-rw-rw-r-- 1 travis travis 1715 May 10 17:11 quickTimeTest.java
+-rw-rw-r-- 1 travis travis 4848 May 10 17:11 RootDirectory.java
+-rw-rw-r-- 1 travis travis 3730 May 10 17:11 SystemJar.java
 # Copy libjvm.dll.a because it was removed by src.ex
 #cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../ptolemy/codegen/c/lib/win/libjvm.dll.a /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/codegen/c/lib/win
 #ls -l  /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/codegen/c/lib/win/libjvm.dll.a
@@ -590,7 +601,7 @@ make[1]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 #
 # Now creating PTIIDIST/jar_dist: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist Thu May 10 16:10:19 UTC 2018
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist Thu May 10 17:17:05 UTC 2018
 if [ ! -d "/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist" ] ; then \
 	    echo "Running make -k  jar_dist and other commands in /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel"; \
 	    (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; PTII=`/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptcygpath /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel` JAVADOC=javadoc ./configure; rm -rf bin/*.app; \
@@ -1037,6 +1048,13 @@ ptdoc:
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/build.xml
+    [javac] Compiling 5 source files to /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.NbBundleProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.URLStreamHandlerRegistrationProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.ServiceProviderProcessor' less than -source '1.8'
+    [javac] Note: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/ptolemy/util/test/junit/AutoTests.java uses unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 3 warnings
 
 -check-ptII-mk-file:
 
@@ -1053,7 +1071,7 @@ build-bin:
 build:
 
 BUILD SUCCESSFUL
-Total time: 4 seconds
+Total time: 5 seconds
 Found /home/travis/build/icyphy/ptII/codeDoc*.jar files that are less than 10 days old.  Will use unjar them in /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel instead of rerunning javadoc.
 Unjaring /home/travis/build/icyphy/ptII/doc/codeDoc.jar in /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel
   created: META-INF/
@@ -13131,138 +13149,138 @@ Unjaring /home/travis/build/icyphy/ptII/doc/codeDocViptos.jar in /home/travis/bu
 Unjaring /home/travis/build/icyphy/ptII/doc/codeDocVisualSense.jar in /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel
   created: META-INF/
  inflated: META-INF/MANIFEST.MF
-total 2480
-drwxrwxr-x  4 travis travis   4096 May 10 16:09 ant
-drwxrwxr-x  3 travis travis   4096 May 10 16:10 bin
--rw-rw-r--  1 travis travis  84712 May 10 16:04 build.default.xml
--rw-rw-r--  1 travis travis 126466 May 10 16:10 build.xml
--rw-rw-r--  1 travis travis 104681 May 10 16:04 build.xml.in
--rw-rw-r--  1 travis travis   6487 May 10 16:04 cluster.xml
-drwxrwxr-x  6 travis travis   4096 May 10 16:09 com
-drwxrwxr-x  2 travis travis   4096 May 10 16:10 config
--rw-rw-r--  1 travis travis  89461 May 10 16:10 config.log
--rwxrwxr-x  1 travis travis  88187 May 10 16:10 config.status
--rwxrwxr-x  1 travis travis 630292 May 10 16:10 configure
--rw-rw-r--  1 travis travis 306719 May 10 16:04 configure.in
-drwxrwxr-x  3 travis travis   4096 May 10 16:09 contrib
--rw-rw-r--  1 travis travis 518207 May 10 16:04 copyright.htm
--rw-rw-r--  1 travis travis   1247 May 10 16:04 copyright.txt
-drwxrwxr-x  8 travis travis   4096 May 10 16:04 diva
-drwxrwxr-x 15 travis travis   4096 May 10 16:10 doc
-drwxrwxr-x  3 travis travis   4096 May 10 16:04 edu
--rw-rw-r--  1 travis travis 360944 May 10 16:10 jars.xml
-drwxrwxr-x  7 travis travis   4096 May 10 16:09 lbnl
-drwxrwxr-x  3 travis travis   4096 May 10 16:10 lib
--rw-rw-r--  1 travis travis  10765 May 10 16:04 makefile
-drwxrwxr-x  2 travis travis   4096 May 10 16:09 META-INF
-drwxrwxr-x  2 travis travis   4096 May 10 16:10 mk
-drwxrwxr-x  3 travis travis   4096 May 10 16:04 net
-drwxrwxr-x 21 travis travis   4096 May 10 16:10 node_modules
-drwxrwxr-x  7 travis travis   4096 May 10 16:04 org
--rw-rw-r--  1 travis travis  12897 May 10 16:04 plugin.xml
--rw-rw-r--  1 travis travis  32784 May 10 16:04 pom.xml
-drwxrwxr-x 10 travis travis   4096 May 10 16:04 ptdb
--rw-rw-r--  1 travis travis    294 May 10 16:04 ptKeystore.properties
-drwxrwxr-x 26 travis travis   4096 May 10 16:09 ptolemy
-drwxrwxr-x 11 travis travis   4096 May 10 16:09 ptserver
--rw-rw-r--  1 travis travis    570 May 10 16:04 README.md
-drwxrwxr-x  6 travis travis   4096 May 10 16:04 thales
-drwxrwxr-x  4 travis travis   4096 May 10 16:04 util
-drwxrwxr-x  6 travis travis   4096 May 10 16:10 vendors
--rw-rw-r--  1 travis travis   1179 May 10 16:04 vergilBCVTB.jnlp.in
--rw-rw-r--  1 travis travis   1784 May 10 16:04 vergilCapeCode.jnlp.in
--rw-rw-r--  1 travis travis   1155 May 10 16:04 vergilCyPhySim.jnlp.in
--rw-rw-r--  1 travis travis   1152 May 10 16:04 vergilDSP.jnlp.in
--rw-rw-r--  1 travis travis   1361 May 10 16:04 vergilHyVisual.jnlp.in
--rw-rw-r--  1 travis travis   2161 May 10 16:04 vergil.jnlp.in
--rw-rw-r--  1 travis travis   1205 May 10 16:04 vergilPtiny.jnlp.in
--rw-rw-r--  1 travis travis   1242 May 10 16:04 vergilPtinyKepler.jnlp.in
--rw-rw-r--  1 travis travis   1478 May 10 16:04 vergilPtinySandbox.jnlp.in
--rw-rw-r--  1 travis travis   1237 May 10 16:04 vergilSpace.jnlp.in
--rw-rw-r--  1 travis travis   1484 May 10 16:04 vergilVisualSense.jnlp.in
+total 2484
+drwxrwxr-x  4 travis travis   4096 May 10 17:16 ant
+drwxrwxr-x  3 travis travis   4096 May 10 17:17 bin
+-rw-rw-r--  1 travis travis  84712 May 10 17:11 build.default.xml
+-rw-rw-r--  1 travis travis 127859 May 10 17:17 build.xml
+-rw-rw-r--  1 travis travis 106074 May 10 17:16 build.xml.in
+-rw-rw-r--  1 travis travis   6487 May 10 17:11 cluster.xml
+drwxrwxr-x  6 travis travis   4096 May 10 17:16 com
+drwxrwxr-x  2 travis travis   4096 May 10 17:17 config
+-rw-rw-r--  1 travis travis  89461 May 10 17:17 config.log
+-rwxrwxr-x  1 travis travis  88187 May 10 17:17 config.status
+-rwxrwxr-x  1 travis travis 630292 May 10 17:17 configure
+-rw-rw-r--  1 travis travis 306719 May 10 17:11 configure.in
+drwxrwxr-x  3 travis travis   4096 May 10 17:16 contrib
+-rw-rw-r--  1 travis travis 518207 May 10 17:11 copyright.htm
+-rw-rw-r--  1 travis travis   1247 May 10 17:11 copyright.txt
+drwxrwxr-x  8 travis travis   4096 May 10 17:11 diva
+drwxrwxr-x 15 travis travis   4096 May 10 17:17 doc
+drwxrwxr-x  3 travis travis   4096 May 10 17:11 edu
+-rw-rw-r--  1 travis travis 360944 May 10 17:17 jars.xml
+drwxrwxr-x  7 travis travis   4096 May 10 17:16 lbnl
+drwxrwxr-x  3 travis travis   4096 May 10 17:17 lib
+-rw-rw-r--  1 travis travis  10765 May 10 17:11 makefile
+drwxrwxr-x  2 travis travis   4096 May 10 17:16 META-INF
+drwxrwxr-x  2 travis travis   4096 May 10 17:17 mk
+drwxrwxr-x  3 travis travis   4096 May 10 17:11 net
+drwxrwxr-x 21 travis travis   4096 May 10 17:17 node_modules
+drwxrwxr-x  7 travis travis   4096 May 10 17:11 org
+-rw-rw-r--  1 travis travis  12897 May 10 17:11 plugin.xml
+-rw-rw-r--  1 travis travis  32784 May 10 17:11 pom.xml
+drwxrwxr-x 10 travis travis   4096 May 10 17:11 ptdb
+-rw-rw-r--  1 travis travis    294 May 10 17:11 ptKeystore.properties
+drwxrwxr-x 26 travis travis   4096 May 10 17:16 ptolemy
+drwxrwxr-x 11 travis travis   4096 May 10 17:16 ptserver
+-rw-rw-r--  1 travis travis    570 May 10 17:11 README.md
+drwxrwxr-x  6 travis travis   4096 May 10 17:11 thales
+drwxrwxr-x  4 travis travis   4096 May 10 17:11 util
+drwxrwxr-x  6 travis travis   4096 May 10 17:17 vendors
+-rw-rw-r--  1 travis travis   1179 May 10 17:11 vergilBCVTB.jnlp.in
+-rw-rw-r--  1 travis travis   1784 May 10 17:11 vergilCapeCode.jnlp.in
+-rw-rw-r--  1 travis travis   1155 May 10 17:11 vergilCyPhySim.jnlp.in
+-rw-rw-r--  1 travis travis   1152 May 10 17:11 vergilDSP.jnlp.in
+-rw-rw-r--  1 travis travis   1361 May 10 17:11 vergilHyVisual.jnlp.in
+-rw-rw-r--  1 travis travis   2161 May 10 17:11 vergil.jnlp.in
+-rw-rw-r--  1 travis travis   1205 May 10 17:11 vergilPtiny.jnlp.in
+-rw-rw-r--  1 travis travis   1242 May 10 17:11 vergilPtinyKepler.jnlp.in
+-rw-rw-r--  1 travis travis   1478 May 10 17:11 vergilPtinySandbox.jnlp.in
+-rw-rw-r--  1 travis travis   1237 May 10 17:11 vergilSpace.jnlp.in
+-rw-rw-r--  1 travis travis   1484 May 10 17:11 vergilVisualSense.jnlp.in
 total 44948
--rw-rw-r--  1 travis travis     7345 May 10 16:04 acks.htm
--rw-rw-r--  1 travis travis     5168 May 10 16:04 authors.htm
--rw-rw-r--  1 travis travis      593 May 10 16:04 banner.htm
--rw-rw-r--  1 travis travis      518 May 10 16:04 body.htm
-drwxrwxr-x  4 travis travis     4096 May 10 16:04 books
--rw-rw-r--  1 travis travis      273 May 10 16:04 buttons.htm
--rw-rw-r--  1 travis travis     7415 May 10 16:04 checkstyle-ptII.xml
+-rw-rw-r--  1 travis travis     7345 May 10 17:11 acks.htm
+-rw-rw-r--  1 travis travis     5168 May 10 17:11 authors.htm
+-rw-rw-r--  1 travis travis      593 May 10 17:11 banner.htm
+-rw-rw-r--  1 travis travis      518 May 10 17:11 body.htm
+drwxrwxr-x  4 travis travis     4096 May 10 17:11 books
+-rw-rw-r--  1 travis travis      273 May 10 17:11 buttons.htm
+-rw-rw-r--  1 travis travis     7415 May 10 17:11 checkstyle-ptII.xml
 drwxrwxr-x 14 travis travis     4096 May 10 16:02 codeDoc
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocBcvtb.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocCapeCode.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocHyVisual.jar
--rw-rw-r--  1 travis travis 34573966 May 10 16:09 codeDoc.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocViptos.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocVisualSense.jar
-drwxrwxr-x  4 travis travis     4096 May 10 16:04 coding
--rw-rw-r--  1 travis travis      584 May 10 16:04 contents.css
--rw-rw-r--  1 travis travis      304 May 10 16:04 contentsheader.htm
--rw-rw-r--  1 travis travis    47590 May 10 16:04 copernicus.htm
--rw-rw-r--  1 travis travis      597 May 10 16:04 default.css
--rw-rw-r--  1 travis travis     2660 May 10 16:04 demoLink.js
--rw-rw-r--  1 travis travis    48582 May 10 16:04 deployJavaJNLP.js
--rw-rw-r--  1 travis travis    48722 May 10 16:04 deployJava.js
-drwxrwxr-x  3 travis travis     4096 May 10 16:09 design
--rw-rw-r--  1 travis travis      702 May 10 16:04 docbody.htm
--rw-rw-r--  1 travis travis      295 May 10 16:04 docbuttons.htm
--rw-rw-r--  1 travis travis  7828946 May 10 16:09 docConfig.jar
-drwxrwxr-x  2 travis travis     4096 May 10 16:08 doclets
--rw-rw-r--  1 travis travis      546 May 10 16:04 docs.htm
--rw-rw-r--  1 travis travis      977 May 10 16:04 doctoc.htm
--rw-rw-r--  1 travis travis    30684 May 10 16:04 domainCompatibility.htm
--rw-rw-r--  1 travis travis    64856 May 10 16:04 domains.htm
-drwxrwxr-x  4 travis travis     4096 May 10 16:04 eclipse
--rw-rw-r--  1 travis travis      743 May 10 16:04 expressions.htm
--rw-rw-r--  1 travis travis  2589714 May 10 16:04 expressions.pdf
--rw-rw-r--  1 travis travis      619 May 10 16:04 footer.htm
--rw-rw-r--  1 travis travis     1776 May 10 16:04 help.htm
--rw-rw-r--  1 travis travis    28361 May 10 16:04 hudsonConfig.xml
--rwxrwxr-x  1 travis travis     2297 May 10 16:04 hyVisualHtml.awk
-drwxrwxr-x  2 travis travis     4096 May 10 16:10 img
--rw-rw-r--  1 travis travis      698 May 10 16:04 index.htm
--rw-rw-r--  1 travis travis    32520 May 10 16:04 install.htm
--rw-rw-r--  1 travis travis      827 May 10 16:04 install_index.htm
--rw-rw-r--  1 travis travis     5816 May 10 16:04 installJNLP.htm
--rw-rw-r--  1 travis travis     2256 May 10 16:04 javahtml.awk
-drwxrwxr-x  3 travis travis     4096 May 10 16:04 jsdoc
--rw-rw-r--  1 travis travis      444 May 10 16:04 limitations.htm
--rw-rw-r--  1 travis travis      661 May 10 16:04 mainheader.htm
--rw-rw-r--  1 travis travis    10761 May 10 16:04 main.htm
--rw-rw-r--  1 travis travis    10089 May 10 16:04 mainVergil.htm
--rw-rw-r--  1 travis travis     8895 May 10 16:04 mainVergilPtiny.htm
--rw-rw-r--  1 travis travis     8924 May 10 16:04 mainVergilPtinyKepler.htm
--rw-rw-r--  1 travis travis    53022 May 10 16:10 makefile
--rwxrwxr-x  1 travis travis     3807 May 10 16:04 mkDomains
--rw-rw-r--  1 travis travis   123512 May 10 16:04 oldFeatures.htm
--rw-rw-r--  1 travis travis     1219 May 10 16:04 openInstanceHelp.htm
-drwxrwxr-x  5 travis travis     4096 May 10 16:09 papers
--rw-rw-r--  1 travis travis    36977 May 10 16:04 ptII11.0.release.htm
--rw-rw-r--  1 travis travis      496 May 10 16:04 ptII11.0.releaseHyVisual.htm
--rw-rw-r--  1 travis travis    19221 May 10 16:04 ptII11.0.releaseVergil.htm
--rw-rw-r--  1 travis travis    79863 May 10 16:04 ptIIfaq.htm
--rwxrwxr-x  1 travis travis     2197 May 10 16:04 ptinyBcvtb.awk
--rwxrwxr-x  1 travis travis     2283 May 10 16:04 ptinyKepler.awk
--rw-rw-r--  1 travis travis      354 May 10 16:04 README.txt
--rw-rw-r--  1 travis travis      835 May 10 16:04 release.htm
--rwxrwxr-x  1 travis travis     1197 May 10 16:04 removeasd
--rw-rw-r--  1 travis travis     3333 May 10 16:04 sandbox.htm
--rw-rw-r--  1 travis travis     3253 May 10 16:04 spotbugs-exclude.xml
--rw-rw-r--  1 travis travis      247 May 10 16:04 spotbugs-include.xml
-drwxrwxr-x  3 travis travis     4096 May 10 16:04 test
--rw-rw-r--  1 travis travis      584 May 10 16:04 toc.css
--rw-rw-r--  1 travis travis     5181 May 10 16:04 toc.htm
-drwxrwxr-x  2 travis travis     4096 May 10 16:04 tour
--rw-rw-r--  1 travis travis    17382 May 10 16:04 troubleshooting.htm
--rw-rw-r--  1 travis travis    17593 May 10 16:04 troubleshootingVergil.htm
-drwxrwxr-x  5 travis travis     4096 May 10 16:08 tutorial
--rw-rw-r--  1 travis travis     3981 May 10 16:04 types.htm
-drwxrwxr-x  2 travis travis     4096 May 10 16:04 ui
--rw-rw-r--  1 travis travis    22762 May 10 16:04 webStartHelp.htm
--rw-rw-r--  1 travis travis      832 May 10 16:04 webStartHelp_index.htm
--rw-rw-r--  1 travis travis     2164 May 10 16:04 whatsnew.awk
--rw-rw-r--  1 travis travis    10689 May 10 16:04 whatsnew.htm
--rw-rw-r--  1 travis travis    10671 May 10 16:04 whatsnewVergil.htm
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocBcvtb.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocCapeCode.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocHyVisual.jar
+-rw-rw-r--  1 travis travis 34573966 May 10 17:16 codeDoc.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocViptos.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocVisualSense.jar
+drwxrwxr-x  4 travis travis     4096 May 10 17:11 coding
+-rw-rw-r--  1 travis travis      584 May 10 17:11 contents.css
+-rw-rw-r--  1 travis travis      304 May 10 17:11 contentsheader.htm
+-rw-rw-r--  1 travis travis    47590 May 10 17:11 copernicus.htm
+-rw-rw-r--  1 travis travis      597 May 10 17:11 default.css
+-rw-rw-r--  1 travis travis     2660 May 10 17:11 demoLink.js
+-rw-rw-r--  1 travis travis    48582 May 10 17:11 deployJavaJNLP.js
+-rw-rw-r--  1 travis travis    48722 May 10 17:11 deployJava.js
+drwxrwxr-x  3 travis travis     4096 May 10 17:16 design
+-rw-rw-r--  1 travis travis      702 May 10 17:11 docbody.htm
+-rw-rw-r--  1 travis travis      295 May 10 17:11 docbuttons.htm
+-rw-rw-r--  1 travis travis  7828946 May 10 17:16 docConfig.jar
+drwxrwxr-x  2 travis travis     4096 May 10 17:15 doclets
+-rw-rw-r--  1 travis travis      546 May 10 17:11 docs.htm
+-rw-rw-r--  1 travis travis      977 May 10 17:11 doctoc.htm
+-rw-rw-r--  1 travis travis    30684 May 10 17:11 domainCompatibility.htm
+-rw-rw-r--  1 travis travis    64856 May 10 17:11 domains.htm
+drwxrwxr-x  4 travis travis     4096 May 10 17:11 eclipse
+-rw-rw-r--  1 travis travis      743 May 10 17:11 expressions.htm
+-rw-rw-r--  1 travis travis  2589714 May 10 17:11 expressions.pdf
+-rw-rw-r--  1 travis travis      619 May 10 17:11 footer.htm
+-rw-rw-r--  1 travis travis     1776 May 10 17:11 help.htm
+-rw-rw-r--  1 travis travis    28361 May 10 17:11 hudsonConfig.xml
+-rwxrwxr-x  1 travis travis     2297 May 10 17:11 hyVisualHtml.awk
+drwxrwxr-x  2 travis travis     4096 May 10 17:17 img
+-rw-rw-r--  1 travis travis      698 May 10 17:11 index.htm
+-rw-rw-r--  1 travis travis    32520 May 10 17:11 install.htm
+-rw-rw-r--  1 travis travis      827 May 10 17:11 install_index.htm
+-rw-rw-r--  1 travis travis     5816 May 10 17:11 installJNLP.htm
+-rw-rw-r--  1 travis travis     2256 May 10 17:11 javahtml.awk
+drwxrwxr-x  3 travis travis     4096 May 10 17:11 jsdoc
+-rw-rw-r--  1 travis travis      444 May 10 17:11 limitations.htm
+-rw-rw-r--  1 travis travis      661 May 10 17:11 mainheader.htm
+-rw-rw-r--  1 travis travis    10761 May 10 17:11 main.htm
+-rw-rw-r--  1 travis travis    10089 May 10 17:11 mainVergil.htm
+-rw-rw-r--  1 travis travis     8895 May 10 17:11 mainVergilPtiny.htm
+-rw-rw-r--  1 travis travis     8924 May 10 17:11 mainVergilPtinyKepler.htm
+-rw-rw-r--  1 travis travis    53022 May 10 17:17 makefile
+-rwxrwxr-x  1 travis travis     3807 May 10 17:11 mkDomains
+-rw-rw-r--  1 travis travis   123512 May 10 17:11 oldFeatures.htm
+-rw-rw-r--  1 travis travis     1219 May 10 17:11 openInstanceHelp.htm
+drwxrwxr-x  5 travis travis     4096 May 10 17:16 papers
+-rw-rw-r--  1 travis travis    36977 May 10 17:11 ptII11.0.release.htm
+-rw-rw-r--  1 travis travis      496 May 10 17:11 ptII11.0.releaseHyVisual.htm
+-rw-rw-r--  1 travis travis    19221 May 10 17:11 ptII11.0.releaseVergil.htm
+-rw-rw-r--  1 travis travis    79863 May 10 17:11 ptIIfaq.htm
+-rwxrwxr-x  1 travis travis     2197 May 10 17:11 ptinyBcvtb.awk
+-rwxrwxr-x  1 travis travis     2283 May 10 17:11 ptinyKepler.awk
+-rw-rw-r--  1 travis travis      354 May 10 17:11 README.txt
+-rw-rw-r--  1 travis travis      835 May 10 17:11 release.htm
+-rwxrwxr-x  1 travis travis     1197 May 10 17:11 removeasd
+-rw-rw-r--  1 travis travis     3333 May 10 17:11 sandbox.htm
+-rw-rw-r--  1 travis travis     3253 May 10 17:11 spotbugs-exclude.xml
+-rw-rw-r--  1 travis travis      247 May 10 17:11 spotbugs-include.xml
+drwxrwxr-x  3 travis travis     4096 May 10 17:11 test
+-rw-rw-r--  1 travis travis      584 May 10 17:11 toc.css
+-rw-rw-r--  1 travis travis     5181 May 10 17:11 toc.htm
+drwxrwxr-x  2 travis travis     4096 May 10 17:11 tour
+-rw-rw-r--  1 travis travis    17382 May 10 17:11 troubleshooting.htm
+-rw-rw-r--  1 travis travis    17593 May 10 17:11 troubleshootingVergil.htm
+drwxrwxr-x  5 travis travis     4096 May 10 17:15 tutorial
+-rw-rw-r--  1 travis travis     3981 May 10 17:11 types.htm
+drwxrwxr-x  2 travis travis     4096 May 10 17:11 ui
+-rw-rw-r--  1 travis travis    22762 May 10 17:11 webStartHelp.htm
+-rw-rw-r--  1 travis travis      832 May 10 17:11 webStartHelp_index.htm
+-rw-rw-r--  1 travis travis     2164 May 10 17:11 whatsnew.awk
+-rw-rw-r--  1 travis travis    10689 May 10 17:11 whatsnew.htm
+-rw-rw-r--  1 travis travis    10671 May 10 17:11 whatsnewVergil.htm
 total 5856
 -rw-rw-r--  1 travis travis  159887 May 10 16:02 allclasses-frame.html
 -rw-rw-r--  1 travis travis  138167 May 10 16:02 allclasses-noframe.html
@@ -13292,7 +13310,7 @@ drwxrwxr-x  8 travis travis    4096 May 10 15:42 ptserver
 -rw-rw-r--  1 travis travis   12842 May 10 16:02 stylesheet.css
 drwxrwxr-x  4 travis travis    4096 May 10 15:45 thales
 drwxrwxr-x  3 travis travis    4096 May 10 15:46 util
-About to run ant jars: Thu May 10 16:10:42 UTC 2018
+About to run ant jars: Thu May 10 17:17:29 UTC 2018
 /home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ant/bin/ant jars
 Buildfile: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/build.xml
 
@@ -13301,6 +13319,7 @@ jars:
 jars:
       [jar] Building MANIFEST-only jar: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.jar
       [jar] Building jar: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/ptolemy/ptsupport.jar
+      [jar] Building jar: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/ptolemy/util/test/junit/junit.jar
       [jar] Building jar: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/ptolemy/chic/chic.jar
 
 BUILD SUCCESSFUL
@@ -13341,16 +13360,16 @@ chmod a+x doc/books/systems/
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j
 -rwxr-xr-x 1 travis travis 160 Jun 27  2017 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j
 ls -l `dirname /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j`
-lrwxrwxrwx 1 travis travis 76 May 10 16:10 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx 1 travis travis 76 May 10 17:17 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors
 total 28
-lrwxrwxrwx 1 travis travis   77 May 10 16:10 installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
-lrwxrwxrwx 1 travis travis   74 May 10 16:10 izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
-drwxrwxr-x 3 travis travis 4096 May 10 16:10 j3d
-drwxrwxr-x 3 travis travis 4096 May 10 16:10 jogl
-lrwxrwxrwx 1 travis travis   76 May 10 16:10 launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
-drwxrwxr-x 4 travis travis 4096 May 10 16:10 misc
-drwxrwxr-x 5 travis travis 4096 May 10 16:10 node
+lrwxrwxrwx 1 travis travis   77 May 10 17:17 installer -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis   74 May 10 17:17 izpack -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+drwxrwxr-x 3 travis travis 4096 May 10 17:17 j3d
+drwxrwxr-x 3 travis travis 4096 May 10 17:17 jogl
+lrwxrwxrwx 1 travis travis   76 May 10 17:17 launch4j -&gt; /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+drwxrwxr-x 4 travis travis 4096 May 10 17:17 misc
+drwxrwxr-x 5 travis travis 4096 May 10 17:16 node
 "/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j" `./bin/ptcygpath capecode_l4j.xml`
 launch4j: Resource file:
 launch4j: LANGUAGE 0, 1
@@ -14037,7 +14056,7 @@ if [ ! -d jar_dist ]; then \
 #  Copying ptolemy/actor/gui/jnlp/SpaceApplication.jar to jar_dist/
 #  Copying ptolemy/actor/gui/jnlp/ViptosApplication.jar to jar_dist/
 make[2]: Leaving directory `/home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel'
-Done creating PTIIDIST/jar_dist: Thu May 10 16:10:55 UTC 2018
+Done creating PTIIDIST/jar_dist: Thu May 10 17:17:42 UTC 2018
 make[1]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 # The /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist rule updates the docs, so we need not do it here.
 #@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
@@ -14340,13 +14359,13 @@ config.status: creating lib/ptII.properties
 config.status: creating ptolemy/util/test/junit/javachdir32
 config.status: executing default commands
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/lib*.so
--rwxrwxr-x 1 travis travis 19964 May 10 16:10 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libJNIFMU.so
--rwxrwxr-x 1 travis travis 31898 May 10 16:10 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libptmatlab.so
+-rwxrwxr-x 1 travis travis 19964 May 10 17:17 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libJNIFMU.so
+-rwxrwxr-x 1 travis travis 31898 May 10 17:17 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libptmatlab.so
 #
 # Now creating PTII_FULL: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar Thu May 10 16:11:14 UTC 2018
- 16:11:14 up 7 min,  1 user,  load average: 2.11, 1.37, 0.65
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar Thu May 10 17:18:02 UTC 2018
+ 17:18:02 up 7 min,  1 user,  load average: 1.89, 1.35, 0.65
 chmod
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; chmod -R a+rX .)
 For some reason under Cygwin, we need to build the compressed
@@ -14371,8 +14390,8 @@ Don't use -v with tar and Jenkins, avoid '/bin/tar: write error'. See http://sta
 #
 # Now creating PTII_SRC: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar Thu May 10 16:11:39 UTC 2018
- 16:11:39 up 8 min,  1 user,  load average: 1.93, 1.39, 0.68
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar Thu May 10 17:18:27 UTC 2018
+ 17:18:27 up 8 min,  1 user,  load average: 1.65, 1.33, 0.66
 rm -rf src/ptII11.0.devel
 mkdir src
 (cd src; \
@@ -21111,7 +21130,7 @@ rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.
 rm -f core
 making clean in ptolemy/vergil/basic/export/test/junit
 make[7]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy/vergil/basic/export/test/junit'
-rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp ExportModelJUnitTest.class ExportModelJUnitTestBatch.class ExportModelJUnitTestBatch1.class ExportModelJUnitTestBatch2.class JUnitTclTest.class       
+rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp ExportModelJUnitTest.class ExportModelJUnitTestBatch.class ExportModelJUnitTestBatch1.class ExportModelJUnitTestBatch2.class ExportModelJUnitTestBatch3.class JUnitTclTest.class       
 rm -f core
 make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy/vergil/basic/export/test/junit'
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy/vergil/basic/export/test'
@@ -23317,9 +23336,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/architecture/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/architecture'
 making clean in doc/books/systems/continuous
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/continuous'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/continuous'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  continuous.jar     continuous.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/continuous/test
@@ -23334,9 +23353,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/continuous/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/continuous'
 making clean in doc/books/systems/dataflow
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/dataflow'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/dataflow'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  dataflow.jar     dataflow.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/dataflow/test
@@ -23386,8 +23405,8 @@ make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/export'
 making clean in doc/books/systems/expressions
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/expressions'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/expressions'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  expressions.jar     expressions.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/expressions/test
@@ -23436,9 +23455,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/intro/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/intro'
 making clean in doc/books/systems/modal
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/modal'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/modal'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  modal.jar     modal.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/modal/test
@@ -23555,9 +23574,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/synchronous/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/synchronous'
 making clean in doc/books/systems/types
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/types'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/types'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  types.jar     types.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/types/test
@@ -23572,9 +23591,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/types/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/types'
 making clean in doc/books/systems/vergil
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/vergil'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/vergil'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  vergil.jar     vergil.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/vergil/test
@@ -23659,9 +23678,9 @@ make[4]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptI
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp    y14.jar    
 rm -f core
 making clean in doc/papers/y14/attackModeling
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/attackModeling'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 makefile:82: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/attackModeling'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  attackModeling.jar     attackModeling.jar 
 rm -f core
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/attackModeling'
@@ -23670,9 +23689,9 @@ make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptI
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp    constructive.jar    
 rm -f core
 making clean in doc/papers/y14/constructive/models
+make[6]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/constructive/models'
 ../../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 makefile:105: warning: ignoring old commands for target `echo_models'
-make[6]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/constructive/models'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  models.jar     models.jar 
 rm -f core
 making clean in doc/papers/y14/constructive/models/test
@@ -23738,25 +23757,25 @@ make[2]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[1]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel'
 (0)About to remove class files in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel
 (1)About to remove jars in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy
-1706765   48 -rw-rw-r--   1 travis   travis      45352 May 10 16:09 ./domains/openmodelica/openmodelica.jar
-1708289  204 -rw-rw-r--   1 travis   travis     208288 May 10 16:09 ./domains/metroII/demo/demo.jar
-1465769   20 -rw-rw-r--   1 travis   travis      16951 May 10 16:09 ./matlab/matlab.jar
-1465777    4 -rw-rw-r--   1 travis   travis       3200 May 10 16:09 ./matlab/demo/MatlabContinuous/MatlabContinuous.jar
-1465778    8 -rw-rw-r--   1 travis   travis       5765 May 10 16:09 ./matlab/demo/demo.jar
-1465782    4 -rw-rw-r--   1 travis   travis       3212 May 10 16:09 ./matlab/demo/MatlabExpression/MatlabExpression.jar
-1709674  160 -rw-rw-r--   1 travis   travis     160060 May 10 16:09 ./cg/cgAccessor.jar
-1713682  184 -rw-rw-r--   1 travis   travis     187439 May 10 16:09 ./actor/lib/jmf/jmf.jar
-1713688    4 -rw-rw-r--   1 travis   travis       2439 May 10 16:09 ./actor/lib/jmf/demo/JMFJAI/JMFJAI.jar
-1713691    4 -rw-rw-r--   1 travis   travis       3856 May 10 16:09 ./actor/lib/jmf/demo/demo.jar
-1713695    4 -rw-rw-r--   1 travis   travis       2308 May 10 16:09 ./actor/lib/jmf/demo/VideoCapture/VideoCapture.jar
-1718583 1660 -rw-rw-r--   1 travis   travis    1699646 May 10 16:09 ./actor/lib/jjs/modules/demo.jar
-1719015  688 -rwxrwxr-x   1 travis   travis     703395 May 10 16:04 ./actor/lib/excel/jxl.jar
-1719110   76 -rw-rw-r--   1 travis   travis      77121 May 10 16:09 ./actor/lib/jai/jai.jar
-1719140    4 -rw-rw-r--   1 travis   travis       2951 May 10 16:09 ./actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar
-1719146    4 -rw-rw-r--   1 travis   travis       3113 May 10 16:09 ./actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.jar
-1719148  288 -rw-rw-r--   1 travis   travis     291748 May 10 16:09 ./actor/lib/jai/demo/demo.jar
-1719153    4 -rw-rw-r--   1 travis   travis       3430 May 10 16:09 ./actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jar
-1720245    4 -rw-rw-r--   1 travis   travis       1757 May 10 16:09 ./actor/gui/jnlp/ViptosApplication.jar
+1595563   48 -rw-rw-r--   1 travis   travis      45352 May 10 17:16 ./domains/openmodelica/openmodelica.jar
+1597127  204 -rw-rw-r--   1 travis   travis     208288 May 10 17:16 ./domains/metroII/demo/demo.jar
+1470483   20 -rw-rw-r--   1 travis   travis      16951 May 10 17:16 ./matlab/matlab.jar
+1470491    4 -rw-rw-r--   1 travis   travis       3200 May 10 17:16 ./matlab/demo/MatlabContinuous/MatlabContinuous.jar
+1470492    8 -rw-rw-r--   1 travis   travis       5765 May 10 17:16 ./matlab/demo/demo.jar
+1470496    4 -rw-rw-r--   1 travis   travis       3212 May 10 17:16 ./matlab/demo/MatlabExpression/MatlabExpression.jar
+1705291  160 -rw-rw-r--   1 travis   travis     160060 May 10 17:16 ./cg/cgAccessor.jar
+1709299  184 -rw-rw-r--   1 travis   travis     187439 May 10 17:16 ./actor/lib/jmf/jmf.jar
+1709305    4 -rw-rw-r--   1 travis   travis       2439 May 10 17:16 ./actor/lib/jmf/demo/JMFJAI/JMFJAI.jar
+1709308    4 -rw-rw-r--   1 travis   travis       3856 May 10 17:16 ./actor/lib/jmf/demo/demo.jar
+1709312    4 -rw-rw-r--   1 travis   travis       2308 May 10 17:16 ./actor/lib/jmf/demo/VideoCapture/VideoCapture.jar
+1714200 1660 -rw-rw-r--   1 travis   travis    1699646 May 10 17:16 ./actor/lib/jjs/modules/demo.jar
+1714632  688 -rwxrwxr-x   1 travis   travis     703395 May 10 17:11 ./actor/lib/excel/jxl.jar
+1714727   76 -rw-rw-r--   1 travis   travis      77121 May 10 17:16 ./actor/lib/jai/jai.jar
+1714757    4 -rw-rw-r--   1 travis   travis       2951 May 10 17:16 ./actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar
+1714763    4 -rw-rw-r--   1 travis   travis       3113 May 10 17:16 ./actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.jar
+1714765  288 -rw-rw-r--   1 travis   travis     291748 May 10 17:16 ./actor/lib/jai/demo/demo.jar
+1714770    4 -rw-rw-r--   1 travis   travis       3430 May 10 17:16 ./actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jar
+1715862    4 -rw-rw-r--   1 travis   travis       1757 May 10 17:16 ./actor/gui/jnlp/ViptosApplication.jar
 (2)About to remove jars in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy/domains/ptinyos
 (3)About to remove jars in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc
 (4)About to remove files named core /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel
@@ -24301,18 +24320,18 @@ Total time: 0 seconds
 #
 # Creating the /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip directory so that we can create a zip
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip Thu May 10 16:12:44 UTC 2018
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip Thu May 10 17:19:32 UTC 2018
 if [ ! -d /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip ]; then mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip; fi
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip; tar -xf ../ptII11.0.devel.src.tar);
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip/ptII11.0.devel; rm -rf vendors/izpack vendors/j3d vendors/launch4j; pwd; ls -l vendors)
 /home/travis/build/icyphy/ptII/adm/gen-11.0/ptzip/ptII11.0.devel
 total 4
-drwxrwxr-x 4 travis travis 4096 May 10 16:10 misc
+drwxrwxr-x 4 travis travis 4096 May 10 17:17 misc
 #
 # Now creating PTII_FULL_ZIP: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip Thu May 10 16:12:45 UTC 2018
- 16:12:45 up 9 min,  1 user,  load average: 2.38, 1.61, 0.81
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip Thu May 10 17:19:33 UTC 2018
+ 17:19:33 up 9 min,  1 user,  load average: 1.93, 1.51, 0.77
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip; \
 	zip -r -q `/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptcygpath /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip` \
 	ptII11.0.devel \
@@ -24323,7 +24342,7 @@ chgrp ptolemy /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/ge
 chgrp: invalid group: &lsquo;ptolemy&rsquo;
 make: [/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip] Error 1 (ignored)
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
--rw-rw-r-- 1 travis travis 268456187 May 10 16:13 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
+-rw-rw-r-- 1 travis travis 268458334 May 10 17:19 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
 #
 src_jar rule
 #
@@ -24378,15 +24397,15 @@ About to remove unneeded sources from /home/travis/build/icyphy/ptII/adm/gen-11.
 #
 # Now creating PTII_SRC_JAR: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Thu May 10 16:13:22 UTC 2018
- 16:13:22 up 9 min,  1 user,  load average: 2.37, 1.70, 0.87
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Thu May 10 17:20:15 UTC 2018
+ 17:20:15 up 9 min,  1 user,  load average: 2.27, 1.65, 0.85
 rm -rf src_jar/ptII11.0.devel/vendors/izpack* src_jar/ptII11.0.devel/vendors/launch4j*
 (cd src_jar/ptII11.0.devel; "/usr/bin/jar" -cf ../../ptII11.0.devel.src.jar .)
 #
 # Now creating src_jar/capecode: src_jar/capecode0.2.devel
 #
-src_jar/capecode0.2.devel Thu May 10 16:13:46 UTC 2018
- 16:13:46 up 10 min,  1 user,  load average: 2.45, 1.78, 0.92
+src_jar/capecode0.2.devel Thu May 10 17:20:37 UTC 2018
+ 17:20:37 up 10 min,  1 user,  load average: 2.28, 1.69, 0.89
 if [ ! -d src_jar/capecode0.2.devel ]; then \
 		 mkdir -p src_jar/capecode0.2.devel; \
 	fi
@@ -24734,8 +24753,8 @@ cp licenseCapeCode.htm src_jar/capecode0.2.devel/copyright.htm
 #
 # Now creating CAPECODE_SRC_TAR: capecode0.2.devel.tar.gz
 #
-capecode0.2.devel.tar.gz Thu May 10 16:14:07 UTC 2018
- 16:14:07 up 10 min,  1 user,  load average: 2.52, 1.84, 0.96
+capecode0.2.devel.tar.gz Thu May 10 17:20:46 UTC 2018
+ 17:20:46 up 10 min,  1 user,  load average: 2.07, 1.67, 0.89
 # cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../doc/design/capecode.pdf src_jar/capecode0.2.devel/doc/design/capecode.pdf;
 (cd src_jar; \
 		/usr/local/bin/tar -czf ../capecode0.2.devel.tar.gz \
@@ -24754,8 +24773,8 @@ make: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 #
 # Now creating PTII_SRC_JAR: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Thu May 10 16:14:19 UTC 2018
- 16:14:19 up 10 min,  1 user,  load average: 2.37, 1.83, 0.96
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Thu May 10 17:20:58 UTC 2018
+ 17:20:58 up 10 min,  1 user,  load average: 1.98, 1.66, 0.90
 rm -rf src_jar/ptII11.0.devel/vendors/izpack* src_jar/ptII11.0.devel/vendors/launch4j*
 (cd src_jar/ptII11.0.devel; "/usr/bin/jar" -cf ../../ptII11.0.devel.src.jar .)
 make: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
@@ -24773,7 +24792,7 @@ make: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/matlab; jar -xf ../../lib/matlabWindows.jar)
 #
 # cleanSrc: removing files created by configure
-# Thu May 10 16:14:38 UTC 2018
+# Thu May 10 17:21:18 UTC 2018
 if [ -f src/ptII11.0.devel/mk/ptII.mk ]; then \
 		(cd src/ptII11.0.devel/bin; mv CapeCode.app Ptiny.app Vergil.app ..; make clean; mv ../CapeCode.app ../Ptiny.app ../Vergil.app ../Ptiny.app .); \
 	fi
@@ -24825,157 +24844,157 @@ if [ ! -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/
 	fi
 #
 # Now building target setup_jar (PTSETUP).jar: ptII11_0_devel_setup_windows.jar
-# Thu May 10 16:14:42 UTC 2018
+# Thu May 10 17:21:21 UTC 2018
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel
 total 2632
-drwxrwxr-x  4 travis travis   4096 May 10 16:09 ant
-drwxrwxr-x  4 travis travis   4096 May 10 16:10 bin
--rw-rw-r--  1 travis travis  84712 May 10 16:04 build.default.xml
--rw-rw-r--  1 travis travis 104681 May 10 16:04 build.xml.in
--rwxrwxr-x  1 travis travis  36352 May 10 16:10 capecode.exe
--rw-rw-r--  1 travis travis   6085 May 10 16:10 capecode_l4j.xml
--rw-rw-r--  1 travis travis   6487 May 10 16:04 cluster.xml
-drwxrwxr-x  6 travis travis   4096 May 10 16:09 com
-drwxrwxr-x  2 travis travis   4096 May 10 16:10 config
--rw-rw-r--  1 travis travis  89461 May 10 16:10 config.log
--rwxrwxr-x  1 travis travis  88187 May 10 16:10 config.status
--rwxrwxr-x  1 travis travis 630292 May 10 16:10 configure
--rw-rw-r--  1 travis travis 306719 May 10 16:04 configure.in
-drwxrwxr-x  3 travis travis   4096 May 10 16:09 contrib
--rw-rw-r--  1 travis travis 518207 May 10 16:04 copyright.htm
--rw-rw-r--  1 travis travis   1247 May 10 16:04 copyright.txt
-drwxrwxr-x  8 travis travis   4096 May 10 16:04 diva
-drwxrwxr-x 15 travis travis   4096 May 10 16:10 doc
-drwxrwxr-x  3 travis travis   4096 May 10 16:04 edu
--rwxrwxr-x  1 travis travis  31232 May 10 16:10 histogram.exe
--rw-rw-r--  1 travis travis   1446 May 10 16:10 histogram_l4j.xml
--rwxrwxr-x  1 travis travis  32256 May 10 16:10 hyvisual.exe
--rw-rw-r--  1 travis travis   2524 May 10 16:10 hyvisual_l4j.xml
-drwxrwxr-x 12 travis travis   4096 May 10 16:10 jar_dist
--rw-rw-r--  1 travis travis 360944 May 10 16:10 jars.xml
-drwxrwxr-x  7 travis travis   4096 May 10 16:09 lbnl
-drwxrwxr-x  3 travis travis   4096 May 10 16:10 lib
--rw-rw-r--  1 travis travis  10765 May 10 16:04 makefile
-drwxrwxr-x  2 travis travis   4096 May 10 16:09 META-INF
-drwxrwxr-x  2 travis travis   4096 May 10 16:10 mk
-drwxrwxr-x  3 travis travis   4096 May 10 16:04 net
-drwxrwxr-x 21 travis travis   4096 May 10 16:10 node_modules
-drwxrwxr-x  7 travis travis   4096 May 10 16:04 org
--rw-rw-r--  1 travis travis  12897 May 10 16:04 plugin.xml
--rw-rw-r--  1 travis travis  32784 May 10 16:04 pom.xml
--rwxrwxr-x  1 travis travis  31232 May 10 16:10 ptbook.exe
--rw-rw-r--  1 travis travis   1426 May 10 16:10 ptbook_l4j.xml
-drwxrwxr-x 10 travis travis   4096 May 10 16:04 ptdb
--rwxrwxr-x  1 travis travis  33280 May 10 16:10 ptiny.exe
--rw-rw-r--  1 travis travis   4073 May 10 16:10 ptiny_l4j.xml
--rw-rw-r--  1 travis travis    294 May 10 16:04 ptKeystore.properties
-drwxrwxr-x 27 travis travis   4096 May 10 16:10 ptolemy
--rwxrwxr-x  1 travis travis  31232 May 10 16:10 ptplot.exe
--rw-rw-r--  1 travis travis   1434 May 10 16:10 ptplot_l4j.xml
-drwxrwxr-x 11 travis travis   4096 May 10 16:09 ptserver
--rw-rw-r--  1 travis travis    570 May 10 16:04 README.md
-drwxrwxr-x  6 travis travis   4096 May 10 16:04 thales
-drwxrwxr-x  4 travis travis   4096 May 10 16:04 util
-drwxrwxr-x  6 travis travis   4096 May 10 16:10 vendors
--rw-rw-r--  1 travis travis   1179 May 10 16:04 vergilBCVTB.jnlp.in
--rw-rw-r--  1 travis travis   1784 May 10 16:04 vergilCapeCode.jnlp.in
--rw-rw-r--  1 travis travis   1155 May 10 16:04 vergilCyPhySim.jnlp.in
--rw-rw-r--  1 travis travis   1152 May 10 16:04 vergilDSP.jnlp.in
--rwxrwxr-x  1 travis travis  31232 May 10 16:10 vergil.exe
--rw-rw-r--  1 travis travis   1361 May 10 16:04 vergilHyVisual.jnlp.in
--rw-rw-r--  1 travis travis   2161 May 10 16:04 vergil.jnlp.in
--rw-rw-r--  1 travis travis   2687 May 10 16:10 vergil_l4j.jar
--rw-rw-r--  1 travis travis     12 May 10 16:10 vergil_l4j.mf
--rw-rw-r--  1 travis travis   1395 May 10 16:10 vergil_l4j.xml
--rw-rw-r--  1 travis travis   1205 May 10 16:04 vergilPtiny.jnlp.in
--rw-rw-r--  1 travis travis   1242 May 10 16:04 vergilPtinyKepler.jnlp.in
--rw-rw-r--  1 travis travis   1478 May 10 16:04 vergilPtinySandbox.jnlp.in
--rw-rw-r--  1 travis travis   1237 May 10 16:04 vergilSpace.jnlp.in
--rw-rw-r--  1 travis travis   1484 May 10 16:04 vergilVisualSense.jnlp.in
+drwxrwxr-x  4 travis travis   4096 May 10 17:16 ant
+drwxrwxr-x  4 travis travis   4096 May 10 17:17 bin
+-rw-rw-r--  1 travis travis  84712 May 10 17:11 build.default.xml
+-rw-rw-r--  1 travis travis 106074 May 10 17:16 build.xml.in
+-rwxrwxr-x  1 travis travis  36352 May 10 17:17 capecode.exe
+-rw-rw-r--  1 travis travis   6085 May 10 17:17 capecode_l4j.xml
+-rw-rw-r--  1 travis travis   6487 May 10 17:11 cluster.xml
+drwxrwxr-x  6 travis travis   4096 May 10 17:16 com
+drwxrwxr-x  2 travis travis   4096 May 10 17:17 config
+-rw-rw-r--  1 travis travis  89461 May 10 17:17 config.log
+-rwxrwxr-x  1 travis travis  88187 May 10 17:17 config.status
+-rwxrwxr-x  1 travis travis 630292 May 10 17:17 configure
+-rw-rw-r--  1 travis travis 306719 May 10 17:11 configure.in
+drwxrwxr-x  3 travis travis   4096 May 10 17:16 contrib
+-rw-rw-r--  1 travis travis 518207 May 10 17:11 copyright.htm
+-rw-rw-r--  1 travis travis   1247 May 10 17:11 copyright.txt
+drwxrwxr-x  8 travis travis   4096 May 10 17:11 diva
+drwxrwxr-x 15 travis travis   4096 May 10 17:17 doc
+drwxrwxr-x  3 travis travis   4096 May 10 17:11 edu
+-rwxrwxr-x  1 travis travis  31232 May 10 17:17 histogram.exe
+-rw-rw-r--  1 travis travis   1446 May 10 17:17 histogram_l4j.xml
+-rwxrwxr-x  1 travis travis  32256 May 10 17:17 hyvisual.exe
+-rw-rw-r--  1 travis travis   2524 May 10 17:17 hyvisual_l4j.xml
+drwxrwxr-x 12 travis travis   4096 May 10 17:17 jar_dist
+-rw-rw-r--  1 travis travis 360944 May 10 17:17 jars.xml
+drwxrwxr-x  7 travis travis   4096 May 10 17:16 lbnl
+drwxrwxr-x  3 travis travis   4096 May 10 17:17 lib
+-rw-rw-r--  1 travis travis  10765 May 10 17:11 makefile
+drwxrwxr-x  2 travis travis   4096 May 10 17:16 META-INF
+drwxrwxr-x  2 travis travis   4096 May 10 17:17 mk
+drwxrwxr-x  3 travis travis   4096 May 10 17:11 net
+drwxrwxr-x 21 travis travis   4096 May 10 17:17 node_modules
+drwxrwxr-x  7 travis travis   4096 May 10 17:11 org
+-rw-rw-r--  1 travis travis  12897 May 10 17:11 plugin.xml
+-rw-rw-r--  1 travis travis  32784 May 10 17:11 pom.xml
+-rwxrwxr-x  1 travis travis  31232 May 10 17:17 ptbook.exe
+-rw-rw-r--  1 travis travis   1426 May 10 17:17 ptbook_l4j.xml
+drwxrwxr-x 10 travis travis   4096 May 10 17:11 ptdb
+-rwxrwxr-x  1 travis travis  33280 May 10 17:17 ptiny.exe
+-rw-rw-r--  1 travis travis   4073 May 10 17:17 ptiny_l4j.xml
+-rw-rw-r--  1 travis travis    294 May 10 17:11 ptKeystore.properties
+drwxrwxr-x 27 travis travis   4096 May 10 17:17 ptolemy
+-rwxrwxr-x  1 travis travis  31232 May 10 17:17 ptplot.exe
+-rw-rw-r--  1 travis travis   1434 May 10 17:17 ptplot_l4j.xml
+drwxrwxr-x 11 travis travis   4096 May 10 17:16 ptserver
+-rw-rw-r--  1 travis travis    570 May 10 17:11 README.md
+drwxrwxr-x  6 travis travis   4096 May 10 17:11 thales
+drwxrwxr-x  4 travis travis   4096 May 10 17:11 util
+drwxrwxr-x  6 travis travis   4096 May 10 17:17 vendors
+-rw-rw-r--  1 travis travis   1179 May 10 17:11 vergilBCVTB.jnlp.in
+-rw-rw-r--  1 travis travis   1784 May 10 17:11 vergilCapeCode.jnlp.in
+-rw-rw-r--  1 travis travis   1155 May 10 17:11 vergilCyPhySim.jnlp.in
+-rw-rw-r--  1 travis travis   1152 May 10 17:11 vergilDSP.jnlp.in
+-rwxrwxr-x  1 travis travis  31232 May 10 17:17 vergil.exe
+-rw-rw-r--  1 travis travis   1361 May 10 17:11 vergilHyVisual.jnlp.in
+-rw-rw-r--  1 travis travis   2161 May 10 17:11 vergil.jnlp.in
+-rw-rw-r--  1 travis travis   2687 May 10 17:17 vergil_l4j.jar
+-rw-rw-r--  1 travis travis     12 May 10 17:17 vergil_l4j.mf
+-rw-rw-r--  1 travis travis   1395 May 10 17:17 vergil_l4j.xml
+-rw-rw-r--  1 travis travis   1205 May 10 17:11 vergilPtiny.jnlp.in
+-rw-rw-r--  1 travis travis   1242 May 10 17:11 vergilPtinyKepler.jnlp.in
+-rw-rw-r--  1 travis travis   1478 May 10 17:11 vergilPtinySandbox.jnlp.in
+-rw-rw-r--  1 travis travis   1237 May 10 17:11 vergilSpace.jnlp.in
+-rw-rw-r--  1 travis travis   1484 May 10 17:11 vergilVisualSense.jnlp.in
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc
 total 44948
--rw-rw-r--  1 travis travis     7345 May 10 16:04 acks.htm
--rw-rw-r--  1 travis travis     5168 May 10 16:04 authors.htm
--rw-rw-r--  1 travis travis      593 May 10 16:04 banner.htm
--rw-rw-r--  1 travis travis      518 May 10 16:04 body.htm
-drwxrwxr-x  4 travis travis     4096 May 10 16:04 books
--rw-rw-r--  1 travis travis      273 May 10 16:04 buttons.htm
--rw-rw-r--  1 travis travis     7415 May 10 16:04 checkstyle-ptII.xml
+-rw-rw-r--  1 travis travis     7345 May 10 17:11 acks.htm
+-rw-rw-r--  1 travis travis     5168 May 10 17:11 authors.htm
+-rw-rw-r--  1 travis travis      593 May 10 17:11 banner.htm
+-rw-rw-r--  1 travis travis      518 May 10 17:11 body.htm
+drwxrwxr-x  4 travis travis     4096 May 10 17:11 books
+-rw-rw-r--  1 travis travis      273 May 10 17:11 buttons.htm
+-rw-rw-r--  1 travis travis     7415 May 10 17:11 checkstyle-ptII.xml
 drwxrwxr-x 14 travis travis     4096 May 10 16:02 codeDoc
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocBcvtb.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocCapeCode.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocHyVisual.jar
--rw-rw-r--  1 travis travis 34573966 May 10 16:09 codeDoc.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocViptos.jar
--rw-rw-r--  1 travis travis      333 May 10 16:09 codeDocVisualSense.jar
-drwxrwxr-x  4 travis travis     4096 May 10 16:04 coding
--rw-rw-r--  1 travis travis      584 May 10 16:04 contents.css
--rw-rw-r--  1 travis travis      304 May 10 16:04 contentsheader.htm
--rw-rw-r--  1 travis travis    47590 May 10 16:04 copernicus.htm
--rw-rw-r--  1 travis travis      597 May 10 16:04 default.css
--rw-rw-r--  1 travis travis     2660 May 10 16:04 demoLink.js
--rw-rw-r--  1 travis travis    48582 May 10 16:04 deployJavaJNLP.js
--rw-rw-r--  1 travis travis    48722 May 10 16:04 deployJava.js
-drwxrwxr-x  3 travis travis     4096 May 10 16:09 design
--rw-rw-r--  1 travis travis      702 May 10 16:04 docbody.htm
--rw-rw-r--  1 travis travis      295 May 10 16:04 docbuttons.htm
--rw-rw-r--  1 travis travis  7828946 May 10 16:09 docConfig.jar
-drwxrwxr-x  2 travis travis     4096 May 10 16:08 doclets
--rw-rw-r--  1 travis travis      546 May 10 16:04 docs.htm
--rw-rw-r--  1 travis travis      977 May 10 16:04 doctoc.htm
--rw-rw-r--  1 travis travis    30684 May 10 16:04 domainCompatibility.htm
--rw-rw-r--  1 travis travis    64856 May 10 16:04 domains.htm
-drwxrwxr-x  4 travis travis     4096 May 10 16:04 eclipse
--rw-rw-r--  1 travis travis      743 May 10 16:04 expressions.htm
--rw-rw-r--  1 travis travis  2589714 May 10 16:04 expressions.pdf
--rw-rw-r--  1 travis travis      619 May 10 16:04 footer.htm
--rw-rw-r--  1 travis travis     1776 May 10 16:04 help.htm
--rw-rw-r--  1 travis travis    28361 May 10 16:04 hudsonConfig.xml
--rwxrwxr-x  1 travis travis     2297 May 10 16:04 hyVisualHtml.awk
-drwxrwxr-x  2 travis travis     4096 May 10 16:10 img
--rw-rw-r--  1 travis travis      698 May 10 16:04 index.htm
--rw-rw-r--  1 travis travis    32520 May 10 16:04 install.htm
--rw-rw-r--  1 travis travis      827 May 10 16:04 install_index.htm
--rw-rw-r--  1 travis travis     5816 May 10 16:04 installJNLP.htm
--rw-rw-r--  1 travis travis     2256 May 10 16:04 javahtml.awk
-drwxrwxr-x  3 travis travis     4096 May 10 16:04 jsdoc
--rw-rw-r--  1 travis travis      444 May 10 16:04 limitations.htm
--rw-rw-r--  1 travis travis      661 May 10 16:04 mainheader.htm
--rw-rw-r--  1 travis travis    10761 May 10 16:04 main.htm
--rw-rw-r--  1 travis travis    10089 May 10 16:04 mainVergil.htm
--rw-rw-r--  1 travis travis     8895 May 10 16:04 mainVergilPtiny.htm
--rw-rw-r--  1 travis travis     8924 May 10 16:04 mainVergilPtinyKepler.htm
--rw-rw-r--  1 travis travis    53022 May 10 16:10 makefile
--rwxrwxr-x  1 travis travis     3807 May 10 16:04 mkDomains
--rw-rw-r--  1 travis travis   123512 May 10 16:04 oldFeatures.htm
--rw-rw-r--  1 travis travis     1219 May 10 16:04 openInstanceHelp.htm
-drwxrwxr-x  5 travis travis     4096 May 10 16:09 papers
--rw-rw-r--  1 travis travis    36977 May 10 16:04 ptII11.0.release.htm
--rw-rw-r--  1 travis travis      496 May 10 16:04 ptII11.0.releaseHyVisual.htm
--rw-rw-r--  1 travis travis    19221 May 10 16:04 ptII11.0.releaseVergil.htm
--rw-rw-r--  1 travis travis    79863 May 10 16:04 ptIIfaq.htm
--rwxrwxr-x  1 travis travis     2197 May 10 16:04 ptinyBcvtb.awk
--rwxrwxr-x  1 travis travis     2283 May 10 16:04 ptinyKepler.awk
--rw-rw-r--  1 travis travis      354 May 10 16:04 README.txt
--rw-rw-r--  1 travis travis      835 May 10 16:04 release.htm
--rwxrwxr-x  1 travis travis     1197 May 10 16:04 removeasd
--rw-rw-r--  1 travis travis     3333 May 10 16:04 sandbox.htm
--rw-rw-r--  1 travis travis     3253 May 10 16:04 spotbugs-exclude.xml
--rw-rw-r--  1 travis travis      247 May 10 16:04 spotbugs-include.xml
-drwxrwxr-x  3 travis travis     4096 May 10 16:04 test
--rw-rw-r--  1 travis travis      584 May 10 16:04 toc.css
--rw-rw-r--  1 travis travis     5181 May 10 16:04 toc.htm
-drwxrwxr-x  2 travis travis     4096 May 10 16:04 tour
--rw-rw-r--  1 travis travis    17382 May 10 16:04 troubleshooting.htm
--rw-rw-r--  1 travis travis    17593 May 10 16:04 troubleshootingVergil.htm
-drwxrwxr-x  5 travis travis     4096 May 10 16:08 tutorial
--rw-rw-r--  1 travis travis     3981 May 10 16:04 types.htm
-drwxrwxr-x  2 travis travis     4096 May 10 16:04 ui
--rw-rw-r--  1 travis travis    22762 May 10 16:04 webStartHelp.htm
--rw-rw-r--  1 travis travis      832 May 10 16:04 webStartHelp_index.htm
--rw-rw-r--  1 travis travis     2164 May 10 16:04 whatsnew.awk
--rw-rw-r--  1 travis travis    10689 May 10 16:04 whatsnew.htm
--rw-rw-r--  1 travis travis    10671 May 10 16:04 whatsnewVergil.htm
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocBcvtb.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocCapeCode.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocHyVisual.jar
+-rw-rw-r--  1 travis travis 34573966 May 10 17:16 codeDoc.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocViptos.jar
+-rw-rw-r--  1 travis travis      333 May 10 17:16 codeDocVisualSense.jar
+drwxrwxr-x  4 travis travis     4096 May 10 17:11 coding
+-rw-rw-r--  1 travis travis      584 May 10 17:11 contents.css
+-rw-rw-r--  1 travis travis      304 May 10 17:11 contentsheader.htm
+-rw-rw-r--  1 travis travis    47590 May 10 17:11 copernicus.htm
+-rw-rw-r--  1 travis travis      597 May 10 17:11 default.css
+-rw-rw-r--  1 travis travis     2660 May 10 17:11 demoLink.js
+-rw-rw-r--  1 travis travis    48582 May 10 17:11 deployJavaJNLP.js
+-rw-rw-r--  1 travis travis    48722 May 10 17:11 deployJava.js
+drwxrwxr-x  3 travis travis     4096 May 10 17:16 design
+-rw-rw-r--  1 travis travis      702 May 10 17:11 docbody.htm
+-rw-rw-r--  1 travis travis      295 May 10 17:11 docbuttons.htm
+-rw-rw-r--  1 travis travis  7828946 May 10 17:16 docConfig.jar
+drwxrwxr-x  2 travis travis     4096 May 10 17:15 doclets
+-rw-rw-r--  1 travis travis      546 May 10 17:11 docs.htm
+-rw-rw-r--  1 travis travis      977 May 10 17:11 doctoc.htm
+-rw-rw-r--  1 travis travis    30684 May 10 17:11 domainCompatibility.htm
+-rw-rw-r--  1 travis travis    64856 May 10 17:11 domains.htm
+drwxrwxr-x  4 travis travis     4096 May 10 17:11 eclipse
+-rw-rw-r--  1 travis travis      743 May 10 17:11 expressions.htm
+-rw-rw-r--  1 travis travis  2589714 May 10 17:11 expressions.pdf
+-rw-rw-r--  1 travis travis      619 May 10 17:11 footer.htm
+-rw-rw-r--  1 travis travis     1776 May 10 17:11 help.htm
+-rw-rw-r--  1 travis travis    28361 May 10 17:11 hudsonConfig.xml
+-rwxrwxr-x  1 travis travis     2297 May 10 17:11 hyVisualHtml.awk
+drwxrwxr-x  2 travis travis     4096 May 10 17:17 img
+-rw-rw-r--  1 travis travis      698 May 10 17:11 index.htm
+-rw-rw-r--  1 travis travis    32520 May 10 17:11 install.htm
+-rw-rw-r--  1 travis travis      827 May 10 17:11 install_index.htm
+-rw-rw-r--  1 travis travis     5816 May 10 17:11 installJNLP.htm
+-rw-rw-r--  1 travis travis     2256 May 10 17:11 javahtml.awk
+drwxrwxr-x  3 travis travis     4096 May 10 17:11 jsdoc
+-rw-rw-r--  1 travis travis      444 May 10 17:11 limitations.htm
+-rw-rw-r--  1 travis travis      661 May 10 17:11 mainheader.htm
+-rw-rw-r--  1 travis travis    10761 May 10 17:11 main.htm
+-rw-rw-r--  1 travis travis    10089 May 10 17:11 mainVergil.htm
+-rw-rw-r--  1 travis travis     8895 May 10 17:11 mainVergilPtiny.htm
+-rw-rw-r--  1 travis travis     8924 May 10 17:11 mainVergilPtinyKepler.htm
+-rw-rw-r--  1 travis travis    53022 May 10 17:17 makefile
+-rwxrwxr-x  1 travis travis     3807 May 10 17:11 mkDomains
+-rw-rw-r--  1 travis travis   123512 May 10 17:11 oldFeatures.htm
+-rw-rw-r--  1 travis travis     1219 May 10 17:11 openInstanceHelp.htm
+drwxrwxr-x  5 travis travis     4096 May 10 17:16 papers
+-rw-rw-r--  1 travis travis    36977 May 10 17:11 ptII11.0.release.htm
+-rw-rw-r--  1 travis travis      496 May 10 17:11 ptII11.0.releaseHyVisual.htm
+-rw-rw-r--  1 travis travis    19221 May 10 17:11 ptII11.0.releaseVergil.htm
+-rw-rw-r--  1 travis travis    79863 May 10 17:11 ptIIfaq.htm
+-rwxrwxr-x  1 travis travis     2197 May 10 17:11 ptinyBcvtb.awk
+-rwxrwxr-x  1 travis travis     2283 May 10 17:11 ptinyKepler.awk
+-rw-rw-r--  1 travis travis      354 May 10 17:11 README.txt
+-rw-rw-r--  1 travis travis      835 May 10 17:11 release.htm
+-rwxrwxr-x  1 travis travis     1197 May 10 17:11 removeasd
+-rw-rw-r--  1 travis travis     3333 May 10 17:11 sandbox.htm
+-rw-rw-r--  1 travis travis     3253 May 10 17:11 spotbugs-exclude.xml
+-rw-rw-r--  1 travis travis      247 May 10 17:11 spotbugs-include.xml
+drwxrwxr-x  3 travis travis     4096 May 10 17:11 test
+-rw-rw-r--  1 travis travis      584 May 10 17:11 toc.css
+-rw-rw-r--  1 travis travis     5181 May 10 17:11 toc.htm
+drwxrwxr-x  2 travis travis     4096 May 10 17:11 tour
+-rw-rw-r--  1 travis travis    17382 May 10 17:11 troubleshooting.htm
+-rw-rw-r--  1 travis travis    17593 May 10 17:11 troubleshootingVergil.htm
+drwxrwxr-x  5 travis travis     4096 May 10 17:15 tutorial
+-rw-rw-r--  1 travis travis     3981 May 10 17:11 types.htm
+drwxrwxr-x  2 travis travis     4096 May 10 17:11 ui
+-rw-rw-r--  1 travis travis    22762 May 10 17:11 webStartHelp.htm
+-rw-rw-r--  1 travis travis      832 May 10 17:11 webStartHelp_index.htm
+-rw-rw-r--  1 travis travis     2164 May 10 17:11 whatsnew.awk
+-rw-rw-r--  1 travis travis    10689 May 10 17:11 whatsnew.htm
+-rw-rw-r--  1 travis travis    10671 May 10 17:11 whatsnewVergil.htm
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/doc/codeDoc
 total 5856
 -rw-rw-r--  1 travis travis  159887 May 10 16:02 allclasses-frame.html
@@ -25007,7 +25026,7 @@ drwxrwxr-x  8 travis travis    4096 May 10 15:42 ptserver
 drwxrwxr-x  4 travis travis    4096 May 10 15:45 thales
 drwxrwxr-x  3 travis travis    4096 May 10 15:46 util
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil
-lrwxrwxrwx 1 travis travis 8 May 10 16:09 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil -&gt; ptinvoke
+lrwxrwxrwx 1 travis travis 8 May 10 17:16 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/bin/vergil -&gt; ptinvoke
 rm -rf jre; mkdir jre
 (cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
 IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/izpackLogging.txt sh "/home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack/bin/compile" -o ptII11_0_devel_setup_windows.jar ptII11_0_devel_setup_windows.xml
@@ -25028,185 +25047,185 @@ IZPACK_OPTS=-Djava.util.logging.config.file=/home/travis/build/icyphy/ptII/adm/i
 -&gt; Compr. level: -1
 -&gt; IzPack home : /home/travis/build/icyphy/ptII/vendors/izpack
 
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.CompilerConfig &lt;init&gt;
 INFO: Logging initialized at level 'INFO'
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.CompilerConfig addInfoStrings
 INFO: Pack compression method: default
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Setting the installer information
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding content of jar: /home/travis/build/icyphy/ptII/adm/gen-11.0/./izpacksetup.jar
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.CompilerConfig addInfoConditional
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.CompilerConfig addInfoConditional
 INFO: Adding uninstaller
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Setting the installer information
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Setting the console preferences
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Setting the GUI preferences
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding langpack: eng
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:23 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: flag.eng
-May 10, 2018 4:14:43 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: userInputLang.xml
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: CustomLangPack.xml
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: HTMLInfoPanel.info
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: HTMLLicencePanel.licence
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: InfoPanel.info
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: TargetPanel.dir.windows
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: InstallerLarger.image
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: StyleSheet
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: shortcutSpec.xml
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: userInputSpec.xml
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.0
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.1
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.2
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.3
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.4
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.5
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.6
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.7
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: Installer.image.8
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: ProcessPanel.Spec.xml
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding resource: packsLang.xml
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: HelloPanel_0 :: Classname : com.izforge.izpack.panels.hello.HelloPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: HTMLInfoPanel_1 :: Classname : com.izforge.izpack.panels.htmlinfo.HTMLInfoPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: HTMLLicencePanel_2 :: Classname : com.izforge.izpack.panels.htmllicence.HTMLLicencePanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: TargetPanel_3 :: Classname : com.izforge.izpack.panels.target.TargetPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: PacksPanel_4 :: Classname : com.izforge.izpack.panels.packs.PacksPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: SummaryPanel_5 :: Classname : com.izforge.izpack.panels.summary.SummaryPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: InstallPanel_6 :: Classname : com.izforge.izpack.panels.install.InstallPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: ShortcutPanel_7 :: Classname : com.izforge.izpack.panels.shortcut.ShortcutPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: startApplicationPanelCapeCode :: Classname : com.izforge.izpack.panels.userinput.UserInputPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: startApplicationPanelFull :: Classname : com.izforge.izpack.panels.userinput.UserInputPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: startApplicationPanelPtiny :: Classname : com.izforge.izpack.panels.userinput.UserInputPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: ProcessPanel_11 :: Classname : com.izforge.izpack.panels.process.ProcessPanel
-May 10, 2018 4:14:44 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
+May 10, 2018 5:21:24 PM com.izforge.izpack.compiler.listener.CmdlinePackagerListener packagerMsg
 INFO: Adding panel: FinishPanel_12 :: Classname : com.izforge.izpack.panels.finish.FinishPanel
-May 10, 2018 4:14:49 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:29 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: ant/bin/ant
-May 10, 2018 4:14:49 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:29 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: ant/bin/antRun
-May 10, 2018 4:14:49 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:29 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: ant/bin/complete-ant-cmd.pl
-May 10, 2018 4:14:49 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:29 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: ant/bin/runant.py
-May 10, 2018 4:14:49 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:29 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: ant/bin/runant.pl
-May 10, 2018 4:14:49 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:29 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: ant/bin/antRun.pl
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/comm.policy.in
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptweb
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/vergil
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/sandbox.policy
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/capecode
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/IncrementalFMU_wrap.dll
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptcodegen
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/mkpttest
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/makeapp
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/npm
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptinvoke.in
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/comm.policy
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/mkosgi
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/updateFmu
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/node
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/reloadAllAccessors
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ant
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/hyvisual
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/cyphysim
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/homer.bat
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptinvoke
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/mkptdemo
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/viptos
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/mkl4j
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptcygpath
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptweb.bat
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/policy.all
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/libfmipp.dll
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptcodegen.bat
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/ptjunit
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/convertToLazy.bat
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/macContents
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/mkptlivelinkdemo
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/homer
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/startjini
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/mkjnlp
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/capecode.bat
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logMarkFileExecutable
 INFO: Marked target file executable: bin/makefile
-May 10, 2018 4:14:50 PM com.izforge.izpack.compiler.CompilerConfig logAddingPack
+May 10, 2018 5:21:30 PM com.izforge.izpack.compiler.CompilerConfig logAddingPack
 INFO: Adding pack Ptiny containing 3718 files
 -&gt; Fatal error :
    Source file ../dists/ptII11.0.devel/jar_dist/lib/vertx-core-3.5.1.jar (/home/travis/build/icyphy/ptII/adm/gen-11.0/./../dists/ptII11.0.devel/jar_dist/lib/vertx-core-3.5.1.jar) not found
@@ -25221,8 +25240,8 @@ Caused by: java.io.FileNotFoundException: Source file ../dists/ptII11.0.devel/ja
 	... 4 more
 
 (tip : use -? to get the commmand line parameters)
-make: *** [ptII11_0_devel_setup_windows.jar] Error 1
 make: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
+make: *** [ptII11_0_devel_setup_windows.jar] Error 1
 All Done
 nightly-1.5: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11_0_devel_setup_windows.exe
 
@@ -25245,7 +25264,7 @@ nightly-1.5: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen
 ---- Result should have been:
 0 {} 1
 ---- installers-1.5 FAILED
-05/10/18 04:14:50
+05/10/18 05:21:34
 Failed: 1  Total Tests: 4  ((Passed: 3, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/adm/installers/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test

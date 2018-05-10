@@ -26,9 +26,28 @@ ptolemy.domains.de.kernel.DEReceiver cannot be cast to ptolemy.actor.process.Pro
 Caused by: java.lang.ClassCastException: ptolemy.domains.de.kernel.DEReceiver cannot be cast to ptolemy.actor.process.ProcessReceiver
 	at ptolemy.actor.process.BranchController.addBranches(BranchController.java:178)
 	... 12 more
-Warning: '.RemoveNilTokens.Test' The test produced only 11 tokens, yet the correctValues parameter was expecting 13 tokens.
+Warning: '.RemoveNilTokens.Test2' The test produced only 7 tokens, yet the correctValues parameter was expecting 8 tokens.
 Threads:
-Threads: 13
+Threads: 18
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+process reaper                      system               10  true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Timer-0                             main                 5   true   true   
+Thread-536                          main                 5   false  true   
+RemoveNilTokens                     main                 1   false  true   
+Thread-537                          main                 5   false  true   
+.RemoveNilTokens.Test2              main                 1   false  true  *
+.RemoveNilTokens.Test               main                 1   false  true   
+
+Warning: '.RemoveNilTokens.Test' The test produced only 9 tokens, yet the correctValues parameter was expecting 13 tokens.
+Threads:
+Threads: 25
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   

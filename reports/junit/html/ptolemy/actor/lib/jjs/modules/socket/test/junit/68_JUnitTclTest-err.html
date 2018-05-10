@@ -4,7 +4,7 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>May 10, 2018 3:43:16 PM io.vertx.core.impl.ContextImpl
+<pre>May 10, 2018 5:23:16 PM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
@@ -50,7 +50,7 @@ java.lang.IllegalArgumentException: Invalid send data type: long
 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.lang.Thread.run(Thread.java:748)
 
-May 10, 2018 3:43:16 PM io.vertx.core.impl.ContextImpl
+May 10, 2018 5:23:16 PM io.vertx.core.impl.ContextImpl
 SEVERE: Unhandled exception
 java.lang.IllegalArgumentException: Invalid send data type: long
 	at ptolemy.actor.lib.jjs.modules.socket.SocketHelper$SocketWrapper.&lt;init&gt;(SocketHelper.java:566)
@@ -599,105 +599,22 @@ Thread-7                            main                 5   false  true
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4012
-Connection refused
-  in .Message2.Client
-Because:
-Connection refused: localhost/127.0.0.1:4012
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4012
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4012
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4012
-Connection refused
-  in .Message2.Client
-Because:
-Connection refused: localhost/127.0.0.1:4012
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4012
-Connection refused
-  in .Message2.Client
-Because:
-Connection refused: localhost/127.0.0.1:4012
-	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4012
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .Message4.TrainableTest
+  in .Message2.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .Message4.TrainableTest2
+  in .Message2.TrainableTest2
 Because:
 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 
-  in .Message4.DE Director
+  in .Message2.DE Director
 Because:
 Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .Message4.TrainableTest
+  in .Message2.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
@@ -708,7 +625,7 @@ Error: TrainableTest: The input handler of this accessor was never invoked. Usua
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .Message4.TrainableTest
+  in .Message2.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
@@ -727,212 +644,30 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of th
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$9298$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$9296$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$4933$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$4931$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4002
-Connection refused
-  in .Socket2.Client2
-Because:
-Connection refused: localhost/127.0.0.1:4002
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4002
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4002
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4002
-Connection refused
-  in .Socket2.Client2
-Because:
-Connection refused: localhost/127.0.0.1:4002
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4002
-Connection refused
-  in .Socket2.Client2
-Because:
-Connection refused: localhost/127.0.0.1:4002
-	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4002
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
-Value was: "aaa". Should have been: "aa"
-  in .Socket3.Test
-	at ptolemy.actor.lib.Test.fire(Test.java:268)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4011
-Connection refused
-  in .SocketByte.Client
-Because:
-Connection refused: localhost/127.0.0.1:4011
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4011
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4011
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4011
-Connection refused
-  in .SocketByte.Client
-Because:
-Connection refused: localhost/127.0.0.1:4011
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
-	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4011
-Connection refused
-  in .SocketByte.Client
-Because:
-Connection refused: localhost/127.0.0.1:4011
-	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4011
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-[Thread-48] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .SocketImage.TrainableTest
+  in .Message3.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .SocketImage.TrainableTest2
+  in .Message3.TrainableTest2
 Because:
 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 
-  in .SocketImage.DE Director
+  in .Message3.DE Director
 Because:
 Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .SocketImage.TrainableTest
+  in .Message3.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
@@ -943,7 +678,7 @@ Error: TrainableTest: The input handler of this accessor was never invoked. Usua
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .SocketImage.TrainableTest
+  in .Message3.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
@@ -962,24 +697,103 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of th
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$23926$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$23924$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$6950$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$6948$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4090
+Connection refused
+  in .Socket3.Client
+Because:
+Connection refused: localhost/127.0.0.1:4090
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4090
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4090
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4090
+Connection refused
+  in .Socket3.Client
+Because:
+Connection refused: localhost/127.0.0.1:4090
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4090
+Connection refused
+  in .Socket3.Client
+Because:
+Connection refused: localhost/127.0.0.1:4090
+	... 9 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4090
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
 Threads:
-Threads: 16
+Threads: 14
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -993,16 +807,14 @@ vert.x-eventloop-thread-0           main                 1   false  true
 vert.x-eventloop-thread-1           main                 1   false  true   
 vert.x-eventloop-thread-2           main                 1   false  true   
 vert.x-eventloop-thread-3           main                 1   false  true   
-atomic-processor-1                  main                 5   true   true   
-webcam-discovery-service            main                 5   true   true   
-Thread-62                           main                 5   false  true   
-SocketInt                           main                 1   false  true  *
-Thread-63                           main                 5   false  true   
+Thread-33                           main                 5   false  true   
+SocketByte                          main                 1   false  true  *
+Thread-34                           main                 5   false  true   
 
-  in .SocketInt.Test
+  in .SocketByte.Test
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
 Threads:
-Threads: 16
+Threads: 14
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -1016,16 +828,14 @@ vert.x-eventloop-thread-0           main                 1   false  true
 vert.x-eventloop-thread-1           main                 1   false  true   
 vert.x-eventloop-thread-2           main                 1   false  true   
 vert.x-eventloop-thread-3           main                 1   false  true   
-atomic-processor-1                  main                 5   true   true   
-webcam-discovery-service            main                 5   true   true   
-Thread-62                           main                 5   false  true   
-SocketInt                           main                 1   false  true  *
-Thread-63                           main                 5   false  true   
+Thread-33                           main                 5   false  true   
+SocketByte                          main                 1   false  true  *
+Thread-34                           main                 5   false  true   
 
-  in .SocketInt.Test2
+  in .SocketByte.Test2
 ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
 Threads:
-Threads: 16
+Threads: 14
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -1039,19 +849,17 @@ vert.x-eventloop-thread-0           main                 1   false  true
 vert.x-eventloop-thread-1           main                 1   false  true   
 vert.x-eventloop-thread-2           main                 1   false  true   
 vert.x-eventloop-thread-3           main                 1   false  true   
-atomic-processor-1                  main                 5   true   true   
-webcam-discovery-service            main                 5   true   true   
-Thread-62                           main                 5   false  true   
-SocketInt                           main                 1   false  true  *
-Thread-63                           main                 5   false  true   
+Thread-33                           main                 5   false  true   
+SocketByte                          main                 1   false  true  *
+Thread-34                           main                 5   false  true   
 
-  in .SocketInt.Test3
+  in .SocketByte.Test3
 
-  in .SocketInt.DE Director
+  in .SocketByte.DE Director
 Because:
 The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
 Threads:
-Threads: 16
+Threads: 14
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -1065,13 +873,11 @@ vert.x-eventloop-thread-0           main                 1   false  true
 vert.x-eventloop-thread-1           main                 1   false  true   
 vert.x-eventloop-thread-2           main                 1   false  true   
 vert.x-eventloop-thread-3           main                 1   false  true   
-atomic-processor-1                  main                 5   true   true   
-webcam-discovery-service            main                 5   true   true   
-Thread-62                           main                 5   false  true   
-SocketInt                           main                 1   false  true  *
-Thread-63                           main                 5   false  true   
+Thread-33                           main                 5   false  true   
+SocketByte                          main                 1   false  true  *
+Thread-34                           main                 5   false  true   
 
-  in .SocketInt.Test
+  in .SocketByte.Test
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
@@ -1081,7 +887,7 @@ Thread-63                           main                 5   false  true
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
 Threads:
-Threads: 16
+Threads: 14
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -1095,16 +901,21 @@ vert.x-eventloop-thread-0           main                 1   false  true
 vert.x-eventloop-thread-1           main                 1   false  true   
 vert.x-eventloop-thread-2           main                 1   false  true   
 vert.x-eventloop-thread-3           main                 1   false  true   
-atomic-processor-1                  main                 5   true   true   
-webcam-discovery-service            main                 5   true   true   
-Thread-62                           main                 5   false  true   
-SocketInt                           main                 1   false  true  *
-Thread-63                           main                 5   false  true   
+Thread-33                           main                 5   false  true   
+SocketByte                          main                 1   false  true  *
+Thread-34                           main                 5   false  true   
 
-  in .SocketInt.Test
+  in .SocketByte.Test
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
+[Thread-48] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -1236,12 +1047,143 @@ Thread-66                           main                 5   false  true
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
 	at ptolemy.actor.Director.wrapup(Director.java:1722)
 	... 6 more
-ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4093
-Connection refused
-  in .SocketTypicalUsage.Client
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 16
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+atomic-processor-1                  main                 5   true   true   
+webcam-discovery-service            main                 5   true   true   
+Thread-74                           main                 5   false  true   
+SocketUnsignedByte                  main                 1   false  true  *
+Thread-75                           main                 5   false  true   
+
+  in .SocketUnsignedByte.Test
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 16
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+atomic-processor-1                  main                 5   true   true   
+webcam-discovery-service            main                 5   true   true   
+Thread-74                           main                 5   false  true   
+SocketUnsignedByte                  main                 1   false  true  *
+Thread-75                           main                 5   false  true   
+
+  in .SocketUnsignedByte.Test2
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 16
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+atomic-processor-1                  main                 5   true   true   
+webcam-discovery-service            main                 5   true   true   
+Thread-74                           main                 5   false  true   
+SocketUnsignedByte                  main                 1   false  true  *
+Thread-75                           main                 5   false  true   
+
+  in .SocketUnsignedByte.Test3
+
+  in .SocketUnsignedByte.DE Director
 Because:
-Connection refused: localhost/127.0.0.1:4093
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 16
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+atomic-processor-1                  main                 5   true   true   
+webcam-discovery-service            main                 5   true   true   
+Thread-74                           main                 5   false  true   
+SocketUnsignedByte                  main                 1   false  true  *
+Thread-75                           main                 5   false  true   
+
+  in .SocketUnsignedByte.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 16
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+atomic-processor-1                  main                 5   true   true   
+webcam-discovery-service            main                 5   true   true   
+Thread-74                           main                 5   false  true   
+SocketUnsignedByte                  main                 1   false  true  *
+Thread-75                           main                 5   false  true   
+
+  in .SocketUnsignedByte.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:41119
+Connection refused
+  in .TCPSocketSecureServerClient.ClientB
+Because:
+Connection refused: localhost/127.0.0.1:41119
 	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -1251,7 +1193,7 @@ Connection refused: localhost/127.0.0.1:4093
 	at ptolemy.actor.Manager.execute(Manager.java:369)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4093
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:41119
 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
@@ -1265,7 +1207,7 @@ Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connectio
 	at java.lang.Thread.run(Thread.java:748)
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4093
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:41119
 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
@@ -1282,11 +1224,11 @@ Caused by: java.net.ConnectException: Connection refused
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4093
+Connection refused: localhost/127.0.0.1:41119
 Connection refused
-  in .SocketTypicalUsage.Client
+  in .TCPSocketSecureServerClient.ClientB
 Because:
-Connection refused: localhost/127.0.0.1:4093
+Connection refused: localhost/127.0.0.1:41119
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:857)
 	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
@@ -1299,13 +1241,13 @@ Connection refused: localhost/127.0.0.1:4093
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: Failed to connect: 
-Connection refused: localhost/127.0.0.1:4093
+Connection refused: localhost/127.0.0.1:41119
 Connection refused
-  in .SocketTypicalUsage.Client
+  in .TCPSocketSecureServerClient.ClientB
 Because:
-Connection refused: localhost/127.0.0.1:4093
+Connection refused: localhost/127.0.0.1:41119
 	... 9 more
-Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4093
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:41119
 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
@@ -1319,22 +1261,23 @@ Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connectio
 	at java.lang.Thread.run(Thread.java:748)
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
+WARNING: JavaScriptDiscreteClock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.102, 4.102]
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest
+  in .TCPSocketUnsignedShort.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest2
+  in .TCPSocketUnsignedShort.TrainableTest2
 Because:
 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 
-  in .TCPSocketSecureServerClient.DE Director
+  in .TCPSocketUnsignedShort.DE Director
 Because:
 Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest
+  in .TCPSocketUnsignedShort.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
@@ -1345,7 +1288,7 @@ Error: TrainableTest: The input handler of this accessor was never invoked. Usua
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
-  in .TCPSocketSecureServerClient.TrainableTest
+  in .TCPSocketUnsignedShort.TrainableTest
 Because:
 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
@@ -1364,15 +1307,14 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of th
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$41435$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$41433$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$50859$18508$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$50857$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-WARNING: JavaScriptDiscreteClock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [4.1160000000000005, 5.1160000000000005]
 </pre>
 </body>
 </html>

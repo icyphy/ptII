@@ -6,27 +6,77 @@
 <body>
 <pre>java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 423: Locked
-	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
-	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$514$3480A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$512$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$505$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientResponseHandler$2.run(HttpClientHelper.java:343)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 10
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-0                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 5   true   true   
+ContextAware                        main                 1   false  true  *
+Thread-4                            main                 5   false  true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+
+  in .ContextAware.Test
+
+  in .ContextAware.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 10
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-0                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 5   true   true   
+ContextAware                        main                 1   false  true  *
+Thread-4                            main                 5   false  true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+
+  in .ContextAware.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 10
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-0                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 5   true   true   
+ContextAware                        main                 1   false  true  *
+Thread-4                            main                 5   false  true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+
+  in .ContextAware.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
 java.lang.reflect.InvocationTargetException
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
 	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
@@ -42,27 +92,77 @@ java.lang.reflect.InvocationTargetException
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
-Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 423: Locked
-	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
-	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$514$3480A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$512$15770A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:370)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$505$17393AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:407)
-	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)
-	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientResponseHandler$2.run(HttpClientHelper.java:343)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 10
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-0                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 5   true   true   
+ContextAware                        main                 1   false  true  *
+Thread-4                            main                 5   false  true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+
+  in .ContextAware.Test
+
+  in .ContextAware.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 10
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-0                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 5   true   true   
+ContextAware                        main                 1   false  true  *
+Thread-4                            main                 5   false  true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+
+  in .ContextAware.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 10
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-0                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 5   true   true   
+ContextAware                        main                 1   false  true  *
+Thread-4                            main                 5   false  true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+
+  in .ContextAware.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
 </pre>
 </body>
 </html>
