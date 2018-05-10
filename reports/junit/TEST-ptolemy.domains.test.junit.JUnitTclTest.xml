@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="1" hostname="travis-job-5df2978a-89a6-46a8-991a-76289a96ad23" name="ptolemy.domains.test.junit.JUnitTclTest" skipped="0" tests="16" time="21.532" timestamp="2018-05-10T00:28:34">
+<testsuite errors="0" failures="1" hostname="travis-job-d8ef998d-2c65-4607-aaac-89fee256a39b" name="ptolemy.domains.test.junit.JUnitTclTest" skipped="0" tests="16" time="12.394" timestamp="2018-05-10T01:25:11">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="410.7" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="411.7" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.39 41916 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.8 53674 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -51,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.39 41916 10.20.1.40 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.8 53674 10.20.0.90 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -69,12 +69,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2136548611671446216.properties propsfile=/home/travis/build/icyphy/ptII/junit1958599301156342126.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5497768484573719946.properties propsfile=/home/travis/build/icyphy/ptII/junit4068960210162406035.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbea...a35e0c44513d" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbeae51969f1d6ca9a5beb394f1a24e8...a35e0c44513de30172a090eeb5d722d5b8cbec98" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -114,7 +114,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="410" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="411" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -130,7 +130,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="377070374" />
+    <property name="env.TRAVIS_BUILD_ID" value="377083647" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -175,7 +175,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/domains/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="377070381" />
+    <property name="env.TRAVIS_JOB_ID" value="377083654" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -226,7 +226,7 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/test/domains.tcl (RunTclFile)" time="19.637">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/test/domains.tcl (RunTclFile)" time="10.625">
     <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -237,30 +237,30 @@
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml (RunModel)" time="0.041" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml (RunModel)" time="0.251" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml (RunModel)" time="0.042" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest2.xml (RunModel)" time="0.046" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml (RunModel)" time="0.132" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml (RunModel)" time="0.207" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml (RunModel)" time="0.106" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml (RunModel)" time="0.081" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml (RunModel)" time="0.107" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml (RunModel)" time="0.116" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml (RunModel)" time="0.051" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml (RunModel)" time="0.081" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml (RunModel)" time="0.098" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml (RunModel)" time="0.264" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml (RunModel)" time="0.068" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest2.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.007" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml (RunModel)" time="0.137" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml (RunModel)" time="0.214" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml (RunModel)" time="0.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml (RunModel)" time="0.076" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml (RunModel)" time="0.092" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml (RunModel)" time="0.057" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/domains/test/domains.tcl
-testDefs.tcl: setting time out to 9000 seconds at Thu May 10 00:28:34 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Thu May 10 01:25:11 UTC 2018
 domains-2.1 takes about 7 seconds...
-1946 ms. Memory: 116224K Free: 101905K (88%)
-18237 ms. Memory: 142848K Free: 93915K (66%)
-227 ms. Memory: 142848K Free: 76202K (53%)
-16 ms. Memory: 144384K Free: 125349K (87%)
-23 ms. Memory: 144384K Free: 119044K (82%)
-20 ms. Memory: 144384K Free: 113699K (79%)
+1189 ms. Memory: 146944K Free: 120154K (82%)
+9503 ms. Memory: 208384K Free: 164146K (79%)
+185 ms. Memory: 208384K Free: 147072K (71%)
+29 ms. Memory: 208384K Free: 140086K (67%)
+15 ms. Memory: 208384K Free: 134482K (65%)
+9 ms. Memory: 208384K Free: 127526K (61%)
 
 
 ==== $PTII/ptolemy/domains/test/domains.tcl: domains-6.1 
@@ -362,79 +362,79 @@ The test produced only 0 tokens, yet the correctValues parameter was expecting 1
 > 
 @@@@@ Done running diffText
 ---- domains-6.1 FAILED
-05/10/18 12:28:54
+05/10/18 01:25:21
 Failed: 1  Total Tests: 6  ((Passed: 5, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/domains/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml
 Known Failure: java.lang.reflect.InvocationTargetException
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml
-190 ms. Memory: 144384K Free: 88149K (61%)
+206 ms. Memory: 208384K Free: 103061K (49%)
 Known Failure: java.lang.reflect.InvocationTargetException
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml
-23 ms. Memory: 144384K Free: 84285K (58%)
+7 ms. Memory: 208384K Free: 98711K (47%)
 Known Failure: java.lang.reflect.InvocationTargetException
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml
-15 ms. Memory: 144384K Free: 80497K (56%)
+21 ms. Memory: 208384K Free: 94008K (45%)
 Known Failure: java.lang.reflect.InvocationTargetException
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest2.xml
-7 ms. Memory: 144384K Free: 75318K (52%)
+25 ms. Memory: 208384K Free: 89979K (43%)
+463 ms. Memory: 208384K Free: 89365K (43%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/test
-598 ms. Memory: 180736K Free: 150391K (83%)
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu May 10 00:28:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml
+----------------- testing Thu May 10 01:25:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml
-16 ms. Memory: 180736K Free: 124372K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@457fc8ff
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@457fc8ff
+26 ms. Memory: 330240K Free: 284482K (86%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@575b7e49
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@575b7e49
 reloadAllAccessors: .CSPSDFtest1
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml
+----------------- testing Thu May 10 01:25:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml
-130 ms. Memory: 180736K Free: 112047K (62%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3f9f4f99
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3f9f4f99
+144 ms. Memory: 330240K Free: 260384K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4bdb880a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4bdb880a
 reloadAllAccessors: .CSPSRtest1
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml
-32 ms. Memory: 180736K Free: 103009K (57%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44d8eb23
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44d8eb23
+23 ms. Memory: 330240K Free: 244538K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67d7aed7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67d7aed7
 reloadAllAccessors: .CSPSRtest2
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml
-27 ms. Memory: 180736K Free: 95832K (53%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a24fc5c
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a24fc5c
+34 ms. Memory: 330240K Free: 232802K (70%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@18f34d1d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@18f34d1d
 reloadAllAccessors: .PNSRtest1
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml
-40 ms. Memory: 180736K Free: 88813K (49%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53f888ad
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53f888ad
+23 ms. Memory: 330240K Free: 222440K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c5995e2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c5995e2
 reloadAllAccessors: .PNSRtest2
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml
-30 ms. Memory: 180736K Free: 78992K (44%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d155896
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d155896
+32 ms. Memory: 330240K Free: 207298K (63%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5992756b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5992756b
 reloadAllAccessors: .PNSRtest4
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml
-7 ms. Memory: 180736K Free: 74364K (41%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1dc3cc9a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1dc3cc9a
+8 ms. Memory: 330240K Free: 202485K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6219a7a2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6219a7a2
 reloadAllAccessors: .SDFSRtest1
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml
-6 ms. Memory: 180736K Free: 69573K (38%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@34f8d132
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@34f8d132
+8 ms. Memory: 330240K Free: 196968K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4c4f4453
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4c4f4453
 reloadAllAccessors: .SDFSRtest3
------------------ testing Thu May 10 00:28:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml
+----------------- testing Thu May 10 01:25:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml
-13 ms. Memory: 192512K Free: 162699K (85%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52155d74
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52155d74
+6 ms. Memory: 330240K Free: 191452K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4229480d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4229480d
 reloadAllAccessors: .SRSDFtest3
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
@@ -478,7 +478,7 @@ Caused by: ptolemy.actor.NoRoomException: Queue is at capacity of 1. Cannot put 
 	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)
 Warning: '.PNSRtest3.NonStrictTest' The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 22
+Threads: 23
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -499,6 +499,7 @@ Thread-43                           main                 5   false  true
 PNSRtest3                           main                 1   false  true   
 Thread-44                           main                 5   false  true   
 .PNSRtest3.NonStrictTest            main                 1   false  true  *
+.PNSRtest3.AddSubtract              main                 1   false  true   
 .PNSRtest3.Ramp                     main                 1   false  true   
 .PNSRtest3.topologia SR             main                 1   false  true   
 NotifyThread                        main                 1   false  true   
@@ -622,7 +623,7 @@ java.lang.RuntimeException: Execution failed
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 17
+Threads: 18
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -642,6 +643,8 @@ PNSDFtest1                          main                 1   false  true
 Thread-58                           main                 5   false  true   
 SRSDFtest2                          main                 1   false  true  *
 Thread-59                           main                 5   false  true   
+PrintThreads.toThreadDescription(): thread argument == null
+   This can happen if the thread was killed while PrintThreads was called
 
   in .SRSDFtest2.NonStrictTest
 
@@ -649,7 +652,7 @@ Thread-59                           main                 5   false  true
 Because:
 The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 17
+Threads: 18
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -669,6 +672,8 @@ PNSDFtest1                          main                 1   false  true
 Thread-58                           main                 5   false  true   
 SRSDFtest2                          main                 1   false  true  *
 Thread-59                           main                 5   false  true   
+PrintThreads.toThreadDescription(): thread argument == null
+   This can happen if the thread was killed while PrintThreads was called
 
   in .SRSDFtest2.NonStrictTest
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
@@ -679,7 +684,7 @@ Thread-59                           main                 5   false  true
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 17
+Threads: 18
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -699,6 +704,8 @@ PNSDFtest1                          main                 1   false  true
 Thread-58                           main                 5   false  true   
 SRSDFtest2                          main                 1   false  true  *
 Thread-59                           main                 5   false  true   
+PrintThreads.toThreadDescription(): thread argument == null
+   This can happen if the thread was killed while PrintThreads was called
 
   in .SRSDFtest2.NonStrictTest
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:412)
@@ -722,7 +729,7 @@ java.lang.reflect.InvocationTargetException
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 17
+Threads: 18
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -742,6 +749,8 @@ PNSDFtest1                          main                 1   false  true
 Thread-58                           main                 5   false  true   
 SRSDFtest2                          main                 1   false  true  *
 Thread-59                           main                 5   false  true   
+PrintThreads.toThreadDescription(): thread argument == null
+   This can happen if the thread was killed while PrintThreads was called
 
   in .SRSDFtest2.NonStrictTest
 
@@ -749,7 +758,7 @@ Thread-59                           main                 5   false  true
 Because:
 The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 17
+Threads: 18
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -769,6 +778,8 @@ PNSDFtest1                          main                 1   false  true
 Thread-58                           main                 5   false  true   
 SRSDFtest2                          main                 1   false  true  *
 Thread-59                           main                 5   false  true   
+PrintThreads.toThreadDescription(): thread argument == null
+   This can happen if the thread was killed while PrintThreads was called
 
   in .SRSDFtest2.NonStrictTest
 	at ptolemy.actor.Director.wrapup(Director.java:1736)
@@ -779,7 +790,7 @@ Thread-59                           main                 5   false  true
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 Caused by: ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
 Threads:
-Threads: 17
+Threads: 18
 Current Thread (*) _is not_ the Swing Event Dispatch Thread
 Name                                Group                Pri Daemon Alive Curr
 Reference Handler                   system               10  true   true   
@@ -799,6 +810,8 @@ PNSDFtest1                          main                 1   false  true
 Thread-58                           main                 5   false  true   
 SRSDFtest2                          main                 1   false  true  *
 Thread-59                           main                 5   false  true   
+PrintThreads.toThreadDescription(): thread argument == null
+   This can happen if the thread was killed while PrintThreads was called
 
   in .SRSDFtest2.NonStrictTest
 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:412)

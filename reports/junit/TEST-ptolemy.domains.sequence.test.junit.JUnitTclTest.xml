@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-5df2978a-89a6-46a8-991a-76289a96ad23" name="ptolemy.domains.sequence.test.junit.JUnitTclTest" skipped="0" tests="22" time="2.886" timestamp="2018-05-10T00:28:04">
+<testsuite errors="0" failures="0" hostname="travis-job-d8ef998d-2c65-4607-aaac-89fee256a39b" name="ptolemy.domains.sequence.test.junit.JUnitTclTest" skipped="0" tests="22" time="2.436" timestamp="2018-05-10T01:24:46">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="410.7" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="411.7" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.39 41916 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.8 53674 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -51,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.39 41916 10.20.1.40 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.8 53674 10.20.0.90 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -69,12 +69,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.sequence.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.sequence.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8219372274293049567.properties propsfile=/home/travis/build/icyphy/ptII/junit8025891219147441710.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.domains.sequence.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.domains.sequence.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6588217351179062212.properties propsfile=/home/travis/build/icyphy/ptII/junit1063409101813649313.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbea...a35e0c44513d" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbeae51969f1d6ca9a5beb394f1a24e8...a35e0c44513de30172a090eeb5d722d5b8cbec98" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -114,7 +114,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="410" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="411" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -130,7 +130,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="377070374" />
+    <property name="env.TRAVIS_BUILD_ID" value="377083647" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -175,7 +175,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="377070381" />
+    <property name="env.TRAVIS_JOB_ID" value="377083654" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -227,145 +227,145 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestIfElse.xml (RunModel)" time="0.354" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestNoOutputInitialValues.xml (RunModel)" time="0.256" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestPtolemyActors.xml (RunModel)" time="0.206" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestInputOutputDataTypesPtolemyActors.xml (RunModel)" time="0.078" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestPtolemyActors.xml (RunModel)" time="0.1" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqCompositeActorIncludingBreak.xml (RunModel)" time="0.076" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestControlPorts.xml (RunModel)" time="0.109" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.004" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestIfElse.xml (RunModel)" time="0.341" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestNoOutputInitialValues.xml (RunModel)" time="0.333" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestPtolemyActors.xml (RunModel)" time="0.136" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestInputOutputDataTypesPtolemyActors.xml (RunModel)" time="0.115" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestPtolemyActors.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqCompositeActorIncludingBreak.xml (RunModel)" time="0.069" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestControlPorts.xml (RunModel)" time="0.086" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestNoOutputInitialValues.xml (RunModel)" time="0.077" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestSingleMultiPort.xml (RunModel)" time="0.109" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestArrayToken.xml (RunModel)" time="0.048" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestPtolemyActors.xml (RunModel)" time="0.053" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElse.xml (RunModel)" time="0.084" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseMultipleActorsPerBranchTrueFalse.xml (RunModel)" time="0.172" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseNested.xml (RunModel)" time="0.188" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElsewithBreak.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestPtolemyActors.xml (RunModel)" time="0.101" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegrator.xml (RunModel)" time="0.073" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegratorMultipleInstances.xml (RunModel)" time="0.148" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedVariable.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestSingleMultiPort.xml (RunModel)" time="0.069" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestArrayToken.xml (RunModel)" time="0.062" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestPtolemyActors.xml (RunModel)" time="0.058" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElse.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseMultipleActorsPerBranchTrueFalse.xml (RunModel)" time="0.089" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseNested.xml (RunModel)" time="0.13" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElsewithBreak.xml (RunModel)" time="0.035" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestPtolemyActors.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegrator.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegratorMultipleInstances.xml (RunModel)" time="0.09" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedVariable.xml (RunModel)" time="0.029" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu May 10 00:28:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestIfElse.xml
+----------------- testing Thu May 10 01:24:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestIfElse.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestIfElse.xml
-34 ms. Memory: 116224K Free: 86469K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53c3f937
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53c3f937
+45 ms. Memory: 116224K Free: 86468K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5194a274
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5194a274
 reloadAllAccessors: .SeqMoC_ProcessTestIfElse
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestNoOutputInitialValues.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestNoOutputInitialValues.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestNoOutputInitialValues.xml
-100 ms. Memory: 116224K Free: 103453K (89%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@402a8d5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@402a8d5
+155 ms. Memory: 146944K Free: 132630K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@75b11ab2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@75b11ab2
 reloadAllAccessors: .SeqMoC_ProcessTestNoOutputInitialValues
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestPtolemyActors.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestPtolemyActors.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessTestPtolemyActors.xml
-17 ms. Memory: 116224K Free: 91510K (79%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@272d5d67
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@272d5d67
+9 ms. Memory: 146944K Free: 120191K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@119c9580
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@119c9580
 reloadAllAccessors: .SeqMoC_ProcessTestPtolemyActors
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestInputOutputDataTypesPtolemyActors.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestInputOutputDataTypesPtolemyActors.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestInputOutputDataTypesPtolemyActors.xml
-16 ms. Memory: 116224K Free: 82108K (71%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@152a4419
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@152a4419
+18 ms. Memory: 146944K Free: 110271K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d184d5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d184d5
 reloadAllAccessors: .SeqMoC_ProcessUpstreamTestInputOutputDataTypesPtolemyActors
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestPtolemyActors.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestPtolemyActors.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_ProcessUpstreamTestPtolemyActors.xml
-12 ms. Memory: 116224K Free: 104075K (90%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@420c3021
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@420c3021
+6 ms. Memory: 146944K Free: 100982K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59736c0e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59736c0e
 reloadAllAccessors: .SeqMoC_ProcessUpstreamTestPtolemyActors
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqCompositeActorIncludingBreak.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqCompositeActorIncludingBreak.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqCompositeActorIncludingBreak.xml
-10 ms. Memory: 116224K Free: 94136K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@527a4f62
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@527a4f62
+8 ms. Memory: 146944K Free: 90983K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2dfd0c01
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2dfd0c01
 reloadAllAccessors: .SeqMoC_SeqCompositeActorIncludingBreak
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestControlPorts.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestControlPorts.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestControlPorts.xml
-20 ms. Memory: 116224K Free: 87739K (75%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c2b934e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c2b934e
+11 ms. Memory: 146944K Free: 84160K (57%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4eb070e1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4eb070e1
 reloadAllAccessors: .SeqMoC_SeqTestControlPorts
------------------ testing Thu May 10 00:28:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestNoOutputInitialValues.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestNoOutputInitialValues.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestNoOutputInitialValues.xml
-20 ms. Memory: 146944K Free: 142858K (97%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40eabe9b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40eabe9b
+9 ms. Memory: 146944K Free: 139644K (95%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37aa72f1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37aa72f1
 reloadAllAccessors: .SeqMoC_SeqTestNoOutputInitialValues
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestSingleMultiPort.xml
+----------------- testing Thu May 10 01:24:47 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestSingleMultiPort.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqTestSingleMultiPort.xml
-24 ms. Memory: 146944K Free: 134207K (91%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26f11041
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26f11041
+7 ms. Memory: 146944K Free: 130932K (89%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f072d44
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f072d44
 reloadAllAccessors: .SeqMoC_SeqTestSingleMultiPort
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestArrayToken.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestArrayToken.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestArrayToken.xml
-7 ms. Memory: 146944K Free: 129083K (88%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7157b677
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7157b677
+11 ms. Memory: 146944K Free: 125968K (86%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d33c08d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d33c08d
 reloadAllAccessors: .SeqMoC_SeqUpstreamTestArrayToken
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestPtolemyActors.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestPtolemyActors.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoC_SeqUpstreamTestPtolemyActors.xml
-7 ms. Memory: 146944K Free: 119552K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3e5b2d52
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3e5b2d52
+11 ms. Memory: 146944K Free: 116859K (80%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@327c461e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@327c461e
 reloadAllAccessors: .SeqMoC_SeqUpstreamTestPtolemyActors
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElse.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElse.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElse.xml
-16 ms. Memory: 146944K Free: 114023K (78%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb7236
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb7236
+6 ms. Memory: 146944K Free: 111394K (76%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ebaad39
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ebaad39
 reloadAllAccessors: .SeqMoc_SeqTestIfElse
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseMultipleActorsPerBranchTrueFalse.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseMultipleActorsPerBranchTrueFalse.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseMultipleActorsPerBranchTrueFalse.xml
-48 ms. Memory: 146944K Free: 101033K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@45e1403
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@45e1403
+31 ms. Memory: 146944K Free: 97352K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@998efa9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@998efa9
 reloadAllAccessors: .SeqMoc_SeqTestIfElseMultipleActorsPerBranchTrueFalse
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseNested.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseNested.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElseNested.xml
-18 ms. Memory: 146944K Free: 141874K (97%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@503e09d0
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@503e09d0
+20 ms. Memory: 208384K Free: 199737K (96%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41188b35
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41188b35
 reloadAllAccessors: .SeqMoc_SeqTestIfElseNested
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElsewithBreak.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElsewithBreak.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestIfElsewithBreak.xml
-9 ms. Memory: 146944K Free: 135804K (92%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ac40696
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ac40696
+6 ms. Memory: 208384K Free: 192738K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e92b9c1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e92b9c1
 reloadAllAccessors: .SeqMoc_SeqTestIfElsewithBreak
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestPtolemyActors.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestPtolemyActors.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SeqMoc_SeqTestPtolemyActors.xml
-18 ms. Memory: 146944K Free: 124899K (85%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4940dc5d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4940dc5d
+11 ms. Memory: 208384K Free: 181599K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a3ec643
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a3ec643
 reloadAllAccessors: .SeqMoc_SeqTestPtolemyActors
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegrator.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegrator.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegrator.xml
-26 ms. Memory: 146944K Free: 118618K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ac15fe5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ac15fe5
+16 ms. Memory: 208384K Free: 174808K (84%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22b699c9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22b699c9
 reloadAllAccessors: .SequencedIntegrator
------------------ testing Thu May 10 00:28:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegratorMultipleInstances.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegratorMultipleInstances.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedIntegratorMultipleInstances.xml
-51 ms. Memory: 146944K Free: 101766K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cd5194a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cd5194a
+34 ms. Memory: 208384K Free: 158026K (76%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b5733b7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b5733b7
 reloadAllAccessors: .SequencedIntegratorMultipleInstances
------------------ testing Thu May 10 00:28:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedVariable.xml
+----------------- testing Thu May 10 01:24:48 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedVariable.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/test/auto/SequencedVariable.xml
-3 ms. Memory: 146944K Free: 98259K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55164449
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55164449
+7 ms. Memory: 208384K Free: 153693K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6796f68a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6796f68a
 reloadAllAccessors: .SequencedVariable
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

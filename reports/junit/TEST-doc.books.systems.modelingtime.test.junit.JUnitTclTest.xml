@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-5df2978a-89a6-46a8-991a-76289a96ad23" name="doc.books.systems.modelingtime.test.junit.JUnitTclTest" skipped="0" tests="23" time="9.088" timestamp="2018-05-10T00:14:25">
+<testsuite errors="0" failures="0" hostname="travis-job-d8ef998d-2c65-4607-aaac-89fee256a39b" name="doc.books.systems.modelingtime.test.junit.JUnitTclTest" skipped="0" tests="23" time="6.557" timestamp="2018-05-10T01:13:13">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="410.7" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="411.7" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.39 41916 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.8 53674 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -51,7 +51,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.39 41916 10.20.1.40 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.8 53674 10.20.0.90 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -69,12 +69,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.modelingtime.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.modelingtime.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4535225117165247863.properties propsfile=/home/travis/build/icyphy/ptII/junit3581474317820084216.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.modelingtime.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.modelingtime.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4207257317740752247.properties propsfile=/home/travis/build/icyphy/ptII/junit1510143675565371889.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbea...a35e0c44513d" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbeae51969f1d6ca9a5beb394f1a24e8...a35e0c44513de30172a090eeb5d722d5b8cbec98" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -114,7 +114,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="410" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="411" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -130,7 +130,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="377070374" />
+    <property name="env.TRAVIS_BUILD_ID" value="377083647" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -175,7 +175,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="377070381" />
+    <property name="env.TRAVIS_JOB_ID" value="377083654" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -227,157 +227,157 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml (RunModel)" time="1.296" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml (RunModel)" time="0.967" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml (RunModel)" time="0.319" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml (RunModel)" time="0.131" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml (RunModel)" time="0.192" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml (RunModel)" time="1.493" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml (RunModel)" time="0.288" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml (RunModel)" time="0.39" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml (RunModel)" time="0.433" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml (RunModel)" time="0.401" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml (RunModel)" time="0.289" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml (RunModel)" time="0.356" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml (RunModel)" time="0.364" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml (RunModel)" time="0.888" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml (RunModel)" time="0.088" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml (RunModel)" time="0.134" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml (RunModel)" time="0.114" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml (RunModel)" time="0.129" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml (RunModel)" time="0.089" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml (RunModel)" time="0.176" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.007" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml (RunModel)" time="0.99" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml (RunModel)" time="0.635" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml (RunModel)" time="0.285" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml (RunModel)" time="0.117" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml (RunModel)" time="1.247" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml (RunModel)" time="0.212" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml (RunModel)" time="0.247" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml (RunModel)" time="0.309" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml (RunModel)" time="0.246" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml (RunModel)" time="0.194" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml (RunModel)" time="0.234" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml (RunModel)" time="0.236" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml (RunModel)" time="0.563" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml (RunModel)" time="0.076" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml (RunModel)" time="0.091" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml (RunModel)" time="0.091" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml (RunModel)" time="0.144" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu May 10 00:14:26 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
+----------------- testing Thu May 10 01:13:14 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelay1.xml
-732 ms. Memory: 116224K Free: 80793K (70%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@73bc732a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@73bc732a
+565 ms. Memory: 146944K Free: 111054K (76%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@df16080
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@df16080
 reloadAllAccessors: .CommunicationDelay1
------------------ testing Thu May 10 00:14:27 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
+----------------- testing Thu May 10 01:13:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayActors.xml
-722 ms. Memory: 146944K Free: 121688K (83%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d03e512
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d03e512
+450 ms. Memory: 146944K Free: 126115K (86%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40cded5b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40cded5b
 reloadAllAccessors: .CommunicationDelayActors
------------------ testing Thu May 10 00:14:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
+----------------- testing Thu May 10 01:13:15 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/CommunicationDelayQM.xml
-214 ms. Memory: 146944K Free: 91908K (63%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1359d9c9
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1359d9c9
+130 ms. Memory: 146944K Free: 96714K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@773bb17c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@773bb17c
 reloadAllAccessors: .CommunicationDelayQM
------------------ testing Thu May 10 00:14:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
+----------------- testing Thu May 10 01:13:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/DEModelOfPtidesSimple.xml
-35 ms. Memory: 146944K Free: 142760K (97%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4301e172
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4301e172
+7 ms. Memory: 146944K Free: 85794K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@88d786d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@88d786d
 reloadAllAccessors: .DEModelOfPtidesSimple
------------------ testing Thu May 10 00:14:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
+----------------- testing Thu May 10 01:13:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ExecutionTime.xml
-70 ms. Memory: 146944K Free: 125774K (86%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@249ebcc3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@249ebcc3
+52 ms. Memory: 208384K Free: 197387K (95%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@618e6f3e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@618e6f3e
 reloadAllAccessors: .ExecutionTime
------------------ testing Thu May 10 00:14:28 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
+----------------- testing Thu May 10 01:13:16 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/GeneratorResourceScheduler.xml
 WARNING: The execution aspects in this model can influence the timing of actors by delaying the 
 execution, potentially changing the behavior. There is no guarantee that actors fire at the 
 time they request to be fired. 
 Use Ptides for deterministic DE behavior that is not influenced by execution aspects. 
 
-860 ms. Memory: 208384K Free: 114511K (55%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@303b3b2d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@303b3b2d
+657 ms. Memory: 208384K Free: 187266K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3425afa8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3425afa8
 reloadAllAccessors: .GeneratorExecutionAspect
------------------ testing Thu May 10 00:14:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
+----------------- testing Thu May 10 01:13:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/HeartBeatDetector.xml
-113 ms. Memory: 208896K Free: 201910K (97%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@71ea6aed
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@71ea6aed
+67 ms. Memory: 208384K Free: 150120K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@563fc4ff
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@563fc4ff
 reloadAllAccessors: .HeartBeatDetector
------------------ testing Thu May 10 00:14:30 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
+----------------- testing Thu May 10 01:13:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel.xml
-211 ms. Memory: 208896K Free: 168026K (80%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d65965e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d65965e
+101 ms. Memory: 208384K Free: 116516K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@594bf17d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@594bf17d
 reloadAllAccessors: .LineFaultModel
------------------ testing Thu May 10 00:14:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
+----------------- testing Thu May 10 01:13:17 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithBetterCQM.xml
-236 ms. Memory: 208896K Free: 115979K (56%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@47d13967
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@47d13967
+139 ms. Memory: 332288K Free: 310889K (94%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72ba0e9e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72ba0e9e
 reloadAllAccessors: .LineFaultModelWithBetterCompositeCommunicationAspect
------------------ testing Thu May 10 00:14:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
+----------------- testing Thu May 10 01:13:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithCQM.xml
-219 ms. Memory: 331776K Free: 309512K (93%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@eddd9a3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@eddd9a3
+126 ms. Memory: 332288K Free: 259830K (78%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e76c62a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e76c62a
 reloadAllAccessors: .LineFaultModelWithCompositeCommunicationAspect
------------------ testing Thu May 10 00:14:31 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
+----------------- testing Thu May 10 01:13:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithDelays.xml
-162 ms. Memory: 331776K Free: 270992K (82%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11f5996a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11f5996a
+98 ms. Memory: 332288K Free: 220475K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2fef34eb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2fef34eb
 reloadAllAccessors: .LineFaultModelWithDelays
------------------ testing Thu May 10 00:14:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
+----------------- testing Thu May 10 01:13:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithQM.xml
-173 ms. Memory: 331776K Free: 222983K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4113c995
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4113c995
+110 ms. Memory: 332288K Free: 172550K (52%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@78ba85cf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@78ba85cf
 reloadAllAccessors: .LineFaultModelWithQM
------------------ testing Thu May 10 00:14:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
+----------------- testing Thu May 10 01:13:18 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModelWithTwoQMs.xml
-190 ms. Memory: 331776K Free: 167611K (51%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3344c02
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3344c02
+111 ms. Memory: 332288K Free: 115959K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6f22a689
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6f22a689
 reloadAllAccessors: .LineFaultModelWithTwoQMs
------------------ testing Thu May 10 00:14:32 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
+----------------- testing Thu May 10 01:13:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LineFaultModel_noClockSync.xml
-706 ms. Memory: 331776K Free: 293938K (89%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@545bba0d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@545bba0d
+424 ms. Memory: 332288K Free: 239296K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66513bcf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66513bcf
 reloadAllAccessors: .LineFaultModel_noClockSync
------------------ testing Thu May 10 00:14:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
+----------------- testing Thu May 10 01:13:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/LocalSource.xml
-37 ms. Memory: 331776K Free: 282840K (85%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c12bd49
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c12bd49
+9 ms. Memory: 332288K Free: 229039K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3fdd30b8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3fdd30b8
 reloadAllAccessors: .LocalSource
------------------ testing Thu May 10 00:14:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
+----------------- testing Thu May 10 01:13:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema.xml
-28 ms. Memory: 331776K Free: 256718K (77%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c8db61e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c8db61e
+19 ms. Memory: 332288K Free: 202824K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@34f3b730
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@34f3b730
 reloadAllAccessors: .PtidesSchema
------------------ testing Thu May 10 00:14:33 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
+----------------- testing Thu May 10 01:13:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/PtidesSchema_Exception.xml
-24 ms. Memory: 331776K Free: 229620K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3978a9cd
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3978a9cd
+22 ms. Memory: 332288K Free: 174537K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4545760f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4545760f
 reloadAllAccessors: .PtidesSchema_Exception
------------------ testing Thu May 10 00:14:34 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
+----------------- testing Thu May 10 01:13:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/ResourceScheduler.xml
-26 ms. Memory: 331776K Free: 203523K (61%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@487a1c2f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@487a1c2f
+22 ms. Memory: 332288K Free: 148306K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1580efd
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1580efd
 reloadAllAccessors: .ResourceScheduler
------------------ testing Thu May 10 00:14:34 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
+----------------- testing Thu May 10 01:13:19 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/SimplePtides.xml
-20 ms. Memory: 331776K Free: 186310K (56%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ba5c45d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ba5c45d
+13 ms. Memory: 332288K Free: 130283K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@504fd1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@504fd1
 reloadAllAccessors: .SimplePtides
------------------ testing Thu May 10 00:14:34 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
+----------------- testing Thu May 10 01:13:20 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/modelingtime/test/auto/TimePlot.xml
-88 ms. Memory: 331776K Free: 156493K (47%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@462d8ae
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@462d8ae
+86 ms. Memory: 332288K Free: 100349K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2eddb275
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2eddb275
 reloadAllAccessors: .TimePlot
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
