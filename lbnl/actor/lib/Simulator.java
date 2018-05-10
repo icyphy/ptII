@@ -872,7 +872,10 @@ public class Simulator extends SDFTransformer {
 
             // Server can be null if we are exporting to JNLP.
             if (server != null) {
-                server.write(1, tokTim.getDoubleValue(), dblWri);
+                // tokTim can be null if we are exporting to JNLP.
+                if (tokTim != null) {
+                    server.write(1, tokTim.getDoubleValue(), dblWri);
+                }
                 // Close the server.
                 server.close();
             }
