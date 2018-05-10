@@ -44,6 +44,8 @@ include $(CONFIG)
 
 JSRCS = \
 	ExportModelJUnitTest.java \
+	ExportModelJUnitTestBatch.java \
+	ExportModelJUnitTestBatch1.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
