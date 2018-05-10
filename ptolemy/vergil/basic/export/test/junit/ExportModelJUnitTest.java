@@ -331,8 +331,7 @@ public class ExportModelJUnitTest {
                           // If hlacerti models are hanging, see
                           // AutoTests.delayIfNecessary() and consider
                           // increasing the amount of delay time
-
-                          // "org/hlacerti",
+                          //"org/hlacerti",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
