@@ -311,13 +311,18 @@
     <exclude name="**/ptserver/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
-  <!-- Tests of the core, fourth batch. -->
+  <!-- Tests of the core, fifth batch. -->
   <patternset id="test.core5.includes">
     <include name="**/ptolemy/configs/**/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core5.excludes">
     <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
+  </patternset>
+
+  <!-- Tests of the export demos, first batch. -->
+  <patternset id="test.export1.includes">
+    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch1.java" />
   </patternset>
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
@@ -1613,7 +1618,7 @@ For example:
   </target>
 
   <target name="test.core5.xml" depends="initReports"
-	  description="Run the fourth batch of core tests with xml output.">
+	  description="Run the fifth batch of core tests with xml output.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
@@ -1645,6 +1650,38 @@ For example:
 	  <patternset refid="test.core4.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.export1.xml" depends="initReports"
+	  description="Run the first batch of export demo tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.export1.xml ==
+      This target runs the first batch of export demo tests
+      and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.export1.includes" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}"/>
