@@ -1818,7 +1818,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/vergil/basic/export/html/jsoup/jsoup.jar")) {
-            auxiliaryClassMap.put("jsoup.jar needs lib/jsoup-1.7.3.jar",
+            auxiliaryClassMap.put("jsoup.jar needs lib/jsoup-1.8.2.jar",
                     "lib/jsoup-1.7.3.jar");
         }
 
