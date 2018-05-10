@@ -2452,12 +2452,8 @@ For example:
       <formatter type="${junit.single.formatter}" usefile="${usefile}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <batchtest todir="${junit.output.dir}">
-	<fileset defaultexcludes="yes"
-		 dir="${basedir}">
-	  <include name="${test.name}" />
-        </fileset>
-      </batchtest>
+      <test todir="${junit.output.dir}"
+	    name="${test.name}" />
     </junit>
   </target>
 
