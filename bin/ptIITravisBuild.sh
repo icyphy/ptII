@@ -283,6 +283,9 @@ updateGhPages () {
         return 
     fi
 
+    # See https://git-scm.com/docs/git-pull
+    export GIT_MERGE_AUTOEDIT=no
+    
     df -k .
     TMP=/tmp/ptIITravisBuild_gh_pages.$$
     if [ ! -d $TMP ]; then
@@ -307,10 +310,11 @@ updateGhPages () {
         git rm -rf reports/junit/*.xml
         # Don't change 'Travis Build gh-branch' because people filter email on that string.
         git commit -m "Travis Build gh-branch: Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
-        GIT_TRACE=true git pull -v
+        # --no-edit will avoid a commit edit if there is a merge commit
+        GIT_TRACE=true git pull -v --no-edit
         git push origin gh-pages
         git push -f origin gh-pages
-        GIT_TRACE=true git pull -v
+        GIT_TRACE=true git pull -v --no-edit
     else
         echo "$destination" | grep '.*/$'
         status=$?
@@ -359,7 +363,7 @@ updateGhPages () {
     # Commit and Push the Changes.
     # Don't change 'Travis Build gh-branch' because people filter email on that string.
     git commit -m "Travis Build gh-branch: Latest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
-    GIT_TRACE=true git pull -v
+    GIT_TRACE=true git pull -v --no-edit
     git push origin gh-pages
     git push -f origin gh-pages
 
