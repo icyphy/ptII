@@ -141,6 +141,7 @@
     <include name="ptolemy/domains/algebraic/demo.jar" />
     <include name="ptolemy/domains/atc/atc.jar" />
     <include name="ptolemy/domains/atc/demo/demo.jar" />
+    <include name="ptolemy/domains/atc/kernel/kernel.jar" />
     <include name="ptolemy/domains/ca/ca.jar" />
     <include name="ptolemy/domains/ca/demo/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />
@@ -2451,6 +2452,16 @@
 	<include name="ptolemy/domains/atc/kernel/*.class"/>
 	<include name="ptolemy/domains/atc/kernel/policy*/*.class"/>
 	<include name="ptolemy/domains/atc/lib/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/atc/atc.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/atc/kernel/kernel.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/atc/kernel/*.class"/>
+	<include name="ptolemy/domains/atc/kernel/policy*/*.class"/>
       </fileset>
     </jar>
 
