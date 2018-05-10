@@ -86,6 +86,6 @@ public class ExportModelJUnitTestBatch1 extends ExportModelJUnitTestBatch {
 
 
     public Object[] demos() throws IOException {
-        return super.demos(1, 200);
+        return super.demos(1, 175);
     }
 }
