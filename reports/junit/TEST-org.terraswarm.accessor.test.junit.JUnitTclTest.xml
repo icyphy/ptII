@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="2" hostname="travis-job-be4c4ace-6f25-4ce9-8646-dca3b218d7ff" name="org.terraswarm.accessor.test.junit.JUnitTclTest" skipped="0" tests="29" time="320.392" timestamp="2018-05-09T23:48:39">
+<testsuite errors="1" failures="2" hostname="travis-job-3e6b891d-5463-48c4-9535-2710647a8a03" name="org.terraswarm.accessor.test.junit.JUnitTclTest" skipped="0" tests="29" time="282.555" timestamp="2018-05-10T00:50:27">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="410.5" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="411.5" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.39 55666 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.25 55626 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.39 55666 10.20.0.250 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.25 55626 10.20.0.123 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6944196091577227798.properties propsfile=/home/travis/build/icyphy/ptII/junit8234455063758694619.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5664905079484179767.properties propsfile=/home/travis/build/icyphy/ptII/junit6375772049648210315.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbea...a35e0c44513d" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbeae51969f1d6ca9a5beb394f1a24e8...a35e0c44513de30172a090eeb5d722d5b8cbec98" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="410" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="411" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,7 +131,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="377070374" />
+    <property name="env.TRAVIS_BUILD_ID" value="377083647" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -176,7 +176,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="377070379" />
+    <property name="env.TRAVIS_JOB_ID" value="377083652" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -226,7 +226,7 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)" time="20.203">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl (RunTclFile)" time="15.654">
     <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -237,7 +237,7 @@
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)" time="159.729">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl (RunTclFile)" time="149.348">
     <failure message="Number of failed tests is has increased. expected:&lt;1&gt; but was:&lt;2&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;1&gt; but was:&lt;2&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -248,24 +248,24 @@
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.008" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.006" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.007" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)" time="2.222" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)" time="2.027" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)" time="4.483" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)" time="2.427" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)" time="24.421" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)" time="2.281" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)" time="2.154" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)" time="1.847" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)" time="2.321" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)" time="2.698" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)" time="1.79" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)" time="2.077" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)" time="2.447" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)" time="2.859" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)" time="2.844" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)" time="2.022">
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml (RunModel)" time="1.213" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml (RunModel)" time="1.819" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml (RunModel)" time="3.493" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml (RunModel)" time="1.606" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml (RunModel)" time="22.923" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml (RunModel)" time="1.186" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml (RunModel)" time="1.861" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml (RunModel)" time="1.757" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml (RunModel)" time="1.537" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml (RunModel)" time="1.672" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml (RunModel)" time="1.592" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml (RunModel)" time="1.724" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml (RunModel)" time="1.861" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml (RunModel)" time="2.394" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml (RunModel)" time="2.388" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)" time="1.751">
     <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
 	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
 	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:161)
@@ -283,17 +283,17 @@ Value was: 42. Should have been: 43
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 </error>
   </testcase>
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)" time="2.488" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)" time="12.893" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)" time="23.638" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)" time="2.231" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)" time="4.363" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)" time="14.899" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)" time="3.868" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)" time="11.087" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)" time="3.876" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml (RunModel)" time="1.638" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)" time="8.545" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml (RunModel)" time="22.684" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)" time="1.487" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml (RunModel)" time="3.474" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml (RunModel)" time="13.432" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml (RunModel)" time="2.748" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml (RunModel)" time="9.186" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml (RunModel)" time="3.438" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/JSAccessor.tcl
-testDefs.tcl: setting time out to 9000 seconds at Wed May 09 23:48:39 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Thu May 10 00:50:27 UTC 2018
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
 
 
@@ -498,17 +498,17 @@ JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not
 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/WebSocketClientTest.tcl
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:9981/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClientJS,1,main])
-8673 ms. Memory: 699904K Free: 355832K (51%)
+6291 ms. Memory: 708608K Free: 440503K (62%)
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:9981/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
-7440 ms. Memory: 878592K Free: 529958K (60%)
+5565 ms. Memory: 890368K Free: 627400K (70%)
 reloadAllAccessors: .WebSocketClientJS
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
 WebSocketClient: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:9981/nConnection refused (Thread[vert.x-eventloop-thread-0,1,main])
 WebSocketClient: Connection closed because model is no longer running. (Thread[main,5,main])
-6666 ms. Memory: 1081344K Free: 663596K (61%)
+4847 ms. Memory: 1049600K Free: 596530K (57%)
 WebSocketClient: Connection closed because model is no longer running. (Thread[WebSocketClient2JS,1,main])
-125770 ms. Memory: 1231360K Free: 267807K (22%)
+124045 ms. Memory: 1062912K Free: 804478K (76%)
 
 
 ==== $PTII/org/terraswarm/accessor/test/WebSocketClientTest.tcl: WebSocketClientTest-3.1 Run WebSocketClientJS.xml and then WebSocketClient2JS.xml with reloading of the accessor
@@ -576,8 +576,8 @@ Caused by: <function>:393:16 Error: TrainableTest: The input handler of this acc
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7310$18508$\^function\_.L:1#wrapup(<function>:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7308$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7317$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7315$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -609,8 +609,8 @@ Caused by: <function>:393:16 Error: TrainableTest: The input handler of this acc
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7310$18508$\^function\_.L:1#wrapup(<function>:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7308$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7317$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7315$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -636,8 +636,8 @@ Caused by: <function>:393:16 Error: TrainableTest: The input handler of this acc
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7310$18508$\^function\_.L:1#wrapup(<function>:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7308$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7317$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7315$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -665,49 +665,49 @@ Error: TrainableTest: The input handler of this accessor was never invoked. Usua
     ("uplevel" body line 11)
     invoked from within
 "uplevel $contents_of_test"
-05/09/18 11:51:39
+05/10/18 12:53:12
 Failed: 2  Total Tests: 14  ((Passed: 12, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Wed May 09 23:51:39 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+----------------- testing Thu May 10 00:53:12 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
-925 ms. Memory: 1239040K Free: 795902K (64%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7544cdd5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7544cdd5
+572 ms. Memory: 1062912K Free: 452951K (43%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5498f18d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5498f18d
 reloadAllAccessors: .AccessViolation
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:51:41 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
------------------ testing Wed May 09 23:51:41 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:13 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation.xml
+----------------- testing Thu May 10 00:53:13 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
-980 ms. Memory: 1239040K Free: 387969K (31%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6869408b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6869408b
+1110 ms. Memory: 1276416K Free: 1153733K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1927a3d5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1927a3d5
 reloadAllAccessors: .AccessViolation2
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:51:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
------------------ testing Wed May 09 23:51:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:15 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/AccessViolation2.xml
+----------------- testing Thu May 10 00:53:15 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
-1938 ms. Memory: 1443840K Free: 925908K (64%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@36c8f3dc
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@36c8f3dc
+1659 ms. Memory: 1276416K Free: 416333K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2077d30a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2077d30a
 reloadAllAccessors: .Accessor1
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:51:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
------------------ testing Wed May 09 23:51:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:18 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor1.xml
+----------------- testing Thu May 10 00:53:18 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
-1241 ms. Memory: 1443840K Free: 436160K (30%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c01951a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c01951a
+811 ms. Memory: 1287680K Free: 795209K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7e3254d5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7e3254d5
 reloadAllAccessors: .Accessor2
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:51:50 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
------------------ testing Wed May 09 23:51:50 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:20 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Accessor2.xml
+----------------- testing Thu May 10 00:53:20 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
-22161 ms. Memory: 1452032K Free: 761845K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a3e0e48
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a3e0e48
+21632 ms. Memory: 1455616K Free: 1116248K (77%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6472c951
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6472c951
 reloadAllAccessors: .CallbackWithSuppress
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:14 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
------------------ testing Wed May 09 23:52:14 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/CallbackWithSuppress.xml
+----------------- testing Thu May 10 00:53:43 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
 DerivedA: base set up (Thread[Thread-31,5,main])
 DerivedA: derived set up (Thread[Thread-31,5,main])
@@ -726,17 +726,17 @@ DerivedA: derived set up (Thread[Derived,1,main])
 DerivedA: base init (Thread[Derived,1,main])
 DerivedA: derived init (Thread[Derived,1,main])
 DerivedA: derived wrapped up (Thread[Derived,1,main])
-1032 ms. Memory: 1452032K Free: 274483K (19%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13dc3788
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13dc3788
+599 ms. Memory: 1455616K Free: 620114K (43%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1bad327c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1bad327c
 reloadAllAccessors: .Derived
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedA.js
 DerivedA: base set up (Thread[Thread-31,5,main])
 DerivedA: derived set up (Thread[Thread-31,5,main])
 DerivedA: base set up (Thread[Thread-31,5,main])
 DerivedA: derived set up (Thread[Thread-31,5,main])
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:17 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
------------------ testing Wed May 09 23:52:17 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived.xml
+----------------- testing Thu May 10 00:53:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
 DerivedB2: printing non-prototype properties (Thread[Derived2,1,main])
 DerivedB2: ssuper: [object Object] (Thread[Derived2,1,main])
@@ -765,159 +765,156 @@ DerivedB2: inputHandler: function () {
     this.send('output', false);
 } (Thread[Derived2,1,main])
 DerivedB2: sending false (Thread[Derived2,1,main])
-1134 ms. Memory: 1671680K Free: 1099792K (66%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@300578f6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@300578f6
+840 ms. Memory: 1455616K Free: 215271K (15%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e7a05db
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e7a05db
 reloadAllAccessors: .Derived2
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedB.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:19 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
------------------ testing Wed May 09 23:52:19 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived2.xml
+----------------- testing Thu May 10 00:53:46 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
-929 ms. Memory: 1671680K Free: 693689K (41%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cc7d0d2
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cc7d0d2
+861 ms. Memory: 1480704K Free: 1072270K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@47b710c7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@47b710c7
 reloadAllAccessors: .Derived3
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedC.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
------------------ testing Wed May 09 23:52:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived3.xml
+----------------- testing Thu May 10 00:53:48 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
-1143 ms. Memory: 1671680K Free: 281001K (17%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3032e9b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3032e9b
+742 ms. Memory: 1480704K Free: 658589K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55c3e568
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55c3e568
 reloadAllAccessors: .Derived4
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedD.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:23 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
------------------ testing Wed May 09 23:52:23 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:49 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived4.xml
+----------------- testing Thu May 10 00:53:49 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
-1049 ms. Memory: 1719296K Free: 1388223K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c909a3a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c909a3a
+978 ms. Memory: 1680384K Free: 1459298K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@542f4451
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@542f4451
 reloadAllAccessors: .Derived5
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedE.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:26 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
------------------ testing Wed May 09 23:52:26 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:51 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived5.xml
+----------------- testing Thu May 10 00:53:51 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
-885 ms. Memory: 1719296K Free: 972419K (57%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b788bd6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b788bd6
+863 ms. Memory: 1680384K Free: 1042239K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1061ac21
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1061ac21
 reloadAllAccessors: .Derived6
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedF.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:28 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
------------------ testing Wed May 09 23:52:28 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:52 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived6.xml
+----------------- testing Thu May 10 00:53:52 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
-1070 ms. Memory: 1719296K Free: 560235K (33%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4015e929
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4015e929
+914 ms. Memory: 1680384K Free: 626664K (37%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d224a5a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d224a5a
 reloadAllAccessors: .Derived8
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedH.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:30 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
------------------ testing Wed May 09 23:52:30 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived8.xml
+----------------- testing Thu May 10 00:53:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
-1443 ms. Memory: 1874944K Free: 1510831K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15cac684
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15cac684
+1038 ms. Memory: 1687552K Free: 1394719K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5311f431
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5311f431
 reloadAllAccessors: .Derived9
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedI.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:32 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
------------------ testing Wed May 09 23:52:32 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:56 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Derived9.xml
+----------------- testing Thu May 10 00:53:56 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
-1971 ms. Memory: 1874944K Free: 1090704K (58%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@50dbf8a3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@50dbf8a3
+1752 ms. Memory: 1687552K Free: 976495K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d7455d3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d7455d3
 reloadAllAccessors: .DerivedAgain
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainA.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
------------------ testing Wed May 09 23:52:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:53:58 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain.xml
+----------------- testing Thu May 10 00:53:58 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
-2002 ms. Memory: 1874944K Free: 676631K (36%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@18837dc5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@18837dc5
+1707 ms. Memory: 1687552K Free: 560632K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17873849
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17873849
 reloadAllAccessors: .DerivedAgain2
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainB.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:38 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
------------------ testing Wed May 09 23:52:38 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:01 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain2.xml
+----------------- testing Thu May 10 00:54:01 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml
-1010 ms. Memory: 1874944K Free: 257848K (14%)
------------------ testing Wed May 09 23:52:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+1207 ms. Memory: 1908224K Free: 1809867K (95%)
+----------------- testing Thu May 10 00:54:03 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
-1225 ms. Memory: 1861632K Free: 1217541K (65%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fda018b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fda018b
+868 ms. Memory: 1908224K Free: 1432153K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37c6375f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37c6375f
 reloadAllAccessors: .DerivedAgain5
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainE.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:42 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
------------------ testing Wed May 09 23:52:42 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:04 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain5.xml
+----------------- testing Thu May 10 00:54:04 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
 REST: Making an HTTP request. (Thread[GetDate,1,main])
-7519 ms. Memory: 1915904K Free: 887848K (46%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32de0b1e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32de0b1e
+5107 ms. Memory: 1893888K Free: 745681K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7212aa25
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7212aa25
 reloadAllAccessors: .GetDate
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:52:55 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
------------------ testing Wed May 09 23:52:55 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:13 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml
+----------------- testing Thu May 10 00:54:13 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
-21757 ms. Memory: 1880576K Free: 1203708K (64%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23f27f19
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23f27f19
+21144 ms. Memory: 1886720K Free: 1123815K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b492470
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b492470
 reloadAllAccessors: .HandlerWithSuppress
 Accessors in test/auto do not typically have documentation, so we are not running jsdoc on file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.js
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:53:19 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
------------------ testing Wed May 09 23:53:19 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HandlerWithSuppress.xml
+----------------- testing Thu May 10 00:54:35 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
-1277 ms. Memory: 1880576K Free: 728173K (39%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@31429c1b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@31429c1b
+933 ms. Memory: 1886720K Free: 645294K (34%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3957675d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3957675d
 reloadAllAccessors: .HttpRequest
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:53:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
------------------ testing Wed May 09 23:53:21 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:37 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml
+----------------- testing Thu May 10 00:54:37 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/JSON.xml
 JavaScript: { data: 1 } (Thread[JSON,1,main])
 JavaScript3: 1 (Thread[JSON,1,main])
-3024 ms. Memory: 1910272K Free: 1361185K (71%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16fa8188
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16fa8188
+2858 ms. Memory: 1923072K Free: 1566910K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d3dfb8c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d3dfb8c
 reloadAllAccessors: .JSON
------------------ testing Wed May 09 23:53:25 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+----------------- testing Thu May 10 00:54:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
-12488 ms. Memory: 1910272K Free: 395175K (21%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@68d1f2a6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@68d1f2a6
+11790 ms. Memory: 1923072K Free: 605855K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@8bf8efa
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@8bf8efa
 reloadAllAccessors: .ReadURL
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:53:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
------------------ testing Wed May 09 23:53:40 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/ReadURL.xml
+----------------- testing Thu May 10 00:54:54 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
-1686 ms. Memory: 1899008K Free: 1193580K (63%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16db096d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16db096d
+1358 ms. Memory: 1952768K Free: 1159235K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ccc3d10
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ccc3d10
 reloadAllAccessors: .SendNullToOwnInput
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:53:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
------------------ testing Wed May 09 23:53:44 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:54:57 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/SendNullToOwnInput.xml
+----------------- testing Thu May 10 00:54:57 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
 TextDisplayHelper: 0
 TextDisplayHelper: 1
 TextDisplayHelper: 2
 TextDisplayHelper: 3
-7942 ms. Memory: 1949696K Free: 1095505K (56%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ac4058f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ac4058f
+6968 ms. Memory: 1902592K Free: 959708K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7dc4a564
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7dc4a564
 reloadAllAccessors: .Stop
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:53:55 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
------------------ testing Wed May 09 23:53:55 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:55:06 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop.xml
+----------------- testing Thu May 10 00:55:06 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
-2909 ms. Memory: 1949696K Free: 544571K (28%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@97c5b79
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@97c5b79
+2728 ms. Memory: 1902592K Free: 403644K (21%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb4e3b8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb4e3b8
 reloadAllAccessors: .Stop2
--------------- Reloaded accessors, but skipping rerun for now. Wed May 09 23:53:59 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
+-------------- Reloaded accessors, but skipping rerun for now. Thu May 10 00:55:09 UTC 2018 /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/Stop2.xml
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 ]]></system-out>
-  <system-err><![CDATA[WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.20900000000000002]
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+  <system-err><![CDATA[WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.264, 0.266]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.163]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.14]
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -959,8 +956,8 @@ Caused by: <function>:393:16 Error: TrainableTest: The input handler of this acc
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7310$18508$\^function\_.L:1#wrapup(<function>:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$7308$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7317$18508$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$7315$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
