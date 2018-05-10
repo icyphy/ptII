@@ -402,7 +402,7 @@ public class NonStrictTest extends Sink {
                         + " tokens, yet the correctValues parameter was "
                         + "expecting "
                         + ((ArrayToken) correctValues.getToken()).length()
-                        + " tokens.");
+                        + " tokens.";
                 if (((BooleanToken) requireAllCorrectValues.getToken())
                         .booleanValue()) {
                     _initialized = false;
