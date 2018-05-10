@@ -390,7 +390,7 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/vertx-codegen-3.5.1.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/vertx-core-3.5.1.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/vertx-core-3.5.2-SNAPSHOT.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/vertx-hazelcast-3.5.1.jar"
                   targetdir="$INSTALL_PATH/lib"/>
