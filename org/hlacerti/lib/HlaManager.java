@@ -1146,8 +1146,11 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Resign HLA/CERTI Federation execution.
         try {
-            _rtia.resignFederationExecution(
-                    ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
+            // _rtia can be null if we are exporting to JNLP.
+            if (_rtia != null) {
+                _rtia.resignFederationExecution(
+                        ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
+            }
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
                     "RTIexception: " + e.getMessage());
