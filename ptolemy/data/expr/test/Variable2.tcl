@@ -69,7 +69,8 @@ test Variable2-13.0 {Test setting structured type} {
     $v setToken $doubleArrayToken
 
     list [[$v getType] toString] [[$v getToken] toString]
-} {arrayType(double) {{2.2, 3.3}}}
+} {arrayType(double) {{2.2, 3.3}}} {Marten found a problem where variables could change type over the course of an execution (yikes!) as a side effect of repeatedly carried out type inference (after initialization). It was a model from John and Patricia that exhibited.  Edward and Marten discussed a solution, but it has not yet been implemented}
+
 
 ######################################################################
 ####
@@ -93,4 +94,4 @@ test Variable2-13.2 {Test setting structured type} {
     $v setToken $intArrayToken
 
     list [[$v getType] toString] [[$v getToken] toString]
-} {arrayType(int) {{0, 1}}}
+} {arrayType(int) {{0, 1}}} {Marten found a problem where variables could change type over the course of an execution (yikes!) as a side effect of repeatedly carried out type inference (after initialization). It was a model from John and Patricia that exhibited.  Edward and Marten discussed a solution, but it has not yet been implemented}
