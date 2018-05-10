@@ -197,7 +197,10 @@ public class OscSender extends TypedAtomicActor {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        oscP5.stop();
+        // oscP5 can be null if we are exporting to JNLP.
+        if (oscP5 != null) {
+            oscP5.stop();
+        }
     }
 
     OscP5 oscP5;
