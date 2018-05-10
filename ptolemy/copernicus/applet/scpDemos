@@ -27,6 +27,6 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     (cd $modelPath; tar -cf - *.jar *.jnlp *JNLP.htm $model) | ssh moog "cd ~www/ptweb/ptolemyII/ptII10.0/ptII10.0.devel/$targetPath; tar -xpf -"
+     (cd $modelPath; tar -cf - *.jar *.jnlp *JNLP.htm $model) | ssh ptolemy@calweb-basic-prod-01.ist.berkeley.edu "cd ~/apache2/ptweb/ptolemyII/ptII11.0/ptII11.0.devel/$targetPath; tar -xpf -"
 
 done

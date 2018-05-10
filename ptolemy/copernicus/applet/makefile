@@ -188,15 +188,16 @@ jnlpSimpleDemo:
 # Used to update demos with jnlp files, see ./updateDemos
 jnlpUpdateDemo:
 	@echo "generate a jnlp for '$(MODELPATH)'"
-	JAVAFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=yes $(PTII)/bin/copernicus \
+	JAVAFLAGS="-Dptolemy.ptII.isRunningNightlyBuild=yes -Dptolemy.ptII.ptKeystore=/home/cxh/ptKeystore.properties" $(PTII)/bin/copernicus \
 		-verbose \
 		-codeGenerator   "applet" \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-run 		 "false" \
 		-targetPath	 "$(TARGETPATH)" \
-		-ptIILocalURL	 "file:///Users/cxh/ptII/" \
+		-ptIILocalURL	 "https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11.0.devel/" \
 		$(MODELPATH)
-	#-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/" \
+	#		-ptIILocalURL	 "file:///home/cxh/src/ptII11.0.devel/" \
+
 	#javaws -wait $(PTII)/$(TARGETPATH)/$(MODEL).jnlp
 	#$(ROOT)/bin/vergil $(PTII)/$(TARGETPATH)/$(MODEL).htm#in_browser
 
