@@ -283,10 +283,14 @@ function ClientRequest(options, responseCallback) {
         if (query !== null && query[query.length -1] === '/') {
         	query = query.substring(0, query.length - 1);
         }
-        
+        // url.getPath() may add a trailing /. Remove.
+        var path = url.getPath();
+        if (path !== null && path.length > 0 && path[path.length - 1] === '/') {
+            path = path.substring(0, path.length - 1);
+        }
         options.url = {
             'host': url.getHost(),
-            'path': url.getPath(),
+            'path': path,
             'port': port,
             'protocol': url.getProtocol(),
             'query': query
@@ -333,7 +337,8 @@ exports.ClientRequest = ClientRequest;
 /** Issue the request. */
 ClientRequest.prototype.end = function () {
 	console.log("Making an HTTP request.");
-	//console.log("Making an HTTP request to " + util.inspect(this.options.url));
+	// console.log("Making an HTTP request to " + util.inspect(this.options));
+	
     this.helper.request(this, this.options);
 };
 
