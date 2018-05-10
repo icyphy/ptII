@@ -307,10 +307,10 @@ updateGhPages () {
         git rm -rf reports/junit/*.xml
         # Don't change 'Travis Build gh-branch' because people filter email on that string.
         git commit -m "Travis Build gh-branch: Removed reports/junit/*.xml so that subsequent tests populate an empty directory." -a
-        git pull
+        git pull -v
         git push origin gh-pages
         git push -f origin gh-pages
-        git pull
+        git pull -v
     else
         echo "$destination" | grep '.*/$'
         status=$?
@@ -359,7 +359,7 @@ updateGhPages () {
     # Commit and Push the Changes.
     # Don't change 'Travis Build gh-branch' because people filter email on that string.
     git commit -m "Travis Build gh-branch: Latest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
-    git pull
+    git pull -v
     git push origin gh-pages
     git push -f origin gh-pages
 
