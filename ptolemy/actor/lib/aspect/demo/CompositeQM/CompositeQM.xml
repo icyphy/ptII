@@ -16,9 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0123410744986039">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.2822265625, 131.0486489623708}">
-    </property>
-    <property name="qm" class="ptolemy.data.expr.Parameter" value="C">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.2822265625, 131.04864896237075}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -189,8 +187,6 @@
             </property>
         </entity>
         <entity name="channel" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
             </property>
             <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
