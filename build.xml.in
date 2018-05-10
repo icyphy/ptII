@@ -412,6 +412,7 @@
   <!-- Exclude longest running tests. -->
   <patternset id="test.longest.excludes">
     <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+    <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch*" />
   </patternset>
 
   <!-- JavaScript files. -->
