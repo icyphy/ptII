@@ -373,6 +373,7 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/domains/algebraic/algebraic.jar \
 	ptolemy/domains/algebraic/demo/demo.jar \
 	ptolemy/domains/atc/atc.jar \
+	ptolemy/domains/atc/kernel/kernel.jar \
 	ptolemy/domains/fmima/fmima.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/qss/qss.jar \
