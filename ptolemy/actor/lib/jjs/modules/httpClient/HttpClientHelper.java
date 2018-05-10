@@ -38,7 +38,6 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpVersion;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.core.net.ProxyType;
 
@@ -619,7 +618,7 @@ public class HttpClientHelper extends VertxHelperBase {
         public void run() {
             Map<String, Object> urlSpec = (Map<String, Object>) _options
                     .get("url");
-
+            
             HttpClient client = null;
             boolean useProxy = false;
 
@@ -690,7 +689,9 @@ public class HttpClientHelper extends VertxHelperBase {
 
             // NOTE: We use the timeout parameter both for connect and response.
             // Should these be different numbers?
-            request.setTimeout((Integer) _options.get("timeout"));
+            // FIXME: On some machines, like the Travis test machine, this timeout
+            // does not work. We now implement the timeout in the accessor.
+            // request.setTimeout((Integer) _options.get("timeout"));
             request.exceptionHandler(new HttpClientExceptionHandler(_requestObj,
                     client, _requestNumber));
 
@@ -799,7 +800,7 @@ public class HttpClientHelper extends VertxHelperBase {
             // Allow overlapped requests. Sequence numbers take care of ensuring outputs
             // come out in order.
             // _setBusy(true);
-
+            
             // FIXME: The following doesn't allow further writes to the request.
             request.end();
         }
