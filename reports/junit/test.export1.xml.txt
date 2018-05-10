@@ -1,0 +1,344 @@
+/home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant build test.export1.xml
+Buildfile: /home/travis/build/icyphy/ptII/build.xml
+
+build-message:
+     [echo] Use ant -p to see other targets. JAVA_HOME=/usr/lib/jvm/java-8-oracle
+     [echo] tools.jar is necessary for compilation of doc/doclets/.
+     [echo] If compilation fails, try setting JAVA_HOME to the location of the JDK.
+     [echo] For example:
+     [echo]   [bldmastr@sisyphus ptII]$ which java
+     [echo]   /usr/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+     [echo]     
+
+-build-subprojects-empty:
+
+-check-maven-ant-task:
+
+build-websensor:
+
+build-subprojects:
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+     [echo] The node binary was not found or does not work or npmjs.org was not reachable, so the network is probably down, so there is no point in trying npm.
+
+-check-jsdoc:
+
+jsdoc-install:
+
+jsdoc-update:
+
+-ptdoc-no-node:
+
+-ptdoc-no-npm:
+
+ptdoc:
+     [echo] 
+     [echo]       If the ptdoc target fails, then try running:
+     [echo]           ant build-project build-bin
+     [echo]     
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+     [echo] The node binary was not found or does not work or npmjs.org was not reachable, so the network is probably down, so there is no point in trying npm.
+
+-check-jsdoc:
+     [echo] To stop CapeCode from invoking jsdoc and svn, set the PT_NO_NET environment variable.  
+     [echo]     Under BASH:
+     [echo]         export PT_NO_NET=true
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]     
+
+jsdoc-install:
+
+jsdoc-update:
+
+-ptdoc-no-node-message:
+
+-ptdoc-no-npm-message:
+
+-check-jsdoc-again:
+
+-jsdoc-command-message:
+     [echo] The jsdoc command at /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/../node_modules/@terraswarm/jsdoc/jsdoc.js does not exist, so we won't run ptdoc.
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]   
+
+ptdoc:
+
+build-project:
+     [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
+    [javac] Compiling 4710 source files to /home/travis/build/icyphy/ptII
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.NbBundleProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.URLStreamHandlerRegistrationProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.ServiceProviderProcessor' less than -source '1.8'
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:118: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+    [javac]                               ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]             ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]                              ^
+    [javac] Note: Some input files use or override a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 9 warnings
+
+-check-ptII-mk-file:
+
+-check-bin-vergil:
+
+-check-make-bin-vergil:
+
+build-bin-not:
+
+build-not-bin-vergil:
+     [echo] 
+     [echo] 	$PTII/bin/vergil does not exist, perhaps (cd $PTII/bin; make) has not been run?
+     [echo] 	This can happen if the make binary cannot be found in the path or if $PTII/mk/ptII.mk
+     [echo] 	is not present.
+     [echo] 	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
+     [echo] 	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
+     [echo] 	However, $PTII/bin does include other scripts that may be of use.
+     [echo]       
+
+build-bin:
+     [exec] for file in .momllib-util .nc2moml-util .ncapp2moml-util capecode convertToLazy copernicus decompile emachine giottoc histogram homer jode mescal moml obfuscate ptcg ptcodegen ptexecute ptjacl ptjaclapp ptplot ptstartjini ptolemy ptweb pxgraph soot tinicomm tinic tiniconverter startjini.gui vergil; do \
+     [exec] 		echo "$file"; \
+     [exec] 		rm -f "$file"; \
+     [exec] 		ln -s ptinvoke "$file"; \
+     [exec] 		chmod a+x "$file"; \
+     [exec] 	done
+     [exec] .momllib-util
+     [exec] .nc2moml-util
+     [exec] .ncapp2moml-util
+     [exec] capecode
+     [exec] convertToLazy
+     [exec] copernicus
+     [exec] decompile
+     [exec] emachine
+     [exec] giottoc
+     [exec] histogram
+     [exec] homer
+     [exec] jode
+     [exec] mescal
+     [exec] moml
+     [exec] obfuscate
+     [exec] ptcg
+     [exec] ptcodegen
+     [exec] ptexecute
+     [exec] ptjacl
+     [exec] ptjaclapp
+     [exec] ptplot
+     [exec] ptstartjini
+     [exec] ptolemy
+     [exec] ptweb
+     [exec] pxgraph
+     [exec] soot
+     [exec] tinicomm
+     [exec] tinic
+     [exec] tiniconverter
+     [exec] startjini.gui
+     [exec] vergil
+     [exec] rm -f makebat
+     [exec] ln -s ptinvoke makebat
+     [exec] rm -f ".momllib-util.bat"
+     [exec] ./makebat -q "`basename .momllib-util.bat .bat`"
+     [exec] rm -f ".nc2moml-util.bat"
+     [exec] ./makebat -q "`basename .nc2moml-util.bat .bat`"
+     [exec] rm -f ".ncapp2moml-util.bat"
+     [exec] ./makebat -q "`basename .ncapp2moml-util.bat .bat`"
+     [exec] rm -f "capecode.bat"
+     [exec] ./makebat -q "`basename capecode.bat .bat`"
+     [exec] rm -f "convertToLazy.bat"
+     [exec] ./makebat -q "`basename convertToLazy.bat .bat`"
+     [exec] rm -f "copernicus.bat"
+     [exec] ./makebat -q "`basename copernicus.bat .bat`"
+     [exec] rm -f "decompile.bat"
+     [exec] ./makebat -q "`basename decompile.bat .bat`"
+     [exec] rm -f "emachine.bat"
+     [exec] ./makebat -q "`basename emachine.bat .bat`"
+     [exec] rm -f "giottoc.bat"
+     [exec] ./makebat -q "`basename giottoc.bat .bat`"
+     [exec] rm -f "histogram.bat"
+     [exec] ./makebat -q "`basename histogram.bat .bat`"
+     [exec] rm -f "homer.bat"
+     [exec] ./makebat -q "`basename homer.bat .bat`"
+     [exec] rm -f "jode.bat"
+     [exec] ./makebat -q "`basename jode.bat .bat`"
+     [exec] rm -f "mescal.bat"
+     [exec] ./makebat -q "`basename mescal.bat .bat`"
+     [exec] LD_LIBRARY_PATH = /home/travis/build/icyphy/ptII/mescal/lib:/home/travis/build/icyphy/ptII/mescal/bin:/usr/local/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:
+     [exec] rm -f "moml.bat"
+     [exec] ./makebat -q "`basename moml.bat .bat`"
+     [exec] rm -f "obfuscate.bat"
+     [exec] ./makebat -q "`basename obfuscate.bat .bat`"
+     [exec] rm -f "ptcg.bat"
+     [exec] ./makebat -q "`basename ptcg.bat .bat`"
+     [exec] rm -f "ptcodegen.bat"
+     [exec] ./makebat -q "`basename ptcodegen.bat .bat`"
+     [exec] rm -f "ptexecute.bat"
+     [exec] ./makebat -q "`basename ptexecute.bat .bat`"
+     [exec] rm -f "ptjacl.bat"
+     [exec] ./makebat -q "`basename ptjacl.bat .bat`"
+     [exec] rm -f "ptjaclapp.bat"
+     [exec] ./makebat -q "`basename ptjaclapp.bat .bat`"
+     [exec] rm -f "ptplot.bat"
+     [exec] ./makebat -q "`basename ptplot.bat .bat`"
+     [exec] rm -f "ptstartjini.bat"
+     [exec] ./makebat -q "`basename ptstartjini.bat .bat`"
+     [exec] rm -f "ptolemy.bat"
+     [exec] ./makebat -q "`basename ptolemy.bat .bat`"
+     [exec] rm -f "ptweb.bat"
+     [exec] ./makebat -q "`basename ptweb.bat .bat`"
+     [exec] rm -f "pxgraph.bat"
+     [exec] ./makebat -q "`basename pxgraph.bat .bat`"
+     [exec] rm -f "soot.bat"
+     [exec] ./makebat -q "`basename soot.bat .bat`"
+     [exec] rm -f "tinicomm.bat"
+     [exec] ./makebat -q "`basename tinicomm.bat .bat`"
+     [exec] rm -f "tinic.bat"
+     [exec] ./makebat -q "`basename tinic.bat .bat`"
+     [exec] rm -f "tiniconverter.bat"
+     [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
+     [exec] rm -f "startjini.gui.bat"
+     [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
+     [exec] rm -f "vergil.bat"
+     [exec] ./makebat -q "`basename vergil.bat .bat`"
+     [exec] rm -f makeapp
+     [exec] ln -s ptinvoke makeapp
+     [exec] chmod a+x ptinvoke makeapp
+     [exec] ./makeapp CapeCode.app CAPECODE -capecode
+     [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
+     [exec] Cloning into 'universalJavaApplicationStub'...
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] ./makeapp: Could not find MacJVMTar in /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz, downloading it now: Thu May 10 03:17:48 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 10 03:17:48 UTC 2018
+     [exec] tar: This does not look like a tar archive
+     [exec] 
+     [exec] gzip: stdin: unexpected end of file
+     [exec] tar: Child returned status 1
+     [exec] tar: Error is not recoverable: exiting now
+     [exec] make: *** [CapeCode.app] Error 2
+     [exec] Result: 2
+
+build:
+
+initReports:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/doccheck
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/ojdcheck
+
+test.export1.xml:
+     [echo] 
+     [echo]       ==test.export1.xml ==
+     [echo]       This target runs the first batch of export demo tests
+     [echo]       and generates JUnit xml output.
+     [echo]       timeout = 4000000 milliseconds
+     [echo]     
+    [junit] javachdir: directory = ptolemy/vergil/basic/export/test
+    [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test  Invoking with -Djava.net.preferIPv4Stack=true
+    [junit] ExportModeJUnitTestBatch: There are 754 demos. Exporting demos: 1 to 200.
+    [junit] Running ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch1
+    [junit] ####### 1 Thu May 10 03:17:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground lbnl/demo/MatlabRoom/MatlabRoom.xml $PTII/lbnl/demo/MatlabRoom/MatlabRoom
+    [junit] Warning: not running lbnl/demo/MatlabRoom/MatlabRoom.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/lbnl/demo/MatlabRoom/MatlabRoom/index.html
+    [junit] 6688 ms. Memory: 151040K Free: 62487K (41%)
+    [junit] ####### 2 Thu May 10 03:17:56 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground lbnl/demo/SystemCommand/SystemCommand.xml $PTII/lbnl/demo/SystemCommand/SystemCommand
+    [junit] Warning: not running lbnl/demo/SystemCommand/SystemCommand.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/lbnl/demo/SystemCommand/SystemCommand/index.html
+    [junit] 3786 ms. Memory: 200192K Free: 107866K (54%)
+    [junit] ####### 3 Thu May 10 03:18:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml $PTII/org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed
+    [junit] Warning: not running org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed/index.html
+    [junit] 3413 ms. Memory: 200704K Free: 119429K (60%)
+    [junit] ####### 4 Thu May 10 03:18:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground org/hlacerti/demo/Billard/2Billes1Fed/PoolTable2.xml $PTII/org/hlacerti/demo/Billard/2Billes1Fed/PoolTable2
+    [junit] Running .PoolTable2
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .PoolTable2.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, Test.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/demo/Billard/2Billes1Fed
+    [junit] CertiRtig: .PoolTable2.HlaManager: About to terminate rtig.
+    [junit] 293 ms. Memory: 237056K Free: 146998K (62%)
+    [junit] Exported /home/travis/build/icyphy/ptII/org/hlacerti/demo/Billard/2Billes1Fed/PoolTable2/index.html
+    [junit] 4773 ms. Memory: 237056K Free: 97785K (41%)
+    [junit] ####### 5 Thu May 10 03:18:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground org/hlacerti/demo/Billard/2Billes1Fed/TwoBilliardBalls.xml $PTII/org/hlacerti/demo/Billard/2Billes1Fed/TwoBilliardBalls
+    [junit] Running .TwoBilliardBalls
+    [junit] CertiRtig: the os.name property is: Linux
+    [junit] CertiRtig: .TwoBilliardBalls.HlaManager: About to invoke rtig: 
+    [junit] command: [/bin/sh, -c, /home/travis/pthla/certi-tools/bin/rtig, Test.fed]
+    [junit] environment: [LD_LIBRARY_PATH=/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:]
+    [junit] directory: /home/travis/build/icyphy/ptII/org/hlacerti/demo/Billard/2Billes1Fed
+    [junit] UNCAUGHT EXCEPTION: Stdout-0 IOExeception throwed.
+    [junit]   in .PoolTable2.HlaManager
+    [junit] Because:
+    [junit] Stream closed
+    [junit] ptolemy.kernel.util.InternalErrorException: Stdout-0 IOExeception throwed.
+    [junit]   in .PoolTable2.HlaManager
+    [junit] Because:
+    [junit] Stream closed
+    [junit] 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:370)
+    [junit] 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread.run(CertiRtig.java:339)
+    [junit] Caused by: java.io.IOException: Stream closed
+    [junit] 	at java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:170)
+    [junit] 	at java.io.BufferedInputStream.read1(BufferedInputStream.java:283)
+    [junit] 	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+    [junit] 	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+    [junit] 	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+    [junit] 	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+    [junit] 	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+    [junit] 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:359)
+    [junit] 	... 1 more
+    [junit] Caused by: java.io.IOException: Stream closed
+    [junit] 	at java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:170)
+    [junit] 	at java.io.BufferedInputStream.read1(BufferedInputStream.java:283)
+    [junit] 	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+    [junit] 	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+    [junit] 	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+    [junit] 	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+    [junit] 	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+    [junit] 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:359)
+    [junit] 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread.run(CertiRtig.java:339)
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] ExportHTMLTimer went off after 60000 ms., calling manager.stop().
