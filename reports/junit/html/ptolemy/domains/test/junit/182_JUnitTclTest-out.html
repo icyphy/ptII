@@ -1,0 +1,195 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/test/domains.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu May 10 16:22:27 UTC 2018
+domains-2.1 takes about 7 seconds...
+1372 ms. Memory: 146944K Free: 104498K (71%)
+13327 ms. Memory: 203776K Free: 161696K (79%)
+176 ms. Memory: 203776K Free: 142005K (70%)
+31 ms. Memory: 203776K Free: 135282K (66%)
+23 ms. Memory: 203776K Free: 128218K (63%)
+9 ms. Memory: 203776K Free: 123131K (60%)
+
+
+==== $PTII/ptolemy/domains/test/domains.tcl: domains-6.1 
+==== Contents of test case:
+
+    jdkCaptureErr {
+        catch {createAndExecute "auto/knownFailedTests/SRSDFtest2.xml"} errMsg
+    } err
+    list $errMsg
+
+==== Result was:
+{ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
+Threads:
+Threads: 12
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+process reaper                      system               10  true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Timer-0                             main                 5   true   true   
+.PNSRTimedtest.Clock2               main                 1   false  true   
+.PNSRTimedtest.Clock                main                 1   false  true   
+SRSDFtest2                          main                 1   false  true  *
+Thread-32                           main                 5   false  true   
+
+  in .SRSDFtest2.NonStrictTest
+
+  in .SRSDFtest2.1:SR Director
+Because:
+The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
+Threads:
+Threads: 12
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+process reaper                      system               10  true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Timer-0                             main                 5   true   true   
+.PNSRTimedtest.Clock2               main                 1   false  true   
+.PNSRTimedtest.Clock                main                 1   false  true   
+SRSDFtest2                          main                 1   false  true  *
+Thread-32                           main                 5   false  true   
+
+  in .SRSDFtest2.NonStrictTest}
+---- Result should have been:
+{ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
+  in .SRSDFtest2.NonStrictTest
+
+  in .SRSDFtest2.1:SR Director
+Because:
+The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
+  in .SRSDFtest2.NonStrictTest}
+@@@@@ known results is more than 7 lines long, so we run diff
+2a3,19
+&gt; Threads:
+&gt; Threads: 12
+&gt; Current Thread (*) _is not_ the Swing Event Dispatch Thread
+&gt; Name                                Group                Pri Daemon Alive Curr
+&gt; Reference Handler                   system               10  true   true   
+&gt; Finalizer                           system               8   true   true   
+&gt; Signal Dispatcher                   system               9   true   true   
+&gt; process reaper                      system               10  true   true   
+&gt; Java2D Disposer                     system               10  true   true   
+&gt; AWT-XAWT                            system               6   true   true   
+&gt; main                                main                 5   false  true   
+&gt; Timer-0                             main                 5   true   true   
+&gt; .PNSRTimedtest.Clock2               main                 1   false  true   
+&gt; .PNSRTimedtest.Clock                main                 1   false  true   
+&gt; SRSDFtest2                          main                 1   false  true  *
+&gt; Thread-32                           main                 5   false  true   
+&gt; 
+7a25,41
+&gt; Threads:
+&gt; Threads: 12
+&gt; Current Thread (*) _is not_ the Swing Event Dispatch Thread
+&gt; Name                                Group                Pri Daemon Alive Curr
+&gt; Reference Handler                   system               10  true   true   
+&gt; Finalizer                           system               8   true   true   
+&gt; Signal Dispatcher                   system               9   true   true   
+&gt; process reaper                      system               10  true   true   
+&gt; Java2D Disposer                     system               10  true   true   
+&gt; AWT-XAWT                            system               6   true   true   
+&gt; main                                main                 5   false  true   
+&gt; Timer-0                             main                 5   true   true   
+&gt; .PNSRTimedtest.Clock2               main                 1   false  true   
+&gt; .PNSRTimedtest.Clock                main                 1   false  true   
+&gt; SRSDFtest2                          main                 1   false  true  *
+&gt; Thread-32                           main                 5   false  true   
+&gt; 
+@@@@@ Done running diffText
+---- domains-6.1 FAILED
+05/10/18 04:22:42
+Failed: 1  Total Tests: 6  ((Passed: 5, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/domains/test
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSDFtest1.xml
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml
+266 ms. Memory: 203776K Free: 92771K (46%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SDFSRtest2.xml
+33 ms. Memory: 203776K Free: 88303K (43%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest1.xml
+7 ms. Memory: 203776K Free: 84387K (41%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/knownFailedTests/SRSDFtest2.xml
+9 ms. Memory: 203776K Free: 80482K (39%)
+Known Failure: java.lang.reflect.InvocationTargetException
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/test
+647 ms. Memory: 203776K Free: 175036K (86%)
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu May 10 16:22:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSDFtest1.xml
+45 ms. Memory: 203776K Free: 147892K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63dcf43b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63dcf43b
+reloadAllAccessors: .CSPSDFtest1
+----------------- testing Thu May 10 16:22:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest1.xml
+125 ms. Memory: 203776K Free: 134685K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@605bccac
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@605bccac
+reloadAllAccessors: .CSPSRtest1
+----------------- testing Thu May 10 16:22:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/CSPSRtest2.xml
+33 ms. Memory: 203776K Free: 125380K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@29287889
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@29287889
+reloadAllAccessors: .CSPSRtest2
+----------------- testing Thu May 10 16:22:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest1.xml
+41 ms. Memory: 203776K Free: 117852K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@78b754c6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@78b754c6
+reloadAllAccessors: .PNSRtest1
+----------------- testing Thu May 10 16:22:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest2.xml
+39 ms. Memory: 203776K Free: 110475K (54%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51afdd57
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51afdd57
+reloadAllAccessors: .PNSRtest2
+----------------- testing Thu May 10 16:22:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/PNSRtest4.xml
+66 ms. Memory: 203776K Free: 100508K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3284be16
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3284be16
+reloadAllAccessors: .PNSRtest4
+----------------- testing Thu May 10 16:22:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest1.xml
+7 ms. Memory: 203776K Free: 95832K (47%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3872470f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3872470f
+reloadAllAccessors: .SDFSRtest1
+----------------- testing Thu May 10 16:22:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SDFSRtest3.xml
+18 ms. Memory: 203776K Free: 90813K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1df945be
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1df945be
+reloadAllAccessors: .SDFSRtest3
+----------------- testing Thu May 10 16:22:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/test/auto/SRSDFtest3.xml
+6 ms. Memory: 203776K Free: 85722K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c84a668
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c84a668
+reloadAllAccessors: .SRSDFtest3
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

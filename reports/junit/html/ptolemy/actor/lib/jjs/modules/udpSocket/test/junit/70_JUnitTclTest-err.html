@@ -1,0 +1,89 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 12
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-5                            main                 5   false  true   
+UDPSocketInt                        main                 1   false  true  *
+Thread-6                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+
+  in .UDPSocketInt.Test
+
+  in .UDPSocketInt.DE Director
+Because:
+The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 12
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-5                            main                 5   false  true   
+UDPSocketInt                        main                 1   false  true  *
+Thread-6                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+
+  in .UDPSocketInt.Test
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+Threads:
+Threads: 12
+Current Thread (*) _is not_ the Swing Event Dispatch Thread
+Name                                Group                Pri Daemon Alive Curr
+Reference Handler                   system               10  true   true   
+Finalizer                           system               8   true   true   
+Signal Dispatcher                   system               9   true   true   
+Java2D Disposer                     system               10  true   true   
+AWT-XAWT                            system               6   true   true   
+main                                main                 5   false  true   
+Thread-5                            main                 5   false  true   
+UDPSocketInt                        main                 1   false  true  *
+Thread-6                            main                 5   false  true   
+vertx-blocked-thread-checker        main                 1   true   true   
+vert.x-eventloop-thread-0           main                 1   false  true   
+vert.x-eventloop-thread-1           main                 1   false  true   
+vert.x-eventloop-thread-2           main                 1   false  true   
+vert.x-eventloop-thread-3           main                 1   false  true   
+
+  in .UDPSocketInt.Test
+	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:395)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 6 more
+WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+</pre>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Could not simulate, inc20_fmiDoStep(Component, /* time */ 0.0, /* stepSize */0.0, /* newStep */ 1) returned fmiError
+  in .FMUInc20.inc20
+	at ptolemy.actor.lib.fmi.FMUImport._fmiDoStep(FMUImport.java:2739)
+	at ptolemy.actor.lib.fmi.FMUImport.fire(FMUImport.java:675)
+	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)
+	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)
+	at ptolemy.domains.continuous.kernel.ContinuousDirector.fire(ContinuousDirector.java:494)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoKnownFailedTests.RunModel(AutoKnownFailedTests.java:107)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
+Caused by: ptolemy.kernel.util.IllegalActionException: Could not simulate, inc20_fmiDoStep(Component, /* time */ 0.0, /* stepSize */0.0, /* newStep */ 1) returned fmiError
+  in .FMUInc20.inc20
+	at ptolemy.actor.lib.fmi.FMUImport._fmiDoStep(FMUImport.java:2739)
+	at ptolemy.actor.lib.fmi.FMUImport.fire(FMUImport.java:675)
+	at ptolemy.actor.sched.FixedPointDirector._fireActor(FixedPointDirector.java:768)
+	at ptolemy.actor.sched.FixedPointDirector.fire(FixedPointDirector.java:244)
+	at ptolemy.domains.continuous.kernel.ContinuousDirector.fire(ContinuousDirector.java:494)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+</pre>
+</body>
+</html>
