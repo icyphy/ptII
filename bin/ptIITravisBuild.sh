@@ -477,6 +477,10 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE5_XML" ]; then
     runTarget test.core5.xml
 fi
 
+# Run the first batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT1_XML" ]; then
+    runTarget test.export1.xml
+fi
 
 # Build the installers.
 #

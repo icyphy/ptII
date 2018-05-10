@@ -97,33 +97,28 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
      * Return a two dimensional array of arrays of strings that name the model
      * to be exported.
      *
-     * Only the demos between _start and _end are returned.
+     * Derived classes should override this method with the
+     * range of demos to be exported.
      * 
      * @return a two dimension array of arrays of strings that name the
      * models to be exported.
      * @exception IOException If there is a problem accessing the directory.
      */
     public Object[] demos() throws IOException {
-        System.out.println("ExportModeJUnitTestBatch: exporting models: " + _start + " to " + _end);
-        Object [] allDemos = super.demos();
-        Object[][] subDemos = new Object[_end - _start][1];
-        System.arraycopy(allDemos,
-                         _start,
-                         subDemos,
-                         0,
-                         _end - _start);
-        return subDemos;
+        return demos(1, 50);
     }
 
-    /** The index of the first model to export as found in the array
-     *  returned by ExportModelJUnitTest.demos().
-     *  Derived classes should set _start in a @Before method.
-     */
-    protected int _start = 1;
+    public Object[] demos(int start, int end) throws IOException {
+        Object [] allDemos = super.demos();
+        System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
+                           + " demos. Exporting demos: " + start + " to " + end + ".");
 
-    /** The index of the last model to export as found in the array
-     *  returned by ExportModelJUnitTest.demos().
-     *  Derived classes should set _end in a @Before method.
-     */
-    protected int _end = 50;
+        Object[][] subDemos = new Object[end - start + 1][1];
+        System.arraycopy(allDemos,
+                         start,
+                         subDemos,
+                         0,
+                         end - start + 1);
+        return subDemos;
+    }
 }
