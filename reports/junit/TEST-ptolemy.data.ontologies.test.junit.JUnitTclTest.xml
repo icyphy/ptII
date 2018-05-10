@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-6cde1622-a646-433f-904a-1f69d56b4dd9" name="ptolemy.data.ontologies.test.junit.JUnitTclTest" skipped="0" tests="40" time="17.689" timestamp="2018-05-10T00:00:57">
+<testsuite errors="0" failures="0" hostname="travis-job-da05217d-a1cf-44c3-8b7e-d5e2f461bb95" name="ptolemy.data.ontologies.test.junit.JUnitTclTest" skipped="0" tests="40" time="14.603" timestamp="2018-05-10T01:17:29">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="410.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="411.6" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -32,7 +32,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.28 55374 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.27 43840 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.28 55374 10.20.0.3 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.27 43840 10.20.1.46 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.data.ontologies.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.data.ontologies.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1022404550331061961.properties propsfile=/home/travis/build/icyphy/ptII/junit8212178324125944177.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.data.ontologies.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.data.ontologies.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1533829564947937516.properties propsfile=/home/travis/build/icyphy/ptII/junit5516101846848334468.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbea...a35e0c44513d" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbeae51969f1d6ca9a5beb394f1a24e8...a35e0c44513de30172a090eeb5d722d5b8cbec98" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="410" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="411" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,7 +131,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="377070374" />
+    <property name="env.TRAVIS_BUILD_ID" value="377083647" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -176,7 +176,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="377070380" />
+    <property name="env.TRAVIS_JOB_ID" value="377083653" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -229,269 +229,269 @@
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards.xml (RunModel)" time="0.5" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards2.xml (RunModel)" time="0.18" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldntInferForwards.xml (RunModel)" time="0.107" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BooleanSwitchDemoProductLattice.xml (RunModel)" time="2.895" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/CarTracking.xml (RunModel)" time="5.871" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Const.xml (RunModel)" time="0.164" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstAbstractInterpretation.xml (RunModel)" time="0.144" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstMultiplyDivideDemoProductLattice.xml (RunModel)" time="0.644" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstNonconst.xml (RunModel)" time="0.122" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstScaleDemoProductLattice.xml (RunModel)" time="0.624" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DeltaConstraintTest.xml (RunModel)" time="0.118" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DerivedUnitConceptTestCase.xml (RunModel)" time="0.169" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ExceptionAnalysisUsingManager.xml (RunModel)" time="0.134" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/GreatestFixedPoint.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/InequalityExpression.xml (RunModel)" time="0.059" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBackwardInference.xml (RunModel)" time="0.056" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBidirectionalInference.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorForwardInference.xml (RunModel)" time="0.057" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorInferBackwardForward.xml (RunModel)" time="0.099" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/LeastUpperBoundConstraint.xml (RunModel)" time="0.063" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MonotonicityAnalysis.xml (RunModel)" time="0.195" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MultiplyDivideUnits.xml (RunModel)" time="0.396" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/NestedRecordTest.xml (RunModel)" time="0.19" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Observable.xml (RunModel)" time="0.103" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeRecordConceptTest.xml (RunModel)" time="0.438" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeWithConstantPropagation.xml (RunModel)" time="1.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalMissingFieldOnOneSideTest.xml (RunModel)" time="0.119" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalNoCommonFields.xml (RunModel)" time="0.112" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalUnmatched.xml (RunModel)" time="0.107" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordForwardInference.xml (RunModel)" time="0.11" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExample.xml (RunModel)" time="0.472" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExampleMultiport.xml (RunModel)" time="0.48" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleConstPropagation.xml (RunModel)" time="0.13" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleNonconstDemo.xml (RunModel)" time="0.127" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TemperatureUnits.xml (RunModel)" time="0.304" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TimeUnitIntegration.xml (RunModel)" time="0.179" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/UnitSystemExample.xml (RunModel)" time="0.438" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards.xml (RunModel)" time="0.45" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards2.xml (RunModel)" time="0.098" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldntInferForwards.xml (RunModel)" time="0.13" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BooleanSwitchDemoProductLattice.xml (RunModel)" time="2.248" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/CarTracking.xml (RunModel)" time="5.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Const.xml (RunModel)" time="0.172" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstAbstractInterpretation.xml (RunModel)" time="0.159" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstMultiplyDivideDemoProductLattice.xml (RunModel)" time="0.455" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstNonconst.xml (RunModel)" time="0.121" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstScaleDemoProductLattice.xml (RunModel)" time="0.448" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DeltaConstraintTest.xml (RunModel)" time="0.123" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DerivedUnitConceptTestCase.xml (RunModel)" time="0.142" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ExceptionAnalysisUsingManager.xml (RunModel)" time="0.125" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/GreatestFixedPoint.xml (RunModel)" time="0.054" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/InequalityExpression.xml (RunModel)" time="0.042" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBackwardInference.xml (RunModel)" time="0.048" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBidirectionalInference.xml (RunModel)" time="0.05" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorForwardInference.xml (RunModel)" time="0.045" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorInferBackwardForward.xml (RunModel)" time="0.074" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/LeastUpperBoundConstraint.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MonotonicityAnalysis.xml (RunModel)" time="0.165" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MultiplyDivideUnits.xml (RunModel)" time="0.322" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/NestedRecordTest.xml (RunModel)" time="0.142" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Observable.xml (RunModel)" time="0.084" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeRecordConceptTest.xml (RunModel)" time="0.363" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeWithConstantPropagation.xml (RunModel)" time="0.836" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalMissingFieldOnOneSideTest.xml (RunModel)" time="0.093" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalNoCommonFields.xml (RunModel)" time="0.082" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalUnmatched.xml (RunModel)" time="0.1" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordForwardInference.xml (RunModel)" time="0.098" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExample.xml (RunModel)" time="0.369" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExampleMultiport.xml (RunModel)" time="0.247" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleConstPropagation.xml (RunModel)" time="0.12" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleNonconstDemo.xml (RunModel)" time="0.111" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TemperatureUnits.xml (RunModel)" time="0.258" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TimeUnitIntegration.xml (RunModel)" time="0.145" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/UnitSystemExample.xml (RunModel)" time="0.413" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu May 10 00:00:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards.xml
+----------------- testing Thu May 10 01:17:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards.xml
-108 ms. Memory: 116224K Free: 104848K (90%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1894dbd6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1894dbd6
+115 ms. Memory: 116224K Free: 105073K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@415c7d90
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@415c7d90
 reloadAllAccessors: .BackwardResolutionShouldInferBackwards
------------------ testing Thu May 10 00:00:58 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards2.xml
+----------------- testing Thu May 10 01:17:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldInferBackwards2.xml
-51 ms. Memory: 116224K Free: 88262K (76%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14a39fe4
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14a39fe4
+29 ms. Memory: 116224K Free: 88394K (76%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@151c35ac
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@151c35ac
 reloadAllAccessors: .BackwardResolutionShouldInferBackwards2
------------------ testing Thu May 10 00:00:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldntInferForwards.xml
+----------------- testing Thu May 10 01:17:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldntInferForwards.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BackwardResolutionShouldntInferForwards.xml
-38 ms. Memory: 116224K Free: 106474K (92%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ff1c6dc
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ff1c6dc
+40 ms. Memory: 116224K Free: 106610K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2caf02d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2caf02d
 reloadAllAccessors: .BackwardResolutionShouldntInferForwards
------------------ testing Thu May 10 00:00:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BooleanSwitchDemoProductLattice.xml
+----------------- testing Thu May 10 01:17:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BooleanSwitchDemoProductLattice.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/BooleanSwitchDemoProductLattice.xml
-1697 ms. Memory: 332800K Free: 265076K (80%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56b320c3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56b320c3
+1302 ms. Memory: 331776K Free: 264533K (80%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22c9634b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22c9634b
 reloadAllAccessors: .BooleanSwitchDemoProductLattice
------------------ testing Thu May 10 00:01:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/CarTracking.xml
+----------------- testing Thu May 10 01:17:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/CarTracking.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/CarTracking.xml
-5175 ms. Memory: 480256K Free: 402084K (84%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9d3f786
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9d3f786
+4301 ms. Memory: 478720K Free: 399441K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14620d22
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14620d22
 reloadAllAccessors: .CarTracking
------------------ testing Thu May 10 00:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Const.xml
+----------------- testing Thu May 10 01:17:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Const.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Const.xml
-79 ms. Memory: 480256K Free: 353282K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@676b2592
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@676b2592
+98 ms. Memory: 478720K Free: 350900K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74307b99
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74307b99
 reloadAllAccessors: .Const
------------------ testing Thu May 10 00:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstAbstractInterpretation.xml
+----------------- testing Thu May 10 01:17:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstAbstractInterpretation.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstAbstractInterpretation.xml
-81 ms. Memory: 480256K Free: 321808K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5453d366
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5453d366
+105 ms. Memory: 478720K Free: 319525K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f631b4d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f631b4d
 reloadAllAccessors: .ConstAbstractInterpretation
------------------ testing Thu May 10 00:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstMultiplyDivideDemoProductLattice.xml
+----------------- testing Thu May 10 01:17:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstMultiplyDivideDemoProductLattice.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstMultiplyDivideDemoProductLattice.xml
-378 ms. Memory: 480256K Free: 164423K (34%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@71253dfe
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@71253dfe
+235 ms. Memory: 478720K Free: 170603K (36%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@740cc585
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@740cc585
 reloadAllAccessors: .ConstMultiplyDivideDemoProductLattice
------------------ testing Thu May 10 00:01:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstNonconst.xml
+----------------- testing Thu May 10 01:17:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstNonconst.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstNonconst.xml
-71 ms. Memory: 480256K Free: 128985K (27%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@348af502
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@348af502
+62 ms. Memory: 478720K Free: 135319K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4efb79f2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4efb79f2
 reloadAllAccessors: .ConstNonconst
------------------ testing Thu May 10 00:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstScaleDemoProductLattice.xml
+----------------- testing Thu May 10 01:17:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstScaleDemoProductLattice.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ConstScaleDemoProductLattice.xml
-492 ms. Memory: 715776K Free: 600162K (84%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@39750520
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@39750520
+346 ms. Memory: 713216K Free: 605393K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f5e31b3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f5e31b3
 reloadAllAccessors: .ConstScaleDemoProductLattice
------------------ testing Thu May 10 00:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DeltaConstraintTest.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DeltaConstraintTest.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DeltaConstraintTest.xml
-67 ms. Memory: 715776K Free: 565494K (79%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@bc43418
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@bc43418
+86 ms. Memory: 713216K Free: 570842K (80%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53c35f9c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53c35f9c
 reloadAllAccessors: .DeltaConstraintTest
------------------ testing Thu May 10 00:01:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DerivedUnitConceptTestCase.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DerivedUnitConceptTestCase.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/DerivedUnitConceptTestCase.xml
-62 ms. Memory: 715776K Free: 531901K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@21bf43b8
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@21bf43b8
+39 ms. Memory: 713216K Free: 537418K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@213bd1e0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@213bd1e0
 reloadAllAccessors: .DerivedUnitConceptTestCase
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ExceptionAnalysisUsingManager.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ExceptionAnalysisUsingManager.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ExceptionAnalysisUsingManager.xml
-19 ms. Memory: 715776K Free: 515113K (72%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@574c7bc3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@574c7bc3
+17 ms. Memory: 713216K Free: 520706K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c0ba80c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c0ba80c
 reloadAllAccessors: .ExceptionAnalysisUsingManager
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/GreatestFixedPoint.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/GreatestFixedPoint.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/GreatestFixedPoint.xml
-13 ms. Memory: 715776K Free: 485716K (68%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79710129
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79710129
+10 ms. Memory: 713216K Free: 491412K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@278161d9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@278161d9
 reloadAllAccessors: .GreatestFixedPoint
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/InequalityExpression.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/InequalityExpression.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/InequalityExpression.xml
-31 ms. Memory: 715776K Free: 468935K (66%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f067b55
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f067b55
+23 ms. Memory: 713216K Free: 474700K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70fd9477
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70fd9477
 reloadAllAccessors: .InequalityExpression
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBackwardInference.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBackwardInference.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBackwardInference.xml
-36 ms. Memory: 715776K Free: 452155K (63%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@8fa1087
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@8fa1087
+31 ms. Memory: 713216K Free: 457979K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b637585
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b637585
 reloadAllAccessors: .IntegratorBackwardInference
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBidirectionalInference.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBidirectionalInference.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorBidirectionalInference.xml
-29 ms. Memory: 715776K Free: 435375K (61%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63ba90b1
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63ba90b1
+25 ms. Memory: 713216K Free: 441267K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@332eb042
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@332eb042
 reloadAllAccessors: .IntegratorBidirectionalInference
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorForwardInference.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorForwardInference.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorForwardInference.xml
-30 ms. Memory: 715776K Free: 416878K (58%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e26a592
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e26a592
+23 ms. Memory: 713216K Free: 422846K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13ae9b3c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13ae9b3c
 reloadAllAccessors: .IntegratorForwardInference
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorInferBackwardForward.xml
+----------------- testing Thu May 10 01:17:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorInferBackwardForward.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/IntegratorInferBackwardForward.xml
-60 ms. Memory: 715776K Free: 387489K (54%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@64c57024
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@64c57024
+44 ms. Memory: 713216K Free: 393584K (55%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@45a91d3b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@45a91d3b
 reloadAllAccessors: .IntegratorInferBackwardForward
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/LeastUpperBoundConstraint.xml
+----------------- testing Thu May 10 01:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/LeastUpperBoundConstraint.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/LeastUpperBoundConstraint.xml
-37 ms. Memory: 715776K Free: 370709K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c70d1f7
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c70d1f7
+27 ms. Memory: 713216K Free: 376872K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ee250bb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2ee250bb
 reloadAllAccessors: .LeastUpperBoundConstraint
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MonotonicityAnalysis.xml
+----------------- testing Thu May 10 01:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MonotonicityAnalysis.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MonotonicityAnalysis.xml
-115 ms. Memory: 715776K Free: 328695K (46%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4eca0134
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4eca0134
+108 ms. Memory: 713216K Free: 335045K (47%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2392856
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2392856
 reloadAllAccessors: .MonotonicityAnalysis
------------------ testing Thu May 10 00:01:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MultiplyDivideUnits.xml
+----------------- testing Thu May 10 01:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MultiplyDivideUnits.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/MultiplyDivideUnits.xml
-158 ms. Memory: 715776K Free: 219495K (31%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1b2fa763
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1b2fa763
+128 ms. Memory: 713216K Free: 226312K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6386f70
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6386f70
 reloadAllAccessors: .MultiplyDivideUnits
------------------ testing Thu May 10 00:01:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/NestedRecordTest.xml
+----------------- testing Thu May 10 01:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/NestedRecordTest.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/NestedRecordTest.xml
-104 ms. Memory: 715776K Free: 169114K (24%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6854ec5f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6854ec5f
+79 ms. Memory: 713216K Free: 176136K (25%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@60d9a754
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@60d9a754
 reloadAllAccessors: .NestedRecordTest
------------------ testing Thu May 10 00:01:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Observable.xml
+----------------- testing Thu May 10 01:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Observable.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/Observable.xml
-39 ms. Memory: 715776K Free: 139717K (20%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3489712d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3489712d
+34 ms. Memory: 713216K Free: 134357K (19%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ebfb5ef
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ebfb5ef
 reloadAllAccessors: .Observable
------------------ testing Thu May 10 00:01:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeRecordConceptTest.xml
+----------------- testing Thu May 10 01:17:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeRecordConceptTest.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeRecordConceptTest.xml
-387 ms. Memory: 716288K Free: 678532K (95%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2aaf8956
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2aaf8956
+310 ms. Memory: 713728K Free: 671295K (94%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@851aa55
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@851aa55
 reloadAllAccessors: .ProductLatticeRecordConceptTest
------------------ testing Thu May 10 00:01:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeWithConstantPropagation.xml
+----------------- testing Thu May 10 01:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeWithConstantPropagation.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/ProductLatticeWithConstantPropagation.xml
-766 ms. Memory: 716288K Free: 370811K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@71adba60
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@71adba60
+616 ms. Memory: 713728K Free: 382524K (54%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2316f402
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2316f402
 reloadAllAccessors: .ProductLatticeWithConstantPropagation
------------------ testing Thu May 10 00:01:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalMissingFieldOnOneSideTest.xml
+----------------- testing Thu May 10 01:17:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalMissingFieldOnOneSideTest.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalMissingFieldOnOneSideTest.xml
-85 ms. Memory: 716288K Free: 333056K (46%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bdd55e6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bdd55e6
+65 ms. Memory: 713728K Free: 344882K (48%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72347c26
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72347c26
 reloadAllAccessors: .RecordBidirectionalMissingFieldOnOneSideTest
------------------ testing Thu May 10 00:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalNoCommonFields.xml
+----------------- testing Thu May 10 01:17:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalNoCommonFields.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalNoCommonFields.xml
-58 ms. Memory: 716288K Free: 303690K (42%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d748e6b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d748e6b
+47 ms. Memory: 713728K Free: 316681K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@155738a1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@155738a1
 reloadAllAccessors: .RecordBidirectionalNoCommonFields
------------------ testing Thu May 10 00:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalUnmatched.xml
+----------------- testing Thu May 10 01:17:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalUnmatched.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordBidirectionalUnmatched.xml
-75 ms. Memory: 716288K Free: 265926K (37%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@658bcc9c
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@658bcc9c
+63 ms. Memory: 713728K Free: 279062K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7df3afa4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7df3afa4
 reloadAllAccessors: .RecordBidirectionalUnmatched
------------------ testing Thu May 10 00:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordForwardInference.xml
+----------------- testing Thu May 10 01:17:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordForwardInference.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/RecordForwardInference.xml
-77 ms. Memory: 716288K Free: 231223K (32%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ae10757
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ae10757
+70 ms. Memory: 713728K Free: 243415K (34%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c478a5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c478a5
 reloadAllAccessors: .RecordForwardInference
------------------ testing Thu May 10 00:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExample.xml
+----------------- testing Thu May 10 01:17:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExample.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExample.xml
-153 ms. Memory: 716288K Free: 88392K (12%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b794efe
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b794efe
+96 ms. Memory: 713728K Free: 99018K (14%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f195a51
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f195a51
 reloadAllAccessors: .SIUnitExample
------------------ testing Thu May 10 00:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExampleMultiport.xml
+----------------- testing Thu May 10 01:17:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExampleMultiport.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SIUnitExampleMultiport.xml
-138 ms. Memory: 684032K Free: 545898K (80%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23695f7f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23695f7f
+85 ms. Memory: 1088512K Free: 996271K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@179cff49
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@179cff49
 reloadAllAccessors: .SIUnitExampleMultiport
------------------ testing Thu May 10 00:01:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleConstPropagation.xml
+----------------- testing Thu May 10 01:17:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleConstPropagation.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleConstPropagation.xml
-61 ms. Memory: 684032K Free: 500145K (73%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16f45202
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16f45202
+57 ms. Memory: 1088512K Free: 941621K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11922fa8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11922fa8
 reloadAllAccessors: .SimpleConstPropagation
------------------ testing Thu May 10 00:01:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleNonconstDemo.xml
+----------------- testing Thu May 10 01:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleNonconstDemo.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/SimpleNonconstDemo.xml
-70 ms. Memory: 684032K Free: 458096K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@487fef02
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@487fef02
+64 ms. Memory: 1088512K Free: 894861K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@de5d6bd
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@de5d6bd
 reloadAllAccessors: .SimpleNonconstDemo
------------------ testing Thu May 10 00:01:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TemperatureUnits.xml
+----------------- testing Thu May 10 01:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TemperatureUnits.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TemperatureUnits.xml
-128 ms. Memory: 684032K Free: 358325K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55c763fd
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@55c763fd
+120 ms. Memory: 1088512K Free: 794688K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26f869cf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26f869cf
 reloadAllAccessors: .TemperatureUnits
------------------ testing Thu May 10 00:01:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TimeUnitIntegration.xml
+----------------- testing Thu May 10 01:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TimeUnitIntegration.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/TimeUnitIntegration.xml
-135 ms. Memory: 684032K Free: 301317K (44%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66866363
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66866363
+100 ms. Memory: 1088512K Free: 734583K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f76e601
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f76e601
 reloadAllAccessors: .TimeUnitIntegration
------------------ testing Thu May 10 00:01:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/UnitSystemExample.xml
+----------------- testing Thu May 10 01:17:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/UnitSystemExample.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/test/auto/UnitSystemExample.xml
-143 ms. Memory: 684032K Free: 130193K (19%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e9e9c92
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e9e9c92
+128 ms. Memory: 1088512K Free: 559683K (51%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59730356
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59730356
 reloadAllAccessors: .UnitSystemExample
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

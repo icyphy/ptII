@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-6cde1622-a646-433f-904a-1f69d56b4dd9" name="ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest" skipped="0" tests="26" time="4.387" timestamp="2018-05-10T00:00:48">
+<testsuite errors="0" failures="0" hostname="travis-job-da05217d-a1cf-44c3-8b7e-d5e2f461bb95" name="ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest" skipped="0" tests="26" time="3.803" timestamp="2018-05-10T01:17:21">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="410.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="411.6" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -32,7 +32,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.28 55374 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.27 43840 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.28 55374 10.20.0.3 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.27 43840 10.20.1.46 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2301146205038678270.properties propsfile=/home/travis/build/icyphy/ptII/junit6518776208183492920.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.data.ontologies.demo.MonotonicityAnalysis.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2560998446182049926.properties propsfile=/home/travis/build/icyphy/ptII/junit8411788518536914820.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbea...a35e0c44513d" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="712d3efebbeae51969f1d6ca9a5beb394f1a24e8...a35e0c44513de30172a090eeb5d722d5b8cbec98" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="410" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="411" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,7 +131,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="377070374" />
+    <property name="env.TRAVIS_BUILD_ID" value="377083647" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -176,7 +176,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -207,7 +207,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="377070380" />
+    <property name="env.TRAVIS_JOB_ID" value="377083653" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -227,171 +227,171 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml (RunModel)" time="0.701" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml (RunModel)" time="0.084" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml (RunModel)" time="0.073" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml (RunModel)" time="0.087" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml (RunModel)" time="0.113" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml (RunModel)" time="0.076" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml (RunModel)" time="0.073" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml (RunModel)" time="0.618" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml (RunModel)" time="0.093" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml (RunModel)" time="0.065" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml (RunModel)" time="0.04" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml (RunModel)" time="0.024" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml (RunModel)" time="0.112" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml (RunModel)" time="0.069" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml (RunModel)" time="0.116" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml (RunModel)" time="0.079" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml (RunModel)" time="0.102" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml (RunModel)" time="0.084" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml (RunModel)" time="0.101" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml (RunModel)" time="0.143" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml (RunModel)" time="0.066" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml (RunModel)" time="0.048" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml (RunModel)" time="0.064" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml (RunModel)" time="0.137" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml (RunModel)" time="0.089" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml (RunModel)" time="0.04" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml (RunModel)" time="0.054" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml (RunModel)" time="0.028" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml (RunModel)" time="0.024" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml (RunModel)" time="0.328" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml (RunModel)" time="0.524" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml (RunModel)" time="0.887" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml (RunModel)" time="0.034" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml (RunModel)" time="0.047" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml (RunModel)" time="0.287" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml (RunModel)" time="0.385" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml (RunModel)" time="0.679" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Thu May 10 00:00:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml
+----------------- testing Thu May 10 01:17:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/Monotonicity2WayIfNonmonotonic.xml
-131 ms. Memory: 116224K Free: 84062K (72%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f95036
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f95036
+71 ms. Memory: 146944K Free: 113697K (77%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@28790478
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@28790478
 reloadAllAccessors: .Monotonicity2WayIfNonmonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityArgumentYMonotonic.xml
-48 ms. Memory: 116224K Free: 109946K (95%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@962633a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@962633a
+38 ms. Memory: 146944K Free: 107184K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dda0a86
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dda0a86
 reloadAllAccessors: .MonotonicityArgumentYMonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalAntimonotonic.xml
-27 ms. Memory: 116224K Free: 97842K (84%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@dd7f6a1
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@dd7f6a1
+23 ms. Memory: 146944K Free: 95253K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c2d1e30
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c2d1e30
 reloadAllAccessors: .MonotonicityConditionalAntimonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConditionalMonotonic.xml
-63 ms. Memory: 116224K Free: 92751K (80%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@49d8c5e7
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@49d8c5e7
+26 ms. Memory: 146944K Free: 89675K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72173d01
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72173d01
 reloadAllAccessors: .MonotonicityConditionalMonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityConstantConcept.xml
-25 ms. Memory: 116224K Free: 88709K (76%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48e45274
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48e45274
+13 ms. Memory: 146944K Free: 85341K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@33acb6e0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@33acb6e0
 reloadAllAccessors: .MonotonicityConstantConcept
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfMonotonic.xml
-65 ms. Memory: 116224K Free: 82165K (71%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b764bb
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b764bb
+74 ms. Memory: 146944K Free: 140848K (96%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a098d4b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a098d4b
 reloadAllAccessors: .MonotonicityDimensionLattice3WayIfMonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice3WayIfNonmonotonic.xml
-39 ms. Memory: 146944K Free: 136164K (93%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c7b62ef
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c7b62ef
+42 ms. Memory: 146944K Free: 132793K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32911f4d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32911f4d
 reloadAllAccessors: .MonotonicityDimensionLattice3WayIfNonmonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml
+----------------- testing Thu May 10 01:17:22 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLattice4WayIfMonotonic.xml
-56 ms. Memory: 146944K Free: 127026K (86%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7e5b408
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7e5b408
+87 ms. Memory: 146944K Free: 124520K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a5d817e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a5d817e
 reloadAllAccessors: .MonotonicityDimensionLattice4WayIfMonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeAntimonotonic.xml
-27 ms. Memory: 146944K Free: 121234K (83%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79f22072
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79f22072
+48 ms. Memory: 146944K Free: 119098K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d39d983
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d39d983
 reloadAllAccessors: .MonotonicityDimensionLatticeAntimonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityDimensionLatticeIntegratorMonotonic.xml
-79 ms. Memory: 146944K Free: 109654K (75%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@213bfa84
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@213bfa84
+87 ms. Memory: 146944K Free: 107700K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d416648
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7d416648
 reloadAllAccessors: .MonotonicityDimensionLatticeIntegratorMonotonic
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcBaseCase.xml
-60 ms. Memory: 146944K Free: 103067K (70%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70ec0f0a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70ec0f0a
+30 ms. Memory: 146944K Free: 101443K (69%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6740d591
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6740d591
 reloadAllAccessors: .MonotonicityIfcBaseCase
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcHarderCase.xml
-56 ms. Memory: 146944K Free: 96015K (65%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5daefcd1
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5daefcd1
+46 ms. Memory: 146944K Free: 95186K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@256754ba
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@256754ba
 reloadAllAccessors: .MonotonicityIfcHarderCase
------------------ testing Thu May 10 00:00:50 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityIfcProblemCase.xml
-97 ms. Memory: 146944K Free: 84808K (58%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f45174a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f45174a
+110 ms. Memory: 146944K Free: 84503K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a364a87
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a364a87
 reloadAllAccessors: .MonotonicityIfcProblemCase
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityRelationalNodeM.xml
-13 ms. Memory: 146944K Free: 133744K (91%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5babc0b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5babc0b
+18 ms. Memory: 208384K Free: 193612K (93%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11607b38
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11607b38
 reloadAllAccessors: .MonotonicityRelationalNodeM
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow1.xml
-16 ms. Memory: 146944K Free: 128510K (87%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b54708c
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b54708c
+18 ms. Memory: 208384K Free: 187894K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@712b0345
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@712b0345
 reloadAllAccessors: .MonotonicitySimpleIfRow1
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow3.xml
-27 ms. Memory: 146944K Free: 120785K (82%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9bc6062
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9bc6062
+33 ms. Memory: 208384K Free: 180513K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1bdff285
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1bdff285
 reloadAllAccessors: .MonotonicitySimpleIfRow3
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySimpleIfRow5.xml
-15 ms. Memory: 146944K Free: 115844K (79%)
+16 ms. Memory: 208384K Free: 175597K (84%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7906f841
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7906f841
 reloadAllAccessors: .MonotonicitySimpleIfRow5
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleConstant.xml
-17 ms. Memory: 146944K Free: 111381K (76%)
+16 ms. Memory: 208384K Free: 171469K (82%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17349a7d
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17349a7d
 reloadAllAccessors: .MonotonicitySingleConstant
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicitySingleVariable.xml
-12 ms. Memory: 146944K Free: 106951K (73%)
+9 ms. Memory: 208384K Free: 166538K (80%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c3768da
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c3768da
 reloadAllAccessors: .MonotonicitySingleVariable
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/MonotonicityTwoVariable.xml
-44 ms. Memory: 146944K Free: 99504K (68%)
+23 ms. Memory: 208384K Free: 158313K (76%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c3e5e49
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c3e5e49
 reloadAllAccessors: .MonotonicityTwoVariable
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml
+----------------- testing Thu May 10 01:17:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivide.xml
-151 ms. Memory: 208384K Free: 176749K (85%)
+143 ms. Memory: 208384K Free: 113931K (55%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@698d467
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@698d467
 reloadAllAccessors: .ProductLatticeMultiplyDivide
------------------ testing Thu May 10 00:00:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml
+----------------- testing Thu May 10 01:17:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELS.xml
-508 ms. Memory: 208384K Free: 114976K (55%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23dee2
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23dee2
+360 ms. Memory: 208384K Free: 172647K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b746c37
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b746c37
 reloadAllAccessors: .ProductLatticeMultiplyDivideMODELS
------------------ testing Thu May 10 00:00:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml
+----------------- testing Thu May 10 01:17:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/data/ontologies/demo/MonotonicityAnalysis/test/auto/ProductLatticeMultiplyDivideMODELSwProjections.xml
-849 ms. Memory: 208896K Free: 131629K (63%)
+665 ms. Memory: 333824K Free: 311966K (93%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37a0215a
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37a0215a
 reloadAllAccessors: .ProductLatticeMultiplyDivideMODELS
