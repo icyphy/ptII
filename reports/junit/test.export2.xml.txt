@@ -1,0 +1,1818 @@
+/home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant build test.export2.xml
+Buildfile: /home/travis/build/icyphy/ptII/build.xml
+
+build-message:
+     [echo] Use ant -p to see other targets. JAVA_HOME=/usr/lib/jvm/java-8-oracle
+     [echo] tools.jar is necessary for compilation of doc/doclets/.
+     [echo] If compilation fails, try setting JAVA_HOME to the location of the JDK.
+     [echo] For example:
+     [echo]   [bldmastr@sisyphus ptII]$ which java
+     [echo]   /usr/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+     [echo]     
+
+-build-subprojects-empty:
+
+-check-maven-ant-task:
+
+build-websensor:
+
+build-subprojects:
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+     [echo] The node binary was not found or does not work or npmjs.org was not reachable, so the network is probably down, so there is no point in trying npm.
+
+-check-jsdoc:
+
+jsdoc-install:
+
+jsdoc-update:
+
+-ptdoc-no-node:
+
+-ptdoc-no-npm:
+
+ptdoc:
+     [echo] 
+     [echo]       If the ptdoc target fails, then try running:
+     [echo]           ant build-project build-bin
+     [echo]     
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+     [echo] The node binary was not found or does not work or npmjs.org was not reachable, so the network is probably down, so there is no point in trying npm.
+
+-check-jsdoc:
+     [echo] To stop CapeCode from invoking jsdoc and svn, set the PT_NO_NET environment variable.  
+     [echo]     Under BASH:
+     [echo]         export PT_NO_NET=true
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]     
+
+jsdoc-install:
+
+jsdoc-update:
+
+-ptdoc-no-node-message:
+
+-ptdoc-no-npm-message:
+
+-check-jsdoc-again:
+
+-jsdoc-command-message:
+     [echo] The jsdoc command at /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/../node_modules/@terraswarm/jsdoc/jsdoc.js does not exist, so we won't run ptdoc.
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]   
+
+ptdoc:
+
+build-project:
+     [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
+    [javac] Compiling 4712 source files to /home/travis/build/icyphy/ptII
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.NbBundleProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.URLStreamHandlerRegistrationProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.ServiceProviderProcessor' less than -source '1.8'
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:118: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+    [javac]                               ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]             ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]                              ^
+    [javac] Note: Some input files use or override a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 9 warnings
+
+-check-ptII-mk-file:
+
+-check-bin-vergil:
+
+-check-make-bin-vergil:
+
+build-bin-not:
+
+build-not-bin-vergil:
+     [echo] 
+     [echo] 	$PTII/bin/vergil does not exist, perhaps (cd $PTII/bin; make) has not been run?
+     [echo] 	This can happen if the make binary cannot be found in the path or if $PTII/mk/ptII.mk
+     [echo] 	is not present.
+     [echo] 	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
+     [echo] 	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
+     [echo] 	However, $PTII/bin does include other scripts that may be of use.
+     [echo]       
+
+build-bin:
+     [exec] for file in .momllib-util .nc2moml-util .ncapp2moml-util capecode convertToLazy copernicus decompile emachine giottoc histogram homer jode mescal moml obfuscate ptcg ptcodegen ptexecute ptjacl ptjaclapp ptplot ptstartjini ptolemy ptweb pxgraph soot tinicomm tinic tiniconverter startjini.gui vergil; do \
+     [exec] 		echo "$file"; \
+     [exec] 		rm -f "$file"; \
+     [exec] 		ln -s ptinvoke "$file"; \
+     [exec] 		chmod a+x "$file"; \
+     [exec] 	done
+     [exec] .momllib-util
+     [exec] .nc2moml-util
+     [exec] .ncapp2moml-util
+     [exec] capecode
+     [exec] convertToLazy
+     [exec] copernicus
+     [exec] decompile
+     [exec] emachine
+     [exec] giottoc
+     [exec] histogram
+     [exec] homer
+     [exec] jode
+     [exec] mescal
+     [exec] moml
+     [exec] obfuscate
+     [exec] ptcg
+     [exec] ptcodegen
+     [exec] ptexecute
+     [exec] ptjacl
+     [exec] ptjaclapp
+     [exec] ptplot
+     [exec] ptstartjini
+     [exec] ptolemy
+     [exec] ptweb
+     [exec] pxgraph
+     [exec] soot
+     [exec] tinicomm
+     [exec] tinic
+     [exec] tiniconverter
+     [exec] startjini.gui
+     [exec] vergil
+     [exec] rm -f makebat
+     [exec] ln -s ptinvoke makebat
+     [exec] rm -f ".momllib-util.bat"
+     [exec] ./makebat -q "`basename .momllib-util.bat .bat`"
+     [exec] rm -f ".nc2moml-util.bat"
+     [exec] ./makebat -q "`basename .nc2moml-util.bat .bat`"
+     [exec] rm -f ".ncapp2moml-util.bat"
+     [exec] ./makebat -q "`basename .ncapp2moml-util.bat .bat`"
+     [exec] rm -f "capecode.bat"
+     [exec] ./makebat -q "`basename capecode.bat .bat`"
+     [exec] rm -f "convertToLazy.bat"
+     [exec] ./makebat -q "`basename convertToLazy.bat .bat`"
+     [exec] rm -f "copernicus.bat"
+     [exec] ./makebat -q "`basename copernicus.bat .bat`"
+     [exec] rm -f "decompile.bat"
+     [exec] ./makebat -q "`basename decompile.bat .bat`"
+     [exec] rm -f "emachine.bat"
+     [exec] ./makebat -q "`basename emachine.bat .bat`"
+     [exec] rm -f "giottoc.bat"
+     [exec] ./makebat -q "`basename giottoc.bat .bat`"
+     [exec] rm -f "histogram.bat"
+     [exec] ./makebat -q "`basename histogram.bat .bat`"
+     [exec] rm -f "homer.bat"
+     [exec] ./makebat -q "`basename homer.bat .bat`"
+     [exec] rm -f "jode.bat"
+     [exec] ./makebat -q "`basename jode.bat .bat`"
+     [exec] rm -f "mescal.bat"
+     [exec] ./makebat -q "`basename mescal.bat .bat`"
+     [exec] LD_LIBRARY_PATH = /home/travis/build/icyphy/ptII/mescal/lib:/home/travis/build/icyphy/ptII/mescal/bin:/usr/local/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:
+     [exec] rm -f "moml.bat"
+     [exec] ./makebat -q "`basename moml.bat .bat`"
+     [exec] rm -f "obfuscate.bat"
+     [exec] ./makebat -q "`basename obfuscate.bat .bat`"
+     [exec] rm -f "ptcg.bat"
+     [exec] ./makebat -q "`basename ptcg.bat .bat`"
+     [exec] rm -f "ptcodegen.bat"
+     [exec] ./makebat -q "`basename ptcodegen.bat .bat`"
+     [exec] rm -f "ptexecute.bat"
+     [exec] ./makebat -q "`basename ptexecute.bat .bat`"
+     [exec] rm -f "ptjacl.bat"
+     [exec] ./makebat -q "`basename ptjacl.bat .bat`"
+     [exec] rm -f "ptjaclapp.bat"
+     [exec] ./makebat -q "`basename ptjaclapp.bat .bat`"
+     [exec] rm -f "ptplot.bat"
+     [exec] ./makebat -q "`basename ptplot.bat .bat`"
+     [exec] rm -f "ptstartjini.bat"
+     [exec] ./makebat -q "`basename ptstartjini.bat .bat`"
+     [exec] rm -f "ptolemy.bat"
+     [exec] ./makebat -q "`basename ptolemy.bat .bat`"
+     [exec] rm -f "ptweb.bat"
+     [exec] ./makebat -q "`basename ptweb.bat .bat`"
+     [exec] rm -f "pxgraph.bat"
+     [exec] ./makebat -q "`basename pxgraph.bat .bat`"
+     [exec] rm -f "soot.bat"
+     [exec] ./makebat -q "`basename soot.bat .bat`"
+     [exec] rm -f "tinicomm.bat"
+     [exec] ./makebat -q "`basename tinicomm.bat .bat`"
+     [exec] rm -f "tinic.bat"
+     [exec] ./makebat -q "`basename tinic.bat .bat`"
+     [exec] rm -f "tiniconverter.bat"
+     [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
+     [exec] rm -f "startjini.gui.bat"
+     [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
+     [exec] rm -f "vergil.bat"
+     [exec] ./makebat -q "`basename vergil.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
+     [exec] rm -f makeapp
+     [exec] ln -s ptinvoke makeapp
+     [exec] chmod a+x ptinvoke makeapp
+     [exec] ./makeapp CapeCode.app CAPECODE -capecode
+     [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] Error: This Java instance does not support a 32-bit JVM.
+     [exec] Please install the desired version.
+     [exec] configure: WARNING: Running java -d32 -version failed,
+     [exec]     and ./bin/java does not exist.
+     [exec]     Perhaps you need to install a separate 32-bit JVM
+     [exec]     or rerun configure with --with-java32?
+     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
+     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
+     [exec]     the same as '/usr/bin/java'.
+     [exec]     Perhaps '/usr/bin/java' is in your path before
+     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
+     [exec]     If you have problems later, be sure that you don't have a mismatch
+     [exec]     in JDK versions.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
+     [exec] 	 the same as '/usr/bin/javac'.
+     [exec] 	 Perhaps '/usr/bin/javac' is in your path
+     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
+     [exec] 	 If you have problems later, be sure that you don't have a mismatch
+     [exec] 	 in JDK versions.
+     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
+     [exec]     This is only a problem if you want to rebuild the Functional
+     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
+     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
+     [exec]     Checkstyle is only necessary for code cleaning.
+     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
+     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
+     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
+     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
+     [exec]     Cobertura is only necessary to for code coverage.
+     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
+     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
+     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
+     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
+     [exec]     CUnit is only necessary to test the C templates of the code generation facility
+     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
+     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
+     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+     [exec]     so the Mbed CG facility will not be run.
+     [exec] JAITest.java:28: error: package javax.media.jai does not exist
+     [exec] import javax.media.jai.*;
+     [exec] ^
+     [exec] 1 error
+     [exec] configure: WARNING: JAI not found in the default classpath
+     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+     [exec]     which is part of JModelica.
+     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
+     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
+     [exec] JMFTest.java:28: error: package javax.media does not exist
+     [exec] import javax.media.CaptureDeviceInfo;
+     [exec]                   ^
+     [exec] 1 error
+     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
+     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
+     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
+     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
+     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
+     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
+     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
+     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
+     [exec]     so we will try other jars.
+     [exec] libdc1394 error: Failed to initialize libdc1394
+     [exec] configure: WARNING: Could not find directory
+     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
+     [exec]     so we search for the jjtree command.
+     [exec] configure: WARNING: Failed to find jjtree
+     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
+     [exec]     in ptolemy/data/expr.
+     [exec]     JavaCC is available from
+     [exec]     http://javacc.dev.java.net/
+     [exec] 
+     [exec]     Note that the zip file that gets downloaded is actually an installer
+     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
+     [exec] 
+     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+     [exec]     ReInit() being static or not static.
+     [exec] 
+     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+     [exec]     we recommend JavaCC-5.0.
+     [exec] 
+     [exec]     Try:
+     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
+     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+     [exec]     tar -zxf javacc-5.0.tar.gz
+     [exec]     cd /home/travis/build/icyphy/ptII
+     [exec]     ./configure
+     [exec] 
+     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
+     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
+     [exec]     and then rerun configure.'
+     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
+     [exec] configure: WARNING: Failed to find matlab executable in the path.
+     [exec]     Perhaps Matlab is not installed?
+     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
+     [exec]     $PTII/ptolemy/matlab will not be usable.
+     [exec] configure: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.
+     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
+     [exec]     Rebuilding the OpenModelica fmus will not be possible.
+     [exec]     Running the OpenModelica models will not be possible.
+     [exec]     This is only a concern if you are interested in OpenModelica
+     [exec] configure: WARNING: Failed to find PowerMock.
+     [exec]     Perhaps PowerMock was not installed?
+     [exec]     You need not download these packages if you would like
+     [exec]     to run the tests.  To install PowerMock, go to
+     [exec]     http://code.google.com/p/powermock/ and download
+     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+     [exec]     then rerun configure.
+     [exec]     Other versions of PowerMock _may_ work, but are untested.
+     [exec] configure: WARNING: Failed to find the scalac binary,
+     [exec]     so org/ptolemy/scala will be excluded
+     [exec] configure: WARNING: ojdbc5.jar not found,
+     [exec]     but only necessary to use database actors with Oracle.
+     [exec]     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+     [exec]     To install ojdbc5.jar or ojdbc6.jar,
+     [exec]     download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+     [exec]     copy it to ptolemy/actor/lib/database
+     [exec]     and rerun ./configure
+     [exec] configure: WARNING: Failed to find Batik Jar file
+     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
+     [exec]     for use with Kepler.
+     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+     [exec]     batike-1.9/lib/batik-all-1.9.jar copied to /home/travis/build/icyphy/ptII/lib
+     [exec]     and ./configure rerun.
+     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
+     [exec] configure: WARNING: $TOSROOT is set to '',
+     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
+     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
+     [exec] configure: WARNING: Failed to find giotto/gdk.jar
+     [exec]     perhaps Giotto is not installed?
+     [exec]     You need not download Giotto unless you plan on generating code for
+     [exec]     Giotto models.
+     [exec]     The Giotto SDK can be
+     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
+     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
+     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
+     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
+     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
+     [exec]     will not be compiled. FMI++ is an extension of the
+     [exec]     Functional Mockup Interface, see
+     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
+     [exec] ./makeapp: Could not find MacJVMTar in /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz, downloading it now: Thu May 10 18:06:55 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 10 18:06:56 UTC 2018
+     [exec] tar: This does not look like a tar archive
+     [exec] 
+     [exec] gzip: stdin: unexpected end of file
+     [exec] tar: Child returned status 1
+     [exec] tar: Error is not recoverable: exiting now
+     [exec] make: *** [CapeCode.app] Error 2
+     [exec] Result: 2
+
+build:
+
+initReports:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/doccheck
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/ojdcheck
+
+test.export2.xml:
+     [echo] 
+     [echo]       ==test.export2.xml ==
+     [echo]       This target runs the second batch of export demo tests
+     [echo]       and generates JUnit xml output.
+     [echo]       timeout = 4000000 milliseconds
+     [echo]     
+    [junit] javachdir: directory = ptolemy/vergil/basic/export/test
+    [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test  Invoking with -Djava.net.preferIPv4Stack=true
+    [junit] ExportModeJUnitTestBatch: There are 754 demos. Exporting demos: 181 to 390.
+    [junit] Running ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2
+    [junit] ####### 1 Thu May 10 18:06:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml $PTII/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat
+    [junit] ----------------- Thu May 10 18:06:57 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
+    [junit] Done sleeping
+    [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+    [junit] .VertxChat.ThreadedComposite.InteractiveShell invoked SwingUtilities.invokeAndWait()
+    [junit] Model ".VertxChat" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat/index.html
+    [junit] 12426 ms. Memory: 283648K Free: 161589K (57%)
+    [junit] ####### 2 Thu May 10 18:07:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml $PTII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector
+    [junit] ----------------- Thu May 10 18:07:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml
+    [junit] Done sleeping
+    [junit] libdc1394 error: Failed to initialize libdc1394
+    [junit] Running .FaceDetector
+    [junit] 1799 ms. Memory: 373760K Free: 203888K (55%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector/index.html
+    [junit] 7370 ms. Memory: 373760K Free: 169450K (45%)
+    [junit] ####### 3 Thu May 10 18:07:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera.xml $PTII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera
+    [junit] ----------------- Thu May 10 18:07:27 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera.xml
+    [junit] Done sleeping
+    [junit] [AWT-EventQueue-0] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+    [junit] No physical cameras found, using WebcamDummyDriver.
+    [junit] Running .FaceDetectorCamera
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [14.994, 23.912000000000003, 16.143, 12.822000000000001, 13.668000000000001, 12.718, 13.564, 17.908, 25.051000000000002, 25.155, 18.858, 16.247, 18.535, 26.951, 24.016000000000002, 19.38, 18.011, 20.424, 20.32, 13.147, 20.842000000000002, 13.461, 13.772, 14.891, 18.752000000000002, 24.948, 19.276, 19.587, 21.051000000000002, 20.947, 19.691, 21.155, 13.877, 19.483, 21.259, 20.739, 13.25, 24.431, 25.988, 14.611, 24.327, 21.362000000000002, 18.641000000000002, 21.466, 22.866, 13.354000000000001, 18.96, 24.224, 24.12, 25.885, 21.880000000000003, 14.716000000000001, 23.177, 22.969, 23.073, 16.765, 23.281000000000002, 22.716, 24.742, 19.166, 16.973, 16.869, 25.672, 15.73, 21.673000000000002, 21.777, 17.077, 24.535, 24.639, 14.092, 14.195, 13.988000000000001, 22.404, 16.661, 14.299000000000001, 24.845000000000002, 14.403, 14.507, 16.557000000000002, 22.613, 23.490000000000002, 26.195, 13.036, 23.386, 12.932, 21.57, 26.091, 20.532, 26.298000000000002, 19.063000000000002, 19.900000000000002, 16.454, 26.823, 16.35, 17.284, 15.937000000000001, 17.18, 25.362000000000002, 25.466, 17.596, 18.218, 23.806, 20.636, 15.096, 23.702, 26.401, 20.108, 15.521, 23.597, 15.418000000000001, 15.625, 15.833, 21.987000000000002, 17.701, 25.569000000000003, 16.04, 17.804000000000002, 22.196, 25.776, 22.092000000000002, 25.258000000000003, 18.115000000000002, 15.209000000000001, 22.3, 26.608, 20.005, 17.493000000000002, 20.212, 22.507, 19.797, 26.711000000000002, 17.389, 26.504, 15.313]
+    [junit] 30199 ms. Memory: 1374720K Free: 989920K (72%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera/index.html
+    [junit] 39338 ms. Memory: 1374720K Free: 953198K (69%)
+    [junit] ####### 4 Thu May 10 18:08:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount.xml $PTII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount
+    [junit] ----------------- Thu May 10 18:08:11 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount.xml
+    [junit] Done sleeping
+    [junit] Running .OccupancyCount
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30051 ms. Memory: 1583616K Free: 340445K (21%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount/index.html
+    [junit] 35674 ms. Memory: 1583616K Free: 313236K (20%)
+    [junit] ####### 5 Thu May 10 18:08:52 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST
+    [junit] Warning: not running ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] ----------------- Thu May 10 18:08:52 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml
+    [junit] Done sleeping
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST/index.html
+    [junit] 3222 ms. Memory: 1603072K Free: 1230975K (77%)
+    [junit] ####### 6 Thu May 10 18:09:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple.xml $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple
+    [junit] ----------------- Thu May 10 18:09:00 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple.xml
+    [junit] Done sleeping
+    [junit] Running .RESTSimple
+    [junit] REST2: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST2: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 2753 ms. Memory: 1603072K Free: 686507K (43%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple/index.html
+    [junit] 7615 ms. Memory: 1603072K Free: 658200K (41%)
+    [junit] ####### 7 Thu May 10 18:09:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather
+    [junit] Warning: not running ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] ----------------- Thu May 10 18:09:13 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
+    [junit] Done sleeping
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather/index.html
+    [junit] 4967 ms. Memory: 1691648K Free: 1269224K (75%)
+    [junit] ####### 8 Thu May 10 18:09:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml $PTII/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer
+    [junit] ----------------- Thu May 10 18:09:23 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml
+    [junit] Done sleeping
+    [junit] Running .HttpServer
+    [junit] JavaScript: Server is listening. (Thread[vert.x-eventloop-thread-2,6,main])
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30028 ms. Memory: 1691648K Free: 847003K (50%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer/index.html
+    [junit] 34897 ms. Memory: 1691648K Free: 812592K (48%)
+    [junit] ####### 9 Thu May 10 18:10:03 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml $PTII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient
+    [junit] ----------------- Thu May 10 18:10:03 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml
+    [junit] Done sleeping
+    [junit] Running .KeyValueStoreClient
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] KeyValueStore: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30034 ms. Memory: 1700352K Free: 764724K (45%)
+    [junit] WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [28.0]
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient/index.html
+    [junit] 35676 ms. Memory: 1700352K Free: 732682K (43%)
+    [junit] ####### 10 Thu May 10 18:10:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml $PTII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer
+    [junit] ----------------- Thu May 10 18:10:43 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml
+    [junit] Done sleeping
+    [junit] Running .KeyValueStoreServer
+    [junit] WebServer: WebServer: Creating new server. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-1,6,main])
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] WebServer: WebServer: Stopping the server. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 30055 ms. Memory: 1894400K Free: 450602K (24%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer/index.html
+    [junit] 37738 ms. Memory: 2014208K Free: 1602645K (80%)
+    [junit] ####### 11 Thu May 10 18:11:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerTerra.xml $PTII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerTerra
+    [junit] ----------------- Thu May 10 18:11:26 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerTerra.xml
+    [junit] Done sleeping
+    [junit] Running .KeyValueStoreServerTerra
+    [junit] WebServer: WebServer: Creating new server. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,6,main])
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] WebServer: WebServer: Stopping the server. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 30051 ms. Memory: 1904640K Free: 409179K (21%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerTerra/index.html
+    [junit] 37560 ms. Memory: 1904640K Free: 363037K (19%)
+    [junit] ####### 12 Thu May 10 18:12:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml $PTII/ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer
+    [junit] ----------------- Thu May 10 18:12:09 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml
+    [junit] Done sleeping
+    [junit] Running .WebServer
+    [junit] WebServer: WebServer: Creating new server. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] REST: Making an HTTP request. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WebServer: WebServer: Stopping the server. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+    [junit] 23527 ms. Memory: 2107392K Free: 562209K (27%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer/index.html
+    [junit] 30179 ms. Memory: 2107392K Free: 529372K (25%)
+    [junit] ####### 13 Thu May 10 18:12:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate
+    [junit] ----------------- Thu May 10 18:12:44 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml
+    [junit] Done sleeping
+    [junit] Running .ImageAnnotate
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30068 ms. Memory: 2380288K Free: 1062191K (45%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate/index.html
+    [junit] 35724 ms. Memory: 2380288K Free: 1021939K (43%)
+    [junit] ####### 14 Thu May 10 18:13:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Annotate.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Annotate
+    [junit] ----------------- Thu May 10 18:13:24 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Annotate.xml
+    [junit] Done sleeping
+    [junit] Running .Annotate
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30054 ms. Memory: 2543616K Free: 1704481K (67%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Annotate/index.html
+    [junit] 35318 ms. Memory: 2543616K Free: 1678724K (66%)
+    [junit] ####### 15 Thu May 10 18:14:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Average.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Average
+    [junit] ----------------- Thu May 10 18:14:05 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Average.xml
+    [junit] Done sleeping
+    [junit] Running .Average
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30074 ms. Memory: 2443776K Free: 844347K (35%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Average/index.html
+    [junit] 35367 ms. Memory: 2443776K Free: 822432K (34%)
+    [junit] ####### 16 Thu May 10 18:14:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BicubicScale.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BicubicScale
+    [junit] ----------------- Thu May 10 18:14:45 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BicubicScale.xml
+    [junit] Done sleeping
+    [junit] Running .BicubicScale
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30062 ms. Memory: 2280448K Free: 1006642K (44%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BicubicScale/index.html
+    [junit] 35591 ms. Memory: 2280448K Free: 984916K (43%)
+    [junit] ####### 17 Thu May 10 18:15:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Block.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Block
+    [junit] ----------------- Thu May 10 18:15:26 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Block.xml
+    [junit] Done sleeping
+    [junit] Running .Block
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30067 ms. Memory: 2414080K Free: 851876K (35%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Block/index.html
+    [junit] 35665 ms. Memory: 2414080K Free: 827553K (34%)
+    [junit] ####### 18 Thu May 10 18:16:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Border.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Border
+    [junit] ----------------- Thu May 10 18:16:06 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Border.xml
+    [junit] Done sleeping
+    [junit] Running .Border
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30054 ms. Memory: 2203136K Free: 392482K (18%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Border/index.html
+    [junit] 35651 ms. Memory: 2203136K Free: 369631K (17%)
+    [junit] ####### 19 Thu May 10 18:16:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BoxBlur.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BoxBlur
+    [junit] ----------------- Thu May 10 18:16:47 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BoxBlur.xml
+    [junit] Done sleeping
+    [junit] Running .BoxBlur
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30046 ms. Memory: 2283520K Free: 274403K (12%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/BoxBlur/index.html
+    [junit] 36234 ms. Memory: 2318336K Free: 1322986K (57%)
+    [junit] ####### 20 Thu May 10 18:17:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Bump.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Bump
+    [junit] ----------------- Thu May 10 18:17:28 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Bump.xml
+    [junit] Done sleeping
+    [junit] Running .Bump
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30064 ms. Memory: 2384384K Free: 1483071K (62%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Bump/index.html
+    [junit] 36051 ms. Memory: 2384384K Free: 1456963K (61%)
+    [junit] ####### 21 Thu May 10 18:18:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ChannelMix.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ChannelMix
+    [junit] ----------------- Thu May 10 18:18:09 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ChannelMix.xml
+    [junit] Done sleeping
+    [junit] Running .ChannelMix
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30071 ms. Memory: 2447360K Free: 756782K (31%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ChannelMix/index.html
+    [junit] 36217 ms. Memory: 2447360K Free: 734191K (30%)
+    [junit] ####### 22 Thu May 10 18:18:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Chrome.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Chrome
+    [junit] ----------------- Thu May 10 18:18:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Chrome.xml
+    [junit] Done sleeping
+    [junit] Running .Chrome
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30100 ms. Memory: 2485760K Free: 1110234K (45%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.605, 26.015, 25.912000000000003, 25.708000000000002, 25.298000000000002, 25.093, 25.400000000000002, 25.810000000000002, 26.117, 25.196, 25.503]
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Chrome/index.html
+    [junit] 36488 ms. Memory: 2485760K Free: 1090391K (44%)
+    [junit] ####### 23 Thu May 10 18:19:32 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Circle.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Circle
+    [junit] ----------------- Thu May 10 18:19:32 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Circle.xml
+    [junit] Done sleeping
+    [junit] Running .Circle
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30082 ms. Memory: 2524160K Free: 940371K (37%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Circle/index.html
+    [junit] 36554 ms. Memory: 2524160K Free: 916097K (36%)
+    [junit] ####### 24 Thu May 10 18:20:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ColorHalftone.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ColorHalftone
+    [junit] ----------------- Thu May 10 18:20:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ColorHalftone.xml
+    [junit] Done sleeping
+    [junit] Running .ColorHalftone
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.303, 23.097, 23.719, 23.2, 23.822, 23.406000000000002, 23.613, 23.509]
+    [junit] 30185 ms. Memory: 2458624K Free: 827404K (34%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ColorHalftone/index.html
+    [junit] 36741 ms. Memory: 2458624K Free: 801797K (33%)
+    [junit] ####### 25 Thu May 10 18:20:55 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contour.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contour
+    [junit] ----------------- Thu May 10 18:20:55 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contour.xml
+    [junit] Done sleeping
+    [junit] Running .Contour
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30061 ms. Memory: 2460672K Free: 933569K (38%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contour/index.html
+    [junit] 36970 ms. Memory: 2460672K Free: 907283K (37%)
+    [junit] ####### 26 Thu May 10 18:21:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contrast.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contrast
+    [junit] ----------------- Thu May 10 18:21:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contrast.xml
+    [junit] Done sleeping
+    [junit] Running .Contrast
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30073 ms. Memory: 2456064K Free: 791752K (32%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Contrast/index.html
+    [junit] 36842 ms. Memory: 2456064K Free: 768383K (31%)
+    [junit] ####### 27 Thu May 10 18:22:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crop.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crop
+    [junit] ----------------- Thu May 10 18:22:19 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crop.xml
+    [junit] Done sleeping
+    [junit] Running .Crop
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30075 ms. Memory: 2461184K Free: 994201K (40%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crop/index.html
+    [junit] 37044 ms. Memory: 2461184K Free: 973769K (40%)
+    [junit] ####### 28 Thu May 10 18:23:01 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crystallize.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crystallize
+    [junit] ----------------- Thu May 10 18:23:01 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crystallize.xml
+    [junit] Done sleeping
+    [junit] Running .Crystallize
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30637 ms. Memory: 2467328K Free: 938047K (38%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Crystallize/index.html
+    [junit] 37674 ms. Memory: 2467328K Free: 912322K (37%)
+    [junit] ####### 29 Thu May 10 18:23:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Gray.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Gray
+    [junit] ----------------- Thu May 10 18:23:44 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Gray.xml
+    [junit] Done sleeping
+    [junit] Running .Gray
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30091 ms. Memory: 2209280K Free: 344310K (16%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Gray/index.html
+    [junit] 37137 ms. Memory: 2403840K Free: 1406067K (58%)
+    [junit] ####### 30 Thu May 10 18:24:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters
+    [junit] Warning: not running ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] ----------------- Thu May 10 18:24:26 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml
+    [junit] Done sleeping
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters/index.html
+    [junit] 3185 ms. Memory: 2403840K Free: 1245431K (52%)
+    [junit] ####### 31 Thu May 10 18:24:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Invert.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Invert
+    [junit] ----------------- Thu May 10 18:24:34 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Invert.xml
+    [junit] Done sleeping
+    [junit] Running .Invert
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30097 ms. Memory: 2366464K Free: 507667K (21%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Invert/index.html
+    [junit] 37192 ms. Memory: 2366464K Free: 484632K (20%)
+    [junit] ####### 32 Thu May 10 18:25:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/LensBlur.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/LensBlur
+    [junit] ----------------- Thu May 10 18:25:16 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/LensBlur.xml
+    [junit] Done sleeping
+    [junit] Running .LensBlur
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30081 ms. Memory: 2388992K Free: 702801K (29%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/LensBlur/index.html
+    [junit] 37394 ms. Memory: 2388992K Free: 677459K (28%)
+    [junit] ####### 33 Thu May 10 18:25:59 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random
+    [junit] ----------------- Thu May 10 18:25:59 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml
+    [junit] Done sleeping
+    [junit] Running .Random
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30180 ms. Memory: 2360320K Free: 391680K (17%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.821]
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random/index.html
+    [junit] 39417 ms. Memory: 2360320K Free: 366547K (16%)
+    [junit] ####### 34 Thu May 10 18:26:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Solarize.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Solarize
+    [junit] ----------------- Thu May 10 18:26:43 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Solarize.xml
+    [junit] Done sleeping
+    [junit] Running .Solarize
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30094 ms. Memory: 2626048K Free: 1189108K (45%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Solarize/index.html
+    [junit] 37476 ms. Memory: 2626048K Free: 1165595K (44%)
+    [junit] ####### 35 Thu May 10 18:27:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Threshold.xml $PTII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Threshold
+    [junit] ----------------- Thu May 10 18:27:26 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Threshold.xml
+    [junit] Done sleeping
+    [junit] Running .Threshold
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30078 ms. Memory: 2654208K Free: 548736K (21%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Threshold/index.html
+    [junit] 37631 ms. Memory: 2654208K Free: 526028K (20%)
+    [junit] ####### 36 Thu May 10 18:28:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient
+    [junit] ----------------- Thu May 10 18:28:08 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient.xml
+    [junit] Done sleeping
+    [junit] Running .SecureCommClient
+    [junit] 9063 ms. Memory: 2553856K Free: 872068K (34%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient/index.html
+    [junit] 15536 ms. Memory: 2553856K Free: 832695K (33%)
+    [junit] ####### 37 Thu May 10 18:28:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer
+    [junit] ----------------- Thu May 10 18:28:29 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml
+    [junit] Done sleeping
+    [junit] Running .SecureCommServer
+    [junit] 15592 ms. Memory: 2285056K Free: 1070071K (47%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer/index.html
+    [junit] 21845 ms. Memory: 2285056K Free: 1037483K (45%)
+    [junit] ####### 38 Thu May 10 18:28:56 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient
+    [junit] ----------------- Thu May 10 18:28:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient.xml
+    [junit] Done sleeping
+    [junit] Running .SecureCommServerClient
+    [junit] 12816 ms. Memory: 2694144K Free: 1164510K (43%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient/index.html
+    [junit] 21113 ms. Memory: 2694144K Free: 1125874K (42%)
+    [junit] ####### 39 Thu May 10 18:29:22 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClientJS.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClientJS
+    [junit] ----------------- Thu May 10 18:29:22 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClientJS.xml
+    [junit] Done sleeping
+    [junit] Opened file:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClientJS.xml in 28870 ms.
+    [junit] Size Statistics for .SecureCommServerClientJS
+    [junit] AtomicEntities: 17
+    [junit] CompositeEntities: 0
+    [junit] OpaqueCompositeEntities: 0
+    [junit] Relations: 18
+    [junit] Attributes: 213
+    [junit] Atomic Actor Names and Counts:
+    [junit] org.terraswarm.accessor.JSAccessor 12
+    [junit] ptolemy.actor.lib.jjs.JavaScript 5
+    [junit] 
+    [junit] Composite Entity Depths and Counts:
+    [junit] 
+    [junit] Running .SecureCommServerClientJS
+    [junit] preinitialize() finished: 29717 ms. Memory: 2728960K Free: 1068259K (39%)
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] Manager.initialize() finished: 50585 ms. Memory: 2729984K Free: 1119266K (41%)
+    [junit] 50998 ms. Memory: 2729984K Free: 1103481K (40%)
+    [junit] ####### 40 Thu May 10 18:30:48 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager
+    [junit] ----------------- Thu May 10 18:30:48 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager.xml
+    [junit] ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 
+    [junit]   in .SecureCommServerClientJS.DE Director
+    [junit] Because:
+    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	... 19 more
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	... 21 more
+    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34628$18508$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34626$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	... 21 more
+    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34628$18508$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34626$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34628$18508$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34626$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] java.lang.reflect.InvocationTargetException
+    [junit] 	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
+    [junit] 	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
+    [junit] 	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
+    [junit] 	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
+    [junit] 	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:93)
+    [junit] 	at sun.reflect.GeneratedMethodAccessor17.invoke(Unknown Source)
+    [junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    [junit] 	at java.lang.reflect.Method.invoke(Method.java:498)
+    [junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit] 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+    [junit] 	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+    [junit] 	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+    [junit] 	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+    [junit] 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+    [junit] 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+    [junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+    [junit] Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 
+    [junit]   in .SecureCommServerClientJS.DE Director
+    [junit] Because:
+    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 
+    [junit]   in .SecureCommServerClientJS.DE Director
+    [junit] Because:
+    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	... 14 more
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .SecureCommServerClientJS.TrainableTest
+    [junit] Because:
+    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	... 19 more
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	... 21 more
+    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34628$18508$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$34626$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] Done sleeping
+    [junit] Running .SecureCommServerClientWithAuthManager
+    [junit] AuthManager._cloneOrPull(/home/travis/build/icyphy/ptII/vendors/iotauth, https://github.com/iotauth/iotauth.git, -1
+    [junit] In "/home/travis/build/icyphy/ptII/vendors/iotauth", about to execute:
+    [junit]     git clone https://github.com/iotauth/iotauth.git .
+    [junit] Cloning into '.'...
+    [junit] All Done
+    [junit] patternLog: 
+    [junit] AuthManager._generateCredentials(/home/travis/build/icyphy/ptII/vendors/iotauth, examples)
+    [junit] Manager.initialize() finished: 12483 ms. Memory: 2841088K Free: 1545903K (54%)
+    [junit] 17536 ms. Memory: 2841088K Free: 1545870K (54%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager/index.html
+    [junit] 26055 ms. Memory: 2841088K Free: 1511232K (53%)
+    [junit] ####### 41 Thu May 10 18:31:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub
+    [junit] ----------------- Thu May 10 18:31:19 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml
+    [junit] Done sleeping
+    [junit] Running .SecurePubSub
+    [junit] 17663 ms. Memory: 2865664K Free: 1311860K (46%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub/index.html
+    [junit] 26841 ms. Memory: 2865664K Free: 1256869K (44%)
+    [junit] ####### 42 Thu May 10 18:31:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml $PTII/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage
+    [junit] ----------------- Thu May 10 18:31:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
+    [junit] Done sleeping
+    [junit] Running .LocalStorage
+    [junit] 3429 ms. Memory: 2869248K Free: 1629261K (57%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage/index.html
+    [junit] 9274 ms. Memory: 2869248K Free: 1590725K (55%)
+    [junit] ####### 43 Thu May 10 18:32:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml $PTII/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub
+    [junit] ----------------- Thu May 10 18:32:05 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
+    [junit] Done sleeping
+    [junit] Running .MQTTPubSub
+    [junit] 17348 ms. Memory: 2883072K Free: 1573578K (55%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub/index.html
+    [junit] 25309 ms. Memory: 2883072K Free: 1535611K (53%)
+    [junit] ####### 44 Thu May 10 18:32:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket
+    [junit] ----------------- Thu May 10 18:32:35 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml
+    [junit] Done sleeping
+    [junit] Running .SecureSocket
+    [junit] Client: Failed to connect: 
+    [junit] Connection refused: localhost/127.0.0.1:64183
+    [junit] Connection refused
+    [junit] ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+    [junit] Connection refused: localhost/127.0.0.1:64183
+    [junit] Connection refused
+    [junit]   in .SecureSocket.Client
+    [junit] Because:
+    [junit] Connection refused: localhost/127.0.0.1:64183
+    [junit] 	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:64183
+    [junit] 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+    [junit] 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+    [junit] 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+    [junit] 	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+    [junit] 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+    [junit] 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+    [junit] 	at java.lang.Thread.run(Thread.java:748)
+    [junit] Caused by: java.net.ConnectException: Connection refused
+    [junit] 	... 11 more
+    [junit] Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:64183
+    [junit] 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+    [junit] 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+    [junit] 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+    [junit] 	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+    [junit] 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+    [junit] 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+    [junit] 	at java.lang.Thread.run(Thread.java:748)
+    [junit] Caused by: java.net.ConnectException: Connection refused
+    [junit] 	... 11 more
+    [junit] 17417 ms. Memory: 2888704K Free: 1572442K (54%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket/index.html
+    [junit] 25105 ms. Memory: 2888704K Free: 1536584K (53%)
+    [junit] ####### 45 Thu May 10 18:33:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched
+    [junit] ----------------- Thu May 10 18:33:06 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml
+    [junit] Done sleeping
+    [junit] Running .SocketDoubleArrayBatched
+    [junit] Client: Sending data: 1.1,1.2 (Thread[AWT-EventQueue-0,6,main])
+    [junit] 10166 ms. Memory: 2888704K Free: 733452K (25%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched/index.html
+    [junit] 18727 ms. Memory: 2861568K Free: 1491032K (52%)
+    [junit] ####### 46 Thu May 10 18:33:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage
+    [junit] ----------------- Thu May 10 18:33:29 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml
+    [junit] Done sleeping
+    [junit] Running .SocketImage
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] Manager.initialize() finished: 10984 ms. Memory: 2879488K Free: 1206927K (42%)
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.102]
+    [junit] 30163 ms. Memory: 2870784K Free: 508028K (18%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage/index.html
+    [junit] 39832 ms. Memory: 2870784K Free: 465646K (16%)
+    [junit] ####### 47 Thu May 10 18:34:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString
+    [junit] ----------------- Thu May 10 18:34:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml
+    [junit] Done sleeping
+    [junit] Running .SocketString
+    [junit] May 10, 2018 6:34:32 PM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+    [junit] SEVERE: mqttpt_8234141479069515196: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,525,977,212,874 lastInboundActivity=1,525,977,149,111 time=1,525,977,272,874 lastPing=1,525,977,212,874
+    [junit] May 10, 2018 6:34:32 PM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+    [junit] SEVERE: mqttpt_8234141479069515196: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,525,977,212,904 lastInboundActivity=1,525,977,152,046 time=1,525,977,272,904 lastPing=1,525,977,212,904
+    [junit] 11687 ms. Memory: 2871808K Free: 815304K (28%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString/index.html
+    [junit] 19969 ms. Memory: 2871808K Free: 783087K (27%)
+    [junit] ####### 48 Thu May 10 18:34:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort
+    [junit] ----------------- Thu May 10 18:34:39 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml
+    [junit] Done sleeping
+    [junit] Running .SocketUnsignedShort
+    [junit] Client: Sending data: -1,0,1,65535,65536 (Thread[AWT-EventQueue-0,6,main])
+    [junit] 9753 ms. Memory: 2500608K Free: 392227K (16%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort/index.html
+    [junit] 17738 ms. Memory: 2500608K Free: 367058K (15%)
+    [junit] ####### 49 Thu May 10 18:35:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket
+    [junit] Warning: not running ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] ----------------- Thu May 10 18:35:02 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml
+    [junit] Done sleeping
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket/index.html
+    [junit] 3159 ms. Memory: 2500608K Free: 243522K (10%)
+    [junit] ####### 50 Thu May 10 18:35:10 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched
+    [junit] ----------------- Thu May 10 18:35:10 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml
+    [junit] Done sleeping
+    [junit] Running .TCPSocketDoubleArrayBatched
+    [junit] 9401 ms. Memory: 2877952K Free: 540707K (19%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched/index.html
+    [junit] 18766 ms. Memory: 2606592K Free: 1016597K (39%)
+    [junit] ####### 51 Thu May 10 18:35:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage
+    [junit] ----------------- Thu May 10 18:35:34 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml
+    [junit] Done sleeping
+    [junit] Running .TCPSocketImage
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] Manager.initialize() finished: 13363 ms. Memory: 2859520K Free: 747980K (26%)
+    [junit] May 10, 2018 6:36:13 PM io.vertx.core.impl.BlockedThreadChecker
+    [junit] WARNING: Thread Thread[vert.x-eventloop-thread-3,6,main] has been blocked for 2612 ms, time limit is 2000
+    [junit] WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] 30175 ms. Memory: 3115008K Free: 1278058K (41%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage/index.html
+    [junit] 41526 ms. Memory: 3115008K Free: 1242983K (40%)
+    [junit] ####### 52 Thu May 10 18:36:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient
+    [junit] ----------------- Thu May 10 18:36:20 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient.xml
+    [junit] Done sleeping
+    [junit] Running .TCPSocketSecureServerClient
+    [junit] Manager.initialize() finished: 16695 ms. Memory: 3090432K Free: 1177689K (38%)
+    [junit] ClientA: Failed to connect: 
+    [junit] Connection refused: localhost/127.0.0.1:41018
+    [junit] Connection refused
+    [junit] 21869 ms. Memory: 3090432K Free: 1156357K (37%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient/index.html
+    [junit] 34900 ms. Memory: 3090432K Free: 1112712K (36%)
+    [junit] ####### 53 Thu May 10 18:37:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients
+    [junit] ----------------- Thu May 10 18:37:00 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients.xml
+    [junit] Done sleeping
+    [junit] Running .TCPSocketTwoClients
+    [junit] Manager.initialize() finished: 14426 ms. Memory: 3120640K Free: 732889K (23%)
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30139 ms. Memory: 3152384K Free: 1516816K (48%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients/index.html
+    [junit] 42217 ms. Memory: 3152384K Free: 1463058K (46%)
+    [junit] ####### 54 Thu May 10 18:37:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort
+    [junit] ----------------- Thu May 10 18:37:47 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort.xml
+    [junit] Done sleeping
+    [junit] Running .TCPSocketUnsignedShort
+    [junit] Manager.initialize() finished: 10064 ms. Memory: 3163648K Free: 1479101K (47%)
+    [junit] 12194 ms. Memory: 3163648K Free: 1456503K (46%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort/index.html
+    [junit] 20751 ms. Memory: 3163648K Free: 1421613K (45%)
+    [junit] ####### 55 Thu May 10 18:38:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml $PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition
+    [junit] Warning: not running ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] ----------------- Thu May 10 18:38:13 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml
+    [junit] Done sleeping
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition/index.html
+    [junit] 12129 ms. Memory: 3163648K Free: 751505K (24%)
+    [junit] ####### 56 Thu May 10 18:38:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml $PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater
+    [junit] Warning: not running ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] ----------------- Thu May 10 18:38:30 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml
+    [junit] Done sleeping
+    [junit] Opened file:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml in 19000 ms.
+    [junit] Size Statistics for .WatchCommandUpdater
+    [junit] AtomicEntities: 9
+    [junit] CompositeEntities: 0
+    [junit] OpaqueCompositeEntities: 0
+    [junit] Relations: 6
+    [junit] Attributes: 93
+    [junit] Atomic Actor Names and Counts:
+    [junit] org.terraswarm.accessor.JSAccessor 6
+    [junit] ptolemy.actor.lib.jjs.JavaScript 3
+    [junit] 
+    [junit] Composite Entity Depths and Counts:
+    [junit] 
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater/index.html
+    [junit] 22154 ms. Memory: 3173888K Free: 1247016K (39%)
+    [junit] ####### 57 Thu May 10 18:38:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml $PTII/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing
+    [junit] ----------------- Thu May 10 18:38:57 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
+    [junit] Done sleeping
+    [junit] Running .Testing
+    [junit] Manager.initialize() finished: 14155 ms. Memory: 3191296K Free: 999344K (31%)
+    [junit] MochaTest: Start of Common host: Basic (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: End of Common host: Basic (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: Start of Common host: Composite accessors (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: Start of Common host: Spontaneous accessors (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: Start of Common host: Spontaneous accessors (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: Before Spontaneous accessor produces correct outputs after 1 and 2 seconds. (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: After Spontaneous accessor produces correct outputs after 1 and 2 seconds. (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: End of Common host: Spontaneous accessors (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: Start of Common host: Inheritance (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: End of Common host: Inheritance (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: Instance of TestAccessor: [Circular]
+    [junit] Tests: (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: TestAccessor.fire() invoked. (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: TestAdder: fire(): inputLeft: 10 inputRight: 40 (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: TestAdder: fire(): inputLeft: 5 inputRight: 20 (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: TestAdder: fire(): inputLeft: 5 inputRight: 20 (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: TestAccessor.fire() invoked. (Thread[AWT-EventQueue-0,6,main])
+    [junit] MochaTest: <?xml version="1.0" encoding="UTF-8"?>
+    [junit]  <testsuites>
+    [junit]  <testsuite name="Root Suite" tests="0">
+    [junit]  <testsuite name="Common host: Basic" tests="7">
+    [junit]  <testcase name="this.getParameter() returns default value." > </testcase>
+    [junit]  <testcase name="this.getParameter() returns value set by this.setParameter()." > </testcase>
+    [junit]  <testcase name="this.get() returns default value." > </testcase>
+    [junit]  <testcase name="this.get() returns null if no input yet provided." > </testcase>
+    [junit]  <testcase name="this.get() returns null if no input yet provided but type being boolean." > </testcase>
+    [junit]  <testcase name="this.get() returns value provided by provideInput()." > </testcase>
+    [junit]  <testcase name="latestOutput contains value provided by inputHandlers and send()." > </testcase>
+    [junit]  </testsuite>
+    [junit]  <testsuite name="Common host: Composite accessors" tests="2">
+    [junit]  <testcase name="Composite accessor produces correct output when manually scheduled." > </testcase>
+    [junit]  <testcase name="Composite accessor produces correct output when automatically scheduled." > </testcase>
+    [junit]  </testsuite>
+    [junit]  <testsuite name="Common host: Spontaneous accessors" tests="2">
+    [junit]  <testcase name="Spontaneous accessor produces correct outputs after 1 and 2 seconds." > </testcase>
+    [junit]  <testcase name="Composite spontaneous accessor produces correct outputs after 1 and 2 seconds." > </testcase>
+    [junit]  </testsuite>
+    [junit]  <testsuite name="Common host: Inheritance" tests="4">
+    [junit]  <testcase name="Inheritance, function overriding, and variable visiility should work properly." > </testcase>
+    [junit]  <testcase name="Implementing an interface should work properly." > </testcase>
+    [junit]  <testcase name="Exported fields of base classes can be accessed and initialize() is properly scoped." > </testcase>
+    [junit]  <testcase name="Two-level inheritance should work properly." > </testcase>
+    [junit]  </testsuite>
+    [junit]  </testsuite>
+    [junit]  </testsuites>
+    [junit]  (Thread[AWT-EventQueue-0,6,main])
+    [junit] 29337 ms. Memory: 3191296K Free: 885452K (28%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing/index.html
+    [junit] 41058 ms. Memory: 3191296K Free: 844650K (26%)
+    [junit] ####### 58 Thu May 10 18:39:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml $PTII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket
+    [junit] ----------------- Thu May 10 18:39:43 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml
+    [junit] Done sleeping
+    [junit] Running .UDPSocket
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30051 ms. Memory: 3191296K Free: 400792K (13%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket/index.html
+    [junit] 36478 ms. Memory: 3189248K Free: 1280140K (40%)
+    [junit] ####### 59 Thu May 10 18:40:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml $PTII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator
+    [junit] ----------------- Thu May 10 18:40:25 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml
+    [junit] Done sleeping
+    [junit] Opened file:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml in 14941 ms.
+    [junit] Size Statistics for .WatchEmulator
+    [junit] AtomicEntities: 7
+    [junit] CompositeEntities: 0
+    [junit] OpaqueCompositeEntities: 0
+    [junit] Relations: 5
+    [junit] Attributes: 85
+    [junit] Atomic Actor Names and Counts:
+    [junit] org.terraswarm.accessor.JSAccessor 5
+    [junit] ptolemy.actor.lib.jjs.JavaScript 2
+    [junit] 
+    [junit] Composite Entity Depths and Counts:
+    [junit] 
+    [junit] Running .WatchEmulator
+    [junit] preinitialize() finished: 14919 ms. Memory: 3156480K Free: 323225K (10%)
+    [junit] Manager.initialize() finished: 25878 ms. Memory: 3148800K Free: 598260K (19%)
+    [junit] ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 
+    [junit]   in .WatchEmulator.DE Director
+    [junit] Because:
+    [junit] Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	... 19 more
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	... 21 more
+    [junit] Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53176$18557$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53174$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	... 21 more
+    [junit] Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53176$18557$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53174$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53176$18557$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53174$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] java.lang.reflect.InvocationTargetException
+    [junit] 	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
+    [junit] 	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
+    [junit] 	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
+    [junit] 	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
+    [junit] 	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:93)
+    [junit] 	at sun.reflect.GeneratedMethodAccessor17.invoke(Unknown Source)
+    [junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    [junit] 	at java.lang.reflect.Method.invoke(Method.java:498)
+    [junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit] 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+    [junit] 	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+    [junit] 	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+    [junit] 	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+    [junit] 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+    [junit] 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+    [junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+    [junit] Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 
+    [junit]   in .WatchEmulator.DE Director
+    [junit] Because:
+    [junit] Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
+    [junit] 	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+    [junit] 	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+    [junit] 	at java.awt.EventQueue.access$500(EventQueue.java:97)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:709)
+    [junit] 	at java.awt.EventQueue$3.run(EventQueue.java:703)
+    [junit] 	at java.security.AccessController.doPrivileged(Native Method)
+    [junit] 	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+    [junit] 	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+    [junit] 	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+    [junit] 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+    [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+    [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 
+    [junit]   in .WatchEmulator.DE Director
+    [junit] Because:
+    [junit] Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+    [junit] 	... 14 more
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit]   in .WatchEmulator.TrainableTest2
+    [junit] Because:
+    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	... 19 more
+    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)
+    [junit] 	... 21 more
+    [junit] Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53176$18557$\^function\_.L:1#wrapup(<function>:393)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$53174$30328$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:673)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+    [junit] 	... 23 more
+    [junit] 28144 ms. Memory: 3148800K Free: 561099K (18%)
+    [junit] ####### 60 Thu May 10 18:41:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots
+    [junit] ----------------- Thu May 10 18:41:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml
+    [junit] Done sleeping
+    [junit] Running .Dots
+    [junit] Manager.initialize() finished: 10769 ms. Memory: 3048960K Free: 1150381K (38%)
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] Xlib:  extension "RANDR" missing on display ":99.0".
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] ExportHTMLTimer went off after 60000 ms., calling manager.stop().
+    [junit] 74084 ms. Memory: 3048960K Free: 1126752K (37%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots/index.html
+    [junit] 86380 ms. Memory: 3048960K Free: 1093363K (36%)
+    [junit] ####### 61 Thu May 10 18:42:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface
+    [junit] ----------------- Thu May 10 18:42:46 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml
+    [junit] Done sleeping
+    [junit] Running .HelloUserInterface
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 16979 ms. Memory: 3080192K Free: 1119312K (36%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface/index.html
+    [junit] 26546 ms. Memory: 3080192K Free: 1083397K (35%)
+    [junit] ####### 62 Thu May 10 18:43:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface
+    [junit] ----------------- Thu May 10 18:43:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterface
+    [junit] 5001 ms. Memory: 3080192K Free: 985015K (32%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface/index.html
+    [junit] 9148 ms. Memory: 3046400K Free: 1651039K (54%)
+    [junit] ####### 63 Thu May 10 18:43:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser
+    [junit] ----------------- Thu May 10 18:43:31 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterfaceBrowser
+    [junit] Manager.initialize() finished: 15806 ms. Memory: 3065344K Free: 1007993K (33%)
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.0]
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 30175 ms. Memory: 3065344K Free: 967957K (32%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser/index.html
+    [junit] 42795 ms. Memory: 3065344K Free: 934828K (30%)
+    [junit] ####### 64 Thu May 10 18:44:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage
+    [junit] ----------------- Thu May 10 18:44:19 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterfaceFixedPage
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 9036 ms. Memory: 3077632K Free: 1243347K (40%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage/index.html
+    [junit] 15790 ms. Memory: 3077632K Free: 1208662K (39%)
+    [junit] ####### 65 Thu May 10 18:44:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive
+    [junit] ----------------- Thu May 10 18:44:40 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterfaceInteractive
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 30091 ms. Memory: 3085824K Free: 1282051K (42%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive/index.html
+    [junit] 38469 ms. Memory: 3085824K Free: 1247334K (40%)
+    [junit] ####### 66 Thu May 10 18:45:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp
+    [junit] ----------------- Thu May 10 18:45:23 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterfaceRamp
+    [junit] Manager.initialize() finished: 12144 ms. Memory: 3081728K Free: 999582K (32%)
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 22764 ms. Memory: 3081728K Free: 980797K (32%)
+    [junit] WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp/index.html
+    [junit] 33519 ms. Memory: 3081728K Free: 946447K (31%)
+    [junit] ####### 67 Thu May 10 18:46:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate
+    [junit] ----------------- Thu May 10 18:46:02 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterfaceUpdate
+    [junit] Manager.initialize() finished: 16415 ms. Memory: 2963456K Free: 987543K (33%)
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+    [junit] WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+    [junit] 26578 ms. Memory: 2963456K Free: 969595K (33%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate/index.html
+    [junit] 40306 ms. Memory: 2963456K Free: 939282K (32%)
+    [junit] ####### 68 Thu May 10 18:46:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo
+    [junit] ----------------- Thu May 10 18:46:47 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml
+    [junit] Done sleeping
+    [junit] Running .UserInterfaceVideo
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+    [junit] Manager.initialize() finished: 12686 ms. Memory: 2998272K Free: 1114809K (37%)
+    [junit] BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+    [junit] 30435 ms. Memory: 3122176K Free: 1718680K (55%)
+    [junit] [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+    [junit] WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [17.571]
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo/index.html
+    [junit] 41422 ms. Memory: 3122176K Free: 1690464K (54%)
+    [junit] ####### 69 Thu May 10 18:47:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient
+    [junit] ----------------- Thu May 10 18:47:34 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
+    [junit] Done sleeping
+    [junit] Running .SpeakingServerListeningClient
+    [junit] WSServer: *** server initialized. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSServer: *** server is listenting. (Thread[vert.x-eventloop-thread-3,6,main])
+    [junit] WSClient1: --- client 1 initialized. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSServer: *** server received connection 0 (Thread[vert.x-eventloop-thread-3,6,main])
+    [junit] WSClient1: --- client 1 connection open. Sending message to server. (Thread[vert.x-eventloop-thread-1,6,main])
+    [junit] WSServer: *** server received connection 1 (Thread[vert.x-eventloop-thread-3,6,main])
+    [junit] WSClient2: +++ client 2 initialized. (Thread[AWT-EventQueue-0,6,main])
+    [junit] Manager.initialize() finished: 13035 ms. Memory: 3119616K Free: 1216307K (39%)
+    [junit] WSClient2: +++ connection established. Sending message to server. (Thread[vert.x-eventloop-thread-3,6,main])
+    [junit] WSServer: *** server received message: Hello from the client (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSClient1: --- client 1 received message: Hello to client number 1 (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSClient2: +++ client 2 received message: Hello to client number 2 (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSServer: *** server received message: Hello from the client (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSServer: *** server wrapping up. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSClient1: --- client 1 wrapping up. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSClient1: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSClient2: +++ client 2 wrapping up. (Thread[AWT-EventQueue-0,6,main])
+    [junit] WSClient2: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+    [junit] 16178 ms. Memory: 3119616K Free: 1194252K (38%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient/index.html
+    [junit] 27592 ms. Memory: 3119616K Free: 1162702K (37%)
+    [junit] ####### 70 Thu May 10 18:48:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets
+    [junit] ----------------- Thu May 10 18:48:06 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
+    [junit] Done sleeping
+    [junit] Running .TwoWebSockets
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984/nConnection refused (Thread[vert.x-eventloop-thread-0,6,main])
+    [junit] JavaScript: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:8080/nConnection refused
+    [junit] JavaScript: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:1984/nConnection refused
+    [junit] 9282 ms. Memory: 3160064K Free: 1355109K (43%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets/index.html
+    [junit] 15847 ms. Memory: 3160064K Free: 1330353K (42%)
+    [junit] ####### 71 Thu May 10 18:48:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client
+    [junit] ----------------- Thu May 10 18:48:27 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml
+    [junit] Done sleeping
+    [junit] .Client.InteractiveDialog invoked SwingUtilities.invokeAndWait()
+    [junit] Model ".Client" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client/index.html
+    [junit] 5458 ms. Memory: 3160064K Free: 1078659K (34%)
+    [junit] ####### 72 Thu May 10 18:48:38 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient
+    [junit] ----------------- Thu May 10 18:48:38 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml
+    [junit] Done sleeping
+    [junit] .SecureClient.InteractiveDialog invoked SwingUtilities.invokeAndWait()
+    [junit] Model ".SecureClient" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient/index.html
+    [junit] 5738 ms. Memory: 3164672K Free: 1469632K (46%)
+    [junit] ####### 73 Thu May 10 18:48:48 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer
+    [junit] ----------------- Thu May 10 18:48:48 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml
+    [junit] Done sleeping
+    [junit] Running .SecureServer
