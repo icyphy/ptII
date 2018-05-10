@@ -2785,10 +2785,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiFreeModelInstanceFunction
                         .invoke(new Object[] { _fmiComponent });
             } else {
-                // fmiFreeSlaveInstance is a void function.
-                // No returned status.
-                _fmiFreeSlaveInstanceFunction
+                // Check for null because 
+                // make MODEL=AMS_AMSSim MODELPATH=/home/cxh/src/ptII11.0.devel/ptolemy/demo/AirManagementSystem/AMS_AMSSim.xml TARGETPATH=ptolemy/demo/AirManagementSystem jnlpUpdateDemo
+                // was failing.
+                if (_fmiFreeSlaveInstanceFunction != null) {
+                    // fmiFreeSlaveInstance is a void function.
+                    // No returned status.
+                    _fmiFreeSlaveInstanceFunction
                         .invoke(new Object[] { _fmiComponent });
+                } else {
+                    System.out.prinln("Warning _fmiFreeSlaveInstanceFunction was null?");
+                }
             }
         } else {
             _fmiFreeInstanceFunction.invoke(new Object[] { _fmiComponent });
