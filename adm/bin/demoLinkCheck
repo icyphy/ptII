@@ -11,7 +11,7 @@
 modelsFile=/tmp/demoLinkCheck.models.$$
 cat $PTII/ptolemy/configs/doc/models.txt | sed 's@$CLASSPATH/@@' | sed 's/.xml//' | sort | uniq  > $modelsFile
 
-tocs=`cd $PTII; find . -name "adm" -prune -o -name "toc.htm"`
+tocs=`cd $PTII; find . -name "adm" -prune -o -type f -name "toc.htm" | grep -v adm`
 
 tocDemosFile=/tmp/demoLinkCheck.tocDemos.$$
 
