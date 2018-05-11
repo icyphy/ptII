@@ -1257,10 +1257,10 @@ PTVIEWER_PACKAGES=ptolemy.media.viewer
 AC_MSG_CHECKING(Java 9 and later)
 echo "$JVERSION" | egrep '^9|^[1-9][0-9]' > /dev/null
 status=$?
-if test "$status" = "0" ; then
-    PT_MSG_RESULT(Java 9 or later is not present)
+if test "$status" = "1" ; then
+    PT_MSG_RESULT([Java 9 or later is not present])
 else
-    PT_MSG_RESULT(Java 9 or later present, so certain internal sun.* packages are not accessible)
+    PT_MSG_RESULT([Java 9 or later present, so certain internal sun.* packages are not accessible])
     # We use to need to add a module so that
     # javax.xml.bind.DatatypeConverter can be found.
     # However, we no longer need that class.
