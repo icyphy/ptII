@@ -5,9 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="localClock" class="ptolemy.actor.LocalClock">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
