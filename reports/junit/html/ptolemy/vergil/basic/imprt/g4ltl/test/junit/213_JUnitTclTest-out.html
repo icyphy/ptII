@@ -5,17 +5,17 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl
-testDefs.tcl: setting time out to 9000 seconds at Fri May 11 17:29:46 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Fri May 11 21:15:22 UTC 2018
 Rewritten as       : ( ( true ) U ( ( ( "req1" ) /\ ( ( false ) V ( ! ( "grant1" ) ) ) ) \/ ( ( ( "grant1" ) /\ ( "grant2" ) ) \/ ( ( "req2" ) /\ ( ( false ) V ( ! ( "grant2" ) ) ) ) ) ) )
 
 ***********************
 
 
-Total elapsed time in execution of method formulaToBA() is : 56
-Total elapsed time in execution of method createGameArena() is : 0
-Total elapsed time in execution of method createReductionGraph() is: 34
-Total elapsed time in execution of method analyzeSafetyGame() is: 177
-131 ms. Memory: 308736K Free: 184373K (60%)
+Total elapsed time in execution of method formulaToBA() is : 10
+Total elapsed time in execution of method createGameArena() is : 1
+Total elapsed time in execution of method createReductionGraph() is: 2
+Total elapsed time in execution of method analyzeSafetyGame() is: 320
+79 ms. Memory: 303104K Free: 180955K (60%)
 
 
 ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.1 Synthesize from ArbitorLTL.txt using CoBuechi and unrollSteps 1 and merge it into the ArbitorTest.xml
@@ -150,11 +150,11 @@ Rewritten as       : ( ( true ) U ( ( ( "req1" ) /\ ( ( ! ( "grant1" ) ) /\ ( X 
 ***********************
 
 
-Total elapsed time in execution of method formulaToBA() is : 40
-Total elapsed time in execution of method createGameArena() is : 1
-Total elapsed time in execution of method createReductionGraph() is: 621
-Total elapsed time in execution of method analyzeSafetyGame() is: 318
-75 ms. Memory: 374784K Free: 182561K (49%)
+Total elapsed time in execution of method formulaToBA() is : 30
+Total elapsed time in execution of method createGameArena() is : 11
+Total elapsed time in execution of method createReductionGraph() is: 318
+Total elapsed time in execution of method analyzeSafetyGame() is: 174
+29 ms. Memory: 449536K Free: 251058K (56%)
 
 
 ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.2 Synthesize from PriorityArbitorLTL.txt using CoBuechi and unrollSteps 3 and merge it into the PriorityArbitorTest.xml
@@ -291,11 +291,11 @@ Rewritten as       : ( ( ( false ) V ( ( true ) U ( "operator" ) ) ) /\ ( ( true
 ***********************
 
 
-Total elapsed time in execution of method formulaToBA() is : 66
-Total elapsed time in execution of method createGameArena() is : 11
-Total elapsed time in execution of method createReductionGraph() is: 1280
-Total elapsed time in execution of method analyzeSafetyGame() is: 931
-186 ms. Memory: 433152K Free: 271483K (63%)
+Total elapsed time in execution of method formulaToBA() is : 46
+Total elapsed time in execution of method createGameArena() is : 3
+Total elapsed time in execution of method createReductionGraph() is: 1063
+Total elapsed time in execution of method analyzeSafetyGame() is: 583
+182 ms. Memory: 500224K Free: 96581K (19%)
 
 
 ==== $PTII/ptolemy/vergil/basic/imprt/g4ltl/test/G4LTL.tcl: G4LTL-2.3 Synthesize from ErrorHandlingLTL.txt using CoBuechi and unrollSteps 3 and merge it into the ErrorHandlingTest.xml
@@ -434,7 +434,7 @@ Value was: false. Should have been: true
     ("uplevel" body line 41)
     invoked from within
 "uplevel $contents_of_test"
-05/11/18 05:29:57
+05/11/18 09:15:30
 Failed: 0  Total Tests: 4  ((Passed: 1, Newly Passed: 0)  Known Failed: 3) /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/test

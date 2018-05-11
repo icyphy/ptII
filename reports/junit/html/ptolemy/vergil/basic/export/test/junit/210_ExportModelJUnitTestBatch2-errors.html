@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.23 38290 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.8 55616 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.23 38290 10.20.0.183 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.8 55616 10.20.0.81 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '377815986';
+        cur['env.TRAVIS_BUILD_ID'] = '377901608';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '428';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '429';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '725a0242f4ab3d43c92d9a90174a9497e4a379c9';
+        cur['env.TRAVIS_COMMIT'] = 'c74c94777275758b05d7735338edf8661c72af04';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Increased the stop time from 60 to 120 for travis.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added hostStackTrace(), which under Nashorn, will include the Java stack.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '66ba64ccb1c8...725a0242f4ab';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '725a0242f4ab...c74c94777275';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '377815998';
+        cur['env.TRAVIS_JOB_ID'] = '377901620';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '428.12';
+        cur['env.TRAVIS_JOB_NUMBER'] = '429.12';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +417,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2 skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2900513498277524827.properties propsfile=/home/travis/build/icyphy/ptII/junit2312966576761200939.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2 skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher6836050868947856362.properties propsfile=/home/travis/build/icyphy/ptII/junit2831454831675180752.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +500,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="210_ExportModelJUnitTestBatch2.html">ExportModelJUnitTestBatch2</a></td><td><a title="Display all tests" href="210_ExportModelJUnitTestBatch2.html">1</a></td><td><a title="Display only errors" href="210_ExportModelJUnitTestBatch2-errors.html">1</a></td><td>0</td><td>0</td><td>0.081</td><td>2018-05-11T17:29:02</td><td>travis-job-f06fa74c-b556-4e1c-992e-154522169a1e</td>
+<td><a title="Display all tests" href="210_ExportModelJUnitTestBatch2.html">ExportModelJUnitTestBatch2</a></td><td><a title="Display all tests" href="210_ExportModelJUnitTestBatch2.html">1</a></td><td><a title="Display only errors" href="210_ExportModelJUnitTestBatch2-errors.html">1</a></td><td>0</td><td>0</td><td>0.081</td><td>2018-05-11T21:18:44</td><td>travis-job-48d9534f-87e1-4f34-8147-9023362ab78c</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -512,7 +512,7 @@
 <td><a name="initializationError"></a>initializationError</td><td>Error</td><td>Could not invoke method: demos defined in class class ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2 so no params were used.<br>
 <br>
 <code>java.lang.RuntimeException: Could not invoke method: demos defined in class class ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2 so no params were used.<br>	at junitparams.internal.TestMethod.invokeParamsProvidingMethod(TestMethod.java:196)<br>	at junitparams.internal.TestMethod.invokeMethodWithParams(TestMethod.java:149)<br>	at junitparams.internal.TestMethod.paramsFromMethod(TestMethod.java:126)<br>	at junitparams.internal.TestMethod.parametersSets(TestMethod.java:100)<br>	at junitparams.internal.TestMethod.isIgnored(TestMethod.java:61)<br>	at junitparams.internal.TestMethod.isNotIgnored(TestMethod.java:68)<br>	at junitparams.internal.ParameterisedTestClassRunner.addTestMethodForEachParamSet(ParameterisedTestClassRunner.java:82)<br>	at junitparams.internal.ParameterisedTestClassRunner.computeFrameworkMethods(ParameterisedTestClassRunner.java:56)<br>	at junitparams.internal.ParameterisedTestClassRunner.&lt;init&gt;(ParameterisedTestClassRunner.java:32)<br>	at junitparams.JUnitParamsRunner.&lt;init&gt;(JUnitParamsRunner.java:222)<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>Caused by: java.lang.reflect.InvocationTargetException<br>	at junitparams.internal.TestMethod.invokeParamsProvidingMethod(TestMethod.java:173)<br>Caused by: java.lang.NegativeArraySizeException<br>	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.demos(ExportModelJUnitTestBatch.java:116)<br>	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch2.demos(ExportModelJUnitTestBatch2.java:89)<br>
-</code></td><td>0.008</td>
+</code></td><td>0.009</td>
 </tr>
 </table>
 <div class="Properties">
