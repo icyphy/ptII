@@ -130,6 +130,30 @@ function getTopLevelAccessorsNotSupported() {
     throw new Error("getTopLevelAccessors() is not supported in CapeCode because each accessor is a separate JavaScript engine.");
 }
 
+/** If the stack of exception is undefined, the try to return the underlying Java stack trace.
+ *
+ *  @param exception The JavaScript exception;
+ *  @return If stack is undefined, then try to return the underlyig stack trace as a string.
+ */ 
+function hostStackTrace(exception) {
+    var stack = exception.stack;
+    if (typeof stack === 'undefined') {
+             try {
+                 // This code is Cape Code Host-specific because it uses Java.
+                 var StringWriter = java.io.StringWriter,
+                     PrintWriter = java.io.PrintWriter;
+                 var stringWriter = new StringWriter();
+                 var printWriter = new PrintWriter(stringWriter);
+                 exception.printStackTrace(printWriter);
+                 stack = "\n" + stringWriter.toString();
+             } catch (exception2) {
+                 stack = "undefined and the exception was not a Java exception so exception.printStackTrace() failed with: " + exception2;
+             }
+    }
+
+    return stack;
+}
+
 /** Specify an input for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
  *  lower-case character). The options argument can have the following fields:

@@ -515,6 +515,7 @@ error, \
 exports, \
 getResource, \
 getTopLevelAccessors, \
+hostStackTrace, \
 httpRequest, \
 readURL, \
 require, \
@@ -529,6 +530,7 @@ clearTimeout',
                  this.exports,
                  this.getResource,
                  this.getTopLevelAccessors,
+                 this.hostStackTrace,
                  this.httpRequest,
                  this.readURL,
                  this.require,
@@ -1368,6 +1370,18 @@ Accessor.prototype.getResource = function () {
     throw new Error('This swarmlet host does not support this.getResource().');
 };
 
+/** Given a JavaScript exception, return the stack.
+ *
+ *  Hosts could extend this method in their localFunctions.js file to
+ *  return a host-specific stack trace.
+ *
+ *  @param exception The JavaScript exception
+ *  @return In commonHost.js, return exception.stack.
+ */ 
+Accessor.prototype.hostStackTrace = function (stack) {
+    return exception.stack;
+};
+
 /** Default implement of the httpRequest() function, which throws an exception stating
  *  that httpRequest is not supported.
  *  Note that this function is deprecated in the Accessor Specification version 1,
@@ -1673,31 +1687,12 @@ Accessor.prototype.react = function (name) {
                         // the input does not match the training data, then we
                         // don't ignore the error in commonHost.error().
 
-                        // If the exception was thrown because of
-                        // Java, we should get the Java stacktrace.
-                        var stacktrace = exception.stack;
-                        // FIXME: Now that commonHost has no platform-dependent code,
-                        // we can no longer get Java-specific exceptions under the Java-based hosts.
-                        // if (typeof stacktrace === 'undefined' && platform === platformEnum.CAPECODE || platform === platformEnum.NASHORN) {
-                        //     try {
-                        //         // This code is Cape Code Host-specific because it uses Java.
-                        //         var StringWriter = java.io.StringWriter,
-                        //             PrintWriter = java.io.PrintWriter;
-                        //         var stringWriter = new StringWriter();
-                        //         var printWriter = new PrintWriter(stringWriter);
-                        //         exception.printStackTrace(printWriter);
-                        //         stacktrace = "\n" + stringWriter.toString();
-                        //     } catch (exception2) {
-                        //         stacktrace = "undefined and the exception was not a Java exception so exception.printStackTrace() failed with: " + exception2;
-                        //     }
-                        // }
-
                         throw new Error('commonHost.js, react(), invoking a specific handler for \"' +
                                         name + '\": Exception occurred in input handler for accessor ' +
                                         thiz.accessorName +
                                         ', which has now has been removed.  Exception was: ' +
                                         exception +
-                                        ' Stacktrace was: ' + stacktrace);
+                                        ' Stacktrace was: ' + hostStackTrace(exception));
                     }
                 }
             }
@@ -1752,7 +1747,7 @@ Accessor.prototype.react = function (name) {
                     thiz.error('commonHost.js, react() invoking handlers registered to handle any input: Exception occurred in input handler,' +
                                ' which has now has been removed.  Exception was: ' +
                                exception +
-                               ' Stacktrace was: ' + exception.stack);
+                               ' Stacktrace was: ' + hostStackTrace(exception));
                 }
             }
         }
@@ -2945,9 +2940,10 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
 
             try {
                 eval(fileReader(argv[i]));
-            } catch (error) {
-                console.error('Failed to eval "' + argv[i] + '": ' + error +
-                              ":" + error.stack);
+            } catch (exception) {
+                console.error('Failed to eval "' + argv[i] + '": ' + exception +
+                              ': Stacktrace was: ' + hostStackTrace(exceptionk));
+
                 return false;
             }
 
@@ -3086,7 +3082,8 @@ function stopAllAccessors() {
     }
     if (initialThrowable !== null) {
         throw new Error("commonHost.js: stopAllAccessors(): while invoking wrapup() of all accessors," +
-                        " an exception was thrown: " + initialThrowable + ":" + initialThrowable.stack);
+                        " an exception was thrown: " + initialThrowable +
+                        ' Stacktrace was: ' + hostStackTrace(initialThrowable));
     }
 }
 
