@@ -174,12 +174,25 @@ public class HttpServerHelper extends VertxHelperBase {
                 return;
             }
 
+            // Note that there is a slight chance that the response
+            // could close before the write()
             response.setStatusCode(responseCode);
             response.headers()
                     .add("Content-Length",
                             String.valueOf(responseText.length()))
                     .add("Content-Type", "text/html");
             response.write(responseText);
+
+            if (response.closed()) {
+                // Response has been closed during the write, perhaps
+                // because write() took a long time. Nothing to do.
+
+                // Under Travis,
+                // ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml
+                // was failing with a "Response is closed" exception
+                // here.
+                return;
+            }
             response.end();
         }
     }
