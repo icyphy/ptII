@@ -2794,7 +2794,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _fmiFreeSlaveInstanceFunction
                         .invoke(new Object[] { _fmiComponent });
                 } else {
-                    System.out.prinln("Warning _fmiFreeSlaveInstanceFunction was null?");
+                    System.out.println("Warning _fmiFreeSlaveInstanceFunction was null?");
                 }
             }
         } else {
