@@ -130,25 +130,30 @@ function getTopLevelAccessorsNotSupported() {
     throw new Error("getTopLevelAccessors() is not supported in CapeCode because each accessor is a separate JavaScript engine.");
 }
 
-/** If the stack of exception is undefined, the try to return the underlying Java stack trace.
+/** If the stack of exception is undefined, the try to return the
+ *  underlying Java stack trace, otherwise return the stack
+ *  of the JavaScript exception.
  *
- *  @param exception The JavaScript exception;
- *  @return If stack is undefined, then try to return the underlyig stack trace as a string.
+ *  @param exception The JavaScript exception.
+ *  @return If stack is undefined, then try to return the underlying
+ *  Java stack trace as a string.  If not undefined, then return the
+ *  JavaScript stack from the exception
  */ 
 function hostStackTrace(exception) {
     var stack = exception.stack;
     if (typeof stack === 'undefined') {
-             try {
-                 // This code is Cape Code Host-specific because it uses Java.
-                 var StringWriter = java.io.StringWriter,
-                     PrintWriter = java.io.PrintWriter;
-                 var stringWriter = new StringWriter();
-                 var printWriter = new PrintWriter(stringWriter);
-                 exception.printStackTrace(printWriter);
-                 stack = "\n" + stringWriter.toString();
-             } catch (exception2) {
-                 stack = "undefined and the exception was not a Java exception so exception.printStackTrace() failed with: " + exception2;
-             }
+        try {
+            // This code is CapeCode/Nashorn Host-specific because it uses Java.
+            var StringWriter = java.io.StringWriter,
+                PrintWriter = java.io.PrintWriter;
+            var stringWriter = new StringWriter();
+            var printWriter = new PrintWriter(stringWriter);
+            exception.printStackTrace(printWriter);
+            stack = "\n" + stringWriter.toString();
+        } catch (exception2) {
+            stack = 'localFunctions.js: hostStackTrace(): Internal error? The stack of the JavaScript exception ' + exception +
+                'was undefined and the getting the stack trace as a Java exception failed with: ' + exception2;
+        }
     }
 
     return stack;
