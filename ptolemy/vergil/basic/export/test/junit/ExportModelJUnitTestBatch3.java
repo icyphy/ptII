@@ -84,8 +84,8 @@ import ptolemy.vergil.basic.export.ExportModel;
 @RunWith(JUnitParamsRunner.class)
 public class ExportModelJUnitTestBatch3 extends ExportModelJUnitTestBatch {
 
-    /** Run demos 171 through 255. */
+    /** Run demos 201 through 270. */
     public Object[] demos() throws IOException {
-        return super.demos(171, 255);
+        return super.demos(201, 270);
     }
 }
