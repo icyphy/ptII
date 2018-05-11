@@ -508,6 +508,11 @@ if [ ! -z "$PT_TRAVIS_TEST_EXPORT3_XML" ]; then
     runTarget test.export3.xml
 fi
 
+# Run the fourth batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT4_XML" ]; then
+    runTarget test.export4.xml
+fi
+
 # Build the installers.
 #
 # We use Travis-ci deploy to upload the release because GitHub has a
