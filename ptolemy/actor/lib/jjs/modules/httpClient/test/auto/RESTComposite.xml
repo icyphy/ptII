@@ -47,7 +47,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('response');&#10;	this.output('status');&#10;	&#10;	var REST = this.instantiate('REST', 'net/REST');&#10;	this.connect('trigger', REST, 'trigger');&#10;	this.connect(REST, 'response', 'response');&#10;	this.connect(REST, 'status', 'status');&#10;	&#10;	REST.setDefault('options', {&quot;url&quot;:&quot;http://httpbin.org&quot;});&#10;	REST.setDefault('command', &quot;get&quot;);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('response');&#10;	this.output('status');&#10;	&#10;	var REST = this.instantiate('REST', 'net/REST');&#10;	this.connect('trigger', REST, 'trigger');&#10;	this.connect(REST, 'response', 'response');&#10;	this.connect(REST, 'status', 'status');&#10;	&#10;	REST.setDefault('options', {&quot;url&quot;:&quot;http://httpbin.org&quot;});&#10;	REST.setDefault('command', &quot;get&quot;);&#10;	REST.setParameter('timeout', 45678);&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
