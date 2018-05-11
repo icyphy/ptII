@@ -1,9 +1,9 @@
-# Makefile for TerraSwarm Accessors
+# Makefile Ptolemy Accessors
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2015-2018 The Regents of the University of California.
+# @Copyright (c) 2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,20 +29,13 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = demo doc test
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../../..
-
-JSRCS = 
+ROOT =		../../../..
 
 # $(ME) is used in ptdir.mk
-ME =		org/terraswarm/accessor
-
-# AccessorOne.java depends on JavaScript.java, which uses these
-# libraries.  If we run 'make fast', and JavaScript.class does not
-# exist, then we will need these jars in the classpath.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTRTOOL_JARS)
+ME =		org/terraswarm/accessors/doc
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
@@ -52,51 +45,26 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	accessor
+PTPACKAGE = 	doc
 PTCLASSJAR =	$(PTPACKAGE).jar
-#PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-JSRCS = \
-	AccessorIconLoader.java \
-	AccessorLibrary.java \
-	JSAccessor.java
 
 OTHER_FILES_TO_BE_JARED = \
-	accessors \
-	JSAccessorIcon.xml \
-	XMLJSToMoML.xslt
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm \
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
-	status
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: jclass accessors
-install: jclass accessors jars
-
-accessors:
-	if [ ! -d accessors ] ; then \
-		svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors; \
-	else \
-		(cd accessors; svn update); \
-	fi
+all: suball
+install: subinstall jars
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
-MISC_FILES = doc test
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	'AccessorIconLoader$$1.class' \
-	'JSAccessor$$1.class' \
-	'JSAccessor$$2.class' \
-	'JSAccessor$$3.class' \
-        'JSAccessor$$ActionableAttribute.class'
+MISC_FILES = $(DIRS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
