@@ -122,6 +122,9 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
      * @exception IOException If there is a problem accessing the directory.
      */
     public Object[] demos(int start, int end) throws IOException {
+        if (start < 0 || end < 0) {
+            throw new IllegalArgumentException("The start indice (" + start + ") or the end indice (" + end + ") is less than zero.");
+        }
         if (start >= end) {
             throw new IllegalArgumentException("The start indice (" + start + ") must be greater than the end indice (" + end + ")");
         }
@@ -129,6 +132,18 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
         System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
                            + " demos. Exporting demos: " + start + " to " + end + ".");
 
+        if (allDemos.length < start) {
+            System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
+                               + " demos, which is less than the start index " + start
+                               + ". Returning an empty array of demos.");
+            return new Object[0][1];
+        }
+        if (allDemos.length < end) {
+            end = allDemos.length - 1;
+            System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
+                               + " demos, which is less than the end index " + start
+                               + ". Setting the end index to " + end);
+        }
         Object[][] subDemos = new Object[end - start + 1][1];
         System.arraycopy(allDemos,
                          start,
