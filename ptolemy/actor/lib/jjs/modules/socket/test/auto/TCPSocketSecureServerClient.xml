@@ -189,6 +189,8 @@
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="41118">
         </property>
+        <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="20000">
+        </property>
         <port name="host" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -593,6 +595,8 @@
             </property>
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="41119">
+        </property>
+        <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="30000">
         </property>
         <port name="host" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
