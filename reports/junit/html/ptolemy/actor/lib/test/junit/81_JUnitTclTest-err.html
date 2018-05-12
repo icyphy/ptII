@@ -165,32 +165,6 @@ Caused by: ptolemy.kernel.util.IllegalActionException: TypeTest actor has no tra
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-ptolemy.kernel.util.InternalErrorException: Exec Stdout Gobbler-4: Failed while reading from java.lang.UNIXProcess$ProcessPipeInputStream@7613e150. To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true.null
-  in .ExecEnvironment.Exec
-Because:
-Stream closed
-	at ptolemy.actor.lib.Exec$_StreamReaderThread._read(Exec.java:762)
-	at ptolemy.actor.lib.Exec$_StreamReaderThread.run(Exec.java:706)
-Caused by: java.io.IOException: Stream closed
-	at sun.nio.cs.StreamDecoder.ensureOpen(StreamDecoder.java:46)
-	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:148)
-	at java.io.InputStreamReader.read(InputStreamReader.java:184)
-	at ptolemy.actor.lib.Exec$_StreamReaderThread._read(Exec.java:724)
-	... 1 more
-Caused by: java.io.IOException: Stream closed
-	at sun.nio.cs.StreamDecoder.ensureOpen(StreamDecoder.java:46)
-	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:148)
-	at java.io.InputStreamReader.read(InputStreamReader.java:184)
-	at ptolemy.actor.lib.Exec$_StreamReaderThread._read(Exec.java:724)
-	at ptolemy.actor.lib.Exec$_StreamReaderThread.run(Exec.java:706)
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
-Value was: 2001L. Should have been: 2000L
-  in .ExecutionTimePN.NonStrictTest
-	at ptolemy.actor.lib.NonStrictTest.postfire(NonStrictTest.java:328)
-	at ptolemy.actor.process.ProcessThread._iterateActor(ProcessThread.java:346)
-	at ptolemy.actor.process.ProcessThread.run(ProcessThread.java:213)
 </pre>
 </body>
 </html>

@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.8 48202 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.29 59090 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.8 48202 10.20.0.222 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.29 59090 10.20.255.37 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '377901608';
+        cur['env.TRAVIS_BUILD_ID'] = '378096024';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '429';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '433';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = 'c74c94777275758b05d7735338edf8661c72af04';
+        cur['env.TRAVIS_COMMIT'] = 'ed9785f00f2831fae5ac8b3355cbae5f77cfed48';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added hostStackTrace(), which under Nashorn, will include the Java stack.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Adjusted model numbers in export batches.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '725a0242f4ab...c74c94777275';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '19b13553cfd6...ed9785f00f28';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '377901613';
+        cur['env.TRAVIS_JOB_ID'] = '378096029';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '429.5';
+        cur['env.TRAVIS_JOB_NUMBER'] = '433.5';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -417,7 +417,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7522993661716541605.properties propsfile=/home/travis/build/icyphy/ptII/junit8029797221959434484.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3600795702986882109.properties propsfile=/home/travis/build/icyphy/ptII/junit3761508423266481614.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -500,7 +500,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="35_JUnitTclTest-errors.html">1</a></td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">2</a></td><td>0</td><td>290.801</td><td>2018-05-11T20:36:41</td><td>travis-job-a4173100-ea3d-4552-8ec2-a1e34594f3db</td>
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="35_JUnitTclTest-errors.html">1</a></td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>172.167</td><td>2018-05-12T13:48:59</td><td>travis-job-f32323e8-4b20-4927-84f0-83326133d849</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -512,7 +512,7 @@
 <td><a name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 42. Should have been: 43<br>  in .DerivedAgain4.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.682</td>
+</code></td><td>1.179</td>
 </tr>
 </table>
 <div class="Properties">
