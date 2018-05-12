@@ -320,19 +320,21 @@
     <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
-  <!-- Tests of the export demos, first batch. -->
+  <!-- Tests of the export demos -->
   <patternset id="test.export1.includes">
     <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch1.java" />
   </patternset>
 
-  <!-- Tests of the export demos, second batch. -->
   <patternset id="test.export2.includes">
     <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch2.java" />
   </patternset>
 
-  <!-- Tests of the export demos, third batch. -->
   <patternset id="test.export3.includes">
     <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch3.java" />
+  </patternset>
+
+  <patternset id="test.export4.includes">
+    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch4.java" />
   </patternset>
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
