@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007-2009 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,15 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/cg/lib
+ME =		ptolemy/cg/lib/testKnownFailed
 
-DIRS = 		demo \
-		syntactic \
-		test \
-		testKnownFailed \
+DIRS = 		test
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -50,15 +47,7 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	CompiledCompositeActor.java \
-	EmbeddedCodeActor.java \
-	ModularableComposite.java \
-	ModularCodeGenLazyTypedCompositeActor.java \
-	ModularCodeGenTypedCompositeActor.java \
-	ModularCompiledSDFTypedCompositeActor.java \
-	PointerToken.java \
-	Profile.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -68,24 +57,11 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES = \
-	syntactic \
-	test \
-	testKnownFailed
+	test 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	'EmbeddedCodeActor$$DummyActor.class' \
-	'EmbeddedCodeActor$$EmbeddedActor.class' \
-	'PointerToken$$1.class' \
-	'PointerToken$$PointerType.class'\
-	'Profile$$Connection.class' \
-	'Profile$$FiringFunction.class' \
-	'Profile$$FiringFunctionPort.class' \
-	'Profile$$Junction.class' \
-	'Profile$$Port.class' \
-	'Profile$$ProfileActor.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
