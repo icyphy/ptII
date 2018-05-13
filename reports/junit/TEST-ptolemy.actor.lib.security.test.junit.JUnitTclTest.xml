@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-2b3fd129-d5e6-4921-924e-baab38ce7e74" name="ptolemy.actor.lib.security.test.junit.JUnitTclTest" skipped="0" tests="9" time="7.214" timestamp="2018-05-12T13:58:35">
+<testsuite errors="0" failures="0" hostname="travis-job-e0445e4b-bf6f-4dd5-82ba-9c469d2ca3ab" name="ptolemy.actor.lib.security.test.junit.JUnitTclTest" skipped="0" tests="9" time="7.066" timestamp="2018-05-13T00:48:15">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="433.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="434.6" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -32,7 +32,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.29 46930 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.7 40680 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.29 46930 10.20.0.169 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.7 40680 10.20.0.62 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.security.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.security.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher54817530512823817.properties propsfile=/home/travis/build/icyphy/ptII/junit1118652891969230200.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.security.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.security.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2468290212417217935.properties propsfile=/home/travis/build/icyphy/ptII/junit3406768987833063378.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="19b13553cfd6...ed9785f00f28" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="19b13553cfd632cf1fc5a7f5e86b681759fef7e7...ed9785f00f2831fae5ac8b3355cbae5f77cfed48" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="433" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="434" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,7 +131,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="378096024" />
+    <property name="env.TRAVIS_BUILD_ID" value="378239440" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -176,7 +176,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -206,7 +206,7 @@
     <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
-    <property name="env.TRAVIS_JOB_ID" value="378096030" />
+    <property name="env.TRAVIS_JOB_ID" value="378239447" />
     <property name="env.TRAVIS_BRANCH" value="master" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
@@ -226,34 +226,34 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyReader.tcl (RunTclFile)" time="2.765" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyToken.tcl (RunTclFile)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/info.tcl (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.007" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.011" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml (RunModel)" time="1.984" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml (RunModel)" time="0.157" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml (RunModel)" time="0.976" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml (RunModel)" time="0.87" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyReader.tcl (RunTclFile)" time="2.647" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyToken.tcl (RunTclFile)" time="0.077" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/info.tcl (RunTclFile)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.008" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml (RunModel)" time="1.865" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml (RunModel)" time="0.153" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml (RunModel)" time="1.091" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml (RunModel)" time="0.83" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyReader.tcl
-testDefs.tcl: setting time out to 9000 seconds at Sat May 12 13:58:35 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Sun May 13 00:48:15 UTC 2018
 Creating keystore foo.keystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: $aliasName
-Creation date: May 12, 2018
+Creation date: May 13, 2018
 Entry type: PrivateKeyEntry
 Certificate chain length: 1
 Certificate[1]:
 Owner: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
 Issuer: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
-Serial number: 3b206ef9
-Valid from: Sat May 12 13:58:37 UTC 2018 until: Fri Aug 10 13:58:37 UTC 2018
+Serial number: 6df275d9
+Valid from: Sun May 13 00:48:16 UTC 2018 until: Sat Aug 11 00:48:16 UTC 2018
 Certificate fingerprints:
-	 MD5:  10:5B:3E:6D:1B:F9:3F:7E:6E:6F:09:1B:68:F2:2E:9C
-	 SHA1: 87:32:51:99:68:64:3C:92:FF:DF:32:22:38:CB:C4:D2:2D:0F:C1:14
-	 SHA256: 74:45:FF:08:8B:F2:93:7F:13:EC:B1:13:AB:A7:8E:E1:E4:FA:A2:05:8B:9D:AD:84:68:E0:0C:B1:15:40:96:36
+	 MD5:  80:2E:DD:9C:23:66:1C:8C:C6:C1:47:A8:7A:4F:BC:BB
+	 SHA1: 53:16:26:CB:2B:AE:60:B4:4C:B2:4B:B4:FB:5F:4B:EC:6E:7E:E2:EB
+	 SHA256: EB:55:F8:24:73:73:88:FF:17:56:0D:FC:1D:EC:B1:F4:52:6A:98:1A:60:69:6E:F7:DB:A1:DF:0D:CB:98:A4:6C
 Signature algorithm name: SHA256withDSA
 Subject Public Key Algorithm: 2048-bit DSA key
 Version: 3
@@ -263,23 +263,23 @@ Extensions:
 #1: ObjectId: 2.5.29.14 Criticality=false
 SubjectKeyIdentifier [
 KeyIdentifier [
-0000: 89 4E 11 2B 23 B0 73 99   DF 46 FC 24 F5 61 4D C9  .N.+#.s..F.$.aM.
-0010: C5 5B 23 55                                        .[#U
+0000: 31 B7 30 A7 A0 BF DD 6F   98 4D 91 BF 0D 5E BF E2  1.0....o.M...^..
+0010: 17 17 B3 46                                        ...F
 ]
 ]
 
-2187 ms. Memory: 116224K Free: 99207K (85%)
+2104 ms. Memory: 116224K Free: 99765K (86%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyToken.tcl
 Available Ciphers: PBEWITHHMACSHA384ANDAES_128 AES_256/GCM/NOPADDING AES_192/GCM/NOPADDING PBEWITHHMACSHA512ANDAES_128 AES_256/CBC/NOPADDING AES_256/ECB/NOPADDING PBEWITHHMACSHA224ANDAES_256 AES_128/CBC/NOPADDING AESWRAP_192 AESWRAP PBEWITHMD5ANDDES AES_192/CBC/NOPADDING PBEWITHHMACSHA256ANDAES_256 PBEWITHHMACSHA1ANDAES_128 PBEWITHSHA1ANDRC4_128 AES_192/OFB/NOPADDING AES_128/ECB/NOPADDING DESEDEWRAP AESWRAP_256 RC2 PBEWITHSHA1ANDRC4_40 RSA AESWRAP_128 PBEWITHHMACSHA512ANDAES_256 AES_192/CFB/NOPADDING DESEDE AES_128/CFB/NOPADDING AES_192/ECB/NOPADDING BLOWFISH ARCFOUR AES_256/CFB/NOPADDING AES AES_128/OFB/NOPADDING AES_128/GCM/NOPADDING DES PBEWITHHMACSHA256ANDAES_128 PBEWITHSHA1ANDDESEDE PBEWITHSHA1ANDRC2_40 PBEWITHHMACSHA384ANDAES_256 AES_256/OFB/NOPADDING PBEWITHSHA1ANDRC2_128 PBEWITHMD5ANDTRIPLEDES PBEWITHHMACSHA1ANDAES_256 PBEWITHHMACSHA224ANDAES_128
 Using BLOWFISH
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/info.tcl
-05/12/18 01:58:38
+05/13/18 12:48:17
 Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat May 12 13:58:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
+----------------- testing Sun May 13 00:48:18 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
 Creating keystore foo.keystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
@@ -288,37 +288,37 @@ Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore
 keytool error: java.lang.ClassCastException: javax.crypto.spec.SecretKeySpec cannot be cast to java.security.PrivateKey
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: $aliasName
-Creation date: May 12, 2018
+Creation date: May 13, 2018
 Entry type: SecretKeyEntry
-1916 ms. Memory: 146944K Free: 125569K (85%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@763e39c1
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@763e39c1
+1792 ms. Memory: 146944K Free: 125580K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b9de3e9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b9de3e9
 reloadAllAccessors: .KeyReader
------------------ testing Sat May 12 13:58:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
+----------------- testing Sun May 13 00:48:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
-133 ms. Memory: 146944K Free: 108326K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6003181f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6003181f
+133 ms. Memory: 146944K Free: 108339K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@606cb0b9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@606cb0b9
 reloadAllAccessors: .KeyWriter
------------------ testing Sat May 12 13:58:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
+----------------- testing Sun May 13 00:48:20 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
 Creating keystore /home/travis/build/icyphy/ptII/ptKeystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: ptolemy
-Creation date: May 12, 2018
+Creation date: May 13, 2018
 Entry type: PrivateKeyEntry
 Certificate chain length: 1
 Certificate[1]:
 Owner: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
 Issuer: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
-Serial number: 2e612d2c
-Valid from: Sat May 12 13:58:41 UTC 2018 until: Fri Aug 10 13:58:41 UTC 2018
+Serial number: 7a8cd29c
+Valid from: Sun May 13 00:48:20 UTC 2018 until: Sat Aug 11 00:48:20 UTC 2018
 Certificate fingerprints:
-	 MD5:  9C:DB:08:81:1F:96:DB:09:EA:59:32:2F:BC:4F:60:7D
-	 SHA1: 08:99:54:8D:56:CC:69:E6:B8:5E:32:0B:AD:BD:6D:A4:EB:42:A5:67
-	 SHA256: A7:A2:9D:55:45:70:A0:AB:40:60:25:FA:79:32:BA:AF:FF:C9:09:5F:F8:0A:74:30:D0:5D:80:F6:08:E5:6C:1D
+	 MD5:  FD:68:9E:37:9D:BE:DF:D5:82:76:78:5F:CC:23:E5:8F
+	 SHA1: 88:52:D7:25:08:BB:A9:F6:50:10:B5:2D:4E:FF:E3:A1:A2:88:6B:FE
+	 SHA256: 9D:FD:BD:21:05:0E:51:F2:FE:49:B5:5A:D1:E1:D0:A2:A9:05:B3:00:8F:54:C3:9C:5A:ED:3D:09:DB:E7:0F:77
 Signature algorithm name: SHA256withDSA
 Subject Public Key Algorithm: 2048-bit DSA key
 Version: 3
@@ -328,20 +328,20 @@ Extensions:
 #1: ObjectId: 2.5.29.14 Criticality=false
 SubjectKeyIdentifier [
 KeyIdentifier [
-0000: A6 21 61 B3 48 FF 59 40   01 90 A1 4B 2D FB C8 2D  .!a.H.Y@...K-..-
-0010: C6 E5 39 39                                        ..99
+0000: 61 D9 7D 52 5F D1 95 3E   CB AE 88 D4 49 04 DC 8C  a..R_..>....I...
+0010: C9 E6 05 D8                                        ....
 ]
 ]
 
-883 ms. Memory: 146944K Free: 94078K (64%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38478d81
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38478d81
+960 ms. Memory: 146944K Free: 94139K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63b09cd5
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63b09cd5
 reloadAllAccessors: .Signature
------------------ testing Sat May 12 13:58:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
+----------------- testing Sun May 13 00:48:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
-807 ms. Memory: 210944K Free: 196601K (93%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c9cbbae
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c9cbbae
+778 ms. Memory: 210944K Free: 196631K (93%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44e29f0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44e29f0
 reloadAllAccessors: .Symmetric
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

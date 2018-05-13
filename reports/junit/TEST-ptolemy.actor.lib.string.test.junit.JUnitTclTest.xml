@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-2b3fd129-d5e6-4921-924e-baab38ce7e74" name="ptolemy.actor.lib.string.test.junit.JUnitTclTest" skipped="0" tests="17" time="1.915" timestamp="2018-05-12T13:58:43">
+<testsuite errors="0" failures="0" hostname="travis-job-e0445e4b-bf6f-4dd5-82ba-9c469d2ca3ab" name="ptolemy.actor.lib.string.test.junit.JUnitTclTest" skipped="0" tests="17" time="1.935" timestamp="2018-05-13T00:48:22">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="433.6" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="434.6" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -32,7 +32,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.29 46930 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.7 40680 22" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
     <property name="env.PS4" value="+" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.29 46930 10.20.0.169 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.7 40680 10.20.0.62 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.string.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.string.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3502006340684265733.properties propsfile=/home/travis/build/icyphy/ptII/junit5836240217979218543.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.string.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.string.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5197582340944706616.properties propsfile=/home/travis/build/icyphy/ptII/junit5350731234434626473.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="19b13553cfd6...ed9785f00f28" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="19b13553cfd632cf1fc5a7f5e86b681759fef7e7...ed9785f00f2831fae5ac8b3355cbae5f77cfed48" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="433" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="434" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,7 +131,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="378096024" />
+    <property name="env.TRAVIS_BUILD_ID" value="378239440" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -176,7 +176,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
@@ -206,7 +206,7 @@
     <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
-    <property name="env.TRAVIS_JOB_ID" value="378096030" />
+    <property name="env.TRAVIS_JOB_ID" value="378239447" />
     <property name="env.TRAVIS_BRANCH" value="master" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
@@ -226,114 +226,114 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/StringCompare.tcl (RunTclFile)" time="0.625" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.0" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml (RunModel)" time="0.063" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringFunction.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml (RunModel)" time="0.188" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/StringCompare.tcl (RunTclFile)" time="0.616" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml (RunModel)" time="0.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml (RunModel)" time="0.055" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringFunction.xml (RunModel)" time="0.057" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml (RunModel)" time="0.144" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringLength.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml (RunModel)" time="0.108" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml (RunModel)" time="0.069" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml (RunModel)" time="0.052" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace.xml (RunModel)" time="0.047" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml (RunModel)" time="0.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml (RunModel)" time="0.038" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml (RunModel)" time="0.053" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml (RunModel)" time="0.055" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml (RunModel)" time="0.093" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml (RunModel)" time="0.118" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml (RunModel)" time="0.059" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml (RunModel)" time="0.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml (RunModel)" time="0.033" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml (RunModel)" time="0.061" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml (RunModel)" time="0.051" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml (RunModel)" time="0.038" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/StringCompare.tcl
-testDefs.tcl: setting time out to 9000 seconds at Sat May 12 13:58:43 UTC 2018
-65 ms. Memory: 116224K Free: 99428K (86%)
-23 ms. Memory: 116224K Free: 96417K (83%)
-05/12/18 01:58:44
+testDefs.tcl: setting time out to 9000 seconds at Sun May 13 00:48:22 UTC 2018
+57 ms. Memory: 116224K Free: 99428K (86%)
+14 ms. Memory: 116224K Free: 96410K (83%)
+05/13/18 12:48:23
 Failed: 0  Total Tests: 1  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sat May 12 13:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-26 ms. Memory: 146944K Free: 123059K (84%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6209da5b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6209da5b
+36 ms. Memory: 146944K Free: 125482K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5e7585b6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5e7585b6
 reloadAllAccessors: .StringCompare
------------------ testing Sat May 12 13:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml
-6 ms. Memory: 146944K Free: 117457K (80%)
+16 ms. Memory: 146944K Free: 117439K (80%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32d210eb
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32d210eb
 reloadAllAccessors: .StringCompare2
------------------ testing Sat May 12 13:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringFunction.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringFunction.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringFunction.xml
-5 ms. Memory: 146944K Free: 113100K (77%)
+5 ms. Memory: 146944K Free: 113049K (77%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f1f3353
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f1f3353
 reloadAllAccessors: .StringFunction
------------------ testing Sat May 12 13:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml
-50 ms. Memory: 146944K Free: 90029K (61%)
+48 ms. Memory: 146944K Free: 89970K (61%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48adda16
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48adda16
 reloadAllAccessors: .StringIndexOf
------------------ testing Sat May 12 13:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringLength.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringLength.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringLength.xml
-5 ms. Memory: 146944K Free: 86303K (59%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@36462495
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@36462495
+4 ms. Memory: 146944K Free: 86244K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9384600
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9384600
 reloadAllAccessors: .StringLength
------------------ testing Sat May 12 13:58:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml
-17 ms. Memory: 146944K Free: 137125K (93%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51e61db3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51e61db3
+10 ms. Memory: 146944K Free: 137129K (93%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cce9f1b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cce9f1b
 reloadAllAccessors: .StringMatches
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml
+----------------- testing Sun May 13 00:48:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml
-9 ms. Memory: 146944K Free: 128350K (87%)
+18 ms. Memory: 146944K Free: 128113K (87%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@624302e6
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@624302e6
 reloadAllAccessors: .StringMatches2
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml
-6 ms. Memory: 146944K Free: 120816K (82%)
+5 ms. Memory: 146944K Free: 120635K (82%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1865a309
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1865a309
 reloadAllAccessors: .StringParameter
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace.xml
-9 ms. Memory: 146944K Free: 113282K (77%)
+8 ms. Memory: 146944K Free: 113013K (77%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79b4f4c1
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79b4f4c1
 reloadAllAccessors: .StringReplace
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
-6 ms. Memory: 146944K Free: 106488K (72%)
+6 ms. Memory: 146944K Free: 106195K (72%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b5b5080
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@b5b5080
 reloadAllAccessors: .StringReplace2
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml
-9 ms. Memory: 146944K Free: 99137K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4136192
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4136192
+8 ms. Memory: 146944K Free: 99071K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@d9c7340
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@d9c7340
 reloadAllAccessors: .StringSimpleReplace
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml
-17 ms. Memory: 146944K Free: 90768K (62%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72df3727
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72df3727
+12 ms. Memory: 146944K Free: 91072K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a5f870d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1a5f870d
 reloadAllAccessors: .StringSubstring
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml
-13 ms. Memory: 146944K Free: 87016K (59%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e8cd98b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e8cd98b
+10 ms. Memory: 146944K Free: 87329K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6a461fe7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6a461fe7
 reloadAllAccessors: .StringSubstring2
------------------ testing Sat May 12 13:58:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml
+----------------- testing Sun May 13 00:48:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml
-6 ms. Memory: 146944K Free: 83209K (57%)
+11 ms. Memory: 146944K Free: 83522K (57%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@445b9881
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@445b9881
 reloadAllAccessors: .StringSubstring3
