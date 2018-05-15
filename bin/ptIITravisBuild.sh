@@ -114,7 +114,7 @@ case `uname -s` in
             # Use a -3 signal to get a stack trace, then 20 seconds later, use kill -9.
             TIMEOUTCOMMAND='timeout -s 3 --kill-after=20'
         else
-            echo "timeout does not support --kill-after"
+            echo "timeout does not support --kill-after, usage was: '$usage', use kill -9."
             # Use a -9 signal to kill.
             TIMEOUTCOMMAND='timeout -s 9'
         fi
@@ -510,7 +510,6 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     runTarget test.core3.xml
 fi
 
-
 # Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     runTarget test.core4.xml
@@ -539,6 +538,21 @@ fi
 # Run the fourth batch of export demo tests.
 if [ ! -z "$PT_TRAVIS_TEST_EXPORT4_XML" ]; then
     runTarget test.export4.xml
+fi
+
+# Run the fifth batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT5_XML" ]; then
+    runTarget test.export5.xml
+fi
+
+# Run the sixth batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT6_XML" ]; then
+    runTarget test.export6.xml
+fi
+
+# Run the seventh batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT7_XML" ]; then
+    runTarget test.export7.xml
 fi
 
 # Build the installers.

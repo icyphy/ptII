@@ -22,6 +22,9 @@ env:
     - PT_TRAVIS_TEST_EXPORT2_XML=true
     - PT_TRAVIS_TEST_EXPORT3_XML=true
     - PT_TRAVIS_TEST_EXPORT4_XML=true
+    - PT_TRAVIS_TEST_EXPORT5_XML=true
+    - PT_TRAVIS_TEST_EXPORT6_XML=true
+    - PT_TRAVIS_TEST_EXPORT7_XML=true
     # Building the installers tends to fail in deployment, so do this last.
     #   - PT_TRAVIS_TEST_INSTALLERS=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true
