@@ -48,6 +48,10 @@ if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
 fi    
 
+# Number of lines to show from the log file.
+lastLines=50
+
+
 if [ ! -d $PTII/reports/junit ]; then
     mkdir -p $PTII/reports/junit
 fi    
@@ -212,9 +216,6 @@ runTarget () {
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     log=$PTII/reports/junit/${target}.txt
-
-    # Number of lines to show from the log file.
-    lastLines=50
 
     # FIXME: we probably want to vary the timeout so that we can avoid
     # git conflicts.
@@ -424,6 +425,10 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # Note that there is a chance that the installer will use javadoc
     # jar files that are slightly out of date.
 
+    # Echo status messages so that Travis knows we are alive.
+    # If you need to get status about available memory, insert "free -m" inside the loop.
+    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
     echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
     $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG
     tail -$lastLines $LOG
@@ -433,6 +438,9 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
     (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG
     tail -$lastLines $LOG
+
+    # Killing background sleep loop.
+    kill %1
 
     # No need to check in the log each time because this target is
     # easy to re-run.
