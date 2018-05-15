@@ -5,7 +5,8 @@ env:
     # variable corresponds with the target name in $PTII/build.xml and
     # should be alphabetical.
     - PT_TRAVIS_BUILD_ALL=true
-    - PT_TRAVIS_DOCS=true
+    # Don't include PT_TRAVIS_DOCS=true here, we run it as a separate docs stage.
+    # - PT_TRAVIS_DOCS=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
     - PT_TRAVIS_TEST_CAPECODE1_XML=true
     - PT_TRAVIS_TEST_CAPECODE2_XML=true
@@ -159,16 +160,22 @@ script:
 # The report stage should be run before installers because deploying
 # installers might fail.
 stages:
+  - docs
   - test
   - report
   - installers
   - deploy
 
-# Run three stages, test (which runs the script above), report and installers.
+# Run stages, docs, test (which runs the script above), report and installers.
 # See https://docs.travis-ci.com/user/build-stages/ and
 # https://docs.travis-ci.com/user/build-stages/matrix-expansion/
 jobs:
   include:
+    # Create the JavaDocs and jsdocs and clean the gh-pages branch
+    # before running the tests.
+    - stage: docs
+      script: $PTII/bin/ptIITravisBuild.sh $SECONDS
+      env: PT_TRAVIS_DOCS=true
     # Run "ant junitreport" in the gh-branch, which uses a different
     # build.xml than $PTII.
     - stage: report
