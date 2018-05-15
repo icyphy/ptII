@@ -5,8 +5,10 @@ env:
     # variable corresponds with the target name in $PTII/build.xml and
     # should be alphabetical.
     - PT_TRAVIS_BUILD_ALL=true
-    # Don't include PT_TRAVIS_DOCS=true here, we run it as a separate docs stage.
-    # - PT_TRAVIS_DOCS=true
+    # Don't include PT_TRAVIS_CLEAN=true here, we run it as a separate
+    # clean stage before running the tests.
+    # - PT_TRAVIS_CLEAN=true
+    - PT_TRAVIS_DOCS=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
     - PT_TRAVIS_TEST_CAPECODE1_XML=true
     - PT_TRAVIS_TEST_CAPECODE2_XML=true
@@ -157,30 +159,43 @@ script:
   # Killing background sleep loop.
   - kill %1
 
-# The report stage should be run before installers because deploying
-# installers might fail.
+
+# Below is the order of the stages.
+# See https://docs.travis-ci.com/user/build-stages/ and
+# https://docs.travis-ci.com/user/build-stages/matrix-expansion/
 stages:
-  - docs
+  #
+  # The clean stage runs first to remove JUnit output from the gh-pages branch.
+  - clean
+  #
+  # Most of the targets in the test stage only run if the job is a cron
+  # job or RUN_TESTS=true.
   - test
+  #
+  # The report stage should be run before installers because deploying
+  # installers might fail.
   - report
   - installers
   - deploy
 
-# Run stages, docs, test (which runs the script above), report and installers.
-# See https://docs.travis-ci.com/user/build-stages/ and
-# https://docs.travis-ci.com/user/build-stages/matrix-expansion/
+# Below are the definitions for the stages.
 jobs:
   include:
-    # Create the JavaDocs and jsdocs and clean the gh-pages branch
-    # before running the tests.
-    - stage: docs
+    #
+    # Clean the gh-pages branch of JUnit output before running the tests.
+    - stage: clean
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
-      env: PT_TRAVIS_DOCS=true
+      env: PT_TRAVIS_CLEAN=true
+    #
+    # The test stage uses the script target above.
+    ## - stage: test
+    #
     # Run "ant junitreport" in the gh-branch, which uses a different
     # build.xml than $PTII.
     - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
       env: PT_TRAVIS_JUNITREPORT=true
+    #
     # Build the installers last because it might fail.
     - stage: installers
       script:
