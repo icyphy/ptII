@@ -400,10 +400,12 @@ public class ExportModelJUnitTest {
                 "PageAssembler.xml", // Has links to other models.
                 "ProbabilisticModels.xml", // Has links to other models.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
+                "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
                 "ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml", // Has links to pub and sub
                 "ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml", // Subscriber needs to run
                 "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml", // Publisher needs to run.
                 "PublisherTest", // gt
+                "actor/lib/r", // R is probably not installed.
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "TokenTransmissionTime/Sender.xml", // Requires that Receiver be running.
