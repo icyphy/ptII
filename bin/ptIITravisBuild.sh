@@ -29,20 +29,20 @@
 # Below are the comamands to run to try out various targets:
 #
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE3_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE3_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
 
 if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
@@ -346,27 +346,31 @@ updateGhPages () {
         ant junitreport
     fi
 
-    # JUnit xml output will include the values of the environment,
-    # which can include GITHUB_TOKEN, which is supposed to be secret.
-    # So, we remove any lines checked in to gh-pages that mentions
-    # GITHUB_TOKEN.
-    echo "Remove any instances of GITHUB_TOKEN and other vars: "
-    date
-    # Don't echo GITHUB_TOKEN
-    set +x
-    files=`find . -type f`
-    for file in $files
-    do
-        egrep -e  "$SECRET_REGEX" $file > /dev/null
-	retval=$?
-	if [ $retval != 1 ]; then
-            echo -n "$file "
-            egrep -v "$SECRET_REGEX" $file > $file.tmp
-            mv $file.tmp $file
-        fi
-    done        
-    echo "Done."
-    set -x
+    if [ "$1" = "-clean" ]; then
+        echo "updateGhPages invoked with -clean, so we are skipping searching for GITHUB_TOKEN and other vars."
+    else
+        # JUnit xml output will include the values of the environment,
+        # which can include GITHUB_TOKEN, which is supposed to be secret.
+        # So, we remove any lines checked in to gh-pages that mentions
+        # GITHUB_TOKEN.
+        echo "Remove any instances of GITHUB_TOKEN and other vars: "
+        date
+        # Don't echo GITHUB_TOKEN
+        set +x
+        files=`find . -type f`
+        for file in $files
+        do
+            egrep -e  "$SECRET_REGEX" $file > /dev/null
+	    retval=$?
+	    if [ $retval != 1 ]; then
+                echo -n "$file "
+                egrep -v "$SECRET_REGEX" $file > $file.tmp
+                mv $file.tmp $file
+            fi
+        done        
+        echo "Done."
+        set -x
+    fi
 
     git add -f .
     date
@@ -413,18 +417,28 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     updateGhPages -clean
 
     LOG=$PTII/logs/docs.txt
+
     # Create the Javadoc jar files for use by the installer and deploy
     # them to Github pages.
 
     # Note that there is a chance that the installer will use javadoc
     # jar files that are slightly out of date.
 
-    ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG 
-    (cd doc; make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG 
+    echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
+    $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG
+    tail -$lastLines $LOG
+
+    # Need to update maxTimeout.  Will seconds be updated?
+    maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
+    echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
+    (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG
+    tail -$lastLines $LOG
 
     # No need to check in the log each time because this target is
     # easy to re-run.
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
+
+    # Note that .travis.yml deploys the codeDoc jar files.
 fi
 
 
