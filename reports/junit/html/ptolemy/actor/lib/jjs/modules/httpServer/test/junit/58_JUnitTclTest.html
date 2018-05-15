@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.12 52578 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.38 33070 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.12 52578 10.20.0.34 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.38 33070 10.20.0.73 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '378096024';
+        cur['env.TRAVIS_BUILD_ID'] = '379380794';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '433';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '440';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = 'ed9785f00f2831fae5ac8b3355cbae5f77cfed48';
+        cur['env.TRAVIS_COMMIT'] = 'fa6cb7c93a26f244881eab3610b28db4c41251fa';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Adjusted model numbers in export batches.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added PT_TRAVIS_CLEAN.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '19b13553cfd6...ed9785f00f28';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'a90b2d07f565...fa6cb7c93a26';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '378096027';
+        cur['env.TRAVIS_JOB_ID'] = '379380801';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '433.3';
+        cur['env.TRAVIS_JOB_NUMBER'] = '440.4';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -381,6 +381,8 @@
     
         cur['npm.works'] = 'true';
     
+        cur['npmjs-org-is-up'] = 'true';
+    
         cur['os.arch'] = 'amd64';
     
         cur['os.name'] = 'Linux';
@@ -417,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4835632206526075306.properties propsfile=/home/travis/build/icyphy/ptII/junit7700603895737321504.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8078633103621502488.properties propsfile=/home/travis/build/icyphy/ptII/junit4761478336039759389.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -499,8 +501,8 @@
 <tr valign="top">
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
-<tr valign="top" class="Pass">
-<td><a title="Display all tests" href="58_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="58_JUnitTclTest.html">7</a></td><td>0</td><td>0</td><td>0</td><td>246.075</td><td>2018-05-12T14:06:18</td><td>travis-job-315a6ae3-18be-424c-be24-56f16f77a55f</td>
+<tr valign="top" class="Error">
+<td><a title="Display all tests" href="58_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="58_JUnitTclTest.html">7</a></td><td><a title="Display only errors" href="58_JUnitTclTest-errors.html">3</a></td><td>0</td><td>0</td><td>1024.340</td><td>2018-05-15T20:08:37</td><td>travis-job-4d93b279-9793-42f8-9c78-7ab1ba47cd66</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -512,22 +514,33 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml (RunModel)</td><td>Success</td><td></td><td>160.494</td>
+<tr valign="top" class="Error">
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml (RunModel)</td><td>Error</td><td>test timed out after 900000 milliseconds<br>
+<br>
+<code>java.lang.Exception: test timed out after 900000 milliseconds<br>	at java.lang.Object.wait(Native Method)<br>	at java.lang.Thread.join(Thread.java:1252)<br>	at java.lang.Thread.join(Thread.java:1326)<br>	at ptolemy.moml.MoMLSimpleApplication.&lt;init&gt;(MoMLSimpleApplication.java:155)<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>
+</code></td><td>900.010</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServer.TrainableTest2<br>Because:<br>Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServer.TrainableTest4<br>Because:<br>Error: TrainableTest4: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>
+<br>  in .WebServer.DE Director<br>Because:<br>Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServer.TrainableTest2<br>Because:<br>Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServer.TrainableTest2<br>Because:<br>Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)<br>	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)<br>Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.<br>	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)<br>	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$8249$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$8247$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)<br>
+</code></td><td>45.822</td>
+</tr>
+<tr valign="top" class="Error">
+<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml (RunModel)</td><td>Error</td><td>N/A<br>
+<br>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:<br>ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServerBasic.TrainableTest<br>Because:<br>Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServerBasic.TrainableTest2<br>Because:<br>Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>
+<br>  in .WebServerBasic.DE Director<br>Because:<br>Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServerBasic.TrainableTest<br>Because:<br>Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at ptolemy.actor.Director.wrapup(Director.java:1736)<br>	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)<br>	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)<br>	at ptolemy.actor.Manager.wrapup(Manager.java:1512)<br>	at ptolemy.actor.Manager.execute(Manager.java:407)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>  in .WebServerBasic.TrainableTest<br>Because:<br>Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2223)<br>	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2118)<br>	at ptolemy.actor.Director.wrapup(Director.java:1722)<br>Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)<br>	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2200)<br>Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.<br>	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)<br>	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)<br>	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$10944$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$10942$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)<br>
+</code></td><td>40.596</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml (RunModel)</td><td>Success</td><td></td><td>29.226</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml (RunModel)"></a>[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml (RunModel)</td><td>Success</td><td></td><td>23.037</td>
-</tr>
-<tr valign="top" class="TableRowColor">
-<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml (RunModel)</td><td>Success</td><td></td><td>32.853</td>
+<td><a name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml (RunModel)"></a>[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml (RunModel)</td><td>Success</td><td></td><td>37.186</td>
 </tr>
 </table>
 <div class="Properties">
