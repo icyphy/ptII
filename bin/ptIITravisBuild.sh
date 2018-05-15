@@ -29,6 +29,7 @@
 # Below are the comamands to run to try out various targets:
 #
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_CLEAN=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
@@ -410,12 +411,17 @@ if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     fi
 fi
 
-# Build the docs, which are used by other targets.
-if [ ! -z "$PT_TRAVIS_DOCS" ]; then
+# Clean the JUnit output from the gh-branch.
+if [ ! -z "$PT_TRAVIS_CLEAN" ]; then
     exitIfNotCron
 
     # This target is run early, so clean the reports directory.
     updateGhPages -clean
+fi
+
+# Build the docs, which are used by other targets.
+if [ ! -z "$PT_TRAVIS_DOCS" ]; then
+    exitIfNotCron
 
     LOG=$PTII/logs/docs.txt
 
