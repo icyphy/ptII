@@ -49,8 +49,8 @@ echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors m
 
 if [ "$commit" = "true" -o "$updateCommonHost" = "true" ]; then
     echo "Updating the accessors and ptII repos."
-    (cd $PTII/org/terraswarm/accessor/accessors/web; svn update)
-    (cd $PTII; svn update)
+    (cd $PTII/org/terraswarm/accessor/accessors/web; git pull)
+    (cd $PTII; git pull)
 fi
 
 if [ "$updateCommonHost" = "true" ]; then
@@ -67,13 +67,13 @@ if [ "$updateCommonHost" = "true" ]; then
             echo "$0: $capeCodeFile is newer than $accessorsFile, so $accessorsFile will be updated"
             cp $capeCodeFile $accessorsFile
             if [ "$commit" = "true" ]; then
-                svn commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $accessorsFile
+                git commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $accessorsFile
             fi
         else
             echo "$0: $capeCodeFile is older than $accessorsFile, so $capeCodeFile will be updated"
             cp $accessorsFile $capeCodeFile 
             if [ "$commit" = "true" ]; then
-                svn commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $capeCodeFile
+                git commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $capeCodeFile
             fi
         fi            
     fi        
