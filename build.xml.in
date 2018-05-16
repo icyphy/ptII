@@ -356,6 +356,7 @@
     @ANT_EXCLUDE_TESTS@
     <exclude name="**/adm/coverity/test/junit/*"/>
     <exclude name="**/adm/installers/test/junit/*"/>
+    <exclude name="**/adm/installers2/test/junit/*"/>
     <exclude name="**/adm/test/junit/*"/>
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
@@ -424,6 +425,7 @@
   <patternset id="test.long.excludes">
     <exclude name="**/adm/coverity/test/junit/*"/>
     <exclude name="**/adm/installers/test/junit/*"/>
+    <exclude name="**/adm/installers2/test/junit/*"/>
     <exclude name="**/adm/test/junit/JUnitTclTest.*" />
     <exclude name="**/JUnitCGJavaTest.*" />
     <exclude name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
@@ -1593,7 +1595,7 @@ For example:
 	  <patternset refid="test.core4.excludes" />
 	  <patternset refid="test.core5.excludes" />
 	  <patternset refid="test.excludes" />
-	  <exclude name="adm/**" />
+          <!-- Don't exclude adm/** here because we want to run adm/test. -->
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}"/>
