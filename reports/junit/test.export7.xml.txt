@@ -1,0 +1,661 @@
+/home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant build test.export7.xml
+Buildfile: /home/travis/build/icyphy/ptII/build.xml
+
+build-message:
+     [echo] Use ant -p to see other targets. JAVA_HOME=/usr/lib/jvm/java-8-oracle
+     [echo] tools.jar is necessary for compilation of doc/doclets/.
+     [echo] If compilation fails, try setting JAVA_HOME to the location of the JDK.
+     [echo] For example:
+     [echo]   [bldmastr@sisyphus ptII]$ which java
+     [echo]   /usr/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+     [echo]   lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+     [echo]   [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+     [echo]     
+
+-build-subprojects-empty:
+
+-check-maven-ant-task:
+
+build-websensor:
+
+build-subprojects:
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up.
+
+-jsdoc-no-network-message:
+
+-check-jsdoc:
+
+jsdoc-install:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/node_modules
+     [exec] /home/travis/build/icyphy/ptII
+     [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
+     [exec]   ├── bluebird@3.4.7 
+     [exec]   ├─┬ catharsis@0.8.9 
+     [exec]   │ └─┬ underscore-contrib@0.3.0 
+     [exec]   │   └── underscore@1.6.0 
+     [exec]   ├── escape-string-regexp@1.0.5 
+     [exec]   ├─┬ espree@3.1.7 
+     [exec]   │ ├── acorn@3.3.0 
+     [exec]   │ └── acorn-jsx@3.0.1 
+     [exec]   ├── js2xmlparser@1.0.0 
+     [exec]   ├─┬ klaw@1.3.1 
+     [exec]   │ └── graceful-fs@4.1.11 
+     [exec]   ├── marked@0.3.19 
+     [exec]   ├─┬ mkdirp@0.5.1 
+     [exec]   │ └── minimist@0.0.8 
+     [exec]   ├─┬ requizzle@0.2.1 
+     [exec]   │ └── underscore@1.6.0 
+     [exec]   ├── strip-json-comments@2.0.1 
+     [exec]   ├── taffydb@2.6.2 
+     [exec]   └── underscore@1.8.3 
+     [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/package.json'
+     [exec] npm WARN ptII No description
+     [exec] npm WARN ptII No repository field.
+     [exec] npm WARN ptII No README data
+     [exec] npm WARN ptII No license field.
+
+jsdoc-update:
+
+-ptdoc-no-node:
+
+-ptdoc-no-npm:
+
+ptdoc:
+     [echo] 
+     [echo]       If the ptdoc target fails, then try running:
+     [echo]           ant build-project build-bin
+     [echo]     
+
+-check-node:
+
+-check-node-works:
+     [exec] v7.10.1
+
+-check-npm:
+
+-check-npm-works:
+     [exec] 4.2.0
+
+-check-if-npmjs-org-is-up:
+     [echo] Check to see if https://www.npmjs.org is up or $TRAVIS is set.
+
+-jsdoc-no-network-message:
+
+-check-jsdoc:
+     [echo] To stop CapeCode from invoking jsdoc and svn, set the PT_NO_NET environment variable.  
+     [echo]     Under BASH:
+     [echo]         export PT_NO_NET=true
+     [echo]     If ptdoc fails, and you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo]     
+
+jsdoc-install:
+     [echo] npm.executable: npm
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/node_modules
+     [exec] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors
+     [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
+     [exec]   ├── bluebird@3.4.7 
+     [exec]   ├─┬ catharsis@0.8.9 
+     [exec]   │ └─┬ underscore-contrib@0.3.0 
+     [exec]   │   └── underscore@1.6.0 
+     [exec]   ├── escape-string-regexp@1.0.5 
+     [exec]   ├─┬ espree@3.1.7 
+     [exec]   │ ├── acorn@3.3.0 
+     [exec]   │ └── acorn-jsx@3.0.1 
+     [exec]   ├── js2xmlparser@1.0.0 
+     [exec]   ├─┬ klaw@1.3.1 
+     [exec]   │ └── graceful-fs@4.1.11 
+     [exec]   ├── marked@0.3.19 
+     [exec]   ├─┬ mkdirp@0.5.1 
+     [exec]   │ └── minimist@0.0.8 
+     [exec]   ├─┬ requizzle@0.2.1 
+     [exec]   │ └── underscore@1.6.0 
+     [exec]   ├── strip-json-comments@2.0.1 
+     [exec]   ├── taffydb@2.6.2 
+     [exec]   └── underscore@1.8.3 
+     [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/package.json'
+     [exec] npm WARN accessors No description
+     [exec] npm WARN accessors No repository field.
+     [exec] npm WARN accessors No README data
+     [exec] npm WARN accessors No license field.
+
+jsdoc-update:
+
+-ptdoc-no-node-message:
+
+-ptdoc-no-npm-message:
+
+-check-jsdoc-again:
+
+-jsdoc-command-message:
+
+ptdoc:
+     [echo] Invoke /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/../node_modules/@terraswarm/jsdoc/jsdoc.js to read *.js files and generate *PtDoc.xml files suitable for Ptolemy.
+     [echo]     See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems
+     [echo]     See jsdoc/jsdoc.json
+     [echo]     See jsdoc/plugins/accessorJSDocTags.js
+     [echo]     See jsdoc/templates/ptdoc/publish.js
+     [echo] 
+     [echo]     If the ptdoc target fails, the there is likely a problem with node or npm.  It is possible
+     [echo]     to use CapeCode even if the ptdoc target fails.
+     [echo]     
+     [echo]     If you are building from $PTII, try:
+     [echo]         ant build-project build-bin
+     [echo] 
+     [echo]     
+     [exec] Generating output files...
+     [exec] Finished running in 3.78 seconds.
+
+build-project:
+     [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
+    [javac] Compiling 4724 source files to /home/travis/build/icyphy/ptII
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:61: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac] import sun.security.util.ManifestDigester;
+    [javac]                         ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/media/viewer/AudioViewer.java:51: warning: AudioPlayer is internal proprietary API and may be removed in a future release
+    [javac] import sun.audio.AudioPlayer;
+    [javac]                 ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.NbBundleProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.URLStreamHandlerRegistrationProcessor' less than -source '1.8'
+    [javac] warning: Supported source version 'RELEASE_6' from annotation processor 'org.netbeans.modules.openide.util.ServiceProviderProcessor' less than -source '1.8'
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:61: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac] import sun.security.util.ManifestDigester;
+    [javac]                         ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/media/viewer/AudioViewer.java:51: warning: AudioPlayer is internal proprietary API and may be removed in a future release
+    [javac] import sun.audio.AudioPlayer;
+    [javac]                 ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:61: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac] import sun.security.util.ManifestDigester;
+    [javac]                         ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/media/viewer/AudioViewer.java:51: warning: AudioPlayer is internal proprietary API and may be removed in a future release
+    [javac] import sun.audio.AudioPlayer;
+    [javac]                 ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:48: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac] import sun.misc.Unsafe;
+    [javac]                ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:320: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac]         ManifestDigester manifestDigester = new ManifestDigester(
+    [javac]         ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:320: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac]         ManifestDigester manifestDigester = new ManifestDigester(
+    [javac]                                                 ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:634: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac]                 ManifestDigester md, String baseName, boolean signManifest)
+    [javac]                 ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/copernicus/applet/JarSigner.java:648: warning: ManifestDigester is internal proprietary API and may be removed in a future release
+    [javac]                     ManifestDigester.class, String.class, Boolean.TYPE);
+    [javac]                     ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/media/viewer/AudioViewer.java:242: warning: AudioPlayer is internal proprietary API and may be removed in a future release
+    [javac]         AudioPlayer.player.start(_instream);
+    [javac]         ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:118: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+    [javac]                               ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]             ^
+    [javac] /home/travis/build/icyphy/ptII/ptolemy/util/StringUtilities.java:120: warning: Unsafe is internal proprietary API and may be removed in a future release
+    [javac]             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+    [javac]                              ^
+    [javac] Note: Some input files use or override a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 20 warnings
+
+-check-ptII-mk-file:
+
+-check-bin-vergil:
+
+-check-make-bin-vergil:
+
+build-bin-not:
+
+build-not-bin-vergil:
+     [echo] 
+     [echo] 	$PTII/bin/vergil does not exist, perhaps (cd $PTII/bin; make) has not been run?
+     [echo] 	This can happen if the make binary cannot be found in the path or if $PTII/mk/ptII.mk
+     [echo] 	is not present.
+     [echo] 	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
+     [echo] 	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
+     [echo] 	However, $PTII/bin does include other scripts that may be of use.
+     [echo]       
+
+build-bin:
+     [exec] for file in .momllib-util .nc2moml-util .ncapp2moml-util capecode convertToLazy copernicus decompile emachine giottoc histogram homer jode mescal moml obfuscate ptcg ptcodegen ptexecute ptjacl ptjaclapp ptplot ptstartjini ptolemy ptweb pxgraph soot tinicomm tinic tiniconverter startjini.gui vergil; do \
+     [exec] 		echo "$file"; \
+     [exec] 		rm -f "$file"; \
+     [exec] 		ln -s ptinvoke "$file"; \
+     [exec] 		chmod a+x "$file"; \
+     [exec] 	done
+     [exec] .momllib-util
+     [exec] .nc2moml-util
+     [exec] .ncapp2moml-util
+     [exec] capecode
+     [exec] convertToLazy
+     [exec] copernicus
+     [exec] decompile
+     [exec] emachine
+     [exec] giottoc
+     [exec] histogram
+     [exec] homer
+     [exec] jode
+     [exec] mescal
+     [exec] moml
+     [exec] obfuscate
+     [exec] ptcg
+     [exec] ptcodegen
+     [exec] ptexecute
+     [exec] ptjacl
+     [exec] ptjaclapp
+     [exec] ptplot
+     [exec] ptstartjini
+     [exec] ptolemy
+     [exec] ptweb
+     [exec] pxgraph
+     [exec] soot
+     [exec] tinicomm
+     [exec] tinic
+     [exec] tiniconverter
+     [exec] startjini.gui
+     [exec] vergil
+     [exec] rm -f makebat
+     [exec] ln -s ptinvoke makebat
+     [exec] rm -f ".momllib-util.bat"
+     [exec] ./makebat -q "`basename .momllib-util.bat .bat`"
+     [exec] rm -f ".nc2moml-util.bat"
+     [exec] ./makebat -q "`basename .nc2moml-util.bat .bat`"
+     [exec] rm -f ".ncapp2moml-util.bat"
+     [exec] ./makebat -q "`basename .ncapp2moml-util.bat .bat`"
+     [exec] rm -f "capecode.bat"
+     [exec] ./makebat -q "`basename capecode.bat .bat`"
+     [exec] rm -f "convertToLazy.bat"
+     [exec] ./makebat -q "`basename convertToLazy.bat .bat`"
+     [exec] rm -f "copernicus.bat"
+     [exec] ./makebat -q "`basename copernicus.bat .bat`"
+     [exec] rm -f "decompile.bat"
+     [exec] ./makebat -q "`basename decompile.bat .bat`"
+     [exec] rm -f "emachine.bat"
+     [exec] ./makebat -q "`basename emachine.bat .bat`"
+     [exec] rm -f "giottoc.bat"
+     [exec] ./makebat -q "`basename giottoc.bat .bat`"
+     [exec] rm -f "histogram.bat"
+     [exec] ./makebat -q "`basename histogram.bat .bat`"
+     [exec] rm -f "homer.bat"
+     [exec] ./makebat -q "`basename homer.bat .bat`"
+     [exec] rm -f "jode.bat"
+     [exec] ./makebat -q "`basename jode.bat .bat`"
+     [exec] rm -f "mescal.bat"
+     [exec] ./makebat -q "`basename mescal.bat .bat`"
+     [exec] LD_LIBRARY_PATH = /home/travis/build/icyphy/ptII/mescal/lib:/home/travis/build/icyphy/ptII/mescal/bin:/usr/local/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:
+     [exec] rm -f "moml.bat"
+     [exec] ./makebat -q "`basename moml.bat .bat`"
+     [exec] rm -f "obfuscate.bat"
+     [exec] ./makebat -q "`basename obfuscate.bat .bat`"
+     [exec] rm -f "ptcg.bat"
+     [exec] ./makebat -q "`basename ptcg.bat .bat`"
+     [exec] rm -f "ptcodegen.bat"
+     [exec] ./makebat -q "`basename ptcodegen.bat .bat`"
+     [exec] rm -f "ptexecute.bat"
+     [exec] ./makebat -q "`basename ptexecute.bat .bat`"
+     [exec] rm -f "ptjacl.bat"
+     [exec] ./makebat -q "`basename ptjacl.bat .bat`"
+     [exec] rm -f "ptjaclapp.bat"
+     [exec] ./makebat -q "`basename ptjaclapp.bat .bat`"
+     [exec] rm -f "ptplot.bat"
+     [exec] ./makebat -q "`basename ptplot.bat .bat`"
+     [exec] rm -f "ptstartjini.bat"
+     [exec] ./makebat -q "`basename ptstartjini.bat .bat`"
+     [exec] rm -f "ptolemy.bat"
+     [exec] ./makebat -q "`basename ptolemy.bat .bat`"
+     [exec] rm -f "ptweb.bat"
+     [exec] ./makebat -q "`basename ptweb.bat .bat`"
+     [exec] rm -f "pxgraph.bat"
+     [exec] ./makebat -q "`basename pxgraph.bat .bat`"
+     [exec] rm -f "soot.bat"
+     [exec] ./makebat -q "`basename soot.bat .bat`"
+     [exec] rm -f "tinicomm.bat"
+     [exec] ./makebat -q "`basename tinicomm.bat .bat`"
+     [exec] rm -f "tinic.bat"
+     [exec] ./makebat -q "`basename tinic.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...rm -f "tiniconverter.bat"
+     [exec] 
+     [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
+     [exec] rm -f "startjini.gui.bat"
+     [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
+     [exec] rm -f "vergil.bat"
+     [exec] ./makebat -q "`basename vergil.bat .bat`"
+     [exec] rm -f makeapp
+     [exec] ln -s ptinvoke makeapp
+     [exec] chmod a+x ptinvoke makeapp
+     [exec] ./makeapp CapeCode.app CAPECODE -capecode
+     [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] Error: This Java instance does not support a 32-bit JVM.
+     [exec] Please install the desired version.
+     [exec] configure: WARNING: Running java -d32 -version failed,
+     [exec]     and ./bin/java does not exist.
+     [exec]     Perhaps you need to install a separate 32-bit JVM
+     [exec]     or rerun configure with --with-java32?
+     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
+     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
+     [exec]     the same as '/usr/bin/java'.
+     [exec]     Perhaps '/usr/bin/java' is in your path before
+     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
+     [exec]     If you have problems later, be sure that you don't have a mismatch
+     [exec]     in JDK versions.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
+     [exec] 	 the same as '/usr/bin/javac'.
+     [exec] 	 Perhaps '/usr/bin/javac' is in your path
+     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
+     [exec] 	 If you have problems later, be sure that you don't have a mismatch
+     [exec] 	 in JDK versions.
+     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
+     [exec]     This is only a problem if you want to rebuild the Functional
+     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
+     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
+     [exec]     Checkstyle is only necessary for code cleaning.
+     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
+     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
+     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
+     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
+     [exec]     Cobertura is only necessary to for code coverage.
+     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
+     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
+     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
+     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
+     [exec]     CUnit is only necessary to test the C templates of the code generation facility
+     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
+     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
+     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+     [exec]     so the Mbed CG facility will not be run.
+     [exec] JAITest.java:28: error: package javax.media.jai does not exist
+     [exec] import javax.media.jai.*;
+     [exec] ^
+     [exec] 1 error
+     [exec] configure: WARNING: JAI not found in the default classpath
+     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+     [exec]     which is part of JModelica.
+     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
+     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
+     [exec] JMFTest.java:28: error: package javax.media does not exist
+     [exec] import javax.media.CaptureDeviceInfo;
+     [exec]                   ^
+     [exec] 1 error
+     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
+     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
+     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
+     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
+     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
+     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
+     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
+     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
+     [exec]     so we will try other jars.
+     [exec] libdc1394 error: Failed to initialize libdc1394
+     [exec] configure: WARNING: Could not find directory
+     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
+     [exec]     so we search for the jjtree command.
+     [exec] configure: WARNING: Failed to find jjtree
+     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
+     [exec]     in ptolemy/data/expr.
+     [exec]     JavaCC is available from
+     [exec]     http://javacc.dev.java.net/
+     [exec] 
+     [exec]     Note that the zip file that gets downloaded is actually an installer
+     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
+     [exec] 
+     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+     [exec]     ReInit() being static or not static.
+     [exec] 
+     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+     [exec]     we recommend JavaCC-5.0.
+     [exec] 
+     [exec]     Try:
+     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
+     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+     [exec]     tar -zxf javacc-5.0.tar.gz
+     [exec]     cd /home/travis/build/icyphy/ptII
+     [exec]     ./configure
+     [exec] 
+     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
+     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
+     [exec]     and then rerun configure.'
+     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
+     [exec] configure: WARNING: Failed to find matlab executable in the path.
+     [exec]     Perhaps Matlab is not installed?
+     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
+     [exec]     $PTII/ptolemy/matlab will not be usable.
+     [exec] configure: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.
+     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
+     [exec]     Rebuilding the OpenModelica fmus will not be possible.
+     [exec]     Running the OpenModelica models will not be possible.
+     [exec]     This is only a concern if you are interested in OpenModelica
+     [exec] configure: WARNING: Failed to find PowerMock.
+     [exec]     Perhaps PowerMock was not installed?
+     [exec]     You need not download these packages if you would like
+     [exec]     to run the tests.  To install PowerMock, go to
+     [exec]     http://code.google.com/p/powermock/ and download
+     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+     [exec]     then rerun configure.
+     [exec]     Other versions of PowerMock _may_ work, but are untested.
+     [exec] configure: WARNING: Failed to find the scalac binary,
+     [exec]     so org/ptolemy/scala will be excluded
+     [exec] configure: WARNING: ojdbc5.jar not found,
+     [exec]     but only necessary to use database actors with Oracle.
+     [exec]     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+     [exec]     To install ojdbc5.jar or ojdbc6.jar,
+     [exec]     download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+     [exec]     copy it to ptolemy/actor/lib/database
+     [exec]     and rerun ./configure
+     [exec] configure: WARNING: Failed to find Batik Jar file
+     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
+     [exec]     for use with Kepler.
+     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+     [exec]     batike-1.9/lib/batik-all-1.9.jar copied to /home/travis/build/icyphy/ptII/lib
+     [exec]     and ./configure rerun.
+     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
+     [exec] configure: WARNING: $TOSROOT is set to '',
+     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
+     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
+     [exec] configure: WARNING: Failed to find giotto/gdk.jar
+     [exec]     perhaps Giotto is not installed?
+     [exec]     You need not download Giotto unless you plan on generating code for
+     [exec]     Giotto models.
+     [exec]     The Giotto SDK can be
+     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
+     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
+     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
+     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
+     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
+     [exec]     will not be compiled. FMI++ is an extension of the
+     [exec]     Functional Mockup Interface, see
+     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
+     [exec] ./makeapp: Could not find MacJVMTar in /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz, downloading it now: Wed May 16 02:57:16 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May 16 02:57:23 UTC 2018
+     [exec] touch CapeCode.app
+     [exec] ./makeapp Vergil.app FULL -full
+     [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May 16 02:57:26 UTC 2018
+     [exec] touch Vergil.app
+     [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
+
+build:
+
+initReports:
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/doccheck
+    [mkdir] Created dir: /home/travis/build/icyphy/ptII/reports/ojdcheck
+
+test.export7.xml:
+     [echo] 
+     [echo]       ==test.export7.xml ==
+     [echo]       This target runs the seventh batch of export demo tests
+     [echo]       and generates JUnit xml output.
+     [echo]       timeout = 4000000 milliseconds
+     [echo]     
+    [junit] javachdir: directory = ptolemy/vergil/basic/export/test
+    [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test  Invoking with -Djava.net.preferIPv4Stack=true
+    [junit] ExportModeJUnitTestBatch: There are 754 demos. Exporting demos: 741 to 890.
+    [junit] ExportModeJUnitTestBatch: There are 754 demos, which is less than the end index 741. Setting the end index to 753
+    [junit] Running ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7
+    [junit] ####### 1 Wed May 16 02:57:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling/index.html
+    [junit] 6578 ms. Memory: 178176K Free: 60835K (34%)
+    [junit] ####### 2 Wed May 16 02:57:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized/index.html
+    [junit] 4897 ms. Memory: 336384K Free: 107214K (32%)
+    [junit] ####### 3 Wed May 16 02:57:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp/index.html
+    [junit] 3270 ms. Memory: 339456K Free: 130346K (38%)
+    [junit] ####### 4 Wed May 16 02:57:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/index.html
+    [junit] 3971 ms. Memory: 419840K Free: 324958K (77%)
+    [junit] ####### 5 Wed May 16 02:57:48 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/index.html
+    [junit] 3234 ms. Memory: 419840K Free: 111002K (26%)
+    [junit] ####### 6 Wed May 16 02:57:52 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
+    [junit] Running .AnimateVergil
+    [junit] 2030 ms. Memory: 498176K Free: 432465K (87%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil/index.html
+    [junit] 6248 ms. Memory: 498176K Free: 405521K (81%)
+    [junit] ####### 7 Wed May 16 02:57:58 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
+    [junit] Warning: not running ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification/index.html
+    [junit] 6107 ms. Memory: 600576K Free: 98529K (16%)
+    [junit] ####### 8 Wed May 16 02:58:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
+    [junit] Running .RailroadControl
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30001 ms. Memory: 1794560K Free: 1680338K (94%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/RailroadControl/RailroadControl/index.html
+    [junit] 34511 ms. Memory: 1794560K Free: 1444340K (80%)
+    [junit] ####### 9 Wed May 16 02:58:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
+    [junit] Running .SimpleTrafficLight
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30009 ms. Memory: 1794560K Free: 1202979K (67%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/index.html
+    [junit] 34301 ms. Memory: 1794560K Free: 1068275K (60%)
+    [junit] ####### 10 Wed May 16 02:59:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
+    [junit] Running .SimpleTrafficLightDECTA
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30007 ms. Memory: 1753088K Free: 1452201K (83%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA/index.html
+    [junit] 34324 ms. Memory: 1753088K Free: 1157019K (66%)
+    [junit] ####### 11 Wed May 16 02:59:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
+    [junit] Running .SimpleTrafficLightGraphicalSpec
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30003 ms. Memory: 1753088K Free: 895478K (51%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec/index.html
+    [junit] 34305 ms. Memory: 1753088K Free: 728915K (42%)
+    [junit] ####### 12 Wed May 16 03:00:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
+    [junit] Running .SimpleTrafficLightRTMaudeCG
+    [junit] 70 ms. Memory: 1753088K Free: 565484K (32%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG/index.html
+    [junit] 4393 ms. Memory: 1753088K Free: 362703K (21%)
+    [junit] ####### 13 Wed May 16 03:00:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
+    [junit] Warning: not running ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule/index.html
+    [junit] 3321 ms. Memory: 1753088K Free: 100949K (6%)
+    [junit] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 179.59 sec
+    [junit] Output:
+    [junit] ExportModeJUnitTestBatch: There are 754 demos. Exporting demos: 741 to 890.
+    [junit] ExportModeJUnitTestBatch: There are 754 demos, which is less than the end index 741. Setting the end index to 753
+    [junit] ####### 1 Wed May 16 02:57:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling/index.html
+    [junit] 6578 ms. Memory: 178176K Free: 60835K (34%)
+    [junit] ####### 2 Wed May 16 02:57:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized/index.html
+    [junit] 4897 ms. Memory: 336384K Free: 107214K (32%)
+    [junit] ####### 3 Wed May 16 02:57:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp/index.html
+    [junit] 3270 ms. Memory: 339456K Free: 130346K (38%)
+    [junit] ####### 4 Wed May 16 02:57:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/index.html
+    [junit] 3971 ms. Memory: 419840K Free: 324958K (77%)
+    [junit] ####### 5 Wed May 16 02:57:48 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
+    [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/index.html
+    [junit] 3234 ms. Memory: 419840K Free: 111002K (26%)
+    [junit] ####### 6 Wed May 16 02:57:52 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
+    [junit] Running .AnimateVergil
+    [junit] 2030 ms. Memory: 498176K Free: 432465K (87%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil/index.html
+    [junit] 6248 ms. Memory: 498176K Free: 405521K (81%)
+    [junit] ####### 7 Wed May 16 02:57:58 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
+    [junit] Warning: not running ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification/index.html
+    [junit] 6107 ms. Memory: 600576K Free: 98529K (16%)
+    [junit] ####### 8 Wed May 16 02:58:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
+    [junit] Running .RailroadControl
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30001 ms. Memory: 1794560K Free: 1680338K (94%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/RailroadControl/RailroadControl/index.html
+    [junit] 34511 ms. Memory: 1794560K Free: 1444340K (80%)
+    [junit] ####### 9 Wed May 16 02:58:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
+    [junit] Running .SimpleTrafficLight
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30009 ms. Memory: 1794560K Free: 1202979K (67%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/index.html
+    [junit] 34301 ms. Memory: 1794560K Free: 1068275K (60%)
+    [junit] ####### 10 Wed May 16 02:59:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
+    [junit] Running .SimpleTrafficLightDECTA
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30007 ms. Memory: 1753088K Free: 1452201K (83%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA/index.html
+    [junit] 34324 ms. Memory: 1753088K Free: 1157019K (66%)
+    [junit] ####### 11 Wed May 16 02:59:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
+    [junit] Running .SimpleTrafficLightGraphicalSpec
+    [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+    [junit] 30003 ms. Memory: 1753088K Free: 895478K (51%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec/index.html
+    [junit] 34305 ms. Memory: 1753088K Free: 728915K (42%)
+    [junit] ####### 12 Wed May 16 03:00:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
+    [junit] Running .SimpleTrafficLightRTMaudeCG
+    [junit] 70 ms. Memory: 1753088K Free: 565484K (32%)
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG/index.html
+    [junit] 4393 ms. Memory: 1753088K Free: 362703K (21%)
+    [junit] ####### 13 Wed May 16 03:00:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
+    [junit] Warning: not running ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+    [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule/index.html
+    [junit] 3321 ms. Memory: 1753088K Free: 100949K (6%)
+    [junit] 
+
+BUILD SUCCESSFUL
+Total time: 4 minutes 32 seconds
