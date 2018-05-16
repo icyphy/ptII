@@ -82,6 +82,10 @@ install:
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
   
+  # Avoid "Package libdc1394-22-dev is not available, but is referred to by another package."
+  # See https://github.com/travis-ci/travis-ci/issues/5221
+  - sudo apt-get update 
+
   # Below are the packages that are needed, in alphabetical order:
   #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
