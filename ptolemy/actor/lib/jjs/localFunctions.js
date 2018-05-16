@@ -23,8 +23,13 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 //
 
-/** JavaScript functions for a Ptolemy II (Nashorn) accessor host.
+/** JavaScript functions that override functions in commonHost.js for
+ * a Ptolemy II (Nashorn) accessor host.
  *
+ * This file is read by JavaScript.java and evaluates the accessor
+ * in the context that includes the overrides.  See also the comment
+ * in capeCodeHost.js. 
+ * 
  * @module localFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks, Chris Shaver
  * @version $$Id$$
@@ -33,7 +38,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, channel, clearInterval, clearTimeout, console, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
+/*globals Java, actor, channel, clearInterval, clearTimeout, console, error, getAccessorCode, getParameter, httpRequest, hostStackTrace, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
 /*jshint globalstrict: true*/
 /*jslint nomen: true */
 "use strict";
@@ -72,6 +77,7 @@ function evaluateCode(accessorName, code) {
         'getParameter': getParameter,
         'getResource': getResource,
         'httpRequest': httpRequest,
+        'hostStackTrace': hostStackTrace,
         'input': input,
         'output': output,
         'parameter': parameter,
