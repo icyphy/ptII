@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.22 59126 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.10 56530 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.22 59126 10.20.0.143 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.10 56530 10.20.0.133 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '379380794';
+        cur['env.TRAVIS_BUILD_ID'] = '379502237';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '440';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '443';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = 'fa6cb7c93a26f244881eab3610b28db4c41251fa';
+        cur['env.TRAVIS_COMMIT'] = 'ac07310669d8e920d1cc7459eeb2f5cc7bb9d563';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added PT_TRAVIS_CLEAN.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Added targets for export 5, 6, and 7.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = 'a90b2d07f565...fa6cb7c93a26';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'ce26e4611a6f...ac07310669d8';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '379380803';
+        cur['env.TRAVIS_JOB_ID'] = '379502243';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '440.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '443.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2208374984983482079.properties propsfile=/home/travis/build/icyphy/ptII/junit4136155042463308793.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher156886893710256560.properties propsfile=/home/travis/build/icyphy/ptII/junit2240414262961621378.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="35_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>219.336</td><td>2018-05-15T19:47:57</td><td>travis-job-ff6e10e7-b4fb-498e-ba88-2b39abb9c7b1</td>
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="35_JUnitTclTest-errors.html">2</a></td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>278.320</td><td>2018-05-16T01:22:44</td><td>travis-job-895b5426-b475-47ab-8d97-bf474dc23514</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -514,13 +514,13 @@
 <td><a name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 42. Should have been: 43<br>  in .DerivedAgain4.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>2.867</td>
+</code></td><td>1.416</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)"></a>[17] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/GetDate.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: REST: Request failed with code 503: Service Unavailable<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$20330$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$20328$15986A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:375)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$20320$17609AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:412)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientResponseHandler$2.run(HttpClientHelper.java:342)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>10.717</td>
+<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: java.lang.RuntimeException: REST: Request failed with code 503: Service Unavailable<br>	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)<br>	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)<br>	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)<br>	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$17632$3480A$\^eval\_.error(&lt;eval&gt;:98)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$17630$15986A$require.L:1#_handleError(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:375)<br>	at jdk.nashorn.internal.scripts.Script$Recompilation$17622$17609AA$require.L:1#_errorResponse(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:412)<br>	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:641)<br>	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)<br>	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)<br>	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)<br>	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientResponseHandler$2.run(HttpClientHelper.java:342)<br>	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
+</code></td><td>8.601</td>
 </tr>
 </table>
 <div class="Properties">

@@ -7,28 +7,6 @@
 <pre>java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
 Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .UDPSocketInt.Test
-
-  in .UDPSocketInt.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .UDPSocketInt.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .UDPSocketInt.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:394)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
 ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
   in .UDPSocketSelf.TrainableTest
 Because:
@@ -67,36 +45,14 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of th
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$2776$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$2774$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$2958$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$2956$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .UDPSocketString.Test
-
-  in .UDPSocketString.DE Director
-Because:
-The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .UDPSocketString.Test
-	at ptolemy.actor.Director.wrapup(Director.java:1736)
-	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-	at ptolemy.actor.Manager.execute(Manager.java:407)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .UDPSocketString.Test
-	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:394)
-	at ptolemy.actor.Director.wrapup(Director.java:1722)
-	... 6 more
 </pre>
 </body>
 </html>

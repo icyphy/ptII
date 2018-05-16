@@ -1,0 +1,2146 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from ExportModelJUnitTestBatch2</title>
+</head>
+<body>
+<pre>Counted to 99
+[AWT-EventQueue-0] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.470000000000002]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [20.1]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+Foscam2: The timeout period of 5000ms has been exceeded.
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Foscam2: connection timed out: /10.0.0.46:80
+WARNING: Foscam2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
+HttpClientHelper.java: Received an error for request 1: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
+HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-3] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
+HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 1: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 2: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 3: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 4: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 5: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 6: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 7: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+HttpClientHelper.java: Received an error for request 8: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+HttpClientHelper.java: Received an error for request 9: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
+	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
+	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
+	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
+	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	... 19 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
+	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
+	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
+	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
+	... 16 more
+Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
+	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
+	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
+	... 20 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
+	... 28 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
+	... 34 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
+	... 39 more
+WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.003]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 1: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 2: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 3: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 4: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 5: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 6: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 7: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 8: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 9: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 10: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 11: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+HttpClientHelper.java: Received an error for request 12: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.012, 28.012, 22.009]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [22.098000000000003, 22.712, 23.674, 21.792, 23.441000000000003, 22.406000000000002, 21.486, 22.311, 23.572, 21.996000000000002, 23.334, 22.61, 21.69, 22.917, 21.384, 22.2, 21.281000000000002, 21.894000000000002, 23.229, 22.508, 21.588, 22.814]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [20.401, 21.014, 21.524, 22.137, 21.831, 21.218, 22.341, 20.503, 22.035, 20.299, 20.912, 22.239, 21.32, 22.443, 20.095000000000002, 22.655, 20.197, 20.810000000000002, 21.422, 22.756, 21.729, 21.116, 20.605, 21.933, 21.627000000000002, 22.551000000000002, 20.708000000000002]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+</pre>
+</body>
+</html>
