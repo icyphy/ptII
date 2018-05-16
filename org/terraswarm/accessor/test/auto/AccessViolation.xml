@@ -51,7 +51,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2015-05-14 13:43:08 -0700 (Thu, 14 May 2015) $">
             </property>
             <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
