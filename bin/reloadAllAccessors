@@ -48,9 +48,10 @@ echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
 
 if [ "$commit" = "true" -o "$updateCommonHost" = "true" ]; then
-    echo "Updating the accessors and ptII repos."
-    (cd $PTII/org/terraswarm/accessor/accessors/web; git pull)
-    (cd $PTII; git pull)
+    echo "Updating the accessors repo."
+    (cd $PTII/org/terraswarm/accessor/accessors/web; git status; git pull)
+    echo "Updating the ptII repo."
+    (cd $PTII; git status; git pull)
 fi
 
 if [ "$updateCommonHost" = "true" ]; then
@@ -138,7 +139,7 @@ if [ "$commit" = "true" ]; then
     jsaccessorsNoVendors=`cat $jsaccessors | grep -v /vendors/`
     jsaccessorsToBeCommitted=`git status $jsaccessorsNoVendors | egrep "modified:" | awk '{print $2}' | grep -v diva.jar`
 
-    accessorsRepoCommits=`(cd $PTII/org/terraswarm/accessor/accessors/web' git status | egrep "modified: " | awk '{print $2}' | egrep "js$|xml$"`
+    accessorsRepoCommits=`(cd $PTII/org/terraswarm/accessor/accessors/web; git status | egrep "modified: " | awk '{print $2}' | egrep "js$|xml$" ) `
 
     if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
