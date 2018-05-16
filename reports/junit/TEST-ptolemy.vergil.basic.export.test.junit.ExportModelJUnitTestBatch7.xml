@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="3" hostname="travis-job-b26d7c5b-a4c5-40b3-83c4-0f852f109c5c" name="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" skipped="0" tests="63" time="814.707" timestamp="2018-05-16T17:25:14">
+<testsuite errors="0" failures="2" hostname="travis-job-6da88e48-8438-4c3b-82db-b2b3a4a451d4" name="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" skipped="0" tests="63" time="827.883" timestamp="2018-05-16T19:13:20">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="446.18" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="447.18" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.2 60700 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.25 42924 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.2 60700 10.20.0.65 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.25 42924 10.20.0.130 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7 skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher1256672113593573066.properties propsfile=/home/travis/build/icyphy/ptII/junit2115173928905062947.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7 skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7917347420079148210.properties propsfile=/home/travis/build/icyphy/ptII/junit6355512695313999963.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="d3d13556cf6d...0e6c0a9687ed" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="0e6c0a9687ed...438b382dd57d" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -116,7 +116,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="446" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="447" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -132,12 +132,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="379781119" />
+    <property name="env.TRAVIS_BUILD_ID" value="379791735" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="0e6c0a9687edec7f86dbc13ba3056410ba2e1d44" />
+    <property name="env.TRAVIS_COMMIT" value="438b382dd57d639ef4714c008b3b116655013493" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -169,7 +169,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Cleanups for using git instead of svn." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Reloaded accessors using /Users/cxh/src/ptII11.0.devel/bin/reloadAllAccessors." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -208,7 +208,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="379781137" />
+    <property name="env.TRAVIS_JOB_ID" value="379791755" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -227,104 +227,45 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[0] ptolemy/domains/sequence/demo/HelloWorld/HelloWorld.xml (RunExportModel)" time="7.418" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[1] ptolemy/domains/sequence/demo/SequencedActors/SequencedActors.xml (RunExportModel)" time="3.584" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[2] ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances.xml (RunExportModel)" time="4.702" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[3] ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances.xml (RunExportModel)" time="4.459" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[4] ptolemy/domains/sequence/demo/Visual/Visual.xml (RunExportModel)" time="4.384" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[5] ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml (RunExportModel)" time="6.661" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[6] ptolemy/domains/space/demo/DOPCenter/Placard.xml (RunExportModel)" time="7.38" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[7] ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.xml (RunExportModel)" time="4.34" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[8] ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml (RunExportModel)" time="4.457" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[9] ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml (RunExportModel)" time="4.432" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[10] ptolemy/domains/sr/demo/TokenRing/TokenRing.xml (RunExportModel)" time="4.798" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[11] ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml (RunExportModel)" time="34.945" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[12] ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml (RunExportModel)" time="35.641" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[13] ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml (RunExportModel)" time="4.274" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[14] ptolemy/domains/taskpt/demo/Task/Task.xml (RunExportModel)" time="4.314" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[15] ptolemy/domains/tcs/demo/TCS/TCS.xml (RunExportModel)" time="35.497" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[16] ptolemy/domains/tm/demo/Controllers/Controllers.xml (RunExportModel)" time="5.741" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[17] ptolemy/domains/tm/demo/FFT/FFT.xml (RunExportModel)" time="14.455" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[18] ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml (RunExportModel)" time="34.239" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[19] ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml (RunExportModel)" time="4.199" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[20] ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml (RunExportModel)" time="4.579" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[21] ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml (RunExportModel)" time="3.272" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[22] ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml (RunExportModel)" time="3.127" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[23] ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml (RunExportModel)" time="3.503" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[24] ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml (RunExportModel)" time="3.621" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[25] ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml (RunExportModel)" time="34.346" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[26] ptolemy/domains/wireless/demo/Collisions/Collisions.xml (RunExportModel)" time="24.488" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[27] ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml (RunExportModel)" time="4.454" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[28] ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml (RunExportModel)" time="34.666" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[29] ptolemy/domains/wireless/demo/Intersections/Intersections.xml (RunExportModel)" time="70.387" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[30] ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml (RunExportModel)" time="7.738">
-    <failure message="Exporting HTML for ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml failed: &#xa;java.lang.reflect.InvocationTargetException&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)&#xa;&#x9;at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)&#xa;&#x9;at sun.reflect.GeneratedMethodAccessor22.invoke(Unknown Source)&#xa;&#x9;at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)&#xa;&#x9;at java.lang.reflect.Method.invoke(Method.java:498)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)&#xa;&#x9;at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)&#xa;&#x9;at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)&#xa;&#x9;at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)&#xa;&#x9;at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)&#xa;&#x9;at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)&#xa;&#x9;at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)&#xa;&#x9;at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)&#xa;&#x9;at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)&#xa;&#x9;at org.junit.runners.ParentRunner.run(ParentRunner.java:236)&#xa;&#x9;at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)&#xa;Caused by: java.lang.RuntimeException: ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null&#xa;  in .&lt;Unnamed Object&gt;&#xa;Because:&#xa;java.lang.InterruptedException&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)&#xa;&#x9;at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)&#xa;&#x9;at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)&#xa;&#x9;at java.awt.EventQueue.access$500(EventQueue.java:97)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:709)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:703)&#xa;&#x9;at java.security.AccessController.doPrivileged(Native Method)&#xa;&#x9;at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)&#xa;&#x9;at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)&#xa;&#x9;at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)&#xa;&#x9;at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)&#xa;Caused by: ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null&#xa;  in .&lt;Unnamed Object&gt;&#xa;Because:&#xa;java.lang.InterruptedException&#xa;&#x9;at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:574)&#xa;&#x9;at ptolemy.actor.RelationWidthInference.inferWidths(RelationWidthInference.java:135)&#xa;&#x9;at ptolemy.actor.CompositeActor.inferWidths(CompositeActor.java:830)&#xa;&#x9;at ptolemy.actor.Manager._inferWidths(Manager.java:1732)&#xa;&#x9;at ptolemy.actor.Manager.iterate(Manager.java:794)&#xa;&#x9;at ptolemy.actor.Manager.execute(Manager.java:369)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)&#xa;&#x9;... 14 more&#xa;Caused by: java.lang.InterruptedException&#xa;&#x9;at java.lang.Object.wait(Native Method)&#xa;&#x9;at java.lang.Object.wait(Object.java:502)&#xa;&#x9;at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:569)&#xa;&#x9;... 20 more&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Exporting HTML for ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml failed: 
-java.lang.reflect.InvocationTargetException
-	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
-	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
-	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
-	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
-	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
-	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null
-  in .&lt;Unnamed Object&gt;
-Because:
-java.lang.InterruptedException
-	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:709)
-	at java.awt.EventQueue$3.run(EventQueue.java:703)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-Caused by: ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null
-  in .&lt;Unnamed Object&gt;
-Because:
-java.lang.InterruptedException
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:574)
-	at ptolemy.actor.RelationWidthInference.inferWidths(RelationWidthInference.java:135)
-	at ptolemy.actor.CompositeActor.inferWidths(CompositeActor.java:830)
-	at ptolemy.actor.Manager._inferWidths(Manager.java:1732)
-	at ptolemy.actor.Manager.iterate(Manager.java:794)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
-Caused by: java.lang.InterruptedException
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:502)
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:569)
-
-	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:162)
-	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-</failure>
-  </testcase>
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[31] ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml (RunExportModel)" time="3.395" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[32] ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml (RunExportModel)" time="29.268" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[33] ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml (RunExportModel)" time="5.056" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[34] ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml (RunExportModel)" time="34.929" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[35] ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml (RunExportModel)" time="34.174" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[36] ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml (RunExportModel)" time="34.22" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[37] ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml (RunExportModel)" time="36.088" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[38] ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml (RunExportModel)" time="1.238">
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[0] ptolemy/domains/sequence/demo/HelloWorld/HelloWorld.xml (RunExportModel)" time="7.266" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[1] ptolemy/domains/sequence/demo/SequencedActors/SequencedActors.xml (RunExportModel)" time="3.652" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[2] ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances.xml (RunExportModel)" time="4.567" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[3] ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances.xml (RunExportModel)" time="4.486" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[4] ptolemy/domains/sequence/demo/Visual/Visual.xml (RunExportModel)" time="4.267" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[5] ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml (RunExportModel)" time="6.561" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[6] ptolemy/domains/space/demo/DOPCenter/Placard.xml (RunExportModel)" time="7.267" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[7] ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.xml (RunExportModel)" time="4.38" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[8] ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml (RunExportModel)" time="4.498" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[9] ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml (RunExportModel)" time="4.46" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[10] ptolemy/domains/sr/demo/TokenRing/TokenRing.xml (RunExportModel)" time="4.755" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[11] ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml (RunExportModel)" time="34.797" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[12] ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml (RunExportModel)" time="35.723" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[13] ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml (RunExportModel)" time="4.292" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[14] ptolemy/domains/taskpt/demo/Task/Task.xml (RunExportModel)" time="4.268" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[15] ptolemy/domains/tcs/demo/TCS/TCS.xml (RunExportModel)" time="35.522" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[16] ptolemy/domains/tm/demo/Controllers/Controllers.xml (RunExportModel)" time="5.683" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[17] ptolemy/domains/tm/demo/FFT/FFT.xml (RunExportModel)" time="14.438" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[18] ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml (RunExportModel)" time="34.226" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[19] ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml (RunExportModel)" time="4.194" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[20] ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml (RunExportModel)" time="4.574" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[21] ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml (RunExportModel)" time="3.238" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[22] ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml (RunExportModel)" time="3.123" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[23] ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml (RunExportModel)" time="3.487" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[24] ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml (RunExportModel)" time="3.668" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[25] ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml (RunExportModel)" time="34.332" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[26] ptolemy/domains/wireless/demo/Collisions/Collisions.xml (RunExportModel)" time="24.478" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[27] ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml (RunExportModel)" time="4.55" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[28] ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml (RunExportModel)" time="34.53" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[29] ptolemy/domains/wireless/demo/Intersections/Intersections.xml (RunExportModel)" time="69.503" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[30] ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml (RunExportModel)" time="24.277" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[31] ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml (RunExportModel)" time="3.265" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[32] ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml (RunExportModel)" time="29.233" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[33] ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml (RunExportModel)" time="4.964" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[34] ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml (RunExportModel)" time="34.883" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[35] ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml (RunExportModel)" time="34.178" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[36] ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml (RunExportModel)" time="34.199" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[37] ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml (RunExportModel)" time="35.377" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[38] ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml (RunExportModel)" time="1.267">
     <failure message="Exporting HTML for ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml failed: &#xa;java.lang.reflect.InvocationTargetException&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)&#xa;&#x9;at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)&#xa;&#x9;at sun.reflect.GeneratedMethodAccessor22.invoke(Unknown Source)&#xa;&#x9;at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)&#xa;&#x9;at java.lang.reflect.Method.invoke(Method.java:498)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)&#xa;&#x9;at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)&#xa;&#x9;at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)&#xa;&#x9;at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)&#xa;&#x9;at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)&#xa;&#x9;at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)&#xa;&#x9;at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)&#xa;&#x9;at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)&#xa;&#x9;at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)&#xa;&#x9;at org.junit.runners.ParentRunner.run(ParentRunner.java:236)&#xa;&#x9;at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)&#xa;Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException:   in .MatlabContinuous.MyManager&#xa;Because:&#xa;Did not find &apos;ptmatlab&apos; in path, searched user.home (/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test) user.dir (/home/travis) and the classpath for &apos;ptmatlab.so&apos;, but that was not found either.&#xa;The java.library.path property was: /home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib:/home/travis/build/icyphy/ptII/lib&#xa;The Java classpath was: /home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar&#xa;In addition, loadLibrary(&quot;ptmatlab&quot;) was called, the exception for the loadLibrary() call was: java.lang.UnsatisfiedLinkError: /home/travis/build/icyphy/ptII/lib/libptmatlab.so: libeng.so: cannot open shared object file: No such file or directory&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)&#xa;&#x9;at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)&#xa;&#x9;at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)&#xa;&#x9;at java.awt.EventQueue.access$500(EventQueue.java:97)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:709)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:703)&#xa;&#x9;at java.security.AccessController.doPrivileged(Native Method)&#xa;&#x9;at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)&#xa;&#x9;at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)&#xa;&#x9;at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)&#xa;&#x9;at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)&#xa;Caused by: ptolemy.kernel.util.IllegalActionException:   in .MatlabContinuous.MyManager&#xa;Because:&#xa;Did not find &apos;ptmatlab&apos; in path, searched user.home (/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test) user.dir (/home/travis) and the classpath for &apos;ptmatlab.so&apos;, but that was not found either.&#xa;The java.library.path property was: /home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib:/home/travis/build/icyphy/ptII/lib&#xa;The Java classpath was: /home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar&#xa;In addition, loadLibrary(&quot;ptmatlab&quot;) was called, the exception for the loadLibrary() call was: java.lang.UnsatisfiedLinkError: /home/travis/build/icyphy/ptII/lib/libptmatlab.so: libeng.so: cannot open shared object file: No such file or directory&#xa;&#x9;at ptolemy.actor.Manager.execute(Manager.java:505)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)&#xa;&#x9;... 14 more&#xa;Caused by: java.lang.UnsatisfiedLinkError: Did not find &apos;ptmatlab&apos; in path, searched user.home (/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test) user.dir (/home/travis) and the classpath for &apos;ptmatlab.so&apos;, but that was not found either.&#xa;The java.library.path property was: /home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib:/home/travis/build/icyphy/ptII/lib&#xa;The Java classpath was: /home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar&#xa;In addition, loadLibrary(&quot;ptmatlab&quot;) was called, the exception for the loadLibrary() call was: java.lang.UnsatisfiedLinkError: /home/travis/build/icyphy/ptII/lib/libptmatlab.so: libeng.so: cannot open shared object file: No such file or directory&#xa;&#x9;at ptolemy.data.expr.UtilityFunctions._loadLibrary(UtilityFunctions.java:2255)&#xa;&#x9;at ptolemy.data.expr.UtilityFunctions.loadLibrary(UtilityFunctions.java:998)&#xa;&#x9;at ptolemy.matlab.Engine.&lt;clinit&gt;(Engine.java:176)&#xa;&#x9;at ptolemy.matlab.Expression._initializeEngine(Expression.java:569)&#xa;&#x9;at ptolemy.matlab.Expression.preinitialize(Expression.java:346)&#xa;&#x9;at ptolemy.actor.Director.preinitialize(Director.java:1302)&#xa;&#x9;at ptolemy.actor.Director.preinitialize(Director.java:1257)&#xa;&#x9;at ptolemy.domains.continuous.kernel.ContinuousDirector.preinitialize(ContinuousDirector.java:882)&#xa;&#x9;at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)&#xa;&#x9;at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)&#xa;&#x9;at ptolemy.actor.Manager.initialize(Manager.java:710)&#xa;&#x9;at ptolemy.actor.Manager.execute(Manager.java:356)&#xa;&#x9;... 15 more&#xa;Caused by: java.lang.UnsatisfiedLinkError: Expecting an absolute path of the library: ptolemy/matlab/ptmatlab&#xa;&#x9;at java.lang.Runtime.load0(Runtime.java:806)&#xa;&#x9;at java.lang.System.load(System.java:1086)&#xa;&#x9;at ptolemy.data.expr.UtilityFunctions.loadLibrary(UtilityFunctions.java:971)&#xa;&#x9;... 25 more&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Exporting HTML for ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml failed: 
 java.lang.reflect.InvocationTargetException
 	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
@@ -399,7 +340,7 @@ Caused by: java.lang.UnsatisfiedLinkError: Expecting an absolute path of the lib
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[39] ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml (RunExportModel)" time="1.074">
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[39] ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml (RunExportModel)" time="1.05">
     <failure message="Exporting HTML for ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml failed: &#xa;java.lang.reflect.InvocationTargetException&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)&#xa;&#x9;at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)&#xa;&#x9;at sun.reflect.GeneratedMethodAccessor22.invoke(Unknown Source)&#xa;&#x9;at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)&#xa;&#x9;at java.lang.reflect.Method.invoke(Method.java:498)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)&#xa;&#x9;at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)&#xa;&#x9;at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)&#xa;&#x9;at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)&#xa;&#x9;at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)&#xa;&#x9;at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)&#xa;&#x9;at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)&#xa;&#x9;at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)&#xa;&#x9;at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)&#xa;&#x9;at org.junit.runners.ParentRunner.run(ParentRunner.java:236)&#xa;&#x9;at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)&#xa;Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException:   in .MatlabExpression.MyManager&#xa;Because:&#xa;Could not initialize class ptolemy.matlab.Engine&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)&#xa;&#x9;at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)&#xa;&#x9;at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)&#xa;&#x9;at java.awt.EventQueue.access$500(EventQueue.java:97)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:709)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:703)&#xa;&#x9;at java.security.AccessController.doPrivileged(Native Method)&#xa;&#x9;at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)&#xa;&#x9;at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)&#xa;&#x9;at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)&#xa;&#x9;at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)&#xa;Caused by: ptolemy.kernel.util.IllegalActionException:   in .MatlabExpression.MyManager&#xa;Because:&#xa;Could not initialize class ptolemy.matlab.Engine&#xa;&#x9;at ptolemy.actor.Manager.execute(Manager.java:505)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)&#xa;&#x9;... 14 more&#xa;Caused by: java.lang.NoClassDefFoundError: Could not initialize class ptolemy.matlab.Engine&#xa;&#x9;at ptolemy.matlab.Expression._initializeEngine(Expression.java:569)&#xa;&#x9;at ptolemy.matlab.Expression.preinitialize(Expression.java:346)&#xa;&#x9;at ptolemy.actor.Director.preinitialize(Director.java:1302)&#xa;&#x9;at ptolemy.actor.Director.preinitialize(Director.java:1257)&#xa;&#x9;at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:763)&#xa;&#x9;at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)&#xa;&#x9;at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)&#xa;&#x9;at ptolemy.actor.Manager.initialize(Manager.java:710)&#xa;&#x9;at ptolemy.actor.Manager.execute(Manager.java:356)&#xa;&#x9;... 15 more&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Exporting HTML for ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml failed: 
 java.lang.reflect.InvocationTargetException
 	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
@@ -458,455 +399,338 @@ Caused by: java.lang.NoClassDefFoundError: Could not initialize class ptolemy.ma
 	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
 </failure>
   </testcase>
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[40] ptolemy/moml/demo/Networked/Networked.xml (RunExportModel)" time="6.982" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[41] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml (RunExportModel)" time="3.232" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[42] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml (RunExportModel)" time="4.264" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[43] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml (RunExportModel)" time="3.26" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[44] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml (RunExportModel)" time="3.175" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[45] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml (RunExportModel)" time="4.228" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[46] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml (RunExportModel)" time="3.19" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[47] ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml (RunExportModel)" time="3.208" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[48] ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml (RunExportModel)" time="3.22" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[49] ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml (RunExportModel)" time="3.184" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[50] ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml (RunExportModel)" time="3.252" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[51] ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml (RunExportModel)" time="4.175" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[52] ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml (RunExportModel)" time="3.157" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[53] ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml (RunExportModel)" time="3.366" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[54] ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml (RunExportModel)" time="3.206" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[55] ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml (RunExportModel)" time="6.169" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[56] ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml (RunExportModel)" time="5.101" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[57] ptolemy/verification/demo/RailroadControl/RailroadControl.xml (RunExportModel)" time="34.264" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[58] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml (RunExportModel)" time="34.229" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[59] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml (RunExportModel)" time="34.217" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[60] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml (RunExportModel)" time="34.294" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[61] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml (RunExportModel)" time="4.283" />
-  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[62] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml (RunExportModel)" time="3.272" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[40] ptolemy/moml/demo/Networked/Networked.xml (RunExportModel)" time="5.693" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[41] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml (RunExportModel)" time="3.26" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[42] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml (RunExportModel)" time="4.24" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[43] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml (RunExportModel)" time="3.368" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[44] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml (RunExportModel)" time="3.244" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[45] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml (RunExportModel)" time="4.25" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[46] ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml (RunExportModel)" time="3.205" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[47] ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml (RunExportModel)" time="3.2" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[48] ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml (RunExportModel)" time="3.21" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[49] ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml (RunExportModel)" time="3.178" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[50] ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml (RunExportModel)" time="3.243" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[51] ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml (RunExportModel)" time="3.734" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[52] ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml (RunExportModel)" time="3.164" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[53] ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml (RunExportModel)" time="3.566" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[54] ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml (RunExportModel)" time="3.175" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[55] ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml (RunExportModel)" time="6.19" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[56] ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml (RunExportModel)" time="5.767" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[57] ptolemy/verification/demo/RailroadControl/RailroadControl.xml (RunExportModel)" time="34.241" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[58] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml (RunExportModel)" time="34.221" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[59] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml (RunExportModel)" time="34.225" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[60] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml (RunExportModel)" time="34.218" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[61] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml (RunExportModel)" time="4.329" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7" name="[62] ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml (RunExportModel)" time="3.256" />
   <system-out><![CDATA[ExportModeJUnitTestBatch: There are 754 demos. Exporting demos: 691 to 830.
 ExportModeJUnitTestBatch: There are 754 demos, which is less than the end index 691. Setting the end index to 753
-####### 1 Wed May 16 17:25:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/HelloWorld/HelloWorld.xml $PTII/ptolemy/domains/sequence/demo/HelloWorld/HelloWorld
+####### 1 Wed May 16 19:13:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/HelloWorld/HelloWorld.xml $PTII/ptolemy/domains/sequence/demo/HelloWorld/HelloWorld
 Running .HelloWorld
-90 ms. Memory: 168960K Free: 131966K (78%)
+64 ms. Memory: 168960K Free: 132651K (79%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/demo/HelloWorld/HelloWorld/index.html
-7410 ms. Memory: 168960K Free: 95321K (56%)
-####### 2 Wed May 16 17:25:22 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/SequencedActors/SequencedActors.xml $PTII/ptolemy/domains/sequence/demo/SequencedActors/SequencedActors
+7259 ms. Memory: 168960K Free: 96119K (57%)
+####### 2 Wed May 16 19:13:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/SequencedActors/SequencedActors.xml $PTII/ptolemy/domains/sequence/demo/SequencedActors/SequencedActors
 Warning: not running ptolemy/domains/sequence/demo/SequencedActors/SequencedActors.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/demo/SequencedActors/SequencedActors/index.html
-3583 ms. Memory: 168960K Free: 88784K (53%)
-####### 3 Wed May 16 17:25:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances.xml $PTII/ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances
+3651 ms. Memory: 168960K Free: 90089K (53%)
+####### 3 Wed May 16 19:13:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances.xml $PTII/ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances
 Running .SequencedIntegratorMultipleInstances
-80 ms. Memory: 263680K Free: 175306K (66%)
+93 ms. Memory: 263680K Free: 176632K (67%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/demo/SequencedActors/SequencedIntegratorMultipleInstances/index.html
-4702 ms. Memory: 263680K Free: 130090K (49%)
-####### 4 Wed May 16 17:25:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances.xml $PTII/ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances
+4567 ms. Memory: 263680K Free: 131035K (50%)
+####### 4 Wed May 16 19:13:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances.xml $PTII/ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances
 Running .SequencedVariableMultipleInstances
-24 ms. Memory: 269312K Free: 237851K (88%)
+38 ms. Memory: 269824K Free: 241273K (89%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/demo/SequencedActors/SequencedVariableMultipleInstances/index.html
-4458 ms. Memory: 269312K Free: 216077K (80%)
-####### 5 Wed May 16 17:25:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/Visual/Visual.xml $PTII/ptolemy/domains/sequence/demo/Visual/Visual
+4485 ms. Memory: 269824K Free: 219235K (81%)
+####### 5 Wed May 16 19:13:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sequence/demo/Visual/Visual.xml $PTII/ptolemy/domains/sequence/demo/Visual/Visual
 Running .Visual
-2 ms. Memory: 269312K Free: 124708K (46%)
+3 ms. Memory: 269824K Free: 127153K (47%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sequence/demo/Visual/Visual/index.html
-4384 ms. Memory: 269312K Free: 90073K (33%)
-####### 6 Wed May 16 17:25:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter
+4266 ms. Memory: 269824K Free: 92433K (34%)
+####### 6 Wed May 16 19:13:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter
 Running .DOPCenter
-2063 ms. Memory: 418304K Free: 268217K (64%)
+2029 ms. Memory: 417792K Free: 274541K (66%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/space/demo/DOPCenter/DOPCenter/index.html
-6661 ms. Memory: 418304K Free: 201111K (48%)
-####### 7 Wed May 16 17:25:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/space/demo/DOPCenter/Placard.xml $PTII/ptolemy/domains/space/demo/DOPCenter/Placard
+6559 ms. Memory: 417792K Free: 205441K (49%)
+####### 7 Wed May 16 19:13:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/space/demo/DOPCenter/Placard.xml $PTII/ptolemy/domains/space/demo/DOPCenter/Placard
 Running .Placard
-2183 ms. Memory: 421888K Free: 344723K (82%)
+2023 ms. Memory: 420352K Free: 359478K (86%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/space/demo/DOPCenter/Placard/index.html
-7379 ms. Memory: 421888K Free: 87927K (21%)
-####### 8 Wed May 16 17:25:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.xml $PTII/ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop
+7267 ms. Memory: 420352K Free: 99491K (24%)
+####### 8 Wed May 16 19:13:58 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.xml $PTII/ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop
 Running .FeedbackLoop
-52 ms. Memory: 546816K Free: 480927K (88%)
+80 ms. Memory: 541696K Free: 490893K (91%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop/index.html
-4340 ms. Memory: 546816K Free: 459841K (84%)
-####### 9 Wed May 16 17:25:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCount
+4380 ms. Memory: 541696K Free: 468510K (86%)
+####### 9 Wed May 16 19:14:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCount
 Running .GuardedCount
-69 ms. Memory: 546816K Free: 332798K (61%)
+95 ms. Memory: 541696K Free: 339889K (63%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/GuardedCount/GuardedCount/index.html
-4457 ms. Memory: 546816K Free: 244781K (45%)
-####### 10 Wed May 16 17:26:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed
+4498 ms. Memory: 541696K Free: 251469K (46%)
+####### 10 Wed May 16 19:14:07 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed
 Running .GuardedCountTimed
-94 ms. Memory: 546816K Free: 120722K (22%)
+61 ms. Memory: 541696K Free: 127581K (24%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed/index.html
-4432 ms. Memory: 546816K Free: 52285K (10%)
-####### 11 Wed May 16 17:26:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TokenRing/TokenRing.xml $PTII/ptolemy/domains/sr/demo/TokenRing/TokenRing
+4460 ms. Memory: 541696K Free: 58048K (11%)
+####### 11 Wed May 16 19:14:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TokenRing/TokenRing.xml $PTII/ptolemy/domains/sr/demo/TokenRing/TokenRing
 Running .TokenRing
-52 ms. Memory: 554496K Free: 247249K (45%)
+42 ms. Memory: 551424K Free: 247629K (45%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TokenRing/TokenRing/index.html
-4796 ms. Memory: 554496K Free: 168018K (30%)
-####### 12 Wed May 16 17:26:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight
+4755 ms. Memory: 551424K Free: 167245K (30%)
+####### 12 Wed May 16 19:14:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight
 Running .TrafficLight
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-29999 ms. Memory: 690688K Free: 555388K (80%)
+30001 ms. Memory: 680960K Free: 527017K (77%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight/index.html
-34945 ms. Memory: 690688K Free: 270765K (39%)
-####### 13 Wed May 16 17:26:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment
+34796 ms. Memory: 680960K Free: 243435K (36%)
+####### 13 Wed May 16 19:14:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment
 Running .WirelessDeployment
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30001 ms. Memory: 738816K Free: 646825K (88%)
+30001 ms. Memory: 729088K Free: 609543K (84%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment/index.html
-35641 ms. Memory: 738816K Free: 139582K (19%)
-####### 14 Wed May 16 17:27:22 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml $PTII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory
+35723 ms. Memory: 729088K Free: 104971K (14%)
+####### 14 Wed May 16 19:15:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml $PTII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory
 Running .SharedMemory
-34 ms. Memory: 898048K Free: 818763K (91%)
+33 ms. Memory: 880640K Free: 764693K (87%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory/index.html
-4273 ms. Memory: 898048K Free: 764004K (85%)
-####### 15 Wed May 16 17:27:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/Task/Task.xml $PTII/ptolemy/domains/taskpt/demo/Task/Task
+4292 ms. Memory: 880640K Free: 715624K (81%)
+####### 15 Wed May 16 19:15:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/Task/Task.xml $PTII/ptolemy/domains/taskpt/demo/Task/Task
 Running .Task
-27 ms. Memory: 898048K Free: 666159K (74%)
+25 ms. Memory: 880640K Free: 609796K (69%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/taskpt/demo/Task/Task/index.html
-4314 ms. Memory: 898048K Free: 614948K (68%)
-####### 16 Wed May 16 17:27:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tcs/demo/TCS/TCS.xml $PTII/ptolemy/domains/tcs/demo/TCS/TCS
+4268 ms. Memory: 880640K Free: 560728K (64%)
+####### 16 Wed May 16 19:15:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tcs/demo/TCS/TCS.xml $PTII/ptolemy/domains/tcs/demo/TCS/TCS
 Running .TCS
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-29999 ms. Memory: 898048K Free: 309634K (34%)
+30001 ms. Memory: 881152K Free: 241041K (27%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tcs/demo/TCS/TCS/index.html
-35496 ms. Memory: 898048K Free: 240234K (27%)
-####### 17 Wed May 16 17:28:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/Controllers/Controllers.xml $PTII/ptolemy/domains/tm/demo/Controllers/Controllers
+35521 ms. Memory: 881152K Free: 173444K (20%)
+####### 17 Wed May 16 19:16:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/Controllers/Controllers.xml $PTII/ptolemy/domains/tm/demo/Controllers/Controllers
 Running .Controllers
-1196 ms. Memory: 1064448K Free: 952210K (89%)
+1176 ms. Memory: 1044480K Free: 847174K (81%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/Controllers/Controllers/index.html
-5741 ms. Memory: 1064448K Free: 695466K (65%)
-####### 18 Wed May 16 17:28:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/FFT/FFT.xml $PTII/ptolemy/domains/tm/demo/FFT/FFT
+5683 ms. Memory: 1044480K Free: 590123K (56%)
+####### 18 Wed May 16 19:16:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/FFT/FFT.xml $PTII/ptolemy/domains/tm/demo/FFT/FFT
 Running .FFT
-10072 ms. Memory: 1064448K Free: 546149K (51%)
+10055 ms. Memory: 1044480K Free: 439918K (42%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/FFT/FFT/index.html
-14453 ms. Memory: 1064448K Free: 417530K (39%)
-####### 19 Wed May 16 17:28:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml $PTII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents
+14438 ms. Memory: 1044480K Free: 311940K (30%)
+####### 19 Wed May 16 19:16:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml $PTII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents
 Running .MergedEvents
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30042 ms. Memory: 1064448K Free: 307301K (29%)
+30023 ms. Memory: 1044480K Free: 202214K (19%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents/index.html
-34239 ms. Memory: 1064448K Free: 208469K (20%)
-####### 20 Wed May 16 17:29:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml $PTII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks
+34225 ms. Memory: 1044480K Free: 102098K (10%)
+####### 20 Wed May 16 19:17:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml $PTII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks
 Running .SimpleTasks
-21 ms. Memory: 1064448K Free: 112759K (11%)
+8 ms. Memory: 1072128K Free: 976197K (91%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks/index.html
-4199 ms. Memory: 1064448K Free: 70556K (7%)
-####### 21 Wed May 16 17:29:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest
+4194 ms. Memory: 1072128K Free: 935658K (87%)
+####### 21 Wed May 16 19:17:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest
 Running .AntennaGainTest
-203 ms. Memory: 1096192K Free: 785410K (72%)
+220 ms. Memory: 1072128K Free: 652972K (61%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest/index.html
-4579 ms. Memory: 1096192K Free: 640726K (58%)
-####### 22 Wed May 16 17:29:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel
+4574 ms. Memory: 1072128K Free: 507861K (47%)
+####### 22 Wed May 16 19:17:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel
 Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel/index.html
-3272 ms. Memory: 1096192K Free: 370824K (34%)
-####### 23 Wed May 16 17:29:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern
+3238 ms. Memory: 1072128K Free: 237364K (22%)
+####### 23 Wed May 16 19:17:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern
 Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern/index.html
-3127 ms. Memory: 1096192K Free: 253329K (23%)
-####### 24 Wed May 16 17:29:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern
+3122 ms. Memory: 1072128K Free: 114969K (11%)
+####### 24 Wed May 16 19:17:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern
 Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern/index.html
-3503 ms. Memory: 1202688K Free: 825605K (69%)
-####### 25 Wed May 16 17:29:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern
+3487 ms. Memory: 1171968K Free: 664386K (57%)
+####### 25 Wed May 16 19:17:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern
 Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern/index.html
-3621 ms. Memory: 1202688K Free: 322767K (27%)
-####### 26 Wed May 16 17:29:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml $PTII/ptolemy/domains/wireless/demo/CircularRange/CircularRange
+3666 ms. Memory: 1171968K Free: 164700K (14%)
+####### 26 Wed May 16 19:17:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml $PTII/ptolemy/domains/wireless/demo/CircularRange/CircularRange
 Running .CircularRange
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-29997 ms. Memory: 1202688K Free: 185571K (15%)
+30000 ms. Memory: 1174016K Free: 1096443K (93%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/CircularRange/CircularRange/index.html
-34346 ms. Memory: 1201664K Free: 1103900K (92%)
-####### 27 Wed May 16 17:29:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/Collisions.xml $PTII/ptolemy/domains/wireless/demo/Collisions/Collisions
+34330 ms. Memory: 1174016K Free: 920006K (78%)
+####### 27 Wed May 16 19:18:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/Collisions.xml $PTII/ptolemy/domains/wireless/demo/Collisions/Collisions
 Running .Collisions
-20028 ms. Memory: 1201664K Free: 920799K (77%)
+20018 ms. Memory: 1174016K Free: 734940K (63%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Collisions/Collisions/index.html
-24487 ms. Memory: 1201664K Free: 578753K (48%)
-####### 28 Wed May 16 17:30:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml $PTII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic
+24477 ms. Memory: 1174016K Free: 392314K (33%)
+####### 28 Wed May 16 19:18:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml $PTII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic
 Running .CollisionsDeterministic
-32 ms. Memory: 1201664K Free: 424001K (35%)
+38 ms. Memory: 1174016K Free: 239551K (20%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic/index.html
-4454 ms. Memory: 1201664K Free: 163119K (14%)
-####### 29 Wed May 16 17:30:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml $PTII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer
+4550 ms. Memory: 1263616K Free: 1124438K (89%)
+####### 29 Wed May 16 19:18:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml $PTII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer
 Running .EvaderAndPursuer
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30001 ms. Memory: 1285632K Free: 885746K (69%)
+30001 ms. Memory: 1263616K Free: 667240K (53%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer/index.html
-34666 ms. Memory: 1285632K Free: 690868K (54%)
-####### 30 Wed May 16 17:31:01 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Intersections/Intersections.xml $PTII/ptolemy/domains/wireless/demo/Intersections/Intersections
+34530 ms. Memory: 1263616K Free: 476275K (38%)
+####### 30 Wed May 16 19:19:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Intersections/Intersections.xml $PTII/ptolemy/domains/wireless/demo/Intersections/Intersections
 Running .Intersections
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30003 ms. Memory: 1775616K Free: 1111693K (63%)
+30003 ms. Memory: 1760256K Free: 420077K (24%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Intersections/Intersections/index.html
-70387 ms. Memory: 1904128K Free: 742049K (39%)
-####### 31 Wed May 16 17:32:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml $PTII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer
+69502 ms. Memory: 1905664K Free: 194456K (10%)
+####### 31 Wed May 16 19:20:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml $PTII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer
 Running .LinkVisualizer
-6525 ms. Memory: 1904128K Free: 408711K (21%)
-####### 32 Wed May 16 17:32:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection
+20016 ms. Memory: 1906176K Free: 1067924K (56%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer/index.html
+24276 ms. Memory: 1906176K Free: 931012K (49%)
+####### 32 Wed May 16 19:20:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection
 Warning: not running ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection/index.html
-3394 ms. Memory: 1908736K Free: 1728614K (91%)
-####### 33 Wed May 16 17:32:22 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml $PTII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability
+3265 ms. Memory: 1906176K Free: 598476K (31%)
+####### 33 Wed May 16 19:20:42 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml $PTII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability
 Running .PowerVariability
-25014 ms. Memory: 1908736K Free: 1597627K (84%)
+25014 ms. Memory: 1906176K Free: 483793K (25%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability/index.html
-29268 ms. Memory: 1908736K Free: 1440726K (75%)
-####### 34 Wed May 16 17:32:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld
+29233 ms. Memory: 1906176K Free: 306022K (16%)
+####### 34 Wed May 16 19:21:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld
 Running .SmallWorld
-141 ms. Memory: 1908736K Free: 530519K (28%)
+99 ms. Memory: 1907200K Free: 983879K (52%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld/index.html
-5056 ms. Memory: 1908736K Free: 403769K (21%)
-####### 35 Wed May 16 17:32:56 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml $PTII/ptolemy/domains/wireless/demo/SmartParking/SmartParking
+4964 ms. Memory: 1907200K Free: 854695K (45%)
+####### 35 Wed May 16 19:21:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml $PTII/ptolemy/domains/wireless/demo/SmartParking/SmartParking
 Running .SmartParking
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30001 ms. Memory: 1913856K Free: 1211907K (63%)
+30001 ms. Memory: 1907200K Free: 126273K (7%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/SmartParking/SmartParking/index.html
-34929 ms. Memory: 1913856K Free: 1046849K (55%)
-####### 36 Wed May 16 17:33:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml $PTII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel
+34883 ms. Memory: 1907712K Free: 1584998K (83%)
+####### 36 Wed May 16 19:21:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml $PTII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel
 Running .TerrainModel
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30000 ms. Memory: 1913856K Free: 918296K (48%)
+30001 ms. Memory: 1907712K Free: 1451981K (76%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel/index.html
-34174 ms. Memory: 1913856K Free: 819014K (43%)
-####### 37 Wed May 16 17:34:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection
+34178 ms. Memory: 1907712K Free: 1332258K (70%)
+####### 37 Wed May 16 19:22:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection
 Running .WirelessSoundDetection
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-29999 ms. Memory: 1913856K Free: 647455K (34%)
+30000 ms. Memory: 1907712K Free: 1148765K (60%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection/index.html
-34220 ms. Memory: 1913856K Free: 519259K (27%)
-####### 38 Wed May 16 17:34:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml $PTII/ptolemy/domains/wireless/demo/Zigbee/Zigbee
+34199 ms. Memory: 1907712K Free: 1008240K (53%)
+####### 38 Wed May 16 19:23:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml $PTII/ptolemy/domains/wireless/demo/Zigbee/Zigbee
 Running .Zigbee
-3105 ms. Memory: 1911296K Free: 1017066K (53%)
+2995 ms. Memory: 1902080K Free: 1469323K (77%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Zigbee/Zigbee/index.html
-36088 ms. Memory: 1900544K Free: 291423K (15%)
-####### 39 Wed May 16 17:35:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml $PTII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous
+35377 ms. Memory: 1849856K Free: 1082776K (59%)
+####### 39 Wed May 16 19:23:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml $PTII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous
 Running .MatlabContinuous
-22 ms. Memory: 1900544K Free: 191086K (10%)
-####### 40 Wed May 16 17:35:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression
+15 ms. Memory: 1849856K Free: 951945K (51%)
+####### 40 Wed May 16 19:23:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression
 Running .MatlabExpression
-1 ms. Memory: 1900544K Free: 133076K (7%)
-####### 41 Wed May 16 17:35:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/moml/demo/Networked/Networked.xml $PTII/ptolemy/moml/demo/Networked/Networked
+0 ms. Memory: 1849856K Free: 910829K (49%)
+####### 41 Wed May 16 19:23:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/moml/demo/Networked/Networked.xml $PTII/ptolemy/moml/demo/Networked/Networked
 Running .Networked
-43 ms. Memory: 1897472K Free: 1556885K (82%)
+28 ms. Memory: 1849856K Free: 770527K (42%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/moml/demo/Networked/Networked/index.html
-6982 ms. Memory: 1897472K Free: 1452746K (77%)
-####### 42 Wed May 16 17:35:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1
+5693 ms. Memory: 1849856K Free: 701304K (38%)
+####### 42 Wed May 16 19:23:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1
 Model ".ExportExample1" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1/index.html
-3232 ms. Memory: 1897472K Free: 1293337K (68%)
-####### 43 Wed May 16 17:35:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2
+3260 ms. Memory: 1849856K Free: 532031K (29%)
+####### 43 Wed May 16 19:23:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2
 Running .ExportExample2
-5 ms. Memory: 1897472K Free: 1195091K (63%)
+5 ms. Memory: 1849856K Free: 409219K (22%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2/index.html
-4263 ms. Memory: 1897472K Free: 1127679K (59%)
-####### 44 Wed May 16 17:35:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3
+4240 ms. Memory: 1849856K Free: 370637K (20%)
+####### 44 Wed May 16 19:23:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3
 Model ".ExportExample3" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3/index.html
-3259 ms. Memory: 1897472K Free: 1021799K (54%)
-####### 45 Wed May 16 17:35:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4
+3367 ms. Memory: 1849856K Free: 239865K (13%)
+####### 45 Wed May 16 19:23:54 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4
 Model ".ExportExample4" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4/index.html
-3175 ms. Memory: 1897472K Free: 892228K (47%)
-####### 46 Wed May 16 17:35:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5
+3244 ms. Memory: 1856512K Free: 1683818K (91%)
+####### 46 Wed May 16 19:23:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5
 Running .ExportExample5
-20 ms. Memory: 1897472K Free: 800133K (42%)
+16 ms. Memory: 1856512K Free: 1587414K (86%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5/index.html
-4227 ms. Memory: 1897472K Free: 702215K (37%)
-####### 47 Wed May 16 17:35:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples
+4250 ms. Memory: 1856512K Free: 1521209K (82%)
+####### 47 Wed May 16 19:24:01 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples
 Warning: not running ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples/index.html
-3190 ms. Memory: 1897472K Free: 573379K (30%)
-####### 48 Wed May 16 17:35:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml $PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler
+3205 ms. Memory: 1856512K Free: 1388492K (75%)
+####### 48 Wed May 16 19:24:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml $PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler
 Warning: not running ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler/index.html
-3208 ms. Memory: 1897472K Free: 413988K (22%)
-####### 49 Wed May 16 17:35:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor
+3200 ms. Memory: 1856512K Free: 1227105K (66%)
+####### 49 Wed May 16 19:24:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor/index.html
-3219 ms. Memory: 1897472K Free: 224016K (12%)
-####### 50 Wed May 16 17:35:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor
+3210 ms. Memory: 1856512K Free: 1038730K (56%)
+####### 50 Wed May 16 19:24:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor/index.html
-3183 ms. Memory: 1903616K Free: 1527799K (80%)
-####### 51 Wed May 16 17:35:56 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
+3177 ms. Memory: 1856512K Free: 777255K (42%)
+####### 51 Wed May 16 19:24:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling/index.html
-3252 ms. Memory: 1903616K Free: 1274481K (67%)
-####### 52 Wed May 16 17:35:59 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
+3242 ms. Memory: 1856512K Free: 528077K (28%)
+####### 52 Wed May 16 19:24:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized/index.html
-4175 ms. Memory: 1903616K Free: 695444K (37%)
-####### 53 Wed May 16 17:36:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
+3734 ms. Memory: 1857536K Free: 1527247K (82%)
+####### 53 Wed May 16 19:24:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp/index.html
-3157 ms. Memory: 1903616K Free: 441426K (23%)
-####### 54 Wed May 16 17:36:07 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
+3164 ms. Memory: 1857536K Free: 1270253K (68%)
+####### 54 Wed May 16 19:24:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/index.html
-3365 ms. Memory: 1901568K Free: 1481555K (78%)
-####### 55 Wed May 16 17:36:10 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
+3566 ms. Memory: 1857536K Free: 765517K (41%)
+####### 55 Wed May 16 19:24:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
 Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/index.html
-3206 ms. Memory: 1901568K Free: 1259977K (66%)
-####### 56 Wed May 16 17:36:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
+3175 ms. Memory: 1857536K Free: 572910K (31%)
+####### 56 Wed May 16 19:24:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
 Running .AnimateVergil
-2018 ms. Memory: 1901568K Free: 1168760K (61%)
+2012 ms. Memory: 1857536K Free: 450462K (24%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil/index.html
-6169 ms. Memory: 1901568K Free: 1133297K (60%)
-####### 57 Wed May 16 17:36:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
+6189 ms. Memory: 1857536K Free: 415379K (22%)
+####### 57 Wed May 16 19:24:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
 Warning: not running ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification/index.html
-5101 ms. Memory: 1908736K Free: 1425286K (75%)
-####### 58 Wed May 16 17:36:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
+5766 ms. Memory: 1854464K Free: 728332K (39%)
+####### 58 Wed May 16 19:24:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
 Running .RailroadControl
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30001 ms. Memory: 1924096K Free: 451385K (23%)
+30001 ms. Memory: 1865216K Free: 809332K (43%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/RailroadControl/RailroadControl/index.html
-34264 ms. Memory: 1924096K Free: 259974K (14%)
-####### 59 Wed May 16 17:36:59 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
+34241 ms. Memory: 1865216K Free: 615446K (33%)
+####### 59 Wed May 16 19:25:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
 Running .SimpleTrafficLight
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30011 ms. Memory: 1923584K Free: 1642870K (85%)
+30003 ms. Memory: 1865216K Free: 388390K (21%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/index.html
-34229 ms. Memory: 1923584K Free: 1569793K (82%)
-####### 60 Wed May 16 17:37:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
+34220 ms. Memory: 1865216K Free: 259138K (14%)
+####### 60 Wed May 16 19:25:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
 Running .SimpleTrafficLightDECTA
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30006 ms. Memory: 1927680K Free: 810739K (42%)
+30008 ms. Memory: 1863680K Free: 89161K (5%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA/index.html
-34217 ms. Memory: 1927680K Free: 518577K (27%)
-####### 61 Wed May 16 17:38:07 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
+34225 ms. Memory: 1877504K Free: 1488791K (79%)
+####### 61 Wed May 16 19:26:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
 Running .SimpleTrafficLightGraphicalSpec
 ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-30004 ms. Memory: 1927680K Free: 293050K (15%)
+30004 ms. Memory: 1877504K Free: 1260336K (67%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec/index.html
-34294 ms. Memory: 1927680K Free: 132211K (7%)
-####### 62 Wed May 16 17:38:42 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
+34218 ms. Memory: 1877504K Free: 1097318K (58%)
+####### 62 Wed May 16 19:27:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
 Running .SimpleTrafficLightRTMaudeCG
-43 ms. Memory: 1934336K Free: 1635826K (85%)
+61 ms. Memory: 1877504K Free: 966581K (51%)
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG/index.html
-4283 ms. Memory: 1934336K Free: 1469434K (76%)
-####### 63 Wed May 16 17:38:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
+4329 ms. Memory: 1877504K Free: 771083K (41%)
+####### 63 Wed May 16 19:27:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
 Warning: not running ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
 Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule/index.html
-3272 ms. Memory: 1934336K Free: 1271609K (66%)
+3254 ms. Memory: 1877504K Free: 542672K (29%)
 ]]></system-out>
-  <system-err><![CDATA[ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null
-  in .<Unnamed Object>
-Because:
-java.lang.InterruptedException
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:574)
-	at ptolemy.actor.RelationWidthInference.inferWidths(RelationWidthInference.java:135)
-	at ptolemy.actor.CompositeActor.inferWidths(CompositeActor.java:830)
-	at ptolemy.actor.Manager._inferWidths(Manager.java:1732)
-	at ptolemy.actor.Manager.iterate(Manager.java:794)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:709)
-	at java.awt.EventQueue$3.run(EventQueue.java:703)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-Caused by: java.lang.InterruptedException
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:502)
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:569)
-	... 20 more
-Caused by: java.lang.InterruptedException
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:502)
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:569)
-	at ptolemy.actor.RelationWidthInference.inferWidths(RelationWidthInference.java:135)
-	at ptolemy.actor.CompositeActor.inferWidths(CompositeActor.java:830)
-	at ptolemy.actor.Manager._inferWidths(Manager.java:1732)
-	at ptolemy.actor.Manager.iterate(Manager.java:794)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:709)
-	at java.awt.EventQueue$3.run(EventQueue.java:703)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-java.lang.reflect.InvocationTargetException
-	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
-	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
-	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
-	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
-	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
-	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
-	at sun.reflect.GeneratedMethodAccessor22.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
-	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
-	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
-	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
-	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
-	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
-	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
-Caused by: java.lang.RuntimeException: ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null
-  in .<Unnamed Object>
-Because:
-java.lang.InterruptedException
-	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
-	at java.awt.EventQueue.access$500(EventQueue.java:97)
-	at java.awt.EventQueue$3.run(EventQueue.java:709)
-	at java.awt.EventQueue$3.run(EventQueue.java:703)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-Caused by: ptolemy.kernel.util.InternalErrorException: AWT-EventQueue-0: Thread interrupted while waiting to get write access: null
-  in .<Unnamed Object>
-Because:
-java.lang.InterruptedException
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:574)
-	at ptolemy.actor.RelationWidthInference.inferWidths(RelationWidthInference.java:135)
-	at ptolemy.actor.CompositeActor.inferWidths(CompositeActor.java:830)
-	at ptolemy.actor.Manager._inferWidths(Manager.java:1732)
-	at ptolemy.actor.Manager.iterate(Manager.java:794)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
-	... 14 more
-Caused by: java.lang.InterruptedException
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:502)
-	at ptolemy.kernel.util.Workspace.getWriteAccess(Workspace.java:569)
-	... 20 more
-java.lang.UnsatisfiedLinkError: Did not find 'ptmatlab' in path, searched user.home (/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test) user.dir (/home/travis) and the classpath for 'ptmatlab.so', but that was not found either.
+  <system-err><![CDATA[java.lang.UnsatisfiedLinkError: Did not find 'ptmatlab' in path, searched user.home (/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test) user.dir (/home/travis) and the classpath for 'ptmatlab.so', but that was not found either.
 The java.library.path property was: /home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib:/home/travis/build/icyphy/ptII/lib
 The Java classpath was: /home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar
 In addition, loadLibrary("ptmatlab") was called, the exception for the loadLibrary() call was: java.lang.UnsatisfiedLinkError: /home/travis/build/icyphy/ptII/lib/libptmatlab.so: libeng.so: cannot open shared object file: No such file or directory
@@ -1246,24 +1070,5 @@ java.util.ConcurrentModificationException
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-May 16, 2018 5:35:32 PM sun.awt.X11.XToolkit processException
-WARNING: Exception on Toolkit thread
-java.lang.NullPointerException
-	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
-	at java.awt.Component$BltSubRegionBufferStrategy.showIfNotLost(Component.java:4542)
-	at javax.swing.BufferStrategyPaintManager.show(BufferStrategyPaintManager.java:252)
-	at javax.swing.RepaintManager.show(RepaintManager.java:1379)
-	at javax.swing.SwingPaintEventDispatcher.createPaintEvent(SwingPaintEventDispatcher.java:61)
-	at sun.awt.X11.XWindow.postPaintEvent(XWindow.java:564)
-	at sun.awt.X11.XContentWindow.postPaintEvent(XContentWindow.java:163)
-	at sun.awt.X11.XWindow.handleExposeEvent(XWindow.java:558)
-	at sun.awt.X11.XContentWindow.handleExposeEvent(XContentWindow.java:45)
-	at sun.awt.X11.XBaseWindow.dispatchEvent(XBaseWindow.java:1110)
-	at sun.awt.X11.XBaseWindow.dispatchToWindow(XBaseWindow.java:1086)
-	at sun.awt.X11.XToolkit.dispatchEvent(XToolkit.java:502)
-	at sun.awt.X11.XToolkit.run(XToolkit.java:616)
-	at sun.awt.X11.XToolkit.run(XToolkit.java:532)
-	at java.lang.Thread.run(Thread.java:748)
-
 ]]></system-err>
 </testsuite>
