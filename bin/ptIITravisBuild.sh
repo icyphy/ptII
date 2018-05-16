@@ -209,7 +209,17 @@ runTarget () {
     for jar in $jars
     do
         echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
+        log=/tmp/wgetJar.txt
+        # Use timeout here because sometimes wget fails and hangs.
+        # Not all builds require these jar files, so we should not fail all builds if there is a problem here.
+        $TIMEOUTCOMMAND 120 wget -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar >& $log
+        status=$?
+        if [ $status != 0 ]; then
+            echo "######################################################"
+            echo "$0: WARNING! `date`: wget $jar failed with a non-zero status of $status"
+            echo "Below are the last $lastlines lines of the log file:"
+            echo tail -$lastlines $log
+        fi
         ls -l $PTII/doc/$jar
         (cd $PTII; jar -xf $PTII/doc/$jar)
     done
