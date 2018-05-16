@@ -279,11 +279,13 @@
   <patternset id="test.core3.includes">
     <include name="**/ptolemy/cg/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/demo/**/test/junit/JUnitTclTest.java" />
+    <include name="**/adm/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core3.excludes">
     <exclude name="**/ptolemy/cg/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/demo/**/test/junit/JUnitTclTest.*" />
+    <exclude name="**/adm/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the core, fourth batch. -->

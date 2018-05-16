@@ -52,10 +52,6 @@ JSIMPLE_TESTS = \
 	ant.tcl \
 	checkClasspathDefault.tcl \
 	license.tcl \
-	Nightly.tcl \
-	NightlyInstall.tcl \
-	NightlyTest.tcl \
-	NightlyUpdate.tcl \
 	Release.tcl \
 	ReloadAllAccessors.tcl \
 	TerraSwarmWiki.tcl
@@ -128,12 +124,12 @@ $(JAVAFILENAMES): $(ROOT)/$(PTIITXTFILES)
 	@egrep "\.java$$" $(TXTFILENAMES) > $(JAVAFILENAMES)
 
 missingMakefiles: $(JAVAFILENAMES)
-	(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | egrep "cannot access") | awk '{print substr($$4, 1, length($$4) - 1) }' | 2>&1 egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni|ptinyos/demo/.*/output|hosts/cordova/plugins)"; rm -f /tmp/missingMakefiles.sh
+	(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | egrep "(cannot access|No such file or directory)") | awk '$$0 ~ /cannot access/ {print substr($$4, 1, length($$4) - 1) } $$0 ~ /No such file/ {print substr($$2, 1, length($$2) -1) }' | 2>&1 egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni|ptinyos/demo/.*/output|hosts/cordova/plugins)";  rm -f /tmp/missingMakefiles.sh
 
 missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p
 	@(cd $(ROOT)/doc; $(MAKE) echo | sort > /tmp/missingDocPackages.d)
-	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal|hosts.cordova.plugins)"; rm -f /tmp/missingDocPackages.d /tmp/missingDocPackages.p
+	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|ptolemy\.backtrack\.eclipse|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal|hosts.cordova.plugins)"; rm -f /tmp/missingDocPackages.d /tmp/missingDocPackages.p
 
 reloadAllAccessors:
 	(cd $(PTII);./bin/reloadAllAccessors -reload -cg -commit -updateCommonHost) | tee /tmp/reloadAllAccessors.$$$$.out
