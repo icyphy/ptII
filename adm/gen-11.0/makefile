@@ -122,6 +122,7 @@ PTII_TOPDIR=	.cshrc \
 		.classpath.default \
 		.eclipse.epf \
 		.project.default \
+		CONTRIBUTING.md \
 		README.md \
 		ant \
 		bin \

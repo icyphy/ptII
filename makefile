@@ -103,6 +103,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 EXTRA_SRCS = \
 	.classpath.in \
 	.eclipse.epf \
+	CONTRIBUTING.md \
 	README.md \
 	build.default.xml \
 	build.xml \
