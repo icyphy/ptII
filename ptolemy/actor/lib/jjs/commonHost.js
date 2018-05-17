@@ -1378,7 +1378,7 @@ Accessor.prototype.getResource = function () {
  *  @param exception The JavaScript exception
  *  @return In commonHost.js, return exception.stack.
  */ 
-Accessor.prototype.hostStackTrace = function (stack) {
+Accessor.prototype.hostStackTrace = function (exception) {
     return exception.stack;
 };
 
@@ -1692,7 +1692,7 @@ Accessor.prototype.react = function (name) {
                                         thiz.accessorName +
                                         ', which has now has been removed.  Exception was: ' +
                                         exception +
-                                        ' Stacktrace was: ' + hostStackTrace(exception));
+                                        ' Stacktrace was: ' + thiz.hostStackTrace(exception));
                     }
                 }
             }
@@ -1747,7 +1747,7 @@ Accessor.prototype.react = function (name) {
                     thiz.error('commonHost.js, react() invoking handlers registered to handle any input: Exception occurred in input handler,' +
                                ' which has now has been removed.  Exception was: ' +
                                exception +
-                               ' Stacktrace was: ' + hostStackTrace(exception));
+                               ' Stacktrace was: ' + thiz.hostStackTrace(exception));
                 }
             }
         }
@@ -2942,7 +2942,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
                 eval(fileReader(argv[i]));
             } catch (exception) {
                 console.error('Failed to eval "' + argv[i] + '": ' + exception +
-                              ': Stacktrace was: ' + hostStackTrace(exceptionk));
+                              ': Stacktrace was: ' + hostStackTrace(exception));
 
                 return false;
             }
