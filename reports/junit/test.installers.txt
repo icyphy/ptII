@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 5.30 seconds.
+     [exec] Finished running in 6.79 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -341,8 +341,8 @@ build-bin:
      [exec] ./makebat -q "`basename tinic.bat .bat`"
      [exec] rm -f "tiniconverter.bat"
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "startjini.gui.bat"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
      [exec] rm -f "vergil.bat"
      [exec] ./makebat -q "`basename vergil.bat .bat`"
@@ -352,11 +352,11 @@ build-bin:
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 17 01:38:33 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 17 03:06:40 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 17 01:38:36 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 17 03:06:43 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -467,7 +467,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 5.26 seconds.
+     [exec] Finished running in 6.69 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -1054,11 +1054,6 @@ test.installers:
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/adm/installers/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running adm.installers.test.junit.JUnitTclTest
     [junit] /home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl
-    [junit] testDefs.tcl: setting time out to 10042 seconds at Thu May 17 01:39:08 UTC 2018
-    [junit] 05/17/18 01:39:08
-    [junit] Failed: 0  Total Tests: 0  ((Passed: 0, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/adm/installers/test
-    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
-    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
     [junit] java.lang.Exception: Evaluating the Tcl file "/home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl"resulted in a TclException being thrown.
     [junit] The Tcl errorInfo global variable has the value:
     [junit] couldn't read file "../../test/nightlyMake.tcl"
@@ -1104,16 +1099,21 @@ test.installers:
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
     [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+    [junit] testDefs.tcl: setting time out to 10042 seconds at Thu May 17 03:07:16 UTC 2018
+    [junit] 05/17/18 03:07:16
+    [junit] Failed: 0  Total Tests: 0  ((Passed: 0, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/adm/installers/test
+    [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
+    [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.209 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.742 sec
     [junit] Output:
     [junit] /home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl
-    [junit] testDefs.tcl: setting time out to 10042 seconds at Thu May 17 01:39:08 UTC 2018
-    [junit] 05/17/18 01:39:08
+    [junit] testDefs.tcl: setting time out to 10042 seconds at Thu May 17 03:07:16 UTC 2018
+    [junit] 05/17/18 03:07:16
     [junit] Failed: 0  Total Tests: 0  ((Passed: 0, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/adm/installers/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
@@ -1173,4 +1173,4 @@ test.installers:
     [junit] Test adm.installers.test.junit.JUnitTclTest FAILED
 
 BUILD SUCCESSFUL
-Total time: 1 minute 54 seconds
+Total time: 2 minutes 9 seconds
