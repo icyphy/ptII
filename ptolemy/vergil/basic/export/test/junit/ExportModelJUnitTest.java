@@ -349,6 +349,7 @@ public class ExportModelJUnitTest {
                 "Billard.xml", // Has links to other models
                 "BillardHit.xml", // Has links to other models
                 "IntegrationTests.xml", // Has links to other models
+                "openmodelica/demo", // OpenModelica is probably not present.
                 "Others.xml", // Has links to other models
                 "TimeAdvancing1Federate.xml", // Has links to other models
                 "TimeAdvancing2FederatesIntervalEvents", // Has links to other models
