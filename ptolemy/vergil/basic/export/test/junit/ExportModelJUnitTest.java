@@ -277,7 +277,11 @@ public class ExportModelJUnitTest {
         // Pathnames that should be skipped
         String[] skip = {
                 // Fails with: Cannot render to more than 32 Canvas3Ds
-                "Gravitation.xml", "GravitationWithCollisionDetection.xml", };
+                "Gravitation.xml", "GravitationWithCollisionDetection.xml",
+                // PtinyOS is probably not installed and if it is not installed,
+                // the loading the demos will report missing classes.
+                "ptolemy/actor/ptalon/demo/ptinyos", 
+        };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
                 return false;
