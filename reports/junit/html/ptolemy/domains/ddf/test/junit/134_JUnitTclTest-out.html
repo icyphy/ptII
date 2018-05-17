@@ -1,0 +1,361 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/SequenceToArrayDDF.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu May 17 02:00:41 UTC 2018
+
+
+==== $PTII/ptolemy/domains/ddf/test/SequenceToArrayDDF.tcl: SequenceToArray-1.0 Read SequenceToArrayDDF.xml, run it, change the const
+==== Contents of test case:
+
+    # DDF SequenceToArray bug submitted by Tomasz Zok
+    # The problem is that if the length of the Const actor changes
+    # between runs from three elements to two elements, then the output of 
+    # the second run does not occur.
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set model "SequenceToArrayDDF.xml"
+    $parser purgeAllModelRecords
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $model]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] myManager]
+    $toplevel setManager $manager
+    $manager execute
+    set recorder [java::cast ptolemy.actor.lib.Recorder [$toplevel getEntity Recorder]]
+    set r1 [listToStrings [$recorder getHistory 0]]
+
+    set const [java::cast ptolemy.actor.lib.Const [$toplevel getEntity Const]]
+    set value [getParameter $const value]
+    $value setExpression "{\"aaa\", \"bbb\"}"
+    $manager execute
+    set r2 [listToStrings [$recorder getHistory 0]]
+    list $r1 $r2
+
+.... Test generated KNOWN error:
+    while executing
+com.microstar.xml.XmlException: Failed to find class 'ptolemy.kernel.util.RelativeLocation' in file:/home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/ at line 34 and column 87
+Caused by:
+ java.lang.ClassNotFoundException: ptolemy.kernel.util.RelativeLocation
+	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5911)
+	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3309)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:921)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
+	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
+	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
+	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
+	at ptolemy.moml.MoMLParser._loadFileInContext(MoMLParser.java:6458)
+	at ptolemy.moml.MoMLParser._loadIconForClass(MoMLParser.java:6503)
+	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4532)
+	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:921)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
+	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
+	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
+	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1595)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1537)
+	at ptolemy.moml.MoMLParser.parseFile(MoMLParser.java:1841)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+Caused by: java.lang.ClassNotFoundException: ptolemy.kernel.util.RelativeLocation
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at ptolemy.moml.MoMLParser._loadClass(MoMLParser.java:6402)
+	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5906)
+	... 95 more
+Caused by: java.lang.ClassNotFoundException: ptolemy.kernel.util.RelativeLocation
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at ptolemy.moml.MoMLParser._loadClass(MoMLParser.java:6402)
+	at ptolemy.moml.MoMLParser._handlePropertyElement(MoMLParser.java:5906)
+	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:3309)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:921)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
+	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
+	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
+	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1617)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1575)
+	at ptolemy.moml.MoMLParser._loadFileInContext(MoMLParser.java:6458)
+	at ptolemy.moml.MoMLParser._loadIconForClass(MoMLParser.java:6503)
+	at ptolemy.moml.MoMLParser._createEntity(MoMLParser.java:4532)
+	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:2864)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:921)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1104)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:924)
+	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:481)
+	at com.microstar.xml.XmlParser.doParse(XmlParser.java:159)
+	at com.microstar.xml.XmlParser.parse(XmlParser.java:132)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1676)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1595)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:1537)
+	at ptolemy.moml.MoMLParser.parseFile(MoMLParser.java:1841)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.AutoloadStub.cmdProc(Extension.java:144)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+
+    while executing
+com.microstar.xml.XmlException: Failed to find class 'ptolemy.kernel.util.RelativeLocation' in file:/home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/ at line 34 and column 87
+Caused by:
+ java.lang.ClassNotFoundException: ptolemy.kernel.util.RelativeLocation
+    while executing
+"$parser parseFile $model"
+    invoked from within
+"java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $model]"
+    invoked from within
+"set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $model]]"
+    ("uplevel" body line 10)
+    invoked from within
+"uplevel $contents_of_test"
+05/17/18 02:00:41
+Failed: 0  Total Tests: 1  ((Passed: 0, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu May 17 02:00:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/DDFInsideDDF.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/DDFInsideDDF.xml
+40 ms. Memory: 146944K Free: 119899K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ef5c05d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ef5c05d
+reloadAllAccessors: .DDFInsideDDF
+----------------- testing Thu May 17 02:00:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/DDFInsideDE.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/DDFInsideDE.xml
+22 ms. Memory: 146944K Free: 114315K (78%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a942106
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a942106
+reloadAllAccessors: .DDFInsideDE
+----------------- testing Thu May 17 02:00:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/DDFinPN.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/DDFinPN.xml
+32 ms. Memory: 146944K Free: 109902K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c299459
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c299459
+reloadAllAccessors: .DDFinPN
+----------------- testing Thu May 17 02:00:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/EratosthenesTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/EratosthenesTest.xml
+1057 ms. Memory: 332800K Free: 305501K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4a4b3123
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4a4b3123
+reloadAllAccessors: .EratosthenesTest
+----------------- testing Thu May 17 02:00:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/FactorialTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/FactorialTest.xml
+81 ms. Memory: 332800K Free: 271770K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10787cd0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10787cd0
+reloadAllAccessors: .FactorialTest
+----------------- testing Thu May 17 02:00:43 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/HanoiTowerTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/HanoiTowerTest.xml
+350 ms. Memory: 332800K Free: 150447K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ec6456c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7ec6456c
+reloadAllAccessors: .HanoiTowerTest
+----------------- testing Thu May 17 02:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/IfThenElse.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/IfThenElse.xml
+5 ms. Memory: 332800K Free: 142255K (43%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ff80eae
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ff80eae
+reloadAllAccessors: .IfThenElse
+----------------- testing Thu May 17 02:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/IfThenElseFSM.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/IfThenElseFSM.xml
+93 ms. Memory: 332800K Free: 117678K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c1ea845
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c1ea845
+reloadAllAccessors: .IfThenElseFSM
+----------------- testing Thu May 17 02:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/LoopTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/LoopTest.xml
+74 ms. Memory: 332800K Free: 107848K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dd8f3ca
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dd8f3ca
+reloadAllAccessors: .LoopTest
+----------------- testing Thu May 17 02:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/OrderedMergeTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/OrderedMergeTest.xml
+26 ms. Memory: 332800K Free: 99655K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@69abb750
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@69abb750
+reloadAllAccessors: .OrderedMergeTest
+----------------- testing Thu May 17 02:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/RandomWalkTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/RandomWalkTest.xml
+69 ms. Memory: 332800K Free: 84878K (26%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ce90ce2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ce90ce2
+reloadAllAccessors: .RandomWalkTest
+----------------- testing Thu May 17 02:00:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/RijndaelEncryptionTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/RijndaelEncryptionTest.xml
+230 ms. Memory: 544768K Free: 409985K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67b8211f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67b8211f
+reloadAllAccessors: .RijndaelEncryptionTest
+----------------- testing Thu May 17 02:00:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/booleanSelect.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/booleanSelect.xml
+100 ms. Memory: 544768K Free: 363024K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@555a9ff4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@555a9ff4
+reloadAllAccessors: .booleanSelect
+----------------- testing Thu May 17 02:00:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml
+2 ms. Memory: 544768K Free: 356470K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f2883b3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f2883b3
+reloadAllAccessors: .controlled_kahnnet
+----------------- testing Thu May 17 02:00:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/hamming-pt.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/ddf/test/auto/hamming-pt.xml
+6 ms. Memory: 544768K Free: 346639K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70baa664
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70baa664
+reloadAllAccessors: .hamming-pt
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
