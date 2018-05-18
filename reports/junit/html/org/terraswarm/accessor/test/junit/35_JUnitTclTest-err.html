@@ -1,0 +1,47 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.20700000000000002, 0.20800000000000002]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.153, 0.154]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.7020000000000001, 0.7010000000000001]
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [0.6910000000000001, 0.6900000000000001]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: CallbackWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: 42. Should have been: 43
+  in .DerivedAgain4.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [16.0]
+WARNING: HandlerWithSuppress: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: "&lt;!DOCTYPE html&gt;\n&lt;html xmlns=\"http://www.". Should have been: "&lt;!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML"
+  in .HttpRequest.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+</pre>
+</body>
+</html>
