@@ -667,6 +667,13 @@ public class HlaManager extends AbstractInitializableAttribute
                 _debug("initialize() - WARNING: FederationExecutionAlreadyExists");
             }
         } catch (CouldNotOpenFED e) {
+            // XXX: FIXME: only for debug purpose
+            try {
+                System.out.println("FED file URL=" + fedFile.asFile().toURI().toURL());
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
+
             throw new IllegalActionException(this, e,
                     "CouldNotOpenFED: " + e.getMessage());
         } catch (ErrorReadingFED e) {
