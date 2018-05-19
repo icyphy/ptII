@@ -1,0 +1,33 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from ExportModelJUnitTestBatch7</title>
+</head>
+<body>
+<pre>Unable to export to web.
+java.util.ConcurrentModificationException
+	at java.util.LinkedList$ListItr.checkForComodification(LinkedList.java:966)
+	at java.util.LinkedList$ListItr.next(LinkedList.java:888)
+	at java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1042)
+	at ptolemy.vergil.basic.export.web.DefaultIconScript._provideAttributes(DefaultIconScript.java:196)
+	at ptolemy.vergil.basic.export.web.WebContent.provideContent(WebContent.java:176)
+	at ptolemy.vergil.basic.export.html.ExportHTMLAction.writeHTML(ExportHTMLAction.java:745)
+	at ptolemy.vergil.basic.BasicGraphFrame.writeHTML(BasicGraphFrame.java:1657)
+	at ptolemy.vergil.basic.export.html.ExportHTMLAction$1$1.run(ExportHTMLAction.java:559)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+</pre>
+</body>
+</html>

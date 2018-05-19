@@ -1,0 +1,216 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/CParseTreeCodeGenerator.tcl
+testDefs.tcl: setting time out to 9000 seconds at Sat May 19 00:58:18 UTC 2018
+node0 = 2
+node1 = 3
+node2 = 4
+node3 = node0+node1+node2
+node0 = 2
+node1 = 3
+node2 = 4
+node3 = node0-node1-node2
+node0 = 2
+node1 = 3
+node2 = 4
+node3 = node0*node1*node2
+node0 = 7
+node1 = 5
+node2 = node0%node1
+node0 = 12
+node1 = 2
+node2 = 3
+node3 = node0/node1/node2
+
+
+==== $PTII/ptolemy/data/expr/test/CParseTreeCodeGenerator.tcl: CParseTreeCodeGenerator-2.2 Construct a Parser, try simple integer expressions
+==== Contents of test case:
+
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "2 + 3 + 4"]
+    set type [generateCode $root]
+
+    set root [ $p1 {generateParseTree String} "2 - 3 - 4"]
+    set type1 [generateCode $root]
+
+    set root [ $p1 {generateParseTree String} "2 * 3 * 4"]
+    set type2 [generateCode $root]
+
+    set root [ $p1 {generateParseTree String} "7 % 5"]
+    set type3 [generateCode $root]
+
+    set root [ $p1 {generateParseTree String} "12 / 2 / 3"]
+    set type4 [generateCode $root]
+
+    list $type $type1 $type2 $type3 $type4
+
+==== Result was:
+{} {} {} {} {}
+---- KNOWN Failure, Result should have been:
+1 1 1 1 1
+---- CParseTreeCodeGenerator-2.2 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/ConversionUtilities.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/FileParameter.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/FixFunctions.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/Functions.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/Parameter.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/ParseTreeEvaluator.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/ParseTreeFreeVariableCollector.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/ParseTreeTypeInference.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/ParseTreeWriter.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/PtParser.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/Rename.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/ScopeExtendingAttribute.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/StringParameter.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/UtilityFunctions.tcl
+UtilityFunctions-6.1: file:/home/travis/build/icyphy/ptII/ file:/home/travis/build/icyphy/ptII/
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/Variable.tcl
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/Variable2.tcl
+
+
+==== $PTII/ptolemy/data/expr/test/Variable2.tcl: Variable2-13.0 Test setting structured type
+==== Contents of test case:
+
+    set v [java::new ptolemy.data.expr.Variable]
+    set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
+    set natArrayType [java::new ptolemy.data.type.ArrayType $nat]
+    $v setTypeEquals $natArrayType
+
+    set int0 [java::new ptolemy.data.IntToken 0]
+    set int1 [java::new ptolemy.data.IntToken 1]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $int0 $int1]]
+    set intArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set double0 [java::new ptolemy.data.DoubleToken 2.2]
+    set double1 [java::new ptolemy.data.DoubleToken 3.3]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $double0 $double1]]
+    set doubleArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    $v setToken $intArrayToken
+    $v setToken $doubleArrayToken
+
+    list [[$v getType] toString] [[$v getToken] toString]
+
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Variable._setToken: Cannot store a token of type arrayType(double,2), which is incompatible with type arrayType(int)
+  in .&lt;Unnamed Object&gt;
+	at ptolemy.data.expr.Variable._setToken(Variable.java:2174)
+	at ptolemy.data.expr.Variable._setTokenAndNotify(Variable.java:2261)
+	at ptolemy.data.expr.Variable.setToken(Variable.java:1233)
+	at sun.reflect.GeneratedMethodAccessor81.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at tcl.lang.reflect.PkgInvoker.invokeMethod(PkgInvoker.java:129)
+	at tcl.lang.JavaInvoke.call(JavaInvoke.java:253)
+	at tcl.lang.JavaInvoke.callMethod(JavaInvoke.java:116)
+	at tcl.lang.ReflectObject.cmdProc(ReflectObject.java:727)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.UplevelCmd.cmdProc(UplevelCmd.java:93)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.eval(Interp.java:1841)
+	at tcl.lang.CatchCmd.cmdProc(CatchCmd.java:42)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Parser.evalTokens(Parser.java:930)
+	at tcl.lang.Parser.eval2(Parser.java:1125)
+	at tcl.lang.Procedure.cmdProc(Procedure.java:175)
+	at tcl.lang.Parser.evalObjv(Parser.java:740)
+	at tcl.lang.Parser.eval2(Parser.java:1138)
+	at tcl.lang.Interp.eval(Interp.java:1782)
+	at tcl.lang.Interp.evalFile(Interp.java:1880)
+	at sun.reflect.GeneratedMethodAccessor80.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:233)
+	at sun.reflect.GeneratedMethodAccessor79.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Variable._setToken: Cannot store a token of type arrayType(double,2), which is incompatible with type arrayType(int)
+  in .&lt;Unnamed Object&gt;
+    while executing
+"$v setToken $doubleArrayToken"
+    ("uplevel" body line 18)
+    invoked from within
+"uplevel $contents_of_test"
+
+
+==== $PTII/ptolemy/data/expr/test/Variable2.tcl: Variable2-13.2 Test setting structured type
+==== Contents of test case:
+
+    set v [java::new ptolemy.data.expr.Variable]
+    set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
+    set natArrayType [java::new ptolemy.data.type.ArrayType $nat]
+    $v setTypeEquals $natArrayType
+
+    set int0 [java::new ptolemy.data.IntToken 0]
+    set int1 [java::new ptolemy.data.IntToken 1]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $int0 $int1]]
+    set intArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set double0 [java::new ptolemy.data.DoubleToken 2.2]
+    set double1 [java::new ptolemy.data.DoubleToken 3.3]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $double0 $double1]]
+    set doubleArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
+    $v setToken $doubleArrayToken
+    $v setToken $intArrayToken
+
+    list [[$v getType] toString] [[$v getToken] toString]
+
+==== Result was:
+arrayType(double) {{0.0, 1.0}}
+---- KNOWN Failure, Result should have been:
+arrayType(int) {{0, 1}}
+---- Variable2-13.2 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/data/expr/test/XMLParser.tcl
+05/19/18 12:58:21
+Failed: 0  Total Tests: 809  ((Passed: 806, Newly Passed: 0)  Known Failed: 3) /home/travis/build/icyphy/ptII/ptolemy/data/expr/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/expr/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/expr/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/data/expr/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

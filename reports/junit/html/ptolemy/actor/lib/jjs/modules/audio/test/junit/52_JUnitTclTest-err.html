@@ -56,6 +56,26 @@ Reached Actors:
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [91.0]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: REST: The timeout period of 90000ms has been exceeded.
+	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
+	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1893$3477A$\^eval\_.error(&lt;eval&gt;:98)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$1889$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
+	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+HttpClientHelper.java: Received an error for request 0: io.vertx.core.VertxException: Connection was closed
+io.vertx.core.VertxException: Connection was closed
 </pre>
 </body>
 </html>
