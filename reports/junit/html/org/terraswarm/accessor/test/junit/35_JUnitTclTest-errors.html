@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.2 48606 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.6 59676 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.2 48606 10.20.0.33 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.6 59676 10.20.0.40 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,9 +213,9 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '380940149';
+        cur['env.TRAVIS_BUILD_ID'] = '381212255';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '455';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '456';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
@@ -229,9 +229,9 @@
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '380940155';
+        cur['env.TRAVIS_JOB_ID'] = '381212261';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '455.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '456.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7685946118695907560.properties propsfile=/home/travis/build/icyphy/ptII/junit5357670922789788222.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8753651313730913045.properties propsfile=/home/travis/build/icyphy/ptII/junit6315115650518619845.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="35_JUnitTclTest-errors.html">2</a></td><td><a title="Display only failures" href="35_JUnitTclTest-fails.html">1</a></td><td>0</td><td>286.676</td><td>2018-05-19T01:13:01</td><td>travis-job-4a0aa734-6db2-4693-9573-77c88fe2265c</td>
+<td><a title="Display all tests" href="35_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="35_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="35_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>198.855</td><td>2018-05-20T00:48:54</td><td>travis-job-4da2c5ff-dbe7-4fdc-b96e-3bb57d98ad87</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -514,13 +514,13 @@
 <td><a name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 42. Should have been: 43<br>  in .DerivedAgain4.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.221</td>
+</code></td><td>1.784</td>
 </tr>
 <tr valign="top" class="Error">
 <td><a name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: "&lt;!DOCTYPE html&gt;\n&lt;html xmlns=\"http://www.". Should have been: "&lt;!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML"<br>  in .HttpRequest.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.393</td>
+</code></td><td>2.588</td>
 </tr>
 </table>
 <div class="Properties">

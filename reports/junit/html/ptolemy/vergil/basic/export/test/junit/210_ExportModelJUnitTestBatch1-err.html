@@ -1,0 +1,735 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from ExportModelJUnitTestBatch1</title>
+</head>
+<body>
+<pre>Register Dispose
+java.lang.NullPointerException
+Register Dispose
+java.lang.NullPointerException
+Register Dispose
+java.lang.NullPointerException
+May 20, 2018 1:35:31 AM sun.awt.X11.XToolkit processException
+WARNING: Exception on Toolkit thread
+java.lang.NullPointerException
+	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
+	at java.awt.Component$BltSubRegionBufferStrategy.showIfNotLost(Component.java:4542)
+	at javax.swing.BufferStrategyPaintManager.show(BufferStrategyPaintManager.java:252)
+	at javax.swing.RepaintManager.show(RepaintManager.java:1379)
+	at javax.swing.SwingPaintEventDispatcher.createPaintEvent(SwingPaintEventDispatcher.java:61)
+	at sun.awt.X11.XWindow.postPaintEvent(XWindow.java:564)
+	at sun.awt.X11.XContentWindow.postPaintEvent(XContentWindow.java:163)
+	at sun.awt.X11.XWindow.handleExposeEvent(XWindow.java:558)
+	at sun.awt.X11.XContentWindow.handleExposeEvent(XContentWindow.java:45)
+	at sun.awt.X11.XBaseWindow.dispatchEvent(XBaseWindow.java:1110)
+	at sun.awt.X11.XBaseWindow.dispatchToWindow(XBaseWindow.java:1086)
+	at sun.awt.X11.XToolkit.dispatchEvent(XToolkit.java:502)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:616)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:532)
+	at java.lang.Thread.run(Thread.java:748)
+
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [1.0]
+WARNING: Mutable: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [1.0]
+Mutable: Connection refused.
+ptolemy.kernel.util.IllegalActionException: Connection refused.
+  in .AugmentedRealityFeedbackBlee.Mutable
+Because:
+MqttException
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1050)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: MqttException (0) - java.net.UnknownHostException: ThisIsNotAPipeNorIsITheBrokerHostIPAddress.UseSummonToFindALocalBroker
+	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:38)
+	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:715)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: ThisIsNotAPipeNorIsITheBrokerHostIPAddress.UseSummonToFindALocalBroker
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:184)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:84)
+	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:701)
+	... 7 more
+Caused by: MqttException (0) - java.net.UnknownHostException: ThisIsNotAPipeNorIsITheBrokerHostIPAddress.UseSummonToFindALocalBroker
+	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:38)
+	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:715)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.UnknownHostException: ThisIsNotAPipeNorIsITheBrokerHostIPAddress.UseSummonToFindALocalBroker
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:184)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:84)
+	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:701)
+	... 7 more
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.0]
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+[AWT-EventQueue-0] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.514]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 1: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 2: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 3: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 4: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+WARNING: GenerateLifxAccessors: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [7.0, 11.0]
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 1: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 2: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 3: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 4: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.217:8099
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.349]
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.221:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.1.221:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Hue: connection timed out: /192.168.1.221:80
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.2.2:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /192.168.2.2:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Hue: connection timed out: /192.168.2.2:80
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.235:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.235:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.305, 44.948, 32.713, 31.686, 35.754, 21.447, 51.067, 25.539, 48.013000000000005, 33.731, 39.847, 23.468, 49.031, 18.401, 42.929, 10.207, 17.367, 14.297, 20.429000000000002, 19.401, 46.984, 13.277000000000001, 7.152, 29.625, 50.039, 11.224, 36.786, 22.465, 24.496000000000002, 40.875, 12.242, 5.125, 16.338, 37.788000000000004, 43.931000000000004, 6.13, 38.818000000000005, 45.965, 34.749, 52.098, 9.183, 8.178, 27.575, 41.907000000000004, 26.556, 28.593, 30.656000000000002]
+WARNING: Lifx: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [14.1]
+WARNING: GenerateQueries: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [7.6770000000000005]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.080000000000002]
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.234:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.234:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Hue: connection timed out: /10.0.0.234:80
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Utilities beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Utilities" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Directors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Directors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .Actors beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "Actors" into container named ".library", which already contains an object with that name.
+TransformationEditor: Ignoring clone of .MoreLibraries beause we don't known how to import it. Exception was: ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "MoreLibraries" into container named ".library", which already contains an object with that name.
+Could not find mediaLib accelerator wrapper classes. Continuing in pure Java mode.
+May 20, 2018 1:56:07 AM sun.awt.X11.XToolkit processException
+WARNING: Exception on Toolkit thread
+java.lang.NullPointerException
+	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
+	at java.awt.Component$BltSubRegionBufferStrategy.showIfNotLost(Component.java:4542)
+	at javax.swing.BufferStrategyPaintManager.show(BufferStrategyPaintManager.java:252)
+	at javax.swing.RepaintManager.show(RepaintManager.java:1379)
+	at javax.swing.SwingPaintEventDispatcher.createPaintEvent(SwingPaintEventDispatcher.java:61)
+	at sun.awt.X11.XWindow.postPaintEvent(XWindow.java:564)
+	at sun.awt.X11.XContentWindow.postPaintEvent(XContentWindow.java:163)
+	at sun.awt.X11.XWindow.handleExposeEvent(XWindow.java:558)
+	at sun.awt.X11.XContentWindow.handleExposeEvent(XContentWindow.java:45)
+	at sun.awt.X11.XBaseWindow.dispatchEvent(XBaseWindow.java:1110)
+	at sun.awt.X11.XBaseWindow.dispatchToWindow(XBaseWindow.java:1086)
+	at sun.awt.X11.XToolkit.dispatchEvent(XToolkit.java:502)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:616)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:532)
+	at java.lang.Thread.run(Thread.java:748)
+
+May 20, 2018 1:56:07 AM sun.awt.X11.XToolkit processException
+WARNING: Exception on Toolkit thread
+java.lang.NullPointerException
+	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
+	at java.awt.Component$BltSubRegionBufferStrategy.showIfNotLost(Component.java:4542)
+	at javax.swing.BufferStrategyPaintManager.show(BufferStrategyPaintManager.java:252)
+	at javax.swing.RepaintManager.show(RepaintManager.java:1379)
+	at javax.swing.SwingPaintEventDispatcher.createPaintEvent(SwingPaintEventDispatcher.java:61)
+	at sun.awt.X11.XWindow.postPaintEvent(XWindow.java:564)
+	at sun.awt.X11.XContentWindow.postPaintEvent(XContentWindow.java:163)
+	at sun.awt.X11.XWindow.handleExposeEvent(XWindow.java:558)
+	at sun.awt.X11.XContentWindow.handleExposeEvent(XContentWindow.java:45)
+	at sun.awt.X11.XBaseWindow.dispatchEvent(XBaseWindow.java:1110)
+	at sun.awt.X11.XBaseWindow.dispatchToWindow(XBaseWindow.java:1086)
+	at sun.awt.X11.XToolkit.dispatchEvent(XToolkit.java:502)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:616)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:532)
+	at java.lang.Thread.run(Thread.java:748)
+
+</pre>
+</body>
+</html>

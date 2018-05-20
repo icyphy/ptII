@@ -1,0 +1,56 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/util/test/CancelException.tcl
+testDefs.tcl: setting time out to 9000 seconds at Sun May 20 01:33:29 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/util/test/ClassUtilities.tcl
+ClassUtilities-3.1: file:/home/travis/build/icyphy/ptII/ file:/home/travis/build/icyphy/ptII/
+/home/travis/build/icyphy/ptII/ptolemy/util/test/FileUtilities.tcl
+/home/travis/build/icyphy/ptII/ptolemy/util/test/MessageHandler.tcl
+/home/travis/build/icyphy/ptII/ptolemy/util/test/StreamExec.tcl
+sleeping 2 seconds: About to execute:
+    echo AtTop
+About to execute:
+    sleep 10
+AtTop
+All Done
+/home/travis/build/icyphy/ptII/ptolemy/util/test/StringUtilities.tcl
+# About to run "make test_policy SCRIPT=policy/userName.tcl"
+# About to run "make test_policy SCRIPT=policy/ptolemyPtIIDir.tcl"
+'/home/travis/build/icyphy/ptII' == '/home/travis/build/icyphy/ptII'
+
+
+==== $PTII/ptolemy/util/test/StringUtilities.tcl: StringUtilities-3.8.3 getProperty: PTII includes cygdrive  
+==== Contents of test case:
+
+    set pathSeparator [java::call ptolemy.util.StringUtilities  getProperty path.separator]
+
+    # We use exec here so that we get the message each time
+    catch {
+	set results [exec -stderrok make test_cygdrive]
+    } errMsg
+    regsub -all {^make\[.*$\n*} $errMsg {} errMsg2
+    list $errMsg2
+
+==== Result was:
+{couldn't read file "ptolemy_ptII_dir.tcl"}
+---- KNOWN Failure, Result should have been:
+{/cygdrive/c/ptII
+ptolemy.ptII.dir property = "/cygdrive/c/ptII", which contains "cygdrive". This is almost always an error under Cygwin that is occurs when one does PTII=`pwd`.  Instead, do PTII=c:/foo/ptII}
+---- StringUtilities-3.8.3 Failed, but this is a KNOWN failure
+/home/travis/build/icyphy/ptII/ptolemy/util/test/XSLTUtilities.tcl
+05/20/18 01:33:39
+Failed: 0  Total Tests: 98  ((Passed: 97, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/util/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/util/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
