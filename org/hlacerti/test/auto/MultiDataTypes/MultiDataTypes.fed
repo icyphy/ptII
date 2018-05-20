@@ -1,7 +1,7 @@
 ;; MultiDataTypes 
 
 (Fed
-  (Federation MultiDataTypes)
+  (Federation MultiDataTypesF)
   (FedVersion v1.3)
   (Spaces
   )
