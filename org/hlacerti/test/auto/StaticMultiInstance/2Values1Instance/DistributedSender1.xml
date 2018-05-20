@@ -56,7 +56,7 @@
         <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance21&quot;">
             <display name="Federation's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance21.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
@@ -80,7 +80,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={864, 90, 706, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={734, 90, 706, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[472, 522]">
     </property>
