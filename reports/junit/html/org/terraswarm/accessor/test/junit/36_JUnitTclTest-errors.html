@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.16.10 39284 22';
+        cur['env.SSH_CLIENT'] = '10.10.4.28 45890 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.16.10 39284 10.20.0.108 22';
+        cur['env.SSH_CONNECTION'] = '10.10.4.28 45890 10.20.0.191 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '382276482';
+        cur['env.TRAVIS_BUILD_ID'] = '382372433';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '463';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '464';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = 'f7e03f79ff3ed815fccb0fa282d27dc74313f83e';
+        cur['env.TRAVIS_COMMIT'] = '9f99ea0e3c74ced4364db99d880f8d3d549eda01';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Exclude ptolemy/domains/ptinyos/demo because PtinyOS is probably not installed.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'Use rawgit for links to html files.';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '603ebf3c7f2e...f7e03f79ff3e';
+        cur['env.TRAVIS_COMMIT_RANGE'] = 'f7e03f79ff3e...9f99ea0e3c74';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'push';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '382276495';
+        cur['env.TRAVIS_JOB_ID'] = '382372439';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '463.6';
+        cur['env.TRAVIS_JOB_NUMBER'] = '464.6';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8472200079593490630.properties propsfile=/home/travis/build/icyphy/ptII/junit4000662718831454289.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.terraswarm.accessor.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.terraswarm.accessor.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7932455077657141164.properties propsfile=/home/travis/build/icyphy/ptII/junit8850863356576840626.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Error">
-<td><a title="Display all tests" href="36_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="36_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="36_JUnitTclTest-errors.html">2</a></td><td>0</td><td>0</td><td>152.489</td><td>2018-05-22T17:51:06</td><td>travis-job-c211dcbf-b60b-4077-aba3-53e32ee5849d</td>
+<td><a title="Display all tests" href="36_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="36_JUnitTclTest.html">29</a></td><td><a title="Display only errors" href="36_JUnitTclTest-errors.html">1</a></td><td>0</td><td>0</td><td>196.140</td><td>2018-05-22T21:31:31</td><td>travis-job-80b2fb5c-d697-4651-9feb-50112f224f8a</td>
 </tr>
 </table>
 <h2>Errors</h2>
@@ -514,13 +514,7 @@
 <td><a name="[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)"></a>[15] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/DerivedAgain4.xml (RunModel)</td><td>Error</td><td>N/A<br>
 <br>
 <code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: 42. Should have been: 43<br>  in .DerivedAgain4.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.563</td>
-</tr>
-<tr valign="top" class="Error">
-<td><a name="[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)"></a>[19] /home/travis/build/icyphy/ptII/org/terraswarm/accessor/test/auto/HttpRequest.xml (RunModel)</td><td>Error</td><td>N/A<br>
-<br>
-<code>java.lang.reflect.InvocationTargetException<br>	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)<br>	at ptolemy.util.test.junit.AutoTests.RunModel(AutoTests.java:185)<br>	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)<br>Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.<br>Value was: "&lt;!DOCTYPE html&gt;\n&lt;html xmlns=\"http://www.". Should have been: "&lt;!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML"<br>  in .HttpRequest.Test<br>	at ptolemy.actor.lib.Test.fire(Test.java:268)<br>	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)<br>	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)<br>	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)<br>	at ptolemy.actor.Manager.iterate(Manager.java:851)<br>	at ptolemy.actor.Manager.execute(Manager.java:369)<br>	at ptolemy.actor.Manager.run(Manager.java:1263)<br>	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)<br>
-</code></td><td>1.273</td>
+</code></td><td>1.363</td>
 </tr>
 </table>
 <div class="Properties">

@@ -7,7 +7,7 @@
 <pre>WARNING: ContextAware: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 423: Locked
+Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 404: Not Found
 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
@@ -43,7 +43,7 @@ java.lang.reflect.InvocationTargetException
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
 	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
-Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 423: Locked
+Caused by: java.lang.RuntimeException: ContextAware: Request failed with code 404: Not Found
 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)

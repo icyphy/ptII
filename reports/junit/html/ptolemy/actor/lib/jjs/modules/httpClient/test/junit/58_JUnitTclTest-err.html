@@ -5,37 +5,19 @@
 </head>
 <body>
 <pre>WARNING: GeoCoder: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-WARNING: Weather: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.534]
+WARNING: Weather: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.517000000000001]
 WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [46.678000000000004]
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: JavaScript: The timeout period of 45678ms has been exceeded.
-	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$4672$3477A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$4668$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
-	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
 WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
 WARNING: REST3: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: REST: The timeout period of 25000ms has been exceeded.
+Caused by: java.lang.RuntimeException: REST2: The timeout period of 25000ms has been exceeded.
 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$8424$3477A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$8339$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$8672$3477A$\^eval\_.error(&lt;eval&gt;:98)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$8625$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -86,22 +68,53 @@ Caused by: &lt;function&gt;:399:16 Error: TrainableTest2: The test produced only
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$11510$18524$\^function\_.L:1#wrapup(&lt;function&gt;:399)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$11508$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$11759$18524$\^function\_.L:1#wrapup(&lt;function&gt;:399)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$11757$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 10 more
-WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
 WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: REST2: The timeout period of 5000ms has been exceeded.
+	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
+	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$15387$3477A$\^eval\_.error(&lt;eval&gt;:98)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$15350$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
+	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.616000000000001, 15.111, 15.319, 15.472000000000001]
-WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.173]
-WARNING: REST3: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.328000000000001]
-WARNING: REST4: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.48]
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [200.0]
+java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: java.lang.RuntimeException: REST: The timeout period of 10000ms has been exceeded.
+	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
+	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
+	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$22560$3477A$\^eval\_.error(&lt;eval&gt;:98)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$22556$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
+	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
 WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
 WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
@@ -114,8 +127,8 @@ Caused by: java.lang.RuntimeException: REST2: The timeout period of 5000ms has b
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$32498$3477A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$32413$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$30958$3477A$\^eval\_.error(&lt;eval&gt;:98)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$30873$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -126,29 +139,16 @@ Caused by: java.lang.RuntimeException: REST2: The timeout period of 5000ms has b
 	at ptolemy.actor.Manager.run(Manager.java:1263)
 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.0]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.172, 10.869, 11.262]
+WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.307]
+WARNING: REST3: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.896]
 WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [150.0]
-java.lang.RuntimeException: Execution failed
-	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-Caused by: java.lang.RuntimeException: REST: The timeout period of 5000ms has been exceeded.
-	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:828)
-	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:108)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$38371$3477A$\^eval\_.error(&lt;eval&gt;:98)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$38367$11119$\^function\_.L:1#issueCommand#L:254(&lt;function&gt;:257)
-	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
-	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1081)
-	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-	at ptolemy.actor.Manager.iterate(Manager.java:851)
-	at ptolemy.actor.Manager.execute(Manager.java:369)
-	at ptolemy.actor.Manager.run(Manager.java:1263)
-	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
 HttpClientHelper.java: Received an error for request 0: io.vertx.core.VertxException: Connection was closed
 io.vertx.core.VertxException: Connection was closed
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.045]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.07]
+HttpClientHelper.java: Received an error for request 0: io.vertx.core.VertxException: Connection was closed
+io.vertx.core.VertxException: Connection was closed
 </pre>
 </body>
 </html>
