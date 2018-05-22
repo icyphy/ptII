@@ -7,6 +7,11 @@
 <pre>[AWT-EventQueue-0] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [20.011]
+May 22, 2018 1:36:25 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+SEVERE: mqttpt_-2790169547200728044: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,526,952,925,961 lastInboundActivity=1,526,952,862,172 time=1,526,952,985,961 lastPing=1,526,952,925,961
+May 22, 2018 1:36:25 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+SEVERE: mqttpt_-2790169547200728044: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,526,952,925,972 lastInboundActivity=1,526,952,865,129 time=1,526,952,985,972 lastPing=1,526,952,925,972
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
@@ -61,8 +66,8 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17585$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17583$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17701$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17699$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -107,8 +112,8 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17585$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17583$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17701$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17699$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -147,8 +152,8 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17585$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17583$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17701$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17699$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -250,32 +255,35 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17585$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17583$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17701$18524$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17699$30384$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:675)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 23 more
-WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [27.0]
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
 WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [27.21]
-WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.0]
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+JavaScript: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:8080/nConnection refused
+JavaScript: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:1984/nConnection refused
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: WebSocketClient: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.312]
+WARNING: WebSocketClient: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [101.0]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.0]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.636, 13.408000000000001, 5.66, 25.646, 10.401, 25.542, 8.562000000000001, 15.265, 19.568, 21.532, 23.077, 7.851, 19.671, 9.273, 23.179000000000002, 10.503, 16.395, 15.368, 18.128, 11.968, 7.333, 7.437, 7.541, 15.06, 17.310000000000002, 7.6450000000000005, 8.664, 12.069, 24.098000000000003, 25.335, 13.718, 2.654, 3.379, 2.862, 15.472000000000001, 2.758, 14.852, 14.956000000000001, 17.105, 7.7490000000000006, 13.615, 13.511000000000001, 13.304, 3.172, 3.068, 17.207, 25.439, 25.232, 10.605, 23.997, 9.172, 3.2760000000000002, 15.162, 2.9650000000000003, 19.156000000000002, 9.58, 18.435000000000002, 23.793, 20.398, 3.482, 23.689, 2.551, 6.479, 24.2, 20.294, 20.19, 12.171000000000001, 19.982, 5.454000000000001, 20.086000000000002, 22.768, 19.878, 22.047, 2.241, 22.151, 14.646, 23.282, 0.995, 23.895, 1.099, 8.765, 1.203, 9.071, 9.684000000000001, 16.598, 13.82, 4.726, 14.13, 14.026, 8.867, 13.922, 3.7920000000000003, 21.841, 24.406000000000002, 1.307, 1.411, 12.685, 4.622, 21.221, 9.374, 6.612, 1.5150000000000001, 12.581000000000001, 15.677000000000001, 4.932, 10.299, 11.866, 4.102, 4.206, 12.997, 7.953, 5.7620000000000005, 6.375, 16.496000000000002, 19.258, 1.723, 3.999, 23.588, 20.811, 24.612000000000002, 20.707, 6.714, 3.895, 11.455, 4.416, 14.336, 16.801000000000002, 11.559000000000001, 10.808, 16.09, 18.847, 8.969000000000001, 1.826, 15.986, 12.374, 24.819000000000003, 1.619, 17.823, 5.251, 6.066, 24.715, 14.439, 9.995000000000001, 23.486, 9.891, 1.929, 4.519, 2.033, 18.95, 20.604, 8.257, 22.254, 14.542, 11.662, 18.641000000000002, 21.016000000000002, 16.192, 22.563000000000002, 5.353, 17.925, 22.459, 2.136, 18.537, 16.7, 10.096, 20.914, 11.248000000000001, 8.156, 7.127000000000001, 11.041, 6.816, 11.145, 11.352, 7.023000000000001, 5.965, 23.384, 22.356, 6.9190000000000005, 18.744, 2.448, 6.2700000000000005, 14.749, 21.944, 25.025000000000002, 25.129, 5.863, 15.574, 9.477, 5.141, 17.004, 8.359, 13.1, 5.559, 17.515, 16.293, 7.23, 4.829, 5.037, 8.054, 21.118000000000002, 18.026, 13.202, 21.326, 3.689, 22.665, 3.585, 9.787, 17.413, 19.053, 10.198, 10.707, 2.3440000000000003, 11.765, 20.501, 15.780000000000001, 22.975, 10.909, 24.923000000000002, 19.775000000000002, 15.884, 22.871000000000002, 17.619, 12.272, 12.894, 21.738, 6.168, 16.902, 24.509, 4.309, 8.461, 12.790000000000001, 12.478, 14.233, 19.465, 21.428, 18.23, 18.334, 17.721, 19.361, 24.303]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.5]
-WSClient: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:8082/nConnection refused
 Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
 Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
 Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
