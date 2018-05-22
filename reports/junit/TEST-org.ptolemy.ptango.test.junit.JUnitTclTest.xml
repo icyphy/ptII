@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-e8a08e99-46bf-4352-bef6-a98438d1fe57" name="org.ptolemy.ptango.test.junit.JUnitTclTest" skipped="0" tests="21" time="207.163" timestamp="2018-05-22T22:04:52">
+<testsuite errors="0" failures="0" hostname="travis-job-5410bfda-514d-4b61-a7bc-0b1791629c05" name="org.ptolemy.ptango.test.junit.JUnitTclTest" skipped="0" tests="21" time="210.235" timestamp="2018-05-22T23:33:32">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="464.10" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="465.10" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.23 50692 22" />
+    <property name="env.SSH_CLIENT" value="10.10.16.4 55352 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.23 50692 10.20.0.246 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.4 55352 10.20.0.56 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -71,12 +71,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3318800059227506847.properties propsfile=/home/travis/build/icyphy/ptII/junit3460635893337786248.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner org.ptolemy.ptango.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-org.ptolemy.ptango.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7167640697897914220.properties propsfile=/home/travis/build/icyphy/ptII/junit2170594438071532467.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="f7e03f79ff3e...9f99ea0e3c74" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="9f99ea0e3c74...ff646375f773" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -116,7 +116,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="464" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="465" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -132,12 +132,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="382372433" />
+    <property name="env.TRAVIS_BUILD_ID" value="382374636" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="9f99ea0e3c74ced4364db99d880f8d3d549eda01" />
+    <property name="env.TRAVIS_COMMIT" value="ff646375f7735ddf057aa402acd9d1a726118e79" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -169,7 +169,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Use rawgit for links to html files." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Fixed links.  Markdown links are backwards from html." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -208,7 +208,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="382372443" />
+    <property name="env.TRAVIS_JOB_ID" value="382374646" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -228,26 +228,26 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartGet.xml (RunModel)" time="3.506" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartGetUsingManager.xml (RunModel)" time="3.1" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartPost.xml (RunModel)" time="3.222" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/WebServerDEInterleaved.xml (RunModel)" time="6.032" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester1.xml (RunModel)" time="7.037" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester2.xml (RunModel)" time="6.796" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/Cookies.xml (RunModel)" time="6.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/DynamicPortSelection.xml (RunModel)" time="5.588" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ErrorHandler.xml (RunModel)" time="6.284" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGet.xml (RunModel)" time="5.813" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGetTimeout.xml (RunModel)" time="5.708" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPost.xml (RunModel)" time="5.243" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPostTimeout.xml (RunModel)" time="5.215" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml (RunModel)" time="0.687" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPutTimeout.xml (RunModel)" time="0.101" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/OptimizationAdvisor.xml (RunModel)" time="70.112" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/RestartInitialize.xml (RunModel)" time="0.047" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/SmartRoom.xml (RunModel)" time="6.09" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/WebServerDE.xml (RunModel)" time="60.134" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartGet.xml (RunModel)" time="3.53" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartGetUsingManager.xml (RunModel)" time="3.173" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartPost.xml (RunModel)" time="3.238" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/WebServerDEInterleaved.xml (RunModel)" time="7.027" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.008" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester1.xml (RunModel)" time="6.78" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester2.xml (RunModel)" time="6.499" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/Cookies.xml (RunModel)" time="6.122" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/DynamicPortSelection.xml (RunModel)" time="5.549" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ErrorHandler.xml (RunModel)" time="6.388" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGet.xml (RunModel)" time="6.125" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGetTimeout.xml (RunModel)" time="5.55" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPost.xml (RunModel)" time="5.235" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPostTimeout.xml (RunModel)" time="5.339" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml (RunModel)" time="0.817" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPutTimeout.xml (RunModel)" time="0.077" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/OptimizationAdvisor.xml (RunModel)" time="71.768" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/RestartInitialize.xml (RunModel)" time="0.045" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/SmartRoom.xml (RunModel)" time="6.197" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/WebServerDE.xml (RunModel)" time="60.206" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/knownFailedTests/ExceptionRestartGet.xml
 Known Failure: java.lang.reflect.InvocationTargetException
@@ -260,97 +260,97 @@ Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Tue May 22 22:05:08 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester1.xml
+----------------- testing Tue May 22 23:33:49 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester1.xml
-6477 ms. Memory: 235008K Free: 86748K (37%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4088e63d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4088e63d
+6345 ms. Memory: 253952K Free: 104036K (41%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@24a1a59d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@24a1a59d
 reloadAllAccessors: .ApplicationPathTester1
------------------ testing Tue May 22 22:05:15 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester2.xml
+----------------- testing Tue May 22 23:33:56 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ApplicationPathTester2.xml
-6361 ms. Memory: 237056K Free: 147112K (62%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6275a35f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6275a35f
+6065 ms. Memory: 299520K Free: 223413K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@be074d8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@be074d8
 reloadAllAccessors: .ApplicationPathTester2
------------------ testing Tue May 22 22:05:22 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/Cookies.xml
+----------------- testing Tue May 22 23:34:03 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/Cookies.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/Cookies.xml
-5712 ms. Memory: 237056K Free: 94994K (40%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d403fba
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d403fba
+5867 ms. Memory: 299520K Free: 166693K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46e34d1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46e34d1
 reloadAllAccessors: .Cookies
------------------ testing Tue May 22 22:05:28 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/DynamicPortSelection.xml
+----------------- testing Tue May 22 23:34:09 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/DynamicPortSelection.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/DynamicPortSelection.xml
-5504 ms. Memory: 237056K Free: 73335K (31%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@116a86d5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@116a86d5
+5477 ms. Memory: 299520K Free: 146862K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4133bf21
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4133bf21
 reloadAllAccessors: .DynamicPortSelection
------------------ testing Tue May 22 22:05:34 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ErrorHandler.xml
+----------------- testing Tue May 22 23:34:14 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ErrorHandler.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/ErrorHandler.xml
-6032 ms. Memory: 270336K Free: 163424K (60%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a7132c6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a7132c6
+6122 ms. Memory: 299520K Free: 71590K (24%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e92652d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e92652d
 reloadAllAccessors: .ErrorHandler
------------------ testing Tue May 22 22:05:40 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGet.xml
+----------------- testing Tue May 22 23:34:21 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGet.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGet.xml
-5708 ms. Memory: 270336K Free: 119272K (44%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@268ac4a9
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@268ac4a9
+5809 ms. Memory: 317952K Free: 262510K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@737108f1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@737108f1
 reloadAllAccessors: .HttpGet
------------------ testing Tue May 22 22:05:46 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGetTimeout.xml
+----------------- testing Tue May 22 23:34:27 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGetTimeout.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpGetTimeout.xml
-5658 ms. Memory: 270336K Free: 81016K (30%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65dcae8f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65dcae8f
+5489 ms. Memory: 317952K Free: 206902K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7751f9df
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7751f9df
 reloadAllAccessors: .HttpGetTimeout
------------------ testing Tue May 22 22:05:52 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPost.xml
+----------------- testing Tue May 22 23:34:32 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPost.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPost.xml
-5163 ms. Memory: 275968K Free: 229727K (83%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48da314b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@48da314b
+5151 ms. Memory: 317952K Free: 179205K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cff291e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cff291e
 reloadAllAccessors: .HttpPost
------------------ testing Tue May 22 22:05:57 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPostTimeout.xml
+----------------- testing Tue May 22 23:34:37 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPostTimeout.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPostTimeout.xml
-5176 ms. Memory: 275968K Free: 205362K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@248eb76e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@248eb76e
+5258 ms. Memory: 317952K Free: 143747K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ee38898
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ee38898
 reloadAllAccessors: .HttpPostTimeout
------------------ testing Tue May 22 22:06:02 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml
+----------------- testing Tue May 22 23:34:43 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPut.xml
-674 ms. Memory: 275968K Free: 190094K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79d8eeda
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@79d8eeda
+780 ms. Memory: 317952K Free: 127852K (40%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63ed3af6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@63ed3af6
 reloadAllAccessors: .HttpPut
------------------ testing Tue May 22 22:06:03 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPutTimeout.xml
+----------------- testing Tue May 22 23:34:44 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPutTimeout.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/HttpPutTimeout.xml
-82 ms. Memory: 275968K Free: 185910K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65ea1760
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65ea1760
+62 ms. Memory: 317952K Free: 123433K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f302274
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f302274
 reloadAllAccessors: .HttpPutTimeout
------------------ testing Tue May 22 22:06:03 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/OptimizationAdvisor.xml
+----------------- testing Tue May 22 23:34:44 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/OptimizationAdvisor.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/OptimizationAdvisor.xml
-60070 ms. Memory: 1712640K Free: 705401K (41%)
-12675 ms. Memory: 1859584K Free: 896318K (48%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32f6f7c2
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@32f6f7c2
+60091 ms. Memory: 1346560K Free: 211165K (16%)
+13889 ms. Memory: 1874432K Free: 1242393K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@660f7463
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@660f7463
 reloadAllAccessors: .OptimizationAdvisor
------------------ testing Tue May 22 22:07:13 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/RestartInitialize.xml
+----------------- testing Tue May 22 23:35:55 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/RestartInitialize.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/RestartInitialize.xml
 .RestartInitialize.TestExceptionAttribute: initialize() was not invoked, but wrapup() was.  This is unusual, but not always a problem.  For example, exporting JNLP will do this.
-5 ms. Memory: 1859584K Free: 856417K (46%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66887de7
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66887de7
+7 ms. Memory: 1874432K Free: 1187892K (63%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ea4583c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3ea4583c
 reloadAllAccessors: .RestartInitialize
------------------ testing Tue May 22 22:07:13 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/SmartRoom.xml
+----------------- testing Tue May 22 23:35:56 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/SmartRoom.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/SmartRoom.xml
-5440 ms. Memory: 1859584K Free: 597918K (32%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4aa5f346
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4aa5f346
+5492 ms. Memory: 1874432K Free: 925403K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@36534466
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@36534466
 reloadAllAccessors: .SmartRoom
------------------ testing Tue May 22 22:07:19 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/WebServerDE.xml
+----------------- testing Tue May 22 23:36:02 UTC 2018 /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/WebServerDE.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/org/ptolemy/ptango/test/auto/WebServerDE.xml
-60042 ms. Memory: 1859584K Free: 509681K (27%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a442acd
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a442acd
+60046 ms. Memory: 1874432K Free: 832326K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f6c749d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f6c749d
 reloadAllAccessors: .WebServerDE
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
@@ -554,7 +554,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-31] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@18da4710: java.net.BindException: Address already in use
+[Thread-31] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@3cd0c7fa: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -634,7 +634,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-46] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2173a2e1: java.net.BindException: Address already in use
+[Thread-46] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@156a05c: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -650,104 +650,11 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-55] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-55] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-55] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2173a2e1: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-64] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-64] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-64] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2173a2e1: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-73] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-73] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-73] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2173a2e1: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-82] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-82] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8004
+[Thread-55] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8001
 [ApplicationPathTester1] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/app,null}
-[Thread-82] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-95] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-95] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
+[Thread-55] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-68] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-68] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -762,7 +669,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-95] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@5cf3c33f: java.net.BindException: Address already in use
+[Thread-68] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@59918647: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -777,8 +684,8 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-104] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-104] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+[Thread-77] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-77] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -793,7 +700,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-104] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@5cf3c33f: java.net.BindException: Address already in use
+[Thread-77] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@59918647: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -808,105 +715,12 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-113] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-113] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-113] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@5cf3c33f: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-122] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-122] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-122] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@5cf3c33f: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-131] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-131] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-131] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@5cf3c33f: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-140] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-140] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8005
+[Thread-86] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-86] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8002
 [ApplicationPathTester2] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/app,null}
-[Thread-140] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-153] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-153] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
+[Thread-86] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-99] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-99] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -921,7 +735,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-153] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61bedb26: java.net.BindException: Address already in use
+[Thread-99] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@103855ec: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -936,12 +750,136 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-162] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-162] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8001
+[Thread-108] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-108] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-108] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@103855ec: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-117] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-117] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-117] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@103855ec: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-126] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-126] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-126] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@103855ec: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-135] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-135] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-135] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@103855ec: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-144] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-144] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8005
 [Cookies] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
-[Thread-162] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-175] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-175] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+[Thread-144] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-157] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-157] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -956,7 +894,69 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-175] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@235a0afc: java.net.BindException: Address already in use
+[Thread-157] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@37c0af6f: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-166] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-166] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-166] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@37c0af6f: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-175] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-175] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-175] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@37c0af6f: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -972,7 +972,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-184] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-184] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+[Thread-184] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -987,7 +987,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-184] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@235a0afc: java.net.BindException: Address already in use
+[Thread-184] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@37c0af6f: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1003,7 +1003,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-193] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-193] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+[Thread-193] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1018,7 +1018,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-193] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@235a0afc: java.net.BindException: Address already in use
+[Thread-193] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@37c0af6f: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1034,7 +1034,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-202] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-202] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
+[Thread-202] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1049,7 +1049,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-202] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@235a0afc: java.net.BindException: Address already in use
+[Thread-202] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@37c0af6f: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1065,73 +1065,11 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-211] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-211] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-211] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@235a0afc: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-220] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-220] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-220] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@235a0afc: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-229] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-229] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8006
+[Thread-211] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8006
 [DynamicPortSelection] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
-[Thread-229] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-242] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-242] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8006: java.net.BindException: Address already in use
+[Thread-211] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-224] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-224] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8006: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1146,7 +1084,69 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-242] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@665af007: java.net.BindException: Address already in use
+[Thread-224] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@73a180ac: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-233] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-233] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-233] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@73a180ac: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-242] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-242] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-242] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@73a180ac: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1162,42 +1162,11 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-251] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-251] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-251] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@665af007: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-260] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-260] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8002
+[Thread-251] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8003
 [ErrorHandler] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
-[Thread-260] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-273] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-273] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+[Thread-251] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-264] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-264] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1212,7 +1181,38 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-273] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
+[Thread-264] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-273] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-273] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-273] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1228,7 +1228,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-282] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-282] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+[Thread-282] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1243,7 +1243,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-282] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
+[Thread-282] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1259,7 +1259,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-291] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-291] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+[Thread-291] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1274,7 +1274,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-291] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
+[Thread-291] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1290,7 +1290,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-300] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-300] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
+[Thread-300] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1305,7 +1305,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-300] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
+[Thread-300] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1321,7 +1321,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-309] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-309] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
+[Thread-309] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1336,7 +1336,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-309] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
+[Thread-309] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1352,7 +1352,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-318] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-318] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
+[Thread-318] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8006: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1367,7 +1367,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-318] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
+[Thread-318] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@47022ab2: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1383,42 +1383,11 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-327] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-327] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8006: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-327] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@61725fe1: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-336] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-336] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8007
+[Thread-327] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8007
 [HttpGet] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
-[Thread-336] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-349] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-349] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8007: java.net.BindException: Address already in use
+[Thread-327] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-340] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-340] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8007: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1433,7 +1402,38 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-349] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-340] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-349] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-349] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-349] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1449,7 +1449,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-358] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-358] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+[Thread-358] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1464,7 +1464,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-358] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-358] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1480,7 +1480,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-367] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-367] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+[Thread-367] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1495,7 +1495,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-367] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-367] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1511,7 +1511,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-376] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-376] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
+[Thread-376] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1526,7 +1526,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-376] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-376] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1542,7 +1542,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-385] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-385] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
+[Thread-385] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1557,7 +1557,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-385] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-385] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1573,7 +1573,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-394] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-394] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8005: java.net.BindException: Address already in use
+[Thread-394] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8006: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1588,7 +1588,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-394] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-394] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1604,7 +1604,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-403] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-403] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8006: java.net.BindException: Address already in use
+[Thread-403] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8007: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1619,7 +1619,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-403] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
+[Thread-403] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@7f6df3da: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1635,46 +1635,15 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-412] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-412] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8007: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-412] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@415c45e2: java.net.BindException: Address already in use
-java.net.BindException: Address already in use
-	at sun.nio.ch.Net.bind0(Native Method)
-	at sun.nio.ch.Net.bind(Net.java:433)
-	at sun.nio.ch.Net.bind(Net.java:425)
-	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
-	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
-	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
-	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
-	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
-	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
-	at java.lang.Thread.run(Thread.java:748)
-[Thread-421] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-421] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8008
+[Thread-412] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8008
 [HttpGetTimeout] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
-[Thread-421] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-434] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-434] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8008
+[Thread-412] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-425] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-425] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8008
 [HttpPost] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
-[Thread-434] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
-[Thread-447] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-447] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8008: java.net.BindException: Address already in use
+[Thread-425] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
+[Thread-438] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-438] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8008: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1689,7 +1658,38 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-447] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2fed0c18: java.net.BindException: Address already in use
+[Thread-438] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@42548887: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-447] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
+[Thread-447] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:182)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:311)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:260)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:283)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
+	at java.lang.Thread.run(Thread.java:748)
+[Thread-447] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@42548887: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1705,7 +1705,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-456] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-456] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8001: java.net.BindException: Address already in use
+[Thread-456] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1720,7 +1720,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-456] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2fed0c18: java.net.BindException: Address already in use
+[Thread-456] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@42548887: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1736,7 +1736,7 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-465] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-465] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8002: java.net.BindException: Address already in use
+[Thread-465] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1751,7 +1751,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-465] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2fed0c18: java.net.BindException: Address already in use
+[Thread-465] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@42548887: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1767,15 +1767,15 @@ java.net.BindException: Address already in use
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
 [Thread-474] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-474] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8003
+[Thread-474] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8004
 [HttpPostTimeout] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
 [Thread-474] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
 [Thread-494] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-494] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8003
+[Thread-494] INFO org.eclipse.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8004
 [OptimizationAdvisor] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/,null}
 [Thread-494] INFO org.eclipse.jetty.server.handler.ContextHandler - stopped o.e.j.s.h.ContextHandler{/,null}
 [Thread-510] INFO org.eclipse.jetty.server.Server - jetty-8.y.z-SNAPSHOT
-[Thread-510] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8003: java.net.BindException: Address already in use
+[Thread-510] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED SelectChannelConnector@0.0.0.0:8004: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1790,7 +1790,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-510] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@2a79b1ad: java.net.BindException: Address already in use
+[Thread-510] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@1ddbb6b: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1825,7 +1825,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-535] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@4c17119a: java.net.BindException: Address already in use
+[Thread-535] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@670bf8e: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
@@ -1856,7 +1856,7 @@ java.net.BindException: Address already in use
 	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
 	at org.ptolemy.ptango.lib.WebServerUtilities$RunnableServer.run(WebServerUtilities.java:825)
 	at java.lang.Thread.run(Thread.java:748)
-[Thread-544] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@4c17119a: java.net.BindException: Address already in use
+[Thread-544] WARN org.eclipse.jetty.util.component.AbstractLifeCycle - FAILED org.eclipse.jetty.server.Server@670bf8e: java.net.BindException: Address already in use
 java.net.BindException: Address already in use
 	at sun.nio.ch.Net.bind0(Native Method)
 	at sun.nio.ch.Net.bind(Net.java:433)
