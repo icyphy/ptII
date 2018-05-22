@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-c9c51161-355e-47e6-ae29-a160821027c6" name="doc.books.systems.vergil.test.junit.JUnitTclTest" skipped="0" tests="21" time="3.926" timestamp="2018-05-22T21:51:00">
+<testsuite errors="0" failures="0" hostname="travis-job-825f7779-39c1-4e72-a3fa-ad191e7b9a9a" name="doc.books.systems.vergil.test.junit.JUnitTclTest" skipped="0" tests="21" time="2.792" timestamp="2018-05-22T23:27:46">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="464.8" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="465.8" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.4.28 36370 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.34 42340 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.4.28 36370 10.20.0.203 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.34 42340 10.20.0.97 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher109693652760903842.properties propsfile=/home/travis/build/icyphy/ptII/junit944812444103626256.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner doc.books.systems.vergil.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-doc.books.systems.vergil.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher781471782977260393.properties propsfile=/home/travis/build/icyphy/ptII/junit8675145414283380452.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="f7e03f79ff3e...9f99ea0e3c74" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="9f99ea0e3c74...ff646375f773" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -115,7 +115,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="464" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="465" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -131,12 +131,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="382372433" />
+    <property name="env.TRAVIS_BUILD_ID" value="382374636" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="9f99ea0e3c74ced4364db99d880f8d3d549eda01" />
+    <property name="env.TRAVIS_COMMIT" value="ff646375f7735ddf057aa402acd9d1a726118e79" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -168,7 +168,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Use rawgit for links to html files." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Fixed links.  Markdown links are backwards from html." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -208,7 +208,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="382372441" />
+    <property name="env.TRAVIS_JOB_ID" value="382374644" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -228,138 +228,138 @@
     <property name="sun.arch.data.model" value="64" />
   </properties>
   <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] ThereAreNoTclTests (RunTclFile)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.001" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml (RunModel)" time="0.385" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml (RunModel)" time="0.058" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml (RunModel)" time="0.176" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml (RunModel)" time="0.371" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml (RunModel)" time="0.217" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml (RunModel)" time="0.139" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml (RunModel)" time="0.277" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml (RunModel)" time="0.424" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml (RunModel)" time="0.316" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml (RunModel)" time="0.157" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml (RunModel)" time="0.114" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml (RunModel)" time="0.204" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml (RunModel)" time="0.055" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml (RunModel)" time="0.017" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml (RunModel)" time="0.183" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml (RunModel)" time="0.122" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml (RunModel)" time="0.046" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml (RunModel)" time="0.298" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml (RunModel)" time="0.127" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml (RunModel)" time="0.244" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml (RunModel)" time="0.142" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml (RunModel)" time="0.08" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml (RunModel)" time="0.19" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml (RunModel)" time="0.184" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml (RunModel)" time="0.179" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml (RunModel)" time="0.139" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml (RunModel)" time="0.09" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml (RunModel)" time="0.187" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml (RunModel)" time="0.068" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml (RunModel)" time="0.022" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml (RunModel)" time="0.189" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml (RunModel)" time="0.067" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml (RunModel)" time="0.023" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml (RunModel)" time="0.034" />
   <system-out><![CDATA[No tcl tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Tue May 22 21:51:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
+----------------- testing Tue May 22 23:27:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStrings.xml
-38 ms. Memory: 116224K Free: 87665K (75%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@774129af
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@774129af
+26 ms. Memory: 116224K Free: 86775K (75%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@60b0da48
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@60b0da48
 reloadAllAccessors: .AddingStrings
------------------ testing Tue May 22 21:51:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
+----------------- testing Tue May 22 23:27:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/AddingStringsException.xml
-8 ms. Memory: 116224K Free: 83059K (71%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d0032c7
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6d0032c7
+5 ms. Memory: 116224K Free: 82257K (71%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@455a1c9e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@455a1c9e
 reloadAllAccessors: .AddingStringsException
------------------ testing Tue May 22 21:51:01 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
+----------------- testing Tue May 22 23:27:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ApplyFunction.xml
-42 ms. Memory: 146944K Free: 135420K (92%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c1b6d7b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5c1b6d7b
+30 ms. Memory: 146944K Free: 134624K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@244e310c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@244e310c
 reloadAllAccessors: .ApplyFunction
------------------ testing Tue May 22 21:51:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
+----------------- testing Tue May 22 23:27:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelBadDesign.xml
-117 ms. Memory: 146944K Free: 109054K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38b54b95
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38b54b95
+57 ms. Memory: 146944K Free: 108177K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b88967b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b88967b
 reloadAllAccessors: .ChannelBadDesign
------------------ testing Tue May 22 21:51:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
+----------------- testing Tue May 22 23:27:47 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelGoodDesign.xml
-95 ms. Memory: 146944K Free: 89645K (61%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9793fd
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9793fd
+57 ms. Memory: 146944K Free: 88139K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@33139266
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@33139266
 reloadAllAccessors: .ChannelGoodDesign
------------------ testing Tue May 22 21:51:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelSingle.xml
-75 ms. Memory: 146944K Free: 140957K (96%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fa37a0a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fa37a0a
+44 ms. Memory: 146944K Free: 140106K (95%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f4aae07
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5f4aae07
 reloadAllAccessors: .ChannelSingle
------------------ testing Tue May 22 21:51:02 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIcon.xml
-91 ms. Memory: 146944K Free: 120675K (82%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@390d4fe4
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@390d4fe4
+53 ms. Memory: 146944K Free: 118683K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1b31a629
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1b31a629
 reloadAllAccessors: .ChannelWithIcon
------------------ testing Tue May 22 21:51:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithIterate.xml
-237 ms. Memory: 146944K Free: 101807K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@429077da
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@429077da
+66 ms. Memory: 146944K Free: 100145K (68%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fd8d91c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fd8d91c
 reloadAllAccessors: .ChannelWithIterate
------------------ testing Tue May 22 21:51:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithMultiInstance.xml
-183 ms. Memory: 208384K Free: 197641K (95%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a5a605d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a5a605d
+136 ms. Memory: 208384K Free: 195791K (94%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@625e2bbc
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@625e2bbc
 reloadAllAccessors: .ChannelWithMultiInstance
------------------ testing Tue May 22 21:51:03 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithOverrides.xml
-51 ms. Memory: 208384K Free: 176289K (85%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@24dc24de
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@24dc24de
+39 ms. Memory: 208384K Free: 173841K (83%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bfd6c97
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bfd6c97
 reloadAllAccessors: .ChannelWithOverrides
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclass.xml
-37 ms. Memory: 208384K Free: 152556K (73%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7685a3d8
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7685a3d8
+41 ms. Memory: 208384K Free: 151594K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65332b65
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65332b65
 reloadAllAccessors: .ChannelWithSubclass
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
+----------------- testing Tue May 22 23:27:48 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/ChannelWithSubclassWithOverrides.xml
-78 ms. Memory: 208384K Free: 120700K (58%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f489a72
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f489a72
+59 ms. Memory: 208384K Free: 116287K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@97517ab
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@97517ab
 reloadAllAccessors: .ChannelWithSubclassWithOverrides
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
+----------------- testing Tue May 22 23:27:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/CustomIcon.xml
-13 ms. Memory: 208384K Free: 110764K (53%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@60cab5b2
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@60cab5b2
+16 ms. Memory: 208384K Free: 106456K (51%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@682a0c39
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@682a0c39
 reloadAllAccessors: .CustomIcon
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
+----------------- testing Tue May 22 23:27:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/HelloWorld.xml
-2 ms. Memory: 208384K Free: 107644K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fb83b43
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fb83b43
+2 ms. Memory: 208384K Free: 103179K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c72cf4a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c72cf4a
 reloadAllAccessors: .HelloWorld
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
+----------------- testing Tue May 22 23:27:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/Spectrum.xml
-56 ms. Memory: 208384K Free: 83311K (40%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@f116ba9
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@f116ba9
+70 ms. Memory: 208384K Free: 201351K (97%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d65a935
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d65a935
 reloadAllAccessors: .Spectrum
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
+----------------- testing Tue May 22 23:27:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/SpectrumOfNoisySinusoid.xml
-45 ms. Memory: 208384K Free: 190933K (92%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16d13ab8
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16d13ab8
+27 ms. Memory: 208384K Free: 185958K (89%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22500e50
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22500e50
 reloadAllAccessors: .SpectrumOfNoisySinusoid
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
+----------------- testing Tue May 22 23:27:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/TypeModel.xml
-12 ms. Memory: 208384K Free: 186310K (89%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4a18ad2e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4a18ad2e
+5 ms. Memory: 208384K Free: 181657K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d91266
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d91266
 reloadAllAccessors: .TypeModel
------------------ testing Tue May 22 21:51:04 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
+----------------- testing Tue May 22 23:27:49 UTC 2018 /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/doc/books/systems/vergil/test/auto/WidthInference.xml
-9 ms. Memory: 208384K Free: 181363K (87%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6dca431
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6dca431
+9 ms. Memory: 208384K Free: 176111K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c98f1a2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c98f1a2
 reloadAllAccessors: .WidthInference
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
