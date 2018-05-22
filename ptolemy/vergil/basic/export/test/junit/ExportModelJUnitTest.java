@@ -281,6 +281,7 @@ public class ExportModelJUnitTest {
                 // PtinyOS is probably not installed and if it is not installed,
                 // the loading the demos will report missing classes.
                 "ptolemy/actor/ptalon/demo/ptinyos", 
+                "ptolemy/domains/ptinyos/demo",
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
@@ -294,8 +295,10 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = { "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-                "SimplePassPointer", // Only works on 32-bit
+        String[] skip = {
+            "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
+            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+            "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
@@ -419,6 +422,7 @@ public class ExportModelJUnitTest {
                 "jjs/modules/httpClient/demo/REST/REST.xml", // Has links to other demos.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
                 "ros/demo/Ros", // Need a robot.
+                "ptolemy/domains/ptinyos/demo", // Ptinyos is probably not installed.
                 "RobotMPC", // Has links to other demos.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RobotPFChase.xml", // Needs the KeyValue model running.
