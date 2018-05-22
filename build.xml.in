@@ -290,6 +290,7 @@
 
   <!-- Tests of the core, fourth batch. -->
   <patternset id="test.core4.includes">
+    <include name="**/org/hlacerti/**/test/junit/JUnitTclTest.java" />
     <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.java" />
@@ -302,6 +303,7 @@
   </patternset>
 
   <patternset id="test.core4.excludes">
+    <exclude name="**/org/hlacerti/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/ptolemy/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.*" />
