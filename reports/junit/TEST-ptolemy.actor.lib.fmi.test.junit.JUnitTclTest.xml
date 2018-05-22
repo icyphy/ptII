@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="travis-job-7de26a2b-09b8-4c05-af68-97a6784b39ba" name="ptolemy.actor.lib.fmi.test.junit.JUnitTclTest" skipped="0" tests="63" time="19.256" timestamp="2018-05-22T21:35:19">
+<testsuite errors="0" failures="0" hostname="travis-job-1104752d-af90-45a3-a67d-ea1523f7ab59" name="ptolemy.actor.lib.fmi.test.junit.JUnitTclTest" skipped="0" tests="63" time="22.641" timestamp="2018-05-22T23:20:54">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="464.7" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="465.7" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -32,7 +32,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.3 34174 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.8 44488 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -53,7 +53,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.3 34174 10.20.0.109 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.8 44488 10.20.0.244 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -71,12 +71,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.fmi.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.fmi.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5209736591808449838.properties propsfile=/home/travis/build/icyphy/ptII/junit2358310235651339297.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.fmi.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.fmi.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher5258068178308303029.properties propsfile=/home/travis/build/icyphy/ptII/junit2308530331181138399.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="f7e03f79ff3e...9f99ea0e3c74" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="9f99ea0e3c74...ff646375f773" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -116,7 +116,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="464" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="465" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -132,12 +132,12 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="382372433" />
+    <property name="env.TRAVIS_BUILD_ID" value="382374636" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
     <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
-    <property name="env.TRAVIS_COMMIT" value="9f99ea0e3c74ced4364db99d880f8d3d549eda01" />
+    <property name="env.TRAVIS_COMMIT" value="ff646375f7735ddf057aa402acd9d1a726118e79" />
     <property name="env._system_arch" value="x86_64" />
     <property name="node.executable" value="node" />
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
@@ -169,7 +169,7 @@
     <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
     <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
     <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
-    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Use rawgit for links to html files." />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Fixed links.  Markdown links are backwards from html." />
     <property name="keystore" value="ptKeystore" />
     <property name="env.XDG_SESSION_ID" value="2" />
     <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
@@ -208,7 +208,7 @@
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="382372440" />
+    <property name="env.TRAVIS_JOB_ID" value="382374643" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="user.country" value="US" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -227,71 +227,71 @@
     <property name="env.TRAVIS" value="true" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUImport.tcl (RunTclFile)" time="2.391" />
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUQSS.tcl (RunTclFile)" time="0.063" />
-  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/knownFailedTests/FMUContinuousInc20.xml (RunModel)" time="0.217" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml (RunModel)" time="1.156" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml (RunModel)" time="0.68" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml (RunModel)" time="1.608" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml (RunModel)" time="0.136" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml (RunModel)" time="0.963" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml (RunModel)" time="0.203" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml (RunModel)" time="0.573" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml (RunModel)" time="0.886" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml (RunModel)" time="0.178" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml (RunModel)" time="0.088" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml (RunModel)" time="0.112" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml (RunModel)" time="0.191" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml (RunModel)" time="0.404" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml (RunModel)" time="0.098" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml (RunModel)" time="0.677" />
-  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml (RunModel)" time="0.714" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml (RunModel)" time="0.611" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml (RunModel)" time="0.208" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml (RunModel)" time="0.231" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml (RunModel)" time="0.092" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml (RunModel)" time="0.039" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml (RunModel)" time="0.04" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml (RunModel)" time="0.164" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUImport.tcl (RunTclFile)" time="2.669" />
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUQSS.tcl (RunTclFile)" time="0.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/knownFailedTests/FMUContinuousInc20.xml (RunModel)" time="0.242" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml (RunModel)" time="1.481" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml (RunModel)" time="0.678" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml (RunModel)" time="2.073" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml (RunModel)" time="0.162" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml (RunModel)" time="1.078" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml (RunModel)" time="0.421" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml (RunModel)" time="0.709" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml (RunModel)" time="0.88" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml (RunModel)" time="0.191" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml (RunModel)" time="0.259" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml (RunModel)" time="0.134" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml (RunModel)" time="0.24" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml (RunModel)" time="0.461" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml (RunModel)" time="0.112" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml (RunModel)" time="0.746" />
+  <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml (RunModel)" time="0.809" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml (RunModel)" time="0.379" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml (RunModel)" time="0.219" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[2] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml (RunModel)" time="0.274" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[3] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml (RunModel)" time="0.05" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[4] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml (RunModel)" time="0.107" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[5] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[6] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml (RunModel)" time="0.044" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[7] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml (RunModel)" time="0.178" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[8] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml (RunModel)" time="0.092" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml (RunModel)" time="0.014" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml (RunModel)" time="0.041" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml (RunModel)" time="0.033" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml (RunModel)" time="0.035" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml (RunModel)" time="0.061" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml (RunModel)" time="0.144" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml (RunModel)" time="2.743" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[9] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml (RunModel)" time="0.088" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[10] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[11] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml (RunModel)" time="0.036" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[12] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml (RunModel)" time="0.022" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[13] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[14] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[15] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml (RunModel)" time="0.059" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[16] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml (RunModel)" time="0.163" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[17] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml (RunModel)" time="3.217" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[18] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml (RunModel)" time="0.029" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml (RunModel)" time="0.236" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml (RunModel)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml (RunModel)" time="0.047" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml (RunModel)" time="0.036" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml (RunModel)" time="0.106" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml (RunModel)" time="0.127" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml (RunModel)" time="0.021" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml (RunModel)" time="0.019" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml (RunModel)" time="0.018" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml (RunModel)" time="0.041" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[19] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml (RunModel)" time="0.296" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[20] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml (RunModel)" time="0.029" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[21] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml (RunModel)" time="0.039" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[22] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml (RunModel)" time="0.05" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[23] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml (RunModel)" time="0.118" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[24] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml (RunModel)" time="0.126" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[25] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml (RunModel)" time="0.026" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[26] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[27] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[28] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml (RunModel)" time="0.045" />
   <testcase classname="ptolemy.util.test.junit.AutoTests" name="[29] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml (RunModel)" time="0.138" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml (RunModel)" time="0.11" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml (RunModel)" time="0.067" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml (RunModel)" time="0.369" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml (RunModel)" time="0.049" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml (RunModel)" time="0.08" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml (RunModel)" time="0.022" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml (RunModel)" time="0.096" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml (RunModel)" time="0.034" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml (RunModel)" time="0.014" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml (RunModel)" time="0.031" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml (RunModel)" time="0.023" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml (RunModel)" time="1.011" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml (RunModel)" time="0.022" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[30] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml (RunModel)" time="0.108" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[31] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml (RunModel)" time="0.089" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[32] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml (RunModel)" time="0.456" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[33] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml (RunModel)" time="0.052" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[34] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml (RunModel)" time="0.049" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[35] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml (RunModel)" time="0.097" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[36] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml (RunModel)" time="0.032" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[37] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml (RunModel)" time="0.109" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[38] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml (RunModel)" time="0.045" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[39] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml (RunModel)" time="0.017" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[40] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml (RunModel)" time="0.043" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[41] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml (RunModel)" time="0.028" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[42] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml (RunModel)" time="1.422" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[43] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml (RunModel)" time="0.02" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUImport.tcl
-testDefs.tcl: setting time out to 9000 seconds at Tue May 22 21:35:19 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Tue May 22 23:20:54 UTC 2018
 .top.ballDynamics
 FMUImport.tcl: auto/tankOpen.fmu is to be imported as a modelExchange fmu.
 .top.tankOpen
@@ -404,565 +404,565 @@ FMUImport.tcl: auto/vanDerPolME1.fmu is to be imported as a modelExchange fmu.
 .top.CheckEqualityFP
 .top.bouncingBall20RC
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/FMUQSS.tcl
-05/22/18 09:35:21
+05/22/18 11:20:57
 Failed: 0  Total Tests: 80  ((Passed: 80, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/knownFailedTests/FMUContinuousInc20.xml
-133 ms. Memory: 208384K Free: 148329K (71%)
+123 ms. Memory: 146944K Free: 89221K (61%)
 Known Failure: java.lang.reflect.InvocationTargetException
------------------ testing Tue May 22 21:35:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml
+----------------- testing Tue May 22 23:20:57 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirOulet1_QSS1.xml
  Number of steps: 1811
   stateEvents: 3
   stepEvents: 0
   timeEvents: 0
-990 ms. Memory: 208384K Free: 95079K (46%)
+1226 ms. Memory: 207872K Free: 153956K (74%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ea08daa
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ea08daa
 reloadAllAccessors: .FMUQSSAirOulet1_QSS1
------------------ testing Tue May 22 21:35:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml
+----------------- testing Tue May 22 23:20:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet1_QSS1.xml
  Number of steps: 1811
   stateEvents: 3
   stepEvents: 0
   timeEvents: 0
-573 ms. Memory: 208384K Free: 161436K (77%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2d271b54
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2d271b54
+610 ms. Memory: 207872K Free: 103246K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52bc3851
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52bc3851
 reloadAllAccessors: .FMUQSSAirToOulet1_QSS1
------------------ testing Tue May 22 21:35:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml
+----------------- testing Tue May 22 23:20:59 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSAirToOulet2_QSS1.xml
  Number of steps: 9936
   stateEvents: 1
   stepEvents: 0
   timeEvents: 8
-1538 ms. Memory: 333312K Free: 174144K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f601387
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f601387
+1974 ms. Memory: 332288K Free: 239319K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44b37be0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44b37be0
 reloadAllAccessors: .FMUQSSAirToOulet2_QSS1
------------------ testing Tue May 22 21:35:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml
+----------------- testing Tue May 22 23:21:01 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS1.xml
  Number of steps: 295
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-63 ms. Memory: 333312K Free: 155987K (47%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@dd7cbd
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@dd7cbd
+102 ms. Memory: 332288K Free: 220990K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d440e80
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d440e80
 reloadAllAccessors: .FMUQSSStateEvent1_QSS1
------------------ testing Tue May 22 21:35:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml
+----------------- testing Tue May 22 23:21:02 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS2.xml
  Number of steps: 6179
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-925 ms. Memory: 336896K Free: 253433K (75%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16f2208e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@16f2208e
+1031 ms. Memory: 332288K Free: 84624K (25%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@773aad75
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@773aad75
 reloadAllAccessors: .FMUQSSStateEvent1_QSS2
------------------ testing Tue May 22 21:35:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml
+----------------- testing Tue May 22 23:21:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent1_QSS3.xml
  Number of steps: 1067
   stateEvents: 1
   stepEvents: 0
   timeEvents: 0
-168 ms. Memory: 336896K Free: 221958K (66%)
+372 ms. Memory: 334336K Free: 290512K (87%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@19a6f7a0
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@19a6f7a0
 reloadAllAccessors: .FMUQSSStateEvent1_QSS3
------------------ testing Tue May 22 21:35:26 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml
+----------------- testing Tue May 22 23:21:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS1.xml
  Number of steps: 3368
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-480 ms. Memory: 336896K Free: 135983K (40%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fe588af
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fe588af
+628 ms. Memory: 334336K Free: 201111K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62748c88
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62748c88
 reloadAllAccessors: .FMUQSSStateEvent2_QSS1
------------------ testing Tue May 22 21:35:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml
+----------------- testing Tue May 22 23:21:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent2_QSS2.xml
  Number of steps: 2499
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-696 ms. Memory: 581120K Free: 499080K (86%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59f07122
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59f07122
+683 ms. Memory: 334336K Free: 92018K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@326a4de2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@326a4de2
 reloadAllAccessors: .FMUQSSStateEvent2_QSS2
------------------ testing Tue May 22 21:35:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml
+----------------- testing Tue May 22 23:21:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS1.xml
  Number of steps: 707
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-102 ms. Memory: 581120K Free: 471193K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@24d94647
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@24d94647
+119 ms. Memory: 334336K Free: 67954K (20%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67d29cfe
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@67d29cfe
 reloadAllAccessors: .FMUQSSStateEvent4_QSS1
------------------ testing Tue May 22 21:35:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml
+----------------- testing Tue May 22 23:21:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS2.xml
  Number of steps: 528
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-73 ms. Memory: 581120K Free: 452003K (78%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d01493b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d01493b
+116 ms. Memory: 480256K Free: 428880K (89%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56888b5f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56888b5f
 reloadAllAccessors: .FMUQSSStateEvent4_QSS2
------------------ testing Tue May 22 21:35:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml
+----------------- testing Tue May 22 23:21:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent4_QSS3.xml
  Number of steps: 546
   stateEvents: 1
   stepEvents: 0
   timeEvents: 1
-77 ms. Memory: 581120K Free: 432813K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2df52d86
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2df52d86
+94 ms. Memory: 480256K Free: 409178K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1371fd91
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1371fd91
 reloadAllAccessors: .FMUQSSStateEvent4_QSS3
------------------ testing Tue May 22 21:35:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml
+----------------- testing Tue May 22 23:21:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS1.xml
  Number of steps: 991
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-127 ms. Memory: 581120K Free: 401629K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d3170a3
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d3170a3
+154 ms. Memory: 480256K Free: 381168K (79%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c972520
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c972520
 reloadAllAccessors: .FMUQSSStateEvent5_QSS1
------------------ testing Tue May 22 21:35:28 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml
+----------------- testing Tue May 22 23:21:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS2.xml
  Number of steps: 3082
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-383 ms. Memory: 581120K Free: 327267K (56%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40409584
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40409584
+436 ms. Memory: 480256K Free: 307322K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d3170a3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d3170a3
 reloadAllAccessors: .FMUQSSStateEvent5_QSS2
------------------ testing Tue May 22 21:35:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml
+----------------- testing Tue May 22 23:21:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent5_QSS3.xml
  Number of steps: 416
   stateEvents: 2
   stepEvents: 0
   timeEvents: 0
-66 ms. Memory: 581120K Free: 310476K (53%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23978a31
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@23978a31
+74 ms. Memory: 480256K Free: 292044K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@581130fb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@581130fb
 reloadAllAccessors: .FMUQSSStateEvent5_QSS3
------------------ testing Tue May 22 21:35:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml
+----------------- testing Tue May 22 23:21:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS1.xml
  Number of steps: 4328
   stateEvents: 8
   stepEvents: 0
   timeEvents: 0
-578 ms. Memory: 581120K Free: 204931K (35%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@25e065e6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@25e065e6
+659 ms. Memory: 480256K Free: 187642K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@cebc45b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@cebc45b
 reloadAllAccessors: .FMUQSSStateEvent6_QSS1
------------------ testing Tue May 22 21:35:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml
+----------------- testing Tue May 22 23:21:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/linux-amd64/FMUQSSStateEvent6_QSS2.xml
  Number of steps: 2682
   stateEvents: 9
   stepEvents: 0
   timeEvents: 0
-578 ms. Memory: 581120K Free: 92189K (16%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c91874d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3c91874d
+688 ms. Memory: 480256K Free: 73055K (15%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ccf9d77
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ccf9d77
 reloadAllAccessors: .FMUQSSStateEvent6_QSS2
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Tue May 22 21:35:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml
+----------------- testing Tue May 22 23:21:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMU30Inc.xml
-243 ms. Memory: 585728K Free: 464324K (79%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@19560a72
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@19560a72
+124 ms. Memory: 483328K Free: 351847K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cbbbaed
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cbbbaed
 reloadAllAccessors: .FMU30Inc
------------------ testing Tue May 22 21:35:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBall.xml
-156 ms. Memory: 585728K Free: 450849K (77%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10284c6b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10284c6b
+182 ms. Memory: 483328K Free: 339099K (70%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ea006a6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ea006a6
 reloadAllAccessors: .FMUBouncingBall
------------------ testing Tue May 22 21:35:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUBouncingBallME20.xml
-145 ms. Memory: 585728K Free: 431659K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3aca9c5f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3aca9c5f
+145 ms. Memory: 483328K Free: 321274K (66%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1426494a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1426494a
 reloadAllAccessors: .FMUBouncingBallME20
------------------ testing Tue May 22 21:35:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDQ.xml
-9 ms. Memory: 585728K Free: 424463K (72%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ce7a17d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ce7a17d
+10 ms. Memory: 483328K Free: 313619K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70006bf9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@70006bf9
 reloadAllAccessors: .FMUDQ
------------------ testing Tue May 22 21:35:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDq20.xml
-40 ms. Memory: 585728K Free: 412469K (70%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2715ef91
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2715ef91
+49 ms. Memory: 483328K Free: 299561K (62%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@25eae2be
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@25eae2be
 reloadAllAccessors: .FMUDq20
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUDqME20.xml
-14 ms. Memory: 585728K Free: 402874K (69%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6ece3bf6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6ece3bf6
+11 ms. Memory: 483328K Free: 289359K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4934b950
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4934b950
 reloadAllAccessors: .FMUDqME20
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUFourInputsFourOutputsME20.xml
-14 ms. Memory: 585728K Free: 390881K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@288553b8
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@288553b8
+17 ms. Memory: 483328K Free: 279174K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f2c87ba
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f2c87ba
 reloadAllAccessors: .FMUFourInputsFourOutputsME20
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml
+----------------- testing Tue May 22 23:21:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHeaterFlowResistance.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile7568903608327089535.tmp/binaries/linux64/heaterFlowResistance.so
+Attempting to build /tmp/FMUFile8134798002072637532.tmp/binaries/linux64/heaterFlowResistance.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so heaterFlowResistance.so
-make[1]: Entering directory `/tmp/FMUFile7568903608327089535.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile8134798002072637532.tmp/sources'
 echo `pwd`
-/tmp/FMUFile7568903608327089535.tmp/sources
+/tmp/FMUFile8134798002072637532.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  heaterFlowResistance.c -o heaterFlowResistance.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,heaterFlowResistance.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/heaterFlowResistance.so heaterFlowResistance.o 
 rm heaterFlowResistance.o
-make[1]: Leaving directory `/tmp/FMUFile7568903608327089535.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile8134798002072637532.tmp/sources'
 
-127 ms. Memory: 585728K Free: 370210K (63%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10756f23
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10756f23
+131 ms. Memory: 483328K Free: 260060K (54%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ccb7086
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ccb7086
 reloadAllAccessors: .FMUHeaterFlowResistance
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorld.xml
-8 ms. Memory: 585728K Free: 363014K (62%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@802c92f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@802c92f
+7 ms. Memory: 483328K Free: 254967K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@419393be
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@419393be
 reloadAllAccessors: .FMUHelloWorld
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUHelloWorldUnBuilt.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile4507370535692546390.tmp/binaries/linux64/helloWorld.so
+Attempting to build /tmp/FMUFile2312777651330013507.tmp/binaries/linux64/helloWorld.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so helloWorld.so
-make[1]: Entering directory `/tmp/FMUFile4507370535692546390.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile2312777651330013507.tmp/sources'
 echo `pwd`
-/tmp/FMUFile4507370535692546390.tmp/sources
+/tmp/FMUFile2312777651330013507.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  helloWorld.c -o helloWorld.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,helloWorld.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/helloWorld.so helloWorld.o 
 rm helloWorld.o
-make[1]: Leaving directory `/tmp/FMUFile4507370535692546390.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile2312777651330013507.tmp/sources'
 
-82 ms. Memory: 585728K Free: 351020K (60%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f7fdbd7
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f7fdbd7
+74 ms. Memory: 483328K Free: 240901K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2eff6d79
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2eff6d79
 reloadAllAccessors: .FMUHelloWorldUnBuilt
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc.xml
-4 ms. Memory: 585728K Free: 343824K (59%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@148b4a56
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@148b4a56
+6 ms. Memory: 483328K Free: 235808K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fad6e7d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fad6e7d
 reloadAllAccessors: .FMUInc
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUInc2.xml
-15 ms. Memory: 585728K Free: 336627K (57%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@18ea094f
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@18ea094f
+17 ms. Memory: 483328K Free: 225606K (47%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ba68997
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ba68997
 reloadAllAccessors: .FMUInc2
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME1.xml
-11 ms. Memory: 585728K Free: 329431K (56%)
+11 ms. Memory: 483328K Free: 220513K (46%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6cb4ed5
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6cb4ed5
 reloadAllAccessors: .FMUIncME1
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncME20.xml
-9 ms. Memory: 585728K Free: 320754K (55%)
+10 ms. Memory: 483328K Free: 212874K (44%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7087e497
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7087e497
 reloadAllAccessors: .FMUIncME20
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUIncScale20RC1pt.xml
-14 ms. Memory: 585728K Free: 313558K (54%)
+15 ms. Memory: 483328K Free: 205235K (42%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3bf81ed1
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3bf81ed1
 reloadAllAccessors: .FMUIncScale20RC1pt
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMULevelStairs.xml
-34 ms. Memory: 585728K Free: 306362K (52%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b8bc1ad
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4b8bc1ad
+39 ms. Memory: 483328K Free: 196270K (41%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@770a55f0
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@770a55f0
 reloadAllAccessors: .FMULevelStairs
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUPumpConstantSpeed.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile7590438349219469049.tmp/binaries/linux64/pumpConstantSpeed.so
+Attempting to build /tmp/FMUFile4646931470902540241.tmp/binaries/linux64/pumpConstantSpeed.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so pumpConstantSpeed.so
-make[1]: Entering directory `/tmp/FMUFile7590438349219469049.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile4646931470902540241.tmp/sources'
 echo `pwd`
-/tmp/FMUFile7590438349219469049.tmp/sources
+/tmp/FMUFile4646931470902540241.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  pumpConstantSpeed.c -o pumpConstantSpeed.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,pumpConstantSpeed.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/pumpConstantSpeed.so pumpConstantSpeed.o 
 rm pumpConstantSpeed.o
-make[1]: Leaving directory `/tmp/FMUFile7590438349219469049.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile4646931470902540241.tmp/sources'
 
-107 ms. Memory: 585728K Free: 291969K (50%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65655545
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@65655545
+115 ms. Memory: 483328K Free: 180975K (37%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2d9c8079
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2d9c8079
 reloadAllAccessors: .FMUPumpConstantSpeed
------------------ testing Tue May 22 21:35:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml
+----------------- testing Tue May 22 23:21:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUQSSTankOpen.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile40215289904386897.tmp/binaries/linux64/tankOpen.so
+Attempting to build /tmp/FMUFile5666271532171302127.tmp/binaries/linux64/tankOpen.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so tankOpen.so
-make[1]: Entering directory `/tmp/FMUFile40215289904386897.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile5666271532171302127.tmp/sources'
 echo `pwd`
-/tmp/FMUFile40215289904386897.tmp/sources
+/tmp/FMUFile5666271532171302127.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  tankOpen.c -o tankOpen.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,tankOpen.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/tankOpen.so tankOpen.o -lm
 rm tankOpen.o
-make[1]: Leaving directory `/tmp/FMUFile40215289904386897.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile5666271532171302127.tmp/sources'
 
  Number of steps: 39894
   stateEvents: 0
   stepEvents: 0
   timeEvents: 0
-2684 ms. Memory: 884224K Free: 726097K (82%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@477b678b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@477b678b
+3149 ms. Memory: 717312K Free: 482499K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2806753a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2806753a
 reloadAllAccessors: .FMUQSSTankOpen
------------------ testing Tue May 22 21:35:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml
+----------------- testing Tue May 22 23:21:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall.xml
-8 ms. Memory: 884224K Free: 713040K (81%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@667fe74a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@667fe74a
+8 ms. Memory: 717312K Free: 469505K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@675a23c8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@675a23c8
 reloadAllAccessors: .FMUSDFBouncingBall
------------------ testing Tue May 22 21:35:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml
+----------------- testing Tue May 22 23:21:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20.xml
-173 ms. Memory: 884224K Free: 670007K (76%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b5233d8
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b5233d8
+208 ms. Memory: 717312K Free: 426663K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2253b8ed
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2253b8ed
 reloadAllAccessors: .FMUSDFBouncingBall20
------------------ testing Tue May 22 21:35:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFBouncingBall20RC1.xml
-9 ms. Memory: 884224K Free: 660775K (75%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7305b696
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7305b696
+12 ms. Memory: 717312K Free: 417477K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@414875bf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@414875bf
 reloadAllAccessors: .FMUSDFBouncingBall20RC1
------------------ testing Tue May 22 21:35:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUSDFInc20.xml
-12 ms. Memory: 884224K Free: 651543K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2dcea2ad
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2dcea2ad
+14 ms. Memory: 717312K Free: 408299K (57%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fb08e4a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fb08e4a
 reloadAllAccessors: .FMUSDFInc20
------------------ testing Tue May 22 21:35:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStairs.xml
-23 ms. Memory: 884224K Free: 642319K (73%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ecf28e5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ecf28e5
+36 ms. Memory: 717312K Free: 399121K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6461ba29
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6461ba29
 reloadAllAccessors: .FMUStairs
------------------ testing Tue May 22 21:35:35 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter1.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile1174478166494788720.tmp/binaries/linux64/stepCounter1.so
+Attempting to build /tmp/FMUFile625704435801186752.tmp/binaries/linux64/stepCounter1.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter1.so
-make[1]: Entering directory `/tmp/FMUFile1174478166494788720.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile625704435801186752.tmp/sources'
 echo `pwd`
-/tmp/FMUFile1174478166494788720.tmp/sources
+/tmp/FMUFile625704435801186752.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounter1.c -o stepCounter1.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounter1.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounter1.so stepCounter1.o 
 rm stepCounter1.o
-make[1]: Leaving directory `/tmp/FMUFile1174478166494788720.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile625704435801186752.tmp/sources'
 
-89 ms. Memory: 884224K Free: 626942K (71%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7eb4a282
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7eb4a282
+99 ms. Memory: 717312K Free: 383830K (54%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10394188
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@10394188
 reloadAllAccessors: .FMUStepCounter1
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounter2.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile4087579069308261605.tmp/binaries/linux64/stepCounter.so
+Attempting to build /tmp/FMUFile516309036925895824.tmp/binaries/linux64/stepCounter.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounter.so
-make[1]: Entering directory `/tmp/FMUFile4087579069308261605.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile516309036925895824.tmp/sources'
 echo `pwd`
-/tmp/FMUFile4087579069308261605.tmp/sources
+/tmp/FMUFile516309036925895824.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounter.c -o stepCounter.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounter.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounter.so stepCounter.o 
 rm stepCounter.o
-make[1]: Leaving directory `/tmp/FMUFile4087579069308261605.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile516309036925895824.tmp/sources'
 
-107 ms. Memory: 884224K Free: 604991K (68%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53c2712d
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53c2712d
+105 ms. Memory: 717312K Free: 363032K (51%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6bbaa575
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6bbaa575
 reloadAllAccessors: .FMUStepCounter2
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml
-7 ms. Memory: 884224K Free: 598847K (68%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1541a109
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1541a109
+5 ms. Memory: 717312K Free: 356919K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@746ccfe9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@746ccfe9
 reloadAllAccessors: .FMUStepCounterContinuous
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous2.xml
-6 ms. Memory: 884224K Free: 592703K (67%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fb6e902
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fb6e902
+11 ms. Memory: 717312K Free: 350805K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@693ae6c1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@693ae6c1
 reloadAllAccessors: .FMUStepCounterContinuous2
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml
-7 ms. Memory: 884224K Free: 583471K (66%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a697e69
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5a697e69
+9 ms. Memory: 717312K Free: 341627K (48%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57c2dfcf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57c2dfcf
 reloadAllAccessors: .FMUStepCounterContinuousTwoFMUs
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs2.xml
-25 ms. Memory: 884224K Free: 574239K (65%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@352d46c0
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@352d46c0
+27 ms. Memory: 717312K Free: 332441K (46%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@394a1d38
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@394a1d38
 reloadAllAccessors: .FMUStepCounterContinuousTwoFMUs2
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterExtendedFMI.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile6829182871773779295.tmp/binaries/linux64/stepCounterExtendedFMI.so
+Attempting to build /tmp/FMUFile7858983477827396250.tmp/binaries/linux64/stepCounterExtendedFMI.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounterExtendedFMI.so
-make[1]: Entering directory `/tmp/FMUFile6829182871773779295.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile7858983477827396250.tmp/sources'
 echo `pwd`
-/tmp/FMUFile6829182871773779295.tmp/sources
+/tmp/FMUFile7858983477827396250.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounterExtendedFMI.c -o stepCounterExtendedFMI.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounterExtendedFMI.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounterExtendedFMI.so stepCounterExtendedFMI.o 
 rm stepCounterExtendedFMI.o
-make[1]: Leaving directory `/tmp/FMUFile6829182871773779295.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile7858983477827396250.tmp/sources'
 
-118 ms. Memory: 884224K Free: 558862K (63%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2fcc7262
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2fcc7262
+113 ms. Memory: 717312K Free: 315617K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@39acd4a8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@39acd4a8
 reloadAllAccessors: .FMUStepCounterExtendedFMI
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterPeriodInNameContinuous2.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile4577829044157741028.tmp/binaries/linux64/stepCounterPeriodInName.so
+Attempting to build /tmp/FMUFile4106886439412992778.tmp/binaries/linux64/stepCounterPeriodInName.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so stepCounterPeriodInName.so
-make[1]: Entering directory `/tmp/FMUFile4577829044157741028.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile4106886439412992778.tmp/sources'
 echo `pwd`
-/tmp/FMUFile4577829044157741028.tmp/sources
+/tmp/FMUFile4106886439412992778.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  stepCounterPeriodInName.c -o stepCounterPeriodInName.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,stepCounterPeriodInName.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/stepCounterPeriodInName.so stepCounterPeriodInName.o 
 rm stepCounterPeriodInName.o
-make[1]: Leaving directory `/tmp/FMUFile4577829044157741028.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile4106886439412992778.tmp/sources'
 
-98 ms. Memory: 884224K Free: 538838K (61%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f3d11e2
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1f3d11e2
+98 ms. Memory: 717312K Free: 300333K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@370d9af6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@370d9af6
 reloadAllAccessors: .FMUStepCounterPeriodInNameContinuous2
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTankOpen.xml
-31 ms. Memory: 884224K Free: 526534K (60%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d457b7e
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1d457b7e
+35 ms. Memory: 717312K Free: 288107K (40%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cb37f4f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cb37f4f
 reloadAllAccessors: .FMUTankOpen
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml
+----------------- testing Tue May 22 23:21:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUTwoBallCollision.xml
-184 ms. Memory: 884224K Free: 483461K (55%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5952a6c0
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5952a6c0
+238 ms. Memory: 717312K Free: 245233K (34%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ce4bbeb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ce4bbeb
 reloadAllAccessors: .FMUTwoBallCollision
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues.xml
-16 ms. Memory: 884224K Free: 471141K (53%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ffcf491
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ffcf491
+16 ms. Memory: 717312K Free: 232990K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@568533e2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@568533e2
 reloadAllAccessors: .FMUValues
------------------ testing Tue May 22 21:35:36 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValues20.xml
-9 ms. Memory: 884224K Free: 458837K (52%)
+16 ms. Memory: 717312K Free: 220748K (31%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37892ad1
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37892ad1
 reloadAllAccessors: .FMUValues20
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUValuesME20.xml
-44 ms. Memory: 884224K Free: 440396K (50%)
+56 ms. Memory: 717312K Free: 200866K (28%)
 ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fb69d7e
 ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fb69d7e
 reloadAllAccessors: .FMUValuesME20
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol.xml
-6 ms. Memory: 884224K Free: 429589K (49%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@623d3d8b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@623d3d8b
+7 ms. Memory: 717312K Free: 191696K (27%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@27b00662
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@27b00662
 reloadAllAccessors: .FMUVanDerPol
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPol20.xml
-60 ms. Memory: 884224K Free: 411132K (46%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22572cfa
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@22572cfa
+66 ms. Memory: 717312K Free: 173324K (24%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@225c3d4a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@225c3d4a
 reloadAllAccessors: .FMUVanDerPol20
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUVanDerPolME20.xml
-11 ms. Memory: 884224K Free: 395756K (45%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@591cbd33
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@591cbd33
+13 ms. Memory: 717312K Free: 158009K (22%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6a631f32
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6a631f32
 reloadAllAccessors: .FMUVanDerPolME20
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUdq20RC1.xml
-4 ms. Memory: 884224K Free: 386540K (44%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@77764cb1
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@77764cb1
+5 ms. Memory: 717312K Free: 148839K (21%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c8ad459
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c8ad459
 reloadAllAccessors: .FMUdq20RC1
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvalues20RC1.xml
-11 ms. Memory: 884224K Free: 374236K (42%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bedbde2
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bedbde2
+15 ms. Memory: 717312K Free: 135071K (19%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ee40075
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ee40075
 reloadAllAccessors: .FMUvalues20RC1
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/FMUvanDerPol20RC1.xml
-8 ms. Memory: 884224K Free: 363412K (41%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cc52d88
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cc52d88
+9 ms. Memory: 717312K Free: 125885K (18%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6591dbf7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6591dbf7
 reloadAllAccessors: .FMUvanDerPol20RC1
------------------ testing Tue May 22 21:35:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml
+----------------- testing Tue May 22 23:21:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/TestZeroDelayFeedback.xml
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile1110546645143516959.tmp/binaries/linux64/Constant.so
+Attempting to build /tmp/FMUFile8106986656247013459.tmp/binaries/linux64/Constant.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Constant.so
-make[1]: Entering directory `/tmp/FMUFile1110546645143516959.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile8106986656247013459.tmp/sources'
 echo `pwd`
-/tmp/FMUFile1110546645143516959.tmp/sources
+/tmp/FMUFile8106986656247013459.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Constant.c -o Constant.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Constant.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Constant.so Constant.o 
 rm Constant.o
-make[1]: Leaving directory `/tmp/FMUFile1110546645143516959.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile8106986656247013459.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile6872761470733744540.tmp/binaries/linux64/Integrator.so
+Attempting to build /tmp/FMUFile5673825572703124778.tmp/binaries/linux64/Integrator.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Integrator.so
-make[1]: Entering directory `/tmp/FMUFile6872761470733744540.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile5673825572703124778.tmp/sources'
 echo `pwd`
-/tmp/FMUFile6872761470733744540.tmp/sources
+/tmp/FMUFile5673825572703124778.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Integrator.c -o Integrator.o
 Integrator.c: In function ‘fmi2HybridGetMaxStepSize’:
 Integrator.c:112:20: warning: unused variable ‘comp’ [-Wunused-variable]
@@ -976,59 +976,59 @@ fmuTemplate.c:992:12: warning: variable ‘prevState’ set but not used [-Wunus
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Integrator.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Integrator.so Integrator.o 
 rm Integrator.o
-make[1]: Leaving directory `/tmp/FMUFile6872761470733744540.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile5673825572703124778.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile2712223393533881768.tmp/binaries/linux64/Adder.so
+Attempting to build /tmp/FMUFile4918553819161526230.tmp/binaries/linux64/Adder.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Adder.so
-make[1]: Entering directory `/tmp/FMUFile2712223393533881768.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile4918553819161526230.tmp/sources'
 echo `pwd`
-/tmp/FMUFile2712223393533881768.tmp/sources
+/tmp/FMUFile4918553819161526230.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Adder.c -o Adder.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Adder.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Adder.so Adder.o 
 rm Adder.o
-make[1]: Leaving directory `/tmp/FMUFile2712223393533881768.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile4918553819161526230.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile4898098491354200745.tmp/binaries/linux64/ZeroCrossingDetector.so
+Attempting to build /tmp/FMUFile3063332170577387688.tmp/binaries/linux64/ZeroCrossingDetector.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so ZeroCrossingDetector.so
-make[1]: Entering directory `/tmp/FMUFile4898098491354200745.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile3063332170577387688.tmp/sources'
 echo `pwd`
-/tmp/FMUFile4898098491354200745.tmp/sources
+/tmp/FMUFile3063332170577387688.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  ZeroCrossingDetector.c -o ZeroCrossingDetector.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,ZeroCrossingDetector.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/ZeroCrossingDetector.so ZeroCrossingDetector.o 
 rm ZeroCrossingDetector.o
-make[1]: Leaving directory `/tmp/FMUFile4898098491354200745.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile3063332170577387688.tmp/sources'
 
 FMU Builder messages:
 
-Attempting to build /tmp/FMUFile3870604624740704788.tmp/binaries/linux64/Delay.so
+Attempting to build /tmp/FMUFile6289768386042385769.tmp/binaries/linux64/Delay.so
 architecture: linux64 isWindows: false  command: make target: linux64
 make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Delay.so
-make[1]: Entering directory `/tmp/FMUFile3870604624740704788.tmp/sources'
+make[1]: Entering directory `/tmp/FMUFile6289768386042385769.tmp/sources'
 echo `pwd`
-/tmp/FMUFile3870604624740704788.tmp/sources
+/tmp/FMUFile6289768386042385769.tmp/sources
 cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Delay.c -o Delay.o
 Creating ../binaries/linux64/
 cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Delay.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Delay.so Delay.o 
 rm Delay.o
-make[1]: Leaving directory `/tmp/FMUFile3870604624740704788.tmp/sources'
+make[1]: Leaving directory `/tmp/FMUFile6289768386042385769.tmp/sources'
 
-985 ms. Memory: 884224K Free: 317299K (36%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f411f94
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f411f94
+1386 ms. Memory: 717312K Free: 80003K (11%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a27426
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a27426
 reloadAllAccessors: .TestZeroDelayFeedback
------------------ testing Tue May 22 21:35:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml
+----------------- testing Tue May 22 23:21:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.xml
-6 ms. Memory: 884224K Free: 311155K (35%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@547e958c
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@547e958c
+7 ms. Memory: 717312K Free: 73890K (10%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6f62df2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6f62df2
 reloadAllAccessors: .helloWorldME2
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
