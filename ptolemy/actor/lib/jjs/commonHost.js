@@ -504,8 +504,6 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
         this.currentTime = bindings.currentTime;
     } else if (typeof currentTime !== 'undefined') {
         this.currentTime = currentTime;
-    } else {
-        throw new Error('Host does not define required currentTime function.');
     }
 
     if (bindings && bindings.getTopLevelAccessors) {
