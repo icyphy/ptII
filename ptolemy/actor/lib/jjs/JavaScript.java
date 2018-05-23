@@ -227,6 +227,7 @@ import ptolemy.util.StringUtilities;
    <li> alert(string): pop up a dialog with the specified message.</li>
    <li> clearInterval(int): clear an interval with the specified handle.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
+   <li> currentTime(): return the current time as a number (in seconds).</li>
    <li> error(string): send a message to error port, or throw an exception if the error port is not connected.</li>
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
    <li> localHostAddress(): If not in restricted mode, return the local host IP address as a string. </li>
@@ -746,6 +747,15 @@ public class JavaScript extends AbstractPlaceableActor
         }
 
         return engine;
+    }
+    
+    /** Return the current time as a number (in seconds).
+     *  @return The current time.
+     */
+    public double currentTime() {
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        return currentTime.getDoubleValue();
     }
 
     /** Declare that any output that is marked as spontanous does does
@@ -1620,8 +1630,7 @@ public class JavaScript extends AbstractPlaceableActor
                 parameter.setDerivedLevel(1);
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
-            }
-            if (parameter.isOverridden() || parameter.getDerivedLevel() < Integer.MAX_VALUE) {
+            } else {
                 result = previousValue;
             }
             // If there was a previous value from a parameter that got deleted, then override the
@@ -1913,8 +1922,7 @@ public class JavaScript extends AbstractPlaceableActor
                 parameter.setDerivedLevel(1);
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
-            }
-            if (parameter.isOverridden() || parameter.getDerivedLevel() < Integer.MAX_VALUE) {
+            } else {
                 result = ((Parameter) parameter).getToken();
             }
 
