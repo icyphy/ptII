@@ -72,6 +72,9 @@ make install
 case $OS in
     Darwin)
         echo "$0: Darwin: Create links for shared libraries in /usr/local/lib"
+        if [ ! -d "$CERTI_INSTALL/lib" ]; then
+            mkdir $CERTI_INSTALL/lib
+        fi 
         files=`(cd $CERTI_INSTALL/lib; ls -1 lib*)`
         for file in $files
         do                    
