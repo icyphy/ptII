@@ -40,11 +40,6 @@ build-subprojects:
 
 jsdoc-install:
     [mkdir] Created dir: /home/travis/build/icyphy/ptII/node_modules
-     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/package.json'
-     [exec] npm WARN ptII No description
-     [exec] npm WARN ptII No repository field.
-     [exec] npm WARN ptII No README data
-     [exec] npm WARN ptII No license field.
      [exec] /home/travis/build/icyphy/ptII
      [exec] └─┬ @terraswarm/jsdoc@3.5.1-dev 
      [exec]   ├── bluebird@3.4.7 
@@ -67,6 +62,11 @@ jsdoc-install:
      [exec]   ├── taffydb@2.6.2 
      [exec]   └── underscore@1.8.3 
      [exec] 
+     [exec] npm WARN enoent ENOENT: no such file or directory, open '/home/travis/build/icyphy/ptII/package.json'
+     [exec] npm WARN ptII No description
+     [exec] npm WARN ptII No repository field.
+     [exec] npm WARN ptII No README data
+     [exec] npm WARN ptII No license field.
 
 jsdoc-update:
 
@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 4.57 seconds.
+     [exec] Finished running in 5.97 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -352,11 +352,159 @@ build-bin:
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May 23 14:06:57 UTC 2018
+     [exec] Error: This Java instance does not support a 32-bit JVM.
+     [exec] Please install the desired version.
+     [exec] configure: WARNING: Running java -d32 -version failed,
+     [exec]     and ./bin/java does not exist.
+     [exec]     Perhaps you need to install a separate 32-bit JVM
+     [exec]     or rerun configure with --with-java32?
+     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
+     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
+     [exec]     the same as '/usr/bin/java'.
+     [exec]     Perhaps '/usr/bin/java' is in your path before
+     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
+     [exec]     If you have problems later, be sure that you don't have a mismatch
+     [exec]     in JDK versions.
+     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
+     [exec] 	 the same as '/usr/bin/javac'.
+     [exec] 	 Perhaps '/usr/bin/javac' is in your path
+     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
+     [exec] 	 If you have problems later, be sure that you don't have a mismatch
+     [exec] 	 in JDK versions.
+     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
+     [exec]     This is only a problem if you want to rebuild the Functional
+     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
+     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
+     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
+     [exec]     Checkstyle is only necessary for code cleaning.
+     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
+     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
+     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
+     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
+     [exec]     Cobertura is only necessary to for code coverage.
+     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
+     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
+     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
+     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
+     [exec]     CUnit is only necessary to test the C templates of the code generation facility
+     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
+     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
+     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+     [exec]     so the Mbed CG facility will not be run.
+     [exec] JAITest.java:28: error: package javax.media.jai does not exist
+     [exec] import javax.media.jai.*;
+     [exec] ^
+     [exec] 1 error
+     [exec] configure: WARNING: JAI not found in the default classpath
+     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
+     [exec]     which is part of JModelica.
+     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
+     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
+     [exec] JMFTest.java:28: error: package javax.media does not exist
+     [exec] import javax.media.CaptureDeviceInfo;
+     [exec]                   ^
+     [exec] 1 error
+     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
+     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
+     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
+     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
+     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
+     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
+     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
+     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
+     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
+     [exec]     so we will try other jars.
+     [exec] libdc1394 error: Failed to initialize libdc1394
+     [exec] configure: WARNING: Could not find directory
+     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
+     [exec]     so we search for the jjtree command.
+     [exec] configure: WARNING: Failed to find jjtree
+     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
+     [exec]     in ptolemy/data/expr.
+     [exec]     JavaCC is available from
+     [exec]     http://javacc.dev.java.net/
+     [exec] 
+     [exec]     Note that the zip file that gets downloaded is actually an installer
+     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
+     [exec] 
+     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
+     [exec]     ReInit() being static or not static.
+     [exec] 
+     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+     [exec]     we recommend JavaCC-5.0.
+     [exec] 
+     [exec]     Try:
+     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
+     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+     [exec]     tar -zxf javacc-5.0.tar.gz
+     [exec]     cd /home/travis/build/icyphy/ptII
+     [exec]     ./configure
+     [exec] 
+     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
+     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
+     [exec]     and then rerun configure.'
+     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
+     [exec] configure: WARNING: Failed to find matlab executable in the path.
+     [exec]     Perhaps Matlab is not installed?
+     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
+     [exec]     $PTII/ptolemy/matlab will not be usable.
+     [exec] configure: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.
+     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
+     [exec]     Rebuilding the OpenModelica fmus will not be possible.
+     [exec]     Running the OpenModelica models will not be possible.
+     [exec]     This is only a concern if you are interested in OpenModelica
+     [exec] configure: WARNING: Failed to find PowerMock.
+     [exec]     Perhaps PowerMock was not installed?
+     [exec]     You need not download these packages if you would like
+     [exec]     to run the tests.  To install PowerMock, go to
+     [exec]     http://code.google.com/p/powermock/ and download
+     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
+     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+     [exec]     then rerun configure.
+     [exec]     Other versions of PowerMock _may_ work, but are untested.
+     [exec] configure: WARNING: Failed to find the scalac binary,
+     [exec]     so org/ptolemy/scala will be excluded
+     [exec] configure: WARNING: ojdbc5.jar not found,
+     [exec]     but only necessary to use database actors with Oracle.
+     [exec]     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
+     [exec]     To install ojdbc5.jar or ojdbc6.jar,
+     [exec]     download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+     [exec]     copy it to ptolemy/actor/lib/database
+     [exec]     and rerun ./configure
+     [exec] configure: WARNING: Failed to find Batik Jar file
+     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
+     [exec]     for use with Kepler.
+     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
+     [exec]     batike-1.9/lib/batik-all-1.9.jar copied to /home/travis/build/icyphy/ptII/lib
+     [exec]     and ./configure rerun.
+     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
+     [exec] configure: WARNING: $TOSROOT is set to '',
+     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
+     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
+     [exec] configure: WARNING: Failed to find giotto/gdk.jar
+     [exec]     perhaps Giotto is not installed?
+     [exec]     You need not download Giotto unless you plan on generating code for
+     [exec]     Giotto models.
+     [exec]     The Giotto SDK can be
+     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
+     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
+     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
+     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
+     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
+     [exec]     will not be compiled. FMI++ is an extension of the
+     [exec]     Functional Mockup Interface, see
+     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May 23 15:46:04 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May 23 14:07:00 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Wed May 23 15:46:07 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -378,176 +526,176 @@ test.export7.xml:
     [junit] ExportModeJUnitTestBatch: There are 745 demos. Exporting demos: 691 to 830.
     [junit] ExportModeJUnitTestBatch: There are 745 demos, which is less than the end index 691. Setting the end index to 744
     [junit] Running ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch7
-    [junit] ####### 1 Wed May 23 14:07:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed
+    [junit] ####### 1 Wed May 23 15:46:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed
     [junit] Running .GuardedCountTimed
-    [junit] 109 ms. Memory: 178688K Free: 126280K (71%)
+    [junit] 169 ms. Memory: 115712K Free: 66104K (57%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed/index.html
-    [junit] 7831 ms. Memory: 178688K Free: 55259K (31%)
-    [junit] ####### 2 Wed May 23 14:07:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TokenRing/TokenRing.xml $PTII/ptolemy/domains/sr/demo/TokenRing/TokenRing
+    [junit] 8027 ms. Memory: 151552K Free: 82103K (54%)
+    [junit] ####### 2 Wed May 23 15:46:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TokenRing/TokenRing.xml $PTII/ptolemy/domains/sr/demo/TokenRing/TokenRing
     [junit] Running .TokenRing
-    [junit] 104 ms. Memory: 241152K Free: 218956K (91%)
+    [junit] 126 ms. Memory: 200192K Free: 177582K (89%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TokenRing/TokenRing/index.html
-    [junit] 5221 ms. Memory: 241152K Free: 139629K (58%)
-    [junit] ####### 3 Wed May 23 14:07:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight
+    [junit] 5479 ms. Memory: 200192K Free: 96055K (48%)
+    [junit] ####### 3 Wed May 23 15:46:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight
     [junit] Running .TrafficLight
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30003 ms. Memory: 341504K Free: 178186K (52%)
+    [junit] 30004 ms. Memory: 252416K Free: 218536K (87%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight/index.html
-    [junit] 35262 ms. Memory: 349696K Free: 161007K (46%)
-    [junit] ####### 4 Wed May 23 14:07:52 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment
+    [junit] 35391 ms. Memory: 301568K Free: 165243K (55%)
+    [junit] ####### 4 Wed May 23 15:47:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment
     [junit] Running .WirelessDeployment
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30001 ms. Memory: 431104K Free: 208147K (48%)
+    [junit] 30001 ms. Memory: 306176K Free: 89408K (29%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment/index.html
-    [junit] 35891 ms. Memory: 432128K Free: 44739K (10%)
-    [junit] ####### 5 Wed May 23 14:08:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml $PTII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory
+    [junit] 36135 ms. Memory: 369152K Free: 182877K (50%)
+    [junit] ####### 5 Wed May 23 15:47:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml $PTII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory
     [junit] Running .SharedMemory
-    [junit] 36 ms. Memory: 521728K Free: 392178K (75%)
+    [junit] 41 ms. Memory: 369152K Free: 81340K (22%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory/index.html
-    [junit] 4441 ms. Memory: 521728K Free: 334813K (64%)
-    [junit] ####### 6 Wed May 23 14:08:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/Task/Task.xml $PTII/ptolemy/domains/taskpt/demo/Task/Task
+    [junit] 4396 ms. Memory: 369152K Free: 28498K (8%)
+    [junit] ####### 6 Wed May 23 15:47:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/Task/Task.xml $PTII/ptolemy/domains/taskpt/demo/Task/Task
     [junit] Running .Task
-    [junit] 35 ms. Memory: 521728K Free: 239385K (46%)
+    [junit] 44 ms. Memory: 437760K Free: 307011K (70%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/taskpt/demo/Task/Task/index.html
-    [junit] 4365 ms. Memory: 521728K Free: 191626K (37%)
-    [junit] ####### 7 Wed May 23 14:08:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tcs/demo/TCS/TCS.xml $PTII/ptolemy/domains/tcs/demo/TCS/TCS
+    [junit] 4440 ms. Memory: 437760K Free: 257138K (59%)
+    [junit] ####### 7 Wed May 23 15:47:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tcs/demo/TCS/TCS.xml $PTII/ptolemy/domains/tcs/demo/TCS/TCS
     [junit] Running .TCS
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30000 ms. Memory: 629248K Free: 103408K (16%)
+    [junit] 30002 ms. Memory: 535552K Free: 473860K (88%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tcs/demo/TCS/TCS/index.html
-    [junit] 35682 ms. Memory: 629248K Free: 31302K (5%)
-    [junit] ####### 8 Wed May 23 14:09:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/Controllers/Controllers.xml $PTII/ptolemy/domains/tm/demo/Controllers/Controllers
+    [junit] 36028 ms. Memory: 535552K Free: 405605K (76%)
+    [junit] ####### 8 Wed May 23 15:48:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/Controllers/Controllers.xml $PTII/ptolemy/domains/tm/demo/Controllers/Controllers
     [junit] Running .Controllers
-    [junit] 1412 ms. Memory: 673280K Free: 403184K (60%)
+    [junit] 1569 ms. Memory: 535552K Free: 151189K (28%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/Controllers/Controllers/index.html
-    [junit] 6121 ms. Memory: 673280K Free: 148629K (22%)
-    [junit] ####### 9 Wed May 23 14:09:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/FFT/FFT.xml $PTII/ptolemy/domains/tm/demo/FFT/FFT
+    [junit] 6244 ms. Memory: 633344K Free: 421125K (66%)
+    [junit] ####### 9 Wed May 23 15:48:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/FFT/FFT.xml $PTII/ptolemy/domains/tm/demo/FFT/FFT
     [junit] Running .FFT
-    [junit] 10082 ms. Memory: 871936K Free: 740884K (85%)
+    [junit] 10083 ms. Memory: 633344K Free: 259614K (41%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/FFT/FFT/index.html
-    [junit] 14482 ms. Memory: 871936K Free: 603325K (69%)
-    [junit] ####### 10 Wed May 23 14:09:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml $PTII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents
+    [junit] 14563 ms. Memory: 633344K Free: 131472K (21%)
+    [junit] ####### 10 Wed May 23 15:48:42 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml $PTII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents
     [junit] Running .MergedEvents
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30034 ms. Memory: 871936K Free: 488474K (56%)
+    [junit] 30027 ms. Memory: 644608K Free: 564176K (88%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents/index.html
-    [junit] 34250 ms. Memory: 871936K Free: 385625K (44%)
-    [junit] ####### 11 Wed May 23 14:10:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml $PTII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks
+    [junit] 34334 ms. Memory: 644608K Free: 465182K (72%)
+    [junit] ####### 11 Wed May 23 15:49:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml $PTII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks
     [junit] Running .SimpleTasks
-    [junit] 7 ms. Memory: 871936K Free: 291818K (33%)
+    [junit] 16 ms. Memory: 644608K Free: 369042K (57%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks/index.html
-    [junit] 4190 ms. Memory: 871936K Free: 248303K (28%)
-    [junit] ####### 12 Wed May 23 14:10:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest
+    [junit] 4276 ms. Memory: 644608K Free: 328233K (51%)
+    [junit] ####### 12 Wed May 23 15:49:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest
     [junit] Running .AntennaGainTest
-    [junit] 373 ms. Memory: 871424K Free: 707478K (81%)
+    [junit] 289 ms. Memory: 744960K Free: 683979K (92%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest/index.html
-    [junit] 5099 ms. Memory: 871424K Free: 563875K (65%)
-    [junit] ####### 13 Wed May 23 14:10:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel
+    [junit] 4796 ms. Memory: 744960K Free: 537280K (72%)
+    [junit] ####### 13 Wed May 23 15:49:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel/index.html
-    [junit] 3409 ms. Memory: 871424K Free: 292889K (34%)
-    [junit] ####### 14 Wed May 23 14:10:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern
+    [junit] 3487 ms. Memory: 744960K Free: 268656K (36%)
+    [junit] ####### 14 Wed May 23 15:49:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern/index.html
-    [junit] 3265 ms. Memory: 871424K Free: 175486K (20%)
-    [junit] ####### 15 Wed May 23 14:10:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern
+    [junit] 3243 ms. Memory: 744960K Free: 149774K (20%)
+    [junit] ####### 15 Wed May 23 15:49:32 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern/index.html
-    [junit] 3913 ms. Memory: 1023488K Free: 555196K (54%)
-    [junit] ####### 16 Wed May 23 14:10:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern
+    [junit] 4012 ms. Memory: 759808K Free: 293210K (39%)
+    [junit] ####### 16 Wed May 23 15:49:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern/index.html
-    [junit] 3766 ms. Memory: 1039360K Free: 972085K (94%)
-    [junit] ####### 17 Wed May 23 14:10:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml $PTII/ptolemy/domains/wireless/demo/CircularRange/CircularRange
+    [junit] 3847 ms. Memory: 870912K Free: 549119K (63%)
+    [junit] ####### 17 Wed May 23 15:49:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml $PTII/ptolemy/domains/wireless/demo/CircularRange/CircularRange
     [junit] Running .CircularRange
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30001 ms. Memory: 1039360K Free: 827579K (80%)
+    [junit] 30001 ms. Memory: 870912K Free: 395576K (45%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/CircularRange/CircularRange/index.html
-    [junit] 34341 ms. Memory: 1039360K Free: 654870K (63%)
-    [junit] ####### 18 Wed May 23 14:11:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/Collisions.xml $PTII/ptolemy/domains/wireless/demo/Collisions/Collisions
+    [junit] 34382 ms. Memory: 870912K Free: 220774K (25%)
+    [junit] ####### 18 Wed May 23 15:50:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/Collisions.xml $PTII/ptolemy/domains/wireless/demo/Collisions/Collisions
     [junit] Running .Collisions
-    [junit] 20038 ms. Memory: 1039360K Free: 467058K (45%)
+    [junit] 20027 ms. Memory: 872448K Free: 800552K (92%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Collisions/Collisions/index.html
-    [junit] 24564 ms. Memory: 1039360K Free: 126864K (12%)
-    [junit] ####### 19 Wed May 23 14:11:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml $PTII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic
+    [junit] 24584 ms. Memory: 872448K Free: 460996K (53%)
+    [junit] ####### 19 Wed May 23 15:50:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml $PTII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic
     [junit] Running .CollisionsDeterministic
-    [junit] 58 ms. Memory: 1196544K Free: 1032471K (86%)
+    [junit] 35 ms. Memory: 872448K Free: 299517K (34%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic/index.html
-    [junit] 4646 ms. Memory: 1196544K Free: 770739K (64%)
-    [junit] ####### 20 Wed May 23 14:11:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml $PTII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer
+    [junit] 4515 ms. Memory: 948736K Free: 875631K (92%)
+    [junit] ####### 20 Wed May 23 15:50:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml $PTII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer
     [junit] Running .EvaderAndPursuer
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30000 ms. Memory: 1196544K Free: 331508K (28%)
+    [junit] 29999 ms. Memory: 948736K Free: 442930K (47%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer/index.html
-    [junit] 34768 ms. Memory: 1196544K Free: 137306K (11%)
-    [junit] ####### 21 Wed May 23 14:12:10 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Intersections/Intersections.xml $PTII/ptolemy/domains/wireless/demo/Intersections/Intersections
+    [junit] 34800 ms. Memory: 948736K Free: 250842K (26%)
+    [junit] ####### 21 Wed May 23 15:51:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Intersections/Intersections.xml $PTII/ptolemy/domains/wireless/demo/Intersections/Intersections
     [junit] Running .Intersections
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30003 ms. Memory: 1817088K Free: 358241K (20%)
+    [junit] 30002 ms. Memory: 1531392K Free: 1172516K (77%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Intersections/Intersections/index.html
-    [junit] 73020 ms. Memory: 1880576K Free: 1640814K (87%)
-    [junit] ####### 22 Wed May 23 14:13:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml $PTII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer
+    [junit] 75310 ms. Memory: 1888768K Free: 627003K (33%)
+    [junit] ####### 22 Wed May 23 15:52:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml $PTII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer
     [junit] Running .LinkVisualizer
-    [junit] 20020 ms. Memory: 1880576K Free: 879793K (47%)
+    [junit] 20013 ms. Memory: 1893376K Free: 1471069K (78%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer/index.html
-    [junit] 24279 ms. Memory: 1880576K Free: 743124K (40%)
-    [junit] ####### 23 Wed May 23 14:13:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection
+    [junit] 24253 ms. Memory: 1893376K Free: 1330529K (70%)
+    [junit] ####### 23 Wed May 23 15:52:58 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection
     [junit] Warning: not running ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection/index.html
-    [junit] 3276 ms. Memory: 1880576K Free: 416767K (22%)
-    [junit] ####### 24 Wed May 23 14:13:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml $PTII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability
+    [junit] 3319 ms. Memory: 1893376K Free: 1005896K (53%)
+    [junit] ####### 24 Wed May 23 15:53:01 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml $PTII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability
     [junit] Running .PowerVariability
-    [junit] 25013 ms. Memory: 1880576K Free: 293884K (16%)
+    [junit] 25020 ms. Memory: 1893376K Free: 884100K (47%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability/index.html
-    [junit] 29233 ms. Memory: 1880576K Free: 105978K (6%)
-    [junit] ####### 25 Wed May 23 14:14:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld
+    [junit] 29365 ms. Memory: 1893376K Free: 705961K (37%)
+    [junit] ####### 25 Wed May 23 15:53:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld
     [junit] Running .SmallWorld
-    [junit] 120 ms. Memory: 1912320K Free: 841722K (44%)
+    [junit] 115 ms. Memory: 1891328K Free: 1364585K (72%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld/index.html
-    [junit] 5026 ms. Memory: 1912320K Free: 711957K (37%)
-    [junit] ####### 26 Wed May 23 14:14:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml $PTII/ptolemy/domains/wireless/demo/SmartParking/SmartParking
+    [junit] 5259 ms. Memory: 1891328K Free: 1229548K (65%)
+    [junit] ####### 26 Wed May 23 15:53:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml $PTII/ptolemy/domains/wireless/demo/SmartParking/SmartParking
     [junit] Running .SmartParking
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30001 ms. Memory: 1911296K Free: 1584606K (83%)
+    [junit] 30001 ms. Memory: 1891328K Free: 500545K (26%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/SmartParking/SmartParking/index.html
-    [junit] 35090 ms. Memory: 1911296K Free: 1418439K (74%)
-    [junit] ####### 27 Wed May 23 14:15:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml $PTII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel
+    [junit] 35156 ms. Memory: 1891328K Free: 333358K (18%)
+    [junit] ####### 27 Wed May 23 15:54:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml $PTII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel
     [junit] Running .TerrainModel
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30000 ms. Memory: 1911296K Free: 1279146K (67%)
+    [junit] 30001 ms. Memory: 1891328K Free: 196747K (10%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel/index.html
-    [junit] 34185 ms. Memory: 1911296K Free: 1151830K (60%)
-    [junit] ####### 28 Wed May 23 14:15:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection
+    [junit] 34203 ms. Memory: 1891328K Free: 82878K (4%)
+    [junit] ####### 28 Wed May 23 15:54:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection
     [junit] Running .WirelessSoundDetection
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30005 ms. Memory: 1911296K Free: 981503K (51%)
+    [junit] 30001 ms. Memory: 1892864K Free: 1538880K (81%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection/index.html
-    [junit] 34219 ms. Memory: 1911296K Free: 850748K (45%)
-    [junit] ####### 29 Wed May 23 14:16:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml $PTII/ptolemy/domains/wireless/demo/Zigbee/Zigbee
+    [junit] 34257 ms. Memory: 1892864K Free: 1393947K (74%)
+    [junit] ####### 29 Wed May 23 15:55:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml $PTII/ptolemy/domains/wireless/demo/Zigbee/Zigbee
     [junit] Running .Zigbee
-    [junit] 3480 ms. Memory: 1897984K Free: 1309596K (69%)
+    [junit] 3438 ms. Memory: 1890816K Free: 251087K (13%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Zigbee/Zigbee/index.html
-    [junit] 36153 ms. Memory: 1901568K Free: 736877K (39%)
-    [junit] ####### 30 Wed May 23 14:16:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml $PTII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous
+    [junit] 37190 ms. Memory: 1862656K Free: 1405947K (75%)
+    [junit] ####### 30 Wed May 23 15:55:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml $PTII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous
     [junit] Warning: not running ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous/index.html
-    [junit] 3152 ms. Memory: 1901568K Free: 562775K (30%)
-    [junit] ####### 31 Wed May 23 14:16:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression
+    [junit] 3166 ms. Memory: 1862656K Free: 1204046K (65%)
+    [junit] ####### 31 Wed May 23 15:56:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression
     [junit] Warning: not running ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression/index.html
-    [junit] 3129 ms. Memory: 1901568K Free: 389104K (20%)
-    [junit] ####### 32 Wed May 23 14:16:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/moml/demo/Networked/Networked.xml $PTII/ptolemy/moml/demo/Networked/Networked
+    [junit] 3145 ms. Memory: 1862656K Free: 1032161K (55%)
+    [junit] ####### 32 Wed May 23 15:56:03 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/moml/demo/Networked/Networked.xml $PTII/ptolemy/moml/demo/Networked/Networked
     [junit] Running .Networked
-    [junit] 42 ms. Memory: 1897984K Free: 1668545K (88%)
+    [junit] 51 ms. Memory: 1862656K Free: 833440K (45%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/moml/demo/Networked/Networked/index.html
-    [junit] 6273 ms. Memory: 1897984K Free: 1569111K (83%)
-    [junit] ####### 33 Wed May 23 14:16:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1
+    [junit] 6056 ms. Memory: 1862656K Free: 722241K (39%)
+    [junit] ####### 33 Wed May 23 15:56:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1
     [junit] Model ".ExportExample1" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1/index.html
-    [junit] 3255 ms. Memory: 1897984K Free: 1419170K (75%)
-    [junit] ####### 34 Wed May 23 14:17:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2
+    [junit] 3277 ms. Memory: 1862656K Free: 540121K (29%)
+    [junit] ####### 34 Wed May 23 15:56:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2
     [junit] Running .ExportExample2
-    [junit] 6 ms. Memory: 1897984K Free: 1301857K (69%)
+    [junit] 6 ms. Memory: 1862656K Free: 405026K (22%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2/index.html
     [junit] Unable to export to web.
     [junit] java.util.ConcurrentModificationException
@@ -573,7 +721,7 @@ test.export7.xml:
     [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
     [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
     [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-    [junit] May 23, 2018 2:17:03 PM sun.awt.X11.XToolkit processException
+    [junit] May 23, 2018 3:56:16 PM sun.awt.X11.XToolkit processException
     [junit] WARNING: Exception on Toolkit thread
     [junit] java.lang.NullPointerException
     [junit] 	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
@@ -592,365 +740,365 @@ test.export7.xml:
     [junit] 	at sun.awt.X11.XToolkit.run(XToolkit.java:532)
     [junit] 	at java.lang.Thread.run(Thread.java:748)
     [junit] 
-    [junit] 4214 ms. Memory: 1897984K Free: 1264988K (67%)
-    [junit] ####### 35 Wed May 23 14:17:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3
+    [junit] 4293 ms. Memory: 1862656K Free: 363495K (20%)
+    [junit] ####### 35 Wed May 23 15:56:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3
     [junit] Model ".ExportExample3" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3/index.html
-    [junit] 3347 ms. Memory: 1897984K Free: 1133656K (60%)
-    [junit] ####### 36 Wed May 23 14:17:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4
+    [junit] 3216 ms. Memory: 1862656K Free: 238730K (13%)
+    [junit] ####### 36 Wed May 23 15:56:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4
     [junit] Model ".ExportExample4" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4/index.html
-    [junit] 3214 ms. Memory: 1897984K Free: 1000677K (53%)
-    [junit] ####### 37 Wed May 23 14:17:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5
+    [junit] 3210 ms. Memory: 1855488K Free: 1624307K (88%)
+    [junit] ####### 37 Wed May 23 15:56:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5
     [junit] Running .ExportExample5
-    [junit] 15 ms. Memory: 1897984K Free: 891741K (47%)
+    [junit] 18 ms. Memory: 1855488K Free: 1516012K (82%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5/index.html
-    [junit] 4165 ms. Memory: 1897984K Free: 811050K (43%)
-    [junit] ####### 38 Wed May 23 14:17:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples
+    [junit] 4206 ms. Memory: 1855488K Free: 1439147K (78%)
+    [junit] ####### 38 Wed May 23 15:56:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples
     [junit] Warning: not running ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples/index.html
-    [junit] 3208 ms. Memory: 1897984K Free: 675337K (36%)
-    [junit] ####### 39 Wed May 23 14:17:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml $PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler
+    [junit] 3159 ms. Memory: 1855488K Free: 1301781K (70%)
+    [junit] ####### 39 Wed May 23 15:56:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml $PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler
     [junit] Warning: not running ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler/index.html
-    [junit] 3214 ms. Memory: 1897984K Free: 492960K (26%)
-    [junit] ####### 40 Wed May 23 14:17:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor
+    [junit] 3178 ms. Memory: 1855488K Free: 1117213K (60%)
+    [junit] ####### 40 Wed May 23 15:56:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor/index.html
-    [junit] 3203 ms. Memory: 1900544K Free: 1786791K (94%)
-    [junit] ####### 41 Wed May 23 14:17:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor
+    [junit] 3172 ms. Memory: 1855488K Free: 927212K (50%)
+    [junit] ####### 41 Wed May 23 15:56:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor/index.html
-    [junit] 3170 ms. Memory: 1900544K Free: 1519657K (80%)
-    [junit] ####### 42 Wed May 23 14:17:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
+    [junit] 3146 ms. Memory: 1855488K Free: 655340K (35%)
+    [junit] ####### 42 Wed May 23 15:56:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling/index.html
-    [junit] 3281 ms. Memory: 1900544K Free: 1248273K (66%)
-    [junit] ####### 43 Wed May 23 14:17:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
+    [junit] 3238 ms. Memory: 1855488K Free: 378537K (20%)
+    [junit] ####### 43 Wed May 23 15:56:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized/index.html
-    [junit] 3754 ms. Memory: 1900544K Free: 644128K (34%)
-    [junit] ####### 44 Wed May 23 14:17:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
+    [junit] 3609 ms. Memory: 1860096K Free: 1334619K (72%)
+    [junit] ####### 44 Wed May 23 15:56:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp/index.html
-    [junit] 3158 ms. Memory: 1900544K Free: 390892K (21%)
-    [junit] ####### 45 Wed May 23 14:17:38 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
+    [junit] 3140 ms. Memory: 1860096K Free: 1080489K (58%)
+    [junit] ####### 45 Wed May 23 15:56:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/index.html
-    [junit] 3531 ms. Memory: 1900032K Free: 1409754K (74%)
-    [junit] ####### 46 Wed May 23 14:17:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
+    [junit] 3509 ms. Memory: 1860096K Free: 589916K (32%)
+    [junit] ####### 46 Wed May 23 15:56:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/index.html
-    [junit] 3151 ms. Memory: 1900032K Free: 1183241K (62%)
-    [junit] ####### 47 Wed May 23 14:17:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
+    [junit] 3210 ms. Memory: 1860096K Free: 370080K (20%)
+    [junit] ####### 47 Wed May 23 15:56:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
     [junit] Running .AnimateVergil
-    [junit] 2018 ms. Memory: 1900032K Free: 1065308K (56%)
+    [junit] 2019 ms. Memory: 1860096K Free: 253867K (14%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil/index.html
-    [junit] 6168 ms. Memory: 1900032K Free: 1036159K (55%)
-    [junit] ####### 48 Wed May 23 14:17:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
+    [junit] 6244 ms. Memory: 1860096K Free: 225858K (12%)
+    [junit] ####### 48 Wed May 23 15:57:03 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
     [junit] Warning: not running ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification/index.html
-    [junit] 5012 ms. Memory: 1901568K Free: 1266862K (67%)
-    [junit] ####### 49 Wed May 23 14:17:56 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
+    [junit] 5702 ms. Memory: 1861632K Free: 512885K (28%)
+    [junit] ####### 49 Wed May 23 15:57:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
     [junit] Running .RailroadControl
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30002 ms. Memory: 1949184K Free: 266330K (14%)
+    [junit] 30002 ms. Memory: 1891840K Free: 1407942K (74%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/RailroadControl/RailroadControl/index.html
-    [junit] 34338 ms. Memory: 1954816K Free: 1685056K (86%)
-    [junit] ####### 50 Wed May 23 14:18:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
+    [junit] 34307 ms. Memory: 1891840K Free: 1215338K (64%)
+    [junit] ####### 50 Wed May 23 15:57:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
     [junit] Running .SimpleTrafficLight
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30005 ms. Memory: 1954816K Free: 1421459K (73%)
+    [junit] 30004 ms. Memory: 1891840K Free: 983491K (52%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/index.html
-    [junit] 34212 ms. Memory: 1954816K Free: 1292085K (66%)
-    [junit] ####### 51 Wed May 23 14:19:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
+    [junit] 34241 ms. Memory: 1891840K Free: 821445K (43%)
+    [junit] ####### 51 Wed May 23 15:58:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
     [junit] Running .SimpleTrafficLightDECTA
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30008 ms. Memory: 1958400K Free: 661991K (34%)
+    [junit] 30005 ms. Memory: 1897984K Free: 1403868K (74%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA/index.html
-    [junit] 34221 ms. Memory: 1958400K Free: 368926K (19%)
-    [junit] ####### 52 Wed May 23 14:19:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
+    [junit] 34257 ms. Memory: 1897984K Free: 1139695K (60%)
+    [junit] ####### 52 Wed May 23 15:58:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
     [junit] Running .SimpleTrafficLightGraphicalSpec
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30002 ms. Memory: 1968128K Free: 1783072K (91%)
+    [junit] 30003 ms. Memory: 1897984K Free: 875960K (46%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec/index.html
-    [junit] 34293 ms. Memory: 1968128K Free: 1661967K (84%)
-    [junit] ####### 53 Wed May 23 14:20:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
+    [junit] 34257 ms. Memory: 1897984K Free: 709448K (37%)
+    [junit] ####### 53 Wed May 23 15:59:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
     [junit] Running .SimpleTrafficLightRTMaudeCG
-    [junit] 32 ms. Memory: 1968128K Free: 1497969K (76%)
+    [junit] 67 ms. Memory: 1897984K Free: 511579K (27%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG/index.html
-    [junit] 4277 ms. Memory: 1968128K Free: 1331593K (68%)
-    [junit] ####### 54 Wed May 23 14:20:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
+    [junit] 4355 ms. Memory: 1897984K Free: 313986K (17%)
+    [junit] ####### 54 Wed May 23 15:59:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
     [junit] Warning: not running ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule/index.html
-    [junit] 3185 ms. Memory: 1968128K Free: 1101937K (56%)
-    [junit] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 796.378 sec
+    [junit] 3209 ms. Memory: 1908736K Free: 1700546K (89%)
+    [junit] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 802.081 sec
     [junit] Output:
     [junit] ExportModeJUnitTestBatch: There are 745 demos. Exporting demos: 691 to 830.
     [junit] ExportModeJUnitTestBatch: There are 745 demos, which is less than the end index 691. Setting the end index to 744
-    [junit] ####### 1 Wed May 23 14:07:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed
+    [junit] ####### 1 Wed May 23 15:46:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml $PTII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed
     [junit] Running .GuardedCountTimed
-    [junit] 109 ms. Memory: 178688K Free: 126280K (71%)
+    [junit] 169 ms. Memory: 115712K Free: 66104K (57%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed/index.html
-    [junit] 7831 ms. Memory: 178688K Free: 55259K (31%)
-    [junit] ####### 2 Wed May 23 14:07:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TokenRing/TokenRing.xml $PTII/ptolemy/domains/sr/demo/TokenRing/TokenRing
+    [junit] 8027 ms. Memory: 151552K Free: 82103K (54%)
+    [junit] ####### 2 Wed May 23 15:46:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TokenRing/TokenRing.xml $PTII/ptolemy/domains/sr/demo/TokenRing/TokenRing
     [junit] Running .TokenRing
-    [junit] 104 ms. Memory: 241152K Free: 218956K (91%)
+    [junit] 126 ms. Memory: 200192K Free: 177582K (89%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TokenRing/TokenRing/index.html
-    [junit] 5221 ms. Memory: 241152K Free: 139629K (58%)
-    [junit] ####### 3 Wed May 23 14:07:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight
+    [junit] 5479 ms. Memory: 200192K Free: 96055K (48%)
+    [junit] ####### 3 Wed May 23 15:46:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight
     [junit] Running .TrafficLight
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30003 ms. Memory: 341504K Free: 178186K (52%)
+    [junit] 30004 ms. Memory: 252416K Free: 218536K (87%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TrafficLight/TrafficLight/index.html
-    [junit] 35262 ms. Memory: 349696K Free: 161007K (46%)
-    [junit] ####### 4 Wed May 23 14:07:52 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment
+    [junit] 35391 ms. Memory: 301568K Free: 165243K (55%)
+    [junit] ####### 4 Wed May 23 15:47:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml $PTII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment
     [junit] Running .WirelessDeployment
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30001 ms. Memory: 431104K Free: 208147K (48%)
+    [junit] 30001 ms. Memory: 306176K Free: 89408K (29%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment/index.html
-    [junit] 35891 ms. Memory: 432128K Free: 44739K (10%)
-    [junit] ####### 5 Wed May 23 14:08:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml $PTII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory
+    [junit] 36135 ms. Memory: 369152K Free: 182877K (50%)
+    [junit] ####### 5 Wed May 23 15:47:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml $PTII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory
     [junit] Running .SharedMemory
-    [junit] 36 ms. Memory: 521728K Free: 392178K (75%)
+    [junit] 41 ms. Memory: 369152K Free: 81340K (22%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory/index.html
-    [junit] 4441 ms. Memory: 521728K Free: 334813K (64%)
-    [junit] ####### 6 Wed May 23 14:08:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/Task/Task.xml $PTII/ptolemy/domains/taskpt/demo/Task/Task
+    [junit] 4396 ms. Memory: 369152K Free: 28498K (8%)
+    [junit] ####### 6 Wed May 23 15:47:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/taskpt/demo/Task/Task.xml $PTII/ptolemy/domains/taskpt/demo/Task/Task
     [junit] Running .Task
-    [junit] 35 ms. Memory: 521728K Free: 239385K (46%)
+    [junit] 44 ms. Memory: 437760K Free: 307011K (70%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/taskpt/demo/Task/Task/index.html
-    [junit] 4365 ms. Memory: 521728K Free: 191626K (37%)
-    [junit] ####### 7 Wed May 23 14:08:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tcs/demo/TCS/TCS.xml $PTII/ptolemy/domains/tcs/demo/TCS/TCS
+    [junit] 4440 ms. Memory: 437760K Free: 257138K (59%)
+    [junit] ####### 7 Wed May 23 15:47:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tcs/demo/TCS/TCS.xml $PTII/ptolemy/domains/tcs/demo/TCS/TCS
     [junit] Running .TCS
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30000 ms. Memory: 629248K Free: 103408K (16%)
+    [junit] 30002 ms. Memory: 535552K Free: 473860K (88%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tcs/demo/TCS/TCS/index.html
-    [junit] 35682 ms. Memory: 629248K Free: 31302K (5%)
-    [junit] ####### 8 Wed May 23 14:09:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/Controllers/Controllers.xml $PTII/ptolemy/domains/tm/demo/Controllers/Controllers
+    [junit] 36028 ms. Memory: 535552K Free: 405605K (76%)
+    [junit] ####### 8 Wed May 23 15:48:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/Controllers/Controllers.xml $PTII/ptolemy/domains/tm/demo/Controllers/Controllers
     [junit] Running .Controllers
-    [junit] 1412 ms. Memory: 673280K Free: 403184K (60%)
+    [junit] 1569 ms. Memory: 535552K Free: 151189K (28%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/Controllers/Controllers/index.html
-    [junit] 6121 ms. Memory: 673280K Free: 148629K (22%)
-    [junit] ####### 9 Wed May 23 14:09:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/FFT/FFT.xml $PTII/ptolemy/domains/tm/demo/FFT/FFT
+    [junit] 6244 ms. Memory: 633344K Free: 421125K (66%)
+    [junit] ####### 9 Wed May 23 15:48:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/FFT/FFT.xml $PTII/ptolemy/domains/tm/demo/FFT/FFT
     [junit] Running .FFT
-    [junit] 10082 ms. Memory: 871936K Free: 740884K (85%)
+    [junit] 10083 ms. Memory: 633344K Free: 259614K (41%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/FFT/FFT/index.html
-    [junit] 14482 ms. Memory: 871936K Free: 603325K (69%)
-    [junit] ####### 10 Wed May 23 14:09:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml $PTII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents
+    [junit] 14563 ms. Memory: 633344K Free: 131472K (21%)
+    [junit] ####### 10 Wed May 23 15:48:42 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml $PTII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents
     [junit] Running .MergedEvents
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30034 ms. Memory: 871936K Free: 488474K (56%)
+    [junit] 30027 ms. Memory: 644608K Free: 564176K (88%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/MergedEvents/MergedEvents/index.html
-    [junit] 34250 ms. Memory: 871936K Free: 385625K (44%)
-    [junit] ####### 11 Wed May 23 14:10:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml $PTII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks
+    [junit] 34334 ms. Memory: 644608K Free: 465182K (72%)
+    [junit] ####### 11 Wed May 23 15:49:16 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml $PTII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks
     [junit] Running .SimpleTasks
-    [junit] 7 ms. Memory: 871936K Free: 291818K (33%)
+    [junit] 16 ms. Memory: 644608K Free: 369042K (57%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks/index.html
-    [junit] 4190 ms. Memory: 871936K Free: 248303K (28%)
-    [junit] ####### 12 Wed May 23 14:10:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest
+    [junit] 4276 ms. Memory: 644608K Free: 328233K (51%)
+    [junit] ####### 12 Wed May 23 15:49:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest
     [junit] Running .AntennaGainTest
-    [junit] 373 ms. Memory: 871424K Free: 707478K (81%)
+    [junit] 289 ms. Memory: 744960K Free: 683979K (92%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest/index.html
-    [junit] 5099 ms. Memory: 871424K Free: 563875K (65%)
-    [junit] ####### 13 Wed May 23 14:10:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel
+    [junit] 4796 ms. Memory: 744960K Free: 537280K (72%)
+    [junit] ####### 13 Wed May 23 15:49:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaModel/index.html
-    [junit] 3409 ms. Memory: 871424K Free: 292889K (34%)
-    [junit] ####### 14 Wed May 23 14:10:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern
+    [junit] 3487 ms. Memory: 744960K Free: 268656K (36%)
+    [junit] ####### 14 Wed May 23 15:49:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern/index.html
-    [junit] 3265 ms. Memory: 871424K Free: 175486K (20%)
-    [junit] ####### 15 Wed May 23 14:10:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern
+    [junit] 3243 ms. Memory: 744960K Free: 149774K (20%)
+    [junit] ####### 15 Wed May 23 15:49:32 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/ReceiveAntennaPattern/index.html
-    [junit] 3913 ms. Memory: 1023488K Free: 555196K (54%)
-    [junit] ####### 16 Wed May 23 14:10:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern
+    [junit] 4012 ms. Memory: 759808K Free: 293210K (39%)
+    [junit] ####### 16 Wed May 23 15:49:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml $PTII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern
     [junit] Warning: not running ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/AntennaPattern/TransmitAntennaPattern/index.html
-    [junit] 3766 ms. Memory: 1039360K Free: 972085K (94%)
-    [junit] ####### 17 Wed May 23 14:10:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml $PTII/ptolemy/domains/wireless/demo/CircularRange/CircularRange
+    [junit] 3847 ms. Memory: 870912K Free: 549119K (63%)
+    [junit] ####### 17 Wed May 23 15:49:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml $PTII/ptolemy/domains/wireless/demo/CircularRange/CircularRange
     [junit] Running .CircularRange
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30001 ms. Memory: 1039360K Free: 827579K (80%)
+    [junit] 30001 ms. Memory: 870912K Free: 395576K (45%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/CircularRange/CircularRange/index.html
-    [junit] 34341 ms. Memory: 1039360K Free: 654870K (63%)
-    [junit] ####### 18 Wed May 23 14:11:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/Collisions.xml $PTII/ptolemy/domains/wireless/demo/Collisions/Collisions
+    [junit] 34382 ms. Memory: 870912K Free: 220774K (25%)
+    [junit] ####### 18 Wed May 23 15:50:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/Collisions.xml $PTII/ptolemy/domains/wireless/demo/Collisions/Collisions
     [junit] Running .Collisions
-    [junit] 20038 ms. Memory: 1039360K Free: 467058K (45%)
+    [junit] 20027 ms. Memory: 872448K Free: 800552K (92%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Collisions/Collisions/index.html
-    [junit] 24564 ms. Memory: 1039360K Free: 126864K (12%)
-    [junit] ####### 19 Wed May 23 14:11:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml $PTII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic
+    [junit] 24584 ms. Memory: 872448K Free: 460996K (53%)
+    [junit] ####### 19 Wed May 23 15:50:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic.xml $PTII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic
     [junit] Running .CollisionsDeterministic
-    [junit] 58 ms. Memory: 1196544K Free: 1032471K (86%)
+    [junit] 35 ms. Memory: 872448K Free: 299517K (34%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Collisions/CollisionsDeterministic/index.html
-    [junit] 4646 ms. Memory: 1196544K Free: 770739K (64%)
-    [junit] ####### 20 Wed May 23 14:11:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml $PTII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer
+    [junit] 4515 ms. Memory: 948736K Free: 875631K (92%)
+    [junit] ####### 20 Wed May 23 15:50:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml $PTII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer
     [junit] Running .EvaderAndPursuer
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30000 ms. Memory: 1196544K Free: 331508K (28%)
+    [junit] 29999 ms. Memory: 948736K Free: 442930K (47%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer/index.html
-    [junit] 34768 ms. Memory: 1196544K Free: 137306K (11%)
-    [junit] ####### 21 Wed May 23 14:12:10 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Intersections/Intersections.xml $PTII/ptolemy/domains/wireless/demo/Intersections/Intersections
+    [junit] 34800 ms. Memory: 948736K Free: 250842K (26%)
+    [junit] ####### 21 Wed May 23 15:51:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Intersections/Intersections.xml $PTII/ptolemy/domains/wireless/demo/Intersections/Intersections
     [junit] Running .Intersections
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30003 ms. Memory: 1817088K Free: 358241K (20%)
+    [junit] 30002 ms. Memory: 1531392K Free: 1172516K (77%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Intersections/Intersections/index.html
-    [junit] 73020 ms. Memory: 1880576K Free: 1640814K (87%)
-    [junit] ####### 22 Wed May 23 14:13:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml $PTII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer
+    [junit] 75310 ms. Memory: 1888768K Free: 627003K (33%)
+    [junit] ####### 22 Wed May 23 15:52:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml $PTII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer
     [junit] Running .LinkVisualizer
-    [junit] 20020 ms. Memory: 1880576K Free: 879793K (47%)
+    [junit] 20013 ms. Memory: 1893376K Free: 1471069K (78%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer/index.html
-    [junit] 24279 ms. Memory: 1880576K Free: 743124K (40%)
-    [junit] ####### 23 Wed May 23 14:13:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection
+    [junit] 24253 ms. Memory: 1893376K Free: 1330529K (70%)
+    [junit] ####### 23 Wed May 23 15:52:58 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection
     [junit] Warning: not running ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection/index.html
-    [junit] 3276 ms. Memory: 1880576K Free: 416767K (22%)
-    [junit] ####### 24 Wed May 23 14:13:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml $PTII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability
+    [junit] 3319 ms. Memory: 1893376K Free: 1005896K (53%)
+    [junit] ####### 24 Wed May 23 15:53:01 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml $PTII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability
     [junit] Running .PowerVariability
-    [junit] 25013 ms. Memory: 1880576K Free: 293884K (16%)
+    [junit] 25020 ms. Memory: 1893376K Free: 884100K (47%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability/index.html
-    [junit] 29233 ms. Memory: 1880576K Free: 105978K (6%)
-    [junit] ####### 25 Wed May 23 14:14:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld
+    [junit] 29365 ms. Memory: 1893376K Free: 705961K (37%)
+    [junit] ####### 25 Wed May 23 15:53:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld
     [junit] Running .SmallWorld
-    [junit] 120 ms. Memory: 1912320K Free: 841722K (44%)
+    [junit] 115 ms. Memory: 1891328K Free: 1364585K (72%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld/index.html
-    [junit] 5026 ms. Memory: 1912320K Free: 711957K (37%)
-    [junit] ####### 26 Wed May 23 14:14:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml $PTII/ptolemy/domains/wireless/demo/SmartParking/SmartParking
+    [junit] 5259 ms. Memory: 1891328K Free: 1229548K (65%)
+    [junit] ####### 26 Wed May 23 15:53:36 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml $PTII/ptolemy/domains/wireless/demo/SmartParking/SmartParking
     [junit] Running .SmartParking
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30001 ms. Memory: 1911296K Free: 1584606K (83%)
+    [junit] 30001 ms. Memory: 1891328K Free: 500545K (26%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/SmartParking/SmartParking/index.html
-    [junit] 35090 ms. Memory: 1911296K Free: 1418439K (74%)
-    [junit] ####### 27 Wed May 23 14:15:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml $PTII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel
+    [junit] 35156 ms. Memory: 1891328K Free: 333358K (18%)
+    [junit] ####### 27 Wed May 23 15:54:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml $PTII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel
     [junit] Running .TerrainModel
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30000 ms. Memory: 1911296K Free: 1279146K (67%)
+    [junit] 30001 ms. Memory: 1891328K Free: 196747K (10%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel/index.html
-    [junit] 34185 ms. Memory: 1911296K Free: 1151830K (60%)
-    [junit] ####### 28 Wed May 23 14:15:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection
+    [junit] 34203 ms. Memory: 1891328K Free: 82878K (4%)
+    [junit] ####### 28 Wed May 23 15:54:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml $PTII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection
     [junit] Running .WirelessSoundDetection
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30005 ms. Memory: 1911296K Free: 981503K (51%)
+    [junit] 30001 ms. Memory: 1892864K Free: 1538880K (81%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection/index.html
-    [junit] 34219 ms. Memory: 1911296K Free: 850748K (45%)
-    [junit] ####### 29 Wed May 23 14:16:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml $PTII/ptolemy/domains/wireless/demo/Zigbee/Zigbee
+    [junit] 34257 ms. Memory: 1892864K Free: 1393947K (74%)
+    [junit] ####### 29 Wed May 23 15:55:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml $PTII/ptolemy/domains/wireless/demo/Zigbee/Zigbee
     [junit] Running .Zigbee
-    [junit] 3480 ms. Memory: 1897984K Free: 1309596K (69%)
+    [junit] 3438 ms. Memory: 1890816K Free: 251087K (13%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/domains/wireless/demo/Zigbee/Zigbee/index.html
-    [junit] 36153 ms. Memory: 1901568K Free: 736877K (39%)
-    [junit] ####### 30 Wed May 23 14:16:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml $PTII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous
+    [junit] 37190 ms. Memory: 1862656K Free: 1405947K (75%)
+    [junit] ####### 30 Wed May 23 15:55:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml $PTII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous
     [junit] Warning: not running ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous/index.html
-    [junit] 3152 ms. Memory: 1901568K Free: 562775K (30%)
-    [junit] ####### 31 Wed May 23 14:16:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression
+    [junit] 3166 ms. Memory: 1862656K Free: 1204046K (65%)
+    [junit] ####### 31 Wed May 23 15:56:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml $PTII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression
     [junit] Warning: not running ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/matlab/demo/MatlabExpression/MatlabExpression/index.html
-    [junit] 3129 ms. Memory: 1901568K Free: 389104K (20%)
-    [junit] ####### 32 Wed May 23 14:16:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/moml/demo/Networked/Networked.xml $PTII/ptolemy/moml/demo/Networked/Networked
+    [junit] 3145 ms. Memory: 1862656K Free: 1032161K (55%)
+    [junit] ####### 32 Wed May 23 15:56:03 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/moml/demo/Networked/Networked.xml $PTII/ptolemy/moml/demo/Networked/Networked
     [junit] Running .Networked
-    [junit] 42 ms. Memory: 1897984K Free: 1668545K (88%)
+    [junit] 51 ms. Memory: 1862656K Free: 833440K (45%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/moml/demo/Networked/Networked/index.html
-    [junit] 6273 ms. Memory: 1897984K Free: 1569111K (83%)
-    [junit] ####### 33 Wed May 23 14:16:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1
+    [junit] 6056 ms. Memory: 1862656K Free: 722241K (39%)
+    [junit] ####### 33 Wed May 23 15:56:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1
     [junit] Model ".ExportExample1" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample1/index.html
-    [junit] 3255 ms. Memory: 1897984K Free: 1419170K (75%)
-    [junit] ####### 34 Wed May 23 14:17:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2
+    [junit] 3277 ms. Memory: 1862656K Free: 540121K (29%)
+    [junit] ####### 34 Wed May 23 15:56:12 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2
     [junit] Running .ExportExample2
-    [junit] 6 ms. Memory: 1897984K Free: 1301857K (69%)
+    [junit] 6 ms. Memory: 1862656K Free: 405026K (22%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample2/index.html
-    [junit] 4214 ms. Memory: 1897984K Free: 1264988K (67%)
-    [junit] ####### 35 Wed May 23 14:17:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3
+    [junit] 4293 ms. Memory: 1862656K Free: 363495K (20%)
+    [junit] ####### 35 Wed May 23 15:56:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3
     [junit] Model ".ExportExample3" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample3/index.html
-    [junit] 3347 ms. Memory: 1897984K Free: 1133656K (60%)
-    [junit] ####### 36 Wed May 23 14:17:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4
+    [junit] 3216 ms. Memory: 1862656K Free: 238730K (13%)
+    [junit] ####### 36 Wed May 23 15:56:20 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4
     [junit] Model ".ExportExample4" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample4/index.html
-    [junit] 3214 ms. Memory: 1897984K Free: 1000677K (53%)
-    [junit] ####### 37 Wed May 23 14:17:11 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5
+    [junit] 3210 ms. Memory: 1855488K Free: 1624307K (88%)
+    [junit] ####### 37 Wed May 23 15:56:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5
     [junit] Running .ExportExample5
-    [junit] 15 ms. Memory: 1897984K Free: 891741K (47%)
+    [junit] 18 ms. Memory: 1855488K Free: 1516012K (82%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5/index.html
-    [junit] 4165 ms. Memory: 1897984K Free: 811050K (43%)
-    [junit] ####### 38 Wed May 23 14:17:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples
+    [junit] 4206 ms. Memory: 1855488K Free: 1439147K (78%)
+    [junit] ####### 38 Wed May 23 15:56:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml $PTII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples
     [junit] Warning: not running ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples/index.html
-    [junit] 3208 ms. Memory: 1897984K Free: 675337K (36%)
-    [junit] ####### 39 Wed May 23 14:17:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml $PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler
+    [junit] 3159 ms. Memory: 1855488K Free: 1301781K (70%)
+    [junit] ####### 39 Wed May 23 15:56:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml $PTII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler
     [junit] Warning: not running ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler/index.html
-    [junit] 3214 ms. Memory: 1897984K Free: 492960K (26%)
-    [junit] ####### 40 Wed May 23 14:17:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor
+    [junit] 3178 ms. Memory: 1855488K Free: 1117213K (60%)
+    [junit] ####### 40 Wed May 23 15:56:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor/index.html
-    [junit] 3203 ms. Memory: 1900544K Free: 1786791K (94%)
-    [junit] ####### 41 Wed May 23 14:17:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor
+    [junit] 3172 ms. Memory: 1855488K Free: 927212K (50%)
+    [junit] ####### 41 Wed May 23 15:56:37 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor/index.html
-    [junit] 3170 ms. Memory: 1900544K Free: 1519657K (80%)
-    [junit] ####### 42 Wed May 23 14:17:28 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
+    [junit] 3146 ms. Memory: 1855488K Free: 655340K (35%)
+    [junit] ####### 42 Wed May 23 15:56:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling/index.html
-    [junit] 3281 ms. Memory: 1900544K Free: 1248273K (66%)
-    [junit] ####### 43 Wed May 23 14:17:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
+    [junit] 3238 ms. Memory: 1855488K Free: 378537K (20%)
+    [junit] ####### 43 Wed May 23 15:56:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized/index.html
-    [junit] 3754 ms. Memory: 1900544K Free: 644128K (34%)
-    [junit] ####### 44 Wed May 23 14:17:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
+    [junit] 3609 ms. Memory: 1860096K Free: 1334619K (72%)
+    [junit] ####### 44 Wed May 23 15:56:47 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp/index.html
-    [junit] 3158 ms. Memory: 1900544K Free: 390892K (21%)
-    [junit] ####### 45 Wed May 23 14:17:38 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
+    [junit] 3140 ms. Memory: 1860096K Free: 1080489K (58%)
+    [junit] ####### 45 Wed May 23 15:56:50 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/index.html
-    [junit] 3531 ms. Memory: 1900032K Free: 1409754K (74%)
-    [junit] ####### 46 Wed May 23 14:17:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
+    [junit] 3509 ms. Memory: 1860096K Free: 589916K (32%)
+    [junit] ####### 46 Wed May 23 15:56:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml $PTII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor
     [junit] Warning: not running ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/index.html
-    [junit] 3151 ms. Memory: 1900032K Free: 1183241K (62%)
-    [junit] ####### 47 Wed May 23 14:17:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
+    [junit] 3210 ms. Memory: 1860096K Free: 370080K (20%)
+    [junit] ####### 47 Wed May 23 15:56:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml $PTII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil
     [junit] Running .AnimateVergil
-    [junit] 2018 ms. Memory: 1900032K Free: 1065308K (56%)
+    [junit] 2019 ms. Memory: 1860096K Free: 253867K (14%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil/index.html
-    [junit] 6168 ms. Memory: 1900032K Free: 1036159K (55%)
-    [junit] ####### 48 Wed May 23 14:17:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
+    [junit] 6244 ms. Memory: 1860096K Free: 225858K (12%)
+    [junit] ####### 48 Wed May 23 15:57:03 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml $PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification
     [junit] Warning: not running ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification/index.html
-    [junit] 5012 ms. Memory: 1901568K Free: 1266862K (67%)
-    [junit] ####### 49 Wed May 23 14:17:56 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
+    [junit] 5702 ms. Memory: 1861632K Free: 512885K (28%)
+    [junit] ####### 49 Wed May 23 15:57:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/RailroadControl/RailroadControl.xml $PTII/ptolemy/verification/demo/RailroadControl/RailroadControl
     [junit] Running .RailroadControl
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30002 ms. Memory: 1949184K Free: 266330K (14%)
+    [junit] 30002 ms. Memory: 1891840K Free: 1407942K (74%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/RailroadControl/RailroadControl/index.html
-    [junit] 34338 ms. Memory: 1954816K Free: 1685056K (86%)
-    [junit] ####### 50 Wed May 23 14:18:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
+    [junit] 34307 ms. Memory: 1891840K Free: 1215338K (64%)
+    [junit] ####### 50 Wed May 23 15:57:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight
     [junit] Running .SimpleTrafficLight
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30005 ms. Memory: 1954816K Free: 1421459K (73%)
+    [junit] 30004 ms. Memory: 1891840K Free: 983491K (52%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/index.html
-    [junit] 34212 ms. Memory: 1954816K Free: 1292085K (66%)
-    [junit] ####### 51 Wed May 23 14:19:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
+    [junit] 34241 ms. Memory: 1891840K Free: 821445K (43%)
+    [junit] ####### 51 Wed May 23 15:58:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA
     [junit] Running .SimpleTrafficLightDECTA
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30008 ms. Memory: 1958400K Free: 661991K (34%)
+    [junit] 30005 ms. Memory: 1897984K Free: 1403868K (74%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA/index.html
-    [junit] 34221 ms. Memory: 1958400K Free: 368926K (19%)
-    [junit] ####### 52 Wed May 23 14:19:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
+    [junit] 34257 ms. Memory: 1897984K Free: 1139695K (60%)
+    [junit] ####### 52 Wed May 23 15:58:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec
     [junit] Running .SimpleTrafficLightGraphicalSpec
     [junit] ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
-    [junit] 30002 ms. Memory: 1968128K Free: 1783072K (91%)
+    [junit] 30003 ms. Memory: 1897984K Free: 875960K (46%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec/index.html
-    [junit] 34293 ms. Memory: 1968128K Free: 1661967K (84%)
-    [junit] ####### 53 Wed May 23 14:20:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
+    [junit] 34257 ms. Memory: 1897984K Free: 709448K (37%)
+    [junit] ####### 53 Wed May 23 15:59:26 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG
     [junit] Running .SimpleTrafficLightRTMaudeCG
-    [junit] 32 ms. Memory: 1968128K Free: 1497969K (76%)
+    [junit] 67 ms. Memory: 1897984K Free: 511579K (27%)
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG/index.html
-    [junit] 4277 ms. Memory: 1968128K Free: 1331593K (68%)
-    [junit] ####### 54 Wed May 23 14:20:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
+    [junit] 4355 ms. Memory: 1897984K Free: 313986K (17%)
+    [junit] ####### 54 Wed May 23 15:59:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule
     [junit] Warning: not running ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
     [junit] Exported /home/travis/build/icyphy/ptII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule/index.html
-    [junit] 3185 ms. Memory: 1968128K Free: 1101937K (56%)
+    [junit] 3209 ms. Memory: 1908736K Free: 1700546K (89%)
     [junit] 
     [junit] Error: 
     [junit] Unable to export to web.
@@ -977,7 +1125,7 @@ test.export7.xml:
     [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
     [junit] 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
     [junit] 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
-    [junit] May 23, 2018 2:17:03 PM sun.awt.X11.XToolkit processException
+    [junit] May 23, 2018 3:56:16 PM sun.awt.X11.XToolkit processException
     [junit] WARNING: Exception on Toolkit thread
     [junit] java.lang.NullPointerException
     [junit] 	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
@@ -999,4 +1147,4 @@ test.export7.xml:
     [junit] 
 
 BUILD SUCCESSFUL
-Total time: 14 minutes 37 seconds
+Total time: 15 minutes 10 seconds
