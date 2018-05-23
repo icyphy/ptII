@@ -205,6 +205,16 @@ function clearTimeout(handle) {
     actor.clearTimeout(handle);
 }
 
+/** Return the current time as a number (in seconds).
+ *  @return The current time.
+ */
+function currentTime() {
+    if (typeof actor === 'undefined') {
+        throw new Error('currentTime(): No actor variable defined.');
+    }
+    return actor.currentTime();
+}
+
 /** Report an error by printing using console.error().
  *  @param message The message for the exception.
  */
