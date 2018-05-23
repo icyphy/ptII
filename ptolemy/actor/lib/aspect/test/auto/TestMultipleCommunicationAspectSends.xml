@@ -169,6 +169,18 @@
         </property>
         <property name="interval" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+        </property>
         <port name="script" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="DecoratorAttributesFor_AOM_SA" class="ptolemy.actor.lib.aspect.CompositeCommunicationAspect$CompositeCommunicationAspectAttributes">
@@ -204,8 +216,6 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{365.0, 249.181640625}">
         </property>
         <entity name="CommunicationRequestPort" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
             </property>
         </entity>

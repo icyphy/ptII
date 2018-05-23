@@ -889,6 +889,7 @@ The Ptiny pack is required.
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
+	    <file src="src/ptII11.0.devel/CONTRIBUTING.md" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/README.md" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/bin" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/build.default.xml" targetdir="$INSTALL_PATH"/>

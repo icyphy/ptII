@@ -29,24 +29,29 @@
 # Below are the comamands to run to try out various targets:
 #
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CAPECODE3_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
-#   PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_CLEAN=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE3_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE1_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE2_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
 
 if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
 fi    
+
+# Number of lines to show from the log file.
+lastLines=50
+
 
 if [ ! -d $PTII/reports/junit ]; then
     mkdir -p $PTII/reports/junit
@@ -109,7 +114,7 @@ case `uname -s` in
             # Use a -3 signal to get a stack trace, then 20 seconds later, use kill -9.
             TIMEOUTCOMMAND='timeout -s 3 --kill-after=20'
         else
-            echo "timeout does not support --kill-after"
+            echo "timeout does not support --kill-after, usage was: '$usage', use kill -9."
             # Use a -9 signal to kill.
             TIMEOUTCOMMAND='timeout -s 9'
         fi
@@ -204,7 +209,17 @@ runTarget () {
     for jar in $jars
     do
         echo "Downloading $jar: `date`"
-        wget --quiet -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar
+        log=/tmp/wgetJar.txt
+        # Use timeout here because sometimes wget fails and hangs.
+        # Not all builds require these jar files, so we should not fail all builds if there is a problem here.
+        $TIMEOUTCOMMAND 120 wget -O $PTII/doc/$jar https://github.com/icyphy/ptII/releases/download/nightly/$jar >& $log
+        status=$?
+        if [ $status != 0 ]; then
+            echo "######################################################"
+            echo "$0: WARNING! `date`: wget $jar failed with a non-zero status of $status"
+            echo "Below are the last $lastlines lines of the log file:"
+            echo tail -$lastlines $log
+        fi
         ls -l $PTII/doc/$jar
         (cd $PTII; jar -xf $PTII/doc/$jar)
     done
@@ -212,9 +227,6 @@ runTarget () {
     # Keep the log file in reports/junit so that we only need to
     # invoke updateGhPages once per target.
     log=$PTII/reports/junit/${target}.txt
-
-    # Number of lines to show from the log file.
-    lastLines=50
 
     # FIXME: we probably want to vary the timeout so that we can avoid
     # git conflicts.
@@ -346,27 +358,31 @@ updateGhPages () {
         ant junitreport
     fi
 
-    # JUnit xml output will include the values of the environment,
-    # which can include GITHUB_TOKEN, which is supposed to be secret.
-    # So, we remove any lines checked in to gh-pages that mentions
-    # GITHUB_TOKEN.
-    echo "Remove any instances of GITHUB_TOKEN and other vars: "
-    date
-    # Don't echo GITHUB_TOKEN
-    set +x
-    files=`find . -type f`
-    for file in $files
-    do
-        egrep -e  "$SECRET_REGEX" $file > /dev/null
-	retval=$?
-	if [ $retval != 1 ]; then
-            echo -n "$file "
-            egrep -v "$SECRET_REGEX" $file > $file.tmp
-            mv $file.tmp $file
-        fi
-    done        
-    echo "Done."
-    set -x
+    if [ "$1" = "-clean" ]; then
+        echo "updateGhPages invoked with -clean, so we are skipping searching for GITHUB_TOKEN and other vars."
+    else
+        # JUnit xml output will include the values of the environment,
+        # which can include GITHUB_TOKEN, which is supposed to be secret.
+        # So, we remove any lines checked in to gh-pages that mentions
+        # GITHUB_TOKEN.
+        echo "Remove any instances of GITHUB_TOKEN and other vars: "
+        date
+        # Don't echo GITHUB_TOKEN
+        set +x
+        files=`find . -type f`
+        for file in $files
+        do
+            egrep -e  "$SECRET_REGEX" $file > /dev/null
+	    retval=$?
+	    if [ $retval != 1 ]; then
+                echo -n "$file "
+                egrep -v "$SECRET_REGEX" $file > $file.tmp
+                mv $file.tmp $file
+            fi
+        done        
+        echo "Done."
+        set -x
+    fi
 
     git add -f .
     date
@@ -405,26 +421,48 @@ if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
     fi
 fi
 
-# Build the docs, which are used by other targets.
-if [ ! -z "$PT_TRAVIS_DOCS" ]; then
+# Clean the JUnit output from the gh-branch.
+if [ ! -z "$PT_TRAVIS_CLEAN" ]; then
     exitIfNotCron
 
     # This target is run early, so clean the reports directory.
     updateGhPages -clean
+fi
+
+# Build the docs, which are used by other targets.
+if [ ! -z "$PT_TRAVIS_DOCS" ]; then
+    exitIfNotCron
 
     LOG=$PTII/logs/docs.txt
+
     # Create the Javadoc jar files for use by the installer and deploy
     # them to Github pages.
 
     # Note that there is a chance that the installer will use javadoc
     # jar files that are slightly out of date.
 
-    ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG 
-    (cd doc; make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG 
+    # Echo status messages so that Travis knows we are alive.
+    # If you need to get status about available memory, insert "free -m" inside the loop.
+    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
+    echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
+    $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG
+    tail -$lastLines $LOG
+
+    # Need to update maxTimeout.  Will seconds be updated?
+    maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
+    echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
+    (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG
+    tail -$lastLines $LOG
+
+    # Killing background sleep loop.
+    kill %1
 
     # No need to check in the log each time because this target is
     # easy to re-run.
     # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
+
+    # Note that .travis.yml deploys the codeDoc jar files.
 fi
 
 
@@ -482,7 +520,6 @@ if [ ! -z "$PT_TRAVIS_TEST_CORE3_XML" ]; then
     runTarget test.core3.xml
 fi
 
-
 # Run the fourth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE4_XML" ]; then
     runTarget test.core4.xml
@@ -506,6 +543,26 @@ fi
 # Run the third batch of export demo tests.
 if [ ! -z "$PT_TRAVIS_TEST_EXPORT3_XML" ]; then
     runTarget test.export3.xml
+fi
+
+# Run the fourth batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT4_XML" ]; then
+    runTarget test.export4.xml
+fi
+
+# Run the fifth batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT5_XML" ]; then
+    runTarget test.export5.xml
+fi
+
+# Run the sixth batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT6_XML" ]; then
+    runTarget test.export6.xml
+fi
+
+# Run the seventh batch of export demo tests.
+if [ ! -z "$PT_TRAVIS_TEST_EXPORT7_XML" ]; then
+    runTarget test.export7.xml
 fi
 
 # Build the installers.

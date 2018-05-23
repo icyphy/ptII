@@ -48,18 +48,18 @@ case $1 in
             package=`echo $2 | sed 's@/@.@g'`
             $PTII/adm/bin/mkpackagehtml $package.junit
 
-            echo "$0: Adding newly created files to svn"
-            svn add $2 $2/junit $2/auto $2/makefile $2/testDefs.tcl $2/junit/makefile $2/junit/JUnitTclTest.java $2/junit/README.txt $2/junit/package.html
+            echo "$0: Adding newly created files to git"
+            git add $2 $2/junit $2/auto $2/makefile $2/testDefs.tcl $2/junit/makefile $2/junit/JUnitTclTest.java $2/junit/README.txt $2/junit/package.html
 
             echo "$0: Adding .class file to svn:ignore"
             (cd $2; $PTII/adm/bin/svnignoreupdate)
 
-            svn delete --force $2/junit/*.class
+            git rm -f $2/junit/*.class
 
-            svn status $2
+            git status $2
 
             echo "$0: Don't forget to add the test directory to the makefile in the parent directory of $2"
-            echo "$0: Next step: run svn commit -m \"Set up test infrastructure.\" $2"
+            echo "$0: Next step: run git commit -m \"Set up test infrastructure.\" $2"
             exit
         fi
 esac    

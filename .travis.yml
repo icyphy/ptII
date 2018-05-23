@@ -5,6 +5,9 @@ env:
     # variable corresponds with the target name in $PTII/build.xml and
     # should be alphabetical.
     - PT_TRAVIS_BUILD_ALL=true
+    # Don't include PT_TRAVIS_CLEAN=true here, we run it as a separate
+    # clean stage before running the tests.
+    # - PT_TRAVIS_CLEAN=true
     - PT_TRAVIS_DOCS=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
     - PT_TRAVIS_TEST_CAPECODE1_XML=true
@@ -18,6 +21,10 @@ env:
     - PT_TRAVIS_TEST_EXPORT1_XML=true
     - PT_TRAVIS_TEST_EXPORT2_XML=true
     - PT_TRAVIS_TEST_EXPORT3_XML=true
+    - PT_TRAVIS_TEST_EXPORT4_XML=true
+    - PT_TRAVIS_TEST_EXPORT5_XML=true
+    - PT_TRAVIS_TEST_EXPORT6_XML=true
+    - PT_TRAVIS_TEST_EXPORT7_XML=true
     # Building the installers tends to fail in deployment, so do this last.
     #   - PT_TRAVIS_TEST_INSTALLERS=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true
@@ -75,6 +82,10 @@ install:
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
   
+  # Avoid "Package libdc1394-22-dev is not available, but is referred to by another package."
+  # See https://github.com/travis-ci/travis-ci/issues/5221
+  - sudo apt-get update 
+
   # Below are the packages that are needed, in alphabetical order:
   #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
@@ -155,24 +166,43 @@ script:
   # Killing background sleep loop.
   - kill %1
 
-# The report stage should be run before installers because deploying
-# installers might fail.
+
+# Below is the order of the stages.
+# See https://docs.travis-ci.com/user/build-stages/ and
+# https://docs.travis-ci.com/user/build-stages/matrix-expansion/
 stages:
+  #
+  # The clean stage runs first to remove JUnit output from the gh-pages branch.
+  - clean
+  #
+  # Most of the targets in the test stage only run if the job is a cron
+  # job or RUN_TESTS=true.
   - test
+  #
+  # The report stage should be run before installers because deploying
+  # installers might fail.
   - report
   - installers
   - deploy
 
-# Run three stages, test (which runs the script above), report and installers.
-# See https://docs.travis-ci.com/user/build-stages/ and
-# https://docs.travis-ci.com/user/build-stages/matrix-expansion/
+# Below are the definitions for the stages.
 jobs:
   include:
+    #
+    # Clean the gh-pages branch of JUnit output before running the tests.
+    - stage: clean
+      script: $PTII/bin/ptIITravisBuild.sh $SECONDS
+      env: PT_TRAVIS_CLEAN=true
+    #
+    # The test stage uses the script target above.
+    ## - stage: test
+    #
     # Run "ant junitreport" in the gh-branch, which uses a different
     # build.xml than $PTII.
     - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
       env: PT_TRAVIS_JUNITREPORT=true
+    #
     # Build the installers last because it might fail.
     - stage: installers
       script:

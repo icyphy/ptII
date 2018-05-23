@@ -33,7 +33,7 @@
  *  which realizes functions that are independent of Ptolemy II.
  *  2) load this file (capeCodeHost.js) which overrides some of those
  *  function definitions.
- *  3) Load localFunctions.js, which evaluates the accessor in in the
+ *  3) Load localFunctions.js, which evaluates the accessor in the
  *  context that includes the overrides.
  *
  *  @module capeCodeHost

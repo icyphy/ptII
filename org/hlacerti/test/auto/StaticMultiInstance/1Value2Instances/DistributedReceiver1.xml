@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6496572005964425">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.1219648994401, 388.3977214867615}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.1219648994401, 388.39772148676144}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver12&quot;">
@@ -25,7 +25,7 @@
         <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstance12&quot;">
             <display name="Federation's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance12.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">

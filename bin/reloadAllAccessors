@@ -48,9 +48,10 @@ echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
 
 if [ "$commit" = "true" -o "$updateCommonHost" = "true" ]; then
-    echo "Updating the accessors and ptII repos."
-    (cd $PTII/org/terraswarm/accessor/accessors/web; svn update)
-    (cd $PTII; svn update)
+    echo "Updating the accessors repo."
+    (cd $PTII/org/terraswarm/accessor/accessors/web; git status; git pull)
+    echo "Updating the ptII repo."
+    (cd $PTII; git status; git pull)
 fi
 
 if [ "$updateCommonHost" = "true" ]; then
@@ -67,13 +68,13 @@ if [ "$updateCommonHost" = "true" ]; then
             echo "$0: $capeCodeFile is newer than $accessorsFile, so $accessorsFile will be updated"
             cp $capeCodeFile $accessorsFile
             if [ "$commit" = "true" ]; then
-                svn commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $accessorsFile
+                git commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $accessorsFile
             fi
         else
             echo "$0: $capeCodeFile is older than $accessorsFile, so $capeCodeFile will be updated"
             cp $accessorsFile $capeCodeFile 
             if [ "$commit" = "true" ]; then
-                svn commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $capeCodeFile
+                git commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $capeCodeFile
             fi
         fi            
     fi        
@@ -94,7 +95,7 @@ failedModels=""
 
 if [ "$reload" = "true" ]; then
     echo "$0: Reloading Accessors in `wc -l $jsaccessors | awk '{print $1}'` models."
-    cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
+    cat $jsaccessors | xargs -n 20 $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
 
     reloadReturnValue=$?
     if [ "$reloadReturnValue" != "0" ]; then
@@ -133,26 +134,26 @@ if [ "$cg" = "true" ]; then
 fi    
 
 if [ "$commit" = "true" ]; then
-    # Commit only models that are marked with M in svn status so that we avoid
+    # Commit only models that are marked with 'modified:' in git status so that we avoid
     # attempting to commit models that have not been checked in.
     jsaccessorsNoVendors=`cat $jsaccessors | grep -v /vendors/`
-    jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar`
+    jsaccessorsToBeCommitted=`git status $jsaccessorsNoVendors | egrep "modified:" | awk '{print $2}' | grep -v diva.jar`
 
-    accessorsRepoCommits=`svn status $PTII/org/terraswarm/accessor/accessors/web | sed 's@org/terraswarm/accessors/accessors/web@@g' | egrep "^M" | awk '{print $2}' | egrep "js$|xml$"`
+    accessorsRepoCommits=`(cd $PTII/org/terraswarm/accessor/accessors/web; git status | egrep "modified: " | awk '{print $2}' | egrep "js$|xml$" ) `
 
     if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
         echo "$0: accessorsRepoCommits: $accessorsRepoCommits"
-        (cd $PTII/org/terraswarm/accessor/accessors/web; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits)
+        (cd $PTII/org/terraswarm/accessor/accessors/web; git commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits; git push)
     else
         echo "$0: No files need be committed in the accessors repo."
     fi 
 
-    ptIIRepoCommits=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar | grep -v org/terraswarm/accessor/accessors/web`
+    ptIIRepoCommits=`git status $jsaccessorsNoVendors | egrep "modified:" | awk '{print $2}' | grep -v diva.jar | grep -v org/terraswarm/accessor/accessors/web`
     if [ ! -z "$ptIIRepoCommits" ]; then
         echo "$0: Commit to the ptII repo."
         echo "$0: ptIIRepoCommits: $ptIIRepoCommits"
-        (cd $PTII; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." $ptIIRepoCommits)
+        (cd $PTII; git commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." $ptIIRepoCommits; git push)
     else
         echo "$0: No files need be committed in the ptII repo."
     fi        

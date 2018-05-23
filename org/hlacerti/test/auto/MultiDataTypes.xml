@@ -4,65 +4,63 @@
 <entity name="MultiDataTypes" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 306, 799, 462}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[565, 352]">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.277074296928941">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-129.07870030403137, -33.918553849813094}">
-    </property>
     <property name="Director" class="ptolemy.actor.Director">
         <doc>Simple director that executes actors in the order in which they were created.</doc>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, -140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model to see a simple/producer&#10;(both Ptolemy models) exchanging data with&#10;several types in a distributed manner with HLA.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-235.0, -95.0]">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={458, 135, 708, 644}, maximized=false}">
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author : David Come">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 60.0]">
-        </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 534]">
     </property>
-    <entity name="Consumer" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="MultiDataTypes/MultiDataTypesConsumer.xml">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.1403623541050045">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{205.99442390267177, 159.59082031250009}">
+    </property>
+    <entity name="consumer" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/test/auto/StaticMultiInstance/MultiDataTypes/MultiDataTypesConsumer.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
+        <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-300.0, -75.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 130.0]">
         </property>
+        <port name="modelFileOrURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
-    <entity name="Producer" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="MultiDataTypes/MultiDataTypesProducer.xml">
+    <entity name="producer" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/hlacerti/test/auto/StaticMultiInstance/MultiDataTypes/MultiDataTypesProducer.xml">
+        </property>
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="500L">
         </property>
+        <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
+        </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-300.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 195.0}">
         </property>
+        <port name="modelFileOrURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 260.0]">
         </property>
     </entity>
 </entity>

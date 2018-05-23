@@ -9,7 +9,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This modified StockTick accessor reads https://ptolemy.eecs.berkeley.edu">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This modified StockTick accessor reads https://ptolemy.berkeley.edu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 200.0]">
         </property>
@@ -32,7 +32,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    exports.fire = function() {&#10;        var stock = this.get('symbol');&#10;        var url = &quot;http://ptolemy.org&quot;;&#10;        var result = httpRequest(url,'GET',null,null,1000);&#10;        this.send('price', result);&#10;    }&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    exports.fire = function() {&#10;        var stock = this.get('symbol');&#10;        var url = &quot;http://ptolemy.berkeley.edu&quot;;&#10;        var result = httpRequest(url,'GET',null,null,1000);&#10;        this.send('price', result);&#10;    }&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/HttpRequest.xml">
         </property>
@@ -41,7 +41,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2015-05-14 13:43:08 -0700 (Thu, 14 May 2015) $">
             </property>
             <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
@@ -55,6 +55,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 150.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_localChanges" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <port name="symbol" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>

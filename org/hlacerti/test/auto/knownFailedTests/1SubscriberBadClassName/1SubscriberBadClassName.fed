@@ -1,7 +1,7 @@
 ;; Test federation
 
 	(Fed
-	 (Federation SimplePublisherSubscriber)
+	 (Federation 1SubscriberBadClassName)
 	 (FedVersion v1.0)
 	 (Spaces)
 	 (Objects

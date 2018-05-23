@@ -277,7 +277,12 @@ public class ExportModelJUnitTest {
         // Pathnames that should be skipped
         String[] skip = {
                 // Fails with: Cannot render to more than 32 Canvas3Ds
-                "Gravitation.xml", "GravitationWithCollisionDetection.xml", };
+                "Gravitation.xml", "GravitationWithCollisionDetection.xml",
+                // PtinyOS is probably not installed and if it is not installed,
+                // the loading the demos will report missing classes.
+                "ptolemy/actor/ptalon/demo/ptinyos", 
+                "ptolemy/domains/ptinyos/demo",
+        };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
                 return false;
@@ -290,8 +295,11 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = { "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-                "SimplePassPointer", // Only works on 32-bit
+        String[] skip = {
+            "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
+            "ptolemy/domains/ptinyos/demo",
+            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+            "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
@@ -345,6 +353,7 @@ public class ExportModelJUnitTest {
                 "Billard.xml", // Has links to other models
                 "BillardHit.xml", // Has links to other models
                 "IntegrationTests.xml", // Has links to other models
+                "openmodelica/demo", // OpenModelica is probably not present.
                 "Others.xml", // Has links to other models
                 "TimeAdvancing1Federate.xml", // Has links to other models
                 "TimeAdvancing2FederatesIntervalEvents", // Has links to other models
@@ -392,6 +401,7 @@ public class ExportModelJUnitTest {
                 "LatticeComposition.xml", // Intentionally throws an error.
                 "LineFault.xml", // Intentionally throws an error.
                 "LongRuns.xml", // Produces almost 1 million lines on stdout.
+                "matlab/demo", // Matlab is not installed on the Travis-ci machine.
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "MapReduceDDF.xml", // Hangs.
                 "MoC.xml", // "No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported."
@@ -400,10 +410,12 @@ public class ExportModelJUnitTest {
                 "PageAssembler.xml", // Has links to other models.
                 "ProbabilisticModels.xml", // Has links to other models.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
+                "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
                 "ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml", // Has links to pub and sub
                 "ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml", // Subscriber needs to run
                 "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml", // Publisher needs to run.
                 "PublisherTest", // gt
+                "actor/lib/r", // R is probably not installed.
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "TokenTransmissionTime/Sender.xml", // Requires that Receiver be running.
@@ -411,6 +423,7 @@ public class ExportModelJUnitTest {
                 "jjs/modules/httpClient/demo/REST/REST.xml", // Has links to other demos.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
                 "ros/demo/Ros", // Need a robot.
+                "ptolemy/domains/ptinyos/demo", // Ptinyos is probably not installed.
                 "RobotMPC", // Has links to other demos.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RobotPFChase.xml", // Needs the KeyValue model running.
