@@ -3457,17 +3457,17 @@ IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLoggi
 IZPACK_PLIST=$(IZPACK_DIR)/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist
 
 # Fix up izpack Installation by updating Info.plist for the Mac.
-# We currently require Java 1.8 and only Java 1.8 for the installer.
+# We currently require Java 1.8 or later
 # See https://izpack.atlassian.net/browse/IZPACK-1562
 izpackFix: $(IZPACK_DIR)
 	@echo ""
 	@echo "izpackFix:"
-	@echo "Changing the Info.plist for the Mac installer app to require Java 1.8."
+	@echo "Changing the Info.plist for the Mac installer app to require Java 1.8 or later."
 	@echo ""
 	if [ ! -f "$(IZPACK_PLIST).orig" ]; then \
 		cp "$(IZPACK_PLIST)" "$(IZPACK_PLIST).orig"; \
         fi
-	sed 's@<string>1.4+</string>@<string>1.8*</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
+	sed 's@<string>1.4+</string>@<string>1.8+</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
 	-diff "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
 	mv "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
 
