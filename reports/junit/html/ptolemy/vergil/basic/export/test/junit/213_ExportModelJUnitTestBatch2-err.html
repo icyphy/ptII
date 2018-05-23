@@ -9,6 +9,7 @@
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="176", height="144"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
@@ -16,8 +17,7 @@ WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
-WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: WebSocketServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [20.027]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 Foscam2: The timeout period of 5000ms has been exceeded.
 HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
@@ -200,160 +200,6 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
 REST: The timeout period of 5000ms has been exceeded.
 REST: The timeout period of 5000ms has been exceeded.
-HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
-javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
-	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
-	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
-	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
-	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
-	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
-	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
-	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
-	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
-	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
-	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
-	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
-	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
-	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
-	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
-	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
-	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
-	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
-	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
-	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
-	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
-	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
-	... 19 more
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
-	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
-	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
-	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
-	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
-	... 20 more
-Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
-	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
-	at sun.security.validator.Validator.validate(Validator.java:260)
-	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
-	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
-	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
-	... 28 more
-Caused by: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
-	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
-	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
-	... 34 more
-Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
-	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
-	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
-	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
-	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
-	... 39 more
-[vert.x-eventloop-thread-3] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
-io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
-	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
-	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
-	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
-	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
-	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
-	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
-	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
-	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
-	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
-	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
-	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
-	... 16 more
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
-	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
-	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
-	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
-	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
-	... 20 more
-Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
-	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
-	at sun.security.validator.Validator.validate(Validator.java:260)
-	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
-	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
-	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
-	... 28 more
-Caused by: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
-	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
-	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
-	... 34 more
-Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
-	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
-	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
-	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
-	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
-	... 39 more
-REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
 HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
@@ -1885,10 +1731,10 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
 	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
 	... 39 more
-WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.003]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.914, 25.782, 18.367, 26.533, 17.835, 16.342000000000002, 19.976, 24.810000000000002, 23.098000000000003, 13.554, 15.808, 18.900000000000002, 21.073, 23.422, 26.639, 26.962, 25.239, 16.769000000000002, 21.606, 27.284000000000002, 16.235, 26.209, 18.794, 24.383, 25.561, 14.953000000000001, 13.981, 22.671, 22.032, 23.849, 24.917, 17.729, 20.402, 17.303, 19.12, 14.838000000000001, 15.378, 13.66, 27.069000000000003, 25.346, 16.449, 24.703, 27.392, 23.205000000000002, 23.956, 19.441, 22.458000000000002, 21.712, 14.198, 17.623, 20.86, 21.393, 24.276, 22.244, 26.103, 22.991, 13.448, 15.059000000000001, 20.509, 18.048000000000002, 20.966, 18.474, 23.529, 22.138, 13.874, 17.197, 19.014, 25.024, 15.484, 16.128, 20.083000000000002, 25.668, 22.564, 17.516000000000002, 15.271, 19.334, 22.884, 14.624, 19.657, 19.228, 24.597, 16.555, 18.581, 20.722, 25.996000000000002, 14.518, 15.166, 21.286, 13.767000000000001, 20.189, 23.635, 14.09, 16.878, 21.819, 17.942, 27.606, 18.154, 19.763, 25.131, 24.17, 26.75, 19.551000000000002, 21.179000000000002, 14.412, 20.616, 23.743000000000002, 16.662, 25.889, 16.02, 22.778000000000002, 27.498, 17.09, 23.315, 24.062, 26.422, 15.698, 25.454, 19.87, 18.687, 21.499000000000002, 14.732000000000001, 26.316000000000003, 26.856, 18.261, 20.295, 17.41, 24.489, 14.306000000000001, 22.351, 27.178, 16.984, 15.593, 21.925]
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.141, 20.936, 14.013, 22.69, 25.228, 22.795, 25.98, 21.353, 21.971, 14.733, 17.761, 20.195, 24.174, 22.379, 25.769000000000002, 24.279, 14.325000000000001, 22.073, 13.378, 21.456, 18.617, 23.744, 16.266000000000002, 26.086000000000002, 15.243, 17.522000000000002, 23.849, 15.653, 18.512, 19.151, 17.656000000000002, 13.483, 18.829, 15.754000000000001, 19.68, 20.621000000000002, 18.078, 15.039, 20.093, 23.957, 16.573, 15.857000000000001, 14.631, 24.806, 23.217000000000002, 17.416, 19.575, 20.831, 14.426, 16.679000000000002, 17.311, 13.273, 18.723, 22.481, 23.322, 25.875, 16.47, 20.726, 22.585, 21.869, 18.183, 19.991, 13.694, 26.507, 20.305, 14.529, 16.368000000000002, 22.277, 16.994, 26.717000000000002, 19.259, 24.701, 16.889, 15.447000000000001, 15.96, 19.469, 26.612000000000002, 17.205000000000002, 19.364, 14.121, 23.428, 21.767, 16.784, 24.912000000000003, 13.799000000000001, 14.937000000000001, 24.596, 26.296, 15.551, 26.823, 14.835, 23.533, 16.062, 26.191000000000003, 24.490000000000002, 25.664, 25.341, 25.017, 23.006, 23.111, 17.972, 21.042, 26.928, 20.515, 21.561, 19.889, 21.665, 25.446, 26.401, 17.1, 18.934, 24.385, 13.91, 18.397000000000002, 24.063000000000002, 22.901, 25.122, 15.345, 16.165, 13.589, 14.223, 27.033, 23.638, 19.786, 19.039, 18.292, 21.147000000000002, 17.867, 22.175, 21.251, 25.559, 20.41]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 REST2: The timeout period of 5000ms has been exceeded.
@@ -2087,23 +1933,8 @@ io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: 
 	at java.lang.Thread.run(Thread.java:748)
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
-HttpClientHelper.java: Received an error for request 13: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
-io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8077
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: java.net.ConnectException: Connection refused
-	... 11 more
-WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [28.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.01, 22.007, 28.008000000000003]
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.009, 28.009, 22.008]
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.0]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
@@ -2111,6 +1942,26 @@ WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.925, 21.607, 24.25, 21.811, 21.709, 24.031000000000002, 24.139]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
@@ -2123,17 +1974,6 @@ WARNING: Invoking send() too late (probably in a callback), so Camera is not abl
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [22.988, 24.638, 23.51, 22.881, 23.408, 23.818, 24.228, 23.921, 24.331, 24.748, 23.715, 22.774, 23.302, 23.613, 24.023, 24.433, 23.09, 23.198, 24.126, 24.536]
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
@@ -2141,23 +1981,12 @@ WARNING: Invoking send() too late (probably in a callback), so Camera is not abl
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.648, 23.546, 23.443, 23.853, 23.751]
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.411, 18.310000000000002]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 </pre>
 </body>
