@@ -82,6 +82,13 @@ public class RestrictedJavaScriptInterface {
         _actor.clearTimeout(handle);
     }
 
+    /** Return the current time.
+     *  @return The current time in seconds.
+     */
+    public double currentTime() {
+        return _actor.currentTime();
+    }
+
     /** Specify a description to appear in the documentation for this actor.
      *  The recommended format for documentation is HTML or Markdown.
      *  @param description A description to appear in documentation.
