@@ -108,6 +108,7 @@ exports.initialize = function() {
 	// Queue of cars waiting to enter the freeway. This queue
 	// contains the arrival time for each car.
 	var waiting = [];
+	var lastMergeTime = -Infinity;
 	
 	// Function to enter the freeway. If the freeway is not currently
 	// blocked, this function allows a car to enter the freeway and
@@ -118,6 +119,20 @@ exports.initialize = function() {
 	function enter() {
 		var arrivalTime = waiting[0];
 		var time = currentTime();
+		
+		var minSpacing = thiz.getParameter('minSpacing');
+		var speed = thiz.getParameter('freewaySpeed');
+		var safeWaitingTime = 3600 * minSpacing / speed;
+		
+		// Check to see whether the most recent merge was too recent
+		// (within clock resolution of 1ms).
+		var wait = lastMergeTime + safeWaitingTime - time;
+		if (wait >= 0.001) {
+		    // Last merge was too recent. Wait.
+		    setTimeout(enter, 1000 * wait);
+		    return;
+		}
+				
 		// Check to see whether the ramp is blocked.
 		var timeToWait = 0.0;
 		for (var i = 0; i < blocked.length; i++) {
@@ -132,17 +147,15 @@ exports.initialize = function() {
 		if (timeToWait < 0.001) {
 			timeToWait = 0.0;
 		}
-		console.log('At time ' + time + ', wait for ' + timeToWait);
+		// console.log('At time ' + time + ', wait for ' + timeToWait);
 		if (timeToWait <= 0.0) {
 			thiz.send('mergeTime', time - arrivalTime);
+			lastMergeTime = time;
 			// Discard the car from the queue.
 			waiting.shift();
 			if (waiting.length > 0) {
 				// There are additional cars waiting.
 				// Try again after safe waiting time.
-				var minSpacing = thiz.getParameter('minSpacing');
-				var speed = thiz.getParameter('freewaySpeed');
-				var safeWaitingTime = 3600 * minSpacing / speed;
 				setTimeout(enter, 1000 * safeWaitingTime);
 			}
 		} else {

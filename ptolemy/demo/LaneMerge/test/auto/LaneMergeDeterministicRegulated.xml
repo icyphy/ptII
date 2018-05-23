@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="LaneMerge" class="ptolemy.actor.TypedCompositeActor">
+<entity name="LaneMergeDeterministicRegulated" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
@@ -14,16 +14,16 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1825134402389863">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.102900493641066">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.8540449142456, 150.4709587097168}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.35789972543705, 211.38477158546445}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At 120 km/hr, if cars&#10;appear every 6 seconds,&#10;they will be 200m apart.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 185.0]">
         </property>
     </property>
     <property name="sensorDistanceToMerge" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -126,25 +126,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Delay ramp arrivals so that&#10;they don't start appearing until&#10;the freeway cars have started arriving&#10;at the ramp entrance.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 325.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we operate open loop, so the ramp&#10;cars travel at maxRampSpeed towards the&#10;merge.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we operate closed loop,&#10;setting the ramp speed according&#10;to the suggested speed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 260.0]">
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open-loop random lane merge, where freeway cars arrive on average every 6 seconds, ramp cars&#10;every 24 seconds, and ramp cars approach the ramp at the maximum speed. The average wait time&#10;is greater than for the regulated version.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 265.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -157,32 +147,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 150.0]">
         </property>
     </entity>
-    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
-        </property>
-        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="6.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 130.0]">
-        </property>
-    </entity>
-    <entity name="PoissonClock2" class="ptolemy.actor.lib.PoissonClock">
-        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="24.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 265.0]">
-        </property>
-    </entity>
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3600 * (sensorDistanceToMerge / freewaySpeed - rampLength / maxRampSpeed)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 290.0]">
         </property>
     </entity>
     <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3600 * rampLength / maxRampSpeed">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 290.0]">
         </property>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -201,8 +175,8 @@
 <title>Waiting Time at Ramp Entrance</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>number of cars</yLabel>
-<xRange min="0.5" max="29.0"/>
-<yRange min="0.0" max="12.0"/>
+<xRange min="0.5" max="2.0"/>
+<yRange min="0.0" max="6.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="3.0" offset="0.5"/>
 </plot>?>
@@ -266,15 +240,70 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Suggested Ramp Speed">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 15.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="6.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="6.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{3.1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 360.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="3600 * rampLength / speed">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 430.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="speed" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{570, 120}">
+        </property>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{230.0, 265.0}">
+        <vertex name="vertex1" value="[205.0, 290.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -285,19 +314,30 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[420.0, 130.0]">
+        </vertex>
     </relation>
     <link port="Display.input" relation="relation4"/>
-    <link port="PoissonClock.output" relation="relation7"/>
-    <link port="PoissonClock2.output" relation="relation2"/>
-    <link port="TimeDelay.input" relation="relation2"/>
+    <link port="TimeDelay.input" relation="relation8"/>
     <link port="TimeDelay.output" relation="relation6"/>
-    <link port="TimeDelay2.input" relation="relation6"/>
+    <link port="TimeDelay2.input" relation="relation9"/>
     <link port="TimeDelay2.output" relation="relation"/>
+    <link port="TimeDelay2.delay" relation="relation10"/>
     <link port="HistogramPlotter.input" relation="relation4"/>
     <link port="Average.input" relation="relation4"/>
     <link port="Average.output" relation="relation3"/>
@@ -305,7 +345,16 @@
     <link port="FreewayRamp.freewayCar" relation="relation7"/>
     <link port="FreewayRamp.rampCar" relation="relation6"/>
     <link port="FreewayRamp.merge" relation="relation"/>
-    <link port="FreewayRamp.suggestedRampSpeed" relation="relation5"/>
+    <link port="FreewayRamp.suggestedRampSpeed" relation="relation11"/>
     <link port="FreewayRamp.mergeTime" relation="relation4"/>
-    <link port="Display3.input" relation="relation5"/>
+    <link port="Display3.input" relation="relation11"/>
+    <link port="DiscreteClock.output" relation="relation7"/>
+    <link port="DiscreteClock2.output" relation="relation8"/>
+    <link port="MicrostepDelay.input" relation="relation6"/>
+    <link port="MicrostepDelay.output" relation="relation9"/>
+    <link port="MicrostepDelay2.input" relation="relation2"/>
+    <link port="MicrostepDelay2.output" relation="relation10"/>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="Expression.speed" relation="relation11"/>
+    <link port="Test.input" relation="relation4"/>
 </entity>
