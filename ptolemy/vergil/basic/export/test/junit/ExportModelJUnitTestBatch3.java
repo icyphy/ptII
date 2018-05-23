@@ -1,4 +1,4 @@
-/* JUnit test that exports the second batch of demos.
+/* JUnit test that exports the third batch of demos.
 
    Copyright (c) 2018 The Regents of the University of California.
    All rights reserved.
@@ -84,8 +84,8 @@ import ptolemy.vergil.basic.export.ExportModel;
 @RunWith(JUnitParamsRunner.class)
 public class ExportModelJUnitTestBatch3 extends ExportModelJUnitTestBatch {
 
-    /** Run demos 201 through 270. */
+    /** Run demos 221 through 290. */
     public Object[] demos() throws IOException {
-        return super.demos(201, 270);
+        return super.demos(221, 290);
     }
 }

@@ -26,6 +26,10 @@ INSTALL_PREFIX=$PTII/vendors/opencv
 INSTALL_FLAG=$INSTALL_PREFIX/share/OpenCV/java
 
 
+# Avoid "Package libdc1394-22-dev is not available, but is referred to by another package."
+# See https://github.com/travis-ci/travis-ci/issues/5221
+sudo apt-get update 
+
 # Install shared libraries necessary for compilation and runtime.  We need liblapack.so.3 etc.
 sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 

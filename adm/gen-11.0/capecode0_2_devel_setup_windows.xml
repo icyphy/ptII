@@ -545,6 +545,7 @@
 	    <file src="src_jar/capecode0.2.devel/pom.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/ptolemy" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/CONTRIBUTING.md" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/README.md" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/util" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/vergilCapeCode.jnlp.in" targetdir="$INSTALL_PATH"/>

@@ -4,7 +4,7 @@
 <entity name="Sender1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={793, 344, 821, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={619, 268, 821, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[587, 522]">
     </property>
@@ -52,13 +52,13 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Sender1&quot;">
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;BadClassN&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SimplePublisherSubscriber&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;1PublisherBadClassName&quot;">
             <display name="Federation's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SimplePublisherSubscriber.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1PublisherBadClassName.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
@@ -94,7 +94,7 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="NameNotFound: unknownClass is not a HLA class from the FOM (see .fed file).&#10;Because:&#10;unknownClass">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="CouldNotOpenFED: Module not found&#10;  in .Sender1.HlaManager&#10;Because:&#10;Module not found">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

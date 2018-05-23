@@ -46,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up the test definitions.
 if {[string compare test [info procs nightlyMake]] == 1} then {
-    source ../../test/nightlyMake.tcl 
+    source ../../installers2/test/nightlyMake.tcl 
 } {}
 
 # Override the default of 8400 seconds in $PTII/util/testsuite/testDefs.tcl because the Coverity

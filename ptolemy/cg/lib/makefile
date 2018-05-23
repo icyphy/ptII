@@ -33,7 +33,8 @@ ME =		ptolemy/cg/lib
 
 DIRS = 		demo \
 		syntactic \
-		test
+		test \
+		testKnownFailed \
 
 # Root of the Java directory
 ROOT =		../../..
@@ -68,7 +69,8 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES = \
 	syntactic \
-	test 
+	test \
+	testKnownFailed
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

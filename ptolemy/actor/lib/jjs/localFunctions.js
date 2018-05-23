@@ -23,8 +23,13 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 //
 
-/** JavaScript functions for a Ptolemy II (Nashorn) accessor host.
+/** JavaScript functions that override functions in commonHost.js for
+ * a Ptolemy II (Nashorn) accessor host.
  *
+ * This file is read by JavaScript.java and evaluates the accessor
+ * in the context that includes the overrides.  See also the comment
+ * in capeCodeHost.js. 
+ * 
  * @module localFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks, Chris Shaver
  * @version $$Id$$
@@ -33,7 +38,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, channel, clearInterval, clearTimeout, console, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
+/*globals Java, actor, channel, clearInterval, clearTimeout, console, error, getAccessorCode, getParameter, httpRequest, hostStackTrace, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
 /*jshint globalstrict: true*/
 /*jslint nomen: true */
 "use strict";
@@ -72,6 +77,7 @@ function evaluateCode(accessorName, code) {
         'getParameter': getParameter,
         'getResource': getResource,
         'httpRequest': httpRequest,
+        'hostStackTrace': hostStackTrace,
         'input': input,
         'output': output,
         'parameter': parameter,
@@ -128,6 +134,35 @@ function getResource(uri, timeout) {
  */
 function getTopLevelAccessorsNotSupported() {
     throw new Error("getTopLevelAccessors() is not supported in CapeCode because each accessor is a separate JavaScript engine.");
+}
+
+/** If the stack of exception is undefined, the try to return the
+ *  underlying Java stack trace, otherwise return the stack
+ *  of the JavaScript exception.
+ *
+ *  @param exception The JavaScript exception.
+ *  @return If stack is undefined, then try to return the underlying
+ *  Java stack trace as a string.  If not undefined, then return the
+ *  JavaScript stack from the exception
+ */ 
+function hostStackTrace(exception) {
+    var stack = exception.stack;
+    if (typeof stack === 'undefined') {
+        try {
+            // This code is CapeCode/Nashorn Host-specific because it uses Java.
+            var StringWriter = java.io.StringWriter,
+                PrintWriter = java.io.PrintWriter;
+            var stringWriter = new StringWriter();
+            var printWriter = new PrintWriter(stringWriter);
+            exception.printStackTrace(printWriter);
+            stack = "\n" + stringWriter.toString();
+        } catch (exception2) {
+            stack = 'localFunctions.js: hostStackTrace(): Internal error? The stack of the JavaScript exception ' + exception +
+                'was undefined and the getting the stack trace as a Java exception failed with: ' + exception2;
+        }
+    }
+
+    return stack;
 }
 
 /** Specify an input for the accessor.
