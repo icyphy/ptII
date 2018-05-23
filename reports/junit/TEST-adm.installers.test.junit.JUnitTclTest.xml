@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="1" hostname="travis-job-959ade74-d8e2-4623-bff2-015e0bfbfc99" name="adm.installers.test.junit.JUnitTclTest" skipped="0" tests="4" time="305.606" timestamp="2018-05-23T00:41:43">
+<testsuite errors="0" failures="1" hostname="travis-job-c248ec40-ba11-4fc3-8864-e7f74560d723" name="adm.installers.test.junit.JUnitTclTest" skipped="0" tests="4" time="298.504" timestamp="2018-05-23T02:40:01">
   <properties>
     <property name="npm.executable" value="npm" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="ptII.mk.exists" value="true" />
     <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
     <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
-    <property name="env.TRAVIS_JOB_NUMBER" value="465.20" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="466.20" />
     <property name="env.DISPLAY" value=":99.0" />
     <property name="java.net.preferIPv4Stack" value="true" />
     <property name="env.SSH_TTY" value="/dev/pts/0" />
@@ -31,7 +31,7 @@
     <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
     <property name="env._system_type" value="Linux" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
-    <property name="env.SSH_CLIENT" value="10.10.16.3 36498 22" />
+    <property name="env.SSH_CLIENT" value="10.10.4.31 45038 22" />
     <property name="npmjs-org-is-up" value="true" />
     <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
     <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
@@ -52,7 +52,7 @@
     <property name="junit.single.formatter" value="plain" />
     <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
     <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
-    <property name="env.SSH_CONNECTION" value="10.10.16.3 36498 10.20.0.70 22" />
+    <property name="env.SSH_CONNECTION" value="10.10.4.31 45038 10.20.0.214 22" />
     <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
     <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
     <property name="env.LC_ALL" value="en_US.UTF-8" />
@@ -70,12 +70,12 @@
     <property name="ant.project.default-target" value="build" />
     <property name="env.GIT_ASKPASS" value="echo" />
     <property name="env.HOME" value="/home/travis" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner adm.installers.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-adm.installers.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher3228246919296811981.properties propsfile=/home/travis/build/icyphy/ptII/junit950541571147186691.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner adm.installers.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-adm.installers.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher8106878791307360798.properties propsfile=/home/travis/build/icyphy/ptII/junit5274436698665922317.properties" />
     <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
     <property name="env.COMPOSER_NO_INTERACTION" value="1" />
     <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
     <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
-    <property name="env.TRAVIS_COMMIT_RANGE" value="9f99ea0e3c74...ff646375f773" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="9f99ea0e3c74ced4364db99d880f8d3d549eda01...ff646375f7735ddf057aa402acd9d1a726118e79" />
     <property name="env._system_name" value="Ubuntu" />
     <property name="timeout" value="2400000" />
     <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
@@ -116,7 +116,7 @@
     <property name="env.rvm_version" value="1.29.3 (latest)" />
     <property name="env.TERM" value="xterm" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="env.TRAVIS_BUILD_NUMBER" value="465" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="466" />
     <property name="env.CI" value="true" />
     <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
     <property name="env.rvm_prefix" value="/home/travis" />
@@ -132,7 +132,7 @@
     <property name="env.NVM_DIR" value="/home/travis/.nvm" />
     <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
     <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
-    <property name="env.TRAVIS_BUILD_ID" value="382374636" />
+    <property name="env.TRAVIS_BUILD_ID" value="382443467" />
     <property name="env.PYENV_ROOT" value="/opt/pyenv" />
     <property name="env.TRAVIS_UID" value="2000" />
     <property name="env.rvm_pretty_print_flag" value="auto" />
@@ -178,7 +178,7 @@
     <property name="user.dir" value="/home/travis/build/icyphy/ptII/adm/installers/test" />
     <property name="env.TRAVIS_NODE_VERSION" value="7" />
     <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
-    <property name="env.TRAVIS_EVENT_TYPE" value="push" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
     <property name="env.MAIL" value="/var/mail/travis" />
     <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
     <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
@@ -209,7 +209,7 @@
     <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
     <property name="env.TRAVIS_OSX_IMAGE" value="" />
     <property name="env.TRAVIS_BRANCH" value="master" />
-    <property name="env.TRAVIS_JOB_ID" value="382374658" />
+    <property name="env.TRAVIS_JOB_ID" value="382443493" />
     <property name="user.country" value="US" />
     <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
     <property name="env.SHELL" value="/bin/bash" />
@@ -229,7 +229,7 @@
     <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
     <property name="sun.arch.data.model" value="64" />
   </properties>
-  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl (RunTclFile)" time="304.988">
+  <testcase classname="ptolemy.util.test.junit.TclTests" name="[0] /home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl (RunTclFile)" time="297.84">
     <failure message="Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Number of failed tests is has increased. expected:&lt;0&gt; but was:&lt;1&gt;
 	at ptolemy.util.test.junit.TclTests.RunTclFile(TclTests.java:286)
 	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
@@ -242,9 +242,9 @@
   </testcase>
   <testcase classname="ptolemy.util.test.junit.AutoKnownFailedTests" name="[0] ThereAreNoKnowFailedTests (RunModel)" time="0.001" />
   <testcase classname="ptolemy.util.test.junit.AutoNameArchTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.002" />
-  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.0" />
+  <testcase classname="ptolemy.util.test.junit.AutoTests" name="[0] ThereAreNoAutoTests (RunModel)" time="0.003" />
   <system-out><![CDATA[/home/travis/build/icyphy/ptII/adm/installers/test/installers.tcl
-testDefs.tcl: setting time out to 10042 seconds at Wed May 23 00:41:43 UTC 2018
+testDefs.tcl: setting time out to 10042 seconds at Wed May 23 02:40:01 UTC 2018
 adm/test/Nightly.tcl: about to clean
 adm/test/nightlyMake.tcl: about to execute [make -C /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0 PTIIHOME=/home/travis/build/icyphy/ptII/adm/installers/test/../../.. PTIIADM=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm JAR=/usr/bin/jar TAR=/usr/local/bin/tar clean]
 About to execute:
@@ -259,8 +259,8 @@ rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptI
 #
 # Now cleaning old tar files
 #
-clean Wed May 23 00:41:43 UTC 2018
- 00:41:43 up 6 min,  1 user,  load average: 1.76, 1.16, 0.54
+clean Wed May 23 02:40:01 UTC 2018
+ 02:40:01 up 6 min,  1 user,  load average: 1.72, 1.11, 0.51
 rm -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptolemy.devel11.0.devel.src.tar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar
 rm -f opencv_java320.dll
 rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar src_jar
@@ -277,11 +277,11 @@ rm -rf capecode0.2.devel.setup.linux.tar.gz capecode0.2.devel.setup.linux.jar ca
 rm -rf capecode0_2_devel_setup_windows.exe capecode0_2_devel_setup_windows.jar
 rm -rf capecode0_2_devel_setup_windows_64.exe capecode0_2_devel_setup_windows_64.jar
 rm -rf capeCodeNonGUI.tar.gz
+All Done
 rm -rf ptII11.0.devel.setup.mac.jar ptII11.0.devel.setup.mac.app ptII11.0.devel.setup.mac.app.tar.gz ptII11.0.devel.setup.mac.dmg ptII11.0.devel.setup.mac.jar ptII11.0.devel.setup.mac.xml
 rm -rf ptII11.0.devel.setup.linux.jar ptII11.0.devel.setup.mac.xml
 rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar
 make: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
-All Done
 adm/test/nightlyMake.tcl: about to execute [make -C /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0 PTIIHOME=/home/travis/build/icyphy/ptII/adm/installers/test/../../.. PTIIADM=/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm JAR=/usr/bin/jar TAR=/usr/local/bin/tar all]
 About to execute:
     make -C
@@ -306,8 +306,8 @@ Platform: ubuntu_linux,version=4.4.0-101-generic,arch=x64,symbolicName=null,java
 [ Processing package: Required files (1/2) ]
 Cleaning up the target folder ...
 [ Processing package: Experimental tools (2/2) ]
-Installation finished
 [ Unpacking finished ]
+Installation finished
 [ Writing the uninstaller data ... ]
 [ Automated installation done ]
 #rm -f izpackInstall.xml
@@ -349,22 +349,22 @@ if [ ! -f "node/node-v7.10.1-darwin-x64.tar.gz" ]; then \
 		echo "Downloading node darwin node/node-v7.10.1-darwin-x64.tar.gz: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v7.10.1/node-v7.10.1-darwin-x64.tar.gz); \
 	fi
-Downloading node darwin node/node-v7.10.1-darwin-x64.tar.gz: Wed May 23 00:41:45 UTC 2018
+Downloading node darwin node/node-v7.10.1-darwin-x64.tar.gz: Wed May 23 02:40:04 UTC 2018
 if [ ! -f "node/node-v7.10.1-linux-x64.tar.xz" ]; then \
 		echo "Downloading node linux node/node-v7.10.1-linux-x64.tar.xz: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v7.10.1/node-v7.10.1-linux-x64.tar.xz); \
 	fi
-Downloading node linux node/node-v7.10.1-linux-x64.tar.xz: Wed May 23 00:41:46 UTC 2018
+Downloading node linux node/node-v7.10.1-linux-x64.tar.xz: Wed May 23 02:40:05 UTC 2018
 if [ ! -f "node/node-v7.10.1-win-x64.zip" ]; then \
 		echo "Downloading node win node/node-v7.10.1-win-x64.zip: `date`"; \
 		(cd node; wget --quiet https://nodejs.org/dist/v7.10.1/node-v7.10.1-win-x64.zip); \
 	fi
-Downloading node win node/node-v7.10.1-win-x64.zip: Wed May 23 00:41:48 UTC 2018
+Downloading node win node/node-v7.10.1-win-x64.zip: Wed May 23 02:40:06 UTC 2018
 #
 # Now creating PTIIDIST: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel Wed May 23 00:41:49 UTC 2018
- 00:41:49 up 6 min,  1 user,  load average: 1.70, 1.16, 0.54
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel Wed May 23 02:40:06 UTC 2018
+ 02:40:06 up 6 min,  1 user,  load average: 1.74, 1.13, 0.52
 OPENCV_DLL: opencv_java320.dll
 NODE_DARWIN: node/node-v7.10.1-darwin-x64.tar.gz
 NODE_LINUX: node/node-v7.10.1-linux-x64.tar.xz
@@ -395,55 +395,55 @@ Already up to date.
 Removing other documentation
 #@echo "  tar -X does not seem to work under Cygwin"
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config
--rwxrwxr-x 1 travis travis 630402 May 23 00:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
+-rwxrwxr-x 1 travis travis 630402 May 23 02:39 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config:
 total 84
--rw-rw-r-- 1 travis travis 1647 May 23 00:36 confTest.java
--rw-rw-r-- 1 travis travis 1659 May 23 00:36 CORBATest.java
--rw-rw-r-- 1 travis travis 1717 May 23 00:36 EclipseITreeSelection.java
--rw-rw-r-- 1 travis travis 5183 May 23 00:36 FindClass.java
--rw-rw-r-- 1 travis travis  289 May 23 00:36 gmpTest2.cc
--rw-rw-r-- 1 travis travis  163 May 23 00:36 gmpTest.c
--rwxrwxr-x 1 travis travis 2585 May 23 00:36 install-sh
--rw-rw-r-- 1 travis travis 1689 May 23 00:36 JAITest.java
--rw-rw-r-- 1 travis travis 1653 May 23 00:36 java3dTest.java
--rw-rw-r-- 1 travis travis 1841 May 23 00:36 JavaFXTest.java
--rw-rw-r-- 1 travis travis 1914 May 23 00:36 JavaHome.java
--rw-rw-r-- 1 travis travis 1522 May 23 00:36 javasoundTest.java
--rw-rw-r-- 1 travis travis 1739 May 23 00:36 JMFTest.java
--rw-rw-r-- 1 travis travis 1707 May 23 00:36 JXLTest.java
--rw-rw-r-- 1 travis travis 1727 May 23 00:36 MajorOSName.java
--rw-rw-r-- 1 travis travis 3229 May 23 00:36 OpenCVTest.java
--rw-rw-r-- 1 travis travis 1715 May 23 00:36 quickTimeTest.java
--rw-rw-r-- 1 travis travis 4848 May 23 00:36 RootDirectory.java
--rw-rw-r-- 1 travis travis 3730 May 23 00:36 SystemJar.java
+-rw-rw-r-- 1 travis travis 1647 May 23 02:34 confTest.java
+-rw-rw-r-- 1 travis travis 1659 May 23 02:34 CORBATest.java
+-rw-rw-r-- 1 travis travis 1717 May 23 02:34 EclipseITreeSelection.java
+-rw-rw-r-- 1 travis travis 5183 May 23 02:34 FindClass.java
+-rw-rw-r-- 1 travis travis  289 May 23 02:34 gmpTest2.cc
+-rw-rw-r-- 1 travis travis  163 May 23 02:34 gmpTest.c
+-rwxrwxr-x 1 travis travis 2585 May 23 02:34 install-sh
+-rw-rw-r-- 1 travis travis 1689 May 23 02:34 JAITest.java
+-rw-rw-r-- 1 travis travis 1653 May 23 02:34 java3dTest.java
+-rw-rw-r-- 1 travis travis 1841 May 23 02:34 JavaFXTest.java
+-rw-rw-r-- 1 travis travis 1914 May 23 02:34 JavaHome.java
+-rw-rw-r-- 1 travis travis 1522 May 23 02:34 javasoundTest.java
+-rw-rw-r-- 1 travis travis 1739 May 23 02:34 JMFTest.java
+-rw-rw-r-- 1 travis travis 1707 May 23 02:34 JXLTest.java
+-rw-rw-r-- 1 travis travis 1727 May 23 02:34 MajorOSName.java
+-rw-rw-r-- 1 travis travis 3229 May 23 02:34 OpenCVTest.java
+-rw-rw-r-- 1 travis travis 1715 May 23 02:34 quickTimeTest.java
+-rw-rw-r-- 1 travis travis 4848 May 23 02:34 RootDirectory.java
+-rw-rw-r-- 1 travis travis 3730 May 23 02:34 SystemJar.java
 rm -rf /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config/*.jar \
 		/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config/*.class
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config
--rwxrwxr-x 1 travis travis 630402 May 23 00:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
+-rwxrwxr-x 1 travis travis 630402 May 23 02:39 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config:
 total 84
--rw-rw-r-- 1 travis travis 1647 May 23 00:36 confTest.java
--rw-rw-r-- 1 travis travis 1659 May 23 00:36 CORBATest.java
--rw-rw-r-- 1 travis travis 1717 May 23 00:36 EclipseITreeSelection.java
--rw-rw-r-- 1 travis travis 5183 May 23 00:36 FindClass.java
--rw-rw-r-- 1 travis travis  289 May 23 00:36 gmpTest2.cc
--rw-rw-r-- 1 travis travis  163 May 23 00:36 gmpTest.c
--rwxrwxr-x 1 travis travis 2585 May 23 00:36 install-sh
--rw-rw-r-- 1 travis travis 1689 May 23 00:36 JAITest.java
--rw-rw-r-- 1 travis travis 1653 May 23 00:36 java3dTest.java
--rw-rw-r-- 1 travis travis 1841 May 23 00:36 JavaFXTest.java
--rw-rw-r-- 1 travis travis 1914 May 23 00:36 JavaHome.java
--rw-rw-r-- 1 travis travis 1522 May 23 00:36 javasoundTest.java
--rw-rw-r-- 1 travis travis 1739 May 23 00:36 JMFTest.java
--rw-rw-r-- 1 travis travis 1707 May 23 00:36 JXLTest.java
--rw-rw-r-- 1 travis travis 1727 May 23 00:36 MajorOSName.java
--rw-rw-r-- 1 travis travis 3229 May 23 00:36 OpenCVTest.java
--rw-rw-r-- 1 travis travis 1715 May 23 00:36 quickTimeTest.java
--rw-rw-r-- 1 travis travis 4848 May 23 00:36 RootDirectory.java
--rw-rw-r-- 1 travis travis 3730 May 23 00:36 SystemJar.java
+-rw-rw-r-- 1 travis travis 1647 May 23 02:34 confTest.java
+-rw-rw-r-- 1 travis travis 1659 May 23 02:34 CORBATest.java
+-rw-rw-r-- 1 travis travis 1717 May 23 02:34 EclipseITreeSelection.java
+-rw-rw-r-- 1 travis travis 5183 May 23 02:34 FindClass.java
+-rw-rw-r-- 1 travis travis  289 May 23 02:34 gmpTest2.cc
+-rw-rw-r-- 1 travis travis  163 May 23 02:34 gmpTest.c
+-rwxrwxr-x 1 travis travis 2585 May 23 02:34 install-sh
+-rw-rw-r-- 1 travis travis 1689 May 23 02:34 JAITest.java
+-rw-rw-r-- 1 travis travis 1653 May 23 02:34 java3dTest.java
+-rw-rw-r-- 1 travis travis 1841 May 23 02:34 JavaFXTest.java
+-rw-rw-r-- 1 travis travis 1914 May 23 02:34 JavaHome.java
+-rw-rw-r-- 1 travis travis 1522 May 23 02:34 javasoundTest.java
+-rw-rw-r-- 1 travis travis 1739 May 23 02:34 JMFTest.java
+-rw-rw-r-- 1 travis travis 1707 May 23 02:34 JXLTest.java
+-rw-rw-r-- 1 travis travis 1727 May 23 02:34 MajorOSName.java
+-rw-rw-r-- 1 travis travis 3229 May 23 02:34 OpenCVTest.java
+-rw-rw-r-- 1 travis travis 1715 May 23 02:34 quickTimeTest.java
+-rw-rw-r-- 1 travis travis 4848 May 23 02:34 RootDirectory.java
+-rw-rw-r-- 1 travis travis 3730 May 23 02:34 SystemJar.java
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/findclean)
 find: `./doc/codeDoc': No such file or directory
 rm: cannot remove ‘./org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core’: Is a directory
@@ -457,7 +457,7 @@ mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/p
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/node; unzip -q /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/node/node-v7.10.1-win-x64.zip)
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors; ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer .)
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer
-lrwxrwxrwx 1 travis travis 77 May 23 00:42 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis 77 May 23 02:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
 # Remove the duktape binaries.
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 /home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/ant/bin/ant clean.duktape
@@ -574,51 +574,51 @@ cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/misc/joys
 ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors
 total 88
-drwxrwxr-x  3 travis travis 4096 May 23 00:36 adm
-drwxrwxr-x  2 travis travis 4096 May 23 00:36 cm
-drwxrwxr-x  2 travis travis 4096 May 23 00:36 fmucheck
-drwxrwxr-x  6 travis travis 4096 May 23 00:36 fmusdk
-drwxrwxr-x  2 travis travis 4096 May 23 00:36 gc
+drwxrwxr-x  3 travis travis 4096 May 23 02:34 adm
+drwxrwxr-x  2 travis travis 4096 May 23 02:34 cm
+drwxrwxr-x  2 travis travis 4096 May 23 02:34 fmucheck
+drwxrwxr-x  6 travis travis 4096 May 23 02:34 fmusdk
+drwxrwxr-x  2 travis travis 4096 May 23 02:34 gc
 drwxrwxr-x  2 travis travis 4096 May 15 21:29 installer
-drwxrwxr-x  9 travis travis 4096 May 23 00:41 izpack
-drwxrwxr-x  3 travis travis 4096 May 23 00:36 j3d
+drwxrwxr-x  9 travis travis 4096 May 23 02:40 izpack
+drwxrwxr-x  3 travis travis 4096 May 23 02:34 j3d
 drwxr-xr-x  3 travis travis 4096 Sep 17  2004 jai-1_1_2_01
 drwxrwxr-x  5 travis travis 4096 May 12 15:16 JMF-2.1.1e
-drwxrwxr-x  5 travis travis 4096 May 23 00:36 jode
+drwxrwxr-x  5 travis travis 4096 May 23 02:34 jode
 drwxrwxr-x  3 travis travis 4096 May 12 15:57 jogl
 drwxr-xr-x 16 travis travis 4096 Jun 27  2017 launch4j
-drwxrwxr-x  9 travis travis 4096 May 23 00:36 misc
-drwxrwxr-x  4 travis travis 4096 May 23 00:36 ocp
+drwxrwxr-x  9 travis travis 4096 May 23 02:34 misc
+drwxrwxr-x  4 travis travis 4096 May 23 02:34 ocp
 drwxrwxr-x  5 travis travis 4096 May 12 15:47 opencv
-drwxrwxr-x  2 travis travis 4096 May 23 00:36 oracle
-drwxrwxr-x  2 travis travis 4096 May 23 00:36 oscP5
--rw-rw-r--  1 travis travis 1543 May 23 00:36 README.txt
-drwxrwxr-x  2 travis travis 4096 May 23 00:36 soot
-drwxrwxr-x  6 travis travis 4096 May 23 00:36 sun
-drwxrwxr-x  7 travis travis 4096 May 23 00:40 universalJavaApplicationStub
+drwxrwxr-x  2 travis travis 4096 May 23 02:34 oracle
+drwxrwxr-x  2 travis travis 4096 May 23 02:34 oscP5
+-rw-rw-r--  1 travis travis 1543 May 23 02:34 README.txt
+drwxrwxr-x  2 travis travis 4096 May 23 02:34 soot
+drwxrwxr-x  6 travis travis 4096 May 23 02:34 sun
+drwxrwxr-x  7 travis travis 4096 May 23 02:39 universalJavaApplicationStub
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors
 total 24
-lrwxrwxrwx 1 travis travis   77 May 23 00:42 installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
-lrwxrwxrwx 1 travis travis   74 May 23 00:42 izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
-drwxrwxr-x 3 travis travis 4096 May 23 00:42 j3d
-drwxrwxr-x 3 travis travis 4096 May 23 00:42 jogl
-drwxrwxr-x 4 travis travis 4096 May 23 00:42 misc
-drwxrwxr-x 5 travis travis 4096 May 23 00:42 node
+lrwxrwxrwx 1 travis travis   77 May 23 02:40 installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis   74 May 23 02:40 izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+drwxrwxr-x 3 travis travis 4096 May 23 02:40 j3d
+drwxrwxr-x 3 travis travis 4096 May 23 02:40 jogl
+drwxrwxr-x 4 travis travis 4096 May 23 02:40 misc
+drwxrwxr-x 5 travis travis 4096 May 23 02:40 node
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack
-lrwxrwxrwx 1 travis travis   74 May 23 00:42 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+lrwxrwxrwx 1 travis travis   74 May 23 02:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack:
 total 28
-drwxrwxr-x 2 travis travis 4096 May 23 00:41 bin
-drwxrwxr-x 2 travis travis 4096 May 23 00:41 icons
-drwxrwxr-x 2 travis travis 4096 May 23 00:41 legal
-drwxrwxr-x 2 travis travis 4096 May 23 00:41 lib
-drwxrwxr-x 3 travis travis 4096 May 23 00:41 schema
-drwxrwxr-x 2 travis travis 4096 May 23 00:41 Uninstaller
-drwxrwxr-x 3 travis travis 4096 May 23 00:41 utils
+drwxrwxr-x 2 travis travis 4096 May 23 02:40 bin
+drwxrwxr-x 2 travis travis 4096 May 23 02:40 icons
+drwxrwxr-x 2 travis travis 4096 May 23 02:40 legal
+drwxrwxr-x 2 travis travis 4096 May 23 02:40 lib
+drwxrwxr-x 3 travis travis 4096 May 23 02:40 schema
+drwxrwxr-x 2 travis travis 4096 May 23 02:40 Uninstaller
+drwxrwxr-x 3 travis travis 4096 May 23 02:40 utils
 ln -s /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j
-lrwxrwxrwx  1 travis travis   76 May 23 00:42 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx  1 travis travis   76 May 23 02:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j:
 total 264
@@ -651,29 +651,29 @@ drwxr-xr-x 2 travis travis   4096 Jun 27  2017 web
 rm -f /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/.glimpse*
 cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../.glimpse_exclude /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config
--rwxrwxr-x 1 travis travis 630402 May 23 00:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
+-rwxrwxr-x 1 travis travis 630402 May 23 02:39 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/configure
 
 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/config:
 total 84
--rw-rw-r-- 1 travis travis 1647 May 23 00:36 confTest.java
--rw-rw-r-- 1 travis travis 1659 May 23 00:36 CORBATest.java
--rw-rw-r-- 1 travis travis 1717 May 23 00:36 EclipseITreeSelection.java
--rw-rw-r-- 1 travis travis 5183 May 23 00:36 FindClass.java
--rw-rw-r-- 1 travis travis  289 May 23 00:36 gmpTest2.cc
--rw-rw-r-- 1 travis travis  163 May 23 00:36 gmpTest.c
--rwxrwxr-x 1 travis travis 2585 May 23 00:36 install-sh
--rw-rw-r-- 1 travis travis 1689 May 23 00:36 JAITest.java
--rw-rw-r-- 1 travis travis 1653 May 23 00:36 java3dTest.java
--rw-rw-r-- 1 travis travis 1841 May 23 00:36 JavaFXTest.java
--rw-rw-r-- 1 travis travis 1914 May 23 00:36 JavaHome.java
--rw-rw-r-- 1 travis travis 1522 May 23 00:36 javasoundTest.java
--rw-rw-r-- 1 travis travis 1739 May 23 00:36 JMFTest.java
--rw-rw-r-- 1 travis travis 1707 May 23 00:36 JXLTest.java
--rw-rw-r-- 1 travis travis 1727 May 23 00:36 MajorOSName.java
--rw-rw-r-- 1 travis travis 3229 May 23 00:36 OpenCVTest.java
--rw-rw-r-- 1 travis travis 1715 May 23 00:36 quickTimeTest.java
--rw-rw-r-- 1 travis travis 4848 May 23 00:36 RootDirectory.java
--rw-rw-r-- 1 travis travis 3730 May 23 00:36 SystemJar.java
+-rw-rw-r-- 1 travis travis 1647 May 23 02:34 confTest.java
+-rw-rw-r-- 1 travis travis 1659 May 23 02:34 CORBATest.java
+-rw-rw-r-- 1 travis travis 1717 May 23 02:34 EclipseITreeSelection.java
+-rw-rw-r-- 1 travis travis 5183 May 23 02:34 FindClass.java
+-rw-rw-r-- 1 travis travis  289 May 23 02:34 gmpTest2.cc
+-rw-rw-r-- 1 travis travis  163 May 23 02:34 gmpTest.c
+-rwxrwxr-x 1 travis travis 2585 May 23 02:34 install-sh
+-rw-rw-r-- 1 travis travis 1689 May 23 02:34 JAITest.java
+-rw-rw-r-- 1 travis travis 1653 May 23 02:34 java3dTest.java
+-rw-rw-r-- 1 travis travis 1841 May 23 02:34 JavaFXTest.java
+-rw-rw-r-- 1 travis travis 1914 May 23 02:34 JavaHome.java
+-rw-rw-r-- 1 travis travis 1522 May 23 02:34 javasoundTest.java
+-rw-rw-r-- 1 travis travis 1739 May 23 02:34 JMFTest.java
+-rw-rw-r-- 1 travis travis 1707 May 23 02:34 JXLTest.java
+-rw-rw-r-- 1 travis travis 1727 May 23 02:34 MajorOSName.java
+-rw-rw-r-- 1 travis travis 3229 May 23 02:34 OpenCVTest.java
+-rw-rw-r-- 1 travis travis 1715 May 23 02:34 quickTimeTest.java
+-rw-rw-r-- 1 travis travis 4848 May 23 02:34 RootDirectory.java
+-rw-rw-r-- 1 travis travis 3730 May 23 02:34 SystemJar.java
 # Copy libjvm.dll.a because it was removed by src.ex
 #cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../ptolemy/codegen/c/lib/win/libjvm.dll.a /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/codegen/c/lib/win
 #ls -l  /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/codegen/c/lib/win/libjvm.dll.a
@@ -826,7 +826,7 @@ make[1]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 #
 # Now creating PTIIDIST/jar_dist: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist Wed May 23 00:42:11 UTC 2018
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist Wed May 23 02:40:31 UTC 2018
 if [ ! -d "/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist" ] ; then \
 	    echo "Running make -k  jar_dist and other commands in /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel"; \
 	    (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; PTII=`/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptcygpath /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel` JAVADOC=javadoc ./configure; rm -rf bin/*.app; \
@@ -879,14 +879,14 @@ configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
     '/usr/lib/jvm/java-8-oracle/bin/java'?
     If you have problems later, be sure that you don't have a mismatch
     in JDK versions.
-checking for the java compiler in /usr/lib/jvm/java-8-oracle/bin... ok
-checking for javac... (cached) /usr/bin/javac
 configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
 	 the same as '/usr/bin/javac'.
 	 Perhaps '/usr/bin/javac' is in your path
 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
 	 If you have problems later, be sure that you don't have a mismatch
 	 in JDK versions.
+checking for the java compiler in /usr/lib/jvm/java-8-oracle/bin... ok
+checking for javac... (cached) /usr/bin/javac
 checking the Java compiler with a simple compile... ok
 checking the value of the java.version Property ... ok
 checking the JDK version... ok
@@ -1307,7 +1307,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 5.18 seconds.
+     [exec] Finished running in 4.57 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/build.xml
@@ -1327,7 +1327,7 @@ build-bin:
 build:
 
 BUILD SUCCESSFUL
-Total time: 14 seconds
+Total time: 12 seconds
 Found /home/travis/build/icyphy/ptII/codeDoc*.jar files that are less than 10 days old.  Will use unjar them in /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel instead of rerunning javadoc.
 Unjaring /home/travis/build/icyphy/ptII/doc/codeDoc.jar in /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel
   created: META-INF/
@@ -13922,169 +13922,169 @@ Unjaring /home/travis/build/icyphy/ptII/doc/codeDocVisualSense.jar in /home/trav
   created: META-INF/
  inflated: META-INF/MANIFEST.MF
 total 2500
-drwxrwxr-x  4 travis travis   4096 May 23 00:41 ant
-drwxrwxr-x  3 travis travis   4096 May 23 00:42 bin
--rw-rw-r--  1 travis travis  84712 May 23 00:36 build.default.xml
--rw-rw-r--  1 travis travis 133387 May 23 00:42 build.xml
--rw-rw-r--  1 travis travis 111740 May 23 00:36 build.xml.in
--rw-rw-r--  1 travis travis   6487 May 23 00:36 cluster.xml
-drwxrwxr-x  6 travis travis   4096 May 23 00:41 com
-drwxrwxr-x  2 travis travis   4096 May 23 00:42 config
--rw-rw-r--  1 travis travis  89300 May 23 00:42 config.log
--rwxrwxr-x  1 travis travis  88014 May 23 00:42 config.status
--rwxrwxr-x  1 travis travis 630402 May 23 00:42 configure
--rw-rw-r--  1 travis travis 306723 May 23 00:36 configure.in
-drwxrwxr-x  3 travis travis   4096 May 23 00:41 contrib
--rw-rw-r--  1 travis travis   3706 May 23 00:36 CONTRIBUTING.md
--rw-rw-r--  1 travis travis 518207 May 23 00:36 copyright.htm
--rw-rw-r--  1 travis travis   1247 May 23 00:36 copyright.txt
-drwxrwxr-x  8 travis travis   4096 May 23 00:36 diva
-drwxrwxr-x 15 travis travis   4096 May 23 00:42 doc
-drwxrwxr-x  3 travis travis   4096 May 23 00:36 edu
--rw-rw-r--  1 travis travis 361321 May 23 00:42 jars.xml
-drwxrwxr-x  7 travis travis   4096 May 23 00:41 lbnl
-drwxrwxr-x  3 travis travis   4096 May 23 00:42 lib
--rw-rw-r--  1 travis travis  10784 May 23 00:36 makefile
-drwxrwxr-x  2 travis travis   4096 May 23 00:41 META-INF
-drwxrwxr-x  2 travis travis   4096 May 23 00:42 mk
-drwxrwxr-x  3 travis travis   4096 May 23 00:36 net
-drwxrwxr-x 21 travis travis   4096 May 23 00:42 node_modules
-drwxrwxr-x  7 travis travis   4096 May 23 00:36 org
--rw-rw-r--  1 travis travis  12897 May 23 00:36 plugin.xml
--rw-rw-r--  1 travis travis  32784 May 23 00:36 pom.xml
-drwxrwxr-x 10 travis travis   4096 May 23 00:36 ptdb
--rw-rw-r--  1 travis travis    294 May 23 00:36 ptKeystore.properties
-drwxrwxr-x 26 travis travis   4096 May 23 00:41 ptolemy
-drwxrwxr-x 11 travis travis   4096 May 23 00:41 ptserver
--rw-rw-r--  1 travis travis    851 May 23 00:36 README.md
-drwxrwxr-x  6 travis travis   4096 May 23 00:36 thales
-drwxrwxr-x  4 travis travis   4096 May 23 00:36 util
-drwxrwxr-x  6 travis travis   4096 May 23 00:42 vendors
--rw-rw-r--  1 travis travis   1179 May 23 00:36 vergilBCVTB.jnlp.in
--rw-rw-r--  1 travis travis   1784 May 23 00:36 vergilCapeCode.jnlp.in
--rw-rw-r--  1 travis travis   1155 May 23 00:36 vergilCyPhySim.jnlp.in
--rw-rw-r--  1 travis travis   1152 May 23 00:36 vergilDSP.jnlp.in
--rw-rw-r--  1 travis travis   1361 May 23 00:36 vergilHyVisual.jnlp.in
--rw-rw-r--  1 travis travis   2161 May 23 00:36 vergil.jnlp.in
--rw-rw-r--  1 travis travis   1205 May 23 00:36 vergilPtiny.jnlp.in
--rw-rw-r--  1 travis travis   1242 May 23 00:36 vergilPtinyKepler.jnlp.in
--rw-rw-r--  1 travis travis   1478 May 23 00:36 vergilPtinySandbox.jnlp.in
--rw-rw-r--  1 travis travis   1237 May 23 00:36 vergilSpace.jnlp.in
--rw-rw-r--  1 travis travis   1484 May 23 00:36 vergilVisualSense.jnlp.in
+drwxrwxr-x  4 travis travis   4096 May 23 02:39 ant
+drwxrwxr-x  3 travis travis   4096 May 23 02:40 bin
+-rw-rw-r--  1 travis travis  84712 May 23 02:34 build.default.xml
+-rw-rw-r--  1 travis travis 133387 May 23 02:40 build.xml
+-rw-rw-r--  1 travis travis 111740 May 23 02:34 build.xml.in
+-rw-rw-r--  1 travis travis   6487 May 23 02:34 cluster.xml
+drwxrwxr-x  6 travis travis   4096 May 23 02:40 com
+drwxrwxr-x  2 travis travis   4096 May 23 02:40 config
+-rw-rw-r--  1 travis travis  89300 May 23 02:40 config.log
+-rwxrwxr-x  1 travis travis  88014 May 23 02:40 config.status
+-rwxrwxr-x  1 travis travis 630402 May 23 02:40 configure
+-rw-rw-r--  1 travis travis 306723 May 23 02:34 configure.in
+drwxrwxr-x  3 travis travis   4096 May 23 02:39 contrib
+-rw-rw-r--  1 travis travis   3706 May 23 02:34 CONTRIBUTING.md
+-rw-rw-r--  1 travis travis 518207 May 23 02:34 copyright.htm
+-rw-rw-r--  1 travis travis   1247 May 23 02:34 copyright.txt
+drwxrwxr-x  8 travis travis   4096 May 23 02:34 diva
+drwxrwxr-x 15 travis travis   4096 May 23 02:40 doc
+drwxrwxr-x  3 travis travis   4096 May 23 02:34 edu
+-rw-rw-r--  1 travis travis 361321 May 23 02:40 jars.xml
+drwxrwxr-x  7 travis travis   4096 May 23 02:39 lbnl
+drwxrwxr-x  3 travis travis   4096 May 23 02:40 lib
+-rw-rw-r--  1 travis travis  10784 May 23 02:34 makefile
+drwxrwxr-x  2 travis travis   4096 May 23 02:40 META-INF
+drwxrwxr-x  2 travis travis   4096 May 23 02:40 mk
+drwxrwxr-x  3 travis travis   4096 May 23 02:34 net
+drwxrwxr-x 21 travis travis   4096 May 23 02:40 node_modules
+drwxrwxr-x  7 travis travis   4096 May 23 02:34 org
+-rw-rw-r--  1 travis travis  12897 May 23 02:34 plugin.xml
+-rw-rw-r--  1 travis travis  32784 May 23 02:34 pom.xml
+drwxrwxr-x 10 travis travis   4096 May 23 02:34 ptdb
+-rw-rw-r--  1 travis travis    294 May 23 02:34 ptKeystore.properties
+drwxrwxr-x 26 travis travis   4096 May 23 02:39 ptolemy
+drwxrwxr-x 11 travis travis   4096 May 23 02:39 ptserver
+-rw-rw-r--  1 travis travis    851 May 23 02:34 README.md
+drwxrwxr-x  6 travis travis   4096 May 23 02:34 thales
+drwxrwxr-x  4 travis travis   4096 May 23 02:34 util
+drwxrwxr-x  6 travis travis   4096 May 23 02:40 vendors
+-rw-rw-r--  1 travis travis   1179 May 23 02:34 vergilBCVTB.jnlp.in
+-rw-rw-r--  1 travis travis   1784 May 23 02:34 vergilCapeCode.jnlp.in
+-rw-rw-r--  1 travis travis   1155 May 23 02:34 vergilCyPhySim.jnlp.in
+-rw-rw-r--  1 travis travis   1152 May 23 02:34 vergilDSP.jnlp.in
+-rw-rw-r--  1 travis travis   1361 May 23 02:34 vergilHyVisual.jnlp.in
+-rw-rw-r--  1 travis travis   2161 May 23 02:34 vergil.jnlp.in
+-rw-rw-r--  1 travis travis   1205 May 23 02:34 vergilPtiny.jnlp.in
+-rw-rw-r--  1 travis travis   1242 May 23 02:34 vergilPtinyKepler.jnlp.in
+-rw-rw-r--  1 travis travis   1478 May 23 02:34 vergilPtinySandbox.jnlp.in
+-rw-rw-r--  1 travis travis   1237 May 23 02:34 vergilSpace.jnlp.in
+-rw-rw-r--  1 travis travis   1484 May 23 02:34 vergilVisualSense.jnlp.in
 total 48180
--rw-rw-r--  1 travis travis     7345 May 23 00:36 acks.htm
--rw-rw-r--  1 travis travis     5168 May 23 00:36 authors.htm
--rw-rw-r--  1 travis travis      593 May 23 00:36 banner.htm
--rw-rw-r--  1 travis travis      518 May 23 00:36 body.htm
-drwxrwxr-x  4 travis travis     4096 May 23 00:36 books
--rw-rw-r--  1 travis travis      273 May 23 00:36 buttons.htm
--rw-rw-r--  1 travis travis     7415 May 23 00:36 checkstyle-ptII.xml
-drwxrwxr-x 15 travis travis     4096 May 22 23:20 codeDoc
--rw-rw-r--  1 travis travis      333 May 23 00:41 codeDocBcvtb.jar
--rw-rw-r--  1 travis travis      333 May 23 00:41 codeDocCapeCode.jar
--rw-rw-r--  1 travis travis      333 May 23 00:41 codeDocHyVisual.jar
--rw-rw-r--  1 travis travis 37882508 May 23 00:41 codeDoc.jar
--rw-rw-r--  1 travis travis      333 May 23 00:41 codeDocViptos.jar
--rw-rw-r--  1 travis travis      333 May 23 00:41 codeDocVisualSense.jar
-drwxrwxr-x  4 travis travis     4096 May 23 00:36 coding
--rw-rw-r--  1 travis travis      584 May 23 00:36 contents.css
--rw-rw-r--  1 travis travis      304 May 23 00:36 contentsheader.htm
--rw-rw-r--  1 travis travis    47590 May 23 00:36 copernicus.htm
--rw-rw-r--  1 travis travis      597 May 23 00:36 default.css
--rw-rw-r--  1 travis travis     2648 May 23 00:36 demoLink.js
--rw-rw-r--  1 travis travis    48582 May 23 00:36 deployJavaJNLP.js
--rw-rw-r--  1 travis travis    48722 May 23 00:36 deployJava.js
-drwxrwxr-x  3 travis travis     4096 May 23 00:41 design
--rw-rw-r--  1 travis travis      702 May 23 00:36 docbody.htm
--rw-rw-r--  1 travis travis      295 May 23 00:36 docbuttons.htm
--rw-rw-r--  1 travis travis  7829240 May 23 00:41 docConfig.jar
-drwxrwxr-x  2 travis travis     4096 May 23 00:40 doclets
--rw-rw-r--  1 travis travis      546 May 23 00:36 docs.htm
--rw-rw-r--  1 travis travis      977 May 23 00:36 doctoc.htm
--rw-rw-r--  1 travis travis    30684 May 23 00:36 domainCompatibility.htm
--rw-rw-r--  1 travis travis    64856 May 23 00:36 domains.htm
-drwxrwxr-x  4 travis travis     4096 May 23 00:36 eclipse
--rw-rw-r--  1 travis travis      743 May 23 00:36 expressions.htm
--rw-rw-r--  1 travis travis  2589714 May 23 00:36 expressions.pdf
--rw-rw-r--  1 travis travis      619 May 23 00:36 footer.htm
--rw-rw-r--  1 travis travis     1776 May 23 00:36 help.htm
--rw-rw-r--  1 travis travis    28361 May 23 00:36 hudsonConfig.xml
--rwxrwxr-x  1 travis travis     2297 May 23 00:36 hyVisualHtml.awk
-drwxrwxr-x  2 travis travis     4096 May 23 00:42 img
--rw-rw-r--  1 travis travis      698 May 23 00:36 index.htm
--rw-rw-r--  1 travis travis    32520 May 23 00:36 install.htm
--rw-rw-r--  1 travis travis      827 May 23 00:36 install_index.htm
--rw-rw-r--  1 travis travis     5816 May 23 00:36 installJNLP.htm
--rw-rw-r--  1 travis travis     2256 May 23 00:36 javahtml.awk
-drwxrwxr-x  3 travis travis     4096 May 23 00:36 jsdoc
--rw-rw-r--  1 travis travis      444 May 23 00:36 limitations.htm
--rw-rw-r--  1 travis travis      661 May 23 00:36 mainheader.htm
--rw-rw-r--  1 travis travis    10761 May 23 00:36 main.htm
--rw-rw-r--  1 travis travis    10089 May 23 00:36 mainVergil.htm
--rw-rw-r--  1 travis travis     8895 May 23 00:36 mainVergilPtiny.htm
--rw-rw-r--  1 travis travis     8924 May 23 00:36 mainVergilPtinyKepler.htm
--rw-rw-r--  1 travis travis    53022 May 23 00:42 makefile
--rwxrwxr-x  1 travis travis     3807 May 23 00:36 mkDomains
--rw-rw-r--  1 travis travis   123512 May 23 00:36 oldFeatures.htm
--rw-rw-r--  1 travis travis     1219 May 23 00:36 openInstanceHelp.htm
-drwxrwxr-x  5 travis travis     4096 May 23 00:41 papers
--rw-rw-r--  1 travis travis    36977 May 23 00:36 ptII11.0.release.htm
--rw-rw-r--  1 travis travis      496 May 23 00:36 ptII11.0.releaseHyVisual.htm
--rw-rw-r--  1 travis travis    19221 May 23 00:36 ptII11.0.releaseVergil.htm
--rw-rw-r--  1 travis travis    79863 May 23 00:36 ptIIfaq.htm
--rwxrwxr-x  1 travis travis     2197 May 23 00:36 ptinyBcvtb.awk
--rwxrwxr-x  1 travis travis     2283 May 23 00:36 ptinyKepler.awk
--rw-rw-r--  1 travis travis      354 May 23 00:36 README.txt
--rw-rw-r--  1 travis travis      835 May 23 00:36 release.htm
--rwxrwxr-x  1 travis travis     1197 May 23 00:36 removeasd
--rw-rw-r--  1 travis travis     3333 May 23 00:36 sandbox.htm
--rw-rw-r--  1 travis travis     3253 May 23 00:36 spotbugs-exclude.xml
--rw-rw-r--  1 travis travis      247 May 23 00:36 spotbugs-include.xml
-drwxrwxr-x  3 travis travis     4096 May 23 00:36 test
--rw-rw-r--  1 travis travis      584 May 23 00:36 toc.css
--rw-rw-r--  1 travis travis     5181 May 23 00:36 toc.htm
-drwxrwxr-x  2 travis travis     4096 May 23 00:36 tour
--rw-rw-r--  1 travis travis    17382 May 23 00:36 troubleshooting.htm
--rw-rw-r--  1 travis travis    17593 May 23 00:36 troubleshootingVergil.htm
-drwxrwxr-x  5 travis travis     4096 May 23 00:40 tutorial
--rw-rw-r--  1 travis travis     3981 May 23 00:36 types.htm
-drwxrwxr-x  2 travis travis     4096 May 23 00:36 ui
--rw-rw-r--  1 travis travis    22762 May 23 00:36 webStartHelp.htm
--rw-rw-r--  1 travis travis      832 May 23 00:36 webStartHelp_index.htm
--rw-rw-r--  1 travis travis     2164 May 23 00:36 whatsnew.awk
--rw-rw-r--  1 travis travis    11152 May 23 00:36 whatsnew.htm
--rw-rw-r--  1 travis travis    11134 May 23 00:36 whatsnewVergil.htm
+-rw-rw-r--  1 travis travis     7345 May 23 02:34 acks.htm
+-rw-rw-r--  1 travis travis     5168 May 23 02:34 authors.htm
+-rw-rw-r--  1 travis travis      593 May 23 02:34 banner.htm
+-rw-rw-r--  1 travis travis      518 May 23 02:34 body.htm
+drwxrwxr-x  4 travis travis     4096 May 23 02:34 books
+-rw-rw-r--  1 travis travis      273 May 23 02:34 buttons.htm
+-rw-rw-r--  1 travis travis     7415 May 23 02:34 checkstyle-ptII.xml
+drwxrwxr-x 15 travis travis     4096 May 23 01:20 codeDoc
+-rw-rw-r--  1 travis travis      333 May 23 02:39 codeDocBcvtb.jar
+-rw-rw-r--  1 travis travis      333 May 23 02:39 codeDocCapeCode.jar
+-rw-rw-r--  1 travis travis      333 May 23 02:39 codeDocHyVisual.jar
+-rw-rw-r--  1 travis travis 37882511 May 23 02:39 codeDoc.jar
+-rw-rw-r--  1 travis travis      333 May 23 02:39 codeDocViptos.jar
+-rw-rw-r--  1 travis travis      333 May 23 02:39 codeDocVisualSense.jar
+drwxrwxr-x  4 travis travis     4096 May 23 02:34 coding
+-rw-rw-r--  1 travis travis      584 May 23 02:34 contents.css
+-rw-rw-r--  1 travis travis      304 May 23 02:34 contentsheader.htm
+-rw-rw-r--  1 travis travis    47590 May 23 02:34 copernicus.htm
+-rw-rw-r--  1 travis travis      597 May 23 02:34 default.css
+-rw-rw-r--  1 travis travis     2648 May 23 02:34 demoLink.js
+-rw-rw-r--  1 travis travis    48582 May 23 02:34 deployJavaJNLP.js
+-rw-rw-r--  1 travis travis    48722 May 23 02:34 deployJava.js
+drwxrwxr-x  3 travis travis     4096 May 23 02:39 design
+-rw-rw-r--  1 travis travis      702 May 23 02:34 docbody.htm
+-rw-rw-r--  1 travis travis      295 May 23 02:34 docbuttons.htm
+-rw-rw-r--  1 travis travis  7829240 May 23 02:39 docConfig.jar
+drwxrwxr-x  2 travis travis     4096 May 23 02:38 doclets
+-rw-rw-r--  1 travis travis      546 May 23 02:34 docs.htm
+-rw-rw-r--  1 travis travis      977 May 23 02:34 doctoc.htm
+-rw-rw-r--  1 travis travis    30684 May 23 02:34 domainCompatibility.htm
+-rw-rw-r--  1 travis travis    64856 May 23 02:34 domains.htm
+drwxrwxr-x  4 travis travis     4096 May 23 02:34 eclipse
+-rw-rw-r--  1 travis travis      743 May 23 02:34 expressions.htm
+-rw-rw-r--  1 travis travis  2589714 May 23 02:34 expressions.pdf
+-rw-rw-r--  1 travis travis      619 May 23 02:34 footer.htm
+-rw-rw-r--  1 travis travis     1776 May 23 02:34 help.htm
+-rw-rw-r--  1 travis travis    28361 May 23 02:34 hudsonConfig.xml
+-rwxrwxr-x  1 travis travis     2297 May 23 02:34 hyVisualHtml.awk
+drwxrwxr-x  2 travis travis     4096 May 23 02:40 img
+-rw-rw-r--  1 travis travis      698 May 23 02:34 index.htm
+-rw-rw-r--  1 travis travis    32520 May 23 02:34 install.htm
+-rw-rw-r--  1 travis travis      827 May 23 02:34 install_index.htm
+-rw-rw-r--  1 travis travis     5816 May 23 02:34 installJNLP.htm
+-rw-rw-r--  1 travis travis     2256 May 23 02:34 javahtml.awk
+drwxrwxr-x  3 travis travis     4096 May 23 02:34 jsdoc
+-rw-rw-r--  1 travis travis      444 May 23 02:34 limitations.htm
+-rw-rw-r--  1 travis travis      661 May 23 02:34 mainheader.htm
+-rw-rw-r--  1 travis travis    10761 May 23 02:34 main.htm
+-rw-rw-r--  1 travis travis    10089 May 23 02:34 mainVergil.htm
+-rw-rw-r--  1 travis travis     8895 May 23 02:34 mainVergilPtiny.htm
+-rw-rw-r--  1 travis travis     8924 May 23 02:34 mainVergilPtinyKepler.htm
+-rw-rw-r--  1 travis travis    53022 May 23 02:40 makefile
+-rwxrwxr-x  1 travis travis     3807 May 23 02:34 mkDomains
+-rw-rw-r--  1 travis travis   123512 May 23 02:34 oldFeatures.htm
+-rw-rw-r--  1 travis travis     1219 May 23 02:34 openInstanceHelp.htm
+drwxrwxr-x  5 travis travis     4096 May 23 02:39 papers
+-rw-rw-r--  1 travis travis    36977 May 23 02:34 ptII11.0.release.htm
+-rw-rw-r--  1 travis travis      496 May 23 02:34 ptII11.0.releaseHyVisual.htm
+-rw-rw-r--  1 travis travis    19221 May 23 02:34 ptII11.0.releaseVergil.htm
+-rw-rw-r--  1 travis travis    79863 May 23 02:34 ptIIfaq.htm
+-rwxrwxr-x  1 travis travis     2197 May 23 02:34 ptinyBcvtb.awk
+-rwxrwxr-x  1 travis travis     2283 May 23 02:34 ptinyKepler.awk
+-rw-rw-r--  1 travis travis      354 May 23 02:34 README.txt
+-rw-rw-r--  1 travis travis      835 May 23 02:34 release.htm
+-rwxrwxr-x  1 travis travis     1197 May 23 02:34 removeasd
+-rw-rw-r--  1 travis travis     3333 May 23 02:34 sandbox.htm
+-rw-rw-r--  1 travis travis     3253 May 23 02:34 spotbugs-exclude.xml
+-rw-rw-r--  1 travis travis      247 May 23 02:34 spotbugs-include.xml
+drwxrwxr-x  3 travis travis     4096 May 23 02:34 test
+-rw-rw-r--  1 travis travis      584 May 23 02:34 toc.css
+-rw-rw-r--  1 travis travis     5181 May 23 02:34 toc.htm
+drwxrwxr-x  2 travis travis     4096 May 23 02:34 tour
+-rw-rw-r--  1 travis travis    17382 May 23 02:34 troubleshooting.htm
+-rw-rw-r--  1 travis travis    17593 May 23 02:34 troubleshootingVergil.htm
+drwxrwxr-x  5 travis travis     4096 May 23 02:38 tutorial
+-rw-rw-r--  1 travis travis     3981 May 23 02:34 types.htm
+drwxrwxr-x  2 travis travis     4096 May 23 02:34 ui
+-rw-rw-r--  1 travis travis    22762 May 23 02:34 webStartHelp.htm
+-rw-rw-r--  1 travis travis      832 May 23 02:34 webStartHelp_index.htm
+-rw-rw-r--  1 travis travis     2164 May 23 02:34 whatsnew.awk
+-rw-rw-r--  1 travis travis    11152 May 23 02:34 whatsnew.htm
+-rw-rw-r--  1 travis travis    11134 May 23 02:34 whatsnewVergil.htm
 total 5904
--rw-rw-r--  1 travis travis  160018 May 22 23:20 allclasses-frame.html
--rw-rw-r--  1 travis travis  138278 May 22 23:20 allclasses-noframe.html
--rw-rw-r--  1 travis travis   11806 May 22 23:20 allNamedObjs.txt
-drwxrwxr-x  6 travis travis    4096 May 22 23:14 com
--rw-rw-r--  1 travis travis  118813 May 22 23:20 constant-values.html
--rw-rw-r--  1 travis travis   52612 May 22 23:20 deprecated-list.html
-drwxrwxr-x  7 travis travis    4096 May 22 22:59 diva
-drwxrwxr-x  3 travis travis    4096 May 22 23:03 doc
-drwxrwxr-x  3 travis travis    4096 May 22 23:13 edu
--rw-rw-r--  1 travis travis    8129 May 22 23:20 help-doc.html
--rw-rw-r--  1 travis travis 4803563 May 22 23:20 index-all.html
--rw-rw-r--  1 travis travis    2879 May 22 23:20 index.html
-drwxrwxr-x  5 travis travis   45056 May 22 23:01 js
-drwxrwxr-x  7 travis travis    4096 May 22 23:12 lbnl
-drwxrwxr-x  3 travis travis    4096 May 22 23:03 net
-drwxrwxr-x  7 travis travis    4096 May 22 23:19 org
--rw-rw-r--  1 travis travis    7489 May 22 23:20 overview-frame.html
--rw-rw-r--  1 travis travis   18142 May 22 23:20 overview-summary.html
--rw-rw-r--  1 travis travis  294254 May 22 23:20 overview-tree.html
--rw-rw-r--  1 travis travis    1429 May 22 23:20 package-list
-drwxrwxr-x  5 travis travis    4096 May 22 23:03 ptdb
--rw-rw-r--  1 travis travis  142238 May 22 23:20 PtIndexer.ser
-drwxrwxr-x 27 travis travis    4096 May 22 23:19 ptolemy
-drwxrwxr-x  8 travis travis    4096 May 22 23:01 ptserver
--rw-rw-r--  1 travis travis     827 May 22 23:20 script.js
--rw-rw-r--  1 travis travis  150669 May 22 23:20 serialized-form.html
--rw-rw-r--  1 travis travis   12842 May 22 23:20 stylesheet.css
-drwxrwxr-x  4 travis travis    4096 May 22 23:03 thales
-drwxrwxr-x  3 travis travis    4096 May 22 23:04 util
-About to run ant jars: Wed May 23 00:42:46 UTC 2018
+-rw-rw-r--  1 travis travis  160018 May 23 01:20 allclasses-frame.html
+-rw-rw-r--  1 travis travis  138278 May 23 01:20 allclasses-noframe.html
+-rw-rw-r--  1 travis travis   11806 May 23 01:20 allNamedObjs.txt
+drwxrwxr-x  6 travis travis    4096 May 23 01:14 com
+-rw-rw-r--  1 travis travis  118813 May 23 01:20 constant-values.html
+-rw-rw-r--  1 travis travis   52612 May 23 01:20 deprecated-list.html
+drwxrwxr-x  7 travis travis    4096 May 23 00:57 diva
+drwxrwxr-x  3 travis travis    4096 May 23 01:02 doc
+drwxrwxr-x  3 travis travis    4096 May 23 01:13 edu
+-rw-rw-r--  1 travis travis    8129 May 23 01:20 help-doc.html
+-rw-rw-r--  1 travis travis 4803563 May 23 01:20 index-all.html
+-rw-rw-r--  1 travis travis    2879 May 23 01:20 index.html
+drwxrwxr-x  5 travis travis   45056 May 23 00:59 js
+drwxrwxr-x  7 travis travis    4096 May 23 01:12 lbnl
+drwxrwxr-x  3 travis travis    4096 May 23 01:02 net
+drwxrwxr-x  7 travis travis    4096 May 23 01:20 org
+-rw-rw-r--  1 travis travis    7489 May 23 01:20 overview-frame.html
+-rw-rw-r--  1 travis travis   18142 May 23 01:20 overview-summary.html
+-rw-rw-r--  1 travis travis  294254 May 23 01:20 overview-tree.html
+-rw-rw-r--  1 travis travis    1429 May 23 01:20 package-list
+drwxrwxr-x  5 travis travis    4096 May 23 01:02 ptdb
+-rw-rw-r--  1 travis travis  142238 May 23 01:20 PtIndexer.ser
+drwxrwxr-x 27 travis travis    4096 May 23 01:20 ptolemy
+drwxrwxr-x  8 travis travis    4096 May 23 00:59 ptserver
+-rw-rw-r--  1 travis travis     827 May 23 01:20 script.js
+-rw-rw-r--  1 travis travis  150669 May 23 01:20 serialized-form.html
+-rw-rw-r--  1 travis travis   12842 May 23 01:20 stylesheet.css
+drwxrwxr-x  4 travis travis    4096 May 23 01:02 thales
+drwxrwxr-x  3 travis travis    4096 May 23 01:02 util
+About to run ant jars: Wed May 23 02:41:02 UTC 2018
 /home/travis/build/icyphy/ptII/bin/ant: Running /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ant/bin/ant jars
 Buildfile: /home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel/build.xml
 
@@ -14134,16 +14134,16 @@ chmod a+x doc/books/systems/
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j
 -rwxr-xr-x 1 travis travis 160 Jun 27  2017 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j
 ls -l `dirname /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j`
-lrwxrwxrwx 1 travis travis 76 May 23 00:42 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+lrwxrwxrwx 1 travis travis 76 May 23 02:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors
 total 28
-lrwxrwxrwx 1 travis travis   77 May 23 00:42 installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
-lrwxrwxrwx 1 travis travis   74 May 23 00:42 izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
-drwxrwxr-x 3 travis travis 4096 May 23 00:42 j3d
-drwxrwxr-x 3 travis travis 4096 May 23 00:42 jogl
-lrwxrwxrwx 1 travis travis   76 May 23 00:42 launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
-drwxrwxr-x 4 travis travis 4096 May 23 00:42 misc
-drwxrwxr-x 5 travis travis 4096 May 23 00:42 node
+lrwxrwxrwx 1 travis travis   77 May 23 02:40 installer -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/installer
+lrwxrwxrwx 1 travis travis   74 May 23 02:40 izpack -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/izpack
+drwxrwxr-x 3 travis travis 4096 May 23 02:40 j3d
+drwxrwxr-x 3 travis travis 4096 May 23 02:40 jogl
+lrwxrwxrwx 1 travis travis   76 May 23 02:40 launch4j -> /home/travis/build/icyphy/ptII/adm/installers/test/../../../vendors/launch4j
+drwxrwxr-x 4 travis travis 4096 May 23 02:40 misc
+drwxrwxr-x 5 travis travis 4096 May 23 02:40 node
 "/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/vendors/launch4j/launch4j" `./bin/ptcygpath capecode_l4j.xml`
 launch4j: Resource file:
 launch4j: LANGUAGE 0, 1
@@ -14830,7 +14830,7 @@ if [ ! -d jar_dist ]; then \
 #  Copying ptolemy/actor/gui/jnlp/SpaceApplication.jar to jar_dist/
 #  Copying ptolemy/actor/gui/jnlp/ViptosApplication.jar to jar_dist/
 make[2]: Leaving directory `/home/travis/build/icyphy/ptII/adm/dists/ptII11.0.devel'
-Done creating PTIIDIST/jar_dist: Wed May 23 00:43:01 UTC 2018
+Done creating PTIIDIST/jar_dist: Wed May 23 02:41:17 UTC 2018
 make[1]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 # The /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/jar_dist rule updates the docs, so we need not do it here.
 #@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
@@ -15133,13 +15133,13 @@ config.status: creating lib/ptII.properties
 config.status: creating ptolemy/util/test/junit/javachdir32
 config.status: executing default commands
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/lib*.so
--rwxrwxr-x 1 travis travis 19964 May 23 00:42 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libJNIFMU.so
--rwxrwxr-x 1 travis travis 31898 May 23 00:42 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libptmatlab.so
+-rwxrwxr-x 1 travis travis 19964 May 23 02:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libJNIFMU.so
+-rwxrwxr-x 1 travis travis 31898 May 23 02:40 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/lib/libptmatlab.so
 #
 # Now creating PTII_FULL: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar Wed May 23 00:43:20 UTC 2018
- 00:43:20 up 8 min,  1 user,  load average: 1.79, 1.33, 0.67
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.tar Wed May 23 02:41:36 UTC 2018
+ 02:41:36 up 8 min,  1 user,  load average: 2.14, 1.43, 0.68
 chmod
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel; chmod -R a+rX .)
 For some reason under Cygwin, we need to build the compressed
@@ -15164,8 +15164,8 @@ Don't use -v with tar and Jenkins, avoid '/bin/tar: write error'. See http://sta
 #
 # Now creating PTII_SRC: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar Wed May 23 00:43:40 UTC 2018
- 00:43:40 up 8 min,  1 user,  load average: 1.63, 1.33, 0.68
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.tar Wed May 23 02:42:01 UTC 2018
+ 02:42:01 up 8 min,  1 user,  load average: 1.88, 1.43, 0.71
 rm -rf src/ptII11.0.devel
 mkdir src
 (cd src; \
@@ -24152,9 +24152,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/continuous/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/continuous'
 making clean in doc/books/systems/dataflow
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/dataflow'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/dataflow'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  dataflow.jar     dataflow.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/dataflow/test
@@ -24169,9 +24169,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/dataflow/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/dataflow'
 making clean in doc/books/systems/discreteevents
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/discreteevents'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/discreteevents'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  discreteevents.jar     discreteevents.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/discreteevents/test
@@ -24254,9 +24254,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/intro/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/intro'
 making clean in doc/books/systems/modal
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/modal'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/modal'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  modal.jar     modal.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/modal/test
@@ -24288,9 +24288,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/modelingtime/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/modelingtime'
 making clean in doc/books/systems/ontologies
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/ontologies'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/ontologies'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  ontologies.jar     ontologies.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/ontologies/test
@@ -24322,9 +24322,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/plotter/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/plotter'
 making clean in doc/books/systems/pn
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/pn'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/pn'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  pn.jar     pn.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/pn/test
@@ -24373,9 +24373,9 @@ make[7]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[6]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/synchronous/test'
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/synchronous'
 making clean in doc/books/systems/types
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/types'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 ../chapter.mk:79: warning: ignoring old commands for target `echo_models'
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/books/systems/types'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  types.jar     types.jar *.jar *.jnlp *.jnlp.fixed *.htm doc
 rm -f core
 making clean in doc/books/systems/types/test
@@ -24477,9 +24477,9 @@ make[4]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptI
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp    y14.jar    
 rm -f core
 making clean in doc/papers/y14/attackModeling
+make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/attackModeling'
 ../../../../mk/ptcommon.mk:990: warning: overriding commands for target `echo_models'
 makefile:82: warning: ignoring old commands for target `echo_models'
-make[5]: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/attackModeling'
 rm -rf *.o *.so *~ *.bak ,* LOG* *.class *.jstmp config.cache config.log config.status manifest.tmp  attackModeling.jar     attackModeling.jar 
 rm -f core
 make[5]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc/papers/y14/attackModeling'
@@ -24556,25 +24556,25 @@ make[2]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII
 make[1]: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel'
 (0)About to remove class files in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel
 (1)About to remove jars in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy
-1706446   48 -rw-rw-r--   1 travis   travis      45352 May 23 00:41 ./domains/openmodelica/openmodelica.jar
-1707976  204 -rw-rw-r--   1 travis   travis     208288 May 23 00:41 ./domains/metroII/demo/demo.jar
-1332906   20 -rw-rw-r--   1 travis   travis      16951 May 23 00:41 ./matlab/matlab.jar
-1332914    4 -rw-rw-r--   1 travis   travis       3200 May 23 00:41 ./matlab/demo/MatlabContinuous/MatlabContinuous.jar
-1332915    8 -rw-rw-r--   1 travis   travis       5765 May 23 00:41 ./matlab/demo/demo.jar
-1332919    4 -rw-rw-r--   1 travis   travis       3212 May 23 00:41 ./matlab/demo/MatlabExpression/MatlabExpression.jar
-1467342  160 -rw-rw-r--   1 travis   travis     160060 May 23 00:41 ./cg/cgAccessor.jar
-1711817  184 -rw-rw-r--   1 travis   travis     187439 May 23 00:41 ./actor/lib/jmf/jmf.jar
-1711823    4 -rw-rw-r--   1 travis   travis       2439 May 23 00:41 ./actor/lib/jmf/demo/JMFJAI/JMFJAI.jar
-1711826    4 -rw-rw-r--   1 travis   travis       3856 May 23 00:41 ./actor/lib/jmf/demo/demo.jar
-1711830    4 -rw-rw-r--   1 travis   travis       2308 May 23 00:41 ./actor/lib/jmf/demo/VideoCapture/VideoCapture.jar
-1716718 1664 -rw-rw-r--   1 travis   travis    1701005 May 23 00:41 ./actor/lib/jjs/modules/demo.jar
-1717150  688 -rwxrwxr-x   1 travis   travis     703395 May 23 00:36 ./actor/lib/excel/jxl.jar
-1717245   76 -rw-rw-r--   1 travis   travis      77121 May 23 00:41 ./actor/lib/jai/jai.jar
-1717275    4 -rw-rw-r--   1 travis   travis       2951 May 23 00:41 ./actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar
-1717281    4 -rw-rw-r--   1 travis   travis       3113 May 23 00:41 ./actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.jar
-1717283  288 -rw-rw-r--   1 travis   travis     291748 May 23 00:41 ./actor/lib/jai/demo/demo.jar
-1717288    4 -rw-rw-r--   1 travis   travis       3430 May 23 00:41 ./actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jar
-1468035    4 -rw-rw-r--   1 travis   travis       1757 May 23 00:41 ./actor/gui/jnlp/ViptosApplication.jar
+1706590   48 -rw-rw-r--   1 travis   travis      45352 May 23 02:39 ./domains/openmodelica/openmodelica.jar
+1708111  204 -rw-rw-r--   1 travis   travis     208288 May 23 02:39 ./domains/metroII/demo/demo.jar
+1332901   20 -rw-rw-r--   1 travis   travis      16951 May 23 02:39 ./matlab/matlab.jar
+1332909    4 -rw-rw-r--   1 travis   travis       3200 May 23 02:40 ./matlab/demo/MatlabContinuous/MatlabContinuous.jar
+1332910    8 -rw-rw-r--   1 travis   travis       5765 May 23 02:39 ./matlab/demo/demo.jar
+1332914    4 -rw-rw-r--   1 travis   travis       3212 May 23 02:40 ./matlab/demo/MatlabExpression/MatlabExpression.jar
+1467060  160 -rw-rw-r--   1 travis   travis     160060 May 23 02:39 ./cg/cgAccessor.jar
+1712339  184 -rw-rw-r--   1 travis   travis     187439 May 23 02:39 ./actor/lib/jmf/jmf.jar
+1712345    4 -rw-rw-r--   1 travis   travis       2439 May 23 02:39 ./actor/lib/jmf/demo/JMFJAI/JMFJAI.jar
+1712348    4 -rw-rw-r--   1 travis   travis       3856 May 23 02:39 ./actor/lib/jmf/demo/demo.jar
+1712352    4 -rw-rw-r--   1 travis   travis       2308 May 23 02:39 ./actor/lib/jmf/demo/VideoCapture/VideoCapture.jar
+1717240 1664 -rw-rw-r--   1 travis   travis    1701005 May 23 02:39 ./actor/lib/jjs/modules/demo.jar
+1717672  688 -rwxrwxr-x   1 travis   travis     703395 May 23 02:34 ./actor/lib/excel/jxl.jar
+1717767   76 -rw-rw-r--   1 travis   travis      77121 May 23 02:39 ./actor/lib/jai/jai.jar
+1717797    4 -rw-rw-r--   1 travis   travis       2951 May 23 02:39 ./actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar
+1717803    4 -rw-rw-r--   1 travis   travis       3113 May 23 02:39 ./actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.jar
+1717805  288 -rw-rw-r--   1 travis   travis     291748 May 23 02:39 ./actor/lib/jai/demo/demo.jar
+1717810    4 -rw-rw-r--   1 travis   travis       3430 May 23 02:39 ./actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jar
+1597904    4 -rw-rw-r--   1 travis   travis       1757 May 23 02:39 ./actor/gui/jnlp/ViptosApplication.jar
 (2)About to remove jars in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/ptolemy/domains/ptinyos
 (3)About to remove jars in /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel/doc
 (4)About to remove files named core /home/travis/build/icyphy/ptII/adm/gen-11.0/src/ptII11.0.devel
@@ -25119,18 +25119,18 @@ Total time: 0 seconds
 #
 # Creating the /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip directory so that we can create a zip
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip Wed May 23 00:44:50 UTC 2018
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip Wed May 23 02:43:08 UTC 2018
 if [ ! -d /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip ]; then mkdir -p /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip; fi
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip; tar -xf ../ptII11.0.devel.src.tar);
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip/ptII11.0.devel; rm -rf vendors/izpack vendors/j3d vendors/launch4j; pwd; ls -l vendors)
 /home/travis/build/icyphy/ptII/adm/gen-11.0/ptzip/ptII11.0.devel
 total 4
-drwxrwxr-x 4 travis travis 4096 May 23 00:42 misc
+drwxrwxr-x 4 travis travis 4096 May 23 02:40 misc
 #
 # Now creating PTII_FULL_ZIP: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip Wed May 23 00:44:52 UTC 2018
- 00:44:52 up 9 min,  1 user,  load average: 2.09, 1.57, 0.81
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip Wed May 23 02:43:10 UTC 2018
+ 02:43:10 up 9 min,  1 user,  load average: 2.00, 1.57, 0.81
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptzip; \
 	zip -r -q `/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptcygpath /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip` \
 	ptII11.0.devel \
@@ -25141,7 +25141,7 @@ chgrp ptolemy /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/ge
 chgrp: invalid group: ‘ptolemy’
 make: [/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip] Error 1 (ignored)
 ls -l /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
--rw-rw-r-- 1 travis travis 270420928 May 23 00:45 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
+-rw-rw-r-- 1 travis travis 270420908 May 23 02:43 /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.zip
 #
 src_jar rule
 #
@@ -25196,15 +25196,15 @@ About to remove unneeded sources from /home/travis/build/icyphy/ptII/adm/gen-11.
 #
 # Now creating PTII_SRC_JAR: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Wed May 23 00:45:38 UTC 2018
- 00:45:38 up 10 min,  1 user,  load average: 2.32, 1.70, 0.90
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Wed May 23 02:43:54 UTC 2018
+ 02:43:54 up 10 min,  1 user,  load average: 2.36, 1.73, 0.90
 rm -rf src_jar/ptII11.0.devel/vendors/izpack* src_jar/ptII11.0.devel/vendors/launch4j*
 (cd src_jar/ptII11.0.devel; "/usr/bin/jar" -cf ../../ptII11.0.devel.src.jar .)
 #
 # Now creating src_jar/capecode: src_jar/capecode0.2.devel
 #
-src_jar/capecode0.2.devel Wed May 23 00:46:02 UTC 2018
- 00:46:02 up 11 min,  1 user,  load average: 2.28, 1.74, 0.93
+src_jar/capecode0.2.devel Wed May 23 02:44:17 UTC 2018
+ 02:44:17 up 10 min,  1 user,  load average: 2.26, 1.75, 0.93
 if [ ! -d src_jar/capecode0.2.devel ]; then \
 		 mkdir -p src_jar/capecode0.2.devel; \
 	fi
@@ -25552,8 +25552,8 @@ cp licenseCapeCode.htm src_jar/capecode0.2.devel/copyright.htm
 #
 # Now creating CAPECODE_SRC_TAR: capecode0.2.devel.tar.gz
 #
-capecode0.2.devel.tar.gz Wed May 23 00:46:14 UTC 2018
- 00:46:14 up 11 min,  1 user,  load average: 2.16, 1.74, 0.94
+capecode0.2.devel.tar.gz Wed May 23 02:44:27 UTC 2018
+ 02:44:27 up 11 min,  1 user,  load average: 2.38, 1.79, 0.95
 # cp /home/travis/build/icyphy/ptII/adm/installers/test/../../../doc/design/capecode.pdf src_jar/capecode0.2.devel/doc/design/capecode.pdf;
 (cd src_jar; \
 		/usr/local/bin/tar -czf ../capecode0.2.devel.tar.gz \
@@ -25572,8 +25572,8 @@ make: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 #
 # Now creating PTII_SRC_JAR: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar
 #
-/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Wed May 23 00:46:27 UTC 2018
- 00:46:27 up 11 min,  1 user,  load average: 1.98, 1.72, 0.95
+/home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen-11.0/ptII11.0.devel.src.jar Wed May 23 02:44:39 UTC 2018
+ 02:44:39 up 11 min,  1 user,  load average: 2.22, 1.78, 0.96
 rm -rf src_jar/ptII11.0.devel/vendors/izpack* src_jar/ptII11.0.devel/vendors/launch4j*
 (cd src_jar/ptII11.0.devel; "/usr/bin/jar" -cf ../../ptII11.0.devel.src.jar .)
 make: Leaving directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
@@ -25591,7 +25591,7 @@ make: Entering directory `/home/travis/build/icyphy/ptII/adm/gen-11.0'
 (cd /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/dists/ptII11.0.devel/ptolemy/matlab; jar -xf ../../lib/matlabWindows.jar)
 #
 # cleanSrc: removing files created by configure
-# Wed May 23 00:46:47 UTC 2018
+# Wed May 23 02:44:59 UTC 2018
 if [ -f src/ptII11.0.devel/mk/ptII.mk ]; then \
 		(cd src/ptII11.0.devel/bin; mv CapeCode.app Ptiny.app Vergil.app ..; make clean; mv ../CapeCode.app ../Ptiny.app ../Vergil.app ../Ptiny.app .); \
 	fi
@@ -25632,7 +25632,7 @@ nightly-1.5: /home/travis/build/icyphy/ptII/adm/installers/test/../../../adm/gen
 ---- Result should have been:
 0 {} 1
 ---- installers-1.5 FAILED
-05/23/18 12:46:48
+05/23/18 02:44:59
 Failed: 1  Total Tests: 4  ((Passed: 3, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/adm/installers/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/adm/installers/test
