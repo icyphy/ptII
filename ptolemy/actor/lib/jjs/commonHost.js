@@ -224,7 +224,7 @@
 
 // Stop extra messages from jslint and jshint.
 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
-/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, getResource, getTopLevelAccessors */
+/*globals actor, alert, console, currentTime, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, getResource, getTopLevelAccessors */
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
@@ -500,6 +500,14 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
         throw new Error('Host does not define required alert function.');
     }
     
+    if (bindings && bindings.currentTime) {
+        this.currentTime = bindings.currentTime;
+    } else if (typeof currentTime !== 'undefined') {
+        this.currentTime = currentTime;
+    } else {
+        throw new Error('Host does not define required currentTime function.');
+    }
+
     if (bindings && bindings.getTopLevelAccessors) {
         this.getTopLevelAccessors = bindings.getTopLevelAccessors;
     } else {
@@ -511,6 +519,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     
     var wrapper = new Function('\
 alert, \
+currentTime, \
 error, \
 exports, \
 getResource, \
@@ -525,6 +534,7 @@ clearTimeout',
                                code);
     wrapper.call(this,
                  this.alert,
+                 this.currentTime,
                  this.error,
                  this.exports,
                  this.getResource,
@@ -1097,6 +1107,13 @@ Accessor.prototype.connect = function (a, b, c, d) {
     }
 };
 
+/** Default implement of the currentTime function, which throws an exception stating
+ *  that currentTime is not supported.
+ */
+Accessor.prototype.currentTime = function () {
+    throw new Error('This swarmlet host does not support currentTime().');
+};
+
 /** Disconnects the specified inputs and outputs.
  *  This function is buit from connect() function. Therefore, it uses the same
  *  four forms, however it is used in order to produce the opposite effect:
@@ -1267,6 +1284,7 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
     // For functions that access ports, etc., we want the default implementation
     // when instantiating the contained accessor.
     var insideBindings = {
+        'currentTime': this.currentTime,
         'error': this.error,
         'httpRequest': this.httpRequest,
         'readURL': this.readURL,
