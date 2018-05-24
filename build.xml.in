@@ -2678,15 +2678,17 @@ For example:
       ==test.single==
       Run a single JUnit test by classname (ptolemy.actor.lib.test.junit.JUnitTclTest).
 
-      To run a different test, use -Dtest.name=ptolemy...JUnitTclTest.java and
+      To run a different test, use
+         -Dtest.name=ptolemy.actor.lib.test.junit.JUnitTclTest
+      and 
          -Djunit.single.formatter=xml|brief|plain|failure (default is plain)
+
       For example:
       * Run all the tests in actor/lib/test
           ant test.single
       * Run all the tests in kernel/test
-          ant test.single -Dtest.name=ptolemy/kernel/test/junit/JUnitTclTest.java
-      * Run all the tests in kernel and subdirectories, generating output in reports/junit
-          ant test.single "-Dtest.name=ptolemy/kernel/*/test/junit/JUnitTclTest.java" -Djunit.single.formatter=xml -Dusefile=true
+          ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest
+
       Various other test targets are available:
        test - builds and runs test.short, test.long and test.longest
        test.32bit - runs the 32-bit JVM tests in auto32/
