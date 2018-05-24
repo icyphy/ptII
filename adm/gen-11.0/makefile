@@ -3492,12 +3492,18 @@ $(IZPACK_COMPILE): $(IZPACK_DIR)
 	 cd $(IZPACK_DIR)/src; ant dist
 
 # Download IzPack
-IZPACK_JAR=$(INSTALLER_SRCS)/izpack-dist-5.1.2.jar
+# IZPACK_JAR=$(INSTALLER_SRCS)/izpack-dist-5.1.2.jar
+# https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar
+
+# Use IzPack built from the head so that installers work under Java 10.
+# See https://izpack.atlassian.net/browse/IZPACK-1627
+IZPACK_JAR=$(INSTALLER_SRCS)/izpack-dist-5.1.3-SNAPSHOT.jar
 izpack_jar:$(IZPACK_JAR)
 $(IZPACK_JAR): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
 		echo "Downloading izpack: `date`"; \
-		wget --quiet -O $@ https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar; \
+		wget --quiet -O $@ \
+			https://github.com/icyphy/ptII/releases/download/nightly/izpack-dist-5.1.3-SNAPSHOT.jar; \
 	fi
 
 
