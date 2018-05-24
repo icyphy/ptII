@@ -183,9 +183,8 @@ public class CertiRtig extends NamedObj {
         // Execute command as shell interpret.
         commandList = _getCommandList();
 
-        // Build the command to execute in the shell: "rtig <.fed file>"
+        // Build the command to execute in the shell: "rtig"
         commandList.add(certiHome + "/bin/rtig");
-        commandList.add(fedFileName.getName());
 
         _commandArray = commandList.toArray(new String[commandList.size()]);
 
