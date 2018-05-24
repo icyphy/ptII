@@ -1,0 +1,1710 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/domains/de/test/DependencyLoop.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu May 24 01:17:47 UTC 2018
+14 ms. Memory: 116224K Free: 95041K (82%)
+6 ms. Memory: 146944K Free: 137810K (94%)
+/home/travis/build/icyphy/ptII/ptolemy/domains/de/test/RunDETestsAsQSS.tcl
+Run the DE tests using ptolemy.domains.qss.test.QSSDirectorTest, which extends QSSDirector and prints a message in the constructors.
+------------------ testing $PTII/ptolemy/domains/de/test/auto/knownFailedTests/dependencyLoop.xml (Known Failure) 
+10 ms. Memory: 146944K Free: 133536K (91%)
+
+
+==== $PTIIhome/travis/build/icyphy/ptII/ptolemy/domains/de/test/../../../../: Auto Automatic test in file $PTII/ptolemy/domains/de/test/auto/knownFailedTests/dependencyLoop.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+	    createAndExecute $file
+	    list {}
+	
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop.original
+  in .dependencyLoop and .dependencyLoop.original
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:759)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:765)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:765)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeActorDepth(CausalityInterfaceForComposites.java:532)
+	at ptolemy.actor.util.CausalityInterfaceForComposites.checkForCycles(CausalityInterfaceForComposites.java:96)
+	at ptolemy.domains.de.kernel.DEDirector.preinitialize(DEDirector.java:1337)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop.original
+  in .dependencyLoop and .dependencyLoop.original
+    while executing
+"java::new ptolemy.moml.MoMLSimpleApplication $file
+"
+    (procedure "createAndExecute" line 2)
+    invoked from within
+"createAndExecute $file"
+    ("uplevel" body line 5)
+    invoked from within
+"uplevel $contents_of_test"
+------------------ testing $PTII/ptolemy/domains/de/test/auto/knownFailedTests/DESDFClockTest.xml (Known Failure) 
+2074 ms. Memory: 146944K Free: 117725K (80%)
+
+
+==== $PTIIhome/travis/build/icyphy/ptII/ptolemy/domains/de/test/../../../../: Auto Automatic test in file $PTII/ptolemy/domains/de/test/auto/knownFailedTests/DESDFClockTest.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+	    createAndExecute $file
+	    list {}
+	
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.  Perhaps UpSample.prefire() returned false? Try debugging the actor by selecting "Listen to Actor".  Also, for SDF check moml for tokenConsumptionRate on input.
+  in .DESDFClockTest.Play Bell.Copy1:SDF Director and .DESDFClockTest.Play Bell.UpSample
+	at ptolemy.actor.sched.StaticSchedulingDirector.fire(StaticSchedulingDirector.java:227)
+	at ptolemy.domains.sdf.kernel.SDFDirector.fire(SDFDirector.java:500)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.  Perhaps UpSample.prefire() returned false? Try debugging the actor by selecting "Listen to Actor".  Also, for SDF check moml for tokenConsumptionRate on input.
+  in .DESDFClockTest.Play Bell.Copy1:SDF Director and .DESDFClockTest.Play Bell.UpSample
+    while executing
+"java::new ptolemy.moml.MoMLSimpleApplication $file
+"
+    (procedure "createAndExecute" line 2)
+    invoked from within
+"createAndExecute $file"
+    ("uplevel" body line 5)
+    invoked from within
+"uplevel $contents_of_test"
+------------------ testing $PTII/ptolemy/domains/de/test/auto/knownFailedTests/FSMSource.xml (Known Failure) 
+20 ms. Memory: 146944K Free: 108225K (74%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/de/test/auto/knownFailedTests/dependencyLoop2.xml (Known Failure) 
+6 ms. Memory: 146944K Free: 106366K (72%)
+
+
+==== $PTIIhome/travis/build/icyphy/ptII/ptolemy/domains/de/test/../../../../: Auto Automatic test in file $PTII/ptolemy/domains/de/test/auto/knownFailedTests/dependencyLoop2.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+	    createAndExecute $file
+	    list {}
+	
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop2.original
+  in .dependencyLoop2 and .dependencyLoop2.original
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:759)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:765)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:765)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeActorDepth(CausalityInterfaceForComposites.java:532)
+	at ptolemy.actor.util.CausalityInterfaceForComposites.checkForCycles(CausalityInterfaceForComposites.java:96)
+	at ptolemy.domains.de.kernel.DEDirector.preinitialize(DEDirector.java:1337)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop2.original
+  in .dependencyLoop2 and .dependencyLoop2.original
+    while executing
+"java::new ptolemy.moml.MoMLSimpleApplication $file
+"
+    (procedure "createAndExecute" line 2)
+    invoked from within
+"createAndExecute $file"
+    ("uplevel" body line 5)
+    invoked from within
+"uplevel $contents_of_test"
+------------------ testing $PTII/ptolemy/domains/de/test/auto/knownFailedTests/HierarchicalModel.xml (Known Failure) 
+10 ms. Memory: 146944K Free: 85839K (58%)
+
+
+==== $PTIIhome/travis/build/icyphy/ptII/ptolemy/domains/de/test/../../../../: Auto Automatic test in file $PTII/ptolemy/domains/de/test/auto/knownFailedTests/HierarchicalModel.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+	    createAndExecute $file
+	    list {}
+	
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .HierarchicalModel.A
+  in .HierarchicalModel and .HierarchicalModel.A
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:759)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:765)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeOutputPortDepth(CausalityInterfaceForComposites.java:765)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeInputDepth(CausalityInterfaceForComposites.java:696)
+	at ptolemy.actor.util.CausalityInterfaceForComposites._computeActorDepth(CausalityInterfaceForComposites.java:532)
+	at ptolemy.actor.util.CausalityInterfaceForComposites.checkForCycles(CausalityInterfaceForComposites.java:96)
+	at ptolemy.domains.de.kernel.DEDirector.preinitialize(DEDirector.java:1337)
+	at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1828)
+	at ptolemy.actor.Manager.preinitializeAndResolveTypes(Manager.java:1040)
+	at ptolemy.actor.Manager.initialize(Manager.java:710)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .HierarchicalModel.A
+  in .HierarchicalModel and .HierarchicalModel.A
+    while executing
+"java::new ptolemy.moml.MoMLSimpleApplication $file
+"
+    (procedure "createAndExecute" line 2)
+    invoked from within
+"createAndExecute $file"
+    ("uplevel" body line 5)
+    invoked from within
+"uplevel $contents_of_test"
+------------------ testing $PTII/ptolemy/domains/de/test/auto/knownFailedTests/DirectFeedback.xml (Known Failure) 
+19 ms. Memory: 146944K Free: 142575K (97%)
+
+
+==== $PTIIhome/travis/build/icyphy/ptII/ptolemy/domains/de/test/../../../../: Auto Automatic test in file $PTII/ptolemy/domains/de/test/auto/knownFailedTests/DirectFeedback.xml
+==== Contents of test case:
+
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+	    createAndExecute $file
+	    list {}
+	
+.... Test generated KNOWN error:
+    while executing
+ptolemy.kernel.util.IllegalActionException: Test fails in iteration 1.
+Value was: 1.0. Should have been: 2.0
+  in .DirectFeedback.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:268)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+
+    while executing
+ptolemy.kernel.util.IllegalActionException: Test fails in iteration 1.
+Value was: 1.0. Should have been: 2.0
+  in .DirectFeedback.Test
+    while executing
+"java::new ptolemy.moml.MoMLSimpleApplication $file
+"
+    (procedure "createAndExecute" line 2)
+    invoked from within
+"createAndExecute $file"
+    ("uplevel" body line 5)
+    invoked from within
+"uplevel $contents_of_test"
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ActorDepthCalculation_actorWithoutPorts.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+8 ms. Memory: 146944K Free: 133601K (91%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+4 ms. Memory: 146944K Free: 132561K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/AssemblyLine.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+35 ms. Memory: 208384K Free: 182845K (88%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+11 ms. Memory: 208384K Free: 182845K (88%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CQBug1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+6 ms. Memory: 208384K Free: 197720K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+2 ms. Memory: 208384K Free: 197720K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CancelFireAt.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+3 ms. Memory: 208384K Free: 201434K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+4 ms. Memory: 208384K Free: 199332K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CausalityAndComposabilityAnalysis.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+7 ms. Memory: 208384K Free: 196477K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+9 ms. Memory: 208384K Free: 196477K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CausalityInterface1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+18 ms. Memory: 208384K Free: 196414K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:51 UTC 2018
+5 ms. Memory: 208384K Free: 196414K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:51 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CausalityInterface15.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+18 ms. Memory: 208384K Free: 196421K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+4 ms. Memory: 208384K Free: 196421K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CausalityInterface2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+6 ms. Memory: 208384K Free: 196390K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+3 ms. Memory: 208384K Free: 196390K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/CausalityInterface3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+7 ms. Memory: 208384K Free: 196403K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+4 ms. Memory: 208384K Free: 196403K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ClockDrift.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+99 ms. Memory: 208384K Free: 187601K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+58 ms. Memory: 208384K Free: 185501K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ClockDriftAndValueChange.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+54 ms. Memory: 208384K Free: 187420K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+39 ms. Memory: 208384K Free: 185320K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ClockDriftChange.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+35 ms. Memory: 208384K Free: 190795K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:52 UTC 2018
+18 ms. Memory: 208384K Free: 188679K (91%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:52 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ComposableCausalityAnalysis.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+3 ms. Memory: 208384K Free: 196033K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+2 ms. Memory: 208384K Free: 193917K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+6 ms. Memory: 208384K Free: 196097K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+1 ms. Memory: 208384K Free: 196097K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DEScheduleTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+4 ms. Memory: 208384K Free: 198571K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+6 ms. Memory: 208384K Free: 196117K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DEinDEwithStartTimes.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+8 ms. Memory: 208384K Free: 196087K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+4 ms. Memory: 208384K Free: 193986K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DEinDEwithStartTimes2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+4 ms. Memory: 208384K Free: 196088K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+7 ms. Memory: 208384K Free: 193972K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DateDemo.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+19 ms. Memory: 208384K Free: 188510K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+6 ms. Memory: 208384K Free: 186410K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:53 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DateToEvent.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:53 UTC 2018
+2010 ms. Memory: 208384K Free: 183199K (88%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:55 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:55 UTC 2018
+2006 ms. Memory: 208384K Free: 183199K (88%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+3 ms. Memory: 208384K Free: 194979K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+2 ms. Memory: 208384K Free: 194979K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+7 ms. Memory: 208384K Free: 193636K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+3 ms. Memory: 208384K Free: 193636K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+2 ms. Memory: 208384K Free: 198108K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+2 ms. Memory: 208384K Free: 198108K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:57 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:57 UTC 2018
+3 ms. Memory: 208384K Free: 195757K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+2 ms. Memory: 208384K Free: 195757K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+6 ms. Memory: 208384K Free: 196050K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+3 ms. Memory: 208384K Free: 196050K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest6.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+7 ms. Memory: 208384K Free: 195673K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+2 ms. Memory: 208384K Free: 195673K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/DepthTest7.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+2 ms. Memory: 208384K Free: 195644K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+2 ms. Memory: 208384K Free: 195644K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:17:58 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/EventToDate.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:17:58 UTC 2018
+3007 ms. Memory: 208384K Free: 185164K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:01 UTC 2018
+3004 ms. Memory: 208384K Free: 185164K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/FSM1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+31 ms. Memory: 208384K Free: 188687K (91%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+24 ms. Memory: 208384K Free: 184486K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/FSM7.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+30 ms. Memory: 208384K Free: 186790K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+15 ms. Memory: 208384K Free: 184674K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Inspection.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+43 ms. Memory: 208384K Free: 187995K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+34 ms. Memory: 208384K Free: 185887K (89%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Iteration.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+10 ms. Memory: 208384K Free: 193350K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:04 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:04 UTC 2018
+6 ms. Memory: 208384K Free: 193350K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:05 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/LineFault.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:05 UTC 2018
+823 ms. Memory: 208384K Free: 195735K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:06 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:06 UTC 2018
+692 ms. Memory: 208384K Free: 138316K (66%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:06 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/MergeModel1Add.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:06 UTC 2018
+28 ms. Memory: 331264K Free: 302157K (91%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+9 ms. Memory: 331264K Free: 298188K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/MergeModel2Add.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+9 ms. Memory: 331264K Free: 303502K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+8 ms. Memory: 331264K Free: 299542K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/MergeModel3Add.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+11 ms. Memory: 331264K Free: 303513K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+6 ms. Memory: 331264K Free: 299544K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/MergeWithoutDiscard.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+2 ms. Memory: 331264K Free: 319652K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+1 ms. Memory: 331264K Free: 315692K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+21 ms. Memory: 331264K Free: 309285K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+27 ms. Memory: 331264K Free: 305324K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+19 ms. Memory: 331264K Free: 309160K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+19 ms. Memory: 331264K Free: 305200K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+15 ms. Memory: 331264K Free: 309443K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+14 ms. Memory: 331264K Free: 305189K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+31 ms. Memory: 331264K Free: 309156K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:07 UTC 2018
+21 ms. Memory: 331264K Free: 305187K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:07 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+15 ms. Memory: 331264K Free: 309143K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+11 ms. Memory: 331264K Free: 305182K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal6.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+14 ms. Memory: 331264K Free: 309140K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+17 ms. Memory: 331264K Free: 305180K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Modal7.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+19 ms. Memory: 331264K Free: 309125K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+11 ms. Memory: 331264K Free: 305164K (92%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ModalModel.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+180 ms. Memory: 331264K Free: 245392K (74%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+171 ms. Memory: 331264K Free: 189889K (57%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ModalSource.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+6 ms. Memory: 331264K Free: 315949K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+6 ms. Memory: 331264K Free: 312425K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/NonInterruptibleTimerZeroDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+4 ms. Memory: 331264K Free: 320326K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+3 ms. Memory: 331264K Free: 316786K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:08 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/OpenQueueingNetwork.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:08 UTC 2018
+3041 ms. Memory: 573952K Free: 405427K (71%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:12 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:12 UTC 2018
+2832 ms. Memory: 550912K Free: 286383K (52%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/OpenQueuingNetwork.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+253 ms. Memory: 549888K Free: 444232K (81%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+250 ms. Memory: 549888K Free: 383953K (70%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/PeriodicSampler.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+2 ms. Memory: 551936K Free: 530315K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+2 ms. Memory: 551936K Free: 530315K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/PersistentIO.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+12 ms. Memory: 549376K Free: 521657K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+3 ms. Memory: 549376K Free: 521657K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/PortParameterResetOnInitialize.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+3 ms. Memory: 551424K Free: 530035K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+2 ms. Memory: 551424K Free: 530035K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:15 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/PortParameterUpdates.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:15 UTC 2018
+3 ms. Memory: 549376K Free: 528349K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+3 ms. Memory: 549376K Free: 521651K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/QueueAndServer.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+6 ms. Memory: 551424K Free: 534810K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+6 ms. Memory: 551424K Free: 528097K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Records.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+4 ms. Memory: 549376K Free: 532704K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 549376K Free: 532704K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+12 ms. Memory: 551424K Free: 534778K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+5 ms. Memory: 551424K Free: 528080K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+5 ms. Memory: 549376K Free: 526252K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+8 ms. Memory: 549376K Free: 526252K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+8 ms. Memory: 550912K Free: 527558K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+6 ms. Memory: 550912K Free: 527558K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+5 ms. Memory: 549376K Free: 526012K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+5 ms. Memory: 549376K Free: 526012K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResettableTimer1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 550912K Free: 534249K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 550912K Free: 534249K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResettableTimer2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+3 ms. Memory: 549376K Free: 533000K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 549376K Free: 533000K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResettableTimer3.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+1 ms. Memory: 550912K Free: 534306K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+1 ms. Memory: 550912K Free: 534306K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResettableTimer4.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+1 ms. Memory: 549376K Free: 533013K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 549376K Free: 533013K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResettableTimer5.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 550400K Free: 529355K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+1 ms. Memory: 550400K Free: 529355K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ResettableTimer6.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 549376K Free: 528051K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:16 UTC 2018
+2 ms. Memory: 549376K Free: 528051K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:16 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ServerZeroDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:17 UTC 2018
+4 ms. Memory: 550400K Free: 533975K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:17 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:17 UTC 2018
+2 ms. Memory: 550400K Free: 533975K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:17 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/SmartSender.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:17 UTC 2018
+3001 ms. Memory: 549376K Free: 518907K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:20 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:20 UTC 2018
+3002 ms. Memory: 549376K Free: 518907K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:23 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/ThreadedComposite.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:23 UTC 2018
+185 ms. Memory: 550400K Free: 513018K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:23 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:23 UTC 2018
+136 ms. Memory: 550400K Free: 496961K (90%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:23 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Time.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:23 UTC 2018
+486 ms. Memory: 549376K Free: 480963K (88%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:24 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:24 UTC 2018
+497 ms. Memory: 549376K Free: 427383K (78%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:24 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/TimeDelayZeroDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:24 UTC 2018
+2 ms. Memory: 550400K Free: 533661K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:24 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:24 UTC 2018
+2 ms. Memory: 550400K Free: 533661K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:24 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/TimerZeroDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:24 UTC 2018
+2 ms. Memory: 549376K Free: 532910K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:24 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:24 UTC 2018
+2 ms. Memory: 549376K Free: 532910K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:24 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/TimingParadox.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:24 UTC 2018
+341 ms. Memory: 549888K Free: 466931K (85%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:25 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:25 UTC 2018
+324 ms. Memory: 549888K Free: 433443K (79%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:25 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/TransferInputs.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:25 UTC 2018
+2 ms. Memory: 549888K Free: 532323K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:25 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:25 UTC 2018
+2 ms. Memory: 549888K Free: 532323K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:25 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/TransferOutputs2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:25 UTC 2018
+3 ms. Memory: 549376K Free: 526200K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:25 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:25 UTC 2018
+3 ms. Memory: 549376K Free: 526200K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:25 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/Trilateration.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:25 UTC 2018
+15843 ms. Memory: 766976K Free: 202667K (26%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:42 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:42 UTC 2018
+13260 ms. Memory: 623104K Free: 585414K (94%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:55 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/TwoSigmaDelta.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:56 UTC 2018
+2881 ms. Memory: 619520K Free: 303454K (49%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:18:59 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:18:59 UTC 2018
+2313 ms. Memory: 619520K Free: 75325K (12%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/VariableDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+5 ms. Memory: 623104K Free: 598454K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+4 ms. Memory: 623104K Free: 598454K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/VariableDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+3 ms. Memory: 619520K Free: 600695K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+2 ms. Memory: 619520K Free: 600695K (97%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/VariableDelayZeroDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+7 ms. Memory: 622592K Free: 598385K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+2 ms. Memory: 622592K Free: 598385K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/VariableDelayZeroDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+3 ms. Memory: 619520K Free: 595312K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+2 ms. Memory: 619520K Free: 595312K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/deInCt.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+0
+1
+1
+1
+0
+0
+0
+0
+1
+1
+1
+1
+0
+0
+0
+0
+1
+1
+1
+0
+0
+0
+1
+1
+1
+0
+0
+0
+1
+1
+1
+0
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+0
+0
+1
+1
+0
+0
+0
+1
+1
+1
+1
+9 ms. Memory: 622080K Free: 597838K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+0
+1
+1
+0
+0
+0
+1
+1
+1
+0
+0
+0
+0
+1
+1
+1
+0
+0
+0
+1
+1
+1
+1
+0
+0
+0
+0
+0
+1
+1
+1
+1
+1
+0
+0
+1
+1
+1
+1
+5 ms. Memory: 622080K Free: 597838K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/deInCt2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+0
+17 ms. Memory: 619520K Free: 595278K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+0
+12 ms. Memory: 619520K Free: 595278K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/dynamicCausalityInterface1.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+1 ms. Memory: 621568K Free: 594497K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+1 ms. Memory: 621568K Free: 594497K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:01 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/fsm_de_test.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:01 UTC 2018
+7 ms. Memory: 619520K Free: 595199K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+5 ms. Memory: 619520K Free: 586979K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/functionDependencyReconstruction.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+3 ms. Memory: 621568K Free: 589010K (95%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+3 ms. Memory: 621568K Free: 580775K (93%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/multirate.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+5 ms. Memory: 619520K Free: 595066K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+3 ms. Memory: 619520K Free: 595066K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/multirate2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+2 ms. Memory: 621056K Free: 596790K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+3 ms. Memory: 621056K Free: 596790K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:02 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/realtime.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:02 UTC 2018
+10001 ms. Memory: 619520K Free: 595222K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:12 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:12 UTC 2018
+10002 ms. Memory: 619520K Free: 595222K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/relationGroup.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 621056K Free: 596815K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 621056K Free: 596815K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/relationGroup2.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+1 ms. Memory: 619520K Free: 595306K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 619520K Free: 595306K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/sortWithOpaquePorts.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 620544K Free: 596330K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 620544K Free: 596330K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/transferInputsandOutputs.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+5 ms. Memory: 619520K Free: 595293K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 619520K Free: 595293K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+------------------ testing $PTII/ptolemy/domains/de/test/auto/triggerType.xml
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 620544K Free: 596268K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+auto.tcl: Setting watchdog for 200 seconds at Thu May 24 01:19:22 UTC 2018
+2 ms. Memory: 620544K Free: 596268K (96%)
+ptolemy.util.test.WatchDog.cancel(): canceling Thu May 24 01:19:22 UTC 2018
+05/24/18 01:19:22
+Failed: 0  Total Tests: 192  ((Passed: 187, Newly Passed: 1)  Known Failed: 5) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test
+05/24/18 01:19:22
+Failed: 0  Total Tests: 192  ((Passed: 187, Newly Passed: 1)  Known Failed: 5) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/knownFailedTests/DESDFClockTest.xml
+2015 ms. Memory: 619520K Free: 584505K (94%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/knownFailedTests/DirectFeedback.xml
+1 ms. Memory: 619520K Free: 541455K (87%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/knownFailedTests/FSMSource.xml
+18 ms. Memory: 619520K Free: 498406K (80%)
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/knownFailedTests/HierarchicalModel.xml
+2 ms. Memory: 619520K Free: 466103K (75%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/knownFailedTests/dependencyLoop.xml
+2 ms. Memory: 619520K Free: 412276K (67%)
+Known Failure: java.lang.reflect.InvocationTargetException
+----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/knownFailedTests/dependencyLoop2.xml
+4 ms. Memory: 619520K Free: 358456K (58%)
+Known Failure: java.lang.reflect.InvocationTargetException
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/domains/de/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ActorDepthCalculation_actorWithoutPorts.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ActorDepthCalculation_actorWithoutPorts.xml
+2 ms. Memory: 619520K Free: 304645K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11aa5dec
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@11aa5dec
+reloadAllAccessors: .ActorDepthCalculation_actorWithoutPorts
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/AssemblyLine.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/AssemblyLine.xml
+1 ms. Memory: 619520K Free: 283120K (46%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fd5e239
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7fd5e239
+reloadAllAccessors: .AssemblyLine
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CQBug1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CQBug1.xml
+1 ms. Memory: 619520K Free: 261596K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@266861c1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@266861c1
+reloadAllAccessors: .CQBug1
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CancelFireAt.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CancelFireAt.xml
+1 ms. Memory: 619520K Free: 240071K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@346a0561
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@346a0561
+reloadAllAccessors: .CancelFireAt
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityAndComposabilityAnalysis.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityAndComposabilityAnalysis.xml
+2 ms. Memory: 619520K Free: 218547K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c3f362b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c3f362b
+reloadAllAccessors: .CausalityAndComposabilityAnalysis
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface1.xml
+4 ms. Memory: 619520K Free: 197022K (32%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d5d1f0f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4d5d1f0f
+reloadAllAccessors: .CausalityInterface1
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface15.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface15.xml
+2 ms. Memory: 619520K Free: 175497K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@241f14e8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@241f14e8
+reloadAllAccessors: .CausalityInterface15
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface2.xml
+2 ms. Memory: 619520K Free: 153973K (25%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@30eabdc
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@30eabdc
+reloadAllAccessors: .CausalityInterface2
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/CausalityInterface3.xml
+1 ms. Memory: 619520K Free: 132448K (21%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57a24faa
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57a24faa
+reloadAllAccessors: .CausalityInterface3
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ClockDrift.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ClockDrift.xml
+10 ms. Memory: 619520K Free: 110924K (18%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46632ea1
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@46632ea1
+reloadAllAccessors: .ClockDrift
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ClockDriftAndValueChange.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ClockDriftAndValueChange.xml
+10 ms. Memory: 619520K Free: 89399K (14%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13477006
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@13477006
+reloadAllAccessors: .ClockDriftAndValueChange
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ClockDriftChange.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ClockDriftChange.xml
+9 ms. Memory: 619520K Free: 76167K (12%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@28f1f875
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@28f1f875
+reloadAllAccessors: .ClockDriftChange
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ComposableCausalityAnalysis.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ComposableCausalityAnalysis.xml
+0 ms. Memory: 595456K Free: 569429K (96%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1619545e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1619545e
+reloadAllAccessors: .ComposableCausalityAnalysis
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml
+1 ms. Memory: 595456K Free: 543814K (91%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ea789bb
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@ea789bb
+reloadAllAccessors: .DEFixedPointLimitation
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEScheduleTest.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEScheduleTest.xml
+1 ms. Memory: 595456K Free: 523293K (88%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@385cd48c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@385cd48c
+reloadAllAccessors: .DEScheduleTest
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEinDEwithStartTimes.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEinDEwithStartTimes.xml
+2 ms. Memory: 595456K Free: 502772K (84%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bc8eea3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5bc8eea3
+reloadAllAccessors: .DEinDEwithStartTimes
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEinDEwithStartTimes2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DEinDEwithStartTimes2.xml
+2 ms. Memory: 595456K Free: 482251K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1e02fa45
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1e02fa45
+reloadAllAccessors: .DEinDEwithStartTimes2
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DateDemo.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DateDemo.xml
+6 ms. Memory: 595456K Free: 451450K (76%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3732a560
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3732a560
+reloadAllAccessors: .DateDemo
+----------------- testing Thu May 24 01:19:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DateToEvent.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DateToEvent.xml
+2003 ms. Memory: 595456K Free: 420653K (71%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5b02b828
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5b02b828
+reloadAllAccessors: .DateToEvent
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest1.xml
+2 ms. Memory: 595456K Free: 400131K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@560ebcd8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@560ebcd8
+reloadAllAccessors: .DepthTest1
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest2.xml
+3 ms. Memory: 595456K Free: 379610K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5af5b484
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5af5b484
+reloadAllAccessors: .DepthTest2
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest3.xml
+1 ms. Memory: 595456K Free: 359089K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@68fae92d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@68fae92d
+reloadAllAccessors: .DepthTest3
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest4.xml
+3 ms. Memory: 595456K Free: 338568K (57%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40527e63
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40527e63
+reloadAllAccessors: .DepthTest4
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest5.xml
+2 ms. Memory: 595456K Free: 312946K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e0a708e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@e0a708e
+reloadAllAccessors: .DepthTest5
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest6.xml
+2 ms. Memory: 595456K Free: 292425K (49%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@456b8c80
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@456b8c80
+reloadAllAccessors: .DepthTest6
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest7.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/DepthTest7.xml
+2 ms. Memory: 595456K Free: 271903K (46%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c2f790b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c2f790b
+reloadAllAccessors: .DepthTest7
+----------------- testing Thu May 24 01:19:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/EventToDate.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/EventToDate.xml
+3007 ms. Memory: 595456K Free: 241106K (40%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@31d496c4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@31d496c4
+reloadAllAccessors: .EventToDate
+----------------- testing Thu May 24 01:19:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/FSM1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/FSM1.xml
+9 ms. Memory: 595456K Free: 220585K (37%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51ea120
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51ea120
+reloadAllAccessors: .FSM1
+----------------- testing Thu May 24 01:19:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/FSM7.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/FSM7.xml
+8 ms. Memory: 595456K Free: 200064K (34%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26a9230a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26a9230a
+reloadAllAccessors: .FSM7
+----------------- testing Thu May 24 01:19:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Inspection.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Inspection.xml
+21 ms. Memory: 595456K Free: 169266K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@54b17b94
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@54b17b94
+reloadAllAccessors: .Inspection
+----------------- testing Thu May 24 01:19:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Iteration.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Iteration.xml
+5 ms. Memory: 595456K Free: 148745K (25%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@35dcf067
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@35dcf067
+reloadAllAccessors: .Iteration
+----------------- testing Thu May 24 01:19:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/LineFault.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/LineFault.xml
+457 ms. Memory: 571392K Free: 502095K (88%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e10003e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2e10003e
+reloadAllAccessors: .LineFault
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeModel1Add.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeModel1Add.xml
+7 ms. Memory: 571392K Free: 468904K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@426bc659
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@426bc659
+reloadAllAccessors: .MergeModel1Add
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeModel2Add.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeModel2Add.xml
+5 ms. Memory: 571392K Free: 444431K (78%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3662df6f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3662df6f
+reloadAllAccessors: .MergeModel2Add
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeModel3Add.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeModel3Add.xml
+5 ms. Memory: 571392K Free: 419951K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb67c7
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7cb67c7
+reloadAllAccessors: .MergeModel3Add
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeWithoutDiscard.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/MergeWithoutDiscard.xml
+1 ms. Memory: 571392K Free: 410172K (72%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@73e82587
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@73e82587
+reloadAllAccessors: .MergeWithoutDiscard
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal1.xml
+8 ms. Memory: 571392K Free: 390581K (68%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4837975b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4837975b
+reloadAllAccessors: .Modal1
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal2.xml
+7 ms. Memory: 571392K Free: 370991K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5212d004
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5212d004
+reloadAllAccessors: .Modal2
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal3.xml
+7 ms. Memory: 571392K Free: 348181K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c37801a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c37801a
+reloadAllAccessors: .Modal3
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal4.xml
+8 ms. Memory: 571392K Free: 328606K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7518cda3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7518cda3
+reloadAllAccessors: .Modal4
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal5.xml
+9 ms. Memory: 571392K Free: 309016K (54%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cb4f8b3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3cb4f8b3
+reloadAllAccessors: .Modal5
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal6.xml
+8 ms. Memory: 571392K Free: 294331K (52%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17aea13a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@17aea13a
+reloadAllAccessors: .Modal6
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal7.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Modal7.xml
+7 ms. Memory: 571392K Free: 274740K (48%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44b65802
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@44b65802
+reloadAllAccessors: .Modal7
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ModalModel.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ModalModel.xml
+97 ms. Memory: 571392K Free: 201268K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@77bbe0e6
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@77bbe0e6
+reloadAllAccessors: .ModalModel
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ModalSource.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ModalSource.xml
+4 ms. Memory: 571392K Free: 186583K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@679f6a58
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@679f6a58
+reloadAllAccessors: .ModalSource
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/NonInterruptibleTimerZeroDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/NonInterruptibleTimerZeroDelay.xml
+2 ms. Memory: 571392K Free: 173557K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72f8fc35
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72f8fc35
+reloadAllAccessors: .NonInterruptibleTimerZeroDelay
+----------------- testing Thu May 24 01:19:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/OpenQueueingNetwork.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/OpenQueueingNetwork.xml
+2198 ms. Memory: 526336K Free: 449538K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c025cd4
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c025cd4
+reloadAllAccessors: .OpenQueueingNetwork
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/OpenQueuingNetwork.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/OpenQueuingNetwork.xml
+227 ms. Memory: 526336K Free: 351507K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@90ba05b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@90ba05b
+reloadAllAccessors: .OpenQueuingNetwork
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PeriodicSampler.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PeriodicSampler.xml
+2 ms. Memory: 526336K Free: 342608K (65%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c7dd78e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1c7dd78e
+reloadAllAccessors: .PeriodicSampler
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PersistentIO.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PersistentIO.xml
+8 ms. Memory: 526336K Free: 329260K (63%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fc64d1a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fc64d1a
+reloadAllAccessors: .PersistentIO
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PortParameterResetOnInitialize.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PortParameterResetOnInitialize.xml
+2 ms. Memory: 526336K Free: 318383K (60%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4455fd0c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4455fd0c
+reloadAllAccessors: .PortParameterResetOnInitialize
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PortParameterUpdates.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/PortParameterUpdates.xml
+4 ms. Memory: 526336K Free: 305012K (58%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1eb1c3f8
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1eb1c3f8
+reloadAllAccessors: .PortParameterUpdates
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/QueueAndServer.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/QueueAndServer.xml
+5 ms. Memory: 526336K Free: 291648K (55%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a2ea88b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a2ea88b
+reloadAllAccessors: .QueueAndServer
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Records.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Records.xml
+5 ms. Memory: 526336K Free: 278284K (53%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66b213d9
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66b213d9
+reloadAllAccessors: .Records
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime1.xml
+6 ms. Memory: 526336K Free: 262941K (50%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@518c7e87
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@518c7e87
+reloadAllAccessors: .ResetTransitionWithStartTime1
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime2.xml
+4 ms. Memory: 526336K Free: 249577K (47%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59a2d731
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@59a2d731
+reloadAllAccessors: .ResetTransitionWithStartTime2
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime3.xml
+4 ms. Memory: 526336K Free: 236213K (45%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@595df050
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@595df050
+reloadAllAccessors: .ResetTransitionWithStartTime3
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResetTransitionWithStartTime4.xml
+3 ms. Memory: 526336K Free: 222849K (42%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@540d6fba
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@540d6fba
+reloadAllAccessors: .ResetTransitionWithStartTime4
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer1.xml
+2 ms. Memory: 526336K Free: 211972K (40%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@766d7e1f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@766d7e1f
+reloadAllAccessors: .ResettableTimer1
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer2.xml
+4 ms. Memory: 526336K Free: 203073K (39%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a530344
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a530344
+reloadAllAccessors: .ResettableTimer2
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer3.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer3.xml
+2 ms. Memory: 526336K Free: 194174K (37%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@12b368bf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@12b368bf
+reloadAllAccessors: .ResettableTimer3
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer4.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer4.xml
+1 ms. Memory: 526336K Free: 185276K (35%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4eee0159
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4eee0159
+reloadAllAccessors: .ResettableTimer4
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer5.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer5.xml
+2 ms. Memory: 526336K Free: 174398K (33%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c3b096e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c3b096e
+reloadAllAccessors: .ResettableTimer5
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer6.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ResettableTimer6.xml
+5 ms. Memory: 526336K Free: 165499K (31%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@327ab7ab
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@327ab7ab
+reloadAllAccessors: .ResettableTimer6
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ServerZeroDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ServerZeroDelay.xml
+2 ms. Memory: 526336K Free: 156601K (30%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d56209d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d56209d
+reloadAllAccessors: .ServerZeroDelay
+----------------- testing Thu May 24 01:19:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/SmartSender.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/SmartSender.xml
+3002 ms. Memory: 526336K Free: 147702K (28%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6458eb8b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6458eb8b
+reloadAllAccessors: .SmartSender
+----------------- testing Thu May 24 01:19:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ThreadedComposite.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/ThreadedComposite.xml
+303 ms. Memory: 526336K Free: 96764K (18%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26b8ea17
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26b8ea17
+reloadAllAccessors: .ThreadedComposite
+----------------- testing Thu May 24 01:19:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Time.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Time.xml
+451 ms. Memory: 508416K Free: 467150K (92%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72558351
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@72558351
+reloadAllAccessors: .Time
+----------------- testing Thu May 24 01:19:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TimeDelayZeroDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TimeDelayZeroDelay.xml
+3 ms. Memory: 508416K Free: 455246K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c55a279
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6c55a279
+reloadAllAccessors: .TimeDelayZeroDelay
+----------------- testing Thu May 24 01:19:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TimerZeroDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TimerZeroDelay.xml
+2 ms. Memory: 508416K Free: 446756K (88%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fe28913
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@fe28913
+reloadAllAccessors: .TimerZeroDelay
+----------------- testing Thu May 24 01:19:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TimingParadox.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TimingParadox.xml
+293 ms. Memory: 508416K Free: 377447K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4dbb0ffc
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4dbb0ffc
+reloadAllAccessors: .TimingParadox
+----------------- testing Thu May 24 01:19:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TransferInputs.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TransferInputs.xml
+2 ms. Memory: 508416K Free: 368942K (73%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4db577de
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4db577de
+reloadAllAccessors: .TransferInputs
+----------------- testing Thu May 24 01:19:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TransferOutputs2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TransferOutputs2.xml
+2 ms. Memory: 508416K Free: 356314K (70%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e9c62d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e9c62d
+reloadAllAccessors: .TransferOutputs2
+----------------- testing Thu May 24 01:19:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Trilateration.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/Trilateration.xml
+12542 ms. Memory: 841728K Free: 429972K (51%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@43c6ba0e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@43c6ba0e
+reloadAllAccessors: .Trilateration
+----------------- testing Thu May 24 01:19:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TwoSigmaDelta.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/TwoSigmaDelta.xml
+2141 ms. Memory: 841728K Free: 135911K (16%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ce8fd77
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ce8fd77
+reloadAllAccessors: .TwoSigmaDelta
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelay.xml
+1 ms. Memory: 841728K Free: 120817K (14%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f6ee246
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f6ee246
+reloadAllAccessors: .VariableDelay
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelay2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelay2.xml
+1 ms. Memory: 841728K Free: 104185K (12%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62447165
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62447165
+reloadAllAccessors: .VariableDelay2
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelayZeroDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelayZeroDelay.xml
+2 ms. Memory: 841728K Free: 89091K (11%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b59e46c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3b59e46c
+reloadAllAccessors: .VariableDelayZeroDelay
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelayZeroDelay2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/VariableDelayZeroDelay2.xml
+1 ms. Memory: 841728K Free: 73997K (9%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cdf3577
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5cdf3577
+reloadAllAccessors: .VariableDelayZeroDelay2
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/deInCt.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/deInCt.xml
+0
+1
+1
+1
+0
+0
+0
+1
+1
+1
+0
+0
+0
+0
+0
+1
+1
+1
+0
+0
+0
+1
+1
+1
+1
+1
+1
+0
+0
+0
+1
+1
+1
+1
+1
+8 ms. Memory: 841728K Free: 61394K (7%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3433b6ec
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3433b6ec
+reloadAllAccessors: .deInCt
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/deInCt2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/deInCt2.xml
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+1
+1
+1
+0
+0
+0
+3 ms. Memory: 800256K Free: 752965K (94%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41be94bf
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@41be94bf
+reloadAllAccessors: .deInCt2
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/dynamicCausalityInterface1.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/dynamicCausalityInterface1.xml
+1 ms. Memory: 800256K Free: 723233K (90%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ac18b7e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1ac18b7e
+reloadAllAccessors: .dynamicCausalityInterface1
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/fsm_de_test.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/fsm_de_test.xml
+6 ms. Memory: 800256K Free: 693506K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f16d157
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7f16d157
+reloadAllAccessors: .fsm_de_test
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/functionDependencyReconstruction.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/functionDependencyReconstruction.xml
+2 ms. Memory: 800256K Free: 650375K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@db6cf9b
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@db6cf9b
+reloadAllAccessors: .functionDependencyReconstruction
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/multirate.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/multirate.xml
+3 ms. Memory: 800256K Free: 620648K (78%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9ccb50d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@9ccb50d
+reloadAllAccessors: .multirate
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/multirate2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/multirate2.xml
+3 ms. Memory: 800256K Free: 591894K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dfcb89
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5dfcb89
+reloadAllAccessors: .multirate2
+----------------- testing Thu May 24 01:19:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/realtime.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/realtime.xml
+10001 ms. Memory: 800256K Free: 562167K (70%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6aec085f
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6aec085f
+reloadAllAccessors: .realtime
+----------------- testing Thu May 24 01:20:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/relationGroup.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/relationGroup.xml
+1 ms. Memory: 800256K Free: 533413K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62fe8ecc
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@62fe8ecc
+reloadAllAccessors: .relationGroup
+----------------- testing Thu May 24 01:20:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/relationGroup2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/relationGroup2.xml
+1 ms. Memory: 800256K Free: 503686K (63%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4605ea2d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4605ea2d
+reloadAllAccessors: .relationGroup2
+----------------- testing Thu May 24 01:20:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/sortWithOpaquePorts.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/sortWithOpaquePorts.xml
+1 ms. Memory: 800256K Free: 473959K (59%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6aa2af41
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6aa2af41
+reloadAllAccessors: .sortWithOpaquePorts
+----------------- testing Thu May 24 01:20:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/transferInputsandOutputs.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/transferInputsandOutputs.xml
+2 ms. Memory: 800256K Free: 445205K (56%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15470748
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15470748
+reloadAllAccessors: .transferInputsandOutputs
+----------------- testing Thu May 24 01:20:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/triggerType.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/domains/de/test/auto/triggerType.xml
+2 ms. Memory: 800256K Free: 415478K (52%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@210ca53c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@210ca53c
+reloadAllAccessors: .triggerType
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

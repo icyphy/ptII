@@ -1,0 +1,94 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/AAAConfiguration.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu May 24 00:58:18 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CheckModelSize.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorApplication.tcl
+30 ms. Memory: 116224K Free: 96749K (83%)
+7 ms. Memory: 116224K Free: 94860K (82%)
+sleeping 2 seconds: 15 ms. Memory: 116224K Free: 88627K (76%)
+27 ms. Memory: 116224K Free: 88627K (76%)
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/CompositeActorSimpleApplication.tcl
+6 ms. Memory: 331264K Free: 134173K (41%)
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ConfigurationApplication.tcl
+test 1.0: filterSize: 13, newFilterSize: 15
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/EffigyFactory.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLAbout.tcl
+Could not find body or head in file:/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/accessors-license.htm &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;!-- $Id$ --&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang
+Reading /home/travis/build/icyphy/ptII/ptolemy/configs/full/configuration.xml
+Checking complete demos of ptolemy/configs/doc/completeDemos.htm
+Warning: ptolemy/configs/kepler/doc-index.htm not found: java.io.IOException: File not found: 'ptolemy/configs/kepler/doc-index.htm'
+ caused by:
+java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.htm
+ AND:
+java.io.IOException: File '/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ptolemy/configs/kepler/doc-index.htm' does not exist.
+ AND:
+java.net.MalformedURLException: no protocol: ptolemy/configs/kepler/doc-index.htm
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/HTMLViewer.tcl
+sleeping 3 seconds: /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/MoMLApplication.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtExecuteApplication.tcl
+9 ms. Memory: 631296K Free: 504721K (80%)
+sleeping 2 seconds: 13 ms. Memory: 801280K Free: 607259K (76%)
+.test
+sleeping 2 seconds: 4 ms. Memory: 882688K Free: 486049K (55%)
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+&lt;entity name="test" class="ptolemy.actor.TypedCompositeActor"&gt;
+    &lt;property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel"&gt;
+    &lt;/property&gt;
+    &lt;doc&gt;This test has no placeable elements, but writes to standard out.&lt;/doc&gt;
+    &lt;property name="step" class="ptolemy.data.expr.Parameter" value="1"&gt;
+    &lt;/property&gt;
+    &lt;property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector"&gt;
+        &lt;property name="iterations" class="ptolemy.data.expr.Parameter" value="5"&gt;
+        &lt;/property&gt;
+        &lt;property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1"&gt;
+        &lt;/property&gt;
+    &lt;/property&gt;
+    &lt;entity name="ramp" class="ptolemy.actor.lib.Ramp"&gt;
+        &lt;property name="init" class="ptolemy.actor.parameters.PortParameter" value="0"&gt;
+        &lt;/property&gt;
+        &lt;property name="step" class="ptolemy.actor.parameters.PortParameter" value="step"&gt;
+        &lt;/property&gt;
+        &lt;property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0"&gt;
+        &lt;/property&gt;
+    &lt;/entity&gt;
+    &lt;entity name="rec" class="ptolemy.actor.lib.Recorder"&gt;
+        &lt;property name="capacity" class="ptolemy.data.expr.Parameter" value="-1"&gt;
+        &lt;/property&gt;
+    &lt;/entity&gt;
+    &lt;relation name="r1" class="ptolemy.actor.TypedIORelation"&gt;
+        &lt;property name="width" class="ptolemy.data.expr.Parameter" value="1"&gt;
+        &lt;/property&gt;
+    &lt;/relation&gt;
+    &lt;link port="ramp.output" relation="r1"/&gt;
+    &lt;link port="rec.input" relation="r1"/&gt;
+&lt;/entity&gt;
+
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/PtolemyApplication.tcl
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/UserActorLibrary.tcl
+JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+No physical cameras found, using WebcamDummyDriver.
+CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
+CharacterRecognition: The tesseract module was not present.  The CharacterRecognition accessor is not supported on this accessor host. (Thread[main,5,main])
+The Mutable accessor original file has no documentation, so we are not running jsdoc on https://accessors.org/utilities/Mutable.js
+/home/travis/build/icyphy/ptII/ptolemy/actor/gui/test/ZZZConfiguration.tcl
+05/24/18 12:59:49
+Failed: 0  Total Tests: 55  ((Passed: 55, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/gui/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
