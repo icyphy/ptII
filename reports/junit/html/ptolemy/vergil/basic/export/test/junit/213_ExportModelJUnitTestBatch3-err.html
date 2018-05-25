@@ -6,11 +6,70 @@
 <body>
 <pre>[AWT-EventQueue-0] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+Client: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+ptolemy.kernel.util.IllegalActionException: Failed to connect: 
+Connection refused: localhost/127.0.0.1:4000
+Connection refused
+  in .SocketImage.Client
+Because:
+Connection refused: localhost/127.0.0.1:4000
+	at ptolemy.actor.lib.jjs.HelperBase$2.run(HelperBase.java:213)
+	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1060)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
+	at ptolemy.actor.Manager.iterate(Manager.java:851)
+	at ptolemy.actor.Manager.execute(Manager.java:369)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:4000
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.net.ConnectException: Connection refused
+	... 11 more
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-May 24, 2018 1:37:54 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
-SEVERE: mqttpt_-8808389288115197362: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,527,125,814,264 lastInboundActivity=1,527,125,750,713 time=1,527,125,874,264 lastPing=1,527,125,814,264
-May 24, 2018 1:37:54 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
-SEVERE: mqttpt_-8808389288115197362: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,527,125,814,277 lastInboundActivity=1,527,125,753,433 time=1,527,125,874,277 lastPing=1,527,125,814,277
+May 25, 2018 1:38:52 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+SEVERE: mqttpt_-7122718797583892417: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,527,212,272,207 lastInboundActivity=1,527,212,208,487 time=1,527,212,332,206 lastPing=1,527,212,272,207
+May 25, 2018 1:38:52 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+SEVERE: mqttpt_-7122718797583892417: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,527,212,272,220 lastInboundActivity=1,527,212,211,404 time=1,527,212,332,220 lastPing=1,527,212,272,220
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 TCPSocketClient: Failed to connect: 
 Connection refused: localhost/127.0.0.1:4000
@@ -71,8 +130,8 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17660$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17658$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17589$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17587$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -117,8 +176,8 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17660$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17658$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17589$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17587$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -157,8 +216,8 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17660$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17658$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17589$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17587$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
@@ -260,34 +319,60 @@ Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of t
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
 	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17660$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
-	at jdk.nashorn.internal.scripts.Script$Recompilation$17658$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17589$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17587$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
 	... 23 more
-WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.0]
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
 WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.901]
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketClient is not able to send the token false to the output connected. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: WebSocketClient: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [101.0]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.0]
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: WebSocketClient: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.847, 24.849]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.5]
+WSClient: Connection failed after 11 tries: Connection refused: localhost/127.0.0.1:8082/nConnection refused
 Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
 Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
 Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
+May 25, 2018 1:57:10 AM sun.awt.X11.XToolkit processException
+WARNING: Exception on Toolkit thread
+java.lang.NullPointerException
+	at java.awt.Component$BltBufferStrategy.contentsLost(Component.java:4479)
+	at java.awt.Component$BltSubRegionBufferStrategy.showIfNotLost(Component.java:4542)
+	at javax.swing.BufferStrategyPaintManager.show(BufferStrategyPaintManager.java:252)
+	at javax.swing.RepaintManager.show(RepaintManager.java:1379)
+	at javax.swing.SwingPaintEventDispatcher.createPaintEvent(SwingPaintEventDispatcher.java:61)
+	at sun.awt.X11.XWindow.postPaintEvent(XWindow.java:564)
+	at sun.awt.X11.XContentWindow.postPaintEvent(XContentWindow.java:163)
+	at sun.awt.X11.XWindow.handleExposeEvent(XWindow.java:558)
+	at sun.awt.X11.XContentWindow.handleExposeEvent(XContentWindow.java:45)
+	at sun.awt.X11.XBaseWindow.dispatchEvent(XBaseWindow.java:1110)
+	at sun.awt.X11.XBaseWindow.dispatchToWindow(XBaseWindow.java:1086)
+	at sun.awt.X11.XToolkit.dispatchEvent(XToolkit.java:502)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:616)
+	at sun.awt.X11.XToolkit.run(XToolkit.java:532)
+	at java.lang.Thread.run(Thread.java:748)
+
 </pre>
 </body>
 </html>
