@@ -197,9 +197,9 @@
     
         cur['env.SHLVL'] = '3';
     
-        cur['env.SSH_CLIENT'] = '10.10.4.30 37542 22';
+        cur['env.SSH_CLIENT'] = '10.10.16.10 54312 22';
     
-        cur['env.SSH_CONNECTION'] = '10.10.4.30 37542 10.20.0.102 22';
+        cur['env.SSH_CONNECTION'] = '10.10.16.10 54312 10.20.0.135 22';
     
         cur['env.SSH_TTY'] = '/dev/pts/0';
     
@@ -213,25 +213,25 @@
     
         cur['env.TRAVIS_BUILD_DIR'] = '/home/travis/build/icyphy/ptII';
     
-        cur['env.TRAVIS_BUILD_ID'] = '383478393';
+        cur['env.TRAVIS_BUILD_ID'] = '383951131';
     
-        cur['env.TRAVIS_BUILD_NUMBER'] = '475';
+        cur['env.TRAVIS_BUILD_NUMBER'] = '477';
     
         cur['env.TRAVIS_BUILD_STAGE_NAME'] = 'Test';
     
-        cur['env.TRAVIS_COMMIT'] = '5c457a9b3383da50660ead4774e5ba5017e1d64f';
+        cur['env.TRAVIS_COMMIT'] = 'e1d1896f7b292ece0aa46a6f28090894993d239f';
     
-        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'test.single: test.name should be a classpath.';
+        cur['env.TRAVIS_COMMIT_MESSAGE'] = 'add debug prints when using FED file information\n\nSigned-off-by: Gilles Lasnier <gilles.lasnier@ciele.fr>';
     
-        cur['env.TRAVIS_COMMIT_RANGE'] = '84ca49783f9cc3027201c2c6df9ae56d24f6ee44...5c457a9b3383da50660ead4774e5ba5017e1d64f';
+        cur['env.TRAVIS_COMMIT_RANGE'] = '9d3048d20b406cafcac19533e47d2c563945ffd7...e1d1896f7b292ece0aa46a6f28090894993d239f';
     
         cur['env.TRAVIS_EVENT_TYPE'] = 'cron';
     
         cur['env.TRAVIS_FILTERED'] = 'redirect_io';
     
-        cur['env.TRAVIS_JOB_ID'] = '383478400';
+        cur['env.TRAVIS_JOB_ID'] = '383951140';
     
-        cur['env.TRAVIS_JOB_NUMBER'] = '475.7';
+        cur['env.TRAVIS_JOB_NUMBER'] = '477.7';
     
         cur['env.TRAVIS_LANGUAGE'] = 'node_js';
     
@@ -419,7 +419,7 @@
     
         cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
     
-        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher4192475632813857298.properties propsfile=/home/travis/build/icyphy/ptII/junit6920200069651877120.properties';
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.actor.lib.jjs.modules.localStorage.test.junit.JUnitTclTest.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher2463308253425811588.properties propsfile=/home/travis/build/icyphy/ptII/junit7956395684838964762.properties';
     
         cur['sun.java.launcher'] = 'SUN_STANDARD';
     
@@ -502,7 +502,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="60_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="60_JUnitTclTest.html">5</a></td><td>0</td><td>0</td><td>0</td><td>42.865</td><td>2018-05-25T00:59:18</td><td>travis-job-3633f355-807a-4fca-89a1-137c2fd9ec73</td>
+<td><a title="Display all tests" href="60_JUnitTclTest.html">JUnitTclTest</a></td><td><a title="Display all tests" href="60_JUnitTclTest.html">5</a></td><td>0</td><td>0</td><td>0</td><td>41.013</td><td>2018-05-26T00:59:54</td><td>travis-job-6af45a4f-1a0f-48b5-9101-73e7098bd386</td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -514,16 +514,16 @@
 <td><a name="[0] ThereAreNoTclTests (RunTclFile)"></a>[0] ThereAreNoTclTests (RunTclFile)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="[0] ThereAreNoKnowFailedTests (RunModel)"></a>[0] ThereAreNoKnowFailedTests (RunModel)</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="[0] ThereAreNoAutoTests (RunModel)"></a>[0] ThereAreNoAutoTests (RunModel)</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)</td><td>Success</td><td></td><td>16.690</td>
+<td><a name="[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)"></a>[0] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTest.xml (RunModel)</td><td>Success</td><td></td><td>15.706</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)</td><td>Success</td><td></td><td>25.703</td>
+<td><a name="[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)"></a>[1] /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/test/auto/LocalStorageTestJS.xml (RunModel)</td><td>Success</td><td></td><td>24.826</td>
 </tr>
 </table>
 <div class="Properties">

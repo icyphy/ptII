@@ -9,19 +9,43 @@
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="176", height="144"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.671]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [20.1]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 Foscam2: The timeout period of 5000ms has been exceeded.
+HttpClientHelper.java: Received an error for request 0: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+Foscam2: connection timed out: /10.0.0.46:80
 WARNING: Foscam2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
+HttpClientHelper.java: Received an error for request 1: io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:267)
+	at io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)
+	at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:125)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
 HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
@@ -177,160 +201,6 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 	... 39 more
 REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
 REST: The timeout period of 5000ms has been exceeded.
-HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
-javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
-	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
-	at io.vertx.core.http.impl.HttpChannelConnector.lambda$null$0(HttpChannelConnector.java:145)
-	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:507)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:500)
-	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:479)
-	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:420)
-	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
-	at io.netty.handler.ssl.SslHandler.notifyHandshakeFailure(SslHandler.java:1535)
-	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1521)
-	at io.netty.handler.ssl.SslHandler.setHandshakeFailure(SslHandler.java:1493)
-	at io.netty.handler.ssl.SslHandler.handleUnwrapThrowable(SslHandler.java:1186)
-	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1165)
-	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
-	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
-	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
-	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
-	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
-	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
-	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
-	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
-	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
-	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
-	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
-	... 19 more
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
-	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
-	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
-	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
-	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
-	... 20 more
-Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
-	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
-	at sun.security.validator.Validator.validate(Validator.java:260)
-	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
-	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
-	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
-	... 28 more
-Caused by: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
-	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
-	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
-	... 34 more
-Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
-	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
-	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
-	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
-	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
-	... 39 more
-[vert.x-eventloop-thread-3] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
-io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
-	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:340)
-	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1359)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:362)
-	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:348)
-	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:935)
-	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:141)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:645)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Handshaker.checkThrown(Handshaker.java:1478)
-	at sun.security.ssl.SSLEngineImpl.checkTaskThrown(SSLEngineImpl.java:535)
-	at sun.security.ssl.SSLEngineImpl.readNetRecord(SSLEngineImpl.java:813)
-	at sun.security.ssl.SSLEngineImpl.unwrap(SSLEngineImpl.java:781)
-	at javax.net.ssl.SSLEngine.unwrap(SSLEngine.java:624)
-	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:292)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1248)
-	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1159)
-	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1194)
-	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:489)
-	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:428)
-	... 16 more
-Caused by: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
-	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
-	at sun.security.ssl.SSLEngineImpl.fatal(SSLEngineImpl.java:1728)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:304)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1514)
-	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
-	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1026)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:966)
-	at sun.security.ssl.Handshaker$1.run(Handshaker.java:963)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at sun.security.ssl.Handshaker$DelegatedTask.run(Handshaker.java:1416)
-	at io.netty.handler.ssl.SslHandler.runDelegatedTasks(SslHandler.java:1408)
-	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1316)
-	... 20 more
-Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362)
-	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:259)
-	at sun.security.validator.Validator.validate(Validator.java:260)
-	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
-	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:281)
-	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:136)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1501)
-	... 28 more
-Caused by: java.security.cert.CertPathValidatorException: validity check failed
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:223)
-	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:140)
-	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:79)
-	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292)
-	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357)
-	... 34 more
-Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 23:59:59 UTC 2018
-	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274)
-	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629)
-	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190)
-	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
-	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
-	... 39 more
-REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
 REST: The timeout period of 5000ms has been exceeded.
 HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
@@ -1863,10 +1733,10 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
 	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
 	... 39 more
-WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.001000000000001]
+WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.003]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [14.817, 16.717000000000002, 18.19, 20.936, 23.985, 27.202, 16.822, 23.045, 26.053, 24.09, 23.150000000000002, 26.263, 14.608, 15.558, 18.085, 26.993000000000002, 14.712, 16.612000000000002, 27.307000000000002, 15.452, 22.94, 17.979, 26.158, 25.021, 24.715, 22.515, 27.097, 25.53, 19.141000000000002, 24.196, 20.091, 21.041, 15.663, 14.156, 22.098000000000003, 18.929000000000002, 26.891000000000002, 27.413, 17.033, 17.874000000000002, 25.842000000000002, 18.401, 19.669, 17.769000000000002, 18.296, 14.923, 21.566000000000003, 18.506, 25.947, 20.302, 25.428, 16.928, 17.664, 24.919, 16.295, 14.051, 20.831, 20.196, 24.817, 23.561, 15.028, 23.457, 26.685000000000002, 25.326, 26.789, 20.513, 18.613, 22.832, 16.19, 19.563000000000002, 26.580000000000002, 21.672, 22.726, 16.085, 21.777, 13.946, 17.349, 20.618000000000002, 15.239, 14.497, 21.463, 22.309, 23.355, 23.666, 17.559, 20.724, 15.98, 22.203, 19.774, 25.224, 15.134, 19.458000000000002, 17.138, 14.392000000000001, 21.358, 20.407, 26.475, 17.454, 23.774, 21.252000000000002, 19.352, 26.369, 21.883, 14.287, 16.506, 24.301000000000002, 18.824, 19.247, 15.769, 24.406000000000002, 24.511, 23.879, 25.737000000000002, 16.401, 22.621000000000002, 25.122, 15.345, 19.04, 19.985, 24.614, 21.988, 19.88, 21.147000000000002, 15.874, 17.243000000000002, 18.718, 25.632, 22.413, 23.254]
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.966000000000001, 16.812, 25.834, 20.184, 21.03, 13.93, 17.762, 17.240000000000002, 25.093, 27.317, 17.657, 23.171, 15.860000000000001, 19.547, 15.537, 18.493000000000002, 24.769000000000002, 15.202, 23.065, 27.211000000000002, 23.277, 17.554000000000002, 15.431000000000001, 22.302, 24.133, 21.668, 24.663, 22.514, 25.728, 26.682000000000002, 25.94, 23.922, 13.825000000000001, 26.470000000000002, 16.707, 14.355, 27.423000000000002, 20.396, 20.819, 26.364, 22.959, 19.441, 19.864, 16.918, 23.383, 24.981, 19.336000000000002, 25.2, 19.759, 18.39, 21.774, 24.556, 24.028000000000002, 14.779, 13.719000000000001, 21.879, 18.288, 15.755, 14.249, 25.305, 23.603, 20.29, 22.408, 15.308, 23.488, 14.674000000000001, 20.924, 26.789, 16.389, 21.986, 14.143, 23.709, 22.832, 25.411, 26.152, 20.607, 18.185000000000002, 22.726, 26.894000000000002, 18.080000000000002, 21.453, 17.129, 16.283, 24.45, 19.124000000000002, 19.970000000000002, 21.558, 26.258000000000003, 17.024, 17.974, 21.347, 18.907, 19.23, 14.885, 20.713, 13.613000000000001, 20.501, 24.875, 25.622, 27.0, 16.177, 19.018, 14.991, 18.595000000000002, 27.106, 15.644, 16.072, 16.495, 18.698, 15.096, 21.242, 23.816000000000003, 24.239, 22.197, 17.346, 22.62, 17.868000000000002, 14.567, 26.576, 21.136, 19.653000000000002, 17.452, 16.601, 22.091, 24.344, 18.801000000000002, 25.517, 14.462, 20.078, 14.036000000000001, 26.047]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 REST2: The timeout period of 5000ms has been exceeded.
@@ -2081,22 +1951,19 @@ io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: 
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
 WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [28.0]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.011, 28.009, 22.009]
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.0]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.636]
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.75]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
@@ -2107,17 +1974,9 @@ WARNING: Invoking send() too late (probably in a callback), so Camera is not abl
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.668, 24.404, 24.201, 24.302, 24.505000000000003]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.929000000000002, 24.132, 23.726, 23.523, 22.812, 23.015, 23.624000000000002, 23.218, 23.421, 22.609, 23.827, 22.71, 22.913, 23.116, 24.031000000000002, 23.319000000000003]
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.543, 24.434, 24.647000000000002, 24.749000000000002, 24.186, 24.856, 24.302]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
@@ -2132,10 +1991,283 @@ WARNING: Invoking send() too late (probably in a callback), so Camera is not abl
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.533, 23.431]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .SecureCommServerClientJS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 19 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 21 more
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63552$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63550$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 21 more
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63552$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63550$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63552$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63550$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+java.lang.reflect.InvocationTargetException
+	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
+	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
+	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
+	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
+	at sun.reflect.GeneratedMethodAccessor21.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .SecureCommServerClientJS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .SecureCommServerClientJS.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	... 14 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .SecureCommServerClientJS.TrainableTest
+Because:
+Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 19 more
+Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 21 more
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63552$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$63550$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
 </pre>
 </body>
 </html>
