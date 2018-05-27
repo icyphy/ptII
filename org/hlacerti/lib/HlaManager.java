@@ -660,6 +660,8 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Create the Federation or raise a warning it the Federation already exits.
         try {
+            System.out.println("createFederationExecution: FED file URL=" + fedFile.asFile().toURI().toURL());
+
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
         } catch (FederationExecutionAlreadyExists e) {
@@ -667,6 +669,13 @@ public class HlaManager extends AbstractInitializableAttribute
                 _debug("initialize() - WARNING: FederationExecutionAlreadyExists");
             }
         } catch (CouldNotOpenFED e) {
+            // XXX: FIXME: only for debug purpose
+            try {
+                System.out.println("createFederationExecution: FED file URL=" + fedFile.asFile().toURI().toURL());
+            } catch (MalformedURLException e1) {
+                e1.printStackTrace();
+            }
+
             throw new IllegalActionException(this, e,
                     "CouldNotOpenFED: " + e.getMessage());
         } catch (ErrorReadingFED e) {
