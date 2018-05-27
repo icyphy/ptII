@@ -1,4 +1,5 @@
-/** Model of a freeway entrance ramp that provides a roadside service
+/** Model of a freeway entrance ramp that delays merge requests until
+ *  it is safe to merge and also provides a roadside service
  *  that suggests a ramp speed that will result in smooth joining on the
  *  freeway. This model accepts input events at the freewayCar port that
  *  represent cars on the freeway approaching the ramp entrance. It also
@@ -8,8 +9,9 @@
  *  events at the merge port, representing cars on the ramp that have
  *  arrived at the ramp entrance. In response to these events, it waits
  *  until the car can safely enter the freeway, and at that time,
- *  produces a mergeTime output indicating the total amount of time that
- *  the car had to wait between arriving at the entrance and entering the
+ *  produces on the **merged** output the same data received on the **merge**
+ *  input and produces a mergeTime output indicating the total amount of time
+ *  that the car had to wait between arriving at the entrance and entering the
  *  freeway.
  *  
  *  This model makes a number of unrealistic simplications. First, the
@@ -64,6 +66,7 @@ exports.setup = function() {
 	
 	this.output('suggestedRampSpeed', {'type':'number'});
 	this.output('mergeTime', {'type':'number'});
+	this.output('merged');
 }
 
 exports.initialize = function() {
@@ -108,6 +111,7 @@ exports.initialize = function() {
 	// Queue of cars waiting to enter the freeway. This queue
 	// contains the arrival time for each car.
 	var waiting = [];
+	var cars = [];
 	var lastMergeTime = -Infinity;
 	
 	// Function to enter the freeway. If the freeway is not currently
@@ -118,6 +122,7 @@ exports.initialize = function() {
 	// time before trying to enter again.
 	function enter() {
 		var arrivalTime = waiting[0];
+		var car = cars[0];
 		var time = currentTime();
 		
 		var minSpacing = thiz.getParameter('minSpacing');
@@ -150,9 +155,11 @@ exports.initialize = function() {
 		// console.log('At time ' + time + ', wait for ' + timeToWait);
 		if (timeToWait <= 0.0) {
 			thiz.send('mergeTime', time - arrivalTime);
+			thiz.send('merged', car);
 			lastMergeTime = time;
 			// Discard the car from the queue.
 			waiting.shift();
+			cars.shift();
 			if (waiting.length > 0) {
 				// There are additional cars waiting.
 				// Try again after safe waiting time.
@@ -165,7 +172,9 @@ exports.initialize = function() {
 	
 	this.addInputHandler('merge', function() {
 		var time = currentTime();
+		var car = thiz.get('merge');
 		waiting.push(time);
+		cars.push(car);
 		if (waiting.length == 1) {
 			// This is the only car waiting, so trigger a wait.
 			// Otherwise, assume it will be triggered after the

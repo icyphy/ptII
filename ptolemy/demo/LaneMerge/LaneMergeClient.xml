@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LaneMergeClient" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 261, 859, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0944277610944277">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{226.125, 247.00755525914633}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple source of cars to enter on freeway ramp.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model sends a car every six seconds.&#10;It displays the delay, which will vary between&#10;0 and 6 seconds plus a network delay of about&#10;0.01 seconds, assuming the server is LaneMergeServer.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The delay displayed here&#10;should exceed the Waiting&#10;Time displayed by the server&#10;by an amount equal to the&#10;networking delay for two&#10;websocket messages.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 210.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Merge accessor, given&#10;an input event representing&#10;a car, delays that event until&#10;the car can safely enter the&#10;freeway. Here, it consults a&#10;server running on localhost&#10;to determine when it is safe.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 245.0]">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="6.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Merge" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Specialized accessor emulating a sensor that, when an input arrives at the&#10; *  **merge** input port, replies on the **grant** output port when it is OK to merge. &#10; *&#10; *  @accessor FreewayRamp&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; */&#10;var WebSocket = require('@accessors-modules/web-socket-client');&#10;&#10;exports.setup = function() {&#10;    this.input('merge');&#10;    this.output('grant');&#10;}&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});&#10;    &#10;    this.addInputHandler('merge', function() {&#10;        client.send({'id': thiz.get('merge')});&#10;    });&#10;    client.on('message', function(message) {&#10;        thiz.send('grant', message);&#10;    });&#10;    client.open();&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$PTII/ptolemy/demo/LaneMerge/Merge.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 235.0]">
+        </property>
+        <property name="_localChanges" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="merge" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="grant" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="ClientDelay" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={272, 650, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Client Delay">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 175.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{160.0, 165.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="Merge.merge" relation="relation3"/>
+    <link port="Merge.grant" relation="relation"/>
+    <link port="TimeCompare.input1" relation="relation3"/>
+    <link port="TimeCompare.input2" relation="relation"/>
+    <link port="TimeCompare.output" relation="relation5"/>
+    <link port="Ramp.output" relation="relation3"/>
+    <link port="Ramp.trigger" relation="relation2"/>
+    <link port="ClientDelay.input" relation="relation5"/>
+</entity>
