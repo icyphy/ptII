@@ -566,7 +566,7 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     private void _connectWebsocket(String host, int port, HttpClient client) {
         // FIXME: Header with content type should be provided?
-        client.websocket(port, host, "", new Handler<WebSocket>() {
+        client.websocket(port, host, "/", new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
                 if (_DEBUG) {
@@ -812,7 +812,7 @@ public class WebSocketHelper extends VertxHelperBase {
             StringBuffer message = new StringBuffer(arg0.getMessage());
             Throwable cause = arg0.getCause();
             while (cause != null) {
-                message.append("/n" + cause.getMessage());
+                message.append("\n" + cause.getMessage());
                 cause = cause.getCause();
             }
             if (_numberOfTries >= _numberOfRetries + 1) {
