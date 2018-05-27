@@ -10,12 +10,11 @@
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.671]
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [22.013]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [20.1]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
@@ -46,6 +45,8 @@ io.netty.channel.ConnectTimeoutException: connection timed out: /10.0.0.46:80
 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
 	at java.lang.Thread.run(Thread.java:748)
+REST: The timeout period of 5000ms has been exceeded.
+REST: The timeout period of 5000ms has been exceeded.
 HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
@@ -128,7 +129,7 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
 	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
 	... 39 more
-[vert.x-eventloop-thread-1] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+[vert.x-eventloop-thread-3] WARN io.netty.channel.DefaultChannelPipeline - An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
 io.netty.handler.codec.DecoderException: javax.net.ssl.SSLHandshakeException: General SSLEngine problem
 	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:459)
 	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:265)
@@ -200,8 +201,6 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
 	... 39 more
 REST: HttpClientHelper.java: The exceptions is a SSLHandshakeException, which is probably caused because the certs for the website in question are not in the JVM keystore.  Try updating your JVM or see See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: Failed to create SSL connection
-REST: The timeout period of 5000ms has been exceeded.
-REST: The timeout period of 5000ms has been exceeded.
 HttpClientHelper.java: Received an error for request 0: javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 javax.net.ssl.SSLHandshakeException: Failed to create SSL connection
 	at io.vertx.core.http.impl.HttpChannelConnector.handshakeFailure(HttpChannelConnector.java:214)
@@ -1733,10 +1732,10 @@ Caused by: java.security.cert.CertificateExpiredException: NotAfter: Fri Apr 13 
 	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144)
 	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125)
 	... 39 more
-WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.003]
+WARNING: VertxSubscribe: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.001000000000001]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [15.966000000000001, 16.812, 25.834, 20.184, 21.03, 13.93, 17.762, 17.240000000000002, 25.093, 27.317, 17.657, 23.171, 15.860000000000001, 19.547, 15.537, 18.493000000000002, 24.769000000000002, 15.202, 23.065, 27.211000000000002, 23.277, 17.554000000000002, 15.431000000000001, 22.302, 24.133, 21.668, 24.663, 22.514, 25.728, 26.682000000000002, 25.94, 23.922, 13.825000000000001, 26.470000000000002, 16.707, 14.355, 27.423000000000002, 20.396, 20.819, 26.364, 22.959, 19.441, 19.864, 16.918, 23.383, 24.981, 19.336000000000002, 25.2, 19.759, 18.39, 21.774, 24.556, 24.028000000000002, 14.779, 13.719000000000001, 21.879, 18.288, 15.755, 14.249, 25.305, 23.603, 20.29, 22.408, 15.308, 23.488, 14.674000000000001, 20.924, 26.789, 16.389, 21.986, 14.143, 23.709, 22.832, 25.411, 26.152, 20.607, 18.185000000000002, 22.726, 26.894000000000002, 18.080000000000002, 21.453, 17.129, 16.283, 24.45, 19.124000000000002, 19.970000000000002, 21.558, 26.258000000000003, 17.024, 17.974, 21.347, 18.907, 19.23, 14.885, 20.713, 13.613000000000001, 20.501, 24.875, 25.622, 27.0, 16.177, 19.018, 14.991, 18.595000000000002, 27.106, 15.644, 16.072, 16.495, 18.698, 15.096, 21.242, 23.816000000000003, 24.239, 22.197, 17.346, 22.62, 17.868000000000002, 14.567, 26.576, 21.136, 19.653000000000002, 17.452, 16.601, 22.091, 24.344, 18.801000000000002, 25.517, 14.462, 20.078, 14.036000000000001, 26.047]
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.784000000000002, 18.367, 22.858, 19.537, 20.279, 15.38, 19.109, 14.733, 23.599, 24.341, 26.889, 20.173000000000002, 16.884, 21.657, 15.818000000000001, 24.871000000000002, 25.083000000000002, 17.625, 26.148, 25.509, 21.021, 16.457, 20.916, 15.486, 16.245, 15.274000000000001, 26.995, 24.129, 25.936, 21.763, 14.521, 17.414, 27.101000000000003, 27.524, 25.189, 21.445, 20.385, 20.704, 22.646, 23.811, 14.956000000000001, 21.339000000000002, 24.235, 20.810000000000002, 16.139, 18.578, 16.990000000000002, 23.705000000000002, 26.571, 24.765, 15.713000000000001, 18.473, 22.752000000000002, 25.295, 26.042, 17.519000000000002, 14.415000000000001, 21.869, 19.003, 16.566, 22.435000000000002, 17.944, 18.79, 23.281000000000002, 25.401, 19.856, 23.175, 23.917, 24.659000000000002, 16.033, 19.427, 25.724, 27.312, 22.330000000000002, 14.842, 15.062000000000001, 17.307000000000002, 19.749000000000002, 23.07, 25.618000000000002, 25.830000000000002, 20.491, 14.309000000000001, 27.206, 18.155, 22.54, 17.838, 21.975, 18.05, 21.233, 23.387, 26.677, 17.096, 18.684, 26.465, 15.927000000000001, 14.204, 21.127000000000002, 24.447, 27.418, 18.897000000000002, 16.778000000000002, 20.067, 19.643, 15.592, 16.672, 26.359, 19.962, 22.187, 14.626000000000001, 19.215, 24.553, 22.081, 23.493000000000002, 19.321, 26.253, 15.168000000000001, 17.202, 21.551000000000002, 16.351, 17.732, 14.098, 18.261, 20.597, 24.977, 22.964000000000002, 24.023]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 REST2: The timeout period of 5000ms has been exceeded.
@@ -1951,15 +1950,11 @@ io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: 
 Caused by: java.net.ConnectException: Connection refused
 	... 11 more
 WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [28.0]
-WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.011, 28.009, 22.009]
+WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.011, 28.007, 22.008]
 WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.0]
 WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [21.0]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [25.75]
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
@@ -1976,9 +1971,29 @@ WARNING: Invoking send() too late (probably in a callback), so Camera is not abl
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.543, 24.434, 24.647000000000002, 24.749000000000002, 24.186, 24.856, 24.302]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [22.962, 23.065, 23.372, 25.483, 22.859, 23.269000000000002, 23.167, 23.474, 22.757]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.942, 23.635, 24.317, 24.422, 23.84, 23.738]
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.817, 23.713]
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
@@ -1987,21 +2002,6 @@ WARNING: Invoking send() too late (probably in a callback), so Camera is not abl
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [23.533, 23.431]
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
-[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
-WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
 [atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
