@@ -1167,6 +1167,7 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_debugging) {
             _debug("wrapup() - Resign Federation execution");
         }
+        System.out.println("wrapup() - Resign Federation execution");
 
         boolean canDestroyRtig = false;
         while (!canDestroyRtig) {
@@ -1178,12 +1179,17 @@ public class HlaManager extends AbstractInitializableAttribute
                 if (_debugging) {
                     _debug("wrapup() - WARNING: FederatesCurrentlyJoined");
                 }
+                System.out.println("wrapup() - Exception: FederatesCurrentlyJoined");
+
             } catch (FederationExecutionDoesNotExist e) {
                 // XXX: FIXME: This should be an IllegalActionExeception
                 if (_debugging) {
                     _debug("wrapup() - WARNING: FederationExecutionDoesNotExist");
                 }
                 canDestroyRtig = true;
+                System.out.println("wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig=" 
+                + canDestroyRtig);
+
             } catch (RTIinternalError e) {
                 throw new IllegalActionException(this, e,
                         "RTIinternalError: " + e.getMessage());
@@ -1195,8 +1201,10 @@ public class HlaManager extends AbstractInitializableAttribute
                 _debug("wrapup() - "
                         + "Destroy Federation execution - no fail");
             }
-
             canDestroyRtig = true;
+            
+            System.out.println("wrapup() - Destroy Federation execution - canDestroyRtig="
+            + canDestroyRtig);
         }
 
         // Terminate RTIG subprocess.
@@ -1206,6 +1214,7 @@ public class HlaManager extends AbstractInitializableAttribute
             if (_debugging) {
                 _debug("wrapup() - " + "Destroy RTIG process (if authorized)");
             }
+            System.out.println("wrapup() - " + "Destroy RTIG process (if authorized)");
         }
 
         // Clean HLA attribute tables.
