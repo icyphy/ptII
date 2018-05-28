@@ -5,24 +5,24 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyReader.tcl
-testDefs.tcl: setting time out to 9000 seconds at Sun May 27 01:01:08 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Mon May 28 01:02:09 UTC 2018
 Creating keystore foo.keystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: $aliasName
-Creation date: May 27, 2018
+Creation date: May 28, 2018
 Entry type: PrivateKeyEntry
 Certificate chain length: 1
 Certificate[1]:
 Owner: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
 Issuer: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
-Serial number: 10074770
-Valid from: Sun May 27 01:01:10 UTC 2018 until: Sat Aug 25 01:01:10 UTC 2018
+Serial number: 284f4c9b
+Valid from: Mon May 28 01:02:11 UTC 2018 until: Sun Aug 26 01:02:11 UTC 2018
 Certificate fingerprints:
-	 MD5:  C4:15:BA:92:8C:39:96:D0:9F:84:22:77:7D:75:DE:95
-	 SHA1: AF:34:D6:F0:75:E0:51:B4:63:0E:CB:26:CA:14:03:C8:D3:4E:A4:BD
-	 SHA256: 54:C1:52:8A:83:E7:99:8B:44:E6:96:03:05:D0:47:55:CC:5C:01:E5:44:53:4A:FE:1E:69:5F:0B:80:11:27:A4
+	 MD5:  60:D9:B7:B5:3D:E3:FB:E1:98:95:07:B3:45:21:DB:5A
+	 SHA1: E6:D0:19:F4:67:B3:81:3D:53:89:90:E6:4F:35:11:EE:4A:DB:2F:7E
+	 SHA256: 7A:8B:A5:AA:C2:3D:C6:50:4C:17:1C:FA:F3:4F:BE:74:A4:F1:40:D8:FC:54:D4:87:3F:B8:33:FF:05:A6:F7:52
 Signature algorithm name: SHA256withDSA
 Subject Public Key Algorithm: 2048-bit DSA key
 Version: 3
@@ -32,23 +32,23 @@ Extensions:
 #1: ObjectId: 2.5.29.14 Criticality=false
 SubjectKeyIdentifier [
 KeyIdentifier [
-0000: BE 97 51 4F 48 67 4C B8   35 F4 76 D6 39 7C F9 BB  ..QOHgL.5.v.9...
-0010: B2 6B 01 FC                                        .k..
+0000: 47 1A 87 60 A7 9B 5C 36   FE 43 40 73 4D 20 96 AD  G..`..\6.C@sM ..
+0010: D8 62 1C D3                                        .b..
 ]
 ]
 
-2084 ms. Memory: 116224K Free: 99013K (85%)
+2102 ms. Memory: 116224K Free: 99182K (85%)
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/KeyToken.tcl
 Available Ciphers: PBEWITHHMACSHA384ANDAES_128 AES_256/GCM/NOPADDING AES_192/GCM/NOPADDING PBEWITHHMACSHA512ANDAES_128 AES_256/CBC/NOPADDING AES_256/ECB/NOPADDING PBEWITHHMACSHA224ANDAES_256 AES_128/CBC/NOPADDING AESWRAP_192 AESWRAP PBEWITHMD5ANDDES AES_192/CBC/NOPADDING PBEWITHHMACSHA256ANDAES_256 PBEWITHHMACSHA1ANDAES_128 PBEWITHSHA1ANDRC4_128 AES_192/OFB/NOPADDING AES_128/ECB/NOPADDING DESEDEWRAP AESWRAP_256 RC2 PBEWITHSHA1ANDRC4_40 RSA AESWRAP_128 PBEWITHHMACSHA512ANDAES_256 AES_192/CFB/NOPADDING DESEDE AES_128/CFB/NOPADDING AES_192/ECB/NOPADDING BLOWFISH ARCFOUR AES_256/CFB/NOPADDING AES AES_128/OFB/NOPADDING AES_128/GCM/NOPADDING DES PBEWITHHMACSHA256ANDAES_128 PBEWITHSHA1ANDDESEDE PBEWITHSHA1ANDRC2_40 PBEWITHHMACSHA384ANDAES_256 AES_256/OFB/NOPADDING PBEWITHSHA1ANDRC2_128 PBEWITHMD5ANDTRIPLEDES PBEWITHHMACSHA1ANDAES_256 PBEWITHHMACSHA224ANDAES_128
 Using BLOWFISH
 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/info.tcl
-05/27/18 01:01:11
+05/28/18 01:02:11
 Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Sun May 27 01:01:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
+----------------- testing Mon May 28 01:02:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyReader.xml
 Creating keystore foo.keystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
@@ -57,37 +57,37 @@ Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore
 keytool error: java.lang.ClassCastException: javax.crypto.spec.SecretKeySpec cannot be cast to java.security.PrivateKey
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore foo.keystore -storetype JCEKS -alias $aliasName -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: $aliasName
-Creation date: May 27, 2018
+Creation date: May 28, 2018
 Entry type: SecretKeyEntry
-1754 ms. Memory: 146944K Free: 125551K (85%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15bdb96
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@15bdb96
+1887 ms. Memory: 146944K Free: 125467K (85%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d7034d
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d7034d
 reloadAllAccessors: .KeyReader
------------------ testing Sun May 27 01:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
+----------------- testing Mon May 28 01:02:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/KeyWriter.xml
-119 ms. Memory: 146944K Free: 108292K (74%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ed8ae7b
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5ed8ae7b
+119 ms. Memory: 146944K Free: 108228K (74%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51e24704
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@51e24704
 reloadAllAccessors: .KeyWriter
------------------ testing Sun May 27 01:01:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
+----------------- testing Mon May 28 01:02:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Signature.xml
 Creating keystore /home/travis/build/icyphy/ptII/ptKeystore
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -genkey -dname "CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US" -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -selfcert -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Keystore Command: /usr/lib/jvm/java-8-oracle/jre/bin/keytool -list -v -keystore /home/travis/build/icyphy/ptII/ptKeystore -storetype jks -alias ptolemy -storepass "this.is.the.storePassword,change.it" -keypass "this.is.the.keyPassword,change.it"
 Alias name: ptolemy
-Creation date: May 27, 2018
+Creation date: May 28, 2018
 Entry type: PrivateKeyEntry
 Certificate chain length: 1
 Certificate[1]:
 Owner: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
 Issuer: CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US
-Serial number: 487a4abc
-Valid from: Sun May 27 01:01:13 UTC 2018 until: Sat Aug 25 01:01:13 UTC 2018
+Serial number: 5ed7387b
+Valid from: Mon May 28 01:02:14 UTC 2018 until: Sun Aug 26 01:02:14 UTC 2018
 Certificate fingerprints:
-	 MD5:  D0:BF:A2:12:49:9A:FE:53:8F:66:9A:13:57:67:52:D6
-	 SHA1: 6C:CD:42:6E:0B:18:A2:99:53:FD:CA:1E:0E:BD:83:81:1F:65:41:41
-	 SHA256: F3:EC:88:18:E0:6D:61:03:43:64:C7:32:6D:C0:3E:04:0C:ED:93:41:83:8A:57:75:5E:F4:B6:3D:75:A2:1F:62
+	 MD5:  71:96:C5:75:B4:22:F4:27:2C:5B:C1:C3:8D:12:46:71
+	 SHA1: 7F:E5:D2:44:B5:F3:F3:33:80:E5:AD:63:1A:09:45:23:7A:BE:BC:FF
+	 SHA256: BF:33:22:7B:4A:E0:25:21:40:82:F8:64:D8:49:C1:AF:A7:EA:33:E3:8A:E1:1C:78:D5:64:9E:53:94:4E:65:A5
 Signature algorithm name: SHA256withDSA
 Subject Public Key Algorithm: 2048-bit DSA key
 Version: 3
@@ -97,20 +97,20 @@ Extensions:
 #1: ObjectId: 2.5.29.14 Criticality=false
 SubjectKeyIdentifier [
 KeyIdentifier [
-0000: 31 9B 5D 10 7F 1B ED 8A   BE 15 23 0C 96 DB 96 28  1.].......#....(
-0010: 09 97 73 9C                                        ..s.
+0000: 3A 41 54 E7 78 06 4A E5   E8 F8 A8 BC 29 CE B5 D7  :AT.x.J.....)...
+0010: 37 5A 5E 55                                        7Z^U
 ]
 ]
 
-836 ms. Memory: 146944K Free: 93975K (64%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@558becbb
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@558becbb
+934 ms. Memory: 146944K Free: 93981K (64%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38478d81
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@38478d81
 reloadAllAccessors: .Signature
------------------ testing Sun May 27 01:01:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
+----------------- testing Mon May 28 01:02:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/test/auto/Symmetric.xml
-772 ms. Memory: 210944K Free: 195419K (93%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@100b92b5
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@100b92b5
+748 ms. Memory: 147968K Free: 132036K (89%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f84732c
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2f84732c
 reloadAllAccessors: .Symmetric
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.

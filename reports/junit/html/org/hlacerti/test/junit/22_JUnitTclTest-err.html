@@ -4,7 +4,7 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>ptolemy.kernel.util.InternalErrorException: Stdout-1 IOExeception throwed.
+<pre>ptolemy.kernel.util.InternalErrorException: Stdout-2 IOExeception throwed.
   in .DistributedReceiver1.HlaManager
 Because:
 Stream closed
@@ -31,7 +31,7 @@ Caused by: java.io.IOException: Stream closed
 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:358)
 	at org.hlacerti.lib.CertiRtig$_StreamReaderThread.run(CertiRtig.java:338)
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedSender1.HlaManager
+  in .DistributedReceiver1.HlaManager
 Because:
 Module not found
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
@@ -55,14 +55,14 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedSender1.HlaManager
+  in .DistributedReceiver1.HlaManager
 Because:
 Module not found
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
 	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
 	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
 Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedSender1.HlaManager
+  in .DistributedReceiver1.HlaManager
 Because:
 Module not found
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
@@ -77,7 +77,7 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
 	... 4 more
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedReceiver1.HlaManager
+  in .DistributedSender1.HlaManager
 Because:
 Module not found
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
@@ -101,14 +101,14 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at ptolemy.actor.Manager.execute(Manager.java:356)
 	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedReceiver1.HlaManager
+  in .DistributedSender1.HlaManager
 Because:
 Module not found
 	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
 	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
 	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
 Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedReceiver1.HlaManager
+  in .DistributedSender1.HlaManager
 Because:
 Module not found
 	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
