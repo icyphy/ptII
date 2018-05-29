@@ -153,6 +153,12 @@ public class ModelTests {
      * A special string that is passed when there are no known failed tests.
      * This is necessary to avoid an exception in the JUnitParameters.
      */
+    protected final static String THERE_ARE_NO_AUTO_ARCH_TESTS = "ThereAreNoAutoArchTests";
+
+    /**
+     * A special string that is passed when there are no known failed tests.
+     * This is necessary to avoid an exception in the JUnitParameters.
+     */
     protected final static String THERE_ARE_NO_KNOWN_FAILED_TESTS = "ThereAreNoKnowFailedTests";
 
     static {
