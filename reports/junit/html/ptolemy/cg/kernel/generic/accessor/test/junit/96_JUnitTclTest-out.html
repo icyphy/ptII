@@ -5,7 +5,7 @@
 </head>
 <body>
 <pre>/home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
-testDefs.tcl: setting time out to 9000 seconds at Mon May 28 01:12:49 UTC 2018
+testDefs.tcl: setting time out to 9000 seconds at Tue May 29 01:21:38 UTC 2018
 JSAccessor: found node
 RunnableCodeGenerator: run command: (cd /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg; /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH localhost /home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg/top.js   npmInstall  )
 In "/home/travis/build/icyphy/ptII/org/terraswarm/accessor/accessors/web/cg", about to execute:
@@ -223,6 +223,9 @@ npmInstall
   │ ├── inherits@2.0.3 
   │ ├─┬ is-binary-path@1.0.1 
   │ │ └── binary-extensions@1.11.0 
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.1.2 (node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.4: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN enoent ENOENT: no such file or directory, open '/home/travis/cg/package.json'
   │ ├─┬ is-glob@4.0.0 
   │ │ └── is-extglob@2.1.1 
   │ ├─┬ normalize-path@2.1.1 
@@ -314,9 +317,6 @@ npmInstall
     └─┬ argparse@1.0.10 
       └── sprintf-js@1.0.3 
 
-npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.1.2 (node_modules/chokidar/node_modules/fsevents):
-npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.4: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
-npm WARN enoent ENOENT: no such file or directory, open '/home/travis/cg/package.json'
 npm WARN cg No description
 npm WARN cg No repository field.
 npm WARN cg No README data
@@ -331,63 +331,63 @@ commonHost.js: processCommandLineArguments(): Setting timeout to stop after 1500
 commonHost.js: processCommandLineArguments(): Maximum time reached. Calling stopAllAccessors().
 commonHost.js: invoking wrapup() for accessor: top
 All initialized accessors have wrapped up. Terminating.
-All Done
 ### accessorInvokeSSH: ssh cg/top/runit.sh returned.
-05/28/18 01:13:25
+All Done
+05/29/18 01:22:14
 Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test
 ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/knownFailedTests/AccessorStatusTest.xml
 JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-7251 ms. Memory: 622592K Free: 493594K (79%)
+7405 ms. Memory: 635392K Free: 545961K (86%)
 Known Failure: java.lang.reflect.InvocationTargetException
 No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
------------------ testing Mon May 28 01:13:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSDisplay.xml
+----------------- testing Tue May 29 01:22:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSDisplay.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSDisplay.xml
 TextDisplayHelper: 1
 TextDisplayHelper: 2
 TextDisplayHelper: 3
 TextDisplayHelper: 4
 TextDisplayHelper: 5
-7950 ms. Memory: 826368K Free: 678513K (82%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@27fd8ae0
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@27fd8ae0
+8073 ms. Memory: 834048K Free: 155070K (19%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7be75a56
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7be75a56
 reloadAllAccessors: .RampJSDisplay
 This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
--------------- Reloaded accessors, but skipping rerun for now. Mon May 28 01:13:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSDisplay.xml
------------------ testing Mon May 28 01:13:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSInspect.xml
+-------------- Reloaded accessors, but skipping rerun for now. Tue May 29 01:22:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSDisplay.xml
+----------------- testing Tue May 29 01:22:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSInspect.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSInspect.xml
-8280 ms. Memory: 1086464K Free: 734885K (68%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2767ad72
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2767ad72
+8439 ms. Memory: 1153024K Free: 177245K (15%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b199ce3
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b199ce3
 reloadAllAccessors: .RampJSInspect
--------------- Reloaded accessors, but skipping rerun for now. Mon May 28 01:14:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSInspect.xml
------------------ testing Mon May 28 01:14:05 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTest.xml
+-------------- Reloaded accessors, but skipping rerun for now. Tue May 29 01:22:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSInspect.xml
+----------------- testing Tue May 29 01:22:54 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTest.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTest.xml
-7099 ms. Memory: 1331712K Free: 409617K (31%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c92a8bd
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@c92a8bd
+6933 ms. Memory: 1441792K Free: 879589K (61%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@eb15c2a
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@eb15c2a
 reloadAllAccessors: .RampJSTest
--------------- Reloaded accessors, but skipping rerun for now. Mon May 28 01:14:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTest.xml
------------------ testing Mon May 28 01:14:15 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml
+-------------- Reloaded accessors, but skipping rerun for now. Tue May 29 01:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTest.xml
+----------------- testing Tue May 29 01:23:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml
 TextDisplayHelper: 1
 TextDisplayHelper: 2
 TextDisplayHelper: 3
 TextDisplayHelper: 4
 TextDisplayHelper: 5
-9193 ms. Memory: 1639424K Free: 1019749K (62%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53e682a6
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@53e682a6
+8566 ms. Memory: 1450496K Free: 127839K (9%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d9be838
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3d9be838
 reloadAllAccessors: .RampJSTextDisplay
--------------- Reloaded accessors, but skipping rerun for now. Mon May 28 01:14:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml
------------------ testing Mon May 28 01:14:27 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/TestComposite.xml
+-------------- Reloaded accessors, but skipping rerun for now. Tue May 29 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml
+----------------- testing Tue May 29 01:23:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/TestComposite.xml
 ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/TestComposite.xml
-1621 ms. Memory: 1649152K Free: 1318354K (80%)
------------------ Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ad5b89a
------------------ Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4ad5b89a
+1417 ms. Memory: 1758720K Free: 768573K (44%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@73cccb15
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@73cccb15
 reloadAllAccessors: .TestComposite
--------------- Reloaded accessors, but skipping rerun for now. Mon May 28 01:14:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/TestComposite.xml
+-------------- Reloaded accessors, but skipping rerun for now. Tue May 29 01:23:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/TestComposite.xml
 AutoTests.java: About to close Vertx.
 AutoTests.java: Vertx closed.
 </pre>
