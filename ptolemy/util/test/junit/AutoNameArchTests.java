@@ -148,6 +148,6 @@ public class AutoNameArchTests extends AutoTests {
                 .toLowerCase();
         String osArch = System.getProperty("os.arch");
         String autoNameArch = "auto/" + osName + "-" + osArch + "/";
-        return modelValues(autoNameArch, THERE_ARE_NO_AUTO_TESTS);
+        return modelValues(autoNameArch, THERE_ARE_NO_AUTO_ARCH_TESTS);
     }
 }
