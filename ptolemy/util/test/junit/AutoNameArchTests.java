@@ -143,11 +143,19 @@ public class AutoNameArchTests extends AutoTests {
         // So, linux64 is not sufficient to differentiate between RHEL
         // and Ubuntu. A better version number would include the
         // version of GLIBC.
+        
+        return modelValues(AutoNameArchTests.autoNameArch(), THERE_ARE_NO_AUTO_ARCH_TESTS);
+    }
 
+    /** Return the auto directory for the current architecture, for example
+     *  "macosx-x86_64/".
+     *  @return the auto directory for the current architecture.   
+     */   
+    public static String autoNameArch() {
         String osName = System.getProperty("os.name").replaceAll("\\s", "")
                 .toLowerCase();
         String osArch = System.getProperty("os.arch");
-        String autoNameArch = "auto/" + osName + "-" + osArch + "/";
-        return modelValues(autoNameArch, THERE_ARE_NO_AUTO_ARCH_TESTS);
+        return "auto/" + osName + "-" + osArch + "/";
     }
+
 }
