@@ -768,3 +768,4 @@ exports.setTimeoutDet = setTimeoutDet;
 exports.clearTimeoutDet = clearTimeoutDet;
 exports.setIntervalDet = setIntervalDet;
 exports.clearIntervalDet = clearIntervalDet;
+exports.reset = reset;
