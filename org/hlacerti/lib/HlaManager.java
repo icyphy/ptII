@@ -660,18 +660,22 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Create the Federation or raise a warning it the Federation already exits.
         try {
-            System.out.println("createFederationExecution: FED file URL=" + fedFile.asFile().toURI().toURL());
-
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
+
+            System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+            "createFederationExecution: FED file URL=" + fedFile.asFile().toURI().toURL());
+
         } catch (FederationExecutionAlreadyExists e) {
             if (_debugging) {
                 _debug("initialize() - WARNING: FederationExecutionAlreadyExists");
             }
+
         } catch (CouldNotOpenFED e) {
             // XXX: FIXME: only for debug purpose
             try {
-                System.out.println("createFederationExecution: FED file URL=" + fedFile.asFile().toURI().toURL());
+                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+                "createFederationExecution: CouldNotOpenFED exception: FED file URL=" + fedFile.asFile().toURI().toURL());
             } catch (MalformedURLException e1) {
                 e1.printStackTrace();
             }
@@ -1167,6 +1171,8 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_debugging) {
             _debug("wrapup() - Resign Federation execution");
         }
+        System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+        "wrapup() - Resign Federation execution");
 
         boolean canDestroyRtig = false;
         while (!canDestroyRtig) {
@@ -1174,16 +1180,35 @@ public class HlaManager extends AbstractInitializableAttribute
             // Destroy federation execution - nofail.
             try {
                 _rtia.destroyFederationExecution(_federationName);
+
+                // If the federation has been destroyed then we can authorize to kill the rtig.
+                canDestroyRtig = true;
+
+                if (_debugging) {
+                    _debug("wrapup() - "
+                            + "Destroy Federation execution - no fail");
+                }
+
+                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+                        "wrapup() - Destroy Federation execution - canDestroyRtig=" + canDestroyRtig);
+
             } catch (FederatesCurrentlyJoined e) {
                 if (_debugging) {
                     _debug("wrapup() - WARNING: FederatesCurrentlyJoined");
                 }
+                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+                        "wrapup() - Exception: FederatesCurrentlyJoined");
+
             } catch (FederationExecutionDoesNotExist e) {
-                // XXX: FIXME: This should be an IllegalActionExeception
+                // No more federation.
                 if (_debugging) {
                     _debug("wrapup() - WARNING: FederationExecutionDoesNotExist");
                 }
                 canDestroyRtig = true;
+
+                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+                        "wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig=" + canDestroyRtig);
+
             } catch (RTIinternalError e) {
                 throw new IllegalActionException(this, e,
                         "RTIinternalError: " + e.getMessage());
@@ -1191,21 +1216,18 @@ public class HlaManager extends AbstractInitializableAttribute
                 throw new IllegalActionException(this, e,
                         "ConcurrentAccessAttempted: " + e.getMessage());
             }
-            if (_debugging) {
-                _debug("wrapup() - "
-                        + "Destroy Federation execution - no fail");
-            }
-
-            canDestroyRtig = true;
         }
 
         // Terminate RTIG subprocess.
         if (_certiRtig != null) {
+            if (_debugging) {
+                _debug("wrapup() - " + "Try to destroy RTIG process (if authorized by the system)");
+            }
+            System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
+            "wrapup() - " + "Try to destroy RTIG process (if authorized by the system)");
             _certiRtig.terminateProcess();
 
-            if (_debugging) {
-                _debug("wrapup() - " + "Destroy RTIG process (if authorized)");
-            }
+
         }
 
         // Clean HLA attribute tables.
