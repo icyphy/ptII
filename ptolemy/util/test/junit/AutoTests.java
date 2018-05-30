@@ -144,6 +144,13 @@ public class AutoTests extends ModelTests {
                     "No auto/*.xml tests in " + System.getProperty("user.dir"));
             return;
         }
+        if (fullPath.endsWith(THERE_ARE_NO_AUTO_ARCH_TESTS)) {
+            System.out.println(
+                               "No " + AutoNameArchTests.autoNameArch()
+                               + "*.xml tests in " + System.getProperty("user.dir"));
+            return;
+        }
+
         // Only check for the JSAccessor class if there are auto tests.
         // MoMLParser.tcl had a test that was reporting different
         // results between running using ptjacl and JUnit because
