@@ -4,11 +4,37 @@
 <title>Standard Error from JUnitTclTest</title>
 </head>
 <body>
-<pre>ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+<pre>ptolemy.kernel.util.InternalErrorException: Stdout-2 IOExeception throwed.
+  in .DistributedReceiver1.HlaManager
+Because:
+Stream closed
+	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:369)
+	at org.hlacerti.lib.CertiRtig$_StreamReaderThread.run(CertiRtig.java:338)
+Caused by: java.io.IOException: Stream closed
+	at java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:170)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:283)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:358)
+	... 1 more
+Caused by: java.io.IOException: Stream closed
+	at java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:170)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:283)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	at java.io.InputStreamReader.read(InputStreamReader.java:184)
+	at org.hlacerti.lib.CertiRtig$_StreamReaderThread._read(CertiRtig.java:358)
+	at org.hlacerti.lib.CertiRtig$_StreamReaderThread.run(CertiRtig.java:338)
+ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -17,13 +43,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -39,7 +65,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -48,13 +74,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .DistributedSender1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -63,13 +89,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -85,7 +111,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedSender1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -94,7 +120,7 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
@@ -143,7 +169,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -152,59 +178,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
-	... 4 more
-ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedSender1.HlaManager
-Because:
-Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
-	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
-	at ptolemy.actor.Manager.initialize(Manager.java:724)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
-	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
-	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
-	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
-	... 4 more
-Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
-	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
-	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
-	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
-	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
-	at ptolemy.actor.Manager.initialize(Manager.java:724)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedSender1.HlaManager
-Because:
-Module not found
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
-	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
-Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .DistributedSender1.HlaManager
-Because:
-Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
-	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
-	at ptolemy.actor.Manager.initialize(Manager.java:724)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
-	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
-	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
-	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -213,13 +193,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -235,7 +215,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -244,7 +224,53 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
+	... 4 more
+ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+  in .DistributedSender1.HlaManager
+Because:
+Module not found
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
+	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
+	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
+	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
+	... 4 more
+Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
+	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
+	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
+	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+  in .DistributedSender1.HlaManager
+Because:
+Module not found
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
+	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
+Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+  in .DistributedSender1.HlaManager
+Because:
+Module not found
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
+	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
+	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
+	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
@@ -293,7 +319,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -302,13 +328,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -317,13 +343,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -339,7 +365,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -348,13 +374,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .DistributedSender1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -363,13 +389,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -385,7 +411,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedSender1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -394,7 +420,7 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
@@ -443,7 +469,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .DistributedReceiver1.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -452,7 +478,53 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
+	... 4 more
+ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+  in .MultiDataTypesConsumer.HlaManager
+Because:
+Module not found
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
+	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
+	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
+	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
+	... 4 more
+Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
+	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
+	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
+	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+  in .MultiDataTypesConsumer.HlaManager
+Because:
+Module not found
+	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
+	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
+	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
+Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
+  in .MultiDataTypesConsumer.HlaManager
+Because:
+Module not found
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
+Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
+	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
+	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
+	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
@@ -476,7 +548,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .MultiDataTypesProducer.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -486,13 +558,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 12 more
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .MultiDataTypesConsumer.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -501,13 +573,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -523,7 +595,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .MultiDataTypesConsumer.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -532,37 +604,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
-ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .MultiDataTypesConsumer.HlaManager
-Because:
-Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
-	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
-	at ptolemy.actor.Manager.initialize(Manager.java:724)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
-	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
-	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
-	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
-	... 4 more
-Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
-	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
-	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
-	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
-	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
-	at ptolemy.actor.Manager.initialize(Manager.java:724)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
 ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
   in .MultiDataTypesProducer.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -571,13 +619,13 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -593,7 +641,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .MultiDataTypesProducer.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -602,29 +650,7 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
-	... 4 more
-java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .MultiDataTypesConsumer.HlaManager
-Because:
-Module not found
-	at ptolemy.util.MessageHandler.error(MessageHandler.java:115)
-	at ptolemy.actor.lib.hoc.ModelReference.executionError(ModelReference.java:450)
-	at ptolemy.actor.Manager$ErrorReportingThread.run(Manager.java:1890)
-Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module not found
-  in .MultiDataTypesConsumer.HlaManager
-Because:
-Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
-	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
-	at ptolemy.actor.Manager.initialize(Manager.java:724)
-	at ptolemy.actor.Manager.execute(Manager.java:356)
-	at ptolemy.actor.lib.hoc.ModelReference$1.run(ModelReference.java:626)
-Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
-	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
-	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
-	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 java.lang.RuntimeException: Execution failed
 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
@@ -673,7 +699,7 @@ Caused by: ptolemy.kernel.util.IllegalActionException: CouldNotOpenFED: Module n
   in .MultiDataTypesConsumer.HlaManager
 Because:
 Module not found
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:680)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:684)
 	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:912)
 	at ptolemy.actor.Manager.initialize(Manager.java:724)
 	at ptolemy.actor.Manager.execute(Manager.java:356)
@@ -682,7 +708,7 @@ Caused by: hla.rti.CouldNotOpenFED: Module not found serial:0
 	at certi.rti.impl.CertiRtiAmbassador.translateException(CertiRtiAmbassador.java:3832)
 	at certi.rti.impl.CertiRtiAmbassador.processRequest(CertiRtiAmbassador.java:3773)
 	at certi.rti.impl.CertiRtiAmbassador.createFederationExecution(CertiRtiAmbassador.java:322)
-	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:665)
+	at org.hlacerti.lib.HlaManager.initialize(HlaManager.java:663)
 	... 4 more
 </pre>
 </body>
