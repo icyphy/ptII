@@ -461,6 +461,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 370.0]">
             </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <entity name="Subtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 225.0]">
@@ -549,7 +551,7 @@
 <title>Car Position</title>
 <xLabel>time</xLabel>
 <yLabel>position</yLabel>
-<xRange min="0.0" max="54.37545984889999"/>
+<xRange min="0.0" max="108.7754598489"/>
 <yRange min="0.0" max="303.20386558028105"/>
 </plot>?>
             </configure>
