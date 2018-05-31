@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
- */
+*/
 
 package ptolemy.util.test.junit;
 
@@ -78,7 +78,7 @@ public class AutoTests extends ModelTests {
     public static void afterClass() {
         try {
             Class clazz = Class
-                    .forName("ptolemy.actor.lib.jjs.VertxHelperBase");
+                .forName("ptolemy.actor.lib.jjs.VertxHelperBase");
             if (clazz != null) {
                 Method method = clazz.getMethod("closeVertx");
 		System.out.println("AutoTests.java: About to close Vertx.");
@@ -89,8 +89,8 @@ public class AutoTests extends ModelTests {
             // Ignore this, it means that MoMLSimpleApplication was invoked without the Vert.x jar files.
         } catch (Throwable throwable) {
             System.err.println(
-                    "AutoTests: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: "
-                            + throwable);
+                               "AutoTests: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: "
+                               + throwable);
         }
 
     }
@@ -106,14 +106,14 @@ public class AutoTests extends ModelTests {
         //                   + " match: " + match);
         if (match) {
             System.out.println("----------------- " + (new java.util.Date())
-                    + " About to sleep for " + delay / 1000.0
-                    + " seconds before running or rerunning.  Test is: " + fullPath);
+                               + " About to sleep for " + delay / 1000.0
+                               + " seconds before running or rerunning.  Test is: " + fullPath);
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException ex) {
                 System.err.println(
-                        "Sleep before rerunning was interrupted: "
-                                + ex);
+                                   "Sleep before rerunning was interrupted: "
+                                   + ex);
             }
             System.out.println("Done sleeping");
         }
@@ -141,7 +141,7 @@ public class AutoTests extends ModelTests {
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
             System.out.println(
-                    "No auto/*.xml tests in " + System.getProperty("user.dir"));
+                               "No auto/*.xml tests in " + System.getProperty("user.dir"));
             return;
         }
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_ARCH_TESTS)) {
@@ -162,18 +162,19 @@ public class AutoTests extends ModelTests {
             AutoTests._haveCheckedForJSAccessor = true;
             AutoTests._checkForJSAccessor();
         }
+        // Use a whole row of equals to signify the start of a new test.
+        System.out.println("\n===========================================================================================");
         if (modelFileIsOK(fullPath)) {
-            // Use a whole row of equals to signify the start of a new test.
-            System.out.println("===========================================================================================");
+
             System.out.println("----------------- testing " + (new java.util.Date()) + " " + fullPath);
             System.out.flush();
             if (_applicationConstructor == null) {
                 // Delay instantiating MoMLSimpleApplication so that we
                 // can run the kernel tests without requiring moml
                 _applicationClass = Class
-                        .forName("ptolemy.moml.MoMLSimpleApplication");
+                    .forName("ptolemy.moml.MoMLSimpleApplication");
                 _applicationConstructor = _applicationClass
-                        .getConstructor(String.class);
+                    .getConstructor(String.class);
             }
 
             // _applicationConstructor might have been initialized in
@@ -181,7 +182,7 @@ public class AutoTests extends ModelTests {
             // _applicationToplevelMethod here.
             if (_applicationToplevelMethod == null) {
                 _applicationToplevelMethod = _applicationClass
-                        .getMethod("toplevel", new Class[] {});
+                    .getMethod("toplevel", new Class[] {});
             }
 
             // If a model is in various directories, including
@@ -209,18 +210,18 @@ public class AutoTests extends ModelTests {
                 
                 System.out.println("----------------- Invoking toplevel() on " + instance);
                 _applicationToplevelMethod = _applicationClass
-                        .getMethod("toplevel", new Class[] {});
+                    .getMethod("toplevel", new Class[] {});
                 Object toplevel = _applicationToplevelMethod.invoke(instance,
-                        (Object[]) null);
+                                                                    (Object[]) null);
                 System.out.println("----------------- Done invoking toplevel() on " + instance);
 
                 if (_jsAccessorReloadAllAccessorsMethod == null) {
                     throw new InternalError(
-                            "Found the JSAccessor class, but not the reloadAllAccessors() method?");
+                                            "Found the JSAccessor class, but not the reloadAllAccessors() method?");
                 }
                 // Reload all the accessors and invoke rerun.
                 if (((Boolean) _jsAccessorReloadAllAccessorsMethod.invoke(null,
-                        new Object[] { toplevel })).booleanValue()) {
+                                                                          new Object[] { toplevel })).booleanValue()) {
                     System.out.println("-------------- Reloaded accessors, but skipping rerun for now. "
                                        + (new java.util.Date()) + " "
                                        + fullPath);
@@ -234,28 +235,71 @@ public class AutoTests extends ModelTests {
                     // rerunMethod.invoke(instance, (Object[]) null);
                 }
             }
-        } else {
-            System.err.println(
-                    "----------------- *** Skipping testing of " + fullPath);
-            System.err.flush();
-
         }
     }
 
     /** Return true if the model should be run.
      *  This is a hack to avoid a problem where certain models
-     *  interact badly with the Cobertura code coverage tool.
+     *  interact badly with the Cobertura code coverage tool
+     *  or with Travis.
      *  @param fullPath The full path of the model to be executed
      *  @return true if the model should be run.
      */
     public boolean modelFileIsOK(String fullPath) {
         if (fullPath.endsWith("de/test/auto/ThreadedComposite.xml")
-                && !StringUtilities
-                        .getProperty("net.sourceforge.cobertura.datafile")
-                        .equals("")) {
-            System.err.println(
-                    "ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
+            && !StringUtilities
+            .getProperty("net.sourceforge.cobertura.datafile")
+            .equals("")) {
+            System.err.println("----------------- *** Skipping testing of " + fullPath
+                               + " because it interacts badly with Cobertura.");
+            System.err.flush();
             return false;
+        }
+
+        // Under Travis, skip certain demos. To see what environment
+        // variables are set by Travis, see
+        // https://docs.travis-ci.com/user/environment-variables/
+        if (System.getenv("TRAVIS").equals("true")) {
+            String [] travisSkip = {
+                "org/hlacerti/test/auto",
+                "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml",
+                "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml",
+                "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml",
+                "ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml",
+                "ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/Message3.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/Message4.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket1.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket2.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket3.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketByte.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArray.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketFloat.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketShort.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketStringArray.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketTypicalUsage.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml",
+                "ptolemy/actor/lib/jjs/modules/udpSocket/test/auto/UDPSocketInt.xml",
+                "ptolemy/actor/lib/jjs/modules/udpSocket/test/auto/UDPSocketSelf.xml",
+                "ptolemy/actor/lib/jjs/modules/udpSocket/test/auto/UDPSocketString.xml",
+                "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml",
+                "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml",
+                "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml",
+                "ptolemy/cg/lib/testKnownFailed/test/auto/knownFailedTests/ScaleC.xml"
+            };
+            for (String element : travisSkip) {
+                if (fullPath.indexOf(element) != -1) {
+                    System.err.println("----------------- *** Skipping testing of " + fullPath
+                                       + " because it does fails under Travis.  "
+                                       + "To updated this list, edit ptolemy/util/test/junit/AutoTests.java");
+                    System.err.flush();
+                    return false;
+                }
+            }
         }
         return true;
     }
@@ -277,11 +321,11 @@ public class AutoTests extends ModelTests {
     private static void _checkForJSAccessor() {
         try {
             _jsAccessorClass = Class
-                    .forName("org.terraswarm.accessor.JSAccessor");
+                .forName("org.terraswarm.accessor.JSAccessor");
             Class compositeEntityClass = Class
-                    .forName("ptolemy.kernel.CompositeEntity");
+                .forName("ptolemy.kernel.CompositeEntity");
             _jsAccessorReloadAllAccessorsMethod = _jsAccessorClass.getMethod(
-                    "reloadAllAccessors", new Class[] { compositeEntityClass });
+                                                                             "reloadAllAccessors", new Class[] { compositeEntityClass });
         } catch (Throwable throwable) {
             // Ignore this, it could be that the JSAccessor class
             // is not present.
