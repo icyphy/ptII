@@ -163,6 +163,8 @@ public class AutoTests extends ModelTests {
             AutoTests._checkForJSAccessor();
         }
         if (modelFileIsOK(fullPath)) {
+            // Use a whole row of equals to signify the start of a new test.
+            System.out.println("===========================================================================================");
             System.out.println("----------------- testing " + (new java.util.Date()) + " " + fullPath);
             System.out.flush();
             if (_applicationConstructor == null) {
