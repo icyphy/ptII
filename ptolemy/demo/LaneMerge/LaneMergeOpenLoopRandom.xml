@@ -1,0 +1,320 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LaneMergeOpenLoopRandom" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 32, 1140, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1825134402389863">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.8540449142456, 150.4709587097168}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At 120 km/hr, if cars&#10;appear every 6 seconds,&#10;they will be 200m apart.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 160.0}">
+        </property>
+    </property>
+    <property name="sensorDistanceToMerge" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 20.0]">
+        </property>
+    </property>
+    <property name="freewaySpeed" class="ptolemy.data.expr.Parameter" value="120.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 35.0]">
+        </property>
+    </property>
+    <property name="rampLength" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 50.0]">
+        </property>
+    </property>
+    <property name="maxRampSpeed" class="ptolemy.data.expr.Parameter" value="60.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 65.0]">
+        </property>
+    </property>
+    <property name="minSpacing" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Delay ramp arrivals so that&#10;they don't start appearing until&#10;the freeway cars have started arriving&#10;at the ramp entrance.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 300.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we operate open loop, so the ramp&#10;cars travel at maxRampSpeed towards the&#10;merge.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 260.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open-loop random lane merge, where freeway cars arrive on average every 6 seconds, ramp cars&#10;every 24 seconds, and ramp cars approach the ramp at the maximum speed. The average wait time&#10;is greater than for the regulated version.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -65.0]">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={862, 389, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Waiting Time">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="6.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="PoissonClock2" class="ptolemy.actor.lib.PoissonClock">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="24.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3600 * (sensorDistanceToMerge / freewaySpeed - rampLength / maxRampSpeed)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3600 * rampLength / maxRampSpeed">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={863, 44, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 75.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Waiting Time at Ramp Entrance</title>
+<xLabel>time (seconds)</xLabel>
+<yLabel>number of cars</yLabel>
+<xRange min="0.5" max="29.0"/>
+<yRange min="0.0" max="12.0"/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="3.0" offset="0.5"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Average" class="ptolemy.actor.lib.Average">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={864, 598, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Average Waiting Time">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="FreewayRamp" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Model of a freeway entrance ramp that delays merge requests until&#10; *  it is safe to merge and also provides a roadside service&#10; *  that suggests a ramp speed that will result in smooth joining on the&#10; *  freeway. This model accepts input events at the freewayCar port that&#10; *  represent cars on the freeway approaching the ramp entrance. It also&#10; *  accepts input events at the rampCar port, and in response to those&#10; *  events, provides a suggestedRampSpeed output. These events represent&#10; *  cars approaching the entrance on the ramp. Finally, it accepts&#10; *  events at the merge port, representing cars on the ramp that have&#10; *  arrived at the ramp entrance. In response to these events, it waits&#10; *  until the car can safely enter the freeway, and at that time,&#10; *  produces on the **merged** output the same data received on the **merge**&#10; *  input and produces a mergeTime output indicating the total amount of time&#10; *  that the car had to wait between arriving at the entrance and entering the&#10; *  freeway.&#10; *  &#10; *  This model makes a number of unrealistic simplications. First, the&#10; *  speed of cars on the freeway is fixed and independent of congestion.&#10; *  Second, It assumes that cars on the ramp accelerate instantaneously&#10; *  to the suggested speed and, once reaching the ramp entrace, can&#10; *  accelerate instantaneously to freeway speed.&#10; *  &#10; *  For much better freeway traffic models, see &lt;i&gt;Freeway Traffic Modeling&#10; *  and Control&lt;/i&gt;, by Antonella Ferrara, Simona Sacone, and Silvia Siri,&#10; *  Springer, 2018.&#10; *  &#10; *  @accessor FreewayRamp&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @parameter {number} sensorDistanceToMerge The distance in kilometers&#10; *   between a car sensor on the freeway and the ramp entrance. This is&#10; *   a number that defaults to 2.0.&#10; *  @parameter {number} freewaySpeed The speed of cars on the freeway in&#10; *   kilometers per hour.&#10; *  @parameter {number} rampLength The distance between the sensor that&#10; *   sees cars at the rampCar position and the freeway entrance (in&#10; *   kilometers). This is a number that defaults to 0.5&#10; *  @parameter {number} maxRampSpeed The maximum speed on the ramp in&#10; *   kilometers per hour. This is a number that defaults to 60.&#10; *  @parameter {number} minSpacing The minimum spacing between cars&#10; *   for a car to safely enter the freeway in kilometers. This is a&#10; *   number that defaults to 0.05.&#10; *   &#10; *  @input freewayCar An event indicating that a car on the freeway &#10; *   is approaching the ramp entrace. At the time of this event, the car&#10; *   is distance sensorDistanceToMerge prior to the merge.&#10; *  @input rampCar An event indicating that a car on the ramp &#10; *   is approaching the ramp entrace. At the time of this event, the car&#10; *   is distance rampLength prior to the merge.&#10; *  @input merge An event indicating that a car on the ramp &#10; *   has arrived at the ramp entrace. At the time of this event, the car&#10; *   is exactly at the merge.&#10; *  &#10; *  @output {number} output The output for the doubled value.&#10; *  @output {number}&#10; */&#10;exports.setup = function() {&#10;	this.parameter('sensorDistanceToMerge', {'type':'number', 'value':2.0});&#10;	this.parameter('freewaySpeed', {'type':'number', 'value':120.0});&#10;	this.parameter('rampLength', {'type':'number', 'value':0.5});&#10;	this.parameter('maxRampSpeed', {'type':'number', 'value':60.0});&#10;	this.parameter('minSpacing', {'type':'number', 'value':0.05});&#10;	&#10;	this.input('freewayCar');&#10;	this.input('rampCar');&#10;	this.input('merge');&#10;	&#10;	this.output('suggestedRampSpeed', {'type':'number'});&#10;	this.output('mergeTime', {'type':'number'});&#10;	this.output('merged');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var blocked = [];&#10;	&#10;	this.addInputHandler('freewayCar', function() {&#10;		var distance = thiz.getParameter('sensorDistanceToMerge');&#10;		var speed = thiz.getParameter('freewaySpeed');&#10;		var minSpacing = thiz.getParameter('minSpacing');&#10;		&#10;		var time = currentTime();&#10;		&#10;		var tmin = time + 3600 * (distance - minSpacing)/speed;&#10;		var tmax = time + 3600 * (distance + minSpacing)/speed;&#10;		blocked.push([tmin, tmax]);&#10;		&#10;		// When car is no longer relevant, remove its blocked interval.&#10;		setTimeout(function() {&#10;			blocked.shift();&#10;		}, 1000 * tmax);&#10;	});&#10;	&#10;	this.addInputHandler('rampCar', function() {&#10;		var time = currentTime();&#10;		var minSpacing = thiz.getParameter('minSpacing');&#10;		var rampLength = thiz.getParameter('rampLength');&#10;		var maxRampSpeed = thiz.getParameter('maxRampSpeed');&#10;		&#10;		var suggestedRampSpeed = maxRampSpeed;&#10;		var arrivalTime = time + 3600 * rampLength / suggestedRampSpeed;&#10;		&#10;		for (var i = 0; i &lt; blocked.length; i++) {&#10;			if (blocked[i][0] &lt; arrivalTime &amp;&amp; blocked[i][1] &gt; arrivalTime) {&#10;				// Ramp will be blocked at current speed.&#10;				suggestedRampSpeed = 3600 * rampLength/(blocked[i][1] - time);&#10;			}&#10;		}&#10;		thiz.send('suggestedRampSpeed', suggestedRampSpeed);&#10;	});&#10;	&#10;	// Queue of cars waiting to enter the freeway. This queue&#10;	// contains the arrival time for each car.&#10;	var waiting = [];&#10;	var cars = [];&#10;	var lastMergeTime = -Infinity;&#10;	&#10;	// Function to enter the freeway. If the freeway is not currently&#10;	// blocked, this function allows a car to enter the freeway and&#10;	// produces a mergeTime output. Otherwise, it continues to wait.&#10;	// If a car is allowed to enter the freeway and there are one or&#10;	// more additional cars waiting, then it waits a safe amount of&#10;	// time before trying to enter again.&#10;	function enter() {&#10;		var arrivalTime = waiting[0];&#10;		var car = cars[0];&#10;		var time = currentTime();&#10;		&#10;		var minSpacing = thiz.getParameter('minSpacing');&#10;		var speed = thiz.getParameter('freewaySpeed');&#10;		var safeWaitingTime = 3600 * minSpacing / speed;&#10;		&#10;		// Check to see whether the most recent merge was too recent&#10;		// (within clock resolution of 1ms).&#10;		var wait = lastMergeTime + safeWaitingTime - time;&#10;		if (wait &gt;= 0.001) {&#10;		    // Last merge was too recent. Wait.&#10;		    setTimeout(enter, 1000 * wait);&#10;		    return;&#10;		}&#10;				&#10;		// Check to see whether the ramp is blocked.&#10;		var timeToWait = 0.0;&#10;		for (var i = 0; i &lt; blocked.length; i++) {&#10;			if (blocked[i][0] &lt; time &amp;&amp; blocked[i][1] &gt; time) {&#10;				// Ramp is blocked.&#10;				timeToWait = blocked[i][1] - time;&#10;			}&#10;		}&#10;		// Timing here has a resolution of ms, so if the timeToWait is&#10;		// small enough that setTimeout() won't result in any delay, then&#10;		// set it to zero.&#10;		if (timeToWait &lt; 0.001) {&#10;			timeToWait = 0.0;&#10;		}&#10;		// console.log('At time ' + time + ', wait for ' + timeToWait);&#10;		if (timeToWait &lt;= 0.0) {&#10;			thiz.send('mergeTime', time - arrivalTime);&#10;			thiz.send('merged', car);&#10;			lastMergeTime = time;&#10;			// Discard the car from the queue.&#10;			waiting.shift();&#10;			cars.shift();&#10;			if (waiting.length &gt; 0) {&#10;				// There are additional cars waiting.&#10;				// Try again after safe waiting time.&#10;				setTimeout(enter, 1000 * safeWaitingTime);&#10;			}&#10;		} else {&#10;			setTimeout(enter, 1000 * timeToWait);&#10;		}&#10;	}&#10;	&#10;	this.addInputHandler('merge', function() {&#10;		var time = currentTime();&#10;		var car = thiz.get('merge');&#10;		waiting.push(time);&#10;		cars.push(car);&#10;		if (waiting.length == 1) {&#10;			// This is the only car waiting, so trigger a wait.&#10;			// Otherwise, assume it will be triggered after the&#10;			// currently waiting car enters the freeway.&#10;			enter();&#10;		}&#10;	});&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$PTII/ptolemy/demo/LaneMerge/FreewayRamp.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 140.0]">
+        </property>
+        <property name="sensorDistanceToMerge" class="ptolemy.data.expr.Parameter" value="sensorDistanceToMerge">
+        </property>
+        <property name="freewaySpeed" class="ptolemy.data.expr.Parameter" value="freewaySpeed">
+        </property>
+        <property name="rampLength" class="ptolemy.data.expr.Parameter" value="rampLength">
+        </property>
+        <property name="maxRampSpeed" class="ptolemy.data.expr.Parameter" value="maxRampSpeed">
+        </property>
+        <property name="minSpacing" class="ptolemy.data.expr.Parameter" value="minSpacing">
+        </property>
+        <port name="freewayCar" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="rampCar" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="merge" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="suggestedRampSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="mergeTime" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="merged" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={360, 598, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Suggested Ramp Speed">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 35.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{230.0, 265.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[430.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation4"/>
+    <link port="PoissonClock.output" relation="relation7"/>
+    <link port="PoissonClock2.output" relation="relation2"/>
+    <link port="TimeDelay.input" relation="relation2"/>
+    <link port="TimeDelay.output" relation="relation6"/>
+    <link port="TimeDelay2.input" relation="relation6"/>
+    <link port="TimeDelay2.output" relation="relation"/>
+    <link port="HistogramPlotter.input" relation="relation4"/>
+    <link port="Average.input" relation="relation4"/>
+    <link port="Average.output" relation="relation3"/>
+    <link port="Display2.input" relation="relation3"/>
+    <link port="FreewayRamp.freewayCar" relation="relation7"/>
+    <link port="FreewayRamp.rampCar" relation="relation6"/>
+    <link port="FreewayRamp.merge" relation="relation"/>
+    <link port="FreewayRamp.suggestedRampSpeed" relation="relation5"/>
+    <link port="FreewayRamp.mergeTime" relation="relation4"/>
+    <link port="Display3.input" relation="relation5"/>
+</entity>

@@ -63,7 +63,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run server before running this: LaneMergerServer.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run server before running this: LaneMergeServer.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 400.0]">
         </property>
