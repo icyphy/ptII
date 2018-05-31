@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 390, 1052, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 266, 1052, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[818, 524]">
     </property>
@@ -87,7 +87,7 @@
             </property>
         </property>
     </property>
-    <property name="rampLength" class="ptolemy.data.expr.Parameter" value="0.5">
+    <property name="rampLength" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -136,7 +136,7 @@
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="40.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="15.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
@@ -175,7 +175,7 @@
         </property>
     </entity>
     <entity name="ClientDelay" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 717, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -536,7 +536,7 @@
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={780, 147, 500, 344}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={824, 23, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -549,8 +549,8 @@
 <title>Car Position</title>
 <xLabel>time</xLabel>
 <yLabel>position</yLabel>
-<xRange min="0.0" max="102.30000000000001"/>
-<yRange min="0.0" max="0.974981607120593"/>
+<xRange min="0.0" max="102.11596617200001"/>
+<yRange min="0.0" max="0.24367863005313545"/>
 </plot>?>
             </configure>
         </entity>
