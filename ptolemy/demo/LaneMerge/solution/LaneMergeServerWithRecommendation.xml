@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 898, 712}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 147, 898, 712}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[664, 602]">
     </property>
@@ -171,7 +171,7 @@
         </property>
     </property>
     <entity name="WaitingTime" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={931, 242, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={771, 366, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -227,7 +227,7 @@
         </port>
     </entity>
     <entity name="SuggestedRampSpeed" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={360, 598, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={360, 723, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -336,7 +336,7 @@
         </port>
     </entity>
     <entity name="Received" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={933, 451, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={773, 575, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -411,7 +411,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('requestID');&#10;	this.input('suggestedRampSpeed', {'type':'number'});&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var requestID = 0;&#10;	this.addInputHandler('requestID', function() {&#10;		requestID = (thiz.get('requestID'))['requestID'];&#10;		console.log('FIXME: ' + requestID);&#10;	});&#10;	this.addInputHandler('suggestedRampSpeed', function() {&#10;		var speed = thiz.get('suggestedRampSpeed');&#10;		console.log('FIXME2: ' + speed);&#10;		var response = {&#10;			'requestID': requestID,&#10;			'response': speed&#10;		};&#10;		thiz.send('response', response);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('requestID');&#10;	this.input('suggestedRampSpeed', {'type':'number'});&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var requestID = 0;&#10;	this.addInputHandler('requestID', function() {&#10;		requestID = (thiz.get('requestID'))['requestID'];&#10;	});&#10;	this.addInputHandler('suggestedRampSpeed', function() {&#10;		var speed = thiz.get('suggestedRampSpeed');&#10;		var response = {&#10;			'requestID': requestID,&#10;			'response': speed&#10;		};&#10;		thiz.send('response', response);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
