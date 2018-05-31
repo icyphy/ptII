@@ -146,7 +146,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run client after running this: LaneMergerClient.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run client after running this: LaneMergeClient.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 345.0]">
         </property>
