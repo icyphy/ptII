@@ -1,0 +1,123 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/ActorIndex.tcl
+testDefs.tcl: setting time out to 9000 seconds at Thu May 31 02:29:38 UTC 2018
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddEditorFactory.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddIcon.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/AddMissingParameter.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/BackwardCompatibility.tcl
+
+
+==== $PTII/ptolemy/moml/filter/test/BackwardCompatibility.tcl: BackwardCompatiblity-20.1 Try running old models, first check that the makefile created the compat/ directory
+==== Contents of test case:
+ 
+    if {! [file exists compat]} {
+	error "compat directory does not exist.  This could happen If you do not have access to old Ptolemy II tests"
+    } else {
+	list 1
+    }
+
+.... Test generated KNOWN error:
+compat directory does not exist.  This could happen If you do not have access to old Ptolemy II tests
+    while executing
+"error "compat directory does not exist.  This could happen If you do not have access to old Ptolemy II tests""
+    invoked from within
+"if {! [file exists compat]} {
+	error "compat directory does not exist.  This could happen If you do not have access to old Ptolemy II tests"
+    } els..."
+    ("uplevel" body line 2)
+    invoked from within
+"uplevel $contents_of_test"
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/BackwardCompatibilityPN.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/GRColorChanges.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/LazyTypedCompositeActorChanges.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/MultiportToSinglePort.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/PropertyClassChanges.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/PropertyClassChangesHDF.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RelationWidthChanges.tcl
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveClasses.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+25 ms. Memory: 146944K Free: 132840K (90%)
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+80 ms. Memory: 146944K Free: 124253K (85%)
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveGraphicalClasses.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+4 ms. Memory: 146944K Free: 118334K (81%)
+    If you get a 'X connection to xxx:11.0 broken' message, then
+    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java
+    Or, under Solaris, run java -verbose -classpath 
+           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}
+           tcl.lang.Shell xxx.tcl
+28 ms. Memory: 146944K Free: 111196K (76%)
+/home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/RemoveGraphicalClassesApplication.tcl
+05/31/18 02:29:42
+Failed: 0  Total Tests: 57  ((Passed: 56, Newly Passed: 0)  Known Failed: 1) /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
+No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+----------------- testing Thu May 31 02:29:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/TimeGap.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/TimeGap.xml
+34 ms. Memory: 119296K Free: 99814K (84%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@424370d2
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@424370d2
+reloadAllAccessors: .TimeGap
+----------------- testing Thu May 31 02:29:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/VariableDelay.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/VariableDelay.xml
+9 ms. Memory: 119296K Free: 98176K (82%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37ef4466
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@37ef4466
+reloadAllAccessors: .
+----------------- testing Thu May 31 02:29:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/expression.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/expression.xml
+5 ms. Memory: 119296K Free: 96040K (81%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d44d605
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5d44d605
+reloadAllAccessors: .model
+----------------- testing Thu May 31 02:29:42 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/modulation2.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/moml/filter/test/auto/modulation2.xml
+79 ms. Memory: 119296K Free: 79502K (67%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66e39a9e
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@66e39a9e
+reloadAllAccessors: .modulation2
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>

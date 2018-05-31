@@ -1,0 +1,135 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Error from JUnitTclTest</title>
+</head>
+<body>
+<pre>java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the initialize function: ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+  in .SerialHelloWorld.JavaScript
+Because:
+ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2239)
+	at ptolemy.actor.lib.jjs.JavaScript.initialize(JavaScript.java:1432)
+	at ptolemy.actor.Director.initialize(Director.java:938)
+	at ptolemy.actor.Director.initialize(Director.java:907)
+	at ptolemy.domains.de.kernel.DEDirector.initialize(DEDirector.java:943)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:397)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 9 more
+Caused by: ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+	at ptolemy.actor.lib.jjs.modules.serial.SerialHelper.open(SerialHelper.java:317)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$594$4288$require.L:1#open(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:115)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$587$655$\^function\_.L:1#initialize(&lt;function&gt;:37)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$584$29043$require.L:1#Accessor#initialize(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:634)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	... 13 more
+Caused by: gnu.io.NoSuchPortException
+	at gnu.io.CommPortIdentifier.getPortIdentifier(CommPortIdentifier.java:273)
+	at ptolemy.actor.lib.jjs.modules.serial.SerialHelper.open(SerialHelper.java:224)
+	... 19 more
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at ptolemy.util.test.junit.AutoKnownFailedTests.RunModel(AutoKnownFailedTests.java:107)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at org.junit.internal.runners.statements.FailOnTimeout$1.run(FailOnTimeout.java:28)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the initialize function: ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+  in .SerialHelloWorld.JavaScript
+Because:
+ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2239)
+	at ptolemy.actor.lib.jjs.JavaScript.initialize(JavaScript.java:1432)
+	at ptolemy.actor.Director.initialize(Director.java:938)
+	at ptolemy.actor.Director.initialize(Director.java:907)
+	at ptolemy.domains.de.kernel.DEDirector.initialize(DEDirector.java:943)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:935)
+	at ptolemy.actor.Manager.initialize(Manager.java:724)
+	at ptolemy.actor.Manager.execute(Manager.java:356)
+	at ptolemy.actor.Manager.run(Manager.java:1263)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:397)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 9 more
+Caused by: ptolemy.kernel.util.IllegalActionException: No such port: /dev/tty.NOT_A_PORT
+  in .SerialHelloWorld.JavaScript
+Because:
+gnu.io.NoSuchPortException
+	at ptolemy.actor.lib.jjs.modules.serial.SerialHelper.open(SerialHelper.java:317)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$594$4288$require.L:1#open(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:115)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$587$655$\^function\_.L:1#initialize(&lt;function&gt;:37)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$584$29043$require.L:1#Accessor#initialize(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:634)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	... 13 more
+Caused by: gnu.io.NoSuchPortException
+	at gnu.io.CommPortIdentifier.getPortIdentifier(CommPortIdentifier.java:273)
+	at ptolemy.actor.lib.jjs.modules.serial.SerialHelper.open(SerialHelper.java:224)
+	... 19 more
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [4.6000000000000005]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 43 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 44 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 45 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 46 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 47 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 48 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 49 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 50 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 51 to the output received. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so SerialPort is not able to send the token 52 to the output received. Token is discarded.
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [5.6000000000000005]
+</pre>
+</body>
+</html>
