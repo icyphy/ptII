@@ -1,0 +1,1441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="1" hostname="travis-job-8e68e44d-b3a4-4ee0-be48-2c7c3ff9cea5" name="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" skipped="0" tests="70" time="1311.978" timestamp="2018-05-31T02:35:29">
+  <properties>
+    <property name="npm.executable" value="npm" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ptII.mk.exists" value="true" />
+    <property name="env.rvm_bin_path" value="/home/travis/.rvm/bin" />
+    <property name="java.home" value="/usr/lib/jvm/java-8-oracle/jre" />
+    <property name="env.TRAVIS_JOB_NUMBER" value="492.14" />
+    <property name="env.DISPLAY" value=":99.0" />
+    <property name="java.net.preferIPv4Stack" value="true" />
+    <property name="env.SSH_TTY" value="/dev/pts/0" />
+    <property name="env.RUN_TESTS" value="true" />
+    <property name="timeout.short" value="1000000" />
+    <property name="env.TRAVIS_STACK_NODE_ATTRIBUTES" value="/.node-attributes.yml" />
+    <property name="junit.formatter" value="xml" />
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/endorsed" />
+    <property name="env.TRAVIS_SUDO" value="true" />
+    <property name="env.LOGNAME" value="travis" />
+    <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="checkstyle.formatter" value="xml" />
+    <property name="bin.vergil.makeable" value="true" />
+    <property name="env._system_version" value="14.04" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.version" value="1.8.0_151" />
+    <property name="env.TZ" value="UTC" />
+    <property name="env.PT_NO_NET" value="true" />
+    <property name="env.TRAVIS_PULL_REQUEST_SHA" value="" />
+    <property name="env.TRAVIS_SECURE_ENV_VARS" value="true" />
+    <property name="env._system_type" value="Linux" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_CLIENT" value="10.10.16.5 60736 22" />
+    <property name="npmjs-org-is-up" value="true" />
+    <property name="env.GEM_HOME" value="/home/travis/.rvm/gems/ruby-2.4.1" />
+    <property name="env.HAS_ANTARES_THREE_LITTLE_FRONZIES_BADGE" value="true" />
+    <property name="env.PS4" value="+" />
+    <property name="ant.project.invoked-targets" value="build,test.export3.xml" />
+    <property name="env.TRAVIS_PULL_REQUEST_BRANCH" value="" />
+    <property name="env.TRAVIS_REPO_SLUG" value="icyphy/ptII" />
+    <property name="node.in.path" value="true" />
+    <property name="java.maxmemory" value="1400m" />
+    <property name="env.RUBY_VERSION" value="ruby-2.4.1" />
+    <property name="user.name" value="travis" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="usefile" value="false" />
+    <property name="return.code" value="0" />
+    <property name="junit.single.formatter" value="plain" />
+    <property name="env.DYLD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:" />
+    <property name="env.DEBIAN_FRONTEND" value="noninteractive" />
+    <property name="env.SSH_CONNECTION" value="10.10.16.5 60736 10.20.0.75 22" />
+    <property name="env.MYSQL_UNIX_PORT" value="/var/run/mysqld/mysqld.sock" />
+    <property name="env.TRAVIS_ALLOW_FAILURE" value="false" />
+    <property name="env.LC_ALL" value="en_US.UTF-8" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="node.works" value="true" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=":" />
+    <property name="env.PYTHON_CFLAGS" value="-g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security" />
+    <property name="timeout.long" value="4000000" />
+    <property name="env.CERTI_HOME" value="/home/travis/pthla/certi-tools" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="ant.file.ptII" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+    <property name="env.TRAVIS_PULL_REQUEST_SLUG" value="" />
+    <property name="ant.project.default-target" value="build" />
+    <property name="env.GIT_ASKPASS" value="echo" />
+    <property name="env.HOME" value="/home/travis" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3 skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/home/travis/build/icyphy/ptII/reports/junit/TEST-ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3.xml crashfile=/home/travis/build/icyphy/ptII/junitvmwatcher7495733943475531772.properties propsfile=/home/travis/build/icyphy/ptII/junit1494093287141793792.properties" />
+    <property name="env.MANPATH" value="/home/travis/.nvm/versions/node/v7.10.1/share/man:/home/travis/.kiex/elixirs/elixir-1.4.5/man:/home/travis/.rvm/rubies/ruby-2.4.1/share/man:/usr/local/man:/usr/local/cmake-3.9.2/man:/usr/local/clang-5.0.0/share/man:/usr/local/share/man:/usr/share/man:/home/travis/.rvm/man" />
+    <property name="env.COMPOSER_NO_INTERACTION" value="1" />
+    <property name="env.JDK_SWITCHER_DEFAULT" value="oraclejdk8" />
+    <property name="ant.file" value="/home/travis/build/icyphy/ptII/build.xml" />
+    <property name="env.TRAVIS_COMMIT_RANGE" value="f9fb5957c0cacbaeb78012f690063fb7b957aaa0...17385e2ee3a0e3d80455ab5b34248a723da2b763" />
+    <property name="env._system_name" value="Ubuntu" />
+    <property name="timeout" value="2400000" />
+    <property name="ptII.classpath.optional.property" value="/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar" />
+    <property name="test.batch" value="**/junit/*.java" />
+    <property name="env._" value="/usr/bin/timeout" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="en" />
+    <property name="env.HISTCONTROL" value="ignoredups:ignorespace" />
+    <property name="env.GOROOT" value="/home/travis/.gimme/versions/go1.7.4.linux.amd64" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="target" value="1.8" />
+    <property name="env.TRAVIS_BUILD_DIR" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.ANT_OPTS" value="-Xmx2048m" />
+    <property name="ant.file.type" value="file" />
+    <property name="ptolemy.ptII.batchMode" value="true" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.MERB_ENV" value="test" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="source" value="1.8" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="env.TRAVIS_TEST_RESULT" value="0" />
+    <property name="jsdoc.command" value="node_modules/@terraswarm/jsdoc/jsdoc.js" />
+    <property name="npm.works" value="true" />
+    <property name="cobertura.dir" value="/home/travis/build/icyphy/ptII/vendors/cobertura-2.0.3" />
+    <property name="env.rvm_path" value="/home/travis/.rvm" />
+    <property name="env.GEM_PATH" value="/home/travis/.rvm/gems/ruby-2.4.1:/home/travis/.rvm/gems/ruby-2.4.1@global" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.PT_TRAVIS_TEST_EXPORT3_XML" value="true" />
+    <property name="env.TRAVIS_STACK_NAME" value="garnet" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.1 compiled on February 2 2017" />
+    <property name="ptII.reports" value="/home/travis/build/icyphy/ptII/reports" />
+    <property name="env.TRAVIS_STACK_TIMESTAMP" value="2017-12-05 19:33:09 UTC" />
+    <property name="ant.file.type.ptII" value="file" />
+    <property name="env.RBENV_SHELL" value="bash" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.rvm_version" value="1.29.3 (latest)" />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.TRAVIS_BUILD_NUMBER" value="492" />
+    <property name="env.CI" value="true" />
+    <property name="java.library.path" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/home/travis" />
+    <property name="env.PATH" value="/home/travis/pthla/certi-tools/share/scripts:/home/travis/.rvm/gems/ruby-2.4.1/bin:/home/travis/.rvm/gems/ruby-2.4.1@global/bin:/home/travis/.rvm/rubies/ruby-2.4.1/bin:/home/travis/.rvm/bin:/home/travis/.nvm/versions/node/v7.10.1/bin:./node_modules/.bin:/home/travis/build/icyphy/ptII/bin:/home/travis/pthla/certi-tools/bin:/home/travis/bin:/home/travis/.local/bin:/opt/pyenv/shims:/home/travis/.phpenv/shims:/home/travis/perl5/perlbrew/bin:/home/travis/.kiex/elixirs/elixir-1.4.5/bin:/home/travis/.kiex/bin:/home/travis/gopath/bin:/home/travis/.gimme/versions/go1.7.4.linux.amd64/bin:/usr/local/phantomjs/bin:/usr/local/phantomjs:/usr/local/neo4j-3.2.7/bin:/usr/local/maven-3.5.2/bin:/usr/local/cmake-3.9.2/bin:/usr/local/clang-5.0.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/travis/.phpenv/bin:/opt/pyenv/bin:/home/travis/.yarn/bin" />
+    <property name="env.TRAVIS_OS_NAME" value="linux" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="basedir" value="/home/travis/build/icyphy/ptII" />
+    <property name="java.class.version" value="52.0" />
+    <property name="env.SHLVL" value="3" />
+    <property name="env.LD_LIBRARY_PATH" value="/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:" />
+    <property name="env.RACK_ENV" value="test" />
+    <property name="ant.home" value="/home/travis/build/icyphy/ptII/ant" />
+    <property name="env.NVM_DIR" value="/home/travis/.nvm" />
+    <property name="env.PERLBREW_BASHRC_VERSION" value="0.80" />
+    <property name="env.CERTI_FOM_PATH" value="/home/travis/pthla/certi-tools/share/federations" />
+    <property name="env.TRAVIS_BUILD_ID" value="385965323" />
+    <property name="env.PYENV_ROOT" value="/opt/pyenv" />
+    <property name="env.TRAVIS_UID" value="2000" />
+    <property name="env.rvm_pretty_print_flag" value="auto" />
+    <property name="env.NVM_BIN" value="/home/travis/.nvm/versions/node/v7.10.1/bin" />
+    <property name="env.TRAVIS_COMMIT" value="17385e2ee3a0e3d80455ab5b34248a723da2b763" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="node.executable" value="node" />
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/amd64" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="env.GOPATH" value="/home/travis/gopath" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="ptolemy.ptII.dir" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.USER" value="travis" />
+    <property name="env.HISTFILESIZE" value="2000" />
+    <property name="timeout.longest" value="19000000" />
+    <property name="env.TRAVIS_STACK_FEATURES" value="basic cassandra chromium couchdb disabled-ipv6 docker docker-compose elasticsearch firefox go-toolchain google-chrome jdk memcached mongodb mysql neo4j nodejs_interpreter perl_interpreter perlbrew phantomjs postgresql python_interpreter rabbitmq redis riak ruby_interpreter sqlite xserver" />
+    <property name="env.TRAVIS_PULL_REQUEST" value="false" />
+    <property name="env.PYENV_SHELL" value="bash" />
+    <property name="ant.project.name" value="ptII" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="env.CERTI_VERSION" value="4.0.0" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.CERTI_HOST" value="localhost" />
+    <property name="env.MY_RUBY_HOME" value="/home/travis/.rvm/rubies/ruby-2.4.1" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-oracle/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="4.4.0-101-generic" />
+    <property name="user.home" value="/home/travis" />
+    <property name="env.MIX_ARCHIVES" value="/home/travis/.kiex/mix/elixir-1.4.5" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.TRAVIS_TAG" value="nightly" />
+    <property name="env.TRAVIS_FILTERED" value="redirect_io" />
+    <property name="javadoc.excludepackagenames" value="adm.cvs2svn.*,build.*,config.*,doc.coding.templates.*,jni.test.jni.meaningOfLife.*,jni.test.jni.testDeux.*,jni.test.jni.testTrois.*,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors.web.hosts.cordova.demo.*,org.terraswarm.accessor.accessors.web.hosts.cordova.plugins.*,org.terraswarm.accessor.accessors-svn.*,pt-modules.*,ptolemy.apps.agilent.*,ptolemy.apps.anytimecontrol.*,ptolemy.apps.apes.*,ptolemy.apps.charon.*,ptolemy.apps.crazyboard.*,ptolemy.apps.eclipse.*,ptolemy.apps.etherealSting.*,ptolemy.apps.fullscreen.*,ptolemy.apps.giotto.*,ptolemy.apps.ia.*,ptolemy.apps.interfaces.*,ptolemy.apps.jmf.*,ptolemy.apps.kurt.*,ptolemy.apps.kvm.*,ptolemy.apps.lego.*,ptolemy.apps.lejos.*,ptolemy.apps.midp.*,ptolemy.apps.mobileCoding.*,ptolemy.apps.pendulum.*,ptolemy.apps.rijndael.*,ptolemy.apps.robot.*,ptolemy.apps.security.*,ptolemy.apps.sobel.*,ptolemy.apps.soot.*,ptolemy.apps.throttle.*,ptolemy.apps.tini.*,ptolemy.apps.transmission.*,ptolemy.apps.vergil.*,ptolemy.apps.waba.*,ptolemy.apps.websensor.*,ptolemy.apps.webstart.*,ptolemy.apps.xsl.*,ptolemy.apps.zaurus.*,ptolemy.backtrack.eclipse.plugin.*,ptolemy.backtrack.test.*,ptolemy.codegen.c.actor.lib.oldJavaFiles.*,ptolemy.codegen.dsp.lib.*,ptolemy.codegen.kernel.newInterfaces.*,ptolemy.codegen.lib.*,ptolemy.copernicus.kernel.fragment.*,ptolemy.copernicus.shallow.cg.*,ptolemy.domains.giotto.demo.Hierarchy.Hierarchy.*,ptolemy.domains.giotto.demo.Multimode.Multimode.*,ptolemy.domains.giotto.demo.Simple.Simple.*,ptolemy.domains.gr.lib.experimental.*,ptolemy.domains.gro.*,ptolemy.domains.pdf.*,ptolemy.domains.ptinyos.demo.Surge.output.*,ptolemy.moml.test.NoPackageActor.java*,ptolemy.plot.adm.*,ptolemy.plot.servlet.*,reports.*,signed.*,src.*,target.*,vendors.*,ptolemy.cg.adapter.generic.program.procedural.c.mbed*,ptolemy.actor.lib.fmi.fmus.omc*,ptolemy.domains.openmodelica*,ptdb.kernel.bl.save.test.*,ptdb.kernel.bl.load.test.*,ptdb.kernel.bl.search.test.*,ptdb.kernel.bl.migration.test.*,ptdb.kernel.database.test.*,ptdb.test.*,ptdb.gui.test.*,org.ptolemy.scala.*,diva.util.java2d.svg.*,ptolemy.domains.ptinyos.*,ptolemy.actor.lib.fmi.fmipp.*,,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+    <property name="env.JAVA_HOME" value="/usr/lib/jvm/java-8-oracle" />
+    <property name="env.PTII" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.TRAVIS_COMMIT_MESSAGE" value="Updated to generate code in net/test/auto." />
+    <property name="keystore" value="ptKeystore" />
+    <property name="env.XDG_SESSION_ID" value="2" />
+    <property name="junit.output.dir" value="/home/travis/build/icyphy/ptII/reports/junit" />
+    <property name="npm.return.code" value="0" />
+    <property name="user.dir" value="/home/travis/build/icyphy/ptII/ptolemy/vergil/basic/export/test" />
+    <property name="env.TRAVIS_NODE_VERSION" value="7" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.TRAVIS_EVENT_TYPE" value="cron" />
+    <property name="env.MAIL" value="/var/mail/travis" />
+    <property name="env.PWD" value="/home/travis/build/icyphy/ptII" />
+    <property name="env.PERLBREW_ROOT" value="/home/travis/perl5/perlbrew" />
+    <property name="timeout.npm" value="45000" />
+    <property name="env.PAGER" value="cat" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.TRAVIS_BUILD_STAGE_NAME" value="Test" />
+    <property name="env.PERLBREW_HOME" value="/home/travis/.perlbrew" />
+    <property name="env.RAILS_ENV" value="test" />
+    <property name="java.vm.version" value="25.151-b12" />
+    <property name="java.class.path" value="/home/travis/build/icyphy/ptII:/home/travis/build/icyphy/ptII/lib/bsh-2.0b4.jar:/home/travis/build/icyphy/ptII/lib/ptCal.jar:/home/travis/build/icyphy/ptII/lib/java_cup.jar:/home/travis/build/icyphy/ptII/lib/saxon8.jar:/home/travis/build/icyphy/ptII/lib/saxon8-dom.jar:/home/travis/build/icyphy/ptII/lib/chic.jar:/home/travis/build/icyphy/ptII/lib/ptcolt.jar:/usr/lib/jvm/java-8-oracle/lib/tools.jar:/usr/lib/eclipse/plugins/org.eclipse.jdt.core_3.8.2.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.runtime_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.osgi_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.resources_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.common_3.6.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.jobs_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.contenttype_3.4.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.preferences_3.5.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.text_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.jface_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.swt_3.8.2.jar:/usr/lib/eclipse/plugins/org.eclipse.jface.text_3.8.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.workbench.texteditor_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.editors_3.8.0.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.core.commands_3.6.1.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.equinox.registry_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.console_3.5.100.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.forms_3.5.200.dist.jar:/usr/lib/eclipse/plugins/org.eclipse.ui.ide_3.8.1.dist.jar:/home/travis/build/icyphy/ptII/vendors/oracle/dbxml.jar:/home/travis/build/icyphy/ptII/vendors/oracle/db.jar:/home/travis/build/icyphy/ptII/vendors/misc/itext/iText.jar:/home/travis/build/icyphy/ptII/lib/g4ltl.jar:/home/travis/build/icyphy/ptII/lib/StructuralCoder.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util.jar:/home/travis/build/icyphy/ptII/lib/org-openide-util-lookup.jar:/home/travis/build/icyphy/ptII/lib/org-netbeans-api-visual.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_core.jar:/home/travis/build/icyphy/ptII/vendors/jai-1_1_2_01/lib/jai_codec.jar:/home/travis/build/icyphy/ptII/lib/jcerti.jar:/home/travis/build/icyphy/ptII/lib/smack.jar:/home/travis/build/icyphy/ptII/lib/smackx.jar:/home/travis/build/icyphy/ptII/lib/jetty-all-8.1.5-v20120716.jar:/home/travis/build/icyphy/ptII/lib/javax.servlet-api-3.0.1.jar:/home/travis/build/icyphy/ptII/lib/javax.mail.jar:/home/travis/build/icyphy/ptII/vendors/JMF-2.1.1e/lib/jmf.jar:/home/travis/build/icyphy/ptII/lib/jna-4.0.0-variadic.jar:/home/travis/build/icyphy/ptII/vendors/misc/joystick/Joystick.jar:/home/travis/build/icyphy/ptII/lib/ptjacl.jar:/home/travis/build/icyphy/ptII/lib/jsoup-1.8.2.jar:/home/travis/build/icyphy/ptII/lib/junit-4.8.2.jar:/home/travis/build/icyphy/ptII/lib/JUnitParams-0.4.0.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/excel/jxl.jar:/home/travis/build/icyphy/ptII/lib/jython.jar:/home/travis/build/icyphy/ptII/lib/kieler.jar:/home/travis/build/icyphy/ptII/vendors/opencv/share/OpenCV/java/opencv-341.jar:/home/travis/build/icyphy/ptII/lib/oscP5.jar:/home/travis/build/icyphy/ptII/lib/nrjavaserial-3.11.0.devel.jar:/usr/share/java/j3dcore.jar:/usr/share/java/j3dutils.jar:/usr/share/java/vecmath.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/travis/build/icyphy/ptII/ptolemy/distributed/jini/jar/sun-util.jar:/home/travis/build/icyphy/ptII/lib/protobuf-java-2.4.1.jar:/home/travis/build/icyphy/ptII/lib/org.eclipse.paho.client.mqttv3.jar:/home/travis/build/icyphy/ptII/ptserver/lib/hessian-4.0.7.jar:/home/travis/build/icyphy/ptII/ptserver/lib/wmqtt.jar:/home/travis/build/icyphy/ptII/lib/mapss.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/antlr/antlr.jar:/home/travis/build/icyphy/ptII/lib/JRI.jar:/home/travis/build/icyphy/ptII/lib/commons-lang-2.6.jar:/home/travis/build/icyphy/ptII/lib/commons-logging-1.1.1.jar:/home/travis/build/icyphy/ptII/lib/sootclasses.jar:/home/travis/build/icyphy/ptII/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar:/home/travis/build/icyphy/ptII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar:/home/travis/build/icyphy/ptII/lib/PDFRenderer.jar:/home/travis/build/icyphy/ptII/lib/svgSalamander.jar:/home/travis/build/icyphy/ptII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/hazelcast-3.8.2.jar:/home/travis/build/icyphy/ptII/lib/jackson-annotations-2.9.0.jar:/home/travis/build/icyphy/ptII/lib/jackson-core-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/jackson-databind-2.9.3.jar:/home/travis/build/icyphy/ptII/lib/netty-buffer-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-codec-http2-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-common-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-handler-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-resolver-dns-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/netty-transport-4.1.19.Final.jar:/home/travis/build/icyphy/ptII/lib/vertx-codegen-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-core-3.5.2-SNAPSHOT.jar:/home/travis/build/icyphy/ptII/lib/vertx-hazelcast-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-lang-js-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-service-proxy-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/vertx-web-3.5.1.jar:/home/travis/build/icyphy/ptII/lib/slf4j-api-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/slf4j-simple-1.7.13.jar:/home/travis/build/icyphy/ptII/lib/webcam-capture-0.3.12.jar:/home/travis/build/icyphy/ptII/lib/bridj-0.7.0.jar:/home/travis/build/icyphy/ptII/lib/xbjlib-1.1.0.nrjavaserial.jar:/home/travis/build/icyphy/ptII/ptolemy/moml/test:/home/travis/build/icyphy/ptII/ant/lib/ant-launcher.jar:/home/travis/build/icyphy/ptII/ant/lib/ant.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit.jar:/home/travis/build/icyphy/ptII/ant/lib/ant-junit4.jar" />
+    <property name="ant.library.dir" value="/home/travis/build/icyphy/ptII/ant/lib" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.TRAVIS_LANGUAGE" value="node_js" />
+    <property name="env.CONTINUOUS_INTEGRATION" value="true" />
+    <property name="env.TRAVIS_STACK_LANGUAGES" value="__garnet__ c c++ clojure cplusplus cpp default go groovy java node_js php pure_java python ruby scala" />
+    <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.PYTHON_CONFIGURE_OPTS" value="--enable-unicode=ucs4 --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos" />
+    <property name="ant.core.lib" value="/home/travis/build/icyphy/ptII/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="env.BCVTB_HOME" value="/home/travis/build/icyphy/ptII/lbnl" />
+    <property name="file.separator" value="/" />
+    <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="spotbugs.home" value="/home/travis/build/icyphy/ptII/vendors/spotbugs-3.1.1" />
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-8-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-8-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-8-oracle/jre/lib/jfr.jar:/usr/lib/jvm/java-8-oracle/jre/classes" />
+    <property name="env.HAS_JOSH_K_SEAL_OF_APPROVAL" value="true" />
+    <property name="env.TRAVIS_OSX_IMAGE" value="" />
+    <property name="env.XDG_RUNTIME_DIR" value="/run/user/2000" />
+    <property name="env.TRAVIS_BRANCH" value="master" />
+    <property name="env.TRAVIS_JOB_ID" value="385965343" />
+    <property name="env.CERTI_HOME_TRAVIS" value="/home/travis/pthla/certi-tools" />
+    <property name="user.country" value="US" />
+    <property name="env.SHELL" value="/bin/bash" />
+    <property name="java.maxmemory.large" value="5000m" />
+    <property name="model" value="" />
+    <property name="env.CASHER_DIR" value="/home/travis/.casher" />
+    <property name="env.NVM_CD_FLAGS" value="" />
+    <property name="jshint.executable" value="/home/travis/node_modules/jshint/bin/jshint" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.JRUBY_OPTS" value=" --client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false" />
+    <property name="env.TRAVIS_PRE_CHEF_BOOTSTRAP_TIME" value="2017-12-05T19:32:55" />
+    <property name="env.TRAVIS_STACK_JOB_BOARD_REGISTER" value="/.job-board-register.yml" />
+    <property name="env.ELIXIR_VERSION" value="1.4.5" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="env.IRBRC" value="/home/travis/.rvm/rubies/ruby-2.4.1/.irbrc" />
+    <property name="env.TRAVIS" value="true" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[0] ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml (RunExportModel)" time="32.876" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[1] ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml (RunExportModel)" time="12.032" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[2] ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml (RunExportModel)" time="23.653" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[3] ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml (RunExportModel)" time="22.417" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[4] ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml (RunExportModel)" time="14.428" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[5] ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml (RunExportModel)" time="37.206" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[6] ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml (RunExportModel)" time="16.686" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[7] ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml (RunExportModel)" time="13.942" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[8] ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml (RunExportModel)" time="8.255" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[9] ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml (RunExportModel)" time="14.194" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[10] ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml (RunExportModel)" time="34.28" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[11] ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient.xml (RunExportModel)" time="21.451" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[12] ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients.xml (RunExportModel)" time="34.1" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[13] ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort.xml (RunExportModel)" time="14.831" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[14] ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml (RunExportModel)" time="10.278" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[15] ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml (RunExportModel)" time="13.097" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[16] ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml (RunExportModel)" time="29.374" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[17] ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml (RunExportModel)" time="39.628" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[18] ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml (RunExportModel)" time="21.905">
+    <failure message="Exporting HTML for ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml failed: &#xa;java.lang.reflect.InvocationTargetException&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)&#xa;&#x9;at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)&#xa;&#x9;at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)&#xa;&#x9;at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)&#xa;&#x9;at sun.reflect.GeneratedMethodAccessor18.invoke(Unknown Source)&#xa;&#x9;at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)&#xa;&#x9;at java.lang.reflect.Method.invoke(Method.java:498)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)&#xa;&#x9;at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)&#xa;&#x9;at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)&#xa;&#x9;at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)&#xa;&#x9;at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)&#xa;&#x9;at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)&#xa;&#x9;at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)&#xa;&#x9;at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)&#xa;&#x9;at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)&#xa;&#x9;at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)&#xa;&#x9;at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)&#xa;&#x9;at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)&#xa;&#x9;at org.junit.runners.ParentRunner.run(ParentRunner.java:236)&#xa;&#x9;at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)&#xa;&#x9;at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)&#xa;Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:&#xa;ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;  in .WatchEmulator.TrainableTest2&#xa;Because:&#xa;Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;&#xa;  in .WatchEmulator.DE Director&#xa;Because:&#xa;Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;  in .WatchEmulator.TrainableTest2&#xa;Because:&#xa;Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)&#xa;&#x9;at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)&#xa;&#x9;at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)&#xa;&#x9;at java.awt.EventQueue.access$500(EventQueue.java:97)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:709)&#xa;&#x9;at java.awt.EventQueue$3.run(EventQueue.java:703)&#xa;&#x9;at java.security.AccessController.doPrivileged(Native Method)&#xa;&#x9;at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)&#xa;&#x9;at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)&#xa;&#x9;at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)&#xa;&#x9;at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)&#xa;&#x9;at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)&#xa;Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:&#xa;ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;  in .WatchEmulator.TrainableTest2&#xa;Because:&#xa;Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;&#xa;  in .WatchEmulator.DE Director&#xa;Because:&#xa;Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;  in .WatchEmulator.TrainableTest2&#xa;Because:&#xa;Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;&#x9;at ptolemy.actor.Director.wrapup(Director.java:1736)&#xa;&#x9;at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)&#xa;&#x9;at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)&#xa;&#x9;at ptolemy.actor.Manager.wrapup(Manager.java:1512)&#xa;&#x9;at ptolemy.actor.Manager.execute(Manager.java:407)&#xa;&#x9;at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)&#xa;&#x9;... 14 more&#xa;Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;  in .WatchEmulator.TrainableTest2&#xa;Because:&#xa;Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;&#x9;at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)&#xa;&#x9;at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)&#xa;&#x9;at ptolemy.actor.Director.wrapup(Director.java:1722)&#xa;&#x9;... 19 more&#xa;Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16&#xa;&#x9;at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)&#xa;&#x9;at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)&#xa;&#x9;at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)&#xa;&#x9;at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)&#xa;&#x9;... 21 more&#xa;Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.&#xa;&#x9;at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)&#xa;&#x9;at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)&#xa;&#x9;at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)&#xa;&#x9;at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)&#xa;&#x9;at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)&#xa;&#x9;at jdk.nashorn.internal.scripts.Script$Recompilation$17647$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)&#xa;&#x9;at jdk.nashorn.internal.scripts.Script$Recompilation$17645$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)&#xa;&#x9;at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)&#xa;&#x9;at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)&#xa;&#x9;at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)&#xa;&#x9;at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)&#xa;&#x9;at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)&#xa;&#x9;... 23 more&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Exporting HTML for ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml failed: 
+java.lang.reflect.InvocationTargetException
+	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
+	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
+	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
+	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WatchEmulator.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+
+  in .WatchEmulator.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in &lt;function&gt; at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+Caused by: &lt;function&gt;:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.&lt;init&gt;(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17647$18537$\^function\_.L:1#wrapup(&lt;function&gt;:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17645$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30&lt;eval&gt;:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:162)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+</failure>
+  </testcase>
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[19] ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml (RunExportModel)" time="76.835" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[20] ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml (RunExportModel)" time="22.769" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[21] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml (RunExportModel)" time="14.165" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[22] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser.xml (RunExportModel)" time="41.177" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[23] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage.xml (RunExportModel)" time="15.669" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[24] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml (RunExportModel)" time="40.034" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[25] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp.xml (RunExportModel)" time="23.486" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[26] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate.xml (RunExportModel)" time="24.828" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[27] ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml (RunExportModel)" time="40.674" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[28] ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml (RunExportModel)" time="17.188" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[29] ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml (RunExportModel)" time="15.892" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[30] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml (RunExportModel)" time="8.814" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[31] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml (RunExportModel)" time="8.806" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[32] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml (RunExportModel)" time="39.687" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[33] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml (RunExportModel)" time="39.823" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[34] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml (RunExportModel)" time="8.147" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[35] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient.xml (RunExportModel)" time="8.773" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[36] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer.xml (RunExportModel)" time="40.226" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[37] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml (RunExportModel)" time="13.089" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[38] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph.xml (RunExportModel)" time="42.745" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[39] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage.xml (RunExportModel)" time="41.484" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[40] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog.xml (RunExportModel)" time="24.262" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[41] ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml (RunExportModel)" time="22.616" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[42] ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml (RunExportModel)" time="9.525" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[43] ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml (RunExportModel)" time="9.493" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[44] ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml (RunExportModel)" time="3.161" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[45] ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml (RunExportModel)" time="3.158" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[46] ptolemy/actor/lib/mail/demo/ExceptionEmailer/ExceptionEmailer.xml (RunExportModel)" time="4.326" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[47] ptolemy/actor/lib/mail/demo/SendMail/SendMail.xml (RunExportModel)" time="4.186" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[48] ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml (RunExportModel)" time="6.136" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[49] ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml (RunExportModel)" time="4.317" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[50] ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml (RunExportModel)" time="3.353" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[51] ptolemy/actor/lib/r/demo/R3DPlot/R3DPlot.xml (RunExportModel)" time="3.432" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[52] ptolemy/actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe.xml (RunExportModel)" time="3.135" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[53] ptolemy/actor/lib/security/demo/Signature/Signature.xml (RunExportModel)" time="3.228" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[54] ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc.xml (RunExportModel)" time="4.302" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[55] ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc.xml (RunExportModel)" time="4.223" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[56] ptolemy/actor/lib/video/demo/DCT8x8/DCT8x8.xml (RunExportModel)" time="4.198" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[57] ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MoMLFileTransformation.xml (RunExportModel)" time="4.832" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[58] ptolemy/actor/lib/xslt/demo/XMLInclusion/XMLInclusion.xml (RunExportModel)" time="4.376" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[59] ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml (RunExportModel)" time="14.344" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[60] ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.xml (RunExportModel)" time="34.248" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[61] ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.xml (RunExportModel)" time="4.512" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[62] ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml (RunExportModel)" time="5.215" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[63] ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.xml (RunExportModel)" time="34.844" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[64] ptolemy/actor/ptalon/demo/MapReduce/MapReduce.xml (RunExportModel)" time="4.761" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[65] ptolemy/actor/ptalon/demo/ModelChange/ModelChange.xml (RunExportModel)" time="4.229" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[66] ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM.xml (RunExportModel)" time="35.749" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[67] ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF.xml (RunExportModel)" time="6.571" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[68] ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.xml (RunExportModel)" time="5.606" />
+  <testcase classname="ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3" name="[69] ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldMultiInstanceComposite.xml (RunExportModel)" time="36.446" />
+  <system-out><![CDATA[ExportModeJUnitTestBatch: There are 746 demos. Exporting demos: 221 to 290.
+####### 1 Thu May 31 02:35:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml $PTII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub
+----------------- Thu May 31 02:35:29 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml
+Done sleeping
+JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
+Running .SecurePubSub
+13907 ms. Memory: 385024K Free: 156800K (41%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub/index.html
+27864 ms. Memory: 385024K Free: 95033K (25%)
+####### 2 Thu May 31 02:36:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml $PTII/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage
+----------------- Thu May 31 02:36:02 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
+Done sleeping
+Running .LocalStorage
+1888 ms. Memory: 498688K Free: 426055K (85%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage/index.html
+7030 ms. Memory: 498688K Free: 391581K (79%)
+####### 3 Thu May 31 02:36:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml $PTII/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub
+----------------- Thu May 31 02:36:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
+Done sleeping
+Running .MQTTPubSub
+12710 ms. Memory: 620544K Free: 449787K (72%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub/index.html
+18651 ms. Memory: 620544K Free: 421147K (68%)
+####### 4 Thu May 31 02:36:38 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket
+----------------- Thu May 31 02:36:38 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml
+Done sleeping
+Running .SecureSocket
+12370 ms. Memory: 751616K Free: 136901K (18%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket/index.html
+17415 ms. Memory: 751616K Free: 96422K (13%)
+####### 5 Thu May 31 02:37:00 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched
+----------------- Thu May 31 02:37:00 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml
+Done sleeping
+Running .SocketDoubleArrayBatched
+4161 ms. Memory: 941056K Free: 731890K (78%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched/index.html
+9427 ms. Memory: 941056K Free: 699758K (74%)
+####### 6 Thu May 31 02:37:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage
+----------------- Thu May 31 02:37:15 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml
+Done sleeping
+No physical cameras found, using WebcamDummyDriver.
+Running .SocketImage
+22977 ms. Memory: 1167872K Free: 471403K (40%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage/index.html
+32206 ms. Memory: 1167872K Free: 437083K (37%)
+####### 7 Thu May 31 02:37:52 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString
+----------------- Thu May 31 02:37:52 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml
+Done sleeping
+Running .SocketString
+6724 ms. Memory: 1171456K Free: 520172K (44%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString/index.html
+11685 ms. Memory: 1171456K Free: 492240K (42%)
+####### 8 Thu May 31 02:38:09 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort
+----------------- Thu May 31 02:38:09 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml
+Done sleeping
+Running .SocketUnsignedShort
+Client: Sending data: -1,0,1,65535,65536 (Thread[AWT-EventQueue-0,6,main])
+3907 ms. Memory: 1342976K Free: 675267K (50%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort/index.html
+8942 ms. Memory: 1342976K Free: 637240K (47%)
+####### 9 Thu May 31 02:38:23 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket
+Warning: not running ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:38:23 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket/index.html
+3254 ms. Memory: 1342976K Free: 509623K (38%)
+####### 10 Thu May 31 02:38:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched
+----------------- Thu May 31 02:38:31 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml
+Done sleeping
+Running .TCPSocketDoubleArrayBatched
+4028 ms. Memory: 1350144K Free: 660116K (49%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched/index.html
+9194 ms. Memory: 1350144K Free: 617922K (46%)
+####### 11 Thu May 31 02:38:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage
+----------------- Thu May 31 02:38:45 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml
+Done sleeping
+Running .TCPSocketImage
+23418 ms. Memory: 1967104K Free: 896386K (46%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage/index.html
+29280 ms. Memory: 1967104K Free: 859961K (44%)
+####### 12 Thu May 31 02:39:19 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient
+----------------- Thu May 31 02:39:19 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient.xml
+Done sleeping
+Running .TCPSocketSecureServerClient
+9732 ms. Memory: 1975296K Free: 383856K (19%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient/index.html
+16451 ms. Memory: 1975296K Free: 340063K (17%)
+####### 13 Thu May 31 02:39:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients
+----------------- Thu May 31 02:39:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients.xml
+Done sleeping
+Running .TCPSocketTwoClients
+23275 ms. Memory: 1954816K Free: 278718K (14%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients/index.html
+29100 ms. Memory: 1954816K Free: 234022K (12%)
+####### 14 Thu May 31 02:40:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort.xml $PTII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort
+----------------- Thu May 31 02:40:15 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort.xml
+Done sleeping
+Running .TCPSocketUnsignedShort
+4099 ms. Memory: 1950208K Free: 969525K (50%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort/index.html
+9831 ms. Memory: 1950208K Free: 927830K (48%)
+####### 15 Thu May 31 02:40:30 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml $PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition
+Warning: not running ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:40:30 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition/index.html
+5276 ms. Memory: 1911296K Free: 1337847K (70%)
+####### 16 Thu May 31 02:40:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml $PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater
+Warning: not running ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:40:40 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater/index.html
+8096 ms. Memory: 1937408K Free: 1248753K (64%)
+####### 17 Thu May 31 02:40:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml $PTII/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing
+----------------- Thu May 31 02:40:53 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
+Done sleeping
+Running .Testing
+MochaTest: Start of Common host: Basic (Thread[AWT-EventQueue-0,6,main])
+MochaTest: End of Common host: Basic (Thread[AWT-EventQueue-0,6,main])
+MochaTest: Start of Common host: Composite accessors (Thread[AWT-EventQueue-0,6,main])
+MochaTest: Start of Common host: Spontaneous accessors (Thread[AWT-EventQueue-0,6,main])
+MochaTest: Start of Common host: Spontaneous accessors (Thread[AWT-EventQueue-0,6,main])
+MochaTest: Before Spontaneous accessor produces correct outputs after 1 and 2 seconds. (Thread[AWT-EventQueue-0,6,main])
+MochaTest: After Spontaneous accessor produces correct outputs after 1 and 2 seconds. (Thread[AWT-EventQueue-0,6,main])
+MochaTest: End of Common host: Spontaneous accessors (Thread[AWT-EventQueue-0,6,main])
+MochaTest: Start of Common host: Inheritance (Thread[AWT-EventQueue-0,6,main])
+MochaTest: End of Common host: Inheritance (Thread[AWT-EventQueue-0,6,main])
+MochaTest: Instance of TestAccessor: [Circular]
+Tests: (Thread[AWT-EventQueue-0,6,main])
+MochaTest: TestAccessor.fire() invoked. (Thread[AWT-EventQueue-0,6,main])
+MochaTest: TestAdder: fire(): inputLeft: 10 inputRight: 40 (Thread[AWT-EventQueue-0,6,main])
+MochaTest: TestAdder: fire(): inputLeft: 5 inputRight: 20 (Thread[AWT-EventQueue-0,6,main])
+MochaTest: TestAdder: fire(): inputLeft: 5 inputRight: 20 (Thread[AWT-EventQueue-0,6,main])
+MochaTest: TestAccessor.fire() invoked. (Thread[AWT-EventQueue-0,6,main])
+MochaTest: <?xml version="1.0" encoding="UTF-8"?>
+ <testsuites>
+ <testsuite name="Root Suite" tests="0">
+ <testsuite name="Common host: Basic" tests="7">
+ <testcase name="this.getParameter() returns default value." > </testcase>
+ <testcase name="this.getParameter() returns value set by this.setParameter()." > </testcase>
+ <testcase name="this.get() returns default value." > </testcase>
+ <testcase name="this.get() returns null if no input yet provided." > </testcase>
+ <testcase name="this.get() returns null if no input yet provided but type being boolean." > </testcase>
+ <testcase name="this.get() returns value provided by provideInput()." > </testcase>
+ <testcase name="latestOutput contains value provided by inputHandlers and send()." > </testcase>
+ </testsuite>
+ <testsuite name="Common host: Composite accessors" tests="2">
+ <testcase name="Composite accessor produces correct output when manually scheduled." > </testcase>
+ <testcase name="Composite accessor produces correct output when automatically scheduled." > </testcase>
+ </testsuite>
+ <testsuite name="Common host: Spontaneous accessors" tests="2">
+ <testcase name="Spontaneous accessor produces correct outputs after 1 and 2 seconds." > </testcase>
+ <testcase name="Composite spontaneous accessor produces correct outputs after 1 and 2 seconds." > </testcase>
+ </testsuite>
+ <testsuite name="Common host: Inheritance" tests="4">
+ <testcase name="Inheritance, function overriding, and variable visiility should work properly." > </testcase>
+ <testcase name="Implementing an interface should work properly." > </testcase>
+ <testcase name="Exported fields of base classes can be accessed and initialize() is properly scoped." > </testcase>
+ <testcase name="Two-level inheritance should work properly." > </testcase>
+ </testsuite>
+ </testsuite>
+ </testsuites>
+ (Thread[AWT-EventQueue-0,6,main])
+17950 ms. Memory: 1900544K Free: 1081757K (57%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing/index.html
+24374 ms. Memory: 1900544K Free: 1050561K (55%)
+####### 18 Thu May 31 02:41:22 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml $PTII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket
+----------------- Thu May 31 02:41:22 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml
+Done sleeping
+Running .UDPSocket
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30012 ms. Memory: 1900544K Free: 587735K (31%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket/index.html
+34628 ms. Memory: 1900544K Free: 556684K (29%)
+####### 19 Thu May 31 02:42:02 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml $PTII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator
+----------------- Thu May 31 02:42:02 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml
+Done sleeping
+Running .WatchEmulator
+10829 ms. Memory: 1879552K Free: 1507421K (80%)
+####### 20 Thu May 31 02:42:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots
+----------------- Thu May 31 02:42:24 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml
+Done sleeping
+Running .Dots
+BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+ExportHTMLTimer went off after 60000 ms., calling manager.stop().
+65898 ms. Memory: 1862656K Free: 1350339K (72%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots/index.html
+71833 ms. Memory: 1862656K Free: 1319434K (71%)
+####### 21 Thu May 31 02:43:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface
+----------------- Thu May 31 02:43:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml
+Done sleeping
+Running .HelloUserInterface
+12165 ms. Memory: 1871360K Free: 1450210K (77%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface/index.html
+17768 ms. Memory: 1871360K Free: 1432689K (77%)
+####### 22 Thu May 31 02:44:04 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface
+----------------- Thu May 31 02:44:04 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml
+Done sleeping
+Running .UserInterface
+5002 ms. Memory: 1871360K Free: 1334126K (71%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface/index.html
+9165 ms. Memory: 1871360K Free: 1297541K (69%)
+####### 23 Thu May 31 02:44:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser
+----------------- Thu May 31 02:44:18 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser.xml
+Done sleeping
+Running .UserInterfaceBrowser
+BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+30049 ms. Memory: 1871360K Free: 698165K (37%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser/index.html
+36177 ms. Memory: 1871360K Free: 661752K (35%)
+####### 24 Thu May 31 02:44:59 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage
+----------------- Thu May 31 02:44:59 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage.xml
+Done sleeping
+Running .UserInterfaceFixedPage
+BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+5932 ms. Memory: 1880064K Free: 1138189K (61%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceFixedPage/index.html
+10669 ms. Memory: 1880064K Free: 1099809K (58%)
+####### 25 Thu May 31 02:45:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive
+----------------- Thu May 31 02:45:15 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml
+Done sleeping
+Running .UserInterfaceInteractive
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30015 ms. Memory: 1917952K Free: 1543726K (80%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive/index.html
+35033 ms. Memory: 1917952K Free: 1523455K (79%)
+####### 26 Thu May 31 02:45:55 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp
+----------------- Thu May 31 02:45:55 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp.xml
+Done sleeping
+Running .UserInterfaceRamp
+BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+13049 ms. Memory: 1926656K Free: 1386636K (72%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceRamp/index.html
+18485 ms. Memory: 1926656K Free: 1346520K (70%)
+####### 27 Thu May 31 02:46:18 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate
+----------------- Thu May 31 02:46:18 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate.xml
+Done sleeping
+Running .UserInterfaceUpdate
+BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+13671 ms. Memory: 1939968K Free: 848932K (44%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceUpdate/index.html
+19828 ms. Memory: 1939968K Free: 826762K (43%)
+####### 28 Thu May 31 02:46:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml $PTII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo
+----------------- Thu May 31 02:46:43 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml
+Done sleeping
+Running .UserInterfaceVideo
+BrowserLauncher: UnsupportedOperation: http://localhost:8090: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+30083 ms. Memory: 2064384K Free: 1142521K (55%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo/index.html
+35673 ms. Memory: 2064384K Free: 1105764K (54%)
+####### 29 Thu May 31 02:47:24 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient
+----------------- Thu May 31 02:47:24 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
+Done sleeping
+Running .SpeakingServerListeningClient
+WSServer: *** server initialized. (Thread[AWT-EventQueue-0,6,main])
+WSServer: *** server is listenting. (Thread[vert.x-eventloop-thread-2,6,main])
+WSClient1: --- client 1 initialized. (Thread[AWT-EventQueue-0,6,main])
+WSServer: *** server received connection 0 (Thread[vert.x-eventloop-thread-2,6,main])
+WSClient1: --- client 1 connection open. Sending message to server. (Thread[vert.x-eventloop-thread-0,6,main])
+WSServer: *** server received connection 1 (Thread[vert.x-eventloop-thread-2,6,main])
+WSClient2: +++ client 2 initialized. (Thread[AWT-EventQueue-0,6,main])
+WSClient2: +++ connection established. Sending message to server. (Thread[vert.x-eventloop-thread-2,6,main])
+WSServer: *** server received message: Hello from the client (Thread[AWT-EventQueue-0,6,main])
+WSClient1: --- client 1 received message: Hello to client number 1 (Thread[AWT-EventQueue-0,6,main])
+WSClient2: +++ client 2 received message: Hello to client number 2 (Thread[AWT-EventQueue-0,6,main])
+WSServer: *** server received message: Hello from the client (Thread[AWT-EventQueue-0,6,main])
+WSServer: *** server wrapping up. (Thread[AWT-EventQueue-0,6,main])
+WSClient1: --- client 1 wrapping up. (Thread[AWT-EventQueue-0,6,main])
+WSClient1: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+WSClient2: +++ client 2 wrapping up. (Thread[AWT-EventQueue-0,6,main])
+WSClient2: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+6390 ms. Memory: 2081792K Free: 1109416K (53%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient/index.html
+12187 ms. Memory: 2081792K Free: 1071102K (51%)
+####### 30 Thu May 31 02:47:41 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets
+----------------- Thu May 31 02:47:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
+Done sleeping
+Running .TwoWebSockets
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:8080
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+JavaScript: Connection failed. Will try again: Connection refused: localhost/127.0.0.1:1984
+Connection refused (Thread[vert.x-eventloop-thread-0,6,main])
+6041 ms. Memory: 2081792K Free: 630896K (30%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets/index.html
+10892 ms. Memory: 2081792K Free: 611465K (29%)
+####### 31 Thu May 31 02:47:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client
+----------------- Thu May 31 02:47:57 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml
+Done sleeping
+.Client.InteractiveDialog invoked SwingUtilities.invokeAndWait()
+Model ".Client" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client/index.html
+3813 ms. Memory: 2091008K Free: 1434804K (69%)
+####### 32 Thu May 31 02:48:06 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient
+----------------- Thu May 31 02:48:06 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml
+Done sleeping
+.SecureClient.InteractiveDialog invoked SwingUtilities.invokeAndWait()
+Model ".SecureClient" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient/index.html
+3804 ms. Memory: 2091008K Free: 1180842K (56%)
+####### 33 Thu May 31 02:48:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer
+----------------- Thu May 31 02:48:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml
+Done sleeping
+Running .SecureServer
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30010 ms. Memory: 2091008K Free: 729863K (35%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer/index.html
+34687 ms. Memory: 2091008K Free: 708744K (34%)
+####### 34 Thu May 31 02:48:54 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server
+----------------- Thu May 31 02:48:54 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml
+Done sleeping
+Running .Server
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30010 ms. Memory: 2105344K Free: 1364496K (65%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server/index.html
+34823 ms. Memory: 2105344K Free: 1341518K (64%)
+####### 35 Thu May 31 02:49:34 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat
+Warning: not running ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:49:34 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat/index.html
+3145 ms. Memory: 2105344K Free: 1228077K (58%)
+####### 36 Thu May 31 02:49:42 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient
+Warning: not running ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:49:42 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient/index.html
+3772 ms. Memory: 2105344K Free: 952283K (45%)
+####### 37 Thu May 31 02:49:51 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer
+----------------- Thu May 31 02:49:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer.xml
+Done sleeping
+Running .WebSocketServer
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30019 ms. Memory: 2102784K Free: 1285395K (61%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer/index.html
+35226 ms. Memory: 2102784K Free: 1259891K (60%)
+####### 38 Thu May 31 02:50:31 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex
+----------------- Thu May 31 02:50:31 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
+Done sleeping
+Running .WebSocketFullDuplex
+WebSocketServer: WebSocketServer message(): 0, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -1, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -2, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -3, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -4, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -5, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -6, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -7, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -8, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -9, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -10, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -11, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -12, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -13, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -14, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -15, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -16, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -17, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -18, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -19, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -20, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -21, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -22, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -23, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -24, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -25, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -26, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -27, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -28, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -29, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -30, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -31, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -32, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -33, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -34, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -35, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -36, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -37, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -38, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -39, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -40, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -41, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -42, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -43, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -44, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -45, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -46, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -47, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -48, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -49, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -50, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -51, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -52, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -53, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -54, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -55, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -56, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -57, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -58, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -59, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -60, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -61, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -62, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -63, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -64, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -65, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -66, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -67, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -68, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -69, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -70, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -71, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -72, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -73, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -74, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -75, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -76, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -77, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -78, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -79, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -80, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -81, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -82, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -83, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -84, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -85, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -86, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -87, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -88, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -89, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -90, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -91, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -92, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -93, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -94, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -95, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -96, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -97, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -98, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -99, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketServer: WebSocketServer message(): -100, typeof message: number (Thread[AWT-EventQueue-0,6,main])
+WebSocketClient: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+2842 ms. Memory: 2102784K Free: 409750K (19%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex/index.html
+8089 ms. Memory: 2023424K Free: 1392815K (69%)
+####### 39 Thu May 31 02:50:44 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph
+----------------- Thu May 31 02:50:44 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph.xml
+Done sleeping
+Running .WebSocketGraph
+BrowserLauncher: UnsupportedOperation: http://localhost:8089: java.lang.UnsupportedOperationException: The BROWSE action is not supported on the current platform!
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+UserInterface: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+30081 ms. Memory: 2065920K Free: 331454K (16%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph/index.html
+37744 ms. Memory: 1900032K Free: 1126947K (59%)
+####### 40 Thu May 31 02:51:27 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage
+----------------- Thu May 31 02:51:27 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage.xml
+Done sleeping
+Running .WebSocketImage
+WebSocketClient: WebSocketClient: WebSocketClient.js: connect(): portValue: -1, which is less than 0. This could be a signal to close a previously open socket.  Returning. (Thread[AWT-EventQueue-0,6,main])
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30051 ms. Memory: 2066432K Free: 892425K (43%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage/index.html
+36484 ms. Memory: 2066432K Free: 859872K (42%)
+####### 41 Thu May 31 02:52:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog
+----------------- Thu May 31 02:52:08 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog.xml
+Done sleeping
+Running .WebSocketLog
+13160 ms. Memory: 2093056K Free: 425895K (20%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog/index.html
+19261 ms. Memory: 2528256K Free: 1772634K (70%)
+####### 42 Thu May 31 02:52:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml $PTII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient
+----------------- Thu May 31 02:52:33 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
+Done sleeping
+Running .WebSocketsServerClient
+WSClient: Connection to socket is open. (Thread[vert.x-eventloop-thread-1,6,main])
+WSClient: Connection closed because model is no longer running. (Thread[AWT-EventQueue-0,6,main])
+12188 ms. Memory: 2528256K Free: 1020274K (40%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient/index.html
+17616 ms. Memory: 2528256K Free: 985611K (39%)
+####### 43 Thu May 31 02:52:55 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml $PTII/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes
+Warning: not running ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:52:55 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes/index.html
+4523 ms. Memory: 2533888K Free: 1500734K (59%)
+####### 44 Thu May 31 02:53:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml $PTII/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld
+Warning: not running ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+----------------- Thu May 31 02:53:05 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml
+Done sleeping
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld/index.html
+4492 ms. Memory: 2533888K Free: 1084777K (43%)
+####### 45 Thu May 31 02:53:14 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml $PTII/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI
+Warning: not running ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI/index.html
+3159 ms. Memory: 2533888K Free: 982243K (39%)
+####### 46 Thu May 31 02:53:17 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml $PTII/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture
+Warning: not running ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture/index.html
+3158 ms. Memory: 2533888K Free: 864798K (34%)
+####### 47 Thu May 31 02:53:21 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/mail/demo/ExceptionEmailer/ExceptionEmailer.xml $PTII/ptolemy/actor/lib/mail/demo/ExceptionEmailer/ExceptionEmailer
+Running .ExceptionEmailer
+18 ms. Memory: 2516480K Free: 1661036K (66%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/demo/ExceptionEmailer/ExceptionEmailer/index.html
+4326 ms. Memory: 2516480K Free: 1621868K (64%)
+####### 48 Thu May 31 02:53:25 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/mail/demo/SendMail/SendMail.xml $PTII/ptolemy/actor/lib/mail/demo/SendMail/SendMail
+Running .SendMail
+35 ms. Memory: 2516480K Free: 1497651K (60%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/mail/demo/SendMail/SendMail/index.html
+4186 ms. Memory: 2516480K Free: 1458987K (58%)
+####### 49 Thu May 31 02:53:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml $PTII/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer
+.Ptolemnizer.InteractiveShell invoked SwingUtilities.invokeAndWait()
+Model ".Ptolemnizer" contains actors such cannot be run  as part of the export process from ExportModel or it has a WebExportParameters value that runBeforeExport set to false. To export run this model and export it, use vergil.
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer/index.html
+6136 ms. Memory: 2516480K Free: 1013321K (40%)
+####### 50 Thu May 31 02:53:35 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml $PTII/ptolemy/actor/lib/python/demo/PythonScale/PythonScale
+Running .PythonScale
+79 ms. Memory: 2516480K Free: 922852K (37%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/python/demo/PythonScale/PythonScale/index.html
+4317 ms. Memory: 2516480K Free: 882992K (35%)
+####### 51 Thu May 31 02:53:40 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml $PTII/ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation
+Warning: not running ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation/index.html
+3353 ms. Memory: 2516480K Free: 739449K (29%)
+####### 52 Thu May 31 02:53:43 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/r/demo/R3DPlot/R3DPlot.xml $PTII/ptolemy/actor/lib/r/demo/R3DPlot/R3DPlot
+Warning: not running ptolemy/actor/lib/r/demo/R3DPlot/R3DPlot.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/r/demo/R3DPlot/R3DPlot/index.html
+3432 ms. Memory: 2530304K Free: 1584360K (63%)
+####### 53 Thu May 31 02:53:46 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe.xml $PTII/ptolemy/actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe
+Warning: not running ptolemy/actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe/index.html
+3134 ms. Memory: 2530304K Free: 1451787K (57%)
+####### 54 Thu May 31 02:53:49 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm  -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/security/demo/Signature/Signature.xml $PTII/ptolemy/actor/lib/security/demo/Signature/Signature
+Warning: not running ptolemy/actor/lib/security/demo/Signature/Signature.xml. See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/security/demo/Signature/Signature/index.html
+3227 ms. Memory: 2530304K Free: 1285841K (51%)
+####### 55 Thu May 31 02:53:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc.xml $PTII/ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc
+Running .DCT2x2dc
+96 ms. Memory: 2530304K Free: 1194267K (47%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc/index.html
+4302 ms. Memory: 2530304K Free: 1156270K (46%)
+####### 56 Thu May 31 02:53:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc.xml $PTII/ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc
+Running .DCT4x4dc
+34 ms. Memory: 2530304K Free: 1082129K (43%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc/index.html
+4223 ms. Memory: 2530304K Free: 1044141K (41%)
+####### 57 Thu May 31 02:54:01 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/video/demo/DCT8x8/DCT8x8.xml $PTII/ptolemy/actor/lib/video/demo/DCT8x8/DCT8x8
+Running .DCT8x8
+24 ms. Memory: 2530304K Free: 951774K (38%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/video/demo/DCT8x8/DCT8x8/index.html
+4198 ms. Memory: 2530304K Free: 932011K (37%)
+####### 58 Thu May 31 02:54:05 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MoMLFileTransformation.xml $PTII/ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MoMLFileTransformation
+Running .MOMLFileTransformation
+623 ms. Memory: 2530304K Free: 749000K (30%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MoMLFileTransformation/index.html
+4832 ms. Memory: 2532864K Free: 1621844K (64%)
+####### 59 Thu May 31 02:54:10 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/xslt/demo/XMLInclusion/XMLInclusion.xml $PTII/ptolemy/actor/lib/xslt/demo/XMLInclusion/XMLInclusion
+Running .XMLInclusion
+37 ms. Memory: 2532864K Free: 1522571K (60%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/lib/xslt/demo/XMLInclusion/XMLInclusion/index.html
+4375 ms. Memory: 2532864K Free: 1421958K (56%)
+####### 60 Thu May 31 02:54:15 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml $PTII/ptolemy/actor/parameters/demo/Bouncer/Bouncer
+Running .Bouncer
+10023 ms. Memory: 2532864K Free: 1284628K (51%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/parameters/demo/Bouncer/Bouncer/index.html
+14344 ms. Memory: 2532864K Free: 1203226K (48%)
+####### 61 Thu May 31 02:54:29 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.xml $PTII/ptolemy/actor/parameters/demo/SliderParameter/SliderParameter
+Running .SliderParameter
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30002 ms. Memory: 2624000K Free: 1246390K (47%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/parameters/demo/SliderParameter/SliderParameter/index.html
+34248 ms. Memory: 2624000K Free: 1173248K (45%)
+####### 62 Thu May 31 02:55:03 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.xml $PTII/ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl
+Running .CruiseControl
+54 ms. Memory: 2624000K Free: 1058196K (40%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl/index.html
+4512 ms. Memory: 2624000K Free: 988271K (38%)
+####### 63 Thu May 31 02:55:08 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml $PTII/ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT
+Running .EightChannelFFT
+47 ms. Memory: 2624000K Free: 808990K (31%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT/index.html
+5215 ms. Memory: 2340864K Free: 1239975K (53%)
+####### 64 Thu May 31 02:55:13 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.xml $PTII/ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife
+Running .GameOfLife
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30186 ms. Memory: 2340864K Free: 1033622K (44%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife/index.html
+34844 ms. Memory: 2340864K Free: 919528K (39%)
+####### 65 Thu May 31 02:55:48 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/MapReduce/MapReduce.xml $PTII/ptolemy/actor/ptalon/demo/MapReduce/MapReduce
+Running .MapReduce
+80 ms. Memory: 2340864K Free: 615728K (26%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/MapReduce/MapReduce/index.html
+4761 ms. Memory: 2625024K Free: 1550372K (59%)
+####### 66 Thu May 31 02:55:53 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/ModelChange/ModelChange.xml $PTII/ptolemy/actor/ptalon/demo/ModelChange/ModelChange
+Running .ModelChange
+10 ms. Memory: 2625024K Free: 1460511K (56%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/ModelChange/ModelChange/index.html
+4229 ms. Memory: 2625024K Free: 1391181K (53%)
+####### 67 Thu May 31 02:55:57 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM.xml $PTII/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM
+Running .ParameterSweepSmallWorldFSM
+297 ms. Memory: 2615296K Free: 1458154K (56%)
+ExportHTMLTimer went off after 30000 ms., calling getDirector().finish and getDirector().stopFire()
+30001 ms. Memory: 2709504K Free: 1151467K (42%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM/index.html
+35749 ms. Memory: 2709504K Free: 1094185K (40%)
+####### 68 Thu May 31 02:56:33 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF.xml $PTII/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF
+Running .ParameterSweepSmallWorldSDF
+189 ms. Memory: 2701824K Free: 1337867K (50%)
+190 ms. Memory: 2701824K Free: 1206032K (45%)
+140 ms. Memory: 2701824K Free: 1100570K (41%)
+148 ms. Memory: 2701824K Free: 968754K (36%)
+1145 ms. Memory: 2701824K Free: 968754K (36%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF/index.html
+6571 ms. Memory: 2701824K Free: 939060K (35%)
+####### 69 Thu May 31 02:56:39 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.xml $PTII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld
+Running .SmallWorld
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+2
+2
+2
+2
+2
+2
+2
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+4
+4
+4
+4
+4
+4
+4
+4
+4
+5
+5
+5
+5
+5
+5
+6
+6
+204 ms. Memory: 2725376K Free: 1331112K (49%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld/index.html
+5606 ms. Memory: 2725376K Free: 1219556K (45%)
+####### 70 Thu May 31 02:56:45 UTC 2018 $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldMultiInstanceComposite.xml $PTII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldMultiInstanceComposite
+Running .SmallWorldMultiInstanceComposite
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+2
+2
+2
+2
+2
+2
+2
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+4
+4
+4
+4
+4
+4
+4
+4
+4
+5
+5
+5
+5
+5
+5
+6
+6
+477 ms. Memory: 2725376K Free: 781953K (29%)
+Exported /home/travis/build/icyphy/ptII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorldMultiInstanceComposite/index.html
+36446 ms. Memory: 2811904K Free: 996580K (35%)
+]]></system-out>
+  <system-err><![CDATA[[AWT-EventQueue-0] INFO com.github.sarxos.webcam.Webcam - WebcamDefaultDriver capture driver will be used
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+WARNING: Invoking send() too late (probably in a callback), so Camera is not able to send the token {type="class ptolemy.data.AWTImageToken", width="640", height="480"} to the output image. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+May 31, 2018 2:38:35 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+SEVERE: mqttpt_7072756073266868125: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,527,734,255,374 lastInboundActivity=1,527,734,191,601 time=1,527,734,315,374 lastPing=1,527,734,255,374
+May 31, 2018 2:38:35 AM org.eclipse.paho.client.mqttv3.internal.ClientState checkForActivity
+SEVERE: mqttpt_7072756073266868125: Timed out as no activity, keepAlive=60,000 lastOutboundActivity=1,527,734,255,382 lastInboundActivity=1,527,734,194,541 time=1,527,734,315,382 lastPing=1,527,734,255,382
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .WatchEmulator.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 19 more
+Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 21 more
+Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17647$18537$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17645$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 21 more
+Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17647$18537$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17645$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17647$18537$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17645$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+java.lang.reflect.InvocationTargetException
+	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1321)
+	at java.awt.EventQueue.invokeAndWait(EventQueue.java:1296)
+	at javax.swing.SwingUtilities.invokeAndWait(SwingUtilities.java:1348)
+	at ptolemy.vergil.basic.export.ExportModel.exportModel(ExportModel.java:401)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.RunExportModel(ExportModelJUnitTest.java:153)
+	at ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch.RunExportModel(ExportModelJUnitTestBatch.java:97)
+	at sun.reflect.GeneratedMethodAccessor18.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at junitparams.internal.InvokeParameterisedMethod.evaluate(InvokeParameterisedMethod.java:102)
+	at junitparams.internal.ParameterisedTestMethodRunner.runMethodInvoker(ParameterisedTestMethodRunner.java:47)
+	at junitparams.internal.ParameterisedTestMethodRunner.runTestMethod(ParameterisedTestMethodRunner.java:41)
+	at junitparams.internal.ParameterisedTestClassRunner.runParameterisedTest(ParameterisedTestClassRunner.java:143)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:237)
+	at junitparams.JUnitParamsRunner.runChild(JUnitParamsRunner.java:215)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:535)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1182)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1033)
+Caused by: java.lang.RuntimeException: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .WatchEmulator.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:397)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:301)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+
+  in .WatchEmulator.DE Director
+Because:
+Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.Director.wrapup(Director.java:1736)
+	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+	at ptolemy.actor.Manager.execute(Manager.java:407)
+	at ptolemy.vergil.basic.export.ExportModel$2.run(ExportModel.java:390)
+	... 14 more
+Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+  in .WatchEmulator.TrainableTest2
+Because:
+Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
+	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
+	at ptolemy.actor.Director.wrapup(Director.java:1722)
+	... 19 more
+Caused by: javax.script.ScriptException: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
+	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
+	... 21 more
+Caused by: <function>:393:16 Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
+	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
+	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
+	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17647$18537$\^function\_.L:1#wrapup(<function>:393)
+	at jdk.nashorn.internal.scripts.Script$Recompilation$17645$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
+	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
+	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
+	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
+	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
+	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
+	... 23 more
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [26.0]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+WARNING: Clock: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: Camera: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [27.038]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: WebSocketClient: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [101.0]
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [24.0]
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+WARNING: Invoking send() too late (probably in a callback), so WebSocketServer is not able to send the token {socketID = 0, status = "closed"} to the output connection. Token is discarded.
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamOpenTask - Opening webcam Dummy Webcam 0
+[atomic-processor-1] INFO com.github.sarxos.webcam.ds.cgt.WebcamCloseTask - Closing Dummy Webcam 0
+WARNING: TestSpontaneous: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.5]
+Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
+Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
+Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor
+]]></system-err>
+</testsuite>
