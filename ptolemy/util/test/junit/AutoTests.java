@@ -259,6 +259,7 @@ public class AutoTests extends ModelTests {
         // Under Travis, skip certain demos. To see what environment
         // variables are set by Travis, see
         // https://docs.travis-ci.com/user/environment-variables/
+        /*
         if (System.getenv("TRAVIS").equals("true")) {
             String [] travisSkip = {
                 "org/hlacerti/test/auto",
@@ -301,6 +302,7 @@ public class AutoTests extends ModelTests {
                 }
             }
         }
+        */
         return true;
     }
 
