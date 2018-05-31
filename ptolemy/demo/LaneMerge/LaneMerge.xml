@@ -23,13 +23,13 @@
 		<entity name="library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 23, 1215, 816}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 131, 1215, 722}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[981, 706]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[981, 612]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{600.9716796875, 357.03515625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{600.9716796875, 310.03515625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -102,7 +102,7 @@
         </property>
     </property>
     <property name="Rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="417.49999999999994, 540.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 540.0}">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="544.9999999999999">
         </property>
