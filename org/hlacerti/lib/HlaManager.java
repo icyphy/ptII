@@ -1585,7 +1585,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 Time newPtolemyTime = _convertToPtolemyTime(
                         (CertiLogicalTime) _federateAmbassador.hlaLogicalTime);
 
-                // algo4: 9: if t'' > t' then  => Update t’ if the received time is smaller, otherwise keeps t’
+                // algo4: 9: if t'' > t' then  => Update t' if the received time is smaller, otherwise keeps t'
                 if (newPtolemyTime.compareTo(proposedTime) < 0) {
                     // algo4: 10: t' <- t''
                     if (_debugging) {
