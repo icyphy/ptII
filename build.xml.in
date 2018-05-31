@@ -214,6 +214,7 @@
 
   <!-- Exclude Cape Code tests from short, long and longest. -->
   <patternset id="test.capecode2.excludes">
+    <!-- Note that certain jjs/modules/tests are excluded from Travis, see ptolemy/util/test/junit/AutoTests.java -->
     <exclude name="**/ptolemy/actor/lib/jjs/modules/q*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/r*/**/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/actor/lib/jjs/modules/s*/**/junit/JUnitTclTest.*" />
@@ -229,6 +230,7 @@
   <!-- Second batch of tests for Cape Code. --> 
   <patternset id="test.capecode3.includes">
     <!-- websocket takes a long time, so we run it here. -->
+    <!-- Note that certain jjs/modules/tests are excluded from Travis, see ptolemy/util/test/junit/AutoTests.java -->
     <include name="**/ptolemy/actor/lib/jjs/modules/w*/**/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/actor/lib/jjs/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.java" />
@@ -290,9 +292,8 @@
 
   <!-- Tests of the core, fourth batch. -->
   <patternset id="test.core4.includes">
-    <!-- Exclude hlacerti tests, they don't pass. -->
-    <!-- include name="**/org/hlacerti/**/test/junit/JUnitTclTest.java" / -->
-
+    <!-- Note that hlacerti tests are excluded from Travis, see ptolemy/util/test/junit/AutoTests.java -->
+    <include name="**/org/hlacerti/**/test/junit/JUnitTclTest.java" />
     <include name="**/org/ptolemy/**/test/junit/JUnitTclTest.java" />
     <include name="**/org/terraswarm/ros/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/caltrop/**/test/junit/JUnitTclTest.java" />
