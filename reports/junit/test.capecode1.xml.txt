@@ -159,7 +159,7 @@ ptdoc:
      [echo] 
      [echo]     
      [exec] Generating output files...
-     [exec] Finished running in 3.83 seconds.
+     [exec] Finished running in 4.55 seconds.
 
 build-project:
      [echo] ptII: /home/travis/build/icyphy/ptII/build.xml
@@ -343,6 +343,7 @@ build-bin:
      [exec] ./makebat -q "`basename tiniconverter.bat .bat`"
      [exec] rm -f "startjini.gui.bat"
      [exec] ./makebat -q "`basename startjini.gui.bat .bat`"
+     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] rm -f "vergil.bat"
      [exec] ./makebat -q "`basename vergil.bat .bat`"
      [exec] rm -f makeapp
@@ -350,161 +351,12 @@ build-bin:
      [exec] chmod a+x ptinvoke makeapp
      [exec] ./makeapp CapeCode.app CAPECODE -capecode
      [exec] ./makeapp: /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub does not exist, creating it from GitHub.
-     [exec] Cloning into 'universalJavaApplicationStub'...
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Error: This Java instance does not support a 32-bit JVM.
-     [exec] Please install the desired version.
-     [exec] configure: WARNING: Running java -d32 -version failed,
-     [exec]     and ./bin/java does not exist.
-     [exec]     Perhaps you need to install a separate 32-bit JVM
-     [exec]     or rerun configure with --with-java32?
-     [exec]     The 32-bit JVM is only needed for certain 32-bit FMI tests.
-     [exec]     In general, under a 64-bit JVM, FMI will work fine without a 32-bit JVM.
-     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/java' is not
-     [exec]     the same as '/usr/bin/java'.
-     [exec]     Perhaps '/usr/bin/java' is in your path before
-     [exec]     '/usr/lib/jvm/java-8-oracle/bin/java'?
-     [exec]     If you have problems later, be sure that you don't have a mismatch
-     [exec]     in JDK versions.
-     [exec] configure: WARNING: '/usr/lib/jvm/java-8-oracle/bin/javac' is not
-     [exec] 	 the same as '/usr/bin/javac'.
-     [exec] 	 Perhaps '/usr/bin/javac' is in your path
-     [exec] 	 before '/usr/lib/jvm/java-8-oracle/bin/javac'?
-     [exec] 	 If you have problems later, be sure that you don't have a mismatch
-     [exec] 	 in JDK versions.
-     [exec] configure: WARNING: Failed to find /usr/local/include/boost/numeric/odeint.hpp
-     [exec]     This is only a problem if you want to rebuild the Functional
-     [exec]     Mock-up Interface ++ C files in actor/lib/fmi/fmipp.
-     [exec]     Most users can use the shared libraries in /home/travis/build/icyphy/ptII/lib or /home/travis/build/icyphy/ptII/bin.
-     [exec] configure: WARNING: Failed to find Checkstyle in /home/travis/build/icyphy/ptII/vendors/checkstyle-6.2
-     [exec]     Checkstyle is only necessary for code cleaning.
-     [exec]     Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
-     [exec]     Checkstyle may be downloaded from http://checkstyle.sourceforge.net/
-     [exec] configure: WARNING: Did not find /home/travis/build/icyphy/ptII/vendors/misc/colt/colt.jar,
-     [exec]     using /home/travis/build/icyphy/ptII/lib/ptcolt.jar
-     [exec] configure: WARNING: Failed to find Cobertura in /home/travis/build/icyphy/ptII/vendors/corbertura-2.0.3
-     [exec]     Cobertura is only necessary to for code coverage.
-     [exec]     Cobertura is GPL'd, so we don't check it in to the ptII repository.
-     [exec]     Cobertura may be downloaded from http://cobertura.github.io/cobertura/
-     [exec] configure: WARNING: Failed to find CUnit in /usr/local or
-     [exec]     /home/travis/build/icyphy/ptII/vendors/CUnit.
-     [exec]     CUnit is only necessary to test the C templates of the code generation facility
-     [exec] configure: WARNING: Failed to find dbxml-X.Y shared library in /home/travis/build/icyphy/ptII/vendors/misc/dbxml-2.5.16/install/lib.
-     [exec]     This means that the Ptolemy/Android HandSimDroid prototype will not run.
-     [exec] configure: WARNING: Failed to find /home/travis/build/icyphy/ptII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
-     [exec]     so the Mbed CG facility will not be run.
-     [exec] JAITest.java:28: error: package javax.media.jai does not exist
-     [exec] import javax.media.jai.*;
-     [exec] ^
-     [exec] 1 error
-     [exec] configure: WARNING: JAI not found in the default classpath
-     [exec] configure: WARNING: Failed to find /usr/local/jmodelica/include/jmi.h
-     [exec]     which is part of JModelica.
-     [exec]     Ptolemy optionally includes one or more FMUs that use JModelica.
-     [exec]     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL
-     [exec] JMFTest.java:28: error: package javax.media does not exist
-     [exec] import javax.media.CaptureDeviceInfo;
-     [exec]                   ^
-     [exec] 1 error
-     [exec] Exception in thread "main" java.lang.RuntimeException: Could not load opencv_java320.
-     [exec]     java.library.path = /home/travis/build/icyphy/ptII/lib:/home/travis/build/icyphy/ptII/lib:/home/travis/pthla/certi-tools/lib:/home/travis/pthla/certi-tools/lib:/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
-     [exec] 	at OpenCVTest.main(OpenCVTest.java:75)
-     [exec] Caused by: java.lang.UnsatisfiedLinkError: no opencv_java320 in java.library.path
-     [exec] 	at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1867)
-     [exec] 	at java.lang.Runtime.loadLibrary0(Runtime.java:870)
-     [exec] 	at java.lang.System.loadLibrary(System.java:1122)
-     [exec] 	at OpenCVTest.main(OpenCVTest.java:52)
-     [exec] configure: WARNING: Failed to run OpenCV test program in /home/travis/build/icyphy/ptII/config with
-     [exec]     /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/travis/build/icyphy/ptII/lib/opencv-320.jar:. OpenCVTest
-     [exec]     so we will try other jars.
-     [exec] libdc1394 error: Failed to initialize libdc1394
-     [exec] configure: WARNING: Could not find directory
-     [exec]     '/home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0'
-     [exec]     so we search for the jjtree command.
-     [exec] configure: WARNING: Failed to find jjtree
-     [exec] configure: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
-     [exec]     You need not download JavaCC unless you plan on modifying .jjt files
-     [exec]     in ptolemy/data/expr.
-     [exec]     JavaCC is available from
-     [exec]     http://javacc.dev.java.net/
-     [exec] 
-     [exec]     Note that the zip file that gets downloaded is actually an installer
-     [exec]     that must be run to install the JavaCC.zip file that contains the classes.
-     [exec] 
-     [exec]     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
-     [exec]     ReInit() being static or not static.
-     [exec] 
-     [exec]     JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
-     [exec]     we recommend JavaCC-5.0.
-     [exec] 
-     [exec]     Try:
-     [exec]     cd /home/travis/build/icyphy/ptII/vendors/sun
-     [exec]     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
-     [exec]     tar -zxf javacc-5.0.tar.gz
-     [exec]     cd /home/travis/build/icyphy/ptII
-     [exec]     ./configure
-     [exec] 
-     [exec]     Configure looks for JavaCC in /home/travis/build/icyphy/ptII/vendors/sun/javacc-5.0
-     [exec]     so either install JavaCC in that location or use the --with-javacc= flag
-     [exec]     and then rerun configure.'
-     [exec] ls: cannot access /home/travis/build/icyphy/ptII/vendors/j3d/*/lib/ext: No such file or directory
-     [exec] configure: WARNING: Failed to find matlab executable in the path.
-     [exec]     Perhaps Matlab is not installed?
-     [exec]     If Matlab is not present, then the Ptolemy II/Matlab interface in
-     [exec]     $PTII/ptolemy/matlab will not be usable.
-     [exec] configure: WARNING: Matlab was not found, but compiling the .java files in ptolemy/matlab/ should be ok.
-     [exec] configure: WARNING: Failed to find omc, the OpenModelicaCompiler.
-     [exec]     Rebuilding the OpenModelica fmus will not be possible.
-     [exec]     Running the OpenModelica models will not be possible.
-     [exec]     This is only a concern if you are interested in OpenModelica
-     [exec] configure: WARNING: Failed to find PowerMock.
-     [exec]     Perhaps PowerMock was not installed?
-     [exec]     You need not download these packages if you would like
-     [exec]     to run the tests.  To install PowerMock, go to
-     [exec]     http://code.google.com/p/powermock/ and download
-     [exec]     http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
-     [exec]     (which contains PowerMock for EasyMock and JUnit) and unzip it in
-     [exec]     /home/travis/build/icyphy/ptII/vendors/misc so that
-     [exec]     /home/travis/build/icyphy/ptII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
-     [exec]     then rerun configure.
-     [exec]     Other versions of PowerMock _may_ work, but are untested.
-     [exec] configure: WARNING: Failed to find the scalac binary,
-     [exec]     so org/ptolemy/scala will be excluded
-     [exec] configure: WARNING: ojdbc5.jar not found,
-     [exec]     but only necessary to use database actors with Oracle.
-     [exec]     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
-     [exec]     To install ojdbc5.jar or ojdbc6.jar,
-     [exec]     download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
-     [exec]     copy it to ptolemy/actor/lib/database
-     [exec]     and rerun ./configure
-     [exec] configure: WARNING: Failed to find Batik Jar file
-     [exec]     You need only have Batik if you are planning on rebuilding diva.jar
-     [exec]     for use with Kepler.
-     [exec]     Batik can be downloaded from http://xmlgraphics.apache.org/batik/,
-     [exec]     batike-1.9/lib/batik-all-1.9.jar copied to /home/travis/build/icyphy/ptII/lib
-     [exec]     and ./configure rerun.
-     [exec] configure: WARNING: $TOSROOT is not set.  It must be set to use PtinyOS.
-     [exec] configure: WARNING: $TOSROOT is set to '',
-     [exec]      but there is no directory by that name, so we will not set up for PtinyOS.
-     [exec]      For details, see /home/travis/build/icyphy/ptII/ptolemy/domains/ptinyos/README.txt.
-     [exec] configure: WARNING: Failed to find giotto/gdk.jar
-     [exec]     perhaps Giotto is not installed?
-     [exec]     You need not download Giotto unless you plan on generating code for
-     [exec]     Giotto models.
-     [exec]     The Giotto SDK can be
-     [exec]     downloaded from https://embedded.eecs.berkeley.edu/giotto/
-     [exec]     Copy gdk.jar to /home/travis/build/icyphy/ptII/vendors/giotto, for example:
-     [exec]         mkdir -p /home/travis/build/icyphy/ptII/vendors/giotto
-     [exec]         cp C:/Program\ Files/Giotto*/gdk.jar /home/travis/build/icyphy/ptII/vendors/giotto/
-     [exec] configure: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
-     [exec]     will not be compiled. FMI++ is an extension of the
-     [exec]     Functional Mockup Interface, see
-     [exec]     http://sourceforge.net/p/fmipp/wiki/Home/
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 31 20:05:12 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 31 21:31:32 UTC 2018
      [exec] touch CapeCode.app
      [exec] ./makeapp Vergil.app FULL -full
      [exec] Updating universalJavaApplicationStub from /home/travis/build/icyphy/ptII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub
-     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 31 20:05:15 UTC 2018
+     [exec] Untaring /home/travis/build/icyphy/ptII/vendors/installer/MacJVM.tar.gz in /home/travis/build/icyphy/ptII/ now: Thu May 31 21:31:35 UTC 2018
      [exec] touch Vergil.app
      [exec] chmod a+x ant cyphysim hyvisual startjini mkjnlp mkl4j mkosgi mkptdemo mkptlivelinkdemo mkpttest node npm ptjunit ptIITravisBuild.sh reloadAllAccessors updateFmu viptos 
 
@@ -528,6 +380,11 @@ test.capecode1.xml:
     [junit] ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/knownFailedTests/AudioError.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] Xlib:  extension "RANDR" missing on display ":99.0".
+    [junit] 1297 ms. Memory: 158208K Free: 93043K (59%)
+    [junit] Known Failure: java.lang.reflect.InvocationTargetException
+    [junit] No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
+    [junit] AutoTests.java: About to close Vertx.
+    [junit] AutoTests.java: Vertx closed.
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
     [junit] Caused by: ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
@@ -581,50 +438,45 @@ test.capecode1.xml:
     [junit] 	at ptolemy.actor.Manager.execute(Manager.java:356)
     [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
     [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] 1230 ms. Memory: 161792K Free: 101330K (63%)
-    [junit] Known Failure: java.lang.reflect.InvocationTargetException
-    [junit] No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
-    [junit] AutoTests.java: About to close Vertx.
-    [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:05:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
-    [junit] ----------------- Thu May 31 20:05:25 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+    [junit] ----------------- testing Thu May 31 21:31:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+    [junit] ----------------- Thu May 31 21:31:46 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
     [junit] REST: Making an HTTP request. (Thread[SpeechSynthesisTest,1,main])
+    [junit] 10589 ms. Memory: 691712K Free: 417378K (60%)
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [91.0]
-    [junit] 9816 ms. Memory: 566784K Free: 308137K (54%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2725248f
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2725248f
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a99b4e1
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a99b4e1
     [junit] reloadAllAccessors: .SpeechSynthesisTest
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:05:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:32:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.203 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 30.288 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
     [junit] ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/knownFailedTests/AudioError.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] 1230 ms. Memory: 161792K Free: 101330K (63%)
+    [junit] 1297 ms. Memory: 158208K Free: 93043K (59%)
     [junit] Known Failure: java.lang.reflect.InvocationTargetException
     [junit] No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:05:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
-    [junit] ----------------- Thu May 31 20:05:25 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+    [junit] ----------------- testing Thu May 31 21:31:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+    [junit] ----------------- Thu May 31 21:31:46 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
     [junit] REST: Making an HTTP request. (Thread[SpeechSynthesisTest,1,main])
-    [junit] 9816 ms. Memory: 566784K Free: 308137K (54%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2725248f
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2725248f
+    [junit] 10589 ms. Memory: 691712K Free: 417378K (60%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a99b4e1
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@a99b4e1
     [junit] reloadAllAccessors: .SpeechSynthesisTest
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:05:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:32:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
@@ -693,7 +545,7 @@ test.capecode1.xml:
     [junit]   "error" : "Firebase error. Please ensure that you spelled the name of your Firebase correctly"
     [junit] }
     [junit] 
-    [junit] 3515 ms. Memory: 312832K Free: 258246K (83%)
+    [junit] 4001 ms. Memory: 300544K Free: 244361K (81%)
     [junit] Known Failure: java.lang.reflect.InvocationTargetException
     [junit] No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test
     [junit] AutoTests.java: About to close Vertx.
@@ -701,7 +553,7 @@ test.capecode1.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.925 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.761 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test
     [junit] ----------------- testing (KnownFailure) /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test/auto/knownFailedTests/ContextAware.xml
@@ -711,7 +563,7 @@ test.capecode1.xml:
     [junit]   "error" : "Firebase error. Please ensure that you spelled the name of your Firebase correctly"
     [junit] }
     [junit] 
-    [junit] 3515 ms. Memory: 312832K Free: 258246K (83%)
+    [junit] 4001 ms. Memory: 300544K Free: 244361K (81%)
     [junit] Known Failure: java.lang.reflect.InvocationTargetException
     [junit] No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/contextAware/test
     [junit] AutoTests.java: About to close Vertx.
@@ -854,22 +706,22 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:05:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
-    [junit] ----------------- Thu May 31 20:05:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
+    [junit] ----------------- testing Thu May 31 21:32:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
+    [junit] ----------------- Thu May 31 21:32:21 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] {{IPAddress = "172.17.0.1", mac = "Host machine", name = "Host machine"}}
     [junit] "172.17.0.1"
-    [junit] 6859 ms. Memory: 430080K Free: 356941K (83%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40e2a746
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40e2a746
+    [junit] 7492 ms. Memory: 390144K Free: 257980K (66%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a471b01
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a471b01
     [junit] reloadAllAccessors: .DiscoveryJSStdout
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:06:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:32:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.722 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.995 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test
@@ -878,19 +730,19 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:05:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
-    [junit] ----------------- Thu May 31 20:05:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
+    [junit] ----------------- testing Thu May 31 21:32:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
+    [junit] ----------------- Thu May 31 21:32:21 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] {{IPAddress = "172.17.0.1", mac = "Host machine", name = "Host machine"}}
     [junit] "172.17.0.1"
-    [junit] 6859 ms. Memory: 430080K Free: 356941K (83%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40e2a746
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@40e2a746
+    [junit] 7492 ms. Memory: 390144K Free: 257980K (66%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a471b01
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2a471b01
     [junit] reloadAllAccessors: .DiscoveryJSStdout
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:06:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:32:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
@@ -904,63 +756,63 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
-    [junit] ----------------- Thu May 31 20:06:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
+    [junit] ----------------- testing Thu May 31 21:32:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
+    [junit] ----------------- Thu May 31 21:32:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
-    [junit] 1870 ms. Memory: 203776K Free: 117022K (57%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5759b357
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5759b357
+    [junit] 2176 ms. Memory: 203776K Free: 109731K (54%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5713a691
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5713a691
     [junit] reloadAllAccessors: .SmokeTest
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
-    [junit] ----------------- Thu May 31 20:06:25 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
+    [junit] ----------------- testing Thu May 31 21:32:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
+    [junit] ----------------- Thu May 31 21:32:52 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] 4471 ms. Memory: 397824K Free: 180472K (45%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@30f2029a
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@30f2029a
+    [junit] 4793 ms. Memory: 407552K Free: 202601K (50%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2af0b24b
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2af0b24b
     [junit] reloadAllAccessors: .VertxEventBus1
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:06:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
-    [junit] ----------------- Thu May 31 20:06:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
+    [junit] ----------------- testing Thu May 31 21:33:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
+    [junit] ----------------- Thu May 31 21:33:06 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
-    [junit] 4795 ms. Memory: 740864K Free: 541215K (73%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57c405c8
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57c405c8
+    [junit] 5256 ms. Memory: 768000K Free: 628943K (82%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3df21c38
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3df21c38
     [junit] reloadAllAccessors: .VertxEventBus2
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:06:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
-    [junit] ----------------- Thu May 31 20:06:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
+    [junit] ----------------- testing Thu May 31 21:33:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
+    [junit] ----------------- Thu May 31 21:33:21 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
-    [junit] 4301 ms. Memory: 942080K Free: 349806K (37%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cc5524c
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cc5524c
+    [junit] 4661 ms. Memory: 984576K Free: 504544K (51%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e5c263f
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e5c263f
     [junit] reloadAllAccessors: .VertxEventBus3
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
-    [junit] ----------------- Thu May 31 20:07:04 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
+    [junit] ----------------- testing Thu May 31 21:33:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
+    [junit] ----------------- Thu May 31 21:33:34 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
-    [junit] 5996 ms. Memory: 1415680K Free: 920614K (65%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@58a498d4
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@58a498d4
+    [junit] 6056 ms. Memory: 1514496K Free: 1298978K (86%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@155fa0b0
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@155fa0b0
     [junit] reloadAllAccessors: .VertxEventBus4
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 65.441 sec
+    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 69.274 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test
@@ -969,60 +821,60 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:14 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
-    [junit] ----------------- Thu May 31 20:06:14 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
+    [junit] ----------------- testing Thu May 31 21:32:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
+    [junit] ----------------- Thu May 31 21:32:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/SmokeTest.xml
-    [junit] 1870 ms. Memory: 203776K Free: 117022K (57%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5759b357
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5759b357
+    [junit] 2176 ms. Memory: 203776K Free: 109731K (54%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5713a691
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@5713a691
     [junit] reloadAllAccessors: .SmokeTest
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:25 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
-    [junit] ----------------- Thu May 31 20:06:25 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
+    [junit] ----------------- testing Thu May 31 21:32:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
+    [junit] ----------------- Thu May 31 21:32:52 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] 4471 ms. Memory: 397824K Free: 180472K (45%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@30f2029a
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@30f2029a
+    [junit] 4793 ms. Memory: 407552K Free: 202601K (50%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2af0b24b
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2af0b24b
     [junit] reloadAllAccessors: .VertxEventBus1
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:06:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus1.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
-    [junit] ----------------- Thu May 31 20:06:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
+    [junit] ----------------- testing Thu May 31 21:33:06 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
+    [junit] ----------------- Thu May 31 21:33:06 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
-    [junit] 4795 ms. Memory: 740864K Free: 541215K (73%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57c405c8
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@57c405c8
+    [junit] 5256 ms. Memory: 768000K Free: 628943K (82%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3df21c38
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3df21c38
     [junit] reloadAllAccessors: .VertxEventBus2
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:06:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus2.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:06:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
-    [junit] ----------------- Thu May 31 20:06:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
+    [junit] ----------------- testing Thu May 31 21:33:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
+    [junit] ----------------- Thu May 31 21:33:21 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
-    [junit] 4301 ms. Memory: 942080K Free: 349806K (37%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cc5524c
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1cc5524c
+    [junit] 4661 ms. Memory: 984576K Free: 504544K (51%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e5c263f
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6e5c263f
     [junit] reloadAllAccessors: .VertxEventBus3
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:33 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus3.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:07:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
-    [junit] ----------------- Thu May 31 20:07:04 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
+    [junit] ----------------- testing Thu May 31 21:33:34 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
+    [junit] ----------------- Thu May 31 21:33:34 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
-    [junit] 5996 ms. Memory: 1415680K Free: 920614K (65%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@58a498d4
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@58a498d4
+    [junit] 6056 ms. Memory: 1514496K Free: 1298978K (86%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@155fa0b0
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@155fa0b0
     [junit] reloadAllAccessors: .VertxEventBus4
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:07:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:33:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/eventbus/test/auto/VertxEventBus4.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
@@ -1036,21 +888,21 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
-    [junit] ----------------- Thu May 31 20:07:21 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
+    [junit] ----------------- testing Thu May 31 21:33:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
+    [junit] ----------------- Thu May 31 21:33:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] libdc1394 error: Failed to initialize libdc1394
-    [junit] 6192 ms. Memory: 545280K Free: 202803K (37%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b7720ed
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b7720ed
+    [junit] 7050 ms. Memory: 420864K Free: 279196K (66%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52512858
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52512858
     [junit] reloadAllAccessors: .TestFaceDetector
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:07:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:34:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.693 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.686 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test
@@ -1059,17 +911,17 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:07:21 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
-    [junit] ----------------- Thu May 31 20:07:21 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
+    [junit] ----------------- testing Thu May 31 21:33:51 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
+    [junit] ----------------- Thu May 31 21:33:51 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] 6192 ms. Memory: 545280K Free: 202803K (37%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b7720ed
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6b7720ed
+    [junit] 7050 ms. Memory: 420864K Free: 279196K (66%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52512858
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@52512858
     [junit] reloadAllAccessors: .TestFaceDetector
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:07:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:34:12 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/faceDetector/test/auto/TestFaceDetector.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
@@ -1083,141 +935,93 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:07:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
-    [junit] ----------------- Thu May 31 20:07:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+    [junit] ----------------- testing Thu May 31 21:34:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+    [junit] ----------------- Thu May 31 21:34:13 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] GeoCoder: Making an HTTP request. (Thread[GeoCoderWeather,1,main])
     [junit] Weather: Making an HTTP request. (Thread[GeoCoderWeather,1,main])
-    [junit] 10463 ms. Memory: 707072K Free: 524223K (74%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fd5984d
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fd5984d
+    [junit] 11343 ms. Memory: 719360K Free: 515176K (72%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@408bfe04
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@408bfe04
     [junit] reloadAllAccessors: .GeoCoderWeather
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
     [junit] WARNING: GeoCoder: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-    [junit] WARNING: Weather: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.489]
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:08:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+    [junit] WARNING: Weather: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.395]
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:34:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:08:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
-    [junit] ----------------- Thu May 31 20:08:07 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+    [junit] ----------------- testing Thu May 31 21:34:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+    [junit] ----------------- Thu May 31 21:34:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
     [junit] JavaScript: Making an HTTP request. (Thread[RESTComposite,1,main])
-    [junit] 16242 ms. Memory: 917504K Free: 341648K (37%)
     [junit] WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [46.678000000000004]
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .RESTComposite.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 
-    [junit]   in .RESTComposite.DE Director
-    [junit] Because:
-    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .RESTComposite.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .RESTComposite.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
-    [junit] 	... 6 more
-    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
-    [junit] 	... 8 more
-    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$4683$18537$\^function\_.L:1#wrapup(<function>:393)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$4681$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
-    [junit] 	... 10 more
-    [junit] 
-    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-11"
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:08:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
-    [junit] ----------------- Thu May 31 20:08:31 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+    [junit] 6004 ms. Memory: 930816K Free: 347894K (37%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c6de390
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c6de390
+    [junit] reloadAllAccessors: .RESTComposite
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:34:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+    [junit] 
+    [junit] ===========================================================================================
+    [junit] 
+    [junit] ===========================================================================================
+    [junit] ----------------- testing Thu May 31 21:34:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+    [junit] ----------------- Thu May 31 21:34:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
     [junit] REST: Making an HTTP request. (Thread[RESTGetCompleteResponseOnly,1,main])
     [junit] REST2: Making an HTTP request. (Thread[RESTGetCompleteResponseOnly,1,main])
-    [junit] 14484 ms. Memory: 1323008K Free: 936541K (71%)
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [8.0]
-    [junit] 
     [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [8.0]
-    [junit] ===========================================================================================
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] ----------------- testing Thu May 31 20:08:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] ----------------- Thu May 31 20:08:55 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
-    [junit] Caused by: java.lang.RuntimeException: REST: The timeout period of 7000ms has been exceeded.
-    [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-    [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
-    [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$7688$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$7632$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
-    [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+    [junit] 9079 ms. Memory: 1354752K Free: 779423K (58%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1267d055
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1267d055
+    [junit] reloadAllAccessors: .RESTGetCompleteResponseOnly
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:35:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
     [junit] 
-    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-15"
+    [junit] ===========================================================================================
+    [junit] ----------------- testing Thu May 31 21:35:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
+    [junit] ----------------- Thu May 31 21:35:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
     [junit] REST: Making an HTTP request. (Thread[RESTPost,1,main])
     [junit] REST2: Making an HTTP request. (Thread[RESTPost,1,main])
-    [junit] 14117 ms. Memory: 1884672K Free: 1265291K (67%)
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:09:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
-    [junit] ----------------- Thu May 31 20:09:19 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] 9764 ms. Memory: 1887744K Free: 655257K (35%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a4398c8
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a4398c8
+    [junit] reloadAllAccessors: .RESTPost
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
     [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:35:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
+    [junit] 
+    [junit] ===========================================================================================
+    [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
+    [junit] 
+    [junit] ===========================================================================================
+    [junit] ----------------- testing Thu May 31 21:35:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] ----------------- Thu May 31 21:35:40 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] Done sleeping
+    [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] REST: Making an HTTP request. (Thread[RESTPut,1,main])
+    [junit] REST2: Making an HTTP request. (Thread[RESTPut,1,main])
+    [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
+    [junit] 19198 ms. Memory: 1926656K Free: 537362K (28%)
     [junit] java.lang.RuntimeException: Execution failed
+    [junit] 
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: java.lang.RuntimeException: REST: The timeout period of 5000ms has been exceeded.
+    [junit] ===========================================================================================
+    [junit] Caused by: java.lang.RuntimeException: REST2: The timeout period of 10000ms has been exceeded.
+    [junit] ----------------- testing Thu May 31 21:36:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
     [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
+    [junit] ----------------- Thu May 31 21:36:09 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
     [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
     [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$11303$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$11279$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$16617$3477A$\^eval\_.error(<eval>:98)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$16580$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
     [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
     [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -1228,40 +1032,31 @@ test.capecode1.xml:
     [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
     [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
     [junit] 
-    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-18"
-    [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
-    [junit] Done sleeping
-    [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
-    [junit] REST: Making an HTTP request. (Thread[RESTPut,1,main])
-    [junit] REST2: Making an HTTP request. (Thread[RESTPut,1,main])
-    [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-    [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-    [junit] 8873 ms. Memory: 1960960K Free: 303518K (15%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f8266db
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f8266db
-    [junit] reloadAllAccessors: .RESTPut
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:09:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:09:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
-    [junit] ----------------- Thu May 31 20:09:40 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
+    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-22"
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
     [junit] REST2: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
     [junit] REST3: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
     [junit] REST: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
     [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
+    [junit] 17450 ms. Memory: 2068480K Free: 852014K (41%)
     [junit] WARNING: REST3: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
+    [junit] 
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
+    [junit] ===========================================================================================
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+    [junit] 
+    [junit] ===========================================================================================
     [junit] Caused by: java.lang.RuntimeException: REST2: The timeout period of 5000ms has been exceeded.
+    [junit] ----------------- testing Thu May 31 21:36:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
+    [junit] ----------------- Thu May 31 21:36:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
     [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$19620$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$19576$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20396$3477A$\^eval\_.error(<eval>:98)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20329$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
     [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
     [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -1274,68 +1069,102 @@ test.capecode1.xml:
     [junit] 
     [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-25"
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
-    [junit] 17322 ms. Memory: 2043904K Free: 1360175K (67%)
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] 
-    [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
-    [junit] ----------------- Thu May 31 20:10:08 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] REST: Making an HTTP request. (Thread[RESTStringURL,1,main])
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-    [junit] 14464 ms. Memory: 2099712K Free: 1610465K (77%)
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: java.lang.RuntimeException: REST: The timeout period of 10000ms has been exceeded.
-    [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-    [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
-    [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20981$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20977$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
-    [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] 
-    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-29"
+    [junit] 4463 ms. Memory: 2126848K Free: 1076312K (51%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@489ff4a7
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@489ff4a7
+    [junit] reloadAllAccessors: .RESTStringURL
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:36:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
-    [junit] ----------------- Thu May 31 20:10:29 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
+    [junit] ----------------- testing Thu May 31 21:36:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
+    [junit] ----------------- Thu May 31 21:36:49 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
     [junit] WebServer: WebServer: Creating new server. (Thread[RESTTimeout,1,main])
-    [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
-    [junit] REST: Making an HTTP request. (Thread[RESTTimeout,1,main])
+    [junit] java.lang.RuntimeException: Execution failed
     [junit] WebServer: WebServer: Stopping the server. (Thread[RESTTimeout,1,main])
-    [junit] 2453 ms. Memory: 2099712K Free: 841804K (40%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4da12e4b
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4da12e4b
-    [junit] reloadAllAccessors: .RESTTimeout
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:10:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
+    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
+    [junit] 121667 ms. Memory: 2125824K Free: 1310994K (62%)
     [junit] 
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
-    [junit] ----------------- Thu May 31 20:10:38 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] ----------------- testing Thu May 31 21:38:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+    [junit] ----------------- Thu May 31 21:38:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit]   in .RESTTimeout.Test
+    [junit] 
+    [junit]   in .RESTTimeout.DE Director
+    [junit] Because:
+    [junit] The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+    [junit]   in .RESTTimeout.Test
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
+    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
+    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+    [junit]   in .RESTTimeout.Test
+    [junit] 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:394)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	... 6 more
+    [junit] 
+    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-33"
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
     [junit] REST: Making an HTTP request. (Thread[RESTWithTimeout,1,main])
-    [junit] 1153 ms. Memory: 2097152K Free: 1562410K (75%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@701d13ca
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@701d13ca
+    [junit] 846 ms. Memory: 2125824K Free: 907588K (43%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2313dc15
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2313dc15
     [junit] reloadAllAccessors: .RESTWithTimeout
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:10:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] HttpClientHelper.java: Received an error for request 0: io.vertx.core.VertxException: Connection was closed
+    [junit] io.vertx.core.VertxException: Connection was closed
+    [junit] May 31, 2018 9:39:03 PM io.vertx.core.impl.ContextImpl
+    [junit] SEVERE: Unhandled exception
+    [junit] java.lang.IllegalStateException: Client is closed
+    [junit] 	at io.vertx.core.http.impl.HttpClientImpl.checkClosed(HttpClientImpl.java:1035)
+    [junit] 	at io.vertx.core.http.impl.HttpClientImpl.close(HttpClientImpl.java:901)
+    [junit] 	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientExceptionHandler.handle(HttpClientHelper.java:287)
+    [junit] 	at ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper$HttpClientExceptionHandler.handle(HttpClientHelper.java:241)
+    [junit] 	at io.vertx.core.http.impl.HttpClientRequestBase.handleException(HttpClientRequestBase.java:130)
+    [junit] 	at io.vertx.core.http.impl.HttpClientRequestImpl.handleException(HttpClientRequestImpl.java:50)
+    [junit] 	at io.vertx.core.http.impl.Http1xClientConnection.handleClosed(Http1xClientConnection.java:730)
+    [junit] 	at io.vertx.core.impl.ContextImpl.lambda$wrapTask$2(ContextImpl.java:337)
+    [junit] 	at io.vertx.core.impl.ContextImpl.executeFromIO(ContextImpl.java:195)
+    [junit] 	at io.vertx.core.net.impl.VertxHandler.channelInactive(VertxHandler.java:130)
+    [junit] 	at io.vertx.core.http.impl.Http1xClientHandler.channelInactive(Http1xClientHandler.java:91)
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:245)
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:231)
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:224)
+    [junit] 	at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelInactive(CombinedChannelDuplexHandler.java:420)
+    [junit] 	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:377)
+    [junit] 	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:342)
+    [junit] 	at io.netty.handler.codec.http.HttpClientCodec$Decoder.channelInactive(HttpClientCodec.java:282)
+    [junit] 	at io.netty.channel.CombinedChannelDuplexHandler.channelInactive(CombinedChannelDuplexHandler.java:223)
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:245)
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:39:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:231)
     [junit] AutoTests.java: About to close Vertx.
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:224)
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 15, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 184.447 sec
+    [junit] 	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1354)
+    [junit] Tests run: 15, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 290.535 sec
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:245)
+    [junit] 	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:231)
+    [junit] 	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:917)
+    [junit] 	at io.netty.channel.AbstractChannel$AbstractUnsafe$8.run(AbstractChannel.java:822)
+    [junit] 	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)
+    [junit] 	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)
+    [junit] 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:463)
+    [junit] 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
+    [junit] 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+    [junit] 	at java.lang.Thread.run(Thread.java:748)
+    [junit] 
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test
@@ -1344,197 +1173,138 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:07:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
-    [junit] ----------------- Thu May 31 20:07:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+    [junit] ----------------- testing Thu May 31 21:34:13 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+    [junit] ----------------- Thu May 31 21:34:13 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] GeoCoder: Making an HTTP request. (Thread[GeoCoderWeather,1,main])
     [junit] Weather: Making an HTTP request. (Thread[GeoCoderWeather,1,main])
-    [junit] 10463 ms. Memory: 707072K Free: 524223K (74%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fd5984d
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@6fd5984d
+    [junit] 11343 ms. Memory: 719360K Free: 515176K (72%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@408bfe04
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@408bfe04
     [junit] reloadAllAccessors: .GeoCoderWeather
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:08:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:34:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/GeoCoderWeather.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:08:07 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
-    [junit] ----------------- Thu May 31 20:08:07 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+    [junit] ----------------- testing Thu May 31 21:34:41 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
+    [junit] ----------------- Thu May 31 21:34:41 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
     [junit] JavaScript: Making an HTTP request. (Thread[RESTComposite,1,main])
-    [junit] 16242 ms. Memory: 917504K Free: 341648K (37%)
+    [junit] 6004 ms. Memory: 930816K Free: 347894K (37%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c6de390
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2c6de390
+    [junit] reloadAllAccessors: .RESTComposite
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:34:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml
     [junit] 
     [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:08:31 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
-    [junit] ----------------- Thu May 31 20:08:31 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+    [junit] ----------------- testing Thu May 31 21:34:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+    [junit] ----------------- Thu May 31 21:34:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
     [junit] REST: Making an HTTP request. (Thread[RESTGetCompleteResponseOnly,1,main])
     [junit] REST2: Making an HTTP request. (Thread[RESTGetCompleteResponseOnly,1,main])
-    [junit] 14484 ms. Memory: 1323008K Free: 936541K (71%)
+    [junit] 9079 ms. Memory: 1354752K Free: 779423K (58%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1267d055
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1267d055
+    [junit] reloadAllAccessors: .RESTGetCompleteResponseOnly
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:35:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:08:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
-    [junit] ----------------- Thu May 31 20:08:55 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
+    [junit] ----------------- testing Thu May 31 21:35:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
+    [junit] ----------------- Thu May 31 21:35:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
     [junit] REST: Making an HTTP request. (Thread[RESTPost,1,main])
     [junit] REST2: Making an HTTP request. (Thread[RESTPost,1,main])
-    [junit] 14117 ms. Memory: 1884672K Free: 1265291K (67%)
+    [junit] 9764 ms. Memory: 1887744K Free: 655257K (35%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a4398c8
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7a4398c8
+    [junit] reloadAllAccessors: .RESTPost
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:35:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml
     [junit] 
     [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:09:19 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
-    [junit] ----------------- Thu May 31 20:09:19 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] ----------------- testing Thu May 31 21:35:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] ----------------- Thu May 31 21:35:40 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
     [junit] REST: Making an HTTP request. (Thread[RESTPut,1,main])
     [junit] REST2: Making an HTTP request. (Thread[RESTPut,1,main])
-    [junit] 8873 ms. Memory: 1960960K Free: 303518K (15%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f8266db
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4f8266db
-    [junit] reloadAllAccessors: .RESTPut
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:09:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPut.xml
+    [junit] 19198 ms. Memory: 1926656K Free: 537362K (28%)
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:09:40 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
-    [junit] ----------------- Thu May 31 20:09:40 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
+    [junit] ----------------- testing Thu May 31 21:36:09 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
+    [junit] ----------------- Thu May 31 21:36:09 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml
     [junit] REST2: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
     [junit] REST3: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
     [junit] REST: Making an HTTP request. (Thread[RESTReceiveImage,1,main])
-    [junit] 17322 ms. Memory: 2043904K Free: 1360175K (67%)
+    [junit] 17450 ms. Memory: 2068480K Free: 852014K (41%)
     [junit] 
     [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:08 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
-    [junit] ----------------- Thu May 31 20:10:08 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
+    [junit] ----------------- testing Thu May 31 21:36:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
+    [junit] ----------------- Thu May 31 21:36:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] REST: Making an HTTP request. (Thread[RESTStringURL,1,main])
-    [junit] 14464 ms. Memory: 2099712K Free: 1610465K (77%)
+    [junit] 4463 ms. Memory: 2126848K Free: 1076312K (51%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@489ff4a7
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@489ff4a7
+    [junit] reloadAllAccessors: .RESTStringURL
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:36:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTStringURL.xml
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:29 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
-    [junit] ----------------- Thu May 31 20:10:29 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
+    [junit] ----------------- testing Thu May 31 21:36:49 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
+    [junit] ----------------- Thu May 31 21:36:49 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
     [junit] WebServer: WebServer: Creating new server. (Thread[RESTTimeout,1,main])
-    [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-2,1,main])
-    [junit] REST: Making an HTTP request. (Thread[RESTTimeout,1,main])
     [junit] WebServer: WebServer: Stopping the server. (Thread[RESTTimeout,1,main])
-    [junit] 2453 ms. Memory: 2099712K Free: 841804K (40%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4da12e4b
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4da12e4b
-    [junit] reloadAllAccessors: .RESTTimeout
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:10:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTTimeout.xml
+    [junit] 121667 ms. Memory: 2125824K Free: 1310994K (62%)
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:38 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
-    [junit] ----------------- Thu May 31 20:10:38 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] ----------------- testing Thu May 31 21:38:56 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] ----------------- Thu May 31 21:38:56 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
     [junit] REST: Making an HTTP request. (Thread[RESTWithTimeout,1,main])
-    [junit] 1153 ms. Memory: 2097152K Free: 1562410K (75%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@701d13ca
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@701d13ca
+    [junit] 846 ms. Memory: 2125824K Free: 907588K (43%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2313dc15
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2313dc15
     [junit] reloadAllAccessors: .RESTWithTimeout
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:10:45 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:39:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTWithTimeout.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] Error: 
     [junit] WARNING: GeoCoder: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-    [junit] WARNING: Weather: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.489]
+    [junit] WARNING: Weather: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [12.395]
     [junit] WARNING: JavaScript: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [46.678000000000004]
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .RESTComposite.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 
-    [junit]   in .RESTComposite.DE Director
-    [junit] Because:
-    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .RESTComposite.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .RESTComposite.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
-    [junit] 	... 6 more
-    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
-    [junit] 	... 8 more
-    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$4683$18537$\^function\_.L:1#wrapup(<function>:393)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$4681$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
-    [junit] 	... 10 more
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [8.0]
     [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [8.0]
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: java.lang.RuntimeException: REST: The timeout period of 7000ms has been exceeded.
-    [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-    [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
-    [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$7688$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$7632$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
-    [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
     [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [6.0]
+    [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
+    [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: java.lang.RuntimeException: REST: The timeout period of 5000ms has been exceeded.
+    [junit] Caused by: java.lang.RuntimeException: REST2: The timeout period of 10000ms has been exceeded.
     [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
     [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
     [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$11303$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$11279$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$16617$3477A$\^eval\_.error(<eval>:98)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$16580$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
     [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
     [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -1544,9 +1314,6 @@ test.capecode1.xml:
     [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
     [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
     [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
-    [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
-    [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
     [junit] WARNING: REST2: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
     [junit] WARNING: REST3: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [10.0]
@@ -1557,8 +1324,8 @@ test.capecode1.xml:
     [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
     [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$19620$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$19576$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20396$3477A$\^eval\_.error(<eval>:98)
+    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20329$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
     [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
     [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
     [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
@@ -1572,22 +1339,26 @@ test.capecode1.xml:
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.0]
     [junit] java.lang.RuntimeException: Execution failed
     [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: java.lang.RuntimeException: REST: The timeout period of 10000ms has been exceeded.
-    [junit] 	at ptolemy.util.SimpleMessageHandler._error(SimpleMessageHandler.java:53)
-    [junit] 	at ptolemy.util.MessageHandler.error(MessageHandler.java:84)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.error(JavaScript.java:838)
-    [junit] 	at ptolemy.actor.lib.jjs.RestrictedJavaScriptInterface.error(RestrictedJavaScriptInterface.java:115)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20981$3477A$\^eval\_.error(<eval>:98)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$20977$11132$\^function\_.L:1#issueCommand#L:254(<function>:257)
-    [junit] 	at jdk.nashorn.javaadapters.java.lang.Runnable.run(Unknown Source)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.fire(JavaScript.java:1091)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1948)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:502)
-    [junit] 	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:455)
-    [junit] 	at ptolemy.actor.Manager.iterate(Manager.java:851)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:369)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+    [junit] ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+    [junit]   in .RESTTimeout.Test
+    [junit] 
+    [junit]   in .RESTTimeout.DE Director
+    [junit] Because:
+    [junit] The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+    [junit]   in .RESTTimeout.Test
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
+    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
+    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
+    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
+    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
     [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
     [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
+    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+    [junit]   in .RESTTimeout.Test
+    [junit] 	at ptolemy.actor.lib.NonStrictTest.wrapup(NonStrictTest.java:394)
+    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
+    [junit] 	... 6 more
     [junit] 
     [junit] Test ptolemy.actor.lib.jjs.modules.httpClient.test.junit.JUnitTclTest FAILED
     [junit] javachdir: directory = ptolemy/actor/lib/jjs/modules/httpServer/test
@@ -1599,63 +1370,57 @@ test.capecode1.xml:
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
-    [junit] ===========================================================================================
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
+    [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
-    [junit] ----------------- Thu May 31 20:10:46 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+    [junit] ----------------- testing Thu May 31 21:39:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+    [junit] ----------------- Thu May 31 21:39:04 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] WebServer: WebServer: Creating new server. (Thread[WebServer,1,main])
     [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
-    [junit] Manager.initialize() finished: 10416 ms. Memory: 726528K Free: 198173K (27%)
+    [junit] Manager.initialize() finished: 12531 ms. Memory: 834048K Free: 748677K (90%)
     [junit] REST: Making an HTTP request. (Thread[WebServer,1,main])
     [junit] WebServer: Server received request. (Thread[WebServer,1,main])
-    [junit] WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.266]
-    [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [29.0]
     [junit] WebServer: WebServer: Stopping the server. (Thread[WebServer,1,main])
-    [junit] 12074 ms. Memory: 726528K Free: 100378K (14%)
+    [junit] WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.279]
+    [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [29.0]
+    [junit] 14277 ms. Memory: 834048K Free: 653659K (78%)
     [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b830c6c
     [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b830c6c
     [junit] reloadAllAccessors: .WebServer
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
     [junit] WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.0]
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:11:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:39:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
     [junit] 
     [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:11:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
-    [junit] ----------------- Thu May 31 20:11:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+    [junit] ----------------- testing Thu May 31 21:39:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+    [junit] ----------------- Thu May 31 21:39:39 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
     [junit] WebServer: WebServer: Creating new server. (Thread[WebServerTimeout,1,main])
+    [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-3,1,main])
     [junit] REST: Making an HTTP request. (Thread[WebServerTimeout,1,main])
-    [junit] HttpClientHelper.java: Received an error for request 0: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8597
-    [junit] io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8597
-    [junit] 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-    [junit] 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-    [junit] 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-    [junit] 	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-    [junit] 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-    [junit] 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-    [junit] 	at java.lang.Thread.run(Thread.java:748)
-    [junit] Caused by: java.net.ConnectException: Connection refused
-    [junit] 	... 11 more
-    [junit] TextDisplayHelper: 'Connection refused: localhost/127.0.0.1:8597'
-    [junit] JavaScriptBarrier: JavaScriptBarrier: sending true after timeout. (Thread[WebServerTimeout,1,main])
+    [junit] WebServer: Server received request. (Thread[WebServerTimeout,1,main])
+    [junit] The total body: <html><h1>Internal Server Error (code 500)</h1><p>Server failed to generate a response within its internal timeout period.</p></html>
+    [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [29.0]
+    [junit] TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
+    [junit] JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[WebServerTimeout,1,main])
     [junit] WebServer: WebServer: Stopping the server. (Thread[WebServerTimeout,1,main])
-    [junit] 26123 ms. Memory: 1269248K Free: 632947K (50%)
+    [junit] WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
+    [junit] 18637 ms. Memory: 1195008K Free: 188729K (16%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26243617
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26243617
+    [junit] reloadAllAccessors: .WebServerTimeout
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:40:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 7, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 66.495 sec
+    [junit] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.678 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test
@@ -1666,173 +1431,56 @@ test.capecode1.xml:
     [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:10:46 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
-    [junit] ----------------- Thu May 31 20:10:46 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+    [junit] ----------------- testing Thu May 31 21:39:04 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+    [junit] ----------------- Thu May 31 21:39:04 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
     [junit] WebServer: WebServer: Creating new server. (Thread[WebServer,1,main])
     [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-0,1,main])
-    [junit] Manager.initialize() finished: 10416 ms. Memory: 726528K Free: 198173K (27%)
+    [junit] Manager.initialize() finished: 12531 ms. Memory: 834048K Free: 748677K (90%)
     [junit] REST: Making an HTTP request. (Thread[WebServer,1,main])
     [junit] WebServer: Server received request. (Thread[WebServer,1,main])
     [junit] WebServer: WebServer: Stopping the server. (Thread[WebServer,1,main])
-    [junit] 12074 ms. Memory: 726528K Free: 100378K (14%)
+    [junit] 14277 ms. Memory: 834048K Free: 653659K (78%)
     [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b830c6c
     [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7b830c6c
     [junit] reloadAllAccessors: .WebServer
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:11:16 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:39:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServer.xml
     [junit] 
     [junit] ===========================================================================================
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:11:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
-    [junit] ----------------- Thu May 31 20:11:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+    [junit] ----------------- testing Thu May 31 21:39:39 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+    [junit] ----------------- Thu May 31 21:39:39 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
     [junit] WebServer: WebServer: Creating new server. (Thread[WebServerTimeout,1,main])
+    [junit] WebServer: WebServer: Listening for requests. (Thread[vert.x-eventloop-thread-3,1,main])
     [junit] REST: Making an HTTP request. (Thread[WebServerTimeout,1,main])
-    [junit] TextDisplayHelper: 'Connection refused: localhost/127.0.0.1:8597'
-    [junit] JavaScriptBarrier: JavaScriptBarrier: sending true after timeout. (Thread[WebServerTimeout,1,main])
+    [junit] WebServer: Server received request. (Thread[WebServerTimeout,1,main])
+    [junit] The total body: <html><h1>Internal Server Error (code 500)</h1><p>Server failed to generate a response within its internal timeout period.</p></html>
+    [junit] TextDisplayHelper: 'Request failed with code 500: Internal Server Error'
+    [junit] JavaScriptBarrier: Saw input2 then input1, now sending true. (Thread[WebServerTimeout,1,main])
     [junit] WebServer: WebServer: Stopping the server. (Thread[WebServerTimeout,1,main])
-    [junit] 26123 ms. Memory: 1269248K Free: 632947K (50%)
+    [junit] 18637 ms. Memory: 1195008K Free: 188729K (16%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26243617
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@26243617
+    [junit] reloadAllAccessors: .WebServerTimeout
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:40:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] Error: 
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
-    [junit] WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.266]
+    [junit] WARNING: WebServer: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [11.279]
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [29.0]
     [junit] WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [18.0]
     [junit] ----------------- *** Skipping testing of /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml because it does fails under Travis.  To updated this list, edit ptolemy/util/test/junit/AutoTests.java
-    [junit] HttpClientHelper.java: Received an error for request 0: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8597
-    [junit] io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: localhost/127.0.0.1:8597
-    [junit] 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-    [junit] 	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:717)
-    [junit] 	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:325)
-    [junit] 	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:340)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:633)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:580)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:497)
-    [junit] 	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:459)
-    [junit] 	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:886)
-    [junit] 	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
-    [junit] 	at java.lang.Thread.run(Thread.java:748)
-    [junit] Caused by: java.net.ConnectException: Connection refused
-    [junit] 	... 11 more
     [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [29.0]
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest2
-    [junit] Because:
-    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
+    [junit] WARNING: JavaScriptBarrier: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [19.0]
     [junit] 
-    [junit]   in .WebServerTimeout.DE Director
-    [junit] Because:
-    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
-    [junit] 	... 6 more
-    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
-    [junit] 	... 8 more
-    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$6827$18537$\^function\_.L:1#wrapup(<function>:393)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$6825$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
-    [junit] 	... 10 more
-    [junit] 
-    [junit] WARNING: REST: Model stopped before executing actions (e.g. producing outputs) scheduled for execution at times [29.0]
-    [junit] java.lang.RuntimeException: Execution failed
-    [junit] 	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:402)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
-    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest2
-    [junit] Because:
-    [junit] Error: TrainableTest2: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 
-    [junit]   in .WebServerTimeout.DE Director
-    [junit] Because:
-    [junit] Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1736)
-    [junit] 	at ptolemy.domains.de.kernel.DEDirector.wrapup(DEDirector.java:1526)
-    [junit] 	at ptolemy.actor.CompositeActor.wrapup(CompositeActor.java:2735)
-    [junit] 	at ptolemy.actor.Manager.wrapup(Manager.java:1512)
-    [junit] 	at ptolemy.actor.Manager.execute(Manager.java:407)
-    [junit] 	at ptolemy.actor.Manager.run(Manager.java:1263)
-    [junit] 	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1915)
-    [junit] Caused by: ptolemy.kernel.util.IllegalActionException: Failure executing the wrapup function: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit]   in .WebServerTimeout.TrainableTest
-    [junit] Because:
-    [junit] Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2231)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript.wrapup(JavaScript.java:2126)
-    [junit] 	at ptolemy.actor.Director.wrapup(Director.java:1722)
-    [junit] 	... 6 more
-    [junit] Caused by: javax.script.ScriptException: Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring. in <function> at line number 393 at column number 16
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:470)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:392)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeMethod(NashornScriptEngine.java:199)
-    [junit] 	at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:2208)
-    [junit] 	... 8 more
-    [junit] Caused by: <function>:393:16 Error: TrainableTest: The input handler of this accessor was never invoked. Usually, this is an error indicating that starvation is occurring.
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.initException(NativeError.java:137)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:102)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:106)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.<init>(NativeError.java:110)
-    [junit] 	at jdk.nashorn.internal.objects.NativeError.constructor(NativeError.java:129)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$6827$18537$\^function\_.L:1#wrapup(<function>:393)
-    [junit] 	at jdk.nashorn.internal.scripts.Script$Recompilation$6825$30640$require.L:1#Accessor#wrapup(/home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/external/require.js#401:30<eval>:683)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunctionData.invoke(ScriptFunctionData.java:637)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptFunction.invoke(ScriptFunction.java:494)
-    [junit] 	at jdk.nashorn.internal.runtime.ScriptRuntime.apply(ScriptRuntime.java:393)
-    [junit] 	at jdk.nashorn.api.scripting.ScriptObjectMirror.callMember(ScriptObjectMirror.java:199)
-    [junit] 	at jdk.nashorn.api.scripting.NashornScriptEngine.invokeImpl(NashornScriptEngine.java:386)
-    [junit] 	... 10 more
-    [junit] 
-    [junit] Exception: java.lang.RuntimeException thrown from the UncaughtExceptionHandler in thread "Thread-13"
-    [junit] Test ptolemy.actor.lib.jjs.modules.httpServer.test.junit.JUnitTclTest FAILED
     [junit] javachdir: directory = ptolemy/actor/lib/jjs/modules/mapManager/test
     [junit] javachdir: pwd: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test  Invoking with -Djava.net.preferIPv4Stack=true
     [junit] Running ptolemy.actor.lib.jjs.modules.mapManager.test.junit.JUnitTclTest
@@ -1843,57 +1491,57 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:11:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
-    [junit] ----------------- Thu May 31 20:11:53 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
+    [junit] ----------------- testing Thu May 31 21:40:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
+    [junit] ----------------- Thu May 31 21:40:11 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
-    [junit] 1817 ms. Memory: 198656K Free: 84686K (43%)
+    [junit] 2356 ms. Memory: 207872K Free: 112287K (54%)
     [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fca1745
     [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fca1745
     [junit] reloadAllAccessors: .createEntity
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
-    [junit] ----------------- Thu May 31 20:12:03 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
+    [junit] ----------------- testing Thu May 31 21:40:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
+    [junit] ----------------- Thu May 31 21:40:23 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
-    [junit] 1237 ms. Memory: 260096K Free: 59993K (23%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14906e34
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14906e34
+    [junit] 1472 ms. Memory: 279040K Free: 115398K (41%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@212c0cb2
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@212c0cb2
     [junit] reloadAllAccessors: .createEntityAliases
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
-    [junit] ----------------- Thu May 31 20:12:10 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
+    [junit] ----------------- testing Thu May 31 21:40:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
+    [junit] ----------------- Thu May 31 21:40:30 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
-    [junit] 1005 ms. Memory: 372736K Free: 240310K (64%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2281fd3c
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2281fd3c
+    [junit] 1135 ms. Memory: 397312K Free: 331102K (83%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1243f325
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1243f325
     [junit] reloadAllAccessors: .createMap
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
-    [junit] ----------------- Thu May 31 20:12:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
+    [junit] ----------------- testing Thu May 31 21:40:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
+    [junit] ----------------- Thu May 31 21:40:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
-    [junit] 1250 ms. Memory: 372224K Free: 139365K (37%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c792521
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c792521
+    [junit] 1305 ms. Memory: 397824K Free: 257001K (65%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@85c4713
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@85c4713
     [junit] reloadAllAccessors: .entityOccupancy
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
-    [junit] ----------------- Thu May 31 20:12:24 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
+    [junit] ----------------- testing Thu May 31 21:40:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
+    [junit] ----------------- Thu May 31 21:40:44 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
-    [junit] 1020 ms. Memory: 496640K Free: 162694K (33%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7939691e
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7939691e
+    [junit] 1278 ms. Memory: 535040K Free: 316772K (59%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74e2892b
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74e2892b
     [junit] reloadAllAccessors: .entityPlacement
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 38.342 sec
+    [junit] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 40.608 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test
@@ -1902,53 +1550,53 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:11:53 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
-    [junit] ----------------- Thu May 31 20:11:53 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
+    [junit] ----------------- testing Thu May 31 21:40:11 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
+    [junit] ----------------- Thu May 31 21:40:11 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntity.xml
-    [junit] 1817 ms. Memory: 198656K Free: 84686K (43%)
+    [junit] 2356 ms. Memory: 207872K Free: 112287K (54%)
     [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fca1745
     [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1fca1745
     [junit] reloadAllAccessors: .createEntity
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:03 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
-    [junit] ----------------- Thu May 31 20:12:03 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
+    [junit] ----------------- testing Thu May 31 21:40:23 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
+    [junit] ----------------- Thu May 31 21:40:23 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createEntityAliases.xml
-    [junit] 1237 ms. Memory: 260096K Free: 59993K (23%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14906e34
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@14906e34
+    [junit] 1472 ms. Memory: 279040K Free: 115398K (41%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@212c0cb2
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@212c0cb2
     [junit] reloadAllAccessors: .createEntityAliases
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:10 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
-    [junit] ----------------- Thu May 31 20:12:10 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
+    [junit] ----------------- testing Thu May 31 21:40:30 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
+    [junit] ----------------- Thu May 31 21:40:30 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/createMap.xml
-    [junit] 1005 ms. Memory: 372736K Free: 240310K (64%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2281fd3c
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@2281fd3c
+    [junit] 1135 ms. Memory: 397312K Free: 331102K (83%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1243f325
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@1243f325
     [junit] reloadAllAccessors: .createMap
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
-    [junit] ----------------- Thu May 31 20:12:17 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
+    [junit] ----------------- testing Thu May 31 21:40:37 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
+    [junit] ----------------- Thu May 31 21:40:37 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityOccupancy.xml
-    [junit] 1250 ms. Memory: 372224K Free: 139365K (37%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c792521
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7c792521
+    [junit] 1305 ms. Memory: 397824K Free: 257001K (65%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@85c4713
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@85c4713
     [junit] reloadAllAccessors: .entityOccupancy
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:24 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
-    [junit] ----------------- Thu May 31 20:12:24 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
+    [junit] ----------------- testing Thu May 31 21:40:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
+    [junit] ----------------- Thu May 31 21:40:44 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mapManager/test/auto/entityPlacement.xml
-    [junit] 1020 ms. Memory: 496640K Free: 162694K (33%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7939691e
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@7939691e
+    [junit] 1278 ms. Memory: 535040K Free: 316772K (59%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74e2892b
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@74e2892b
     [junit] reloadAllAccessors: .entityPlacement
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
@@ -1963,20 +1611,20 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
-    [junit] ----------------- Thu May 31 20:12:32 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
+    [junit] ----------------- testing Thu May 31 21:40:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
+    [junit] ----------------- Thu May 31 21:40:52 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] 12990 ms. Memory: 316928K Free: 283054K (89%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a20510e
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a20510e
+    [junit] 13580 ms. Memory: 300544K Free: 259850K (86%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cd3d89
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cd3d89
     [junit] reloadAllAccessors: .MQTTPubSub
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:12:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:41:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.04 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.578 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test
@@ -1985,17 +1633,17 @@ test.capecode1.xml:
     [junit] AutoTests.java: Vertx closed.
     [junit] 
     [junit] ===========================================================================================
-    [junit] ----------------- testing Thu May 31 20:12:32 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
-    [junit] ----------------- Thu May 31 20:12:32 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
+    [junit] ----------------- testing Thu May 31 21:40:52 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
+    [junit] ----------------- Thu May 31 21:40:52 UTC 2018 About to sleep for 5.0 seconds before running or rerunning.  Test is: /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
     [junit] Done sleeping
     [junit] ----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
     [junit] JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.
-    [junit] 12990 ms. Memory: 316928K Free: 283054K (89%)
-    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a20510e
-    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@3a20510e
+    [junit] 13580 ms. Memory: 300544K Free: 259850K (86%)
+    [junit] ----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cd3d89
+    [junit] ----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@4cd3d89
     [junit] reloadAllAccessors: .MQTTPubSub
     [junit] This is the first time that the reloadAllAccessors method has been invoked in this JVM, so the the accessors repo will be checked out or updated and JSDoc invoked. Note that running the tests may end up invoking a new JVM for each directory, so the repo may be checked out or updated and JSDoc invoked more than once when the tests are run.
-    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 20:12:55 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
+    [junit] -------------- Reloaded accessors, but skipping rerun for now. Thu May 31 21:41:17 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/mqtt/test/auto/MQTTPubSub.xml
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
     [junit] 
@@ -2010,7 +1658,7 @@ test.capecode1.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/objectAssign/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.495 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.474 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/objectAssign/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/objectAssign/test
@@ -2032,7 +1680,7 @@ test.capecode1.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/os/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.433 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.489 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/os/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/os/test
@@ -2054,7 +1702,7 @@ test.capecode1.xml:
     [junit] No auto/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/process/test
     [junit] AutoTests.java: About to close Vertx.
     [junit] AutoTests.java: Vertx closed.
-    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.485 sec
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.477 sec
     [junit] Output:
     [junit] No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/process/test
     [junit] No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/actor/lib/jjs/modules/process/test
@@ -2067,4 +1715,4 @@ test.capecode1.xml:
     [junit] 
 
 BUILD SUCCESSFUL
-Total time: 9 minutes 7 seconds
+Total time: 11 minutes 1 second
