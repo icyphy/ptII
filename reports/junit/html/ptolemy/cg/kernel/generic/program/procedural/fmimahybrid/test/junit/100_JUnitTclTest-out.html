@@ -1,0 +1,108 @@
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Standard Output from JUnitTclTest</title>
+</head>
+<body>
+<pre>No tcl tests in /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmimahybrid/test
+No auto/knownFailedTests/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmimahybrid/test
+No auto/linux-amd64/*.xml tests in /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmimahybrid/test
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+
+===========================================================================================
+----------------- testing Fri Jun 01 01:29:44 UTC 2018 /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmimahybrid/test/auto/TestZeroDelayFeedback.xml
+----------------- Instantiating /home/travis/build/icyphy/ptII/ptolemy/cg/kernel/generic/program/procedural/fmimahybrid/test/auto/TestZeroDelayFeedback.xml
+Warning: FMU modelDescription provides Integer representation of time, but precision is not specified
+Warning: FMU modelDescription provides Integer representation of time, but precision is not specified
+Warning: FMU modelDescription provides Integer representation of time, but precision is not specified
+Warning: FMU modelDescription provides Integer representation of time, but precision is not specified
+Warning: FMU modelDescription provides Integer representation of time, but precision is not specified
+FMU Builder messages:
+
+Attempting to build /tmp/FMUFile3848779711689057169.tmp/binaries/linux64/Constant.so
+architecture: linux64 isWindows: false  command: make target: linux64
+make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Constant.so
+make[1]: Entering directory `/tmp/FMUFile3848779711689057169.tmp/sources'
+echo `pwd`
+/tmp/FMUFile3848779711689057169.tmp/sources
+cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Constant.c -o Constant.o
+Creating ../binaries/linux64/
+cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Constant.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Constant.so Constant.o 
+rm Constant.o
+make[1]: Leaving directory `/tmp/FMUFile3848779711689057169.tmp/sources'
+
+FMU Builder messages:
+
+Attempting to build /tmp/FMUFile3181868073241547600.tmp/binaries/linux64/Integrator.so
+architecture: linux64 isWindows: false  command: make target: linux64
+make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Integrator.so
+make[1]: Entering directory `/tmp/FMUFile3181868073241547600.tmp/sources'
+echo `pwd`
+/tmp/FMUFile3181868073241547600.tmp/sources
+cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Integrator.c -o Integrator.o
+Integrator.c: In function &lsquo;fmi2HybridGetMaxStepSize&rsquo;:
+Integrator.c:112:20: warning: unused variable &lsquo;comp&rsquo; [-Wunused-variable]
+     ModelInstance *comp = (ModelInstance *)c;
+                    ^
+In file included from Integrator.c:123:0:
+fmuTemplate.c: In function &lsquo;fmi2HybridDoStep&rsquo;:
+fmuTemplate.c:992:12: warning: variable &lsquo;prevState&rsquo; set but not used [-Wunused-but-set-variable]
+     double prevState[max(NUMBER_OF_STATES, 1)];
+            ^
+Creating ../binaries/linux64/
+cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Integrator.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Integrator.so Integrator.o 
+rm Integrator.o
+make[1]: Leaving directory `/tmp/FMUFile3181868073241547600.tmp/sources'
+
+FMU Builder messages:
+
+Attempting to build /tmp/FMUFile2247371468128215792.tmp/binaries/linux64/Adder.so
+architecture: linux64 isWindows: false  command: make target: linux64
+make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Adder.so
+make[1]: Entering directory `/tmp/FMUFile2247371468128215792.tmp/sources'
+echo `pwd`
+/tmp/FMUFile2247371468128215792.tmp/sources
+cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Adder.c -o Adder.o
+Creating ../binaries/linux64/
+cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Adder.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Adder.so Adder.o 
+rm Adder.o
+make[1]: Leaving directory `/tmp/FMUFile2247371468128215792.tmp/sources'
+
+FMU Builder messages:
+
+Attempting to build /tmp/FMUFile9040490746111331353.tmp/binaries/linux64/ZeroCrossingDetector.so
+architecture: linux64 isWindows: false  command: make target: linux64
+make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so ZeroCrossingDetector.so
+make[1]: Entering directory `/tmp/FMUFile9040490746111331353.tmp/sources'
+echo `pwd`
+/tmp/FMUFile9040490746111331353.tmp/sources
+cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  ZeroCrossingDetector.c -o ZeroCrossingDetector.o
+Creating ../binaries/linux64/
+cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,ZeroCrossingDetector.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/ZeroCrossingDetector.so ZeroCrossingDetector.o 
+rm ZeroCrossingDetector.o
+make[1]: Leaving directory `/tmp/FMUFile9040490746111331353.tmp/sources'
+
+FMU Builder messages:
+
+Attempting to build /tmp/FMUFile8828100216165933833.tmp/binaries/linux64/Delay.so
+architecture: linux64 isWindows: false  command: make target: linux64
+make ARCH=linux64 CBITSFLAGS=-fvisibility=hidden PIC=-fPIC SHARED_LIBRARY_SUFFIX=so Delay.so
+make[1]: Entering directory `/tmp/FMUFile8828100216165933833.tmp/sources'
+echo `pwd`
+/tmp/FMUFile8828100216165933833.tmp/sources
+cc -g -c -fvisibility=hidden -fPIC -Wall -DFMI_COSIMULATION -I.  Delay.c -o Delay.o
+Creating ../binaries/linux64/
+cc -fvisibility=hidden -g -Wall -shared -Wl,-soname,Delay.so -DFMI_COSIMULATION -I. -o ../binaries/linux64/Delay.so Delay.o 
+rm Delay.o
+make[1]: Leaving directory `/tmp/FMUFile8828100216165933833.tmp/sources'
+
+978 ms. Memory: 146944K Free: 128369K (87%)
+----------------- Invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56f6bfd
+----------------- Done invoking toplevel() on ptolemy.moml.MoMLSimpleApplication@56f6bfd
+reloadAllAccessors: .TestZeroDelayFeedback
+AutoTests.java: About to close Vertx.
+AutoTests.java: Vertx closed.
+</pre>
+</body>
+</html>
