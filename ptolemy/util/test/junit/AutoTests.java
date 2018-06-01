@@ -250,9 +250,9 @@ public class AutoTests extends ModelTests {
             && !StringUtilities
             .getProperty("net.sourceforge.cobertura.datafile")
             .equals("")) {
-            System.err.println("----------------- *** Skipping testing of " + fullPath
+            System.out.println("----------------- *** Skipping testing of " + fullPath
                                + " because it interacts badly with Cobertura.");
-            System.err.flush();
+            System.out.flush();
             return false;
         }
 
@@ -263,17 +263,23 @@ public class AutoTests extends ModelTests {
         if (travis != null && travis.equals("true")) {
             String [] travisSkip = {
                 "org/hlacerti/test/auto",
+                "org/terraswarm/accessor/accessors/web/services/test/auto/ReverseGeoCoderTest.xml",
+                "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTComposite.xml",
                 "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGet.xml",
+                "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPost.xml",
                 "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTPostDataTypes.xml",
+                "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTReceiveImage.xml",
                 "ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml",
                 "ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml",
                 "ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerBasic.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/Message2.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/Message3.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/Message4.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket1.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket2.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/Socket3.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketByte.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDouble.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketDoubleArray.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketFloat.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/SocketInt.xml",
@@ -284,20 +290,22 @@ public class AutoTests extends ModelTests {
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketDoubleArrayBatched.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketSecureServerClient.xml",
                 "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShort.xml",
+                "ptolemy/actor/lib/jjs/modules/socket/test/auto/TCPSocketUnsignedShortSimple.xml",
                 "ptolemy/actor/lib/jjs/modules/udpSocket/test/auto/UDPSocketInt.xml",
                 "ptolemy/actor/lib/jjs/modules/udpSocket/test/auto/UDPSocketSelf.xml",
                 "ptolemy/actor/lib/jjs/modules/udpSocket/test/auto/UDPSocketString.xml",
                 "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex2.xml",
                 "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient2JS.xml",
+                "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClient3JS.xml",
                 "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketClientJS.xml",
-                "ptolemy/cg/lib/testKnownFailed/test/auto/knownFailedTests/ScaleC.xml"
+                "ptolemy/actor/lib/jjs/modules/webSocket/test/auto/WebSocketsServerClient.xml"
             };
             for (String element : travisSkip) {
                 if (fullPath.indexOf(element) != -1) {
-                    System.err.println("----------------- *** Skipping testing of " + fullPath
+                    System.out.println("----------------- *** Skipping testing of " + fullPath
                                        + " because it does fails under Travis.  "
                                        + "To updated this list, edit ptolemy/util/test/junit/AutoTests.java");
-                    System.err.flush();
+                    System.out.flush();
                     return false;
                 }
             }
