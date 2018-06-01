@@ -14,7 +14,7 @@ Below are instructions for accessing the current development version of Ptolemy 
 * [JsDoc](https://icyphy.github.io/ptII-test/doc/codeDoc/js/index.html) output for Javascript
 * [Travis Build](https://travis-ci.org/icyphy/ptII)
  * [PtII specific Travis Notes](https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis)
- * [Downloads](https://icyphy.github.io/ptII-test/downloads/index.html)
+ * [Downloads](downloads/index.html)
  * [Logs](https://icyphy.github.io/ptII-test/logs/index.html)
  * [Reports](https://icyphy.github.io/ptII-test/reports/index.html)
 
