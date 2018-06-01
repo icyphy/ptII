@@ -19,7 +19,7 @@
 
 # To test, set the environment variable(s) and invoke the script.
 #
-# GITHUB_TOKEN is used to update the gh-pages branch of the ptII repo
+# GITHUB_TOKEN is used to update the gh-pages branch of the ptII-test repo
 # and the deployment area at https://github.com/icyphy/ptII/releases
 #
 # PT_TRAVIS* Variables that start with "PT_TRAVIS" name targets in this file.
@@ -63,8 +63,9 @@ fi
 # The timeout Can't be more than 50 minutes or 3000 seconds.  45
 # minutes is cutting it a bit close, so we go with a maximum of 35
 # minutes or 2100 seconds.  We can't use Travis' timeout feature
-# because we want to copy the output to gh-pages. The timeouts should
-# vary so as to avoid git conflicts.
+# because we want to copy the output to the gh-pages branch of the
+# ptII-test repo. The timeouts should vary so as to avoid git
+# conflicts.
 
 # The amount of time after ant completes.  This must be enough time to
 # update gh-pages, update the cache and deploy.  If Travis is timing
@@ -324,7 +325,9 @@ updateGhPages () {
 
     # Don't echo GITHUB_TOKEN
     set +x
-    git clone --depth=1 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
+    # Note that we use the ptII-test repo here instead of the ptII repo so as to avoid cluttering the ptII changelog
+    # with lots of commits from the tests.
+    git clone --depth=1 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII-test gh-pages
     set -x
 
     cd gh-pages
