@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="GiottoEditorFactory" class="ptolemy.domains.giotto.kernel.GiottoCodeGenerator.GiottoEditorFactory">
-  <description>
-An attribute that can create an Giotto code editor for a Giotto model.  </description>
-</doc>

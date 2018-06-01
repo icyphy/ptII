@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="ConstraintMonitorAttributes" class="ptolemy.data.expr.ConstraintMonitor.ConstraintMonitorAttributes">
-  <description>
-Class containing the decorator attributes that decorate objects.&#10;  In this case, there is exactly one decorator attribute called &lt;i&gt;value&lt;/i&gt;.  </description>
-    <!--ptolemy.data.expr.Parameter-->
-    <property name="value"></property>
-</doc>

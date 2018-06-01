@@ -10,13 +10,13 @@ Below are instructions for accessing the current development version of Ptolemy 
 * [Ptolemy II main page](https://ptolemy.berkeley.edu/ptolemyII)
 * [Contributing](https://github.com/icyphy/ptII/blob/master/CONTRIBUTING.md)
  * [Ptolemy II Style Guide](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-164.html)
-* [Javadoc](doc/codeDoc/) output for Java files
-* [JsDoc](doc/codeDoc/js/index.html) output for Javascript
+* [Javadoc](https://icyphy.github.io/ptII-test/doc/codeDoc/) output for Java files
+* [JsDoc](https://icyphy.github.io/ptII-test/doc/codeDoc/js/index.html) output for Javascript
 * [Travis Build](https://travis-ci.org/icyphy/ptII)
  * [PtII specific Travis Notes](https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis)
- * [Downloads](downloads/index.html)
- * [Logs](logs/index.html)
- * [Reports](reports/index.html)
+ * [Downloads](https://icyphy.github.io/ptII-test/downloads/index.html)
+ * [Logs](https://icyphy.github.io/ptII-test/logs/index.html)
+ * [Reports](https://icyphy.github.io/ptII-test/reports/index.html)
 
 # How to get Ptolemy II source code
 ## For the impatient

@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="Factory" class="ptolemy.actor.gui.HTMLViewerTableau.Factory">
-  <description>
-A factory that creates HTML viewer tableaux for Ptolemy models.  </description>
-</doc>

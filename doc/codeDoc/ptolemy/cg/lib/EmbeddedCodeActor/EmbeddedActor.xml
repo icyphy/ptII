@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="EmbeddedActor" class="ptolemy.cg.lib.EmbeddedCodeActor.EmbeddedActor">
-  <description>
-An actor inside the embeddedJavaActor that is used as a dummy&#10;  placeholder.  The EmbeddedActor is created in preinitialize() where&#10;  ports from the outer embeddedJavaActor are connected to the EmbeddedActor.&#10;  The EmbeddedActor is destroyed in wrapup().  </description>
-</doc>

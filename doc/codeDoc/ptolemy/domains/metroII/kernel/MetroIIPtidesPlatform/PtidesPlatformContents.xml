@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="PtidesPlatformContents" class="ptolemy.domains.metroII.kernel.MetroIIPtidesPlatform.PtidesPlatformContents">
-  <description>
-This is a specialized composite actor for use in PtidesPlatform. In&#10; particular, it ensures that if ports are added or deleted locally, then&#10; corresponding ports will be added or deleted in the container. That&#10; addition will result in appropriate connections being made.  </description>
-</doc>

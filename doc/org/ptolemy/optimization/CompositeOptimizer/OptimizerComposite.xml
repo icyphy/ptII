@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd">
-<doc name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizer.OptimizerComposite">
-  <description>
-This is a specialized composite actor for use in CompositeOptimizer.&#10;  In particular, it ensures that if ports are added or deleted&#10;  locally, then corresponding ports will be added or deleted&#10;  in the container.  That addition will result in appropriate&#10;  connections being made.  </description>
-</doc>
