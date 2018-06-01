@@ -271,9 +271,14 @@ runTarget () {
 
 # Copy the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example:
+#
 #   updateGhPages logs/installers.txt logs
-# will copy logs/installers.txt to logs in the gh-pages and push it.
+#
+# will copy logs/installers.txt to logs in the gh-pages branch of the
+# ptII-test repo and push it.
+#
 # If the last argument ends in a /, then a directory by that name is created.
+#
 # The reason we need this is because the Travis deploy to gh-pages seems
 # to overwrite everything in the repo.
 #
@@ -461,9 +466,7 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # Killing background sleep loop.
     kill %1
 
-    # No need to check in the log each time because this target is
-    # easy to re-run.
-    # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
+    updateGhPages $PTII/doc/codeDoc doc/
 
     # Note that .travis.yml deploys the codeDoc jar files.
 fi
@@ -603,7 +606,7 @@ if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     npm install @icyphy/github-issue-junit
     export JUNIT_LABEL=junit-results
     export JUNIT_RESULTS_NOT_DRY_RUN=false
-    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
+    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII-test
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 
     # Clean JUnit results older than 30 days.
