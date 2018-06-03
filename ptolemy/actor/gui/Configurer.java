@@ -43,6 +43,7 @@ import javax.swing.SwingUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.CloseListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
@@ -345,7 +346,7 @@ public class Configurer extends JPanel implements CloseListener {
      *          decorated attributes should also be included.
      *  @return The visible attributes.
      */
-    static private Set<Settable> _getVisibleSettables(final NamedObj object,
+     private Set<Settable> _getVisibleSettables(final NamedObj object,
             boolean addDecoratorAttributes) {
         Set<Settable> attributes = new HashSet<Settable>();
         Iterator<?> parameters = object.attributeList(Settable.class)
@@ -357,12 +358,24 @@ public class Configurer extends JPanel implements CloseListener {
                 Parameter backwardTypeInf = (Parameter) object.getAttribute(
                         "enableBackwardTypeInference", Parameter.class);
                 if (backwardTypeInf == null) {
-                    backwardTypeInf = new Parameter(object,
-                            "enableBackwardTypeInference");
-                    backwardTypeInf.setExpression("false");
-                    attributes.add(backwardTypeInf);
+                    // It is extremely dangerous here to just add a parameter because
+                    // that requires getting write permission on the Workspace.
+                    // This can cause deadlocks, so this should be done in a ChangeRequest.
+                    // Unfortunately, this means that the parameter won't show up immediately.
+                    // The user will have to reopen the dialog to have the parameter appear.
+                    ChangeRequest request = new ChangeRequest(object,
+                            "Add parameter enableBackwardTypeInference") {
+                        @Override
+                        protected void _execute() throws Exception {
+                            Parameter backwardTypeInf = new Parameter(object,
+                                    "enableBackwardTypeInference");
+                            backwardTypeInf.setExpression("false");
+                            backwardTypeInf.setTypeEquals(BaseType.BOOLEAN);
+                            _originalValues.put(backwardTypeInf, "false");
+                        }
+                    };
+                    object.requestChange(request);
                 }
-                backwardTypeInf.setTypeEquals(BaseType.BOOLEAN);
             } catch (KernelException e) {
                 // This should not happen
                 throw new InternalErrorException(e);
