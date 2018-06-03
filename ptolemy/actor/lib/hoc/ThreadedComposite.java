@@ -622,6 +622,8 @@ public class ThreadedComposite extends MirrorComposite {
                         }
                         // The timeout allows this to respond to stop()
                         // even if we have a deadlock for some reason.
+                        // However, if the deadlock involves the Swing thread, then
+                        // no stopping will be possible.
                         wait(1000L);
                     }
                     if (_outputFrames.isEmpty()) {
@@ -637,12 +639,13 @@ public class ThreadedComposite extends MirrorComposite {
 
                     // Produce the outputs on the frame, if there are any
                     // outputs. Note that frame.tokens can only be null
-                    // if the inside thread was interrupted while executing.
-                    // If an exception occurred in the inside thread, then
-                    // the _exception variable tested above would have been
-                    // set (within a synchronized block), so that cannot be
-                    // the cause.
+                    // if the inside thread was interrupted while executing
+                    // or if an exception occurred in the inside thread.
                     if (frame.tokens == null) {
+                        if (_exception != null) {
+                            throw new IllegalActionException(this, _exception,
+                                    "Inside thread had an exception.");
+                        }
                         throw new IllegalActionException(this,
                                 "Inside thread was interrupted.");
                     }
