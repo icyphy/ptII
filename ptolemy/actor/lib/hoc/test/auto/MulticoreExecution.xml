@@ -44,6 +44,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 460.0]">
         </property>
     </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is just a smoke test.&#10;It does not measure actual execution times.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 105.0]">
+        </property>
+    </property>
     <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
         <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
@@ -70,7 +78,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 266, 834, 632}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={422, 258, 834, 632}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
             </property>
@@ -91,32 +99,39 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 100.0}">
                 </property>
             </entity>
-            <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 110.0]">
-                </property>
-            </entity>
             <entity name="Test" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100L, 200L, 300L, 400L, 500L, 600L, 700L, 800L, 900L, 1000L}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 95.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 100.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{290, 100}">
+                </property>
+            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="input" relation="relation2"/>
             <link port="ExecutionTime.output" relation="relation"/>
             <link port="ExecutionTime.trigger" relation="relation2"/>
-            <link port="Accumulator.input" relation="relation"/>
-            <link port="Accumulator.output" relation="relation3"/>
             <link port="Test.input" relation="relation3"/>
+            <link port="Const.output" relation="relation3"/>
+            <link port="Const.trigger" relation="relation"/>
         </entity>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -177,32 +192,39 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 100.0}">
                 </property>
             </entity>
-            <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 110.0]">
-                </property>
-            </entity>
             <entity name="Test" class="ptolemy.actor.lib.Test">
-                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100L, 200L, 300L, 400L, 500L, 600L, 700L, 800L, 900L, 1000L}">
+                <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
                 </property>
                 <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 185.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 100.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 100.0]">
+                </property>
+            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="input" relation="relation2"/>
             <link port="ExecutionTime.output" relation="relation"/>
             <link port="ExecutionTime.trigger" relation="relation2"/>
-            <link port="Accumulator.input" relation="relation"/>
-            <link port="Accumulator.output" relation="relation3"/>
             <link port="Test.input" relation="relation3"/>
+            <link port="Const.output" relation="relation3"/>
+            <link port="Const.trigger" relation="relation"/>
         </entity>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
