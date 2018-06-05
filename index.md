@@ -9,14 +9,17 @@ Below are instructions for accessing the current development version of Ptolemy 
 * [Book on Ptolemy II](https://ptolemy.berkeley.edu/systems) (free download)
 * [Ptolemy II main page](https://ptolemy.berkeley.edu/ptolemyII)
 * [Contributing](https://github.com/icyphy/ptII/blob/master/CONTRIBUTING.md)
- * [Ptolemy II Style Guide](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-164.html)
-* [Javadoc](https://icyphy.github.io/ptII-test/doc/codeDoc/) output for Java files
-* [JsDoc](https://icyphy.github.io/ptII-test/doc/codeDoc/js/index.html) output for Javascript
+  * [Ptolemy II Style Guide](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-164.html)
+
 * [Travis Build](https://travis-ci.org/icyphy/ptII)
- * [PtII specific Travis Notes](https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis)
- * [Downloads](downloads/index.html)
- * [Logs](https://icyphy.github.io/ptII-test/logs/index.html)
- * [Reports](https://icyphy.github.io/ptII-test/reports/index.html)
+  * [PtII specific Travis Notes](https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis) 
+  * [Downloads](downloads/index.html)
+  * [Javadoc](https://icyphy.github.io/ptII-test/doc/codeDoc/) output for Java files
+  * [JsDoc](https://icyphy.github.io/ptII-test/doc/codeDoc/js/index.html) output for Javascript
+  * [Logs](https://icyphy.github.io/ptII-test/logs/index.html)
+  * [Reports](https://icyphy.github.io/ptII-test/reports/index.html)
+    * [JUnit Output](https://icyphy.github.io/ptII-test/reports/junit/html/index.html)
+
 
 # How to get Ptolemy II source code
 ## For the impatient
