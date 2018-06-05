@@ -404,7 +404,7 @@ $(NODE_WIN): node
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(IZPACK_DIR) $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
+$(PTIIDIST): $(IZPACK_DIR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -3467,7 +3467,7 @@ izpackFix: $(IZPACK_DIR)
 	if [ ! -f "$(IZPACK_PLIST).orig" ]; then \
 		cp "$(IZPACK_PLIST)" "$(IZPACK_PLIST).orig"; \
         fi
-	sed 's@<string>1.4+</string>@<string>1.8+</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
+	sed 's@<string>1.[*0-8+]*</string>@<string>1.8+</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
 	-diff "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
 	mv "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
 
@@ -3488,7 +3488,7 @@ izpacksetup.jar: izpackFix IzpackSetup.class
 #   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.1 foo
 # :-|
 make_izpack: $(IZPACK_COMPILE)
-$(IZPACK_COMPILE): $(IZPACK_DIR)
+$(IZPACK_COMPILE): $(IZPACK_DIR) izpackFix
 	 cd $(IZPACK_DIR)/src; ant dist
 
 # Download IzPack
