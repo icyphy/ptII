@@ -50,8 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	PtDoclet.java \
-	PtIndexer.java \
-	RatingTaglet.java
+	PtIndexer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	stylesheet.css
