@@ -25,56 +25,21 @@ from sources.
 
 <h2><a name="impatient">Instructions for the impatient</a></h2>
 
-<ol>
+Install Java 1.8 or newer and run:
 
-<li> Install JDK 1.8 or later, add the jdk bin directory to your path
-so that <code>javac</code> and <code>java</code> are available,
-and have the <code>make</code> command available.
-
-<li> Set the PTII environment variable to the top level Ptolemy directory,
-that is the directory above this directory
-	<dl>
-	<dt> bash (such as Cygwin under Windows)
-	<dd> <pre>
-export PTII=c:/Ptolemy/ptII11.0.devel
-</pre>
-
-<dt> csh
-<dd> <pre>
-setenv PTII /users/yourname/ptII
-</pre>
-
-</dl>
-
-<li> Run configure
 <pre>
-cd "$PTII"
-rm -f config.*
+cd ptII
+export PTII=`pwd`
 ./configure
-</pre>
-
-<li> The safest thing to do is 
-to run make fast install on the entire tree:
-<pre>
-make fast install
-</pre>
-<b>OR</b>: Install Apache Ant from <a href="https://ant.apache.org/#in_browser" target="_top">https://ant.apache.org/</a> and run
-<pre>
-ant
-cd bin; make
-</pre>
-Apache ant is much faster than make.
-
-<li> Start vergil
-<pre>
+$PTII/bin/ant
 $PTII/bin/vergil
 </pre>
 
-
-</ol>
+The last line starts vergil, the Ptolemy II GUI. You may want to export the PTII environment variable in bash profile (or profile for whatever shell you use) and include $PTII/bin in your PATH variable.
 
 
 <h2><a name="requirements">Requirements</a></h2>
+
 <h3>The PTII variable</h3>
 The PTII environment variable is used to refer to the directory
 that contains the Ptolemy II tree.
@@ -84,7 +49,7 @@ sections below.
 
 <h3><a name="java">Java</a></h3>
 
-<p><b>The development version available via svn</b> is best built
+<p><b>The development version available via git</b> is best built
     with Java 1.8</p>
 <p>Oracle calls calls
 Java 1.8 "Java SE Development Kit 8". To download the JDK, see
@@ -105,15 +70,6 @@ that the <code>bin</code> directory is in your path so that
 the <code>javac</code> and <code>java</code> commands are available.
 </dl>
 
-
-<h3><a name="Plugin">Java Plug-in</a></h3>
- <p>Currently, the Java Plug-in 1.8 is included in the JRE and JDK downloads
-   for Windows.
- <p>If your platform is not supported by the plug-in, you can run
-   the applets with the JDK <code>appletviewer</code> command and view JNLP files with <code>javaws</code>.</p>
-
- <p>See the <a href="troubleshooting.htm#plugin">Plug-in section of
- the Ptolemy II Troubleshooting guide</a> for details.
 
 <h2><a name="shippedPackages">Optional packages that are shipped with Ptolemy</a></h2>
 
