@@ -54,7 +54,7 @@ import java.util.Map;
  * more cells.
  * A whitepaper
  * about the FormLayout ships with the product documentation and is available
- * <a href="http://www.jgoodies.com/articles/forms.pdf">online</a>.<p>
+ * <a href="https://web.archive.org/web/20061209004117/http://www.jgoodies.com:80/articles/forms.pdf">online</a>.<p>
  *
  * To use FormLayout you first define the grid by specifying the
  * columns and rows. In a second step you add components to the grid. You can

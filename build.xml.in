@@ -385,6 +385,9 @@
     <!-- OpenModelica is not typically installed. -->
     <exclude name="**/ptolemy/domains/openmodelica/lib/test/junit/JUnitTclTest.*" />
 
+    <!-- PtinyOS is not likely to be installed. -->
+    <exclude name="**/ptolemy/domains/ptinyos/**/JUnitTclTest.*" />
+
     <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/arduino/**"/>
     <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/mbed/**" />
 
