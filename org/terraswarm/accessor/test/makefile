@@ -63,8 +63,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	VertxEventBusHelloWorld.xml \
-	WebSocketClientTest.tcl
+	VertxEventBusHelloWorld.xml
 
 #$(JGRAPHICAL_TESTS)
 
