@@ -33,7 +33,7 @@ $PTII/bin/ant
 ## Resources and documentation
 
 * [Book on Ptolemy II](https://ptolemy.berkeley.edu/systems) (free download)
-* [Github source repository](https://github.com/icyphy)
+* [Github source repository](https://github.com/icyphy/ptII)
 * [Ptolemy II project main page](https://ptolemy.berkeley.edu/ptolemyII)
 * [Javadoc documentation for Ptolemy II Java classes](https://icyphy.github.io/ptII-test/doc/codeDoc/)
 * [JsDoc documentation for JavaScript components](https://icyphy.github.io/ptII-test/doc/codeDoc/js/index.html)
