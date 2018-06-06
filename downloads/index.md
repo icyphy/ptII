@@ -20,8 +20,8 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
  </tr>
 
  <tr>
-  <td> Git sources **_(Preferred)_** </td>
-  <td colspan="2"> [Git instructions](http://chess.eecs.berkeley.edu/ptexternal)** </td>
+  <td> Git sources <b>(Preferred)</b> </td>
+  <td colspan="2"> <a href="https://icyphy.github.io/ptII/index.html">Git Instructions</a> </td>
  </tr>
 
  <tr>
@@ -31,14 +31,14 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   </td>
   <td> 
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.mac.app.tar.gz">ptII11.0.devel.setup.mac.app.tar.gz</a>
-        (Untar, then right click on the .app file and select Open. See [Notes for Mac OS X](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm)
+        (Untar, then right click on the .app file and select Open. See <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm">Notes for macOS</a>.
   </td>
  </tr>
 
  <tr>
   <td>Linux</td>
   <td> NA </td>
-  <td>  [ptII11.0.devel.setup.linux.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz) (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` </td>
+  <td>
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz">ptII11.0.devel.setup.linux.tar.gz</a>
         (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` </td>
  </tr>
