@@ -13,8 +13,10 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
 
  <tr>
   <th> Platform </th>
-  <th> [Ptolemy II 10.0.1](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/) 12/18/2014 _Production Quality_ </th>
-  <th>Most Recent Nightly Build _Experimental, not tested by hand_ </th>
+  <th> <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/">Ptolemy II 10.0.1</a>
+                                                            <i>Production Quality</i>
+  </th>
+  <th>Most Recent Nightly Build <i>Experimental, not tested by hand</i> </th>
  </tr>
 
  <tr>
@@ -24,43 +26,70 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
 
  <tr>
   <td> Mac OS X </td>
-  <td> [ptII10.0.1.setup.mac.dmg](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.setup.mac.dmg) </td>
-  <td> [ptII11.0.devel.setup.mac.app.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.mac.app.tar.gz) (Untar, then right click on the .app file and select Open. See [Notes for Mac OS X](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm) </td>
+  <td>
+        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.setup.mac.dmg">ptII10.0.1.setup.mac.dmg</a>
+  </td>
+  <td> 
+        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.mac.app.tar.gz">ptII11.0.devel.setup.mac.app.tar.gz</a>
+        (Untar, then right click on the .app file and select Open. See [Notes for Mac OS X](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm)
+  </td>
  </tr>
 
  <tr>
   <td>Linux</td>
   <td> NA </td>
-  <td> [ptII11.0.devel.setup.linux.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz) (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` </td>
+  <td>  [ptII11.0.devel.setup.linux.tar.gz](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz) (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` </td>
+        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz">ptII11.0.devel.setup.linux.tar.gz</a>
+        (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` </td>
  </tr>
 
  <tr>
   <td> 32-bit Windows (**Really?**) </td>
-  <td> [ptII10\_0\_1\_setup\_windows.exe](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows.exe) </td>
+  <td> 
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows.exe">ptII10_0_1_setup_windows.exe</a>
+  </td>
   <td> NA </td>
  </tr>  
 
+
  <tr>
   <td> 64-bit Windows </td>
-  <td> [ptII10\_0\_1\_setup\_windows_64.exe](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows_64.exe) </td>
-  <td> [ptII11\_0\_devel\_setup\_windows_64.exe](https://github.com/icyphy/ptII/releases/download/nightly/ptII11_0_devel_setup_windows_64.exe) </td>
+  <td> 
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows_64.exe">ptII10_0_1_setup_windows_64.exe</a>
+  </td>
+  <td> 
+       <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11_0_devel_setup_windows_64.exe">ptII11_0_devel_setup_windows_64.exe</a>
+  </td>
  </tr>
 
  <tr>
   <td> Sources: Windows line endings</td>
-  <td> [ptII10.0.1.src.zip](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.zip) </td>
-  <td> [ptII11.0.devel.src.zip](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.zip) </td>
+  <td>
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.zip">ptII10.0.1.src.zip</a>
+  </td>
+  <td>
+       <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.zip">ptII11.0.devel.src.zip</a>
+        (<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
+  </td>
  </tr>
 
  <tr>
   <td> Sources: Unix line endings </td>
-  <td> [ptII10.0.1.src.tar.gz](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz) </td>
-  <td> [ptII11.0.devel.src.tar](https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.tar) ([Eclipse instructions](http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/eclipse/index.htm)) </td>
+  <td>
+        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz">ptII10.0.1.src.tar.gz</a>
+  </td>
+  <td>
+        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.src.tar">ptII11.0.devel.src.tar</a>
+        (<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
+  </td>
+
  </tr>
 
  <tr>
   <td> Web Copy </td>
-  <td> [ptII10.0.1](https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/doc/index.htm) </td>
+  <td>
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/doc/index.htm">index.htm</a>
+  </td>
   <td> NA </td>
  </tr>
 
